@@ -24,10 +24,10 @@
                             <span class="flag-icon flag-icon-us" v-if="local=='en'"></span> {{local=='en'?'English':'日本語'}}
                     </a>
                     <div class="dropdown-menu dropdown-menu-small" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" :href="baseUrl+'/language/en'"><span
+                        <a class="dropdown-item" :href="BASE_URL+'/language/en'"><span
                                 class="flag-icon flag-icon-us"></span> English</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" :href="baseUrl+'/language/ja'"><span
+                        <a class="dropdown-item" :href="BASE_URL+'/language/ja'"><span
                                 class="flag-icon flag-icon-jp"></span> 日本語</a>
                     </div>
                 </li>
@@ -44,7 +44,7 @@
                     <div class="dropdown-menu dropdown-menu-small" style="margin-left: -60px;">
                         <!-- @can('personal_profile_view') -->
                         <!-- <a class="dropdown-item"
-                            :href="baseUrl+'/users/1'">
+                            :href="BASE_URL+'/users/1'">
                             <i class="material-icons">&#xE7FD;</i> Profile
                         </a> -->
                         <router-link :to="{ name: 'users', params: { id: global_user_id,auth_id:global_user_id } }" class="dropdown-item"><i class="material-icons">&#xE7FD;</i> Profile</router-link>
@@ -89,12 +89,12 @@ data(){
     return {
         local:Globals.local,
         user_data:null,
-        baseUrl:BASE_URL,
+        // BASE_URL:BASE_URL,
     }
 },
 methods:{
     imageSrc(){
-        return this.baseUrl+"/storage/app/public/backend/images/users/"+(this.user_data).user.image
+        return this.BASE_URL+"/storage/app/public/backend/images/users/"+(this.user_data).user.image
     }
 },
 created(){

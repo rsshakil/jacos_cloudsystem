@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Models\Permission;
-use App\users_details;
+use App\adm_user_details;
 use Auth;
 class User extends Authenticatable
 {
@@ -29,8 +29,8 @@ class User extends Authenticatable
      */
     // public function userDetailsRel()
     // {
-    //     // return $this->hasOne('App\users_details', 'user_id');
-    //     return $this->hasOne('App\users_details', 'user_id', 'id');
+    //     // return $this->hasOne('App\adm_user_details', 'user_id');
+    //     return $this->hasOne('App\adm_user_details', 'user_id', 'id');
     // }
 
     /**
@@ -46,7 +46,7 @@ class User extends Authenticatable
     public function getImageAttribute() 
     {
         $user_id= Auth::user()->id;
-        $user_details = users_details::where('user_id', $user_id)->first();
+        $user_details = adm_user_details::where('user_id', $user_id)->first();
         if($user_details){
             $image_name = $user_details->image;
         } else {

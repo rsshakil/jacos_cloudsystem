@@ -3,7 +3,7 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use App\User;
-use App\users_details;
+use App\adm_user_details;
 
 class UsersTableSeeder extends Seeder
 {
@@ -39,7 +39,7 @@ class UsersTableSeeder extends Seeder
             ['user_id'=>3],
         );
         User::insert($user_array);
-        users_details::insert($user_details_array);
+        adm_user_details::insert($user_details_array);
         
     }
 }
