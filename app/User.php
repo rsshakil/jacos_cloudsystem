@@ -41,7 +41,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-
+    protected $table = 'adm_users';
     // public function getFirstNameAttribute() 
     public function getImageAttribute() 
     {
