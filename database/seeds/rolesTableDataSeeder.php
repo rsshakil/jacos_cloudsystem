@@ -1,7 +1,8 @@
 <?php
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+// use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 class rolesTableDataSeeder extends Seeder
 {
     /**
@@ -29,6 +30,6 @@ class rolesTableDataSeeder extends Seeder
             ]
         );
 
-        DB::table('roles')->insert($role_array);
+        Role::insert($role_array);
     }
 }

@@ -55,9 +55,9 @@ class AllUsedFunction extends Controller
     public function get_permissions($role_id = null)
     {
         if ($role_id != null) {
-            $permissions = Permission::select('permissions.*')
-                ->join('role_has_permissions', 'permissions.id', '=', 'role_has_permissions.permission_id')
-                ->where('role_has_permissions.role_id', $role_id)
+            $permissions = Permission::select('adm_permissions.*')
+                ->join('adm_role_has_permissions as rhp', 'adm_permissions.id', '=', 'rhp.permission_id')
+                ->where('rhp.role_id', $role_id)
                 ->get();
         }else{
             $permissions=Permission::all();

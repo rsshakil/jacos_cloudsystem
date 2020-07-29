@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\AllUsedFunction;
 use App\User;
-use App\users_details;
+use App\adm_user_details;
 // use Auth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -73,7 +73,7 @@ class UsersController extends Controller
             $user->password = $hash_password;
             $user->save();
             $last_user_id = $user->id;
-            $user_details = new users_details;
+            $user_details = new adm_user_details;
             $user_details->user_id = $last_user_id;
             $user_details->save();
             $users = User::findOrFail($last_user_id);
@@ -157,7 +157,7 @@ class UsersController extends Controller
 
         $user = User::find($user_id);
         $user_all_data = User::where('id', '=', $user_id)->first();
-        $user_details_data = users_details::where('user_id', '=', $user_id)->first();
+        $user_details_data = adm_user_details::where('user_id', '=', $user_id)->first();
 
         $user_email_exist = $user_all_data->email;
         if ($user_email_exist != $email) {
@@ -198,7 +198,7 @@ class UsersController extends Controller
             'postal_code' => $postal_code,
             'image' => $file_name,
         );
-        users_details::where('user_id', $user_id)->update($update_array);
+        adm_user_details::where('user_id', $user_id)->update($update_array);
         return response()->json(['title'=>"Updated!",'message' =>'updated', 'class_name' => 'success']);
     }
 
@@ -212,7 +212,7 @@ class UsersController extends Controller
     {
         $user_info = User::where('id', $id)->first();
         $user_name = $user_info['name'];
-        $detail_exist = users_details::where('user_id', $id)->first();
+        $detail_exist = adm_user_details::where('user_id', $id)->first();
         User::where('id', $id)->delete();
         if ($detail_exist) {
             $image_exists = $detail_exist['image'];
@@ -220,7 +220,7 @@ class UsersController extends Controller
             if (file_exists($filename)) {
                 @unlink($filename);
             }
-            users_details::where('user_id', $id)->delete();
+            adm_user_details::where('user_id', $id)->delete();
         }
         return response()->json(['title'=>"Deleted!",'message' =>'deleted', 'class_name' => 'success']);
     }
@@ -233,7 +233,7 @@ class UsersController extends Controller
     // public function userDetails(Request $request)
     public function userDetails($user_id)
     {
-        $users = DB::select("select * from users as u left join users_details as ud on u.id=ud.user_id where u.id='$user_id'");
+        $users = DB::select("select * from adm_users as u left join adm_user_details as ud on u.id=ud.user_id where u.id='$user_id'");
         return \response()->json(['users'=>$users]);
     }
     /**

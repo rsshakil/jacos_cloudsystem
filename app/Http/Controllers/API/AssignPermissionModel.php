@@ -41,9 +41,9 @@ class AssignPermissionModel extends Controller
         // }
         $user = User::find($user_id);
         $permissions_exists = $user->permissions;
-        $permission_names =DB::table('model_has_roles as mhr')->select('mhr.*','rhp.*','p.*')
-        ->join('role_has_permissions as rhp','mhr.role_id','=','rhp.role_id')
-        ->join('permissions as p','p.id','=','rhp.permission_id')
+        $permission_names =DB::table('adm_model_has_roles as mhr')->select('mhr.*','rhp.*','p.*')
+        ->join('adm_role_has_permissions as rhp','mhr.role_id','=','rhp.role_id')
+        ->join('adm_permissions as p','p.id','=','rhp.permission_id')
         ->where('mhr.model_id','=',$user_id)
         ->get();
         $permissions = $this->all_used_functions->get_permissions();
