@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreateUsersDetailsTable extends Migration
+class CreateAdmUserDetailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateUsersDetailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('users_details', function (Blueprint $table) {
+        Schema::create('adm_user_details', function (Blueprint $table) {
             $table->increments('users_details_id')->comment('users_details_id');
             $table->integer('user_id')->unsigned()->comment('users_id');
 			$table->string('first_name', 80)->comment('first_name')->nullable();
@@ -39,6 +39,6 @@ class CreateUsersDetailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users_details');
+        Schema::dropIfExists('adm_user_details');
     }
 }

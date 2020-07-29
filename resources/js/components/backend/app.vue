@@ -38,9 +38,9 @@ data(){
         user:null,
         loading:false,
         initiated:false,
-        BASE_URL:Globals.base_url,
+        // BASE_URL:Globals.base_url,
         req: axios.create({
-            baseUrl:Globals.base_url
+            BASE_URL:this.BASE_URL
         })
     }
 },

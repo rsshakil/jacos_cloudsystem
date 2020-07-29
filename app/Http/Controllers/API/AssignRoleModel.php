@@ -38,9 +38,9 @@ class AssignRoleModel extends Controller
      */
     public function getRoleById($id)
     {
-        $model_data = DB::table('model_has_roles')->select('roles.id as role_id','roles.name as role_name')
-        ->join('roles','roles.id','=','model_has_roles.role_id')
-            ->where('model_has_roles.model_id', $id)
+        $model_data = DB::table('adm_model_has_roles as mhr')->select('adm_roles.id as role_id','adm_roles.name as role_name')
+        ->join('adm_roles','adm_roles.id','=','mhr.role_id')
+            ->where('mhr.model_id', $id)
             ->get();
         return response()->json(['model_data'=>$model_data]);
 

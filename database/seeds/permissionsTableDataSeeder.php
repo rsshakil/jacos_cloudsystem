@@ -1,7 +1,8 @@
 <?php
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+// use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Permission;
 
 class permissionsTableDataSeeder extends Seeder
 {
@@ -164,6 +165,6 @@ class permissionsTableDataSeeder extends Seeder
                 'is_system' => 1,
             ]
         );
-        DB::table('permissions')->insert($permission_array);
+        Permission::insert($permission_array);
     }
 }
