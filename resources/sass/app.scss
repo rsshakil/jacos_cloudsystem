@@ -1,14 +1,43 @@
-
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
-
 // Variables
 @import 'variables';
-
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
-
 .navbar-laravel {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
+
+.active-pink-3 input[type=text] {
+    border: 1px solid #f48fb1;
+    box-shadow: 0 0 0 1px #f48fb1;
+}
+
+.data_table thead tr th {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.data_table tbody tr td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.check_item,
+.check_all {
+    width: 15px;
+}
+
+
+/* table col two lines*/
+
+.form_input {
+    text-align: center;
+    display: block;
+    width: 60px;
+    margin-right: -15px;
+}
+
+
+/* table col two lines*/
