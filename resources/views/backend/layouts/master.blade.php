@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Template</title>
+    <title>JCS</title>
     <link rel="shortcut icon" href="{{Config::get('app.url') . '/public/backend/images/logo/favicon.ico'}}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="A high-quality &amp; free Bootstrap admin dashboard template pack that comes with lots of templates and components.">
@@ -25,13 +25,8 @@
 </head>
 
 <body>
-    <div class="container-fluid" id="app">
-        {{-- <div class="col-md-12"></div> --}}
-        {{-- <div class="col-md-4"></div>
-        <div class="col-md-8"></div> --}}
-    </div>
+    <div class="container-fluid" id="app"></div>
     <script type="text/javascript">
-        var BASE_URL='{{URL::to('/')}}';
         @auth
           window.Permissions = {!! json_encode(Auth::user()->allPermissions, true) !!};
        @else
