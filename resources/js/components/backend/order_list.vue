@@ -66,39 +66,20 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>2020年07月21日 12:17</td>
-                                    <td>2020年07月21日</td>
-                                    <td>オンライン</td>
-                                    <td>一部未確定</td>
+                                <tr v-for="(order_list,index) in order_lists" :key="order_list.byr_order_id">
+                                    <td>{{index+1}}</td>
+                                    <td>{{order_list.receive_date}}</td>
+                                    <td>{{order_list.expected_delivery_date}}</td>
+                                    <td>{{order_list.category}}</td>
+                                    <td>{{order_list.status}}</td>
                                     <td><button class="btn btn-primary">ピッキング表</button></td>
                                     <!-- <td><a href="confirm_quantity.html" class="btn btn-info">数量確定</a></td> -->
                                     <td>
-                                        <router-link to="/Bar" class="btn btn-info">数量確定</router-link>
+                                        <router-link :to="{name:'order_list_detail',params:{byr_order_id:order_list.byr_order_id} }" class="btn btn-info">数量確定</router-link>
                                     </td>
                                     <td><button class="btn btn-success">伝票データ</button></td>
                                 </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>2020年07月21日 12:17</td>
-                                    <td>2020年07月21日</td>
-                                    <td>手書き</td>
-                                    <td>一部未確定</td>
-                                    <td><button class="btn btn-primary">ピッキング表</button></td>
-                                    <td><a href="confirm_quantity.html" class="btn btn-info">数量確定</a></td>
-                                    <td><button class="btn btn-success">伝票データ</button></td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>2020年07月21日 12:17</td>
-                                    <td>2020年07月21日</td>
-                                    <td>オンライン</td>
-                                    <td>一部未確定</td>
-                                    <td><button class="btn btn-primary">ピッキング表</button></td>
-                                    <td><a href="confirm_quantity.html" class="btn btn-info">数量確定</a></td>
-                                    <td><button class="btn btn-success">伝票データ</button></td>
-                                </tr>
+                                
                             </tbody>
                         </table>
                         <input type="hidden" name="hidden_page" id="hidden_page" value="1" />
@@ -110,3 +91,30 @@
             </div>
   </div>
 </template>
+<script>
+export default {
+  data() {
+    return {
+        'order_lists':{},
+
+    };
+  },
+  methods: {
+    //get Table data
+    get_all_order(){
+        axios.get("api/byrorders ").then((data) => {
+            console.log(data.data.order_list);
+            this.order_lists = data.data.order_list;
+        });
+    }
+  },
+
+  created() {
+      this.get_all_order();
+      console.log('created log');
+  },
+  mounted() {
+    console.log("User page loaded");
+  }
+};
+</script>

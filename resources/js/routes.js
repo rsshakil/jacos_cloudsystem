@@ -7,7 +7,7 @@ import users from './components/backend/users.vue'
 import user_update from './components/backend/user_update.vue'
 import password_reset from './components/backend/password_reset.vue'
 import order_list from './components/backend/order_list.vue'
-import shipment_list from './components/backend/shipment_list.vue'
+import byr_order_detail from './components/backend/byr_order_detail.vue'
 // import login_body from './components/login/login_body.vue'
 
 export const routes = [
@@ -21,6 +21,6 @@ export const routes = [
     { path: '/users/:id/:auth_id', name: 'users', component: user_update },
     { path: '/password_reset/:id/:auth_id', name: 'password_reset', component: password_reset },
     { path: '/order_list', component: order_list },
-    { path: '/shipment_list', component: shipment_list },
+    { path: '/order_list_detail/:byr_order_id', name: 'order_list_detail', component: byr_order_detail },
     // { path: '/login', name: 'login', component: login_body },
 ];

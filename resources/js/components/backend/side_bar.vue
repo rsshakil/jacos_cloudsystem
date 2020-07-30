@@ -83,12 +83,12 @@
             {{myLang.order_list}}
           </router-link>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <router-link to="/shipment_list" class="nav-link">
             <i class="material-icons">local_taxi</i>
             {{myLang.shipment_list}}
           </router-link>
-        </li>
+        </li>-->
         <!-- <li class="nav-item">
           <a class="nav-link" href="#" @click.prevent="logout">
             <i class="material-icons">power_settings_new</i>
