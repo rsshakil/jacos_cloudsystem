@@ -6,6 +6,9 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
 {
+    protected $commands = [
+        Commands\MigrateInOrder::class,
+    ];
     /**
      * The application's global HTTP middleware stack.
      *

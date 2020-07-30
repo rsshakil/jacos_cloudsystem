@@ -37,7 +37,7 @@ class CreateByrOrderDetailsTable extends Migration
             $table->decimal('order_quantity', 10, 1)->default('0.0')->comment('order quantity');
             $table->date('order_date')->comment('order date')->nullable();
             $table->date('expected_delivery_date')->comment('expected delivery date')->nullable();
-            $table->string('sale_category', 50)->comment('color')->nullable();
+            $table->string('sale_category', 50)->comment('sale_category')->nullable();
             $table->decimal('cost_unit_price', 10, 2)->default('0.00')->comment('order quantity');
             $table->integer('cost_price')->unsigned()->default('0')->comment('cost price');
             $table->mediumInteger('selling_unit_price')->unsigned()->default('0')->comment('selling unit price');
