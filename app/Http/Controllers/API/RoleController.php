@@ -55,18 +55,16 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        // return $this->all_lang->langString();
+        if (!(Validator::make($request->all(), ['role_name' => 'required | max:50',])->passes())) {
+            return response()->json(['alert_text' => 'required', 'class_name' => 'error','title'=>'Required!']);
+        }
         $role_update_id = $request->role_update_id;
         $permission_full = $request->permissions;
+        $role_name = $request->role_name;
         $permissions=array();
         foreach ($permission_full as $key => $value) {
             $permissions[]=$value['id'];
         }
-        $validation = Validator::make($request->all(), [
-            'role_name' => 'required|max:50',
-        ]);
-        if ($validation->passes()) {
-            $role_name = $request->role_name;
             $role_description = $request->role_description;
             if ($role_update_id == null) {
                 $roles = Role::where('name', $role_name)->get();
@@ -83,7 +81,6 @@ class RoleController extends Controller
                 if ($roles_check['name'] != $role_name) {
                     if (Role::where('name', '=', $role_name)->exists()) {
                         return response()->json(['alert_text' => 'duplicated', 'class_name' => 'error','title'=>'Not Updated!']);
-                        // return response()->json(['message' => __('messages.role_duplicated'), 'class_name' => 'error','title'=>'Not Updated!']);
                     }
                 }
                 Role::where('id', $role_update_id)->update([
@@ -91,13 +88,7 @@ class RoleController extends Controller
                     'role_description' => $role_description]);
                 $this->assignPermissionToRole($role_update_id, $permissions);
                 return response()->json(['alert_text' => 'updated', 'class_name' => 'success','title'=>'Updated!']);
-                // return response()->json(['message' => __('messages.role_updated'), 'class_name' => 'success','title'=>'Updated!']);
             }
-
-        } else {
-            return response()->json(['alert_text' => 'required', 'class_name' => 'error','title'=>'Required!']);
-            // return response()->json(['message' => __('messages.role_name_required'), 'class_name' => 'error','title'=>'Required!']);
-        }
     }
 /**
      * Delete a role
