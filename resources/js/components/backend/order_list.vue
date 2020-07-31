@@ -77,7 +77,9 @@
                                     <td>
                                         <router-link :to="{name:'order_list_detail',params:{byr_order_id:order_list.byr_order_id} }" class="btn btn-info">数量確定</router-link>
                                     </td>
-                                    <td><button class="btn btn-success">伝票データ</button></td>
+                                    <td>
+                                    <router-link :to="{name:'canvas',params:{byr_order_id:order_list.byr_order_id} }" class="btn btn-success">伝票データ</router-link>
+                                    </td>
                                 </tr>
                                 
                             </tbody>
