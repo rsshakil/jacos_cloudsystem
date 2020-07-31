@@ -22,7 +22,7 @@ class Byr_orderController extends Controller
     {
         //test
         $result = DB::table('byr_orders')
-            ->select('byr_orders.status', 'byr_orders.receive_date', 'byr_orders.category', 'byr_order_details.expected_delivery_date')
+            ->select('byr_orders.status', 'byr_orders.byr_order_id', 'byr_orders.receive_date', 'byr_orders.category', 'byr_order_details.expected_delivery_date')
             ->join('byr_order_details', 'byr_orders.byr_order_id', '=', 'byr_order_details.byr_order_id')
             ->get();
         return response()->json(['order_list' => $result]);
