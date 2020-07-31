@@ -8,6 +8,7 @@ use App\Byr_order_detail;
 use App\Byr_order;
 use App\Byr_shipment;
 use App\Byr_shipment_detail;
+use App\byr_shop;
 use DB;
 
 class Byr_orderController extends Controller
@@ -21,7 +22,7 @@ class Byr_orderController extends Controller
     {
         //test
         $result = DB::table('byr_orders')
-            ->select('*')
+            ->select('byr_orders.status,byr_orders.receive_date,byr_orders.category,byr_order_details.expected_delivery_date')
             ->join('byr_order_details', 'byr_orders.byr_order_id', '=', 'byr_order_details.byr_order_id')
             ->get();
         return response()->json(['order_list' => $result]);
@@ -48,11 +49,17 @@ class Byr_orderController extends Controller
     {
 
         $result = DB::table('byr_orders')
-            ->select('*')
+            ->select('byr_order_details.*', 'byr_shipment_details.confirm_quantity')
             ->join('byr_order_details', 'byr_orders.byr_order_id', '=', 'byr_order_details.byr_order_id')
+            ->join('byr_shipment_details', 'byr_shipment_details.byr_order_detail_id', '=', 'byr_order_details.byr_order_detail_id')
             ->where('byr_orders.byr_order_id', $byr_order_id)
             ->get();
-        return response()->json(['order_list_detail' => $result]);
+        $byr_shops = DB::table('byr_shops')
+            ->select('byr_shops.shop_name', 'byr_shops.shop_name_kana', 'byr_order_details.byr_shop_id')
+            ->join('byr_order_details', 'byr_order_details.byr_shop_id', '=', 'byr_shops.byr_shop_id')
+            ->where('byr_order_details.byr_order_id', $byr_order_id)
+            ->get();
+        return response()->json(['order_list_detail' => $result, 'byr_shops' => $byr_shops]);
     }
 
     /**

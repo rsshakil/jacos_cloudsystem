@@ -52,7 +52,7 @@
           <div class="col-3">
             <div class="card mb-4 box-shadow">
               <div class="card-header">
-                <h4 class="my-0 font-weight-normal">納品日</h4>
+                <h4 class="my-0 font-weight-normal">ステータス</h4>
               </div>
               <div class="card-body p-0 d-flex flex-column justify-content-between">
                 <div>
@@ -160,15 +160,19 @@
                   <span id="total_icon"></span>
                 </th>
                 <th
+                  v-for="byr_shop in byr_shops"
+                  :key="byr_shop.byr_shop_id"
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="email"
                   style="cursor: pointer"
                   rowspan="2"
                 >
-                  渋谷店
+                  <span v-if="byr_shop.shop_name==''">{{byr_shop.shop_name_kana}}</span>
+                  <span v-else>{{byr_shop.shop_name}}</span>
                   <span id="email_icon"></span>
                 </th>
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -176,17 +180,7 @@
                   style="cursor: pointer"
                   rowspan="2"
                 >
-                  横浜店
-                  <span id="email_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="email"
-                  style="cursor: pointer"
-                  rowspan="2"
-                >
-                  さいたま店
+                  ステータス
                   <span id="email_icon"></span>
                 </th>
                 <th
@@ -235,14 +229,21 @@
                 </td>
                 <td>{{order_detail_list.item_name_kana}}</td>
                 <td>
-                  <input type="text" class="form_input" value="0" readonly />
+                  <input
+                    type="text"
+                    class="form_input"
+                    v-model="order_detail_list.confirm_quantity"
+                    readonly
+                  />
                   {{order_detail_list.order_quantity}}
                 </td>
-                <td>
-                  <input type="text" class="form_input" value="0" />2
-                </td>
-                <td>
-                  <input type="text" class="form_input" value="0" />1
+                <td v-for="byr_shop in byr_shops" :key="byr_shop.byr_shop_id">
+                  <input
+                    type="text"
+                    class="form_input"
+                    v-model="order_detail_list.confirm_quantity"
+                  />
+                  {{order_detail_list.order_quantity}}
                 </td>
                 <td>{{order_detail_list.status}}</td>
                 <td>
@@ -387,6 +388,7 @@ export default {
   data() {
     return {
       order_detail_lists: {},
+      byr_shops: {},
       order_date: "",
       expected_delivery_date: "",
       status: "",
@@ -402,6 +404,7 @@ export default {
         .get(this.BASE_URL + "api/byrorders/" + this.byr_order_id)
         .then(data => {
           this.order_detail_lists = data.data.order_list_detail;
+          this.byr_shops = data.data.byr_shops;
           this.order_date = data.data.order_list_detail[0].order_date;
           this.expected_delivery_date =
             data.data.order_list_detail[0].expected_delivery_date;
