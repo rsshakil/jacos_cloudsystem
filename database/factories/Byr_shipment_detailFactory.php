@@ -7,9 +7,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Byr_shipment_detail::class, function (Faker $faker) {
     return [
-        // 'byr_shipment_id' => 1,
         'byr_shipment_id' => factory(App\Byr_shipment::class),
-        // 'byr_order_detail_id' => 1,
         'byr_order_detail_id' => factory(App\Byr_order_detail::class),
         'order_quantity' => rand(1, 10),
         'confirm_quantity' => rand(1, 10),

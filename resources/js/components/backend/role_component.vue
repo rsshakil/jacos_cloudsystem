@@ -139,6 +139,7 @@ export default {
             this.alert_text=this.myLang.role_name_required
           }else if(data.alert_text=='updated'){
             this.alert_text=this.myLang.role_updated
+            this.loadTableData();
             this.form.clear();
             this.form.reset();
           }else if(data.alert_text=='duplicated'){

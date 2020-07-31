@@ -119,8 +119,9 @@ export default {
           this.alert_text=this.myLang.permission_already_exists
         }else if (data.message=='updated') {
           this.alert_text=this.myLang.permission_updated
+          this.loadPermissionData();
           this.form.clear();
-            this.form.reset();
+          this.form.reset();
         }else if (data.message=='required') {
           this.alert_text=this.myLang.permission_name_blank
         }
