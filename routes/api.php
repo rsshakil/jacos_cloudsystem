@@ -19,33 +19,18 @@ use Illuminate\Http\Request;
 // Authentication Route
 // Route::group(['middleware'=>'MyMiddleWire'],function(){
 Route::apiResources(
-	[
-		'role' => 'API\RoleController'
-	]
+    [
+        'role' => 'API\RoleController',
+        'permission' => 'API\PermissionController',
+        'users' => 'API\UsersController'
+    ]
 );
-Route::apiResources(
 
-	[
-		'permission' => 'API\PermissionController'
-	]
-);
 Route::apiResources(
-
-	[
-		'users' => 'API\UsersController'
-	]
-);
-Route::apiResources(
-
-	[
-		'byrorders' => 'API\Byr_orderController'
-	]
-);
-Route::apiResources(
-
-	[
-		'byrshipments' => 'API\Byr_shipmentController'
-	]
+    [
+        'byrorders' => 'API\Byr_orderController',
+        'byrshipments' => 'API\Byr_shipmentController'
+    ]
 );
 
 Route::get('/all_users_roles', 'API\AssignRoleModel@allUsersAndRoles');
@@ -64,6 +49,5 @@ Route::get('/user_details/{user_id}', 'API\UsersController@userDetails');
 Route::post('/users_update', 'API\UsersController@update');
 
 Route::get('/home_lang_data', 'API\LanguageController@homeLangData');
-		// Route::post('/permission_check', 'API\PermissionController@check');
 
-	// });
+Route::post('scenario_exec/{cmn_scenario_id}', 'API\Cmn_ScenarioController@exec');

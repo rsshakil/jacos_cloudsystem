@@ -13,6 +13,6 @@ $factory->define(cmn_scenario::class, function (Faker $faker) {
         'vector' => $faker->randomElement(['to_jacos','from_jacos','in_jacos','other']),
         'name' => $faker->word,
         'description' => $faker->sentence(5),
-        'file_path' => $faker->url,
+        'file_path' => 'App\Scenarios\ouk_order_toj',
     ];
 });
