@@ -8,9 +8,18 @@ export default {
             alert_title: 'Oops...',
             alert_text: 'Something went wrong!',
             alert_footer: 'May be internet or url problem',
+            global_image_path: null,
         }
     },
     methods: {
+        imageSrc(image_name) {
+            if (image_name) {
+                this.global_image_path = this.BASE_URL + "/storage/app/public/backend/images/users/" + image_name
+            } else {
+                this.global_image_path = this.BASE_URL + "/storage/app/public/backend/images/default/no-image.png"
+            }
+            return this.global_image_path;
+        },
         logout() {
             this.app.req.post(this.BASE_URL + 'logout').then(() => {
                 // this.app.user=null;

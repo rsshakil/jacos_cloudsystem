@@ -199,7 +199,7 @@ class UsersController extends Controller
             'image' => $file_name,
         );
         adm_user_details::where('user_id', $user_id)->update($update_array);
-        return response()->json(['title'=>"Updated!",'message' =>'updated', 'class_name' => 'success']);
+        return response()->json(['title'=>"Updated!",'message' =>'updated', 'class_name' => 'success','image_name'=>$file_name]);
     }
 
     /**
