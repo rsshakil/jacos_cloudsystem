@@ -19,25 +19,28 @@ import { Form, HasError, AlertError } from "vform";
 import Multiselect from "vue-multiselect";
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 // import FlagIcon from 'vue-flag-icon'
-// Fabric js
-import { fabric } from "fabric";
+// Fabric js 
+import { fabric } from 'fabric'
+// import VueKonva from 'vue-konva'
+
 
 Vue.use(VueRouter);
 
 // Install BootstrapVue
-Vue.use(BootstrapVue);
-//     // Optionally install the BootstrapVue icon components plugin
-Vue.use(IconsPlugin);
-// Vue.use(FlagIcon);
-// Register fabric js globally
-Vue.use(fabric);
-// register globally
-Vue.component("multiselect", Multiselect);
-// Vue.use(vueselect);
-//Pagination laravel-vue-pagination
-Vue.component("pagination", require("laravel-vue-pagination"));
-// spinner register
-Vue.component("spinner", require("vue-simple-spinner"));
+Vue.use(BootstrapVue)
+    //     // Optionally install the BootstrapVue icon components plugin
+Vue.use(IconsPlugin)
+    // Vue.use(FlagIcon);
+    // Register fabric js globally 
+Vue.use(fabric)
+    // Vue.use(VueKonva)
+    // register globally
+Vue.component('multiselect', Multiselect)
+    // Vue.use(vueselect);
+    //Pagination laravel-vue-pagination
+Vue.component('pagination', require('laravel-vue-pagination'));
+// spinner register 
+Vue.component('spinner', require('vue-simple-spinner'));
 
 window.Swal = Swal;
 const Toast = Swal.mixin({
