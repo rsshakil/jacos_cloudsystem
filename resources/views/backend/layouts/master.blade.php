@@ -7,7 +7,8 @@
     <title>JCS</title>
     <link rel="shortcut icon" href="{{Config::get('app.url') . '/public/backend/images/logo/favicon.ico'}}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description" content="A high-quality &amp; free Bootstrap admin dashboard template pack that comes with lots of templates and components.">
+    <meta name="description"
+        content="A high-quality &amp; free Bootstrap admin dashboard template pack that comes with lots of templates and components.">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="{{Config::get('app.url').'/public/css/app.css'}}">
     <link rel="stylesheet" href="{{Config::get('app.url').'/public/css/flag-icon.css'}}">
@@ -20,12 +21,17 @@
 
 <body>
     <div class="container-fluid" id="app"></div>
+    <b-modal size="lg" :hide-backdrop="true" @ok="signinUser($event)" :title="table_col_modal_title"
+        v-model="table_col_modal_setting">
+
+        <div v-html="table_col_setting_list"></div>
+    </b-modal>
     <script type="text/javascript">
-        @auth
-          window.Permissions = {!! json_encode(Auth::user()->allPermissions, true) !!};
-       @else
-          window.Permissions = [];
-       @endauth
+    @auth
+    window.Permissions = {!!json_encode(Auth::user()->allPermissions, true) !!};
+    @else
+        window.Permissions = [];
+    @endauth
     </script>
     <script src="{{Config::get('app.url').'/public/js/app.js'}}"></script>
     <script src="{{Config::get('app.url').'/public/js/jquery-3.5.1.min.js'}}"></script>

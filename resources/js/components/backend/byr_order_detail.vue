@@ -381,6 +381,8 @@
         </div>
       </div>-->
     </b-modal>
+    
+   
   </div>
 </template>
 <script>
@@ -423,6 +425,7 @@ export default {
           this.status = data.data.order_list_detail[0].status;
         });
     },
+    
     edit_order_detail(order_detail_list) {
       this.edit_order_modal = true;
     }

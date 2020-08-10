@@ -75,7 +75,32 @@ class Tbl_col_settingController extends Controller
      */
     public function show($id)
     {
-        //
+        $html = '';
+        $header_list = array();
+        $slected_list = array();
+        if (cmn_tbl_col_setting::where('url_slug', $id)->exists()) {
+            $result = cmn_tbl_col_setting::where('url_slug', $id)->first();
+            $header_list = json_decode($result->content_setting);
+            foreach ($header_list as $header) {
+                $checked = ($header->header_status == true ? 'checked' : '');
+                if ($header->header_status == true) {
+                    $slected_list[] = $header->header_field;
+                }
+                $html .= '<tr>';
+                $html .= '<td data_field="' . $header->header_field . '">' . $header->header_text . '</td>';
+                $html .= '<td><label class="switch">
+                    <input @change="handleChange()" name="' . $header->header_field . '" data_header_text="' . $header->header_text . '" type="checkbox" ' . $checked . '>
+                    <span class="slider round"></span>
+                  </label></td>';
+                // $html .= '<td><div><b-form-checkbox @change="handleChange($event)"  v-model="' . $header->header_field . '" name="check-button" switch></b-form-checkbox></div></td>';
+                // $html .= '<td><b-form-checkbox  @change="handleChange()" :value="' . $header->header_field . '" switch><p class="btn btn-info" style="padding:5px;margin:3px;">' . $header->header_text . '</p></b-form-checkbox></td>';
+                $html .= '</tr>';
+            }
+        } else {
+            $html .= '<tr><td colspan="2">No setting found</td></tr>';
+        }
+        $table = '<table class="table table-bordered"><thead><tr><th>Col</th><th>status</th></tr></thead><tbody>' . $html . '</tbody></table>';
+        return $result = response()->json(['result' => $table, 'arrs' => $header_list, 'col_lists' => $header_list, 'selected_columns' => $slected_list]);
     }
 
     /**
@@ -88,6 +113,21 @@ class Tbl_col_settingController extends Controller
     public function update(Request $request, $id)
     {
         //
+        if (cmn_tbl_col_setting::where('url_slug', $id)->exists()) {
+            $result = cmn_tbl_col_setting::where('url_slug', $id)->first();
+            $header_list = json_decode($result->content_setting);
+            foreach ($header_list as $lst) {
+                $lst->header_status = false;
+            }
+            $selected_lists = $request->content_setting;
+            foreach ($selected_lists as $selected_list) {
+                $key = array_search($selected_list, array_column($header_list, 'header_field'));
+                $header_list[$key]->header_status = true;
+            }
+            $jsn = json_encode($header_list);
+            cmn_tbl_col_setting::where('url_slug', $id)->update(['content_setting' => $jsn]);
+        }
+        return $result = response()->json(['result' => $selected_lists, 'url' => $header_list]);
     }
 
     /**

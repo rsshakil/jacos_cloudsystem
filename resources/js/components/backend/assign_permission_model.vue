@@ -114,6 +114,8 @@ export default {
           this.not_matches=data.not_matches
           this.selected_permissions=data.permissions_exist_id
           this.permissions_by_role=data.all_permissions_for_user_array
+           console.log(this.selected_permissions);
+           console.log(this.not_matches);
         })
         .catch(() => {
           console.log("Error...");
