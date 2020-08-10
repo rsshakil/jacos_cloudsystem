@@ -70,6 +70,9 @@ Route::get('/user_details/{user_id}', 'API\UsersController@userDetails');
 Route::post('/users_update', 'API\UsersController@update');
 
 Route::get('/home_lang_data', 'API\LanguageController@homeLangData');
+
+Route::post('/canvas_data_save', 'API\Byr_orderController@canvasDataSave');
+Route::post('/load_canvas_data', 'API\Byr_orderController@canvasAllData');
 		// Route::post('/permission_check', 'API\PermissionController@check');
 
 	// });
