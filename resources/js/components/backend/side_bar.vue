@@ -42,45 +42,38 @@
       <ul class="nav flex-column">
         <li class="nav-item" v-can="['dashboard_menu']">
           <router-link to="/home" class="nav-link">
-            <i class="material-icons">home</i>
-            {{myLang.dashboard_text}}
+            <b-icon icon="house-fill" font-scale="1.2"></b-icon> {{myLang.dashboard_text}}
           </router-link>
         </li>
         <!-- v-if="can('role_menu')" -->
         <li class="nav-item" v-can="['role_menu']">
           <router-link to="/role" class="nav-link">
-            <i class="material-icons">person</i>
-            {{myLang.role_management}}
+            <b-icon icon="person-check-fill" font-scale="1.2"></b-icon> {{myLang.role_management}}
           </router-link>
         </li>
         <li class="nav-item" v-can="['permission_menu']">
           <router-link to="/permission" class="nav-link">
-            <i class="material-icons">account_balance</i>
-            {{myLang.permission_management}}
+            <b-icon icon="person-bounding-box" font-scale="1.2"></b-icon> {{myLang.permission_management}}
           </router-link>
         </li>
         <li class="nav-item" v-can="['assign_role_to_user_menu']">
           <router-link to="/assign_role_to_user" class="nav-link">
-            <i class="material-icons">all_inclusive</i>
-            {{myLang.assign_role_to_user}}
+            <b-icon icon="folder-symlink-fill" font-scale="1.2"></b-icon> {{myLang.assign_role_to_user}}
           </router-link>
         </li>
         <li class="nav-item" v-can="['assign_permission_to_user_menu']">
           <router-link to="/assign_permission_to_user" class="nav-link">
-            <i class="material-icons">enhanced_encryption</i>
-            {{myLang.assign_permission_to_user}}
+            <b-icon icon="unlock-fill" font-scale="1.2"></b-icon> {{myLang.assign_permission_to_user}}
           </router-link>
         </li>
         <li class="nav-item" v-can="['manage_user_menu']">
           <router-link to="/users" class="nav-link">
-            <i class="material-icons">person</i>
-            {{myLang.manage_users}}
+            <b-icon icon="person-circle" font-scale="1.2"></b-icon> {{myLang.manage_users}}
           </router-link>
         </li>
         <li class="nav-item">
           <router-link to="/order_list" class="nav-link">
-            <i class="material-icons">topic</i>
-            {{myLang.order_list}}
+            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> {{myLang.order_list}}
           </router-link>
         </li>
         <!-- <li class="nav-item">

@@ -10,6 +10,8 @@ data(){
     vueCanvas:null,
     canvas : null,
     bg_image_path:null,
+    pointerX:100,
+    pointerY:50,
   }
 },
 methods:{
@@ -24,9 +26,13 @@ methods:{
         });
       },
       createGraphics() {
+        console.log(this.canvas);
+            this.createReactObj();
+          },
+          createReactObj(){
             const rect = new fabric.Rect({
-            left: 100,
-            top: 50,
+            left: this.pointerX,
+            top: this.pointerY-100,
             fill: '#D81B60',
             width: 50,
             height: 50,
@@ -40,7 +46,13 @@ methods:{
             hasControls: true
           });
             this.canvas.add(rect);
-          }
+          },
+          doubleClick(option){
+            console.log(option);
+            this.pointerX=option.pointer.x
+            this.pointerY=option.pointer.y
+            this.createReactObj();
+          },
         // }
       },
       created(){
@@ -56,6 +68,9 @@ methods:{
           // initAligningGuidelines(this.canvas);
           // initCenteringGuidelines(this.canvas);
           this.createGraphics();
+          this.canvas.on('mouse:dblclick', (e) => {
+            this.doubleClick(e)
+          })
     }
 }
 </script>

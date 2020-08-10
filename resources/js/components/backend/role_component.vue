@@ -46,9 +46,9 @@
                         <has-error :form="form" field="role_description"></has-error>
                       </div>
                     </div>
-                    <button @click.prevent="SubmitRole" type="submit" class="btn btn-primary">
-                      <i class="fas fa-save"></i> {{form.submit_button}}
-                    </button>
+                    <b-button pill variant="primary" @click.prevent="SubmitRole" type="submit">
+                      <b-icon icon="inbox-fill" font-scale="1.2"></b-icon> {{form.submit_button}}
+                    </b-button>
                   </form>
                 </div>
               </div>
@@ -79,12 +79,12 @@
                     <td style="" v-html="item.role_permissions">
                     </td>
                     <td style="width:20%;">
-                      <button class="btn btn-info" v-can="['role_update']" @click.prevent="editRole(item)">
-                        <i class="fas fa-edit"></i>
-                      </button>
-                      <button :disabled="is_disabled(item.is_system)" v-can="['role_delete']" type="button" class="btn btn-danger" @click="deleteRole(item.role_id)">
-                        <i class="fas fa-trash-alt"></i>
-                      </button>
+                      <b-button variant="info" v-can="['role_update']" @click.prevent="editRole(item)">
+                        <b-icon icon="pencil-square" font-scale="1.2"></b-icon>
+                      </b-button>
+                      <b-button variant="danger" :disabled="is_disabled(item.is_system)" v-can="['role_delete']" @click="deleteRole(item.role_id)">
+                        <b-icon icon="trash-fill" font-scale="1.2"></b-icon>
+                      </b-button>
                     </td>
                   </tr>
                 </tbody>

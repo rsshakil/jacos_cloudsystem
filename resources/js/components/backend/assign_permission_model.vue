@@ -47,7 +47,7 @@
                         </b-form-group>
 												</div>
 												<div>
-													<button type="submit" @click.prevent="AssignPermissions" class="btn btn-primary" v-can="['assign_permission_to_user_update']"><i class="fas fa-save"></i> {{submit_button}}</button>
+                          <b-button pill variant="primary" @click.prevent="AssignPermissions" v-can="['assign_permission_to_user_update']"><b-icon icon="inbox-fill" font-scale="1.2"></b-icon> {{submit_button}}</b-button>
 												</div>
 											</div>
 										</div>

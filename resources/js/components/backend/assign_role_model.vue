@@ -27,10 +27,10 @@
 									</div>
 									<div class="form-group row">
 										<label class="col-sm-2 col-form-label">{{myLang.select_role}}</label>
-										<div class="col-sm-4">  
+										<div class="col-md-10">  
                       <b-form-group v-if="user_id!=''">
                         <b-form-checkbox-group id="checkbox-group" v-model="selected_roles">
-                          <b-form-checkbox v-for="(role, index) in all_roles" :value="role.role_id" :key="index" switch>{{role.role_name}}</b-form-checkbox>
+                          <b-form-checkbox class="btn outline-secondary" style="margin:3px; line-height:5px; height:25px;" v-for="(role, index) in all_roles" :value="role.role_id" :key="index">{{role.role_name}}</b-form-checkbox>
                         </b-form-checkbox-group>
                     </b-form-group> 
                     <h6 v-else>{{myLang.user_no_select}}</h6>
@@ -39,8 +39,7 @@
 									<div class="form-group row">
 										<label for="inputEmail3" class="col-sm-2 col-form-label"></label>
 										<div class="col-sm-4">
-											<button v-if="user_id!=''" type="submit" @click.prevent="AssignRole()" class="btn btn-primary" v-can="['assign_role_to_user_update']"> <i
-													class="fas fa-save"></i> {{submit_button}}</button>
+											<b-button pill variant="primary" v-if="user_id!=''" @click.prevent="AssignRole()" v-can="['assign_role_to_user_update']"> <b-icon icon="inbox-fill" font-scale="1.2"></b-icon> {{submit_button}}</b-button>
 										</div>
 									</div>
 								<!-- </form> -->
