@@ -47,6 +47,12 @@ Route::apiResources(
 		'byrshipments' => 'API\Byr_shipmentController'
 	]
 );
+Route::apiResources(
+
+	[
+		'tblecolsetting' => 'API\Tbl_col_settingController'
+	]
+);
 
 Route::get('/all_users_roles', 'API\AssignRoleModel@allUsersAndRoles');
 Route::get('/get_roles/{id}', 'API\AssignRoleModel@getRoleById');

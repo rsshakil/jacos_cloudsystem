@@ -9,6 +9,7 @@ export default {
             alert_text: 'Something went wrong!',
             alert_footer: 'May be internet or url problem',
             global_image_path: null,
+            table_col_modal: false
         }
     },
     methods: {
@@ -26,6 +27,11 @@ export default {
                 // this.$router.push('/login');
                 window.location.reload();
             })
+        },
+        display_table_col_setting() {
+            console.log('load modal')
+            this.table_col_modal = true;
+
         },
         sweet_normal_alert() {
             Swal.fire({
@@ -63,6 +69,14 @@ export default {
             } else {
                 return true;
             }
+        },
+        col_show_hide_setting(url_slug) {
+            var post_data = { url_slug: url_slug, user_id: Globals.user_info_id }
+            axios
+                .post(this.BASE_URL + "api/tblecolsetting", post_data)
+                .then(data => {
+                    console.log(data);
+                });
         },
         init() {
             axios.post(this.BASE_URL + 'user').catch(err => { window.location.reload(); })
