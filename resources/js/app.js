@@ -20,7 +20,7 @@ import Multiselect from 'vue-multiselect';
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 // import FlagIcon from 'vue-flag-icon'
 // Fabric js 
-import { fabric } from 'fabric'
+// import { fabric } from 'fabric'
 
 
 Vue.use(VueRouter);
@@ -31,7 +31,7 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
     // Vue.use(FlagIcon);
     // Register fabric js globally 
-Vue.use(fabric)
+    // Vue.use(fabric)
     // register globally
 Vue.component('multiselect', Multiselect)
     // Vue.use(vueselect);
