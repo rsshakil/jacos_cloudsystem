@@ -4,7 +4,11 @@
 </template>
 
 <script>
+import { fabric } from 'fabric'
 export default {
+  components:{
+      fabric
+  },
 data(){
   return {
     vueCanvas:null,

@@ -14,7 +14,7 @@
         <!-- <spinner v-if="loading"></spinner>
         <div v-else-if="initiated"></div> -->
         <div class="col-md-12" style="margin-top:70px; padding:0px;">
-            <projectfooter :app="this"></projectfooter>
+            <projectfooter ></projectfooter>
         </div>
         
         
