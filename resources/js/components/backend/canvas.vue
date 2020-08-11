@@ -27,16 +27,15 @@
     </div>
 <br> -->
                 <div class="col-12">
-                  <button style="margin-left: 1px;" class="btn btn-danger" onclick="deleteObjects()">Delete</button>
-                <button class="print-button btn btn-primary">Print</button>
-                <input class="bg_image btn btn-info" type="file">
-                <input type="hidden" value="" name="update_canvas_id" id="update_canvas_id">
-                <input type="hidden" value="" name="update_image_info" id="update_image_info">
+                  <b-button variant="danger" style="margin-left: 1px;" @click="deleteObjects()">Delete</b-button>
+                <b-button variant="primary" @click="printCanvas">Print</b-button>
+                <input class="btn btn-info" @change="bgImageChange" type="file">
+                <b-button variant="warning" @click="clearCanvasObjects">Clear canvas</b-button>
                 <br>
                 <br>
                 <div class="row" style="margin-left: 1px;">
                         <input type="text" v-model="canvas_name" class="form-control" placeholder="Please enter canvas name" style="width:300px !important">
-                        <b-button variant="info" style="margin-left: 5px;" @click="saveData">Save</b-button> 
+                        <b-button variant="info" style="margin-left: 5px;" @click="saveData">{{submit_button}}</b-button> 
                 </div>
                 <br>
                     <canvas id="c" style="border:1px solid #000000;">Your browser does not support the canvas element.</canvas>
@@ -63,8 +62,11 @@
                           <td>{{(i+1)}}</td>
                           <td>{{canvasData.canvas_name}}</td>
                           <td><img :src="BASE_URL+'public/backend/images/canvas/Canvas_screenshoot/'+canvasData.canvas_image" alt="No image" class="img-responsive img-thumbnail" width="150" height="100" style="border: 1px solid gray;"></td>
-                          <td>{{canvasData.updated_at}}</td>
-                          <td>Edit | Delete</td>
+                          <td v-html="formatDate(canvasData.updated_at)"></td>
+                          <td>
+                            <b-button variant="info" @click="editCanvas(canvasData)"><b-icon icon="pencil-square" font-scale="1.2"></b-icon></b-button>
+                            <b-button variant="danger" @click="deleteCanvas(canvasData.cmn_pdf_canvas_id)"><b-icon icon="trash-fill" font-scale="1.2"></b-icon></b-button>
+                          </td>
                         </tr>
                     </tbody>
                 </table>
@@ -90,21 +92,186 @@ data(){
     canvas_id:null,
     update_image_info:null,
     byr_id:null,
+    submit_button:'Save',
     pointerX:100,
     pointerY:50,
   }
 },
 methods:{
-  loadCanvasData() {
+          loadCanvasData() {
             axios.post(this.BASE_URL+"api/load_canvas_data",{byr_buyer_id:this.byr_id})
                 .then(({ data }) => {
                   this.canvasAllData=data.canvas_info;
-                    console.log(data);
-                        // this.loadUserData();
+                    // console.log(data);
                 })
                 .catch(() => {
                 this.sweet_advance_alert();
                 });
+          },
+          editCanvas(canvasData){
+            // this.canvas.clear();
+            this.canvasClear();
+            this.canvas_name=canvasData.canvas_name;
+            this.canvas_id=canvasData.cmn_pdf_canvas_id;
+            this.submit_button='Update'
+            this.bg_image_path=this.BASE_URL + 'public/backend/images/canvas/Background/'+canvasData.canvas_bg_image;
+            this.backgroundImageSet(this.bg_image_path);
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+            this.canvasDataView(canvasData.canvas_objects);
+          },
+          canvasDataView(text_data) {
+            var c= this.canvas;
+              c.loadFromJSON(text_data, function() {
+              c.renderAll();
+              });
+          },
+          deleteObjects(){
+            var canvas=this.canvas;
+            var activeObjects = canvas.getActiveObjects();
+            if (activeObjects.length) {
+                if (confirm('Do you want to delete the selected item??')) {
+                    activeObjects.forEach(function(object) {
+                        canvas.remove(object);
+                    });
+                }
+            } else {
+                alert('Please select the drawing to delete')
+            }
+          },
+          deleteCanvas(cmn_pdf_canvas_id){
+              this.init();
+              this.delete_sweet().then((result) => {     
+              if (result.value) { 
+                //Send Request to server
+                axios.post(this.BASE_URL+'api/delete_canvas',{cmn_pdf_canvas_id:cmn_pdf_canvas_id})
+                    .then(({data})=> {
+                      if (data.message=='success') {
+                        this.alert_text="Canvas deleted"
+                      }else if(data.message=='faild'){
+                        this.alert_text="Canvas not deleted"
+                      }
+                      this.alert_icon=data.class_name
+                      this.alert_title=data.title
+                      this.sweet_normal_alert();
+                      this.loadCanvasData()
+                    }).catch(() => {
+                        this.sweet_advance_alert();
+                    })
+                }
+
+            })
+            },
+          bgImageChange(e) {
+              let file = e.target.files[0];
+              let reader = new FileReader();  
+              if(file.size < 2111775){
+                  if (file.type =="image/png" ||file.type =="image/jpeg") {
+                    var mainThis=this;
+                     reader.onload = function(e) {
+                          var base64_var = e.target.result;
+                          mainThis.bgImageProcess(base64_var);
+                          mainThis.update_image_info=1;
+                      };
+                      reader.readAsDataURL(file);
+                      reader.onerror = function() {
+                          console.log('there are some problems');
+                      };
+                  }else{
+                      this.alert_text='File must me jpg or png'
+                      this.alert_title="Warning!",
+                      this.alert_icon="warning"
+                      this.sweet_normal_alert();
+                      $('#image').val('');
+                  }
+              }else{
+                  this.alert_text='File size can not be bigger than 2 MB'
+                  this.alert_title="Warning!",
+                  this.alert_icon="warning"
+                  this.sweet_normal_alert();
+                $('#image').val('');
+              }
+          //   this.form.image_url = URL.createObjectURL(file);
+          },
+          canvasClear(){
+            var obj = this.canvas.getObjects();
+            this.canvas.remove(obj)
+          },
+          canvasFieldClead(){
+            this.canvas_name=null;
+            this.canvas_id=null;
+            this.submit_button='Save'
+            this.update_image_info=null
+            this.bg_image_path=this.BASE_URL + 'public/backend/images/canvas/Background/bg_image.jpg'
+            this.backgroundImageSet(this.bg_image_path);
+          },
+          bgImageProcess(bg_image) {
+              var img = new Image();
+              var mainCanvas=this.canvas;
+              img.onload = function() {
+                  var f_img = new fabric.Image(img);
+                  mainCanvas.setBackgroundImage(f_img, mainCanvas.renderAll.bind(mainCanvas), {
+                      width: mainCanvas.width,
+                      height: mainCanvas.height,
+                      originX: 'left',
+                      originY: 'top'
+                  });
+              };
+              img.src = bg_image;
+          },
+          clearCanvasObjects(){
+            this.canvas.clear();
+            this.canvasFieldClead();
+          },
+          printCanvas(){
+            this.deselectObject()
+            this.printData('.canvas-container');
+          },
+          deselectObject(){
+            var canvas= this.canvas;
+            var activeObjects = canvas.getActiveObjects();
+            if (activeObjects.length) {
+                // if (confirm('Do you want to delete the selected item??')) {
+                activeObjects.forEach(function(object) {
+                    canvas.discardActiveObject(object);
+                    canvas.renderAll();
+                });
+                // }
+            }
+          },
+          printData(divVar) {
+            var canvas=this.canvas;
+            var thisVar=this;
+              var imgSrc = canvas.backgroundImage._element.src;
+              canvas.backgroundImage = 0;
+              canvas.renderAll();
+              var ppp = $(divVar).printThis({
+                  debug: false, // show the iframe for debugging
+                  importCSS: false, // import parent page css
+                  importStyle: false, // import style tags
+                  printContainer: true, // print outer container/$.selector
+                  loadCSS: Globals.base_url + "/public/css/pdf_css.css", // path to additional css file - use an array [] for multiple
+                  pageTitle: "0", // add title to print page
+                  removeInline: false, // remove inline styles from print elements
+                  removeInlineSelector: "*", // custom selectors to filter inline styles. removeInline must be true
+                  printDelay: 500, // variable print delay EX: 333
+                  header: null, // prefix to html or null
+                  footer: null, // postfix to html or null
+                  base: false, // preserve the BASE tag or accept a string for the URL
+                  formValues: true, // preserve input/form values
+                  canvas: true, // copy canvas content
+                  doctypeString: '', // enter a different doctype for older markup
+                  removeScripts: false, // remove script tags from print content
+                  copyTagClasses: false, // copy classes from the html & body tag
+                  beforePrintEvent: null, // function for printEvent in iframe
+                  beforePrint: null, // function called before iframe is filled
+                  afterPrint: null // function called before iframe is removed
+              });
+              // console.log(ppp);
+              setTimeout(function() {
+                  thisVar.backgroundImageSet(imgSrc);
+              }, 510);
+
+
           },
           saveData(){
             if (this.canvas_name==null) {
@@ -128,7 +295,9 @@ methods:{
                         this.alert_icon=data.class_name
                         this.sweet_normal_alert();
                         this.loadCanvasData()
-                        // this.canvas.clear();
+                        // this.canvasClear();
+                        this.canvas.clear();
+                        this.canvasFieldClead();
                 })
                 .catch(() => {
                 this.sweet_advance_alert();

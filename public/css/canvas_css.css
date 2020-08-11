@@ -1,0 +1,12 @@
+#c {
+    border: 1px solid #c3c3c3;
+    /* width: 100%;
+    height: 620px; */
+    /* background-image: url('../backend/images/canvas/Background/bg_image.jpg');
+    background-size: 100% 100%; */
+    /* background-repeat: no-repeat; */
+}
+
+.textboxdesign {
+    border: 1px solid red !important;
+}
