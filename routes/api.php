@@ -73,6 +73,7 @@ Route::get('/home_lang_data', 'API\LanguageController@homeLangData');
 
 Route::post('/canvas_data_save', 'API\Byr_orderController@canvasDataSave');
 Route::post('/load_canvas_data', 'API\Byr_orderController@canvasAllData');
+Route::post('/delete_canvas', 'API\Byr_orderController@deleteCanvasData');
 		// Route::post('/permission_check', 'API\PermissionController@check');
 
 	// });

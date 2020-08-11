@@ -38,8 +38,8 @@
     <script src="{{Config::get('app.url').'/public/dashboard/scripts/Chart.min.js'}}"></script>
     <script src="{{Config::get('app.url').'/public/dashboard/scripts/shards-dashboards.1.1.0.min.js'}}"></script>
     <script src="{{Config::get('app.url').'/public/js/jquery.sharrre.min.js'}}"></script>
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Sharrre/2.0.1/jquery.sharrre.min.js"></script> --}}
     <script src="{{Config::get('app.url').'/public/dashboard/scripts/extras.1.1.0.min.js'}}"></script>
+    <script src="{{Config::get('app.url').'/public/js/printThisLibrary/printThis.js'}}"></script>
 </body>
 
 </html>
