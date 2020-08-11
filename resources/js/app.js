@@ -23,7 +23,7 @@ import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 import { fabric } from 'fabric'
 // import VueKonva from 'vue-konva'
 
-
+window.Fire =  new Vue();
 Vue.use(VueRouter);
 
 // Install BootstrapVue

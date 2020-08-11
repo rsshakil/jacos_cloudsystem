@@ -68,13 +68,13 @@ export default {
                     post_data
                 )
                 .then(data => {
-                    console.log(data);
                     this.$root.$emit(
                         "bv::hide::modal",
                         "table_col_setting",
                         "#table_colShowHide"
                     );
-                    this.get_all_byr_order_detail();
+                    // Fire.$emit('AfterCreate');
+                    window.location.reload();
                 });
         },
         handleChange: function(col_setting) {
@@ -85,11 +85,10 @@ export default {
                     if (this.selected_columns[i] == col_setting.header_field) {
                       this.selected_columns.splice(i, 1)
                     }
-                  }
+                }
             }
-            console.log(this.table_col_arry);
-            console.log(this.selected_columns);
         },
+        
         sweet_normal_alert() {
             Swal.fire({
                 icon: this.alert_icon,
@@ -128,6 +127,9 @@ export default {
             }
         },
         col_show_hide_setting(url_slug) {
+            console.log(this.selected_columns.length);
+            if(this.selected_columns.length==0){
+                
             var post_data = {
                 url_slug: url_slug,
                 user_id: Globals.user_info_id
@@ -137,6 +139,7 @@ export default {
                 .then(data => {
                     console.log(data);
                 });
+            }
         },
         init() {
             axios.post(this.BASE_URL + "user").catch(err => {
@@ -145,7 +148,7 @@ export default {
         }
     },
     created() {
-
+        
         axios
             .get(this.BASE_URL + "api/tblecolsetting/" + this.$route.name)
             .then(data => {

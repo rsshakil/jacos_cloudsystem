@@ -393,18 +393,7 @@ export default {
       order_detail_lists: {},
       byr_shops: {},
       order_date: "",
-      order_detail_list: [
-        {
-          header_text: "注文タイプ",
-          header_field: "order_type",
-          status: true
-        },
-        {
-          header_text: "分類コード",
-          header_field: "category_code",
-          status: true
-        }
-      ],
+      order_detail_list: [],
       expected_delivery_date: "",
       status: "",
       byr_order_id: "",
@@ -424,6 +413,8 @@ export default {
           this.expected_delivery_date =
             data.data.order_list_detail[0].expected_delivery_date;
           this.status = data.data.order_list_detail[0].status;
+          console.log("byr detail order refresh");
+          console.log(this.selected_columns);
         });
     },
 
@@ -435,12 +426,16 @@ export default {
   created() {
     this.byr_order_id = this.$route.params.byr_order_id;
     this.get_all_byr_order_detail();
+    Fire.$on("AfterCreate", () => {
+      console.log("load byr order");
+      this.get_all_byr_order_detail();
+    });
     this.col_show_hide_setting(this.$route.name);
     console.log("created log");
     console.log(this.byr_order_id);
   },
   mounted() {
-    console.log("User page loaded");
+    console.log("byr order detail page loaded");
   }
 };
 </script>
