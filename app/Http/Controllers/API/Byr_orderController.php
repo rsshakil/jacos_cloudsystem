@@ -88,7 +88,19 @@ class Byr_orderController extends Controller
     public function canvasAllData(Request $request){
         $byr_buyer_id=$request->byr_buyer_id;
         $canvas_info = cmn_pdf_canvas::where('byr_buyer_id',$byr_buyer_id)->orderBy('created_at','DESC')->get();
-        return response()->json(['canvas_info'=>$canvas_info]);
+        $canvas_array=array();
+        foreach ($canvas_info as $key => $canvas) {
+            $tmp['cmn_pdf_canvas_id']=$canvas->cmn_pdf_canvas_id;
+            $tmp['byr_buyer_id']=$canvas->byr_buyer_id;
+            $tmp['canvas_name']=$canvas->canvas_name;
+            $tmp['canvas_image']=$canvas->canvas_image;
+            $tmp['canvas_bg_image']=$canvas->canvas_bg_image;
+            $tmp['canvas_objects']=$this->UnserializedCanvasData($canvas->canvas_objects);;
+            $tmp['created_at']=$canvas->created_at;
+            $tmp['updated_at']=$canvas->updated_at;
+            $canvas_array[]=$tmp;
+        }
+        return response()->json(['canvas_info'=>$canvas_array]);
     }
     public function canvasDataSave(Request $request){
         // return $request->all();
@@ -136,16 +148,30 @@ class Byr_orderController extends Controller
             return response()->json(['message' =>'created', 'class_name' => 'success','title'=>'Created!']);
         }
     }
-    public function getCanvasDataByCanvasId(Request $request)
+    public function deleteCanvasData(Request $request){
+        $canvas_id=$request->cmn_pdf_canvas_id;
+        $canvas_image_info = cmn_pdf_canvas::select('canvas_image','canvas_bg_image')->where('cmn_pdf_canvas_id', $canvas_id)->first();
+            $file_path = public_path() . '/backend/images/canvas/';
+            \Log::info('file_name_new=' . $file_path .'Canvas_screenshoot/'. $canvas_image_info['canvas_image']);
+            if (file_exists($file_path .'Canvas_screenshoot/'. $canvas_image_info['canvas_image'])) {
+                @unlink($file_path .'Canvas_screenshoot/'. $canvas_image_info['canvas_image']);
+            }
+            if ($canvas_image_info['canvas_bg_image']!="bg_image.jpg") {
+                if (file_exists($file_path .'Background/'. $canvas_image_info['canvas_bg_image'])) {
+                    @unlink($file_path .'Background/'. $canvas_image_info['canvas_bg_image']);
+                }
+            }
+            $canvas_del=cmn_pdf_canvas::where('cmn_pdf_canvas_id', $canvas_id)->delete();
+            if ($canvas_del) {
+                return response()->json(['message' =>'success', 'class_name' => 'success','title'=>'Deleted!']);
+            }else{
+                return response()->json(['message' =>'faild', 'class_name' => 'error','title'=>'Not Deleted!']);
+            }
+            
+    }
+    private function UnserializedCanvasData($canvas_objects)
     {
-        // return $request->all();
-        $canvas_id = $request->canvas_id;
-        $canvas_table_data = cmn_pdf_canvas::where('canvas_id', $canvas_id)->first();
-        $canvas_objects = $canvas_table_data['canvas_objects'];
-        $canvas_bg = $canvas_table_data['canvas_bg_image'];
-        // Unserializing the data in $string
         $canvas_data = unserialize($canvas_objects);
-        // return $canvas_data = base64_decode($canvas_objects, $strict = true);
         $canvas_array = array();
         foreach ($canvas_data['objects'] as $key => $value) {
             $temp_array['type'] = $value['type'];
@@ -202,8 +228,7 @@ class Byr_orderController extends Controller
             'version' => $canvas_data['version'],
             'objects' => $canvas_array,
         );
-        // return $new_array;
-        return response()->json(['canvas_data' => $new_array, 'canvas_bg' => $canvas_bg]);
+        return $new_array;
     }
     public function save_base64_image($base64_image_string, $output_file_without_extension, $path_with_end_slash = "")
     {
