@@ -16,6 +16,27 @@ export default {
         };
     },
     methods: {
+        // Database created and updated datetime conversion 
+        formatDate(date_string) {
+            var date = new Date(date_string)
+            return date.getFullYear() + '-' +
+                this.length_fill(date.getMonth() + 1) + '-' +
+                this.length_fill(date.getDate()) + ' ' +
+                this.length_fill(date.getHours()) + ':' +
+                this.length_fill(date.getMinutes()) + ':' +
+                this.length_fill(date.getSeconds());
+        },
+
+        length_fill(data_string) {
+            var strlenth = data_string.toString().length;
+            var str;
+            if (strlenth < 2) {
+                str = "0" + data_string;
+            } else {
+                str = data_string;
+            }
+            return str;
+        },
         imageSrc(image_name) {
             if (image_name) {
                 this.global_image_path =
