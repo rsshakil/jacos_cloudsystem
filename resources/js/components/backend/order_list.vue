@@ -53,12 +53,12 @@
                                 <tr>
                                     <th>
                                     </th>
-                                    <th><input name="serach_field2" id="serach_field2" class="form-control" type="text"></span>
+                                    <th><input name="serach_field1" id="serach_field1" class="form-control" type="text"></span>
                                     </th>
-                                    <th><input name="serach_field3" id="serach_field3" class="form-control" type="text"></th>
-                                    <th><input name="serach_field1" class="form-control" id="serach_field1" type="text"></span>
+                                    <th><input name="serach_field2" id="serach_field2" class="form-control" type="text"></th>
+                                    <th><input name="serach_field3" class="form-control" id="serach_field3" type="text"></span>
                                     </th>
-                                    <th><input name="serach_field1" class="form-control" id="serach_field1" type="text"></span>
+                                    <th><input name="serach_field4" class="form-control" id="serach_field4" type="text"></span>
                                     </th>
                                     <th></th>
                                     <th></th>

@@ -114,20 +114,20 @@ class Tbl_col_settingController extends Controller
     {
         //
         if (cmn_tbl_col_setting::where('url_slug', $id)->exists()) {
-            $result = cmn_tbl_col_setting::where('url_slug', $id)->first();
-            $header_list = json_decode($result->content_setting);
-            foreach ($header_list as $lst) {
-                $lst->header_status = false;
-            }
-            $selected_lists = $request->content_setting;
-            foreach ($selected_lists as $selected_list) {
-                $key = array_search($selected_list, array_column($header_list, 'header_field'));
-                $header_list[$key]->header_status = true;
-            }
-            $jsn = json_encode($header_list);
+            // $result = cmn_tbl_col_setting::where('url_slug', $id)->first();
+            // $header_list = json_decode($result->content_setting);
+            // foreach ($header_list as $lst) {
+            //     $lst->header_status = false;
+            // }
+            // $selected_lists = $request->content_setting;
+            // foreach ($selected_lists as $selected_list) {
+            //     $key = array_search($selected_list, array_column($header_list, 'header_field'));
+            //     $header_list[$key]->header_status = true;
+            // }
+            $jsn = json_encode($request->setting_list);
             cmn_tbl_col_setting::where('url_slug', $id)->update(['content_setting' => $jsn]);
         }
-        return $result = response()->json(['result' => $selected_lists, 'url' => $header_list]);
+        return $result = response()->json(['result' => $request->setting_list, 'url' => $id]);
     }
 
     /**

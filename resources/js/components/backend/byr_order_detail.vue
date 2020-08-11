@@ -146,6 +146,7 @@
                   data-column_name="name"
                   style="cursor: pointer"
                   rowspan="2"
+                  v-if="selected_columns.includes('order_type')"
                 >
                   商品名
                   <span id="name_icon"></span>
@@ -227,7 +228,9 @@
                 <td>
                   <input type="checkbox" class="form-control check_item" />
                 </td>
-                <td>{{order_detail_list.item_name_kana}}</td>
+                <td
+                  v-if="selected_columns.includes('order_type')"
+                >{{order_detail_list.item_name_kana}}</td>
                 <td>
                   <input
                     type="text"
@@ -381,8 +384,6 @@
         </div>
       </div>-->
     </b-modal>
-    
-   
   </div>
 </template>
 <script>
@@ -425,7 +426,7 @@ export default {
           this.status = data.data.order_list_detail[0].status;
         });
     },
-    
+
     edit_order_detail(order_detail_list) {
       this.edit_order_modal = true;
     }

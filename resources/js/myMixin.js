@@ -51,7 +51,6 @@ export default {
                     this.table_col_arry = data.data.arrs;
                     this.selected_columns = data.data.selected_columns;
                     this.col_lists = data.data.col_lists;
-                    console.log(this.table_col_arry);
                 });
         },
         update_col_setting() {
@@ -60,7 +59,8 @@ export default {
             var post_data = {
                 url_slug: this.$route.name,
                 user_id: Globals.user_info_id,
-                content_setting: this.selected_columns
+                content_setting: this.selected_columns,
+                setting_list: this.table_col_arry,
             };
             axios
                 .put(
@@ -69,10 +69,26 @@ export default {
                 )
                 .then(data => {
                     console.log(data);
+                    this.$root.$emit(
+                        "bv::hide::modal",
+                        "table_col_setting",
+                        "#table_colShowHide"
+                    );
+                    this.get_all_byr_order_detail();
                 });
         },
-        handleChange: function() {
-            alert(44);
+        handleChange: function(col_setting) {
+            if(col_setting.header_status===true){
+                this.selected_columns.push(col_setting.header_field);
+            }else{
+                for (var i = 0; i < this.selected_columns.length; i++ ) {
+                    if (this.selected_columns[i] == col_setting.header_field) {
+                      this.selected_columns.splice(i, 1)
+                    }
+                  }
+            }
+            console.log(this.table_col_arry);
+            console.log(this.selected_columns);
         },
         sweet_normal_alert() {
             Swal.fire({
@@ -127,5 +143,16 @@ export default {
                 window.location.reload();
             });
         }
+    },
+    created() {
+
+        axios
+            .get(this.BASE_URL + "api/tblecolsetting/" + this.$route.name)
+            .then(data => {
+                this.table_col_setting_list = data.data.result;
+                this.table_col_arry = data.data.arrs;
+                this.selected_columns = data.data.selected_columns;
+                this.col_lists = data.data.col_lists;
+            });
     }
 };
