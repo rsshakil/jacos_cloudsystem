@@ -93,6 +93,8 @@ data(){
     update_image_info:null,
     byr_id:null,
     submit_button:'Save',
+    canvas_width:1219,
+    canvas_height:510,
     pointerX:100,
     pointerY:50,
   }
@@ -446,8 +448,8 @@ methods:{
       mounted(){
         this.byr_id = this.$route.params.byr_order_id;
         this.canvas = new fabric.Canvas("c");
-          this.canvas.setWidth(1219);
-          this.canvas.setHeight(510);
+          this.canvas.setWidth(this.canvas_width);
+          this.canvas.setHeight(this.canvas_height);
           // this.canvas.controlsAboveOverlay = true;
           this.bg_image_path=this.BASE_URL + 'public/backend/images/canvas/Background/bg_image.jpg'
           this.backgroundImageSet(this.bg_image_path);
