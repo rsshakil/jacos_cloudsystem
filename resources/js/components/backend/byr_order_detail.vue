@@ -146,9 +146,240 @@
                   data-column_name="name"
                   style="cursor: pointer"
                   rowspan="2"
-                  v-if="show_hide_col_list.includes('order_type')"
+                  v-if="show_hide_col_list.includes('item_name')"
                 >
                   商品名
+                  <span id="name_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer"
+                  rowspan="2"
+                  v-if="show_hide_col_list.includes('order_type')"
+                >
+                  注文タイプ
+                  <span id="name_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer"
+                  rowspan="2"
+                  v-if="show_hide_col_list.includes('category_code')"
+                >
+                  分類コード
+                  <span id="name_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer"
+                  rowspan="2"
+                  v-if="show_hide_col_list.includes('voucher_category')"
+                >
+                  伝票区分
+                  <span id="name_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer"
+                  rowspan="2"
+                  v-if="show_hide_col_list.includes('voucher_number')"
+                >
+                  伝票番号
+                  <span id="name_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer"
+                  rowspan="2"
+                  v-if="show_hide_col_list.includes('list_number')"
+                >
+                  明細番号
+                  <span id="name_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer"
+                  rowspan="2"
+                  v-if="show_hide_col_list.includes('delivery_service_code')"
+                >
+                  便番号
+                  <span id="name_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer"
+                  rowspan="2"
+                  v-if="show_hide_col_list.includes('jan')"
+                >
+                  JAN
+                  <span id="name_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer"
+                  rowspan="2"
+                  v-if="show_hide_col_list.includes('spec')"
+                >
+                  規格
+                  <span id="name_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer"
+                  rowspan="2"
+                  v-if="show_hide_col_list.includes('spec_kana')"
+                >
+                  規格かな
+                  <span id="name_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer"
+                  rowspan="2"
+                  v-if="show_hide_col_list.includes('inputs')"
+                >
+                  入数
+                  <span id="name_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer"
+                  rowspan="2"
+                  v-if="show_hide_col_list.includes('size')"
+                >
+                  サイズ
+                  <span id="name_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer"
+                  rowspan="2"
+                  v-if="show_hide_col_list.includes('color')"
+                >
+                  カラー
+                  <span id="name_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer"
+                  rowspan="2"
+                  v-if="show_hide_col_list.includes('order_inputs')"
+                >
+                  発注単位
+                  <span id="name_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer"
+                  rowspan="2"
+                  v-if="show_hide_col_list.includes('order_date')"
+                >
+                  発注日時
+                  <span id="name_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer"
+                  rowspan="2"
+                  v-if="show_hide_col_list.includes('expected_delivery_date')"
+                >
+                  納品予定日
+                  <span id="name_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer"
+                  rowspan="2"
+                  v-if="show_hide_col_list.includes('sale_category')"
+                >
+                  特売区分
+                  <span id="name_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer"
+                  rowspan="2"
+                  v-if="show_hide_col_list.includes('cost_unit_price')"
+                >
+                  原単価
+                  <span id="name_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer"
+                  rowspan="2"
+                  v-if="show_hide_col_list.includes('cost_price')"
+                >
+                  原価金額
+                  <span id="name_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer"
+                  rowspan="2"
+                  v-if="show_hide_col_list.includes('selling_unit_price')"
+                >
+                  売単価
+                  <span id="name_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer"
+                  rowspan="2"
+                  v-if="show_hide_col_list.includes('selling_price')"
+                >
+                  売価金額
+                  <span id="name_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer"
+                  rowspan="2"
+                  v-if="show_hide_col_list.includes('other_info')"
+                >
+                  メモ
                   <span id="name_icon"></span>
                 </th>
                 <th
@@ -229,8 +460,59 @@
                   <input type="checkbox" class="form-control check_item" />
                 </td>
                 <td
-                  v-if="show_hide_col_list.includes('order_type')"
+                  v-if="show_hide_col_list.includes('item_name')"
                 >{{order_detail_list.item_name_kana}}</td>
+                <td
+                  v-if="show_hide_col_list.includes('order_type')"
+                >{{order_detail_list.order_type}}</td>
+                <td
+                  v-if="show_hide_col_list.includes('category_code')"
+                >{{order_detail_list.category_code}}</td>
+                <td
+                  v-if="show_hide_col_list.includes('voucher_category')"
+                >{{order_detail_list. voucher_category}}</td>
+                <td
+                  v-if="show_hide_col_list.includes('voucher_number')"
+                >{{order_detail_list.voucher_number}}</td>
+                <td
+                  v-if="show_hide_col_list.includes('list_number')"
+                >{{order_detail_list.list_number}}</td>
+                <td
+                  v-if="show_hide_col_list.includes('delivery_service_code')"
+                >{{order_detail_list.delivery_service_code}}</td>
+                <td v-if="show_hide_col_list.includes('jan')">{{order_detail_list.jan}}</td>
+                <td v-if="show_hide_col_list.includes('spec')">{{order_detail_list.spec}}</td>
+                <td v-if="show_hide_col_list.includes('spec_kana')">{{order_detail_list.spec_kana}}</td>
+                <td v-if="show_hide_col_list.includes('inputs')">{{order_detail_list.inputs}}</td>
+                <td v-if="show_hide_col_list.includes('size')">{{order_detail_list.size}}</td>
+                <td v-if="show_hide_col_list.includes('color')">{{order_detail_list.color}}</td>
+                <td
+                  v-if="show_hide_col_list.includes('order_inputs')"
+                >{{order_detail_list.order_inputs}}</td>
+                <td
+                  v-if="show_hide_col_list.includes('order_date')"
+                >{{order_detail_list.order_date}}</td>
+                <td
+                  v-if="show_hide_col_list.includes('expected_delivery_date')"
+                >{{order_detail_list.expected_delivery_date}}</td>
+                <td
+                  v-if="show_hide_col_list.includes('sale_category')"
+                >{{order_detail_list.sale_category}}</td>
+                <td
+                  v-if="show_hide_col_list.includes('cost_unit_price')"
+                >{{order_detail_list.cost_unit_price}}</td>
+                <td
+                  v-if="show_hide_col_list.includes('cost_price')"
+                >{{order_detail_list.cost_price}}</td>
+                <td
+                  v-if="show_hide_col_list.includes('sale_unit_price')"
+                >{{order_detail_list.selling_unit_price}}</td>
+                <td
+                  v-if="show_hide_col_list.includes('sale_price')"
+                >{{order_detail_list.selling_price}}</td>
+                <td
+                  v-if="show_hide_col_list.includes('other_info')"
+                >{{order_detail_list.other_info}}</td>
                 <td>
                   <input
                     type="text"
@@ -248,7 +530,7 @@
                   />
                   {{order_detail_list.order_quantity}}
                 </td>
-                <td>{{order_detail_list.status}}</td>
+                <td v-if="show_hide_col_list.includes('status')">{{order_detail_list.status}}</td>
                 <td>
                   <button class="btn btn-primary">確定</button>
                 </td>
@@ -415,11 +697,23 @@ export default {
           this.expected_delivery_date =
             data.data.order_list_detail[0].expected_delivery_date;
           this.status = data.data.order_list_detail[0].status;
-          console.log("byr detail order refresh");
-          console.log(this.selected_columns);
         });
     },
 
+    col_show_hide_setting(url_slug) {
+      console.log(this.show_hide_col_list.length + "col lenght");
+      if (this.show_hide_col_list.length == 0) {
+        var post_data = {
+          url_slug: url_slug,
+          user_id: Globals.user_info_id
+        };
+        axios
+          .post(this.BASE_URL + "api/tblecolsetting", post_data)
+          .then(data => {
+            console.log(data);
+          });
+      }
+    },
     edit_order_detail(order_detail_list) {
       this.edit_order_modal = true;
     }
@@ -432,8 +726,6 @@ export default {
       this.get_all_byr_order_detail();
     });
     this.col_show_hide_setting(this.$route.name);
-    console.log("created log");
-    console.log(this.byr_order_id);
   },
   mounted() {
     console.log("byr order detail page loaded");
