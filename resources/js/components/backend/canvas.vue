@@ -40,38 +40,42 @@
                 <br>
                     <canvas id="c" style="border:1px solid #000000;">Your browser does not support the canvas element.</canvas>
                 </div>
+                <div class="col-12 text-center">
+                  <b-icon icon="caret-left" variant="info" font-scale="3"></b-icon>
+                  <b-icon icon="caret-right" variant="info" font-scale="3"></b-icon>
+                </div>
                 <div class="col-12">
                   <!-- <div class="col"> -->
-        <div class="card card-small mb-8" style="margin-top: 25px;">
-            <div class="card-header border-bottom">
-                <h6 class="m-0">Canvas List</h6>
-            </div>
-            <div class="card-body p-0 pb-3" id="canvasList">
-                <table id="" class="table mb-0"> 
-                    <thead class="bg-light">
-                        <tr>
-                            <th>#</th>
-                            <th>Canvas Name</th>
-                            <th>Image</th>
-                            <th>Last Update</th>
-                            <th>Operation</th>
-                        </tr>
-                        </thead>
-                    <tbody>
-                        <tr v-for="(canvasData,i) in canvasAllData" :key="i">
-                          <td>{{(i+1)}}</td>
-                          <td>{{canvasData.canvas_name}}</td>
-                          <td><img :src="BASE_URL+'public/backend/images/canvas/Canvas_screenshoot/'+canvasData.canvas_image" alt="No image" class="img-responsive img-thumbnail" width="150" height="100" style="border: 1px solid gray;"></td>
-                          <td v-html="formatDate(canvasData.updated_at)"></td>
-                          <td>
-                            <b-button variant="info" @click="editCanvas(canvasData)"><b-icon icon="pencil-square" font-scale="1.2"></b-icon></b-button>
-                            <b-button variant="danger" @click="deleteCanvas(canvasData.cmn_pdf_canvas_id)"><b-icon icon="trash-fill" font-scale="1.2"></b-icon></b-button>
-                          </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                  <div class="card card-small mb-8" style="margin-top: 25px;">
+                      <div class="card-header border-bottom">
+                          <h6 class="m-0">Canvas List</h6>
+                      </div>
+                      <div class="card-body p-0 pb-3" id="canvasList">
+                          <table id="" class="table mb-0"> 
+                              <thead class="bg-light">
+                                  <tr>
+                                      <th>#</th>
+                                      <th>Canvas Name</th>
+                                      <th>Image</th>
+                                      <th>Last Update</th>
+                                      <th>Operation</th>
+                                  </tr>
+                                  </thead>
+                              <tbody>
+                                  <tr v-for="(canvasData,i) in canvasAllData" :key="i">
+                                    <td>{{(i+1)}}</td>
+                                    <td>{{canvasData.canvas_name}}</td>
+                                    <td><img :src="BASE_URL+'public/backend/images/canvas/Canvas_screenshoot/'+canvasData.canvas_image" alt="No image" class="img-responsive img-thumbnail" width="150" height="100" style="border: 1px solid gray;"></td>
+                                    <td v-html="formatDate(canvasData.updated_at)"></td>
+                                    <td>
+                                      <b-button variant="info" @click="editCanvas(canvasData)"><b-icon icon="pencil-square" font-scale="1.2"></b-icon></b-button>
+                                      <b-button variant="danger" @click="deleteCanvas(canvasData.cmn_pdf_canvas_id)"><b-icon icon="trash-fill" font-scale="1.2"></b-icon></b-button>
+                                    </td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
     <!-- </div> -->
                 </div>
 </div>
