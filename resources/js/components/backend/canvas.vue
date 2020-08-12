@@ -165,7 +165,6 @@ methods:{
             },
           bgImageChange(e) {
               let file = e.target.files[0];
-              console.log(file);
               let reader = new FileReader();  
               if(file.size < 2111775){
                   if (file.type =="image/png" ||file.type =="image/jpeg") {
