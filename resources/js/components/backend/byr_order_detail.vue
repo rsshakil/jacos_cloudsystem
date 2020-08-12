@@ -146,7 +146,7 @@
                   data-column_name="name"
                   style="cursor: pointer"
                   rowspan="2"
-                  v-if="selected_columns.includes('order_type')"
+                  v-if="show_hide_col_list.includes('order_type')"
                 >
                   商品名
                   <span id="name_icon"></span>
@@ -229,7 +229,7 @@
                   <input type="checkbox" class="form-control check_item" />
                 </td>
                 <td
-                  v-if="selected_columns.includes('order_type')"
+                  v-if="show_hide_col_list.includes('order_type')"
                 >{{order_detail_list.item_name_kana}}</td>
                 <td>
                   <input
@@ -394,6 +394,7 @@ export default {
       byr_shops: {},
       order_date: "",
       order_detail_list: [],
+      show_hide_col_list: [],
       expected_delivery_date: "",
       status: "",
       byr_order_id: "",
@@ -409,6 +410,7 @@ export default {
         .then(data => {
           this.order_detail_lists = data.data.order_list_detail;
           this.byr_shops = data.data.byr_shops;
+          this.show_hide_col_list = data.data.slected_list;
           this.order_date = data.data.order_list_detail[0].order_date;
           this.expected_delivery_date =
             data.data.order_list_detail[0].expected_delivery_date;
@@ -426,8 +428,7 @@ export default {
   created() {
     this.byr_order_id = this.$route.params.byr_order_id;
     this.get_all_byr_order_detail();
-    Fire.$on("AfterCreate", () => {
-      console.log("load byr order");
+    Fire.$on("LoadByrorderDetail", () => {
       this.get_all_byr_order_detail();
     });
     this.col_show_hide_setting(this.$route.name);

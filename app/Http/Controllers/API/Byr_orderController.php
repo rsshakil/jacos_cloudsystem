@@ -10,6 +10,7 @@ use App\Byr_shipment;
 use App\Byr_shipment_detail;
 use App\byr_shop;
 use App\cmn_pdf_canvas;
+use App\cmn_tbl_col_setting;
 use DB;
 
 class Byr_orderController extends Controller
@@ -60,7 +61,17 @@ class Byr_orderController extends Controller
             ->join('byr_order_details', 'byr_order_details.byr_shop_id', '=', 'byr_shops.byr_shop_id')
             ->where('byr_order_details.byr_order_id', $byr_order_id)
             ->get();
-        return response()->json(['order_list_detail' => $result, 'byr_shops' => $byr_shops]);
+        /*coll setting*/
+        $slected_list = array();
+        $result_data = cmn_tbl_col_setting::where('url_slug', 'order_list_detail')->first();
+            $header_list = json_decode($result_data->content_setting);
+            foreach ($header_list as $header) {
+                if ($header->header_status == true) {
+                    $slected_list[] = $header->header_field;
+                }
+            }
+        /*coll setting*/
+        return response()->json(['order_list_detail' => $result, 'byr_shops' => $byr_shops,'slected_list'=>$slected_list]);
     }
 
     /**

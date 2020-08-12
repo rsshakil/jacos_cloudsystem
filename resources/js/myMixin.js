@@ -94,8 +94,8 @@ export default {
                         "table_col_setting",
                         "#table_colShowHide"
                     );
-                    // Fire.$emit('AfterCreate');
-                    window.location.reload();
+                    Fire.$emit('LoadByrorderDetail');
+                    // window.location.reload();
                 });
         },
         handleChange: function(col_setting) {
