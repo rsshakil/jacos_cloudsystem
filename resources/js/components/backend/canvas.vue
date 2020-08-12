@@ -165,6 +165,7 @@ methods:{
             },
           bgImageChange(e) {
               let file = e.target.files[0];
+              console.log(file);
               let reader = new FileReader();  
               if(file.size < 2111775){
                   if (file.type =="image/png" ||file.type =="image/jpeg") {
@@ -212,11 +213,13 @@ methods:{
               img.onload = function() {
                   var f_img = new fabric.Image(img);
                   mainCanvas.setBackgroundImage(f_img, mainCanvas.renderAll.bind(mainCanvas), {
-                      width: mainCanvas.width,
-                      height: mainCanvas.height,
+                      // width: mainCanvas.width,
+                      // height: mainCanvas.height,
                       originX: 'left',
                       originY: 'top'
                   });
+                  mainCanvas.setWidth(img.width);
+                  mainCanvas.setHeight(img.height);
               };
               img.src = bg_image;
           },
@@ -378,68 +381,81 @@ methods:{
               return this.canvas.toJSON();
           },
           backgroundImageSet(imgUrl) {
-        this.canvas.setBackgroundImage(imgUrl, this.canvas.renderAll.bind(this.canvas), {
+            var mainCanvas=this.canvas;
+            this.canvas.setBackgroundImage(imgUrl, this.canvas.renderAll.bind(this.canvas), {
             // Optionally add an opacity lvl to the image
             backgroundImageOpacity: 0,
             // should the image be resized to fit the container?
             backgroundImageStretch: false,
-            width: this.canvas.width,
-            height: this.canvas.height
+            // image size as canvas size 
+            // width: this.canvas.width,
+            // height: this.canvas.height
         });
+        // canvas size by image size 
+        this.bgImageWH(imgUrl);
+      },
+      bgImageWH(imgUrl){
+        var mainCanvas=this.canvas;
+        const img = new Image();
+        img.src = imgUrl;
+        img.onload = function() {
+          mainCanvas.setWidth(img.naturalWidth);
+          mainCanvas.setHeight(img.naturalHeight);
+        };
       },
       addText(text_data) {
-    for (let i = 0; i < text_data.length; i++) {
-        var oText = new fabric.Textbox(text_data[i]['text'], {
-            originX: text_data[i]['originX'],
-            originY: text_data[i]['originY'],
-            left: text_data[i]['left'],
-            top: text_data[i]['top'],
-            width: text_data[i]['width'],
-            height: text_data[i]['height'],
-            fill: text_data[i]['fill'],
-            stroke: text_data[i]['stroke'],
-            strokeWidth: text_data[i]['strokeWidth'],
-            strokeDashArray: text_data[i]['strokeDashArray'],
-            strokeLineCap: text_data[i]['strokeLineCap'],
-            strokeDashOffset: text_data[i]['strokeDashOffset'],
-            strokeLineJoin: text_data[i]['strokeLineJoin'],
-            strokeMiterLimit: text_data[i]['strokeMiterLimit'],
-            scaleX: text_data[i]['scaleX'],
-            scaleY: text_data[i]['scaleY'],
-            angle: text_data[i]['angle'],
-            flipX: text_data[i]['flipX'],
-            flipY: text_data[i]['flipY'],
-            opacity: text_data[i]['opacity'],
-            shadow: text_data[i]['shadow'],
-            visible: text_data[i]['visible'],
-            clipTo: text_data[i]['clipTo'],
-            backgroundColor: text_data[i]['backgroundColor'],
-            fillRule: text_data[i]['fillRule'],
-            paintFirst: text_data[i]['paintFirst'],
-            globalCompositeOperation: text_data[i]['globalCompositeOperation'],
-            transformMatrix: text_data[i]['transformMatrix'],
-            skewX: text_data[i]['skewX'],
-            skewY: text_data[i]['skewY'],
-            fontSize: text_data[i]['fontSize'],
-            fontWeight: text_data[i]['fontWeight'],
-            fontFamily: text_data[i]['fontFamily'], //Arial, Times New Roman, Helvetica, sans-serif
-            fontStyle: text_data[i]['fontStyle'],
-            lineHeight: text_data[i]['lineHeight'],
-            underline: text_data[i]['underline'],
-            overline: text_data[i]['overline'],
-            linethrough: text_data[i]['linethrough'],
-            textAlign: text_data[i]['textAlign'],
-            textBackgroundColor: text_data[i]['textBackgroundColor'],
-            charSpacing: text_data[i]['charSpacing'],
-            minWidth: text_data[i]['minWidth'],
-            splitByGrapheme: text_data[i]['splitByGrapheme'],
-            objectCaching: false,
-            // hasControls: false,
-        });
-        this.canvas.add(oText).setActiveObject(oText);
-        this.canvas.renderAll();
-    }
-}
+          for (let i = 0; i < text_data.length; i++) {
+              var oText = new fabric.Textbox(text_data[i]['text'], {
+                  originX: text_data[i]['originX'],
+                  originY: text_data[i]['originY'],
+                  left: text_data[i]['left'],
+                  top: text_data[i]['top'],
+                  width: text_data[i]['width'],
+                  height: text_data[i]['height'],
+                  fill: text_data[i]['fill'],
+                  stroke: text_data[i]['stroke'],
+                  strokeWidth: text_data[i]['strokeWidth'],
+                  strokeDashArray: text_data[i]['strokeDashArray'],
+                  strokeLineCap: text_data[i]['strokeLineCap'],
+                  strokeDashOffset: text_data[i]['strokeDashOffset'],
+                  strokeLineJoin: text_data[i]['strokeLineJoin'],
+                  strokeMiterLimit: text_data[i]['strokeMiterLimit'],
+                  scaleX: text_data[i]['scaleX'],
+                  scaleY: text_data[i]['scaleY'],
+                  angle: text_data[i]['angle'],
+                  flipX: text_data[i]['flipX'],
+                  flipY: text_data[i]['flipY'],
+                  opacity: text_data[i]['opacity'],
+                  shadow: text_data[i]['shadow'],
+                  visible: text_data[i]['visible'],
+                  clipTo: text_data[i]['clipTo'],
+                  backgroundColor: text_data[i]['backgroundColor'],
+                  fillRule: text_data[i]['fillRule'],
+                  paintFirst: text_data[i]['paintFirst'],
+                  globalCompositeOperation: text_data[i]['globalCompositeOperation'],
+                  transformMatrix: text_data[i]['transformMatrix'],
+                  skewX: text_data[i]['skewX'],
+                  skewY: text_data[i]['skewY'],
+                  fontSize: text_data[i]['fontSize'],
+                  fontWeight: text_data[i]['fontWeight'],
+                  fontFamily: text_data[i]['fontFamily'], //Arial, Times New Roman, Helvetica, sans-serif
+                  fontStyle: text_data[i]['fontStyle'],
+                  lineHeight: text_data[i]['lineHeight'],
+                  underline: text_data[i]['underline'],
+                  overline: text_data[i]['overline'],
+                  linethrough: text_data[i]['linethrough'],
+                  textAlign: text_data[i]['textAlign'],
+                  textBackgroundColor: text_data[i]['textBackgroundColor'],
+                  charSpacing: text_data[i]['charSpacing'],
+                  minWidth: text_data[i]['minWidth'],
+                  splitByGrapheme: text_data[i]['splitByGrapheme'],
+                  objectCaching: false,
+                  // hasControls: false,
+              });
+              this.canvas.add(oText).setActiveObject(oText);
+              this.canvas.renderAll();
+          }
+      }
         // }
       },
       created(){
