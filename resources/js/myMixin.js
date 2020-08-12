@@ -147,21 +147,6 @@ export default {
                 return true;
             }
         },
-        col_show_hide_setting(url_slug) {
-            console.log(this.selected_columns.length);
-            if(this.selected_columns.length==0){
-                
-            var post_data = {
-                url_slug: url_slug,
-                user_id: Globals.user_info_id
-            };
-            axios
-                .post(this.BASE_URL + "api/tblecolsetting", post_data)
-                .then(data => {
-                    console.log(data);
-                });
-            }
-        },
         init() {
             axios.post(this.BASE_URL + "user").catch(err => {
                 window.location.reload();
@@ -170,13 +155,13 @@ export default {
     },
     created() {
         
-        axios
-            .get(this.BASE_URL + "api/tblecolsetting/" + this.$route.name)
-            .then(data => {
-                this.table_col_setting_list = data.data.result;
-                this.table_col_arry = data.data.arrs;
-                this.selected_columns = data.data.selected_columns;
-                this.col_lists = data.data.col_lists;
-            });
+        // axios
+        //     .get(this.BASE_URL + "api/tblecolsetting/" + this.$route.name)
+        //     .then(data => {
+        //         this.table_col_setting_list = data.data.result;
+        //         this.table_col_arry = data.data.arrs;
+        //         this.selected_columns = data.data.selected_columns;
+        //         this.col_lists = data.data.col_lists;
+        //     });
     }
 };
