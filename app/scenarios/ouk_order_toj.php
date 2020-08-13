@@ -72,12 +72,22 @@ class ouk_order_toj extends Model
     {
         \Log::debug('ouk_order_toj exec start  ---------------');
         // ファイルアップロード
-        $file_name = $request->file('up_file')->getClientOriginalName();
+       $file_name = $request->file('up_file')->getClientOriginalName();
         $path = $request->file('up_file')->storeAs(config('const.ORDER_DATA_PATH').date('Y-m'), $file_name);
         \Log::debug('save path:'.$path);
 
+        $file_url = fopen(storage_path().'/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name, 'r');
         // フォーマット変換
         // byr_orders,byr_order_details格納
+        $charlist = fread($file_url,filesize(storage_path().'/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name));
+        $charlist = $this->convert_from_sjis_to_utf8_recursively($charlist);
+        // $charlist = $this->convert_from_utf8_to_sjis__recursively($charlist);
+        // $str_arr = $this->mb_str_split($charlist);
+        $str_arr = str_split($charlist);
+        $arr_group = $this->process_array($str_arr);
+        echo '<pre>';
+print_r($arr_group);exit;
+        echo 'save path:'.$path;exit;
 
 
 
@@ -85,6 +95,32 @@ class ouk_order_toj extends Model
         return 0;
     }
 
+    /*jacos string analyze*/
+    public function mb_str_split($string)
+    {
+        # Split at all position not after the start: ^
+        # and not before the end: $
+        return preg_split('/(?<!^)(?!$)/u', $string);
+    }
+    public function process_array($charlist)
+    {
+        $total = count($charlist);
+        $k = 0;
+        $num__index = 0;
+        $arr1 = array();
+        for ($i = 0; $i < $total; $i++) {
+            if ($k <= 128) {
+                $arr1[$num__index][] = $charlist[$i];
+                $k++;
+            }
+            if ($k == 128) {
+                $num__index++;
+                $k = 0;
+            }
+        }
+        return $arr1;
+    }
+    /*jacos string analyze*/
     /**
      * 発注データ連想配列化
      *
@@ -173,5 +209,58 @@ class ouk_order_toj extends Model
             }
         }
         return $data;
+    }
+
+    public static function convert_from_sjis_to_utf8_recursively($dat)
+    {
+        if (is_string($dat)) {
+            \Log::debug('----- SJIJ to UTF-8 conversion completed -----');
+            // return mb_convert_encoding($dat, "UTF-8", "sjis-win");
+            return mb_convert_encoding($dat, "EUC-JP", "auto");
+        } elseif (is_array($dat)) {
+            $ret = [];
+            foreach ($dat as $i => $d) {
+                $ret[$i] = self::convert_from_sjis_to_utf8_recursively($d);
+            }
+
+            return $ret;
+        } elseif (is_object($dat)) {
+            foreach ($dat as $i => $d) {
+                $dat->$i = self::convert_from_sjis_to_utf8_recursively($d);
+            }
+
+            return $dat;
+        } else {
+            return $dat;
+        }
+    }
+    /**
+     * File encoding from utf8 to SJIJ
+     * @param utf-8 String or array
+     * @return  SJIJ encoded string
+     */
+    public static function convert_from_utf8_to_sjis__recursively($dat)
+    {
+        if (is_string($dat)) {
+            \Log::debug('----- UTF-8 to SJIJ conversion completed -----');
+            // Original
+            return mb_convert_encoding($dat, "sjis-win", "UTF-8");
+            // return mb_convert_encoding($dat, "SJIS", "UTF-8");
+        } elseif (is_array($dat)) {
+            $ret = [];
+            foreach ($dat as $i => $d) {
+                $ret[$i] = self::convert_from_utf8_to_sjis__recursively($d);
+            }
+
+            return $ret;
+        } elseif (is_object($dat)) {
+            foreach ($dat as $i => $d) {
+                $dat->$i = self::convert_from_utf8_to_sjis__recursively($d);
+            }
+
+            return $dat;
+        } else {
+            return $dat;
+        }
     }
 }

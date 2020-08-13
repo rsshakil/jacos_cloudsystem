@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+// use App\scenarios\ouk_order_toj;
 use Illuminate\Http\Request;
 use DB;
 use App\Models\Cmn_scenario;
@@ -76,18 +77,25 @@ class Cmn_ScenarioController extends Controller
         \Log::debug('scenario exec start---------------');
         // user info check
         \Log::debug($request);
-        
         // scenario info check
         $sc = cmn_scenario::where('cmn_scenario_id', $id)->first();
         \Log::info($sc);
-
+        
         // scenario call
-        if (!file_exists($sc->file_path.'.php')) {
+        if (!file_exists(app_path().'/'.$sc->file_path.'.php')) {
             \Log::error('Scenario file is not exist!:'.$sc->file_path);
-            return ['status'=>'1','message'=>'Scenario file is not exist!'];
+            return ['status'=>'1','message'=>'Scenario file is not exist!'.$sc->file_path];
         }
         // ファイル読み込み
-        $sc_obj = new $sc->file_path;
+        
+        // $sc_obj = new ouk_order_toj();//$sc->file_path;
+        $customClassPath = "\\App\\";
+        $nw_f_pth = explode('/',$sc->file_path);
+        foreach($nw_f_pth as $p){
+            $customClassPath .= $p.'\\';
+        }
+        $customClassPath = rtrim($customClassPath,"\\");
+        $sc_obj = new $customClassPath;
         // シナリオ実行
         if (!method_exists($sc_obj, 'exec')) {
             \Log::error('scenario exec error');
@@ -105,5 +113,10 @@ class Cmn_ScenarioController extends Controller
 
         \Log::debug('scenario exec end  ---------------');
         return;
+    }
+
+    public function exec_demo(Request $request, $id)
+    {
+        return response()->json(['req'=>$request->all()]);
     }
 }
