@@ -53,13 +53,10 @@
                                 <tr>
                                     <th>
                                     </th>
-                                    <th><input name="serach_field1" id="serach_field1" class="form-control" type="text"></span>
-                                    </th>
+                                    <th><input name="serach_field1" id="serach_field1" class="form-control" type="text"></th>
                                     <th><input name="serach_field2" id="serach_field2" class="form-control" type="text"></th>
-                                    <th><input name="serach_field3" class="form-control" id="serach_field3" type="text"></span>
-                                    </th>
-                                    <th><input name="serach_field4" class="form-control" id="serach_field4" type="text"></span>
-                                    </th>
+                                    <th><input name="serach_field3" class="form-control" id="serach_field3" type="text"></th>
+                                    <th><input name="serach_field4" class="form-control" id="serach_field4" type="text"></th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
@@ -78,7 +75,7 @@
                                         <router-link :to="{name:'order_list_detail',params:{byr_order_id:order_list.byr_order_id} }" class="btn btn-info">数量確定</router-link>
                                     </td>
                                     <td>
-                                    <router-link :to="{name:'canvas',params:{byr_order_id:order_list.byr_order_id} }" class="btn btn-success">伝票データ</router-link>
+                                    <router-link :to="{name:'order_details_canvas',params:{byr_order_id:order_list.byr_order_id} }" class="btn btn-success">伝票データ</router-link>
                                     </td>
                                 </tr>
                                 

@@ -41,8 +41,8 @@
                     <canvas id="c" style="border:1px solid #000000;">Your browser does not support the canvas element.</canvas>
                 </div>
                 <div class="col-12 text-center">
-                  <b-icon icon="caret-left" variant="info" font-scale="3"></b-icon>
-                  <b-icon icon="caret-right" variant="info" font-scale="3"></b-icon>
+                  <b-icon icon="caret-left" variant="info" font-scale="3" role="button"></b-icon>
+                  <b-icon icon="caret-right" variant="info" font-scale="3" role="button"></b-icon>
                 </div>
                 <div class="col-12">
                   <!-- <div class="col"> -->
@@ -107,8 +107,8 @@ methods:{
           loadCanvasData() {
             axios.post(this.BASE_URL+"api/load_canvas_data",{byr_buyer_id:this.byr_id})
                 .then(({ data }) => {
-                  this.canvasAllData=data.canvas_info;
-                    // console.log(data);
+                  // this.canvasAllData=data.canvas_info;
+                    console.log(data);
                 })
                 .catch(() => {
                 this.sweet_advance_alert();

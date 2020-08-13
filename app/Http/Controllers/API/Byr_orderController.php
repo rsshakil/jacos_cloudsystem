@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Byr_order_detail;
 use App\Byr_order;
+use App\byr_buyer;
 use App\Byr_shipment;
 use App\Byr_shipment_detail;
 use App\byr_shop;
@@ -97,7 +98,12 @@ class Byr_orderController extends Controller
         //
     }
     public function canvasAllData(Request $request){
-        $byr_buyer_id=$request->byr_buyer_id;
+        $byr_order_id=$request->byr_order_id;
+        return $can_info=Byr_order_detail::select('byr_order_details.item_name','byr_order_details.jan','byr_order_details.color','byr_order_details.voucher_number')
+        ->join('byr_orders','byr_order_details.byr_order_id','=','byr_orders.byr_order_id')
+        ->where('byr_orders.byr_order_id',$byr_order_id)
+        ->groupBy('byr_order_details.voucher_number')
+        ->get();
         $canvas_info = cmn_pdf_canvas::where('byr_buyer_id',$byr_buyer_id)->orderBy('created_at','DESC')->get();
         $canvas_array=array();
         foreach ($canvas_info as $key => $canvas) {
