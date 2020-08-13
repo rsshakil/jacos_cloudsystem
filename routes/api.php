@@ -32,6 +32,12 @@ Route::apiResources(
         'byrshipments' => 'API\Byr_shipmentController'
     ]
 );
+Route::apiResources(
+
+	[
+		'tblecolsetting' => 'API\Tbl_col_settingController'
+	]
+);
 
 Route::get('/all_users_roles', 'API\AssignRoleModel@allUsersAndRoles');
 Route::get('/get_roles/{id}', 'API\AssignRoleModel@getRoleById');
@@ -49,5 +55,10 @@ Route::get('/user_details/{user_id}', 'API\UsersController@userDetails');
 Route::post('/users_update', 'API\UsersController@update');
 
 Route::get('/home_lang_data', 'API\LanguageController@homeLangData');
+
+Route::post('/canvas_data_save', 'API\Byr_orderController@canvasDataSave');
+Route::post('/load_canvas_data', 'API\Byr_orderController@canvasAllData');
+Route::post('/delete_canvas', 'API\Byr_orderController@deleteCanvasData');
+		// Route::post('/permission_check', 'API\PermissionController@check');
 
 Route::post('scenario_exec/{cmn_scenario_id}', 'API\Cmn_ScenarioController@exec');

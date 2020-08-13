@@ -32,8 +32,7 @@
 											<textarea id="permission_descr" v-model="form.permission_description" class="form-control" name="permission_descr" :placeholder="myLang.permission_desc" rows="5"></textarea>
 										</div>
 									</div>
-									<button @click.prevent="SubmitPermission()" type="submit" class="btn btn-primary"><i class="fas fa-save"> {{form.submit_button}}</i>
-									</button>
+									<b-button pill variant="primary" @click.prevent="SubmitPermission()"><b-icon icon="inbox-fill" font-scale="1.2"></b-icon> {{form.submit_button}}</b-button>
 								</form>
 							</div>
 						</div>
@@ -62,10 +61,10 @@
 								<td>{{item.name}}</td>
 								<td>{{item.permission_description}}</td>
 								<td>
-									<button class="btn btn-info" :disabled="is_disabled(item.is_system)" @click.prevent="editPermission(item)" v-can="['permission_update']"> <i class="fas fa-edit"></i></button>
+									<b-button variant="info" :disabled="is_disabled(item.is_system)" @click.prevent="editPermission(item)" v-can="['permission_update']"> <b-icon icon="pencil-square" font-scale="1.2"></b-icon></b-button>
 								</td>
 								<td>
-									<button :disabled="is_disabled(item.is_system)" type="button" class="btn btn-danger" @click.prevent="deletePermission(item.id)" v-can="['permission_delete']"><i class="fas fa-trash-alt"></i></button>
+									<b-button variant="danger" :disabled="is_disabled(item.is_system)" @click.prevent="deletePermission(item.id)" v-can="['permission_delete']"><b-icon icon="trash-fill" font-scale="1.2"></b-icon></b-button>
 								</td>
 							</tr>
 						</tbody>

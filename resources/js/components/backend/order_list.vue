@@ -50,20 +50,7 @@
                                     <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer"> 数量確定 <span id="btn2_icon"></span></th>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer"> 伝票データ <span id="btn3_icon"></span></th>
                                 </tr>
-                                <tr>
-                                    <th>
-                                    </th>
-                                    <th><input name="serach_field2" id="serach_field2" class="form-control" type="text"></span>
-                                    </th>
-                                    <th><input name="serach_field3" id="serach_field3" class="form-control" type="text"></th>
-                                    <th><input name="serach_field1" class="form-control" id="serach_field1" type="text"></span>
-                                    </th>
-                                    <th><input name="serach_field1" class="form-control" id="serach_field1" type="text"></span>
-                                    </th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
+                                
                             </thead>
                             <tbody>
                                 <tr v-for="(order_list,index) in order_lists" :key="order_list.byr_order_id">
@@ -78,7 +65,7 @@
                                         <router-link :to="{name:'order_list_detail',params:{byr_order_id:order_list.byr_order_id} }" class="btn btn-info">数量確定</router-link>
                                     </td>
                                     <td>
-                                    <router-link :to="{name:'canvas',params:{byr_order_id:order_list.byr_order_id} }" class="btn btn-success">伝票データ</router-link>
+                                    <router-link :to="{name:'order_details_canvas',params:{byr_order_id:order_list.byr_order_id} }" class="btn btn-success">伝票データ</router-link>
                                     </td>
                                 </tr>
                                 

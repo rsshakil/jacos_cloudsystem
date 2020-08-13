@@ -89,7 +89,9 @@
                                             <input id="postal_code" type="text" class="form-control" v-model="form.zip" :placeholder="myLang.postal_code">
                                         </div>
                                     </div>
-                                    <input id="update" type="submit" class="btn btn-accent" :value="update_button" @click.prevent="updateUser" v-can="(user_id==form.auth_id)?['user_update','personal_user_update']:['user_update']">
+                                    <b-button pill variant="accent" @click.prevent="updateUser" v-can="(user_id==form.auth_id)?['user_update','personal_user_update']:['user_update']">
+                                       <b-icon icon="arrow-repeat" font-scale="1.2"></b-icon> {{update_button}}
+                                    </b-button>
                                 </form>
                             </div>
                         </div>
