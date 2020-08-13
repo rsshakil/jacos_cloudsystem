@@ -22,7 +22,7 @@ export const routes = [
     { path: '/users/:id/:auth_id', name: 'users', component: user_update },
     { path: '/password_reset/:id/:auth_id', name: 'password_reset', component: password_reset },
     { path: '/order_list', component: order_list },
-    { path: '/order_list_detail/:byr_order_id', name: 'order_list_detail', component: byr_order_detail },
+    { path: '/order_list/order_list_detail/:byr_order_id', name: 'order_list_detail', component: byr_order_detail },
     { path: '/order_list/order_details_canvas/:byr_order_id', name: 'order_details_canvas', component: order_details_canvas },
     // { path: '/login', name: 'login', component: login_body },
 ];
