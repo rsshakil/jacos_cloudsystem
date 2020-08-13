@@ -99,25 +99,37 @@ class Byr_orderController extends Controller
     }
     public function canvasAllData(Request $request){
         $byr_order_id=$request->byr_order_id;
-        return $can_info=Byr_order_detail::select('byr_order_details.item_name','byr_order_details.jan','byr_order_details.color','byr_order_details.voucher_number')
+        $canvas_data=cmn_pdf_canvas::get();
+
+        $can_info_query=Byr_order_detail::select('byr_order_details.item_name','byr_order_details.jan','byr_order_details.color','byr_order_details.voucher_number')
         ->join('byr_orders','byr_order_details.byr_order_id','=','byr_orders.byr_order_id')
         ->where('byr_orders.byr_order_id',$byr_order_id)
-        ->groupBy('byr_order_details.voucher_number')
         ->get();
-        $canvas_info = cmn_pdf_canvas::where('byr_buyer_id',$byr_buyer_id)->orderBy('created_at','DESC')->get();
-        $canvas_array=array();
-        foreach ($canvas_info as $key => $canvas) {
-            $tmp['cmn_pdf_canvas_id']=$canvas->cmn_pdf_canvas_id;
-            $tmp['byr_buyer_id']=$canvas->byr_buyer_id;
-            $tmp['canvas_name']=$canvas->canvas_name;
-            $tmp['canvas_image']=$canvas->canvas_image;
-            $tmp['canvas_bg_image']=$canvas->canvas_bg_image;
-            $tmp['canvas_objects']=$this->UnserializedCanvasData($canvas->canvas_objects);;
-            $tmp['created_at']=$canvas->created_at;
-            $tmp['updated_at']=$canvas->updated_at;
-            $canvas_array[]=$tmp;
+        $collection = collect($can_info_query);
+        $grouped = $collection->groupBy('voucher_number');
+        $can_info=$grouped->toArray();
+        $can_info_array=array();
+        foreach ($can_info as $key => $value) {
+            $can_info_array[]=$value;
         }
-        return response()->json(['canvas_info'=>$canvas_array]);
+
+        return response()->json(['canvas_data'=>$canvas_data,'can_info'=>$can_info_array]);
+
+
+        // $canvas_info = cmn_pdf_canvas::where('byr_buyer_id',$byr_buyer_id)->orderBy('created_at','DESC')->get();
+        // $canvas_array=array();
+        // foreach ($canvas_info as $key => $canvas) {
+        //     $tmp['cmn_pdf_canvas_id']=$canvas->cmn_pdf_canvas_id;
+        //     $tmp['byr_buyer_id']=$canvas->byr_buyer_id;
+        //     $tmp['canvas_name']=$canvas->canvas_name;
+        //     $tmp['canvas_image']=$canvas->canvas_image;
+        //     $tmp['canvas_bg_image']=$canvas->canvas_bg_image;
+        //     $tmp['canvas_objects']=$this->UnserializedCanvasData($canvas->canvas_objects);;
+        //     $tmp['created_at']=$canvas->created_at;
+        //     $tmp['updated_at']=$canvas->updated_at;
+        //     $canvas_array[]=$tmp;
+        // }
+        // return response()->json(['canvas_info'=>$canvas_array]);
     }
     public function canvasDataSave(Request $request){
         // return $request->all();
