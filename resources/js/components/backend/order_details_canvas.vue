@@ -3,29 +3,24 @@
                 <div class="col-12">
                     <h2 class="top_title text-center">Canvas</h2>
                 </div>
-    <!-- <div class="col-12" id="">
-        <div class="card card-small mb-8">
-            <div class="card-body p-0 pb-3">
-                <button style="margin-left: 1px;" class="btn btn-danger" onclick="deleteObjects()">Delete</button>
-                <button class="print-button btn btn-primary">Print</button>
-                <input class="bg_image btn btn-info" type="file">
-                <input type="hidden" value="" name="update_canvas_id" id="update_canvas_id">
-                <input type="hidden" value="" name="update_image_info" id="update_image_info">
-                <br>
-                <br>
-                <div class="row" style="margin-left: 1px;">
-                        <input type="text" name="canvas_name" id="canvas_name" class="form-control" placeholder="Please enter canvas name" style="width:300px !important">
-                        <a class="save_button btn btn-info" style="margin-left: 5px;" href="#">Save</a>
-                    
+                <div class="col-12">
+                    <div class="input-group mb-1" style="margin-left: 10px;max-width: 250px; float: left;">
+                                            <div class="input-group-prepend">
+                                                <button class="btn btn-outline-primary" type="button">小売選択</button>
+                                            </div>
+                                            <select class="form-control" name="">
+                                              <option value="">スパお洗濯</option>
+                                              <option value="1">スーパーAAA</option>
+                                              <option value="1">スーパーBBB</option>
+                                              <option value="1">スーパーCCC</option>
+                                              <option value="1">スーパーDDD</option>
+                                            </select>
+                                        </div>
+                                        <div class="active-pink-3 active-pink-4 mb-1" style="margin-left: 10px;max-width: 100%; float: left;">
+                                            <!-- <input class="form-control" type="text" placeholder="Search" aria-label="Search"> -->
+                                            <b-button pill variant="info">Button</b-button>
+                                        </div>
                 </div>
-                <br>
-                <canvas id="c">
-                    Your browser does not support the canvas element.
-                </canvas>
-            </div>
-        </div>
-    </div>
-<br> -->
                 <div class="col-12">
                   <b-button variant="danger" style="margin-left: 1px;" @click="deleteObjects()">Delete</b-button>
                 <b-button variant="primary" @click="printCanvas">Print</b-button>
