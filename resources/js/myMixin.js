@@ -58,7 +58,9 @@ export default {
             });
         },
         display_table_col_setting() {
-            console.log("load modal");
+
+            console.log(this.$route.name);
+            if(this.$route.name=='order_list_detail'){
             this.$root.$emit(
                 "bv::show::modal",
                 "table_col_setting",
@@ -73,6 +75,13 @@ export default {
                     this.selected_columns = data.data.selected_columns;
                     this.col_lists = data.data.col_lists;
                 });
+            }else{
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Table column setting',
+                    text: 'Table column setting not found for this page'
+                });
+            }
         },
         update_col_setting() {
             console.log("update col setting");
