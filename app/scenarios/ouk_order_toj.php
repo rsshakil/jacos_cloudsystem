@@ -3,9 +3,33 @@
 namespace App\Scenarios;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Byr_order_detail;
+use App\Byr_order;
+use App\byr_shop;
 
 class ouk_order_toj extends Model
 {
+    // private $b;
+    // private $d;
+    // private $voucher_number;
+    // private $shop_code;
+    // private $category_code;
+    // private $voucher_category;
+    // private $order_date;
+    // private $expected_delivery_date;
+    // private $partner_code;
+    // private $delivery_service_code;
+    // private $shop_name_kana;
+    // private $list_number;
+    // private $order_quantity;
+    // private $inputs;
+    // private $jan;
+    // private $order_inputs;
+    // private $cost_unit_price;
+    // private $cost_price;
+    // private $selling_unit_price;
+    // private $selling_price;
+    // private $item_name_kana;
     private $format = [
         [
             "type"=>"header",
@@ -72,21 +96,61 @@ class ouk_order_toj extends Model
     {
         \Log::debug('ouk_order_toj exec start  ---------------');
         // ファイルアップロード
+        // echo $request->file('up_file');exit;
        $file_name = $request->file('up_file')->getClientOriginalName();
         $path = $request->file('up_file')->storeAs(config('const.ORDER_DATA_PATH').date('Y-m'), $file_name);
         \Log::debug('save path:'.$path);
 
         $file_url = fopen(storage_path().'/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name, 'r');
+        $received_path = storage_path().'/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name;
         // フォーマット変換
         // byr_orders,byr_order_details格納
         $charlist = fread($file_url,filesize(storage_path().'/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name));
         $charlist = $this->convert_from_sjis_to_utf8_recursively($charlist);
         // $charlist = $this->convert_from_utf8_to_sjis__recursively($charlist);
-        // $str_arr = $this->mb_str_split($charlist);
-        $str_arr = str_split($charlist);
-        $arr_group = $this->process_array($str_arr);
+        $str_arr = $this->mb_str_split($charlist);
+        // $str_arr = str_split($charlist);
+        $all_array_data = $this->process_array($str_arr);
+        $insert_array_b = array();
+        $insert_array_d = array();
+        $temp = array();
+        foreach ($all_array_data as $key => $all_array) {
+            //    print_r($all_array[0]);
+            if ($all_array[0] == "B") {
+                $insert_array_b[] = $this->b_array_process($all_array);
+            } elseif ($all_array[0] == "D") {
+                $insert_array_d[] = $this->d_array_process($all_array);
+            }
+        }
+
+        $byr_order_id = Byr_order::insertGetId(['receive_file_path'=>$received_path]);
+        $cnt = 0;
+        if($insert_array_d){
+            $insert_detail = array();
+            foreach($insert_array_d as $value){
+                $insert_detail['byr_order_id']=$byr_order_id;
+                $insert_detail['voucher_number']=$insert_array_b[0]['voucher_number'];
+                $insert_detail['category_code']=$insert_array_b[0]['category_code'];
+                $insert_detail['voucher_category']=$insert_array_b[0]['voucher_category'];
+                $insert_detail['expected_delivery_date']=$insert_array_b[0]['expected_delivery_date'];
+                $insert_detail['order_date']=$insert_array_b[0]['order_date'];
+                $insert_detail['delivery_service_code']=$insert_array_b[0]['delivery_service_code'];
+                $insert_detail['list_number']=$value['list_number'];
+                $insert_detail['jan']=$value['jan'];
+                $insert_detail['inputs']=$value['inputs'];
+                $insert_detail['order_inputs']=$value['order_inputs'];
+                $insert_detail['order_quantity']=$value['order_quantity'];
+                $insert_detail['item_name_kana']=$value['item_name_kana'];
+                $insert_detail['cost_price']=$value['cost_price'];
+                $insert_detail['selling_price']=$value['selling_price'];
+                $insert_detail['selling_unit_price']=$value['selling_unit_price'];
+                $insert_detail['cost_unit_price']=$value['cost_unit_price'];
+                Byr_order_detail::insert($insert_detail);
+                $temp[]= $insert_detail;
+            }
+        }
         echo '<pre>';
-print_r($arr_group);exit;
+print_r($temp);exit;
         echo 'save path:'.$path;exit;
 
 
@@ -120,6 +184,110 @@ print_r($arr_group);exit;
         }
         return $arr1;
     }
+
+    public function b_array_process($all_array)
+    {
+        $b = '';
+        $voucher_number = '';
+        $shop_code = '';
+        $category_code = '';
+        $voucher_category = '';
+        $order_date = '';
+        $expected_delivery_date = '';
+        $partner_code = '';
+        $delivery_service_code = '';
+        $shop_name_kana = '';
+        for ($i = 0; $i < count($all_array); $i++) {
+            if ($i == 0) {
+                $b .= $all_array[$i];
+            } elseif ($i >= 4 && $i < 12) {
+                $voucher_number .= $all_array[$i];
+            } elseif ($i >= 15 && $i < 21) {
+                $shop_code .= $all_array[$i];
+            } elseif ($i >= 21 && $i < 25) {
+                $category_code .= $all_array[$i];
+            } elseif ($i >= 25 && $i < 27) {
+                $voucher_category .= $all_array[$i];
+            } elseif ($i >= 27 && $i < 33) {
+                $order_date .= $all_array[$i];
+            } elseif ($i >= 33 && $i < 39) {
+                $expected_delivery_date .= $all_array[$i];
+            } elseif ($i >= 39 && $i < 45) {
+                $partner_code .= $all_array[$i];
+            } elseif ($i >= 47 && $i < 48) {
+                $delivery_service_code .= $all_array[$i];
+            } elseif ($i >= 48 && $i < 54) {
+                $shop_name_kana .= $all_array[$i];
+            }
+        }
+        $insert_array_b = array(
+            'voucher_number'=>$voucher_number,
+            'shop_code'=>$shop_code,
+            'category_code'=>$category_code,
+            'voucher_category'=>$voucher_category,
+            'expected_delivery_date'=>$expected_delivery_date,
+            'order_date'=>$order_date,
+            'shop_name_kana'=>$shop_name_kana,
+            'partner_code'=>$partner_code,
+            'delivery_service_code'=>$delivery_service_code,
+        );
+        return $insert_array_b;
+    }
+    public function d_array_process($all_array)
+    {
+        $d='';
+        $list_number='';
+       $jan='';
+        $inputs='';
+         $order_inputs='';
+        $order_quantity='';
+        $item_name_kana='';
+         $cost_price='';
+        $selling_price='';
+         $cost_unit_price='';
+        $selling_unit_price='';
+        for ($j = 0; $j < count($all_array); $j++) {
+            if ($j == 0) {
+                $d .= $all_array[$j];
+            } elseif ($j >= 3 && $j < 5) {
+                $list_number .= $all_array[$j];
+            } elseif ($j >= 5 && $j < 13) {
+                $jan .= $all_array[$j];
+            } elseif ($j >= 18 && $j < 22) {
+                $inputs .= $all_array[$j];
+            } elseif ($j >= 22 && $j < 26) {
+                $order_inputs .= $all_array[$j];
+            } elseif ($j >= 29 && $j < 35) {
+                $order_quantity .= $all_array[$j];
+            } elseif ($j >= 36 && $j < 44) {
+                $cost_unit_price .= $all_array[$j];
+            } elseif ($j >= 45 && $j < 51) {
+                $selling_unit_price .= $all_array[$j];
+            } elseif ($j >= 52 && $j < 61) {
+                $cost_price .= $all_array[$j];
+            } elseif ($j >= 62 && $j < 71) {
+                $selling_price .= $all_array[$j];
+            } elseif ($j >= 80 && $j < 105) {
+                $item_name_kana .= $all_array[$j];
+            }
+        }
+        $str = str_split($cost_unit_price, strlen($cost_unit_price) - 2);
+$new_cost_unit_price = $str[0].'.'.$str[1];
+        $insert_array_d = array(
+            'list_number' => $list_number,
+            'jan' => $jan,
+            'inputs' => ltrim($inputs,'0'),
+            'order_inputs' => ltrim($order_inputs,'0'),
+            'order_quantity' => ltrim($order_quantity,'0'),
+            'item_name_kana' => $item_name_kana,
+            'cost_price' => ltrim($cost_price,'0'),
+            'selling_price' => ltrim($selling_price,'0'),
+            'cost_unit_price' => ltrim($new_cost_unit_price,'0'),
+            'selling_unit_price' => ltrim($selling_unit_price,'0'),
+        );
+        return $insert_array_d;
+    }
+
     /*jacos string analyze*/
     /**
      * 発注データ連想配列化
@@ -215,8 +383,7 @@ print_r($arr_group);exit;
     {
         if (is_string($dat)) {
             \Log::debug('----- SJIJ to UTF-8 conversion completed -----');
-            // return mb_convert_encoding($dat, "UTF-8", "sjis-win");
-            return mb_convert_encoding($dat, "EUC-JP", "auto");
+            return mb_convert_encoding($dat, "UTF-8", "sjis-win");
         } elseif (is_array($dat)) {
             $ret = [];
             foreach ($dat as $i => $d) {
