@@ -99,7 +99,11 @@ class Byr_orderController extends Controller
     }
     public function canvasAllData(Request $request){
         $byr_order_id=$request->byr_order_id;
-        $canvas_data=cmn_pdf_canvas::get();
+        $canvas_data=byr_order::join('cmn_connects','cmn_connects.cmn_connect_id','=','byr_orders.cmn_connect_id')
+        ->join('cmn_pdf_canvas','cmn_pdf_canvas.byr_buyer_id','=','cmn_connects.byr_buyer_id')
+        ->where('byr_orders.byr_order_id',$byr_order_id)
+        ->get();
+        // $canvas_data=cmn_pdf_canvas::get();
 
         $can_info_query=Byr_order_detail::select('byr_order_details.item_name','byr_order_details.jan','byr_order_details.color','byr_order_details.voucher_number')
         ->join('byr_orders','byr_order_details.byr_order_id','=','byr_orders.byr_order_id')

@@ -77,6 +77,7 @@
       <b-button variant="primary" @click="printCanvas">Print</b-button>
       <!-- <input class="btn btn-info" @change="bgImageChange" type="file" /> -->
       <b-button variant="warning" @click="clearCanvasObjects">Clear canvas</b-button>
+      <b-button variant="warning" style="margin-left: 1px;" @click="canvasDesign()">Reset Canvas</b-button>
       <br />
       <canvas
         id="c"
@@ -84,8 +85,8 @@
       >Your browser does not support the canvas element.</canvas>
     </div>
     <div class="col-12 text-center">
-      <b-icon icon="caret-left" variant="info" font-scale="3" role="button" v-if="canvasDataLength>1"></b-icon>
-      <b-icon icon="caret-right" variant="info" font-scale="3" role="button" v-if="canvasDataLength>1"></b-icon>
+      <b-button pill variant="info" :disabled="prev==0?true:false" v-if="canvasDataLength>1" @click="canvasDesignLeft"><b-icon icon="caret-left" font-scale="3"></b-icon></b-button>
+      <b-button pill variant="info" :disabled="next==0?true:false" v-if="canvasDataLength>1" @click="canvasDesignRight"><b-icon icon="caret-right" font-scale="3"></b-icon></b-button>
     </div>
     
   </div>
@@ -101,6 +102,10 @@ export default {
       allName: [],
       canvasSelectedName: [],
       canvasDataLength:0,
+      canvasAllData:[],
+      itr:0,
+      prev:0,
+      next:0,
       canvas: null,
       bg_image_path: null,
       canvas_name: null,
@@ -110,6 +115,8 @@ export default {
       canvas_height: 510,
       pointerX: 100,
       pointerY: 50,
+      objLeftMargin:130,
+      objTopMargin:240,
     };
   },
   methods: {
@@ -122,18 +129,60 @@ export default {
           this.allName = data.canvas_data;
           // console.log(data);
           // console.log(data.can_info);
-          var canvas_info=data.can_info
-          this.canvasDataLength=canvas_info.length;
-          if (this.canvasDataLength!=0) {
-            
+          this.canvasAllData=data.can_info
+          this.canvasDataLength=this.canvasAllData.length;
+          if (this.canvasDataLength>1) {
+            this.prev=0;
+            this.next=(this.canvasDataLength-1);
           }
-          // this.canvasAllData=data.canvas_info;
-          // createReactObj(originX='left',originY="top",left=100,top=50,width=150,height=22,text="Created by default",createdBy='auto')
+          if (this.canvasDataLength>0) {
+            this.canvasDesign()
+          }
           
         })
         .catch(() => {
           this.sweet_advance_alert();
         });
+    },
+    canvasDesignLeft(){
+          this.prev-=1;
+          this.next+=1;
+          this.itr-=1;
+          this.objLeftMargin=130
+          this.objTopMargin=240
+          this.canvasDesign()
+    },
+    canvasDesignRight(){
+      this.prev+=1;
+      this.next-=1;
+      this.itr+=1;
+      this.objLeftMargin=130;
+      this.objTopMargin=240;
+      this.canvasDesign()
+    },
+    canvasDesign(){
+      this.clearCanvasObjects();
+      if (this.canvasDataLength>0) {
+        var canvasAllDataArray=this.canvasAllData[this.itr];
+        if (canvasAllDataArray.length) {
+          this.createObj(420,145,140,50,canvasAllDataArray[0].voucher_number,'auto')
+          for (let i = 0; i < canvasAllDataArray.length; i++) {
+            // this.objLeftMargin=130,
+            // this.objTopMargin=240,
+            // this.createObj(left=100,top=50,width=150,height=22,text="Created by default",createdBy='auto')
+            this.createObj(this.objLeftMargin,this.objTopMargin,300,50,canvasAllDataArray[i].item_name,'auto')
+            this.objLeftMargin+=315;
+            this.createObj(this.objLeftMargin,this.objTopMargin,150,50,(canvasAllDataArray[i].jan).toString(),'auto')
+            this.objLeftMargin+=160;
+            this.createObj(this.objLeftMargin,this.objTopMargin,80,50,(canvasAllDataArray[i].color),'auto')
+            this.objLeftMargin=130;
+            this.objTopMargin+=41;
+            
+          }
+          this.objTopMargin=240;
+        }
+            // console.log( canvasAllDataArray)
+          }
     },
     showCanvasBg($event) {
       this.bg_image_path = this.BASE_URL + "public/backend/images/canvas/Background/"+$event.canvas_bg_image;
@@ -245,15 +294,14 @@ export default {
       }, 510);
     },
     
-    createReactObj(originX='left',originY="top",left=100,top=50,width=150,height=22,text="Created by default",createdBy='auto') {
+    createObj(left=100,top=50,width=150,height=22,text="Created by default",createdBy='auto') {
+      
       var activeObject = this.canvas.getActiveObject();
       var text_data = [
         {
-          originX: originX,
-          originY: originY,
+          originX: 'left',
+          originY: "top",
           left: left,
-          // left: this.pointerX - 50,
-          // top: this.pointerY,
           top: top,
           width: width,
           height: height,
@@ -363,7 +411,7 @@ export default {
       // console.log(option);
       this.pointerX = option.pointer.x;
       this.pointerY = option.pointer.y;
-      this.createReactObj('left',"top",this.pointerX-50,this.pointerY,150,22,"Created by Click",'clicked');
+      this.createObj(this.pointerX-50,this.pointerY,150,22,"Created by Click",'clicked');
     },
     getCanvasBgImage() {
       var can_image = this.canvas.toDataURL({
