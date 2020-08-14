@@ -5,7 +5,11 @@
                     <h2 class="top_title text-center">発注データ確認</h2>
                 </div>
                 <div class="col-12 text-center">
-
+                     <h1>check order_api</h1>
+      <label>File
+        <input type="file" id="file" ref="file" v-on:change="onChangeFileUpload()"/>
+      </label>
+        <button v-on:click="submitForm()">Upload</button>
                 </div>
                 <div class="col-12">
                     <div class="">
@@ -85,7 +89,7 @@ export default {
   data() {
     return {
         'order_lists':{},
-
+        'file':'',
     };
   },
   methods: {
@@ -95,7 +99,31 @@ export default {
             console.log(data.data.order_list);
             this.order_lists = data.data.order_list;
         });
-    }
+    },
+    check_byr_order_api(){
+       let formData = new FormData();
+    formData.append("up_file", this.file);
+    formData.append("email", 'user@jacos.co.jp');
+    formData.append("password", 'Qe75ymSr');
+        axios({
+    method: 'POST',
+    url: this.BASE_URL + "api/scenario_exec/1",
+    data: formData,
+    headers: {'Content-Type': 'multipart/form-data' }
+    })
+    .then(function (response) {
+        //handle success
+        console.log(response);
+    })
+    .catch(function (response) {
+        //handle error
+        console.log(response);
+    });
+    },
+    onChangeFileUpload(){
+        this.file = this.$refs.file.files[0];
+        this.check_byr_order_api();
+      }
   },
 
   created() {
