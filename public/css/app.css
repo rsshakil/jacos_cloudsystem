@@ -11049,6 +11049,10 @@ input:checked + .slider:before {
   background-color: red;
 }
 
+.custom_right {
+  float: right;
+}
+
 .btn-arrow-right,
 .btn-arrow-left {
   position: relative;

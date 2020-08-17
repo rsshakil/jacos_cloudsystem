@@ -12,7 +12,7 @@
               id="main-logo"
               class="d-inline-block align-top mr-1"
               style="max-width: 25%;"
-              src="/template_vue/public/backend/images/logo/jacos_logo.png"
+              src="/jcs/public/backend/images/logo/jacos_logo.png"
               alt="Jacos Dashboard"
             />
             <span class="d-none d-md-inline ml-1">{{myLang.heading}}</span>
@@ -79,6 +79,11 @@
         <li class="nav-item">
           <router-link to="/voucher_setting" class="nav-link">
             <b-icon icon="card-checklist" font-scale="1.2"></b-icon> Jacos Voucher Setting
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/jacos_management" class="nav-link">
+            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> Jacos Management
           </router-link>
         </li>
         <!-- <li class="nav-item">
