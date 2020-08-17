@@ -76,6 +76,11 @@
             <b-icon icon="card-checklist" font-scale="1.2"></b-icon> {{myLang.order_list}}
           </router-link>
         </li>
+        <li class="nav-item">
+          <router-link to="/voucher_setting" class="nav-link">
+            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> Jacos Voucher Setting
+          </router-link>
+        </li>
         <!-- <li class="nav-item">
           <router-link to="/shipment_list" class="nav-link">
             <i class="material-icons">local_taxi</i>

@@ -9,6 +9,7 @@ import password_reset from './components/backend/password_reset.vue'
 import order_list from './components/backend/order_list.vue'
 import byr_order_detail from './components/backend/byr_order_detail.vue'
 import order_details_canvas from './components/backend/order_details_canvas.vue'
+import voucher_setting from './components/backend/canvas.vue'
 // import login_body from './components/login/login_body.vue'
 
 export const routes = [
@@ -24,5 +25,7 @@ export const routes = [
     { path: '/order_list', component: order_list },
     { path: '/order_list/order_list_detail/:byr_order_id', name: 'order_list_detail', component: byr_order_detail },
     { path: '/order_list/order_details_canvas/:byr_order_id', name: 'order_details_canvas', component: order_details_canvas },
+
+    { path: '/voucher_setting', name: 'voucher_setting', component: voucher_setting },
     // { path: '/login', name: 'login', component: login_body },
 ];
