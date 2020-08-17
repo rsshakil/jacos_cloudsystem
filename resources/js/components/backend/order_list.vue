@@ -17,31 +17,26 @@
                             <thead>
                                 <tr>
                                     <th colspan="100%" style="border: none;">
-                                        <select class="form-control" name="data_per_page" id="data_per_page" style="margin-left: -10px;max-width: 100px; float: left;">
-                                      <option value="5">5</option>
-                                      <option value="10">10</option>
-                                      <option value="20">20</option>
-                                      <option value="50">50</option>
-                                      <option value="100">100</option>
-                                      <option value="500">500</option>
-                                      <option value="1000">1000</option>
-                                  </select>
-
                                         <div class="input-group mb-1" style="margin-left: 10px;max-width: 250px; float: left;">
                                             <div class="input-group-prepend">
                                                 <button class="btn btn-outline-primary" type="button">小売選択</button>
                                             </div>
                                             <select class="form-control" name="">
                                               <option value="">スパお洗濯</option>
+                                              <option v-for="(option, index) in byr_buyer_lists" 
+                    :key="index" :value="option.byr_buyer_id"
+                    :selected="selectedOption(option)">
+                    {{ option.super_code }}
+            </option>
                                               <option value="1">スーパーAAA</option>
                                               <option value="1">スーパーBBB</option>
                                               <option value="1">スーパーCCC</option>
                                               <option value="1">スーパーDDD</option>
                                             </select>
                                         </div>
-                                        <div class="active-pink-3 active-pink-4 mb-1" style="margin-left: 10px;max-width: 100%; float: left;">
+                                        <!--<div class="active-pink-3 active-pink-4 mb-1" style="margin-left: 10px;max-width: 100%; float: left;">
                                             <input class="form-control" type="text" placeholder="Search" aria-label="Search">
-                                        </div>
+                                        </div>-->
                                     </th>
                                 </tr>
                                 <tr>
@@ -75,10 +70,6 @@
                                 
                             </tbody>
                         </table>
-                        <input type="hidden" name="hidden_page" id="hidden_page" value="1" />
-                        <input type="hidden" name="hidden_column_name" id="hidden_column_name" value="id" />
-                        <input type="hidden" name="hidden_sort_type" id="hidden_sort_type" value="asc" />
-                        <input type="hidden" name="_token" id="token" value="">
                     </div>
                 </div>
             </div>
@@ -89,6 +80,7 @@ export default {
   data() {
     return {
         'order_lists':{},
+        'byr_buyer_lists':{},
         'file':'',
     };
   },
@@ -96,8 +88,9 @@ export default {
     //get Table data
     get_all_order(){
         axios.get(this.BASE_URL +"api/byrorders ").then((data) => {
-            console.log(data.data.order_list);
             this.order_lists = data.data.order_list;
+            this.byr_buyer_lists = data.data.byr_buyer_list;
+            console.log( this.byr_buyer_lists );
         });
     },
     check_byr_order_api(){
@@ -123,7 +116,20 @@ export default {
     onChangeFileUpload(){
         this.file = this.$refs.file.files[0];
         this.check_byr_order_api();
+      },
+      selectedOption(option) {
+      if (this.value) {
+        return option.byr_buyer_id === this.value.byr_buyer_id;
       }
+      return false;
+    },
+    change(e) {
+      const selectedCode = e.target.value;
+      const option = this.options.find((option) => {
+        return selectedCode === option.byr_buyer_id;
+      });
+    //   this.$emit("input", option);
+    }
   },
 
   created() {
