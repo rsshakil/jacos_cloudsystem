@@ -108,6 +108,9 @@ input:checked+.slider:before {
 .custm_brd_crumbs:first-child .btn-arrow-right:before{
     background-color:red;
 }
+.custom_right{
+    float: right;
+}
 .btn-arrow-right,
 .btn-arrow-left {
    position: relative;
