@@ -2,10 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\byr_order;
+use App\Byr_order;
 use Faker\Generator as Faker;
 
-$factory->define(byr_order::class, function (Faker $faker) {
+$factory->define(Byr_order::class, function (Faker $faker) {
     return [
         'cmn_connect_id' => factory(App\cmn_connect::class),
         'category' => $faker->randomElement(['edi', 'manual']),
