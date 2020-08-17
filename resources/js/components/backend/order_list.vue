@@ -2,14 +2,13 @@
   <div>
     <div class="row">
                 <div class="col-12">
-                    <h2 class="top_title text-center">発注データ確認</h2>
+                    <h4 class="top_title text-center" style="margin-top:10px;">発注データ確認</h4>
                 </div>
                 <div class="col-12 text-center">
-                     <h1>check order_api</h1>
-      <label>File
+                    
+      <label>
         <input type="file" id="file" ref="file" v-on:change="onChangeFileUpload()"/>
       </label>
-        <button v-on:click="submitForm()">Upload</button>
                 </div>
                 <div class="col-12">
                     <div class="">
@@ -28,10 +27,6 @@
                     :selected="selectedOption(option)">
                     {{ option.super_code }}
             </option>
-                                              <option value="1">スーパーAAA</option>
-                                              <option value="1">スーパーBBB</option>
-                                              <option value="1">スーパーCCC</option>
-                                              <option value="1">スーパーDDD</option>
                                             </select>
                                         </div>
                                         <!--<div class="active-pink-3 active-pink-4 mb-1" style="margin-left: 10px;max-width: 100%; float: left;">

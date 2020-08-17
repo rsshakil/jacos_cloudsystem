@@ -22,9 +22,28 @@ export const routes = [
     { path: '/users', component: users },
     { path: '/users/:id/:auth_id', name: 'users', component: user_update },
     { path: '/password_reset/:id/:auth_id', name: 'password_reset', component: password_reset },
-    { path: '/order_list', component: order_list },
-    { path: '/order_list/order_list_detail/:byr_order_id', name: 'order_list_detail', component: byr_order_detail },
-    { path: '/order_list/order_details_canvas/:byr_order_id', name: 'order_details_canvas', component: order_details_canvas },
+    { path: '/order_list', component: order_list,meta:{breadcrumb: 'Order'},
+    children: [
+        {
+          path: '/order_list/order_list_detail/:byr_order_id', 
+          component: byr_order_detail,
+          name: 'order_list_detail',
+          meta: {
+            breadcrumb: 'Order detail'  
+          }
+        },
+        {
+          path: '/order_list/order_details_canvas/:byr_order_id', 
+          component: order_details_canvas,
+          name: 'order_details_canvas',
+          meta: {
+            breadcrumb: 'canvas order'
+          }
+        }
+      ]
+},
+    // { path: '/order_list/order_list_detail/:byr_order_id', name: 'order_list_detail', component: byr_order_detail,meta:{breadcrumb: {label:'Order detail',parent:'Order'}} },
+    // { path: '/order_list/order_details_canvas/:byr_order_id', name: 'order_details_canvas', component: order_details_canvas },
 
     { path: '/voucher_setting', name: 'voucher_setting', component: voucher_setting },
     // { path: '/login', name: 'login', component: login_body },
