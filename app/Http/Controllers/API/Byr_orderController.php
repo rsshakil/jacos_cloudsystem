@@ -116,24 +116,29 @@ class Byr_orderController extends Controller
         foreach ($can_info as $key => $value) {
             $can_info_array[]=$value;
         }
-
         return response()->json(['canvas_data'=>$canvas_data,'can_info'=>$can_info_array]);
-
-
-        // $canvas_info = cmn_pdf_canvas::where('byr_buyer_id',$byr_buyer_id)->orderBy('created_at','DESC')->get();
-        // $canvas_array=array();
-        // foreach ($canvas_info as $key => $canvas) {
-        //     $tmp['cmn_pdf_canvas_id']=$canvas->cmn_pdf_canvas_id;
-        //     $tmp['byr_buyer_id']=$canvas->byr_buyer_id;
-        //     $tmp['canvas_name']=$canvas->canvas_name;
-        //     $tmp['canvas_image']=$canvas->canvas_image;
-        //     $tmp['canvas_bg_image']=$canvas->canvas_bg_image;
-        //     $tmp['canvas_objects']=$this->UnserializedCanvasData($canvas->canvas_objects);;
-        //     $tmp['created_at']=$canvas->created_at;
-        //     $tmp['updated_at']=$canvas->updated_at;
-        //     $canvas_array[]=$tmp;
-        // }
-        // return response()->json(['canvas_info'=>$canvas_array]);
+    }
+    public function canvasSettingData(){
+        $all_buyer=byr_buyer::select('byr_buyers.byr_buyer_id','cmn_companies.company_name')
+        ->join('cmn_companies','byr_buyers.cmn_company_id','=','cmn_companies.cmn_company_id')
+        ->orderBy('byr_buyers.byr_buyer_id','ASC')
+        ->get();
+        $canvas_info = cmn_pdf_canvas::orderBy('created_at','DESC')->get();
+        $canvas_array=array();
+        if (!empty($canvas_info)) {
+            foreach ($canvas_info as $key => $canvas) {
+                $tmp['cmn_pdf_canvas_id']=$canvas->cmn_pdf_canvas_id;
+                $tmp['byr_buyer_id']=$canvas->byr_buyer_id;
+                $tmp['canvas_name']=$canvas->canvas_name;
+                $tmp['canvas_image']=$canvas->canvas_image;
+                $tmp['canvas_bg_image']=$canvas->canvas_bg_image;
+                $tmp['canvas_objects']=$this->UnserializedCanvasData($canvas->canvas_objects);;
+                $tmp['created_at']=$canvas->created_at;
+                $tmp['updated_at']=$canvas->updated_at;
+                $canvas_array[]=$tmp;
+            }
+        }
+        return response()->json(['canvas_info'=>$canvas_array,'all_buyer'=>$all_buyer]);
     }
     public function canvasDataSave(Request $request){
         // return $request->all();

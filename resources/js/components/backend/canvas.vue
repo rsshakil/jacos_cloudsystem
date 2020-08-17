@@ -3,29 +3,6 @@
                 <div class="col-12">
                     <h2 class="top_title text-center">Canvas</h2>
                 </div>
-    <!-- <div class="col-12" id="">
-        <div class="card card-small mb-8">
-            <div class="card-body p-0 pb-3">
-                <button style="margin-left: 1px;" class="btn btn-danger" onclick="deleteObjects()">Delete</button>
-                <button class="print-button btn btn-primary">Print</button>
-                <input class="bg_image btn btn-info" type="file">
-                <input type="hidden" value="" name="update_canvas_id" id="update_canvas_id">
-                <input type="hidden" value="" name="update_image_info" id="update_image_info">
-                <br>
-                <br>
-                <div class="row" style="margin-left: 1px;">
-                        <input type="text" name="canvas_name" id="canvas_name" class="form-control" placeholder="Please enter canvas name" style="width:300px !important">
-                        <a class="save_button btn btn-info" style="margin-left: 5px;" href="#">Save</a>
-                    
-                </div>
-                <br>
-                <canvas id="c">
-                    Your browser does not support the canvas element.
-                </canvas>
-            </div>
-        </div>
-    </div>
-<br> -->
                 <div class="col-12">
                   <b-button variant="danger" style="margin-left: 1px;" @click="deleteObjects()">Delete</b-button>
                 <b-button variant="primary" @click="printCanvas">Print</b-button>
@@ -34,15 +11,18 @@
                 <br>
                 <br>
                 <div class="row" style="margin-left: 1px;">
-                        <input type="text" v-model="canvas_name" class="form-control" placeholder="Please enter canvas name" style="width:300px !important">
-                        <b-button variant="info" style="margin-left: 5px;" @click="saveData">{{submit_button}}</b-button> 
+                  <div class="col-4">
+                    <multiselect v-model="selected_buyer" :multiple="true" :options="all_buyer" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Select buyers" label="company_name" track-by="byr_buyer_id"></multiselect>
+                  </div>
+                  <div class="col-3">
+                    <input type="text" v-model="canvas_name" class="form-control" placeholder="Please enter canvas name" style="width:300px !important">
+                  </div>
+                  <div class="col-4">
+                    <b-button variant="info" style="margin-left: 5px;" @click="saveData">{{submit_button}}</b-button>
+                  </div>
                 </div>
                 <br>
                     <canvas id="c" style="border:1px solid #000000;">Your browser does not support the canvas element.</canvas>
-                </div>
-                <div class="col-12 text-center">
-                  <b-icon icon="caret-left" variant="info" font-scale="3" role="button"></b-icon>
-                  <b-icon icon="caret-right" variant="info" font-scale="3" role="button"></b-icon>
                 </div>
                 <div class="col-12">
                   <!-- <div class="col"> -->
@@ -89,13 +69,14 @@
 export default {
 data(){
   return {
+    all_buyer:[],
+    selected_buyer:[],
     canvasAllData:[],
     canvas : null,
     bg_image_path:null,
     canvas_name:null,
     canvas_id:null,
     update_image_info:null,
-    byr_id:null,
     submit_button:'Save',
     canvas_width:1219,
     canvas_height:510,
@@ -105,9 +86,10 @@ data(){
 },
 methods:{
           loadCanvasData() {
-            axios.post(this.BASE_URL+"api/load_canvas_data",{byr_buyer_id:this.byr_id})
+            axios.post(this.BASE_URL+"api/load_canvas_setting_data")
                 .then(({ data }) => {
-                  // this.canvasAllData=data.canvas_info;
+                  this.canvasAllData=data.canvas_info;
+                  this.all_buyer=data.all_buyer;
                     console.log(data);
                 })
                 .catch(() => {
@@ -465,7 +447,6 @@ methods:{
         // this.canvasOpen();
       },
       mounted(){
-        this.byr_id = this.$route.params.byr_order_id;
         this.canvas = new fabric.Canvas("c");
           this.canvas.setWidth(this.canvas_width);
           this.canvas.setHeight(this.canvas_height);
