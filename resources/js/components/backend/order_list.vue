@@ -95,7 +95,7 @@ export default {
   methods: {
     //get Table data
     get_all_order(){
-        axios.get("api/byrorders ").then((data) => {
+        axios.get(this.BASE_URL +"api/byrorders ").then((data) => {
             console.log(data.data.order_list);
             this.order_lists = data.data.order_list;
         });
