@@ -24,10 +24,8 @@ class Byr_orderController extends Controller
     public function index()
     {
         //test
-        $result = DB::table('byr_orders')
-            ->select('byr_orders.status', 'byr_orders.byr_order_id', 'byr_orders.receive_date', 'byr_orders.category', 'byr_order_details.expected_delivery_date')
-            ->join('byr_order_details', 'byr_orders.byr_order_id', '=', 'byr_order_details.byr_order_id')
-            ->get();
+        $result = Byr_order::select( 'byr_orders.byr_order_id','byr_orders.receive_file_path','byr_orders.status','byr_orders.receive_date','byr_orders.data_count','byr_orders.category',
+        DB::raw('(select expected_delivery_date from byr_order_details where byr_order_id  =   byr_orders.byr_order_id limit 1) as expected_delivery_date')  )->get();
         $byr_buyer = byr_buyer::all();
         return response()->json(['order_list' => $result,'byr_buyer_list'=>$byr_buyer]);
     }

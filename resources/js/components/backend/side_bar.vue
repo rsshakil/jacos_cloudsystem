@@ -83,7 +83,7 @@
         </li>
         <li class="nav-item">
           <router-link to="/jacos_management" class="nav-link">
-            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> Jacos Management
+            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> 小売管理
           </router-link>
         </li>
         <!-- <li class="nav-item">
