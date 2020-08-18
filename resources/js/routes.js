@@ -8,10 +8,12 @@ import user_update from './components/backend/user_update.vue'
 import password_reset from './components/backend/password_reset.vue'
 import order_list from './components/backend/order_list.vue'
 import default_order_list from './components/backend/default_order_list.vue'
+import default_parent from './components/backend/default_parent.vue'
 import byr_order_detail from './components/backend/byr_order_detail.vue'
 import order_details_canvas from './components/backend/order_details_canvas.vue'
 import voucher_setting from './components/backend/canvas.vue'
 import jacos_management from './components/backend/jacos_management.vue'
+import jacos_management_edit from './components/backend/jacos_management_edit.vue'
 // import login_body from './components/login/login_body.vue'
 
 export const routes = [
@@ -53,6 +55,23 @@ export const routes = [
     // { path: '/order_list/order_details_canvas/:byr_order_id', name: 'order_details_canvas', component: order_details_canvas },
 
     { path: '/voucher_setting', name: 'voucher_setting', component: voucher_setting },
-    { path: '/jacos_management', name: 'jacos_management', component: jacos_management,meta:{breadcrumb: 'Jacos management'} },
+    { path: '/jacos_management', name: 'jacos_management', component: jacos_management,meta:{breadcrumb: '小売管理'},
+    children:[
+      {
+        path:'/',
+        component:default_parent,
+        name:'default_jacos_management'
+      },
+      {
+        path: '/jacos_management/edit/:jacos_management_id', 
+        component: jacos_management_edit,
+        name: 'jacos_management_edit',
+        meta: {
+          breadcrumb: '基本情報'  
+        }
+      }
+    ]
+
+  },
     // { path: '/login', name: 'login', component: login_body },
 ];
