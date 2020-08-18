@@ -268,12 +268,20 @@ methods:{
                 alert("Please fill canvas name");
                 return false;
             }
+            if (this.selected_buyer.length<=0) {
+              alert("Please select buyer name");
+                return false;
+            }
             var canData = this.canvasData();
             if (!canData['objects'].length) {
                 alert("No canvas drown");
                 return false;
             }
-            var canvas_data= { canvas_id: this.canvas_id, update_image_info: this.update_image_info,byr_id:this.byr_id, canvas_name: this.canvas_name, canData: canData, canvasImage: this.getCanvasBgImage() }
+            var buyer_id=[]
+            this.selected_buyer.forEach(element => {
+              buyer_id.push(element.byr_buyer_id)
+            });
+            var canvas_data= { canvas_id: this.canvas_id, update_image_info: this.update_image_info,byr_id:buyer_id, canvas_name: this.canvas_name, canData: canData, canvasImage: this.getCanvasBgImage() }
             axios.post(this.BASE_URL+"api/canvas_data_save",canvas_data)
                 .then(({ data }) => {
                     if (data.message='created') {
