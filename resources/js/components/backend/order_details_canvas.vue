@@ -127,7 +127,7 @@ export default {
         })
         .then(({ data }) => {
           this.allName = data.canvas_data;
-          // console.log(data);
+          console.log(data);
           // console.log(data.can_info);
           this.canvasAllData=data.can_info
           this.canvasDataLength=this.canvasAllData.length;

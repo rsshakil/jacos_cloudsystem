@@ -12,7 +12,7 @@
                 <br>
                 <div class="row" style="margin-left: 1px;">
                   <div class="col-4">
-                    <multiselect v-model="selected_buyer" :multiple="true" :options="all_buyer" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Select buyers" label="company_name" track-by="byr_buyer_id"></multiselect>
+                    <multiselect v-model="selected_buyer" :options="all_buyer" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Select buyers" label="company_name" track-by="byr_buyer_id"></multiselect>
                   </div>
                   <div class="col-3">
                     <input type="text" v-model="canvas_name" class="form-control" placeholder="Please enter canvas name" style="width:300px !important">
@@ -90,13 +90,13 @@ methods:{
                 .then(({ data }) => {
                   this.canvasAllData=data.canvas_info;
                   this.all_buyer=data.all_buyer;
-                    console.log(data);
                 })
                 .catch(() => {
                 this.sweet_advance_alert();
                 });
           },
           editCanvas(canvasData){
+            this.selected_buyer={byr_buyer_id:canvasData.byr_buyer_id,company_name:canvasData.company_name};
             // this.canvas.clear();
             this.canvasClear();
             this.canvas_name=canvasData.canvas_name;
@@ -189,6 +189,7 @@ methods:{
             this.canvas_id=null;
             this.submit_button='Save'
             this.update_image_info=null
+            this.selected_buyer=[]
             this.bg_image_path=this.BASE_URL + 'public/backend/images/canvas/Background/bg_image.jpg'
             this.backgroundImageSet(this.bg_image_path);
           },
@@ -264,30 +265,39 @@ methods:{
 
           },
           saveData(){
-            if (this.canvas_name==null) {
-                alert("Please fill canvas name");
-                return false;
-            }
-            if (this.selected_buyer.length<=0) {
-              alert("Please select buyer name");
-                return false;
-            }
+            // if (this.canvas_name==null) {
+            //     alert("Please fill canvas name");
+            //     return false;
+            // }
+            // if (this.selected_buyer.length<=0) {
+            //   alert("Please select buyer name");
+            //     return false;
+            // }
             var canData = this.canvasData();
+            var objPosArray=[];
+            (canData.objects).forEach(canObj => {
+              canObj.db_val=canObj.text
+              canObj.db_flg=1
+              objPosArray.push(canObj)
+              // objPosArray.push({posX: canObj.left,posY: canObj.top,fontSize: canObj.fontSize,height: canObj.height,width:canObj.width,db_val:canObj.text});
+            });
             if (!canData['objects'].length) {
                 alert("No canvas drown");
                 return false;
             }
-            var buyer_id=[]
-            this.selected_buyer.forEach(element => {
-              buyer_id.push(element.byr_buyer_id)
-            });
-            var canvas_data= { canvas_id: this.canvas_id, update_image_info: this.update_image_info,byr_id:buyer_id, canvas_name: this.canvas_name, canData: canData, canvasImage: this.getCanvasBgImage() }
+            var buyer_id=this.selected_buyer.byr_buyer_id
+            // this.selected_buyer.forEach(element => {
+            //   buyer_id.push(element.byr_buyer_id)
+            // });
+            var canvas_data= { canvas_id: this.canvas_id, update_image_info: this.update_image_info,byr_id:buyer_id, canvas_name: this.canvas_name, canData: canData,objPosArray:objPosArray, canvasImage: this.getCanvasBgImage() }
             axios.post(this.BASE_URL+"api/canvas_data_save",canvas_data)
                 .then(({ data }) => {
-                    if (data.message='created') {
-                            this.alert_text="Canvas Created"
-                        }else if(data.message='updated'){
+                    if (data.message=='created') {
+                          this.alert_text="Canvas Created"
+                        }else if(data.message=='updated'){
                           this.alert_text="Canvas Updated"
+                        }else if(data.message=='duplicated'){
+                          this.alert_text="Canvas Buyer is duplicated"
                         }
                         this.alert_title=data.title
                         this.alert_icon=data.class_name

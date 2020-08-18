@@ -124,12 +124,17 @@ class Byr_orderController extends Controller
         ->join('cmn_companies','byr_buyers.cmn_company_id','=','cmn_companies.cmn_company_id')
         ->orderBy('byr_buyers.byr_buyer_id','ASC')
         ->get();
-        $canvas_info = cmn_pdf_canvas::orderBy('created_at','DESC')->get();
+        // $canvas_info = cmn_pdf_canvas::orderBy('created_at','DESC')->get();
+        $canvas_info = cmn_pdf_canvas::select('cmn_pdf_canvas.*','cmn_companies.company_name')
+        ->join('byr_buyers','byr_buyers.byr_buyer_id','=','cmn_pdf_canvas.byr_buyer_id')
+        ->join('cmn_companies','cmn_companies.cmn_company_id','=','byr_buyers.cmn_company_id')
+        ->orderBy('cmn_pdf_canvas.created_at','DESC')->get();
         $canvas_array=array();
         if (!empty($canvas_info)) {
             foreach ($canvas_info as $key => $canvas) {
                 $tmp['cmn_pdf_canvas_id']=$canvas->cmn_pdf_canvas_id;
                 $tmp['byr_buyer_id']=$canvas->byr_buyer_id;
+                $tmp['company_name']=$canvas->company_name;
                 $tmp['canvas_name']=$canvas->canvas_name;
                 $tmp['canvas_image']=$canvas->canvas_image;
                 $tmp['canvas_bg_image']=$canvas->canvas_bg_image;
@@ -149,6 +154,7 @@ class Byr_orderController extends Controller
         $canvas_name = $request->canvas_name;
         $base64_canvas_image = $request->canvasImage;
         $canData = $request->canData;
+        $objPosArray = $request->objPosArray;
 
         $canvasRawBgImg = $canData['backgroundImage']['src'];
         if (!empty($update_image_info)) {
@@ -167,8 +173,16 @@ class Byr_orderController extends Controller
             'canvas_image' => $canvas_image,
             'canvas_bg_image' => $canvasBgImg,
             'canvas_objects' => $canData_string,
+            'position_values' => $objPosArray,
         );
         if (!empty($canvas_id)) {
+            $can_exist=cmn_pdf_canvas::where('cmn_pdf_canvas_id', $canvas_id)->first();
+            if ($can_exist['byr_buyer_id']!=$byr_id) {
+                if (cmn_pdf_canvas::where('byr_buyer_id', $byr_id)->exists()) {
+                    return response()->json(['message' =>'duplicated', 'class_name' => 'error','title'=>'Not Updated!']);
+                }
+            }
+
             $canvas_image_info = cmn_pdf_canvas::select('canvas_image','canvas_bg_image')->where('cmn_pdf_canvas_id', $canvas_id)->first();
             $file_path = \public_path() . '/backend/images/canvas/';
             \Log::info('file_name_new=' . $file_path);
@@ -183,8 +197,12 @@ class Byr_orderController extends Controller
             cmn_pdf_canvas::where('cmn_pdf_canvas_id', $canvas_id)->update($canvas_array);
             return response()->json(['message' =>'updated', 'class_name' => 'success','title'=>'Updated!']);
         } else {
-            cmn_pdf_canvas::insert($canvas_array);
-            return response()->json(['message' =>'created', 'class_name' => 'success','title'=>'Created!']);
+            if (!(cmn_pdf_canvas::where('byr_buyer_id', $byr_id)->exists())) {
+                cmn_pdf_canvas::insert($canvas_array);
+                return response()->json(['message' =>'created', 'class_name' => 'success','title'=>'Created!']);
+            }else{
+                return response()->json(['message' =>'duplicated', 'class_name' => 'error','title'=>'Not Created!']);
+            }
         }
     }
     public function deleteCanvasData(Request $request){
