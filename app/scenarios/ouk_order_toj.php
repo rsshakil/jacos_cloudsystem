@@ -106,7 +106,7 @@ class ouk_order_toj extends Model
         // フォーマット変換
         // byr_orders,byr_order_details格納
         $charlist = fread($file_url,filesize(storage_path().'/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name));
-        $charlist = $this->convert_from_sjis_to_utf8_recursively($charlist);
+        // $charlist = $this->convert_from_sjis_to_utf8_recursively($charlist);
         // $charlist = $this->convert_from_utf8_to_sjis__recursively($charlist);
         $str_arr = $this->mb_str_split($charlist);
         // $str_arr = str_split($charlist);
@@ -114,43 +114,50 @@ class ouk_order_toj extends Model
         $insert_array_b = array();
         $insert_array_d = array();
         $temp = array();
+        $k=0;
         foreach ($all_array_data as $key => $all_array) {
             //    print_r($all_array[0]);
             if ($all_array[0] == "B") {
-                $insert_array_b[] = $this->b_array_process($all_array);
+                $k++;
+                $insert_array_b[$k] = $this->b_array_process($all_array);
             } elseif ($all_array[0] == "D") {
-                $insert_array_d[] = $this->d_array_process($all_array);
+                $insert_array_b[$k]['item_data'][] = $this->d_array_process($all_array);
             }
         }
-
+       
         $byr_order_id = Byr_order::insertGetId(['receive_file_path'=>$received_path]);
         $cnt = 0;
-        if($insert_array_d){
+        if($insert_array_b){
             $insert_detail = array();
-            foreach($insert_array_d as $value){
-                $insert_detail['byr_order_id']=$byr_order_id;
-                $insert_detail['voucher_number']=$insert_array_b[0]['voucher_number'];
-                $insert_detail['category_code']=$insert_array_b[0]['category_code'];
-                $insert_detail['voucher_category']=$insert_array_b[0]['voucher_category'];
-                $insert_detail['expected_delivery_date']=$insert_array_b[0]['expected_delivery_date'];
-                $insert_detail['order_date']=$insert_array_b[0]['order_date'];
-                $insert_detail['delivery_service_code']=$insert_array_b[0]['delivery_service_code'];
-                $insert_detail['list_number']=$value['list_number'];
-                $insert_detail['jan']=$value['jan'];
-                $insert_detail['inputs']=$value['inputs'];
-                $insert_detail['order_inputs']=$value['order_inputs'];
-                $insert_detail['order_quantity']=$value['order_quantity'];
-                $insert_detail['item_name_kana']=$value['item_name_kana'];
-                $insert_detail['cost_price']=$value['cost_price'];
-                $insert_detail['selling_price']=$value['selling_price'];
-                $insert_detail['selling_unit_price']=$value['selling_unit_price'];
-                $insert_detail['cost_unit_price']=$value['cost_unit_price'];
-                Byr_order_detail::insert($insert_detail);
-                $temp[]= $insert_detail;
+            foreach($insert_array_b as $value){
+                foreach($value['item_data'] as $item){
+                    $insert_detail['byr_order_id']=$byr_order_id;
+                    $insert_detail['voucher_number']=$value['voucher_number'];
+                    $insert_detail['category_code']=$value['category_code'];
+                    $insert_detail['voucher_category']=$value['voucher_category'];
+                    $insert_detail['expected_delivery_date']=$value['expected_delivery_date'];
+                    $insert_detail['order_date']=$value['order_date'];
+                    $insert_detail['delivery_service_code']=$value['delivery_service_code'];
+                    $insert_detail['list_number']=$item['list_number'];
+                    $insert_detail['jan']=$item['jan'];
+                    $insert_detail['inputs']=$item['inputs'];
+                    $insert_detail['order_inputs']=$item['order_inputs'];
+                    $insert_detail['order_quantity']=$item['order_quantity'];
+                    $insert_detail['item_name_kana']=$item['item_name_kana'];
+                    $insert_detail['cost_price']=$item['cost_price'];
+                    $insert_detail['selling_price']=$item['selling_price'];
+                    $insert_detail['selling_unit_price']=$item['selling_unit_price'];
+                    $insert_detail['cost_unit_price']=$item['cost_unit_price'];
+                    Byr_order_detail::insert($insert_detail);
+                    $temp[]= $insert_detail;
+                }
+                
             }
         }
         echo '<pre>';
-print_r($temp);exit;
+        print_r($temp);
+        // print_r($insert_array_d);
+        exit;
         echo 'save path:'.$path;exit;
 
 
@@ -251,7 +258,7 @@ print_r($temp);exit;
                 $d .= $all_array[$j];
             } elseif ($j >= 3 && $j < 5) {
                 $list_number .= $all_array[$j];
-            } elseif ($j >= 5 && $j < 13) {
+            } elseif ($j >= 5 && $j < 18) {
                 $jan .= $all_array[$j];
             } elseif ($j >= 18 && $j < 22) {
                 $inputs .= $all_array[$j];

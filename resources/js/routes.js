@@ -7,6 +7,7 @@ import users from './components/backend/users.vue'
 import user_update from './components/backend/user_update.vue'
 import password_reset from './components/backend/password_reset.vue'
 import order_list from './components/backend/order_list.vue'
+import default_order_list from './components/backend/default_order_list.vue'
 import byr_order_detail from './components/backend/byr_order_detail.vue'
 import order_details_canvas from './components/backend/order_details_canvas.vue'
 import voucher_setting from './components/backend/canvas.vue'
@@ -25,6 +26,11 @@ export const routes = [
     { path: '/password_reset/:id/:auth_id', name: 'password_reset', component: password_reset },
     { path: '/order_list', component: order_list,meta:{breadcrumb: 'Order'},
     children: [
+        {
+          path: '/', 
+          component: default_order_list,
+          name: 'default_order_list_detail',
+        },
         {
           path: '/order_list/order_list_detail/:byr_order_id', 
           component: byr_order_detail,
