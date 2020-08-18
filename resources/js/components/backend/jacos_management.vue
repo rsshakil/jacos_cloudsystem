@@ -20,7 +20,7 @@
                                             </form>
                                        </div>
                                        <div class="col-6">
-                                    <button class="btn custom_right btn-primary">新規追加</button>
+                                    <button @click="add_new_company_cmn" class="btn custom_right btn-primary">新規追加</button>
 
     </div>
     </div>
@@ -40,38 +40,16 @@
                                 
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>test</td>
-                                    <td>OUK</td>
-                                    <td>Yes</td>
-                                    <td><router-link to="" class="btn btn-primary">ユーザー管理</router-link></td>
+                               <tr v-for="(company_list,index) in company_lists" :key="company_list.cmn_company_id">
+                                    <td>{{index+1}}</td>
+                                    <td>{{company_list.company_name}}</td>
+                                    <td>{{company_list.super_code}}</td>
+                                    <td>稼働中</td>
+                                    <td><router-link :to="{name:'cmn_company_user_list',params:{cmn_company_id:company_list.cmn_company_id} }" class="btn btn-primary">ユーザー管理</router-link></td>
                                     <td><button class="btn btn-info">店舗管理</button></td>
-                                    <td><button class="btn btn-danger">取引先管理</button></td>
+                                    <td><router-link :to="{name:'cmn_company_partner_list',params:{cmn_company_id:company_list.cmn_company_id} }" class="btn btn-danger">取引先管理</router-link></td>
                                     <td><button class="btn btn-success">発注データ</button></td>
-                                    <td><button class="btn btn-primary">詳細</button></td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>test</td>
-                                    <td>OUK</td>
-                                    <td>Yes</td>
-                                    <td><button class="btn btn-primary">test</button></td>
-                                    <td><button class="btn btn-info">test</button></td>
-                                    <td><button class="btn btn-danger">test</button></td>
-                                    <td><button class="btn btn-success">test</button></td>
-                                    <td><button class="btn btn-primary">test</button></td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>test</td>
-                                    <td>OUK</td>
-                                    <td>Yes</td>
-                                    <td><button class="btn btn-primary">test</button></td>
-                                    <td><button class="btn btn-info">test</button></td>
-                                    <td><button class="btn btn-danger">test</button></td>
-                                    <td><button class="btn btn-success">test</button></td>
-                                    <td><button class="btn btn-primary">test</button></td>
+                                    <td><router-link :to="{name:'jacos_management_edit',params:{cmn_company_id:company_list.cmn_company_id} }"  class="btn btn-primary">詳細</router-link></td>
                                 </tr>
                                 
                             </tbody>
@@ -79,23 +57,84 @@
                     </div>
                 </div>
             </div>
+            <b-modal
+      size="md"
+      :hide-backdrop="true"
+      title="小売　新規追加"
+      ok-title="新規追加"
+      cancel-title="キャンセル"
+      @ok.prevent="save_new_company()"
+      v-model="add_cmn_company_modal"
+    >
+      <!-- <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+      <div class="modal-body">-->
+      <div class="panel-body add_item_body">
+            <form>
+  <div class="form-group row">
+    <label for="staticEmail" class="col-sm-4 col-form-label">小売名</label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" id="staticEmail" value="スーパーバリュー">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="inputPassword" class="col-sm-4 col-form-label">Jコード</label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" id="inputPassword" value="000001">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="inputPassword" class="col-sm-4 col-form-label">スーパーコード</label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" id="inputPassword" value="JHG">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="inputPassword" class="col-sm-4 col-form-label">郵便番号</label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" id="inputPassword" value="141-0021">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="inputPassword" class="col-sm-4 col-form-label">住所</label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" id="inputPassword" value="東京都品川区上大崎1-2-3">
+    </div>
+  </div>
+</form>
+          </div>
+      <!-- </div>
+        </div>
+      </div>-->
+    </b-modal>
   </div>
 </template>
 <script>
 export default {
   data() {
     return {
-        'order_lists':{},
-        'byr_buyer_lists':{},
-        'file':'',
+        'company_lists':{},
+        'add_cmn_company_modal':false
     };
   },
   methods: {
-   
+      add_new_company_cmn(){
+          this.add_cmn_company_modal=true;
+      },
+      save_new_company(){
+          conosole.log('add new');
+      },
+       get_all_company(){
+        axios.get(this.BASE_URL +"api/jacosmanagement ").then((data) => {
+            this.company_lists = data.data.company_list;
+            console.log(this.company_lists);
+        });
+    },
   },
 
   created() {
-      console.log('created log');
+      this.get_all_company();
+      console.log('created jacos management log');
   },
   mounted() {
     console.log("User page loaded");

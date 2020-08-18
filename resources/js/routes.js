@@ -6,7 +6,6 @@ import assign_permission_model from './components/backend/assign_permission_mode
 import users from './components/backend/users.vue'
 import user_update from './components/backend/user_update.vue'
 import password_reset from './components/backend/password_reset.vue'
-import order_list from './components/backend/order_list.vue'
 import default_order_list from './components/backend/default_order_list.vue'
 import default_parent from './components/backend/default_parent.vue'
 import byr_order_detail from './components/backend/byr_order_detail.vue'
@@ -14,6 +13,8 @@ import order_details_canvas from './components/backend/order_details_canvas.vue'
 import voucher_setting from './components/backend/canvas.vue'
 import jacos_management from './components/backend/jacos_management.vue'
 import jacos_management_edit from './components/backend/jacos_management_edit.vue'
+import cmn_company_user_list from './components/backend/cmn_company_user_list.vue'
+import cmn_company_partner_list from './components/backend/cmn_company_partner_list.vue'
 // import login_body from './components/login/login_body.vue'
 
 export const routes = [
@@ -26,12 +27,12 @@ export const routes = [
     { path: '/users', component: users },
     { path: '/users/:id/:auth_id', name: 'users', component: user_update },
     { path: '/password_reset/:id/:auth_id', name: 'password_reset', component: password_reset },
-    { path: '/order_list', component: order_list,meta:{breadcrumb: 'Order'},
+    { path: '/order_list', component: default_parent,meta:{breadcrumb: 'Order'},
     children: [
         {
           path: '/', 
           component: default_order_list,
-          name: 'default_order_list_detail',
+          name: 'order_list',
         },
         {
           path: '/order_list/order_list_detail/:byr_order_id', 
@@ -51,23 +52,36 @@ export const routes = [
         }
       ]
 },
-    // { path: '/order_list/order_list_detail/:byr_order_id', name: 'order_list_detail', component: byr_order_detail,meta:{breadcrumb: {label:'Order detail',parent:'Order'}} },
-    // { path: '/order_list/order_details_canvas/:byr_order_id', name: 'order_details_canvas', component: order_details_canvas },
-
     { path: '/voucher_setting', name: 'voucher_setting', component: voucher_setting },
-    { path: '/jacos_management', name: 'jacos_management', component: jacos_management,meta:{breadcrumb: '小売管理'},
+    { path: '/jacos_management', name: 'jacos_management', component: default_parent,meta:{breadcrumb: '小売管理'},
     children:[
       {
         path:'/',
-        component:default_parent,
-        name:'default_jacos_management'
+        component:jacos_management,
+        name:'jacos_management'
       },
       {
-        path: '/jacos_management/edit/:jacos_management_id', 
+        path: '/jacos_management/jacos_management_edit/:cmn_company_id', 
         component: jacos_management_edit,
         name: 'jacos_management_edit',
         meta: {
           breadcrumb: '基本情報'  
+        }
+      },
+      {
+        path: '/jacos_management/cmn_company_user_list/:cmn_company_id', 
+        component: cmn_company_user_list,
+        name: 'cmn_company_user_list',
+        meta: {
+          breadcrumb: 'ユーザー管理'  
+        }
+      },
+      {
+        path: '/jacos_management/cmn_company_partner_list/:cmn_company_id', 
+        component: cmn_company_partner_list,
+        name: 'cmn_company_partner_list',
+        meta: {
+          breadcrumb: '取引先管理'  
         }
       }
     ]

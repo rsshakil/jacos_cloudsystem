@@ -212,3 +212,33 @@ input:checked+.slider:before {
    background-color: white;
 }
 /* table col two lines*/
+
+/*custom tab*/
+.project-tab{
+    margin-bottom: 30px;
+}
+.project-tab .nav-tabs .nav-item.show .nav-link,.project-tab .nav-tabs .nav-link.active {
+    color: #0062cc !important;
+    background-color: transparent;
+    border-color: transparent transparent #f3f3f3;
+    border-bottom: 3px solid #0062cc !important;
+    font-size: 16px;
+    font-weight: bold;
+}
+.project-tab .nav-link {
+    border: 1px solid transparent;
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+    color: #000;
+    font-size: 16px;
+    font-weight: 600;
+}
+.project-tab .nav-link:hover {
+    border: none;
+}
+.project-tab a{
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+}
+/*custom tab*/

@@ -39,6 +39,13 @@ Route::apiResources(
 	]
 );
 
+Route::apiResources(
+
+	[
+		'jacosmanagement' => 'API\Jacos_managementController'
+	]
+);
+
 Route::get('/all_users_roles', 'API\AssignRoleModel@allUsersAndRoles');
 Route::get('/get_roles/{id}', 'API\AssignRoleModel@getRoleById');
 Route::post('/assign_role_to_user', 'API\AssignRoleModel@assignModelRole');
