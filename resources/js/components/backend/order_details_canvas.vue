@@ -103,6 +103,7 @@ export default {
       canvasSelectedName: [],
       canvasDataLength:0,
       canvasAllData:[],
+      positionObjects:[],
       itr:0,
       prev:0,
       next:0,
@@ -115,8 +116,8 @@ export default {
       canvas_height: 510,
       pointerX: 100,
       pointerY: 50,
-      objLeftMargin:130,
-      objTopMargin:240,
+      // objLeftMargin:130,
+      objTopMargin:0,
     };
   },
   methods: {
@@ -126,9 +127,17 @@ export default {
           byr_order_id: this.byr_order_id,
         })
         .then(({ data }) => {
-          this.allName = data.canvas_data;
+          if (data.canvas_data) {
+            // (data.canvas_data).forEach(element => {
+            //   this.allName.push({canvas_name:element.canvas_name,cmn_pdf_canvas_id:element.cmn_pdf_canvas_id,canvas_bg_image:element.canvas_bg_image,position_objects:element.position_values})
+            // });
+            this.allName=data.canvas_data
+            this.canvasSelectedName=this.allName[0]
+            this.bg_image_path=this.BASE_URL + "public/backend/images/canvas/Background/"+(this.allName)[0].canvas_bg_image;
+            this.backgroundImageSet(this.bg_image_path);
+            // this.positionObjects=(data.canvas_data)[0].position_values;
+          }
           console.log(data);
-          // console.log(data.can_info);
           this.canvasAllData=data.can_info
           this.canvasDataLength=this.canvasAllData.length;
           if (this.canvasDataLength>1) {
@@ -148,16 +157,16 @@ export default {
           this.prev-=1;
           this.next+=1;
           this.itr-=1;
-          this.objLeftMargin=130
-          this.objTopMargin=240
+          // this.objLeftMargin=130
+          // this.objTopMargin=240
           this.canvasDesign()
     },
     canvasDesignRight(){
       this.prev+=1;
       this.next-=1;
       this.itr+=1;
-      this.objLeftMargin=130;
-      this.objTopMargin=240;
+      // this.objLeftMargin=130;
+      // this.objTopMargin=240;
       this.canvasDesign()
     },
     canvasDesign(){
@@ -165,21 +174,69 @@ export default {
       if (this.canvasDataLength>0) {
         var canvasAllDataArray=this.canvasAllData[this.itr];
         if (canvasAllDataArray.length) {
-          this.createObj(420,145,140,50,canvasAllDataArray[0].voucher_number,'auto')
-          for (let i = 0; i < canvasAllDataArray.length; i++) {
-            // this.objLeftMargin=130,
-            // this.objTopMargin=240,
-            // this.createObj(left=100,top=50,width=150,height=22,text="Created by default",createdBy='auto')
-            this.createObj(this.objLeftMargin,this.objTopMargin,300,50,canvasAllDataArray[i].item_name,'auto')
-            this.objLeftMargin+=315;
-            this.createObj(this.objLeftMargin,this.objTopMargin,150,50,(canvasAllDataArray[i].jan).toString(),'auto')
-            this.objLeftMargin+=160;
-            this.createObj(this.objLeftMargin,this.objTopMargin,80,50,(canvasAllDataArray[i].color),'auto')
-            this.objLeftMargin=130;
-            this.objTopMargin+=41;
+          var position_values= JSON.parse(this.allName[0].position_values);
+          var static_array=[];
+          var dynamic_array=[];
+          static_array.push({voucher_number:canvasAllDataArray[0].voucher_number})
+          canvasAllDataArray.forEach(element => {
+            var data_array={item_name:element.item_name,jan:element.jan,color:element.color}
+            dynamic_array.push(data_array)
+          });
+  // console.log(element)
+  console.log(dynamic_array)
+          // this.createObj(420,145,140,50,canvasAllDataArray[this.itr]['voucher_number'],'auto')
+          // for (let i = 0; i < canvasAllDataArray.length; i++) {
+            var static_obj=[];
+            var dynamic_obj=[];
+            position_values.forEach(element => {
+              if (element.text=='voucher_number') {
+                static_obj.push(element)
+              }else{
+                dynamic_obj.push(element);
+              }
+              // this.createObj(element.left,element.top,element.width,element.height,canvasAllDataArray[this.itr][element.text].toString(),'auto')
+            });
+            static_array.forEach(static_array_element => {
+              static_obj.forEach(static_element => {
+              this.createObj(static_element.left,static_element.top,static_element.width,static_element.height,static_array_element[static_element.text].toString(),'auto')
+            });
+            });
+
+            // dynamic_array.forEach(dynamic_array_element => {
+              for (let i = 0; i < dynamic_array.length; i++) {
+                const dynamic_array_element = dynamic_array[i];
+                for (let j = 0; j < dynamic_obj.length; j++) {
+                  const dynamic_element = dynamic_obj[j];
+                    this.objTopMargin=dynamic_element.top
+                    if (i!=0) {
+                    this.objTopMargin+=41;
+                  }
+                  this.createObj(dynamic_element.left,this.objTopMargin,dynamic_element.width,dynamic_element.height,dynamic_array_element[dynamic_element.text].toString(),'auto')
+                }
+                  // dynamic_obj.forEach(dynamic_element => {
+                    
+                  // }
+                // });
+              }
+              // this.objTopMargin+=241;
+            // });
+            console.log(this.objTopMargin)
+            console.log(dynamic_obj);
+          // }
+          // for (let i = 0; i < canvasAllDataArray.length; i++) {
+          //   // this.objLeftMargin=130,
+          //   // this.objTopMargin=240,
+          //   // this.createObj(left=100,top=50,width=150,height=22,text="Created by default",createdBy='auto')
+          //   this.createObj(this.objLeftMargin,this.objTopMargin,300,50,canvasAllDataArray[i].item_name,'auto')
+          //   this.objLeftMargin+=315;
+          //   this.createObj(this.objLeftMargin,this.objTopMargin,150,50,(canvasAllDataArray[i].jan).toString(),'auto')
+          //   this.objLeftMargin+=160;
+          //   this.createObj(this.objLeftMargin,this.objTopMargin,80,50,(canvasAllDataArray[i].color),'auto')
+          //   this.objLeftMargin=130;
+          //   this.objTopMargin+=41;
             
-          }
-          this.objTopMargin=240;
+          // }
+          // this.objTopMargin=240;
         }
             // console.log( canvasAllDataArray)
           }

@@ -290,6 +290,8 @@ methods:{
             //   buyer_id.push(element.byr_buyer_id)
             // });
             var canvas_data= { canvas_id: this.canvas_id, update_image_info: this.update_image_info,byr_id:buyer_id, canvas_name: this.canvas_name, canData: canData,objPosArray:objPosArray, canvasImage: this.getCanvasBgImage() }
+            // console.log(canvas_data);
+            // return 0;
             axios.post(this.BASE_URL+"api/canvas_data_save",canvas_data)
                 .then(({ data }) => {
                     if (data.message=='created') {

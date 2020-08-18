@@ -98,7 +98,8 @@ class Byr_orderController extends Controller
     }
     public function canvasAllData(Request $request){
         $byr_order_id=$request->byr_order_id;
-        $canvas_data=byr_order::join('cmn_connects','cmn_connects.cmn_connect_id','=','byr_orders.cmn_connect_id')
+        $canvas_data=byr_order::select('cmn_pdf_canvas.*','byr_orders.byr_order_id')
+        ->join('cmn_connects','cmn_connects.cmn_connect_id','=','byr_orders.cmn_connect_id')
         ->join('cmn_pdf_canvas','cmn_pdf_canvas.byr_buyer_id','=','cmn_connects.byr_buyer_id')
         ->where('byr_orders.byr_order_id',$byr_order_id)
         ->get();
@@ -171,7 +172,7 @@ class Byr_orderController extends Controller
             'canvas_image' => $canvas_image,
             'canvas_bg_image' => $canvasBgImg,
             'canvas_objects' => $canData_string,
-            'position_values' => $objPosArray,
+            'position_values' => \json_encode($objPosArray),
         );
         if (!empty($canvas_id)) {
             $can_exist=cmn_pdf_canvas::where('cmn_pdf_canvas_id', $canvas_id)->first();
