@@ -541,13 +541,11 @@
                     class="btn btn-success"
                   >発注データ修正</button>
                 </td>
+                <td></td>
+                <td></td>
               </tr>
             </tbody>
           </table>
-          <input type="hidden" name="hidden_page" id="hidden_page" value="1" />
-          <input type="hidden" name="hidden_column_name" id="hidden_column_name" value="id" />
-          <input type="hidden" name="hidden_sort_type" id="hidden_sort_type" value="asc" />
-          <input type="hidden" name="_token" id="token" value />
         </div>
       </div>
     </div>
@@ -690,6 +688,7 @@ export default {
       axios
         .get(this.BASE_URL + "api/byrorders/" + this.byr_order_id)
         .then(data => {
+          console.log(data.data.order_list_detail);
           this.order_detail_lists = data.data.order_list_detail;
           this.byr_shops = data.data.byr_shops;
           this.show_hide_col_list = data.data.slected_list;

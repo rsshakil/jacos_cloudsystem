@@ -50,11 +50,10 @@ class Byr_orderController extends Controller
     public function show($byr_order_id)
     {
 
-        $result = DB::table('byr_orders')
+        $result = DB::table('byr_order_details')
             ->select('byr_order_details.*', 'byr_shipment_details.confirm_quantity')
-            ->join('byr_order_details', 'byr_orders.byr_order_id', '=', 'byr_order_details.byr_order_id')
-            ->join('byr_shipment_details', 'byr_shipment_details.byr_order_detail_id', '=', 'byr_order_details.byr_order_detail_id')
-            ->where('byr_orders.byr_order_id', $byr_order_id)
+            ->leftJoin('byr_shipment_details', 'byr_shipment_details.byr_order_detail_id', '=', 'byr_order_details.byr_order_detail_id')
+            ->where('byr_order_details.byr_order_id', $byr_order_id)
             ->get();
         $byr_shops = DB::table('byr_shops')
             ->select('byr_shops.shop_name', 'byr_shops.shop_name_kana', 'byr_order_details.byr_shop_id')
