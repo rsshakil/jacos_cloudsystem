@@ -101,7 +101,7 @@ class Cmn_ScenarioController extends Controller
             \Log::error('scenario exec error');
             return ['status'=>'1','message'=>'Scenario exec function is not exist!'];
         }
-        $ret = $sc_obj->exec($request);
+        $ret = $sc_obj->exec($request,$sc);
         if ($ret !== 0) {
             // error
             \Log::debug('scenario exec error');

@@ -92,7 +92,7 @@ class ouk_order_toj extends Model
     ];
 
     //
-    public function exec($request)
+    public function exec($request,$sc)
     {
         \Log::debug('ouk_order_toj exec start  ---------------');
         // ファイルアップロード
@@ -124,14 +124,16 @@ class ouk_order_toj extends Model
                 $insert_array_b[$k]['item_data'][] = $this->d_array_process($all_array);
             }
         }
-       
+        
         $byr_order_id = Byr_order::insertGetId(['receive_file_path'=>$received_path]);
         $cnt = 0;
         if($insert_array_b){
             $insert_detail = array();
             foreach($insert_array_b as $value){
+                $byr_shop_id = $this->get_shop_id_by_shop_code($value['shop_code'],$value['shop_name_kana'],$sc);
                 foreach($value['item_data'] as $item){
                     $insert_detail['byr_order_id']=$byr_order_id;
+                    $insert_detail['byr_shop_id']=$byr_shop_id;
                     $insert_detail['voucher_number']=$value['voucher_number'];
                     $insert_detail['category_code']=$value['category_code'];
                     $insert_detail['voucher_category']=$value['voucher_category'];
@@ -164,6 +166,15 @@ class ouk_order_toj extends Model
 
         \Log::debug('ouk_order_toj exec end  ---------------');
         return 0;
+    }
+
+    public function get_shop_id_by_shop_code($shop_code,$shop_name_kana,$sc){
+        if(byr_shop::where('shop_code',$shop_code)->exists()){
+            return $id = byr_shop::where('shop_code',$shop_code)->pluck('byr_shop_id');
+        }else{
+            $id = byr_shop::insertGetId(['shop_code'=>$shop_code,'shop_name_kana'=>$shop_name_kana,'byr_buyer_id'=>$sc->byr_buyer_id,'slr_seller_id'=>$sc->slr_seller_id]);
+            return $id;
+        }
     }
 
     /*jacos string analyze*/
