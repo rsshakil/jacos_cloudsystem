@@ -170,7 +170,8 @@ class ouk_order_toj extends Model
 
     public function get_shop_id_by_shop_code($shop_code,$shop_name_kana,$sc){
         if(byr_shop::where('shop_code',$shop_code)->exists()){
-            return $id = byr_shop::where('shop_code',$shop_code)->pluck('byr_shop_id');
+             $row = byr_shop::where('shop_code',$shop_code)->first();
+             return $row->byr_shop_id;
         }else{
             $id = byr_shop::insertGetId(['shop_code'=>$shop_code,'shop_name_kana'=>$shop_name_kana,'byr_buyer_id'=>$sc->byr_buyer_id,'slr_seller_id'=>$sc->slr_seller_id]);
             return $id;
