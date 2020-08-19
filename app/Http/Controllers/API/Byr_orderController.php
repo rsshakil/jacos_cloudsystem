@@ -136,7 +136,9 @@ class Byr_orderController extends Controller
                 $tmp['canvas_name']=$canvas->canvas_name;
                 $tmp['canvas_image']=$canvas->canvas_image;
                 $tmp['canvas_bg_image']=$canvas->canvas_bg_image;
-                $tmp['canvas_objects']=$this->UnserializedCanvasData($canvas->canvas_objects);;
+                $tmp['canvas_objects']=\json_decode($canvas->canvas_objects);
+                // $tmp['canvas_objects']=$canvas->canvas_objects;
+                // $tmp['canvas_objects']=$this->UnserializedCanvasData($canvas->canvas_objects);;
                 $tmp['created_at']=$canvas->created_at;
                 $tmp['updated_at']=$canvas->updated_at;
                 $canvas_array[]=$tmp;
@@ -152,7 +154,7 @@ class Byr_orderController extends Controller
         $canvas_name = $request->canvas_name;
         $base64_canvas_image = $request->canvasImage;
         $canData = $request->canData;
-        $objPosArray = $request->objPosArray;
+        // $objPosArray = $request->objPosArray;
 
         $canvasRawBgImg = $canData['backgroundImage']['src'];
         if (!empty($update_image_info)) {
@@ -164,14 +166,15 @@ class Byr_orderController extends Controller
         // return $canvasBgImg;
         $canvas_image = $this->save_base64_image($base64_canvas_image, 'canvas_image_'. time().'_'.$byr_id, $path_with_end_slash = "public/backend/images/canvas/Canvas_screenshoot/");
         // Serialize the above data
-        $canData_string = serialize($canData);
+        // $canData_string = serialize($canData);
         $canvas_array = array(
             'byr_buyer_id' => $byr_id,
             'canvas_name' => $canvas_name,
             'canvas_image' => $canvas_image,
             'canvas_bg_image' => $canvasBgImg,
-            'canvas_objects' => $canData_string,
-            'position_values' => \json_encode($objPosArray),
+            'canvas_objects' => json_encode($canData),
+            // 'canvas_objects' => $canData_string,
+            // 'position_values' => \json_encode($objPosArray),
         );
         if (!empty($canvas_id)) {
             $can_exist=cmn_pdf_canvas::where('cmn_pdf_canvas_id', $canvas_id)->first();
