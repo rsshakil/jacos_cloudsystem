@@ -265,22 +265,21 @@ methods:{
 
           },
           saveData(){
-            // if (this.canvas_name==null) {
-            //     alert("Please fill canvas name");
-            //     return false;
-            // }
-            // if (this.selected_buyer.length<=0) {
-            //   alert("Please select buyer name");
-            //     return false;
-            // }
+            if (this.canvas_name==null) {
+                alert("Please fill canvas name");
+                return false;
+            }
+            if (this.selected_buyer.length<=0) {
+              alert("Please select buyer name");
+                return false;
+            }
             var canData = this.canvasData();
-            var objPosArray=[];
-            (canData.objects).forEach(canObj => {
-              canObj.db_val=canObj.text
-              canObj.db_flg=1
-              objPosArray.push(canObj)
-              // objPosArray.push({posX: canObj.left,posY: canObj.top,fontSize: canObj.fontSize,height: canObj.height,width:canObj.width,db_val:canObj.text});
-            });
+            // var objPosArray=[];
+            // (canData.objects).forEach(canObj => {
+            //   canObj.db_val=canObj.text
+            //   canObj.db_flg=1
+            //   objPosArray.push(canObj)
+            // });
             if (!canData['objects'].length) {
                 alert("No canvas drown");
                 return false;
@@ -289,7 +288,7 @@ methods:{
             // this.selected_buyer.forEach(element => {
             //   buyer_id.push(element.byr_buyer_id)
             // });
-            var canvas_data= { canvas_id: this.canvas_id, update_image_info: this.update_image_info,byr_id:buyer_id, canvas_name: this.canvas_name, canData: canData,objPosArray:objPosArray, canvasImage: this.getCanvasBgImage() }
+            var canvas_data= { canvas_id: this.canvas_id, update_image_info: this.update_image_info,byr_id:buyer_id, canvas_name: this.canvas_name, canData: canData, canvasImage: this.getCanvasBgImage() }
             // console.log(canvas_data);
             // return 0;
             axios.post(this.BASE_URL+"api/canvas_data_save",canvas_data)
@@ -360,7 +359,7 @@ methods:{
             textBackgroundColor: "",
             charSpacing: 0,
             minWidth: 20,
-            splitByGrapheme: 0, //False
+            splitByGrapheme: 1, //False
             objectCaching: false,
         }];
 
@@ -479,6 +478,8 @@ methods:{
           this.canvas.on('mouse:dblclick', (e) => {
             this.doubleClick(e)
           })
+          // console.log(this.canvas);
+          // onKeyDownHandler(event)
     }
 }
 </script>
