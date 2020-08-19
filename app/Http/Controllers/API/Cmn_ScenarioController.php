@@ -119,4 +119,11 @@ class Cmn_ScenarioController extends Controller
     {
         return response()->json(['req'=>$request->all()]);
     }
+    public function get_scenario_list(){
+        $result = cmn_scenario::select('cmn_scenarios.*','byr_buyers.super_code')
+        ->leftJoin('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_scenarios.byr_buyer_id')
+        ->leftJoin('slr_sellers', 'slr_sellers.slr_seller_id', '=', 'cmn_scenarios.slr_seller_id')
+        ->get();
+        return response()->json(['scenario_list'=>$result]);
+    }
 }

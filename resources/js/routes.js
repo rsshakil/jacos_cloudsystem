@@ -15,6 +15,8 @@ import jacos_management from './components/backend/jacos_management.vue'
 import jacos_management_edit from './components/backend/jacos_management_edit.vue'
 import cmn_company_user_list from './components/backend/cmn_company_user_list.vue'
 import cmn_company_partner_list from './components/backend/cmn_company_partner_list.vue'
+import scenario_management from './components/backend/scenario_management.vue'
+
 // import login_body from './components/login/login_body.vue'
 
 export const routes = [
@@ -84,6 +86,16 @@ export const routes = [
           breadcrumb: '取引先管理'  
         }
       }
+    ]
+
+  },
+  { path: '/scenario_management', name: 'scenario_management', component: default_parent,meta:{breadcrumb: 'シナリオ管理'},
+    children:[
+      {
+        path:'/',
+        component:scenario_management,
+        name:'scenario_management'
+      },
     ]
 
   },
