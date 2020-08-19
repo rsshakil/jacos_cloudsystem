@@ -14,13 +14,28 @@ class Jacos_managementController extends Controller
      */
     public function index()
     {
-        $result = DB::table('cmn_companies')
-        ->leftJoin('byr_buyers', 'byr_buyers.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
-        ->select('byr_buyers.super_code', 'cmn_companies.company_name','cmn_companies.cmn_company_id')
+        $result = DB::table('byr_buyers')
+        ->leftJoin('cmn_companies', 'byr_buyers.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
+        ->select('byr_buyers.super_code', 'cmn_companies.company_name','cmn_companies.cmn_company_id','cmn_companies.byr_buyer_id')
         ->get();
         return response()->json(['company_list'=>$result]);
     }
 
+    public function company_user_list($byr_buyer_id){
+        $result = DB::table('adm_users')
+        ->get();
+        return response()->json(['user_list'=>$result]); 
+    }
+
+    public function company_partner_list($byr_buyer_id){
+        $result = DB::table('cmn_connects')
+        ->leftJoin('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
+        ->leftJoin('cmn_companies', 'byr_buyers.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
+        ->select('cmn_connects.byr_buyer_id','byr_buyers.super_code', 'cmn_companies.company_name', 'cmn_companies.jcode','cmn_connects.partner_code','cmn_connects.is_active')
+        ->where('cmn_connects.byr_buyer_id',$byr_buyer_id)
+        ->get();
+        return response()->json(['partner_list'=>$result]); 
+    }
     /**
      * Store a newly created resource in storage.
      *

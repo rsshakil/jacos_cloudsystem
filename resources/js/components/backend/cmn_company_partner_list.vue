@@ -30,20 +30,22 @@ tabList,
 },
   data() {
     return {
-        'company_lists':{},
+        'company_partner_lists':{},
+        'byr_buyer_id':'',
     };
   },
   methods: {
-       get_all_company(){
-        axios.get(this.BASE_URL +"api/jacosmanagement").then((data) => {
-            this.company_lists = data.data.company_list;
-            console.log(this.company_lists);
+      get_all_partner_users(){
+        axios.get(this.BASE_URL +"api/company_partner_list"+this.byr_buyer_id).then((data) => {
+            this.company_partner_lists = data.data.partner_list;
+            console.log(this.company_partner_lists);
         });
     },
   },
 
   created() {
-      this.get_all_company();
+    this.byr_buyer_id = this.$route.params.byr_buyer_id;
+      this.get_all_partner_users();
       console.log('created jacos management log');
   },
   mounted() {

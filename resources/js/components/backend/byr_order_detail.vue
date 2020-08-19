@@ -453,7 +453,7 @@
             <tbody>
               <tr
                 v-for="(order_detail_list,index) in order_detail_lists"
-                :key="order_detail_list.byr_order_id"
+                :key="order_detail_list.byr_order_detail_id"
               >
                 <td>{{index+1}}</td>
                 <td>
@@ -505,10 +505,10 @@
                   v-if="show_hide_col_list.includes('cost_price')"
                 >{{order_detail_list.cost_price}}</td>
                 <td
-                  v-if="show_hide_col_list.includes('sale_unit_price')"
+                  v-if="show_hide_col_list.includes('selling_unit_price')"
                 >{{order_detail_list.selling_unit_price}}</td>
                 <td
-                  v-if="show_hide_col_list.includes('sale_price')"
+                  v-if="show_hide_col_list.includes('selling_price')"
                 >{{order_detail_list.selling_price}}</td>
                 <td
                   v-if="show_hide_col_list.includes('other_info')"
@@ -541,8 +541,6 @@
                     class="btn btn-success"
                   >発注データ修正</button>
                 </td>
-                <td></td>
-                <td></td>
               </tr>
             </tbody>
           </table>

@@ -61,7 +61,7 @@ export const routes = [
         name:'jacos_management'
       },
       {
-        path: '/jacos_management/jacos_management_edit/:cmn_company_id', 
+        path: '/jacos_management/jacos_management_edit/:byr_buyer_id', 
         component: jacos_management_edit,
         name: 'jacos_management_edit',
         meta: {
@@ -69,7 +69,7 @@ export const routes = [
         }
       },
       {
-        path: '/jacos_management/cmn_company_user_list/:cmn_company_id', 
+        path: '/jacos_management/cmn_company_user_list/:byr_buyer_id', 
         component: cmn_company_user_list,
         name: 'cmn_company_user_list',
         meta: {
@@ -77,7 +77,7 @@ export const routes = [
         }
       },
       {
-        path: '/jacos_management/cmn_company_partner_list/:cmn_company_id', 
+        path: '/jacos_management/cmn_company_partner_list/:byr_buyer_id', 
         component: cmn_company_partner_list,
         name: 'cmn_company_partner_list',
         meta: {

@@ -59,6 +59,7 @@ class Byr_orderController extends Controller
             ->select('byr_shops.shop_name', 'byr_shops.shop_name_kana', 'byr_order_details.byr_shop_id')
             ->join('byr_order_details', 'byr_order_details.byr_shop_id', '=', 'byr_shops.byr_shop_id')
             ->where('byr_order_details.byr_order_id', $byr_order_id)
+            ->groupBy('byr_order_details.byr_shop_id')
             ->get();
         /*coll setting*/
         $slected_list = array();

@@ -40,16 +40,16 @@
                                 
                             </thead>
                             <tbody>
-                               <tr v-for="(company_list,index) in company_lists" :key="company_list.cmn_company_id">
+                               <tr v-for="(company_list,index) in company_lists" :key="company_list.byr_buyer_id">
                                     <td>{{index+1}}</td>
                                     <td>{{company_list.company_name}}</td>
                                     <td>{{company_list.super_code}}</td>
                                     <td>稼働中</td>
-                                    <td><router-link :to="{name:'cmn_company_user_list',params:{cmn_company_id:company_list.cmn_company_id} }" class="btn btn-primary">ユーザー管理</router-link></td>
+                                    <td><router-link :to="{name:'cmn_company_user_list',params:{byr_buyer_id:company_list.byr_buyer_id} }" class="btn btn-primary">ユーザー管理</router-link></td>
                                     <td><button class="btn btn-info">店舗管理</button></td>
-                                    <td><router-link :to="{name:'cmn_company_partner_list',params:{cmn_company_id:company_list.cmn_company_id} }" class="btn btn-danger">取引先管理</router-link></td>
+                                    <td><router-link :to="{name:'cmn_company_partner_list',params:{byr_buyer_id:company_list.byr_buyer_id} }" class="btn btn-danger">取引先管理</router-link></td>
                                     <td><button class="btn btn-success">発注データ</button></td>
-                                    <td><router-link :to="{name:'jacos_management_edit',params:{cmn_company_id:company_list.cmn_company_id} }"  class="btn btn-primary">詳細</router-link></td>
+                                    <td><router-link :to="{name:'jacos_management_edit',params:{byr_buyer_id:company_list.byr_buyer_id} }"  class="btn btn-primary">詳細</router-link></td>
                                 </tr>
                                 
                             </tbody>
