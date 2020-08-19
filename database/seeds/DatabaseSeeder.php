@@ -22,5 +22,6 @@ class DatabaseSeeder extends Seeder
         $this->call(lv3_trigger_file_pathSeeder::class);
         $this->call(lv3_trigger_scheduleSeeder::class);
         $this->call(lv3_historySeeder::class);
+        $this->call(cmn_companies_userSeeder::class);
     }
 }
