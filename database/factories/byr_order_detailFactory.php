@@ -17,7 +17,7 @@ $factory->define(Byr_order_detail::class, function (Faker $faker) {
         'list_number' => rand(1, 20),
         'delivery_service_code' => rand(1, 20),
         'status' => $faker->randomElement(['未確定', '確定済み', '未出荷', '出荷中', '出荷済み']),
-        'jan' => '49'.$faker->randomFloat(0, 4900000000000, 4999999999999),
+        'jan' => $faker->rand(4900000000000, 4999999999999),
         'item_name' => $faker->word,
         'item_name_kana' => $faker->word,
         'spac' => $faker->word,
