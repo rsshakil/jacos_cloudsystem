@@ -92,7 +92,7 @@ export default {
     formData.append("password", 'Qe75ymSr');
         axios({
     method: 'POST',
-    url: this.BASE_URL + "api/scenario_exec/1",
+    url: this.BASE_URL + "api/job_exec/1",
     data: formData,
     headers: {'Content-Type': 'multipart/form-data' }
     })

@@ -69,6 +69,7 @@ Route::post('/delete_canvas', 'API\Byr_orderController@deleteCanvasData');
 		// Route::post('/permission_check', 'API\PermissionController@check');
         
 Route::post('scenario_exec/{cmn_scenario_id}', 'API\Cmn_ScenarioController@exec');
+Route::post('job_exec/{cmn_scenario_id}', 'API\Cmn_jobController@exec');
 
 Route::post('/load_canvas_setting_data', 'API\Byr_orderController@canvasSettingData');
 Route::get('/company_user_list/{byr_buyer_id}', 'API\Jacos_managementController@company_user_list');
