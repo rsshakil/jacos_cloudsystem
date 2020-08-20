@@ -17,6 +17,7 @@ import cmn_company_user_list from './components/backend/cmn_company_user_list.vu
 import cmn_company_partner_list from './components/backend/cmn_company_partner_list.vue'
 import scenario_management from './components/backend/scenario_management.vue'
 import slr_management from './components/backend/slr_management.vue'
+import slr_job_list from './components/backend/slr_job_list.vue'
 
 // import login_body from './components/login/login_body.vue'
 
@@ -81,11 +82,26 @@ export const routes = [
       },
       {
         path: '/jacos_management/cmn_company_partner_list/:byr_buyer_id', 
-        component: cmn_company_partner_list,
+        component: default_parent,
         name: 'cmn_company_partner_list',
         meta: {
           breadcrumb: '取引先管理'  
-        }
+        },
+        children:[
+          {
+            path:'/',
+            component:cmn_company_partner_list,
+            name:'cmn_company_partner_list'
+          },
+          {
+            path: '/jacos_management/cmn_company_partner_list/:byr_buyer_id/slr_job_list/:slr_seller_id', 
+            component: slr_job_list,
+            name: 'slr_job_list',
+            meta: {
+              breadcrumb: 'job list'  
+            }
+          },
+        ]
       }
     ]
 

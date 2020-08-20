@@ -34,9 +34,10 @@ class Jacos_managementController extends Controller
 
     public function company_partner_list($byr_buyer_id){
       $result = DB::table('cmn_connects')
-        ->leftJoin('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
-        ->leftJoin('cmn_companies', 'byr_buyers.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
-        ->select('cmn_connects.byr_buyer_id','byr_buyers.super_code', 'cmn_companies.company_name', 'cmn_companies.jcode','cmn_connects.partner_code','cmn_connects.is_active')
+        ->join('slr_sellers', 'slr_sellers.slr_seller_id', '=', 'cmn_connects.slr_seller_id')
+        ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
+        ->join('cmn_companies', 'slr_sellers.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
+        ->select('cmn_connects.byr_buyer_id','byr_buyers.super_code', 'cmn_companies.company_name', 'cmn_companies.jcode','cmn_connects.partner_code','cmn_connects.is_active', 'slr_sellers.slr_seller_id')
         ->where('cmn_connects.byr_buyer_id',$byr_buyer_id)
         ->get();
         return response()->json(['partner_list'=>$result]); 
