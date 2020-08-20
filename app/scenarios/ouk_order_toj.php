@@ -125,10 +125,11 @@ class ouk_order_toj extends Model
             }
         }
         
-        $byr_order_id = Byr_order::insertGetId(['receive_file_path'=>$received_path]);
+        $byr_order_id = Byr_order::insertGetId(['receive_file_path'=>$received_path,'cmn_connect_id'=>$sc->cmn_connect_id]);
         $cnt = 0;
         if($insert_array_b){
             $insert_detail = array();
+            $total = 0;
             foreach($insert_array_b as $value){
                 $byr_shop_id = $this->get_shop_id_by_shop_code($value['shop_code'],$value['shop_name_kana'],$sc);
                 foreach($value['item_data'] as $item){
@@ -152,9 +153,11 @@ class ouk_order_toj extends Model
                     $insert_detail['cost_unit_price']=$item['cost_unit_price'];
                     Byr_order_detail::insert($insert_detail);
                     $temp[]= $insert_detail;
+                    $total++;
                 }
                 
             }
+            Byr_order::where('byr_order_id',$byr_order_id)->update(['data_count'=>$total]);
         }
         echo '<pre>';
         print_r($temp);
