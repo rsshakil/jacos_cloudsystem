@@ -85,4 +85,11 @@ class Jacos_managementController extends Controller
     {
         //
     }
+
+    public function slr_management(){
+        $result = DB::table('slr_sellers')
+        ->join('cmn_companies', 'slr_sellers.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
+        ->get();
+        return response()->json(['slr_list'=>$result]);
+    }
 }

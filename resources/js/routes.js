@@ -16,6 +16,7 @@ import jacos_management_edit from './components/backend/jacos_management_edit.vu
 import cmn_company_user_list from './components/backend/cmn_company_user_list.vue'
 import cmn_company_partner_list from './components/backend/cmn_company_partner_list.vue'
 import scenario_management from './components/backend/scenario_management.vue'
+import slr_management from './components/backend/slr_management.vue'
 
 // import login_body from './components/login/login_body.vue'
 
@@ -99,5 +100,15 @@ export const routes = [
     ]
 
   },
+  { path: '/slr_management', name: 'slr_management', component: default_parent,meta:{breadcrumb: '問屋管理'},
+  children:[
+    {
+      path:'/',
+      component:slr_management,
+      name:'slr_management'
+    },
+  ]
+
+},
     // { path: '/login', name: 'login', component: login_body },
 ];

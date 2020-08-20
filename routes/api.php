@@ -75,3 +75,4 @@ Route::post('/load_canvas_setting_data', 'API\Byr_orderController@canvasSettingD
 Route::get('/company_user_list/{byr_buyer_id}', 'API\Jacos_managementController@company_user_list');
 Route::get('/company_partner_list/{byr_buyer_id}', 'API\Jacos_managementController@company_partner_list');
 Route::get('/get_scenario_list', 'API\Cmn_ScenarioController@get_scenario_list');
+Route::get('/slr_management', 'API\Jacos_managementController@slr_management');
