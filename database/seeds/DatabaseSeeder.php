@@ -17,11 +17,14 @@ class DatabaseSeeder extends Seeder
         $this->call(roleHasPermissionsTableDataSeeder::class);
         $this->call(modelHasrolesTableDataSeeder::class);
         // JCS Seeders  
+        $this->call(cmn_companySeeder::class);
         $this->call(Byr_shipment_detailSeeder::class);
         $this->call(lv3_jobSeeder::class);
         $this->call(lv3_trigger_file_pathSeeder::class);
         $this->call(lv3_trigger_scheduleSeeder::class);
         $this->call(lv3_historySeeder::class);
         $this->call(cmn_companies_userSeeder::class);
+        $this->call(cmn_scenarioSeeder::class);
+        $this->call(cmn_jobSeeder::class);
     }
 }

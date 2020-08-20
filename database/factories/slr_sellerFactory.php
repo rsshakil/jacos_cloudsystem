@@ -7,7 +7,7 @@ use Faker\Generator as Faker;
 
 $factory->define(slr_seller::class, function (Faker $faker) {
     return [
-        'cmn_company_id' => factory(App\cmn_company::class),
-        'adm_role_id' => factory(Spatie\Permission\Models\Role::class),
+        'cmn_company_id' => App\cmn_company::all()->random()->cmn_company_id,
+        'adm_role_id' => Spatie\Permission\Models\Role::all()->random()->id,
     ];
 });

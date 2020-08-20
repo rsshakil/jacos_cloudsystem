@@ -8,7 +8,7 @@ use Faker\Generator as Faker;
 $factory->define(lv3_service::class, function (Faker $faker) {
     return [
         'cmn_connect_id' => factory(App\cmn_connect::class),
-        'adm_role_id' => factory(Spatie\Permission\Models\Role::class),
+        'adm_role_id' => Spatie\Permission\Models\Role::all()->random()->id,
         'service_name' =>  $faker->word,
     ];
 });
