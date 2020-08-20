@@ -91,6 +91,11 @@
             <b-icon icon="card-checklist" font-scale="1.2"></b-icon> シナリオ管理
           </router-link>
         </li>
+        <li class="nav-item">
+          <router-link to="/slr_management" class="nav-link">
+            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> 問屋管理
+          </router-link>
+        </li>
         <!-- <li class="nav-item">
           <router-link to="/shipment_list" class="nav-link">
             <i class="material-icons">local_taxi</i>
