@@ -12,6 +12,7 @@ use App\Byr_shipment_detail;
 use App\byr_shop;
 use App\cmn_pdf_canvas;
 use App\cmn_tbl_col_setting;
+use App\cmn_scenario;
 use DB;
 
 class Byr_orderController extends Controller
@@ -96,7 +97,38 @@ class Byr_orderController extends Controller
     {
         //
     }
-    public function canvasAllData(Request $request){
+    public function canvasAllData(Request $request, $cmn_scenario_id){
+        $sc=cmn_scenario::where('cmn_scenario_id',$cmn_scenario_id)->first();
+        // return app_path().'/'.$sc->file_path.'.php';
+        // scenario call
+        if (!file_exists(app_path().'/'.$sc->file_path.'.php')) {
+            \Log::error('Scenario file is not exist!:'.$sc->file_path);
+            return ['status'=>'1','message'=>'Scenario file is not exist!'.$sc->file_path];
+        }
+        // ファイル読み込み
+        
+        // $sc_obj = new ouk_order_toj();//$sc->file_path;
+        $customClassPath = "\\App\\";
+        $nw_f_pth = explode('/',$sc->file_path);
+        foreach($nw_f_pth as $p){
+            $customClassPath .= $p.'\\';
+        }
+        $customClassPath = rtrim($customClassPath,"\\");
+        $sc_obj = new $customClassPath;
+        if (!method_exists($sc_obj, 'exec')) {
+            \Log::error('scenario exec error');
+            return ['status'=>'1','message'=>'Scenario exec function is not exist!'];
+        }
+        $ret = $sc_obj->exec($request,$sc);
+        // if ($ret !== 0) {
+        //     // error
+        //     \Log::debug('scenario exec error');
+        // } else {
+        //     // success
+        //     \Log::debug('scenario exec success');
+        // }
+        // return $ret;
+
         $byr_order_id=$request->byr_order_id;
         $canvas_data=byr_order::select('cmn_pdf_canvas.*','byr_orders.byr_order_id')
         ->join('cmn_connects','cmn_connects.cmn_connect_id','=','byr_orders.cmn_connect_id')
@@ -105,18 +137,18 @@ class Byr_orderController extends Controller
         ->get();
         // $canvas_data=cmn_pdf_canvas::get();
 
-        $can_info_query=Byr_order_detail::select('byr_order_details.item_name','byr_order_details.jan','byr_order_details.color','byr_order_details.voucher_number')
-        ->join('byr_orders','byr_order_details.byr_order_id','=','byr_orders.byr_order_id')
-        ->where('byr_orders.byr_order_id',$byr_order_id)
-        ->get();
-        $collection = collect($can_info_query);
-        $grouped = $collection->groupBy('voucher_number');
-        $can_info=$grouped->toArray();
-        $can_info_array=array();
-        foreach ($can_info as $key => $value) {
-            $can_info_array[]=$value;
-        }
-        return response()->json(['canvas_data'=>$canvas_data,'can_info'=>$can_info_array]);
+        // $can_info_query=Byr_order_detail::select('byr_order_details.item_name','byr_order_details.jan','byr_order_details.color','byr_order_details.voucher_number')
+        // ->join('byr_orders','byr_order_details.byr_order_id','=','byr_orders.byr_order_id')
+        // ->where('byr_orders.byr_order_id',$byr_order_id)
+        // ->get();
+        // $collection = collect($can_info_query);
+        // $grouped = $collection->groupBy('voucher_number');
+        // $can_info=$grouped->toArray();
+        // $can_info_array=array();
+        // foreach ($can_info as $key => $value) {
+        //     $can_info_array[]=$value;
+        // }
+        return response()->json(['canvas_data'=>$canvas_data,'can_info'=>$ret]);
     }
     public function canvasSettingData(){
         $all_buyer=byr_buyer::select('byr_buyers.byr_buyer_id','cmn_companies.company_name')
