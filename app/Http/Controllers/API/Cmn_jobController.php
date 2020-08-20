@@ -107,4 +107,12 @@ class Cmn_jobController extends Controller
         \Log::debug('scenario exec end  ---------------');
         return;
     }
+
+    public function slr_job_list_by_seller_id($slr_seller_id){
+        $sc = cmn_job::select('cmn_jobs.*','cmn_scenarios.*')
+        ->join('cmn_scenarios', 'cmn_jobs.cmn_scenario_id', '=', 'cmn_scenarios.cmn_scenario_id')
+        ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'cmn_jobs.cmn_connect_id')
+        ->where('cmn_connects.slr_seller_id', $slr_seller_id)->get();
+        return response()->json(['slr_job_list'=>$sc]);
+    }
 }

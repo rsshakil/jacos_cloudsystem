@@ -32,7 +32,7 @@
                                 
                             </thead>
                             <tbody>
-                                <tr v-for="(value,index) in company_partner_lists" :key="value.id">
+                                <tr v-for="(value,index) in company_partner_lists" :key="value.slr_seller_id">
                                     <td>{{index+1}}</td>   
                                     <td>{{value.company_name}}</td>
                                     <td>{{value.jcode}}</td>
@@ -41,7 +41,7 @@
                                       <option :value="1">稼働中</option>
                                       <option :value="0">稼働</option>
                                     </select></td>
-                                    <td><button class="btn btn-info">詳細</button></td>
+                                    <td><router-link :to="{name:'slr_job_list',params:{slr_seller_id:value.slr_seller_id} }" class="btn btn-info">詳細</router-link></td>
                                     
                                 </tr>
                                 
