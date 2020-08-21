@@ -57,7 +57,7 @@ export const routes = [
       ]
 },
     { path: '/voucher_setting', name: 'voucher_setting', component: voucher_setting },
-    { path: '/jacos_management', name: 'jacos_management', component: default_parent,meta:{breadcrumb: '小売管理'},
+    { path: '/jacos_management', component: default_parent,meta:{breadcrumb: '小売管理'},
     children:[
       {
         path:'/',
@@ -83,7 +83,6 @@ export const routes = [
       {
         path: '/jacos_management/cmn_company_partner_list/:byr_buyer_id', 
         component: default_parent,
-        name: 'cmn_company_partner_list',
         meta: {
           breadcrumb: '取引先管理'  
         },
@@ -106,7 +105,7 @@ export const routes = [
     ]
 
   },
-  { path: '/scenario_management', name: 'scenario_management', component: default_parent,meta:{breadcrumb: 'シナリオ管理'},
+  { path: '/scenario_management', component: default_parent,meta:{breadcrumb: 'シナリオ管理'},
     children:[
       {
         path:'/',
@@ -116,7 +115,7 @@ export const routes = [
     ]
 
   },
-  { path: '/slr_management', name: 'slr_management', component: default_parent,meta:{breadcrumb: '問屋管理'},
+  { path: '/slr_management', component: default_parent,meta:{breadcrumb: '問屋管理'},
   children:[
     {
       path:'/',
