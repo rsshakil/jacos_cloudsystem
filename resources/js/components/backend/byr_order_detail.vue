@@ -106,24 +106,7 @@
                     <option value="1000">1000</option>
                   </select>
 
-                  <div
-                    class="input-group mb-1"
-                    style="margin-left: 10px;max-width: 250px; float: left;"
-                  >
-                    <div class="input-group-prepend">
-                      <button class="btn btn-outline-primary" type="button">小売選択</button>
-                    </div>
-                    <select class="form-control" name>
-                      <option value>スパお洗濯</option>
-                      <option value="1">スーパーAAA</option>
-                      <option value="1">スーパーBBB</option>
-                      <option value="1">スーパーCCC</option>
-                      <option value="1">スーパーDDD</option>
-                    </select>
-                  </div>
-                  <!-- <div class="active-pink-3 active-pink-4 mb-1" style="margin-left: 10px;max-width: 100%; float: left;">
-                                            <input class="form-control" type="text" placeholder="Search" aria-label="Search">
-                  </div>-->
+                  
                 </th>
               </tr>
               <tr>
@@ -132,12 +115,12 @@
                   data-sorting_type="asc"
                   data-column_name="id"
                   style="cursor: pointer"
-                  rowspan="2"
+                  
                 >
                   No
                   <span id="id_icon"></span>
                 </th>
-                <th rowspan="2">
+                <th>
                   <input type="checkbox" class="form-control check_all" />
                 </th>
                 <th
@@ -145,7 +128,7 @@
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer"
-                  rowspan="2"
+                 
                   v-if="show_hide_col_list.includes('item_name')"
                 >
                   商品名
@@ -156,7 +139,7 @@
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer"
-                  rowspan="2"
+                 
                   v-if="show_hide_col_list.includes('order_type')"
                 >
                   注文タイプ
@@ -167,7 +150,7 @@
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer"
-                  rowspan="2"
+                 
                   v-if="show_hide_col_list.includes('category_code')"
                 >
                   分類コード
@@ -178,7 +161,7 @@
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer"
-                  rowspan="2"
+                  
                   v-if="show_hide_col_list.includes('voucher_category')"
                 >
                   伝票区分
@@ -189,7 +172,7 @@
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer"
-                  rowspan="2"
+                  
                   v-if="show_hide_col_list.includes('voucher_number')"
                 >
                   伝票番号
@@ -200,7 +183,7 @@
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer"
-                  rowspan="2"
+                  
                   v-if="show_hide_col_list.includes('list_number')"
                 >
                   明細番号
@@ -211,7 +194,7 @@
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer"
-                  rowspan="2"
+                 
                   v-if="show_hide_col_list.includes('delivery_service_code')"
                 >
                   便番号
@@ -222,7 +205,7 @@
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer"
-                  rowspan="2"
+                 
                   v-if="show_hide_col_list.includes('jan')"
                 >
                   JAN
@@ -233,7 +216,7 @@
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer"
-                  rowspan="2"
+                  
                   v-if="show_hide_col_list.includes('spec')"
                 >
                   規格
@@ -244,7 +227,7 @@
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer"
-                  rowspan="2"
+                 
                   v-if="show_hide_col_list.includes('spec_kana')"
                 >
                   規格かな
@@ -255,7 +238,7 @@
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer"
-                  rowspan="2"
+                  
                   v-if="show_hide_col_list.includes('inputs')"
                 >
                   入数
@@ -266,7 +249,7 @@
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer"
-                  rowspan="2"
+                 
                   v-if="show_hide_col_list.includes('size')"
                 >
                   サイズ
@@ -277,7 +260,7 @@
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer"
-                  rowspan="2"
+                  
                   v-if="show_hide_col_list.includes('color')"
                 >
                   カラー
@@ -288,7 +271,7 @@
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer"
-                  rowspan="2"
+                  
                   v-if="show_hide_col_list.includes('order_inputs')"
                 >
                   発注単位
@@ -299,7 +282,7 @@
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer"
-                  rowspan="2"
+                 
                   v-if="show_hide_col_list.includes('order_date')"
                 >
                   発注日時
@@ -310,7 +293,7 @@
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer"
-                  rowspan="2"
+                  
                   v-if="show_hide_col_list.includes('expected_delivery_date')"
                 >
                   納品予定日
@@ -321,7 +304,7 @@
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer"
-                  rowspan="2"
+                  
                   v-if="show_hide_col_list.includes('sale_category')"
                 >
                   特売区分
@@ -332,7 +315,7 @@
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer"
-                  rowspan="2"
+                 
                   v-if="show_hide_col_list.includes('cost_unit_price')"
                 >
                   原単価
@@ -343,7 +326,7 @@
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer"
-                  rowspan="2"
+                 
                   v-if="show_hide_col_list.includes('cost_price')"
                 >
                   原価金額
@@ -354,7 +337,7 @@
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer"
-                  rowspan="2"
+                 
                   v-if="show_hide_col_list.includes('selling_unit_price')"
                 >
                   売単価
@@ -365,7 +348,7 @@
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer"
-                  rowspan="2"
+                  
                   v-if="show_hide_col_list.includes('selling_price')"
                 >
                   売価金額
@@ -376,7 +359,7 @@
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer"
-                  rowspan="2"
+                  
                   v-if="show_hide_col_list.includes('other_info')"
                 >
                   メモ
@@ -387,22 +370,30 @@
                   data-sorting_type="asc"
                   data-column_name="email"
                   style="cursor: pointer"
+                  
                 >
-                  確定合計
+                  店舗名(ｶﾅ)
                   <span id="total_icon"></span>
                 </th>
                 <th
-                  v-for="byr_shop in byr_shops"
-                  :key="byr_shop.byr_shop_id"
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="email"
                   style="cursor: pointer"
-                  rowspan="2"
+                  
                 >
-                  <span v-if="byr_shop.shop_name==''">{{byr_shop.shop_name_kana}}</span>
-                  <span v-else>{{byr_shop.shop_name}}</span>
-                  <span id="email_icon"></span>
+                  発注数量
+                  <span id="total_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="email"
+                  style="cursor: pointer"
+                  
+                >
+                  納品数量
+                  <span id="total_icon"></span>
                 </th>
 
                 <th
@@ -410,7 +401,7 @@
                   data-sorting_type="asc"
                   data-column_name="email"
                   style="cursor: pointer"
-                  rowspan="2"
+                 
                 >
                   ステータス
                   <span id="email_icon"></span>
@@ -420,7 +411,7 @@
                   data-sorting_type="asc"
                   data-column_name="email"
                   style="cursor: pointer"
-                  rowspan="2"
+                  
                 >
                   数量確定
                   <span id="email_icon"></span>
@@ -430,7 +421,7 @@
                   data-sorting_type="asc"
                   data-column_name="email"
                   style="cursor: pointer"
-                  rowspan="2"
+                  
                 >
                   欠品理由
                   <span id="email_icon"></span>
@@ -440,14 +431,11 @@
                   data-sorting_type="asc"
                   data-column_name="email"
                   style="cursor: pointer"
-                  rowspan="2"
+                 
                 >
                   発注データ修正
                   <span id="email_icon"></span>
                 </th>
-              </tr>
-              <tr>
-                <th>発注合計</th>
               </tr>
             </thead>
             <tbody>
@@ -513,28 +501,20 @@
                 <td
                   v-if="show_hide_col_list.includes('other_info')"
                 >{{order_detail_list.other_info}}</td>
+                <td>{{order_detail_list.shop_name_kana}}</td>
+                <td>{{order_detail_list.order_quantity}}</td>
                 <td>
                   <input
                     type="text"
                     class="form_input"
-                    v-model="order_detail_list.confirm_quantity"
-                    readonly
-                  />
-                  {{order_detail_list.order_quantity}}
+                    v-model="order_detail_list.confirm_quantity"/>
                 </td>
-                <td v-for="byr_shop in byr_shops" :key="byr_shop.byr_shop_id">
-                  <input
-                    type="text"
-                    class="form_input"
-                    v-model="order_detail_list.confirm_quantity"
-                  />
-                  {{order_detail_list.order_quantity}}
-                </td>
+                
                 <td v-if="show_hide_col_list.includes('status')">{{order_detail_list.status}}</td>
                 <td>
-                  <button class="btn btn-primary">確定</button>
+                  <button @click="update_shipment_detail(order_detail_list)" class="btn btn-primary">確定</button>
                 </td>
-                <td></td>
+                <td>{{order_detail_list.lack_reason}}</td>
                 <td>
                   <button
                     @click="edit_order_detail(order_detail_list)"
@@ -669,7 +649,6 @@ export default {
   data() {
     return {
       order_detail_lists: {},
-      byr_shops: {},
       order_date: "",
       order_detail_list: [],
       show_hide_col_list: [],
@@ -681,6 +660,23 @@ export default {
     };
   },
   methods: {
+    update_shipment_detail(order_detail){
+      console.log(order_detail);
+      axios({
+    method: 'POST',
+    url: this.BASE_URL + "api/update_shipment_detail",
+    data: order_detail
+    })
+    .then(function (response) {
+        //handle success
+        console.log(response);
+       Fire.$emit('LoadByrorderDetail');
+    })
+    .catch(function (response) {
+        //handle error
+        console.log(response);
+    });
+    },
     //get Table data
     get_all_byr_order_detail() {
       axios
@@ -688,7 +684,6 @@ export default {
         .then(data => {
           console.log(data.data.order_list_detail);
           this.order_detail_lists = data.data.order_list_detail;
-          this.byr_shops = data.data.byr_shops;
           this.show_hide_col_list = data.data.slected_list;
           this.order_date = data.data.order_list_detail[0].order_date;
           this.expected_delivery_date =

@@ -52,15 +52,10 @@ class Byr_orderController extends Controller
     {
 
         $result = DB::table('byr_order_details')
-            ->select('byr_order_details.*', 'byr_shipment_details.confirm_quantity')
+            ->select('byr_order_details.*', 'byr_shipment_details.confirm_quantity', 'byr_shipment_details.lack_reason','byr_shops.shop_name_kana')
             ->leftJoin('byr_shipment_details', 'byr_shipment_details.byr_order_detail_id', '=', 'byr_order_details.byr_order_detail_id')
+            ->leftJoin('byr_shops', 'byr_shops.byr_shop_id', '=', 'byr_order_details.byr_shop_id')
             ->where('byr_order_details.byr_order_id', $byr_order_id)
-            ->get();
-        $byr_shops = DB::table('byr_shops')
-            ->select('byr_shops.shop_name', 'byr_shops.shop_name_kana', 'byr_order_details.byr_shop_id')
-            ->join('byr_order_details', 'byr_order_details.byr_shop_id', '=', 'byr_shops.byr_shop_id')
-            ->where('byr_order_details.byr_order_id', $byr_order_id)
-            ->groupBy('byr_order_details.byr_shop_id')
             ->get();
         /*coll setting*/
         $slected_list = array();
@@ -72,7 +67,7 @@ class Byr_orderController extends Controller
                 }
             }
         /*coll setting*/
-        return response()->json(['order_list_detail' => $result, 'byr_shops' => $byr_shops,'slected_list'=>$slected_list]);
+        return response()->json(['order_list_detail' => $result,'slected_list'=>$slected_list]);
     }
 
     /**
@@ -87,6 +82,10 @@ class Byr_orderController extends Controller
         //
     }
 
+    public function update_shipment_detail(Request $request){
+        Byr_shipment_detail::where('byr_order_detail_id',$request->byr_order_detail_id)->update(['confirm_quantity'=>$request->confirm_quantity]);
+        return response()->json(['success' => '1']);
+    }
     /**
      * Remove the specified resource from storage.
      *

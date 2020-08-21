@@ -5,6 +5,8 @@ namespace App\Scenarios;
 use Illuminate\Database\Eloquent\Model;
 use App\Byr_order_detail;
 use App\Byr_order;
+use App\Byr_shipment_detail;
+use App\Byr_shipment;
 use App\byr_shop;
 
 class ouk_order_toj extends Model
@@ -126,6 +128,7 @@ class ouk_order_toj extends Model
         }
         
         $byr_order_id = Byr_order::insertGetId(['receive_file_path'=>$received_path,'cmn_connect_id'=>$sc->cmn_connect_id]);
+        $byr_shipment_id = Byr_shipment::insertGetId(['send_file_path'=>$received_path,'cmn_connect_id'=>$sc->cmn_connect_id]);
         $cnt = 0;
         if($insert_array_b){
             $insert_detail = array();
@@ -133,6 +136,7 @@ class ouk_order_toj extends Model
             foreach($insert_array_b as $value){
                 $byr_shop_id = $this->get_shop_id_by_shop_code($value['shop_code'],$value['shop_name_kana'],$sc);
                 foreach($value['item_data'] as $item){
+                    $order_quantity = $item['order_quantity'];
                     $insert_detail['byr_order_id']=$byr_order_id;
                     $insert_detail['byr_shop_id']=$byr_shop_id;
                     $insert_detail['voucher_number']=$value['voucher_number'];
@@ -145,13 +149,14 @@ class ouk_order_toj extends Model
                     $insert_detail['jan']=$item['jan'];
                     $insert_detail['inputs']=$item['inputs'];
                     $insert_detail['order_inputs']=$item['order_inputs'];
-                    $insert_detail['order_quantity']=$item['order_quantity'];
+                    $insert_detail['order_quantity']=$order_quantity;
                     $insert_detail['item_name_kana']=$item['item_name_kana'];
                     $insert_detail['cost_price']=$item['cost_price'];
                     $insert_detail['selling_price']=$item['selling_price'];
                     $insert_detail['selling_unit_price']=$item['selling_unit_price'];
                     $insert_detail['cost_unit_price']=$item['cost_unit_price'];
-                    Byr_order_detail::insert($insert_detail);
+                    $byr_order_detail_id = Byr_order_detail::insertGetId($insert_detail);
+                    Byr_shipment_detail::insert(['byr_order_detail_id'=>$byr_order_detail_id,'byr_shipment_id'=>$byr_shipment_id,'order_quantity'=>$order_quantity]);
                     $temp[]= $insert_detail;
                     $total++;
                 }

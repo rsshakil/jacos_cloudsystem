@@ -19,10 +19,9 @@
                                             <div class="input-group-prepend">
                                                 <button class="btn btn-outline-primary" type="button">小売選択</button>
                                             </div>
-                                            <select class="form-control" name="">
-                                              <option value="">スパお洗濯</option>
+                                            <select class="form-control" v-model="selected_byr">
                                               <option v-for="(option, index) in byr_buyer_lists" 
-                    :key="index" :value="option.byr_buyer_id"
+                    :key="index" :value="option.super_code"
                     :selected="selectedOption(option)">
                     {{ option.super_code }}
             </option>
@@ -75,6 +74,7 @@ export default {
         'order_lists':{},
         'byr_buyer_lists':{},
         'file':'',
+        'selected_byr':'OUK',
     };
   },
   methods: {
