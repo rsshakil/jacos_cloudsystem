@@ -159,7 +159,7 @@ class Byr_orderController extends Controller
         $canvas_info = cmn_pdf_canvas::select('cmn_pdf_canvas.*','cmn_companies.company_name')
         ->join('byr_buyers','byr_buyers.byr_buyer_id','=','cmn_pdf_canvas.byr_buyer_id')
         ->join('cmn_companies','cmn_companies.cmn_company_id','=','byr_buyers.cmn_company_id')
-        ->orderBy('cmn_pdf_canvas.created_at','DESC')->get();
+        ->orderBy('cmn_pdf_canvas.updated_at','DESC')->get();
         $canvas_array=array();
         if (!empty($canvas_info)) {
             foreach ($canvas_info as $key => $canvas) {

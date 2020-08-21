@@ -125,6 +125,7 @@ export default {
           byr_order_id: this.byr_order_id,
         })
         .then(({ data }) => {
+          // console.log(data);
           if (data.canvas_data.length>0) {
             this.allName=data.canvas_data
             this.canvasSelectedName=this.allName[0]
@@ -178,7 +179,13 @@ export default {
                 item=canvasAllDataArray[split_element[1]][split_element[0]];
             }else{
                 if(!(Array.isArray(split_element))){
-                  item=split_element;
+                  if (split_element=="total_order_qty") {
+                    // console.log(canvasAllDataArray[0]['total_order_qty']);
+                    item=canvasAllDataArray[0]['total_order_qty']
+                  }else{
+                    item=split_element;
+                  }
+                  // console.log(item);
                 }
               }
             this.createObj(element.left,element.top,element.width,element.height,item.toString(),'auto')
@@ -198,10 +205,26 @@ export default {
         }
     },
     splitString(givenString){
-       var result = givenString.split(',');
-       if (result.length==1) {
-         result=result[0]
-       }
+      var first_part=givenString.substring(0, 5);
+      var main_part=givenString.slice(5,-2);
+      var last_part=givenString.slice(-1);
+      var result=[];
+      if (first_part=="[db]_") {
+        result.push(main_part)
+        result.push(last_part)
+      }else{
+        result=givenString
+      }
+      // console.log(first_part)
+      // console.log(main_part)
+      // console.log(last_part)
+      // console.log(result)
+      // // [db]_item_name_0
+      //  var result = givenString.split(',');
+      //  if (result.length==1) {
+      //    result=result[0]
+      //  }
+      //  console.log(result)
       //  if (result.length==1) {
       //     result[0]=result[0];
       //     result[1]=0;
