@@ -191,7 +191,7 @@ export default {
                   // console.log(item);
                 }
               }
-            this.createObj(element.left,element.top,element.width,element.height,element.fontSize,element.lineHeight,element.scaleX,element.scaleY,item.toString(),'auto')
+            this.createObj(element.left,element.top,element.width,element.height,element.fontSize,element.textAlign,element.lineHeight,element.scaleX,element.scaleY,item.toString(),'auto')
           });
         }
         this.emptyObjRemove();
@@ -334,9 +334,7 @@ export default {
         thisVar.backgroundImageSet(imgSrc);
       }, 510);
     },
-    
-    createObj(left=100,top=50,width=150,height=22,fontSize=20,lineHeight=1.16,scaleX=1,scaleY=1,text="Created by default",createdBy='auto') {
-      
+    createObj(left=100,top=50,width=150,height=22,fontSize=20,textAlign="left",lineHeight=1.16,scaleX=1,scaleY=1,text="Created by default",createdBy='auto') {
       var activeObject = this.canvas.getActiveObject();
       var text_data = [
         {
@@ -379,7 +377,7 @@ export default {
           underline: 0, //False
           overline: 0, //False
           linethrough: 0, //False
-          textAlign: "left",
+          textAlign:textAlign,
           textBackgroundColor: "",
           charSpacing: 0,
           minWidth: 20,
@@ -452,7 +450,7 @@ export default {
       // console.log(option);
       this.pointerX = option.pointer.x;
       this.pointerY = option.pointer.y;
-      this.createObj(this.pointerX-50,this.pointerY,150,22,20,1.16,1,1,"Created by Click",'clicked');
+      this.createObj(this.pointerX-50,this.pointerY,150,22,20,"left",1.16,1,1,"Created by Click",'clicked');
     },
     getCanvasBgImage() {
       var can_image = this.canvas.toDataURL({

@@ -10,7 +10,7 @@
                 <b-button variant="warning" @click="clearCanvasObjects">Clear canvas</b-button>
                 <br>
                 <br>
-                <div class="row" style="margin-left: 1px;">
+                <div class="row">
                   <div class="col-4">
                     <multiselect v-model="selected_buyer" :options="all_buyer" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Select buyers" label="company_name" track-by="byr_buyer_id"></multiselect>
                   </div>
@@ -21,6 +21,15 @@
                     <b-button variant="info" style="margin-left: 5px;" @click="saveData">{{submit_button}}</b-button>
                   </div>
                 </div>
+                <div class="row" v-if="obj_setting!=0">
+                  <div class="col-1" style="padding-right:0px;">
+                    <multiselect v-model="selectedJustifier" :options="allJustifier" :searchable="true" :close-on-select="true" :show-labels="false" label="icon" track-by="name" @select="changeJustifier($event)"></multiselect>
+                  </div>
+                  <div class="col-1" style="padding:0px;">
+                    <multiselect v-model="selectedFontSize" :options="allFontSize" :searchable="true" :close-on-select="true" :show-labels="false" @select="changeFontSize($event)"></multiselect>
+                  </div>
+                </div>
+                <div class="row" style="height:40px;" v-else></div>
                 <br>
                     <canvas id="c" style="border:1px solid #000000;">Your browser does not support the canvas element.</canvas>
                 </div>
@@ -69,6 +78,11 @@
 export default {
 data(){
   return {
+    allJustifier:[{name:"left",icon:"Left"},{name:"center",icon:"Center"},{name:"right",icon:"Right"}],
+    selectedJustifier:{},
+    allFontSize:[],
+    selectedFontSize:[],
+    obj_setting:0,
     all_buyer:[],
     selected_buyer:[],
     canvasAllData:[],
@@ -189,6 +203,7 @@ methods:{
             this.canvas_id=null;
             this.submit_button='Save'
             this.update_image_info=null
+            this.obj_setting=0;
             this.selected_buyer=[]
             this.bg_image_path=this.BASE_URL + 'public/backend/images/canvas/Background/bg_image.jpg'
             this.backgroundImageSet(this.bg_image_path);
@@ -375,6 +390,8 @@ methods:{
             this.pointerX=option.pointer.x
             this.pointerY=option.pointer.y
             this.createReactObj();
+            this.obj_setting=1;
+            this.getActiveObjectAttr();
           },
           getCanvasBgImage() {
               var can_image = this.canvas.toDataURL({
@@ -408,6 +425,53 @@ methods:{
           mainCanvas.setWidth(img.naturalWidth);
           mainCanvas.setHeight(img.naturalHeight);
         };
+      },
+      mouseUp(e){
+        this.getActiveObjectAttr();
+      },
+      getActiveObjectAttr(){
+        var canvas=this.canvas
+        var _this=this;
+        var activeObjects = canvas.getActiveObjects();
+        if (activeObjects.length>0) {
+          this.obj_setting=1;
+          activeObjects.forEach(function(object) {
+            var icon;
+            if (object.textAlign=="left") {
+              icon="Left"
+            }else if(object.textAlign=="center"){
+              icon="Center"
+            }else if(object.textAlign=="right"){
+              icon="Right"
+            }
+            _this.selectedJustifier={name:object.textAlign,icon:icon}
+            _this.selectedFontSize=[object.fontSize]
+                    // canvas.renderAll();
+                });
+        }else{
+          this.obj_setting=0;
+          // console.log("No")
+        }
+      },
+      changeJustifier($event){
+        var canvas=this.canvas;
+        var activeObjects = canvas.getActiveObjects();
+        if (activeObjects.length) {
+                activeObjects.forEach(function(object) {
+                  object.textAlign=$event.name;
+                  canvas.renderAll();
+                });
+            }
+      },
+      changeFontSize($event){
+        var canvas=this.canvas;
+        var activeObjects = canvas.getActiveObjects();
+        if (activeObjects.length) {
+                activeObjects.forEach(function(object) {
+                  object.fontSize=$event;
+                  canvas.renderAll();
+                });
+            }
       },
       addText(text_data) {
           for (let i = 0; i < text_data.length; i++) {
@@ -477,8 +541,14 @@ methods:{
           // initAligningGuidelines(this.canvas);
           // initCenteringGuidelines(this.canvas);
           this.loadCanvasData();
+          for (let i = 1; i <= 100; i++) {
+            this.allFontSize.push(i);
+          }
           this.canvas.on('mouse:dblclick', (e) => {
             this.doubleClick(e)
+          })
+          this.canvas.on('mouse:up', (e) => {
+            this.mouseUp(e)
           })
           // console.log(this.canvas);
           // onKeyDownHandler(event)
