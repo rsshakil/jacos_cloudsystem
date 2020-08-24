@@ -223,8 +223,10 @@ class Byr_orderController extends Controller
                 @unlink($file_path .'Canvas_screenshoot/'. $canvas_image_info['canvas_image']);
             }
             if (!empty($update_image_info)) {
-                if (file_exists($file_path.'Background/' . $canvas_image_info['canvas_bg_image'])) {
-                    @unlink($file_path.'Background/' . $canvas_image_info['canvas_bg_image']);
+                if ($canvas_image_info['canvas_bg_image']!="bg_image.jpg") {
+                    if (file_exists($file_path.'Background/' . $canvas_image_info['canvas_bg_image'])) {
+                        @unlink($file_path.'Background/' . $canvas_image_info['canvas_bg_image']);
+                    }
                 }
             }
             cmn_pdf_canvas::where('cmn_pdf_canvas_id', $canvas_id)->update($canvas_array);

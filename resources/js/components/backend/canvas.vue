@@ -280,6 +280,8 @@ methods:{
             //   canObj.db_flg=1
             //   objPosArray.push(canObj)
             // });
+            // console.log(canData['objects']);
+            // return 0;
             if (!canData['objects'].length) {
                 alert("No canvas drown");
                 return false;

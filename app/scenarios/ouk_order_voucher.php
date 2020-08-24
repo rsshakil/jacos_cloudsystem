@@ -21,19 +21,23 @@ class ouk_order_voucher extends Model
         $collection = collect($can_info_query);
         $grouped = $collection->groupBy('voucher_number');
         $can_info=$grouped->toArray();
+
         $can_info_array=array();
         $total_order_qty=0;
-
+        $total_selling_price=0;
         foreach ($can_info as $key => $single_info) {
             foreach ($single_info as $key1 => $sum_val_array) {
                 $total_order_qty+=$sum_val_array['order_quantity'];
+                $total_selling_price+=$sum_val_array['selling_price'];
             }
             foreach ($single_info as $key2 => $nested_value) {
                 $nested_value['total_order_qty']=$total_order_qty;
+                $nested_value['total_selling_price']=$total_selling_price;
                 $single_info[$key2]=$nested_value;
             }
             $can_info_array[]=$single_info;
             $total_order_qty=0;
+            $total_selling_price=0;
         }
         return $can_info_array;
     }

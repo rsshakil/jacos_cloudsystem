@@ -180,15 +180,16 @@ export default {
             }else{
                 if(!(Array.isArray(split_element))){
                   if (split_element=="total_order_qty") {
-                    // console.log(canvasAllDataArray[0]['total_order_qty']);
                     item=canvasAllDataArray[0]['total_order_qty']
+                  }else if(split_element=="total_selling_price"){
+                    item=canvasAllDataArray[0]['total_selling_price']
                   }else{
                     item=split_element;
                   }
                   // console.log(item);
                 }
               }
-            this.createObj(element.left,element.top,element.width,element.height,item.toString(),'auto')
+            this.createObj(element.left,element.top,element.width,element.height,element.fontSize,element.lineHeight,element.scaleX,element.scaleY,item.toString(),'auto')
           });
         }
         this.emptyObjRemove();
@@ -215,20 +216,6 @@ export default {
       }else{
         result=givenString
       }
-      // console.log(first_part)
-      // console.log(main_part)
-      // console.log(last_part)
-      // console.log(result)
-      // // [db]_item_name_0
-      //  var result = givenString.split(',');
-      //  if (result.length==1) {
-      //    result=result[0]
-      //  }
-      //  console.log(result)
-      //  if (result.length==1) {
-      //     result[0]=result[0];
-      //     result[1]=0;
-      //  }
        return result;   
     },
     showCanvasBg($event) {
@@ -265,8 +252,11 @@ export default {
       this.canvas_id = null;
       this.submit_button = "Save";
       this.update_image_info = null;
-      this.bg_image_path =
-        this.BASE_URL + "public/backend/images/canvas/Background/bg_image.jpg";
+      if (this.allName.length>0) {
+        this.bg_image_path = this.BASE_URL + "public/backend/images/canvas/Background/"+(this.allName)[0].canvas_bg_image;
+      }else{
+        this.bg_image_path = this.BASE_URL + "public/backend/images/canvas/Background/bg_image.jpg";
+      }
       this.backgroundImageSet(this.bg_image_path);
     },
     bgImageProcess(bg_image) {
@@ -343,7 +333,7 @@ export default {
       }, 510);
     },
     
-    createObj(left=100,top=50,width=150,height=22,text="Created by default",createdBy='auto') {
+    createObj(left=100,top=50,width=150,height=22,fontSize=20,lineHeight=1.16,scaleX=1,scaleY=1,text="Created by default",createdBy='auto') {
       
       var activeObject = this.canvas.getActiveObject();
       var text_data = [
@@ -362,8 +352,8 @@ export default {
           strokeDashOffset: 0,
           strokeLineJoin: "miter",
           strokeMiterLimit: 4,
-          scaleX: 1,
-          scaleY: 1,
+          scaleX: scaleX,
+          scaleY: scaleY,
           angle: 0,
           flipX: 0, //false
           flipY: 0, //false
@@ -379,11 +369,11 @@ export default {
           skewX: 0,
           skewY: 0,
           text: text,
-          fontSize: 20,
+          fontSize: fontSize,
           fontWeight: "normal",
           fontFamily: "Times New Roman", //Arial, Times New Roman, Helvetica, sans-serif
           fontStyle: "normal",
-          lineHeight: 1.16,
+          lineHeight: lineHeight,
           underline: 0, //False
           overline: 0, //False
           linethrough: 0, //False
@@ -460,7 +450,7 @@ export default {
       // console.log(option);
       this.pointerX = option.pointer.x;
       this.pointerY = option.pointer.y;
-      this.createObj(this.pointerX-50,this.pointerY,150,22,"Created by Click",'clicked');
+      this.createObj(this.pointerX-50,this.pointerY,150,22,20,1.16,1,1,"Created by Click",'clicked');
     },
     getCanvasBgImage() {
       var can_image = this.canvas.toDataURL({
