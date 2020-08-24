@@ -152,6 +152,7 @@ class ouk_order_toj extends Model
                     $insert_detail['voucher_number']=$value['voucher_number'];
                     $insert_detail['category_code']=$value['category_code'];
                     $insert_detail['voucher_category']=$value['voucher_category'];
+                    $insert_detail['other_info']=$value['other_info'];
                     $insert_detail['expected_delivery_date']=$value['expected_delivery_date'];
                     $insert_detail['order_date']=$value['order_date'];
                     $insert_detail['delivery_service_code']=$value['delivery_service_code'];
@@ -166,7 +167,7 @@ class ouk_order_toj extends Model
                     $insert_detail['selling_unit_price']=$item['selling_unit_price'];
                     $insert_detail['cost_unit_price']=$item['cost_unit_price'];
                     $byr_order_detail_id = Byr_order_detail::insertGetId($insert_detail);
-                    Byr_shipment_detail::insert(['byr_order_detail_id'=>$byr_order_detail_id,'byr_shipment_id'=>$byr_shipment_id,'order_quantity'=>$order_quantity]);
+                    Byr_shipment_detail::insert(['byr_order_detail_id'=>$byr_order_detail_id,'byr_shipment_id'=>$byr_shipment_id,'order_quantity'=>$order_quantity,'confirm_quantity'=>$order_quantity]);
                     $temp[]= $insert_detail;
                     $total++;
                 }
@@ -234,6 +235,9 @@ class ouk_order_toj extends Model
         $partner_code = '';
         $delivery_service_code = '';
         $shop_name_kana = '';
+        $center_flg = '';
+        $center_code = '';
+        $center_name = '';
         for ($i = 0; $i < count($all_array); $i++) {
             if ($i == 0) {
                 $b .= $all_array[$i];
@@ -255,8 +259,15 @@ class ouk_order_toj extends Model
                 $delivery_service_code .= $all_array[$i];
             } elseif ($i >= 48 && $i < 54) {
                 $shop_name_kana .= $all_array[$i];
+            } elseif ($i >= 83 && $i < 84) {
+                $center_flg .= $all_array[$i];
+            } elseif ($i >= 84 && $i < 90) {
+                $center_code .= $all_array[$i];
+            } elseif ($i >= 90 && $i < 112) {
+                $center_name .= $all_array[$i];
             }
         }
+        $other_infos = json_encode(array('center_flg'=>$center_flg,'center_code'=>$center_code,'center_name'=>$center_name));
         $insert_array_b = array(
             'voucher_number'=>$voucher_number,
             'shop_code'=>$shop_code,
@@ -267,6 +278,7 @@ class ouk_order_toj extends Model
             'shop_name_kana'=>$shop_name_kana,
             'partner_code'=>$partner_code,
             'delivery_service_code'=>$delivery_service_code,
+            'other_info'=>$other_infos,
         );
         return $insert_array_b;
     }
