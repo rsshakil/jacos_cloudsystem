@@ -472,9 +472,17 @@
                 <td
                   v-if="show_hide_col_list.includes('selling_price')"
                 >{{order_detail_list.selling_price}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('other_info')"
-                >{{order_detail_list.other_info}}</td>
+                
+                <td v-if="show_hide_col_list.includes('other_info')">
+                <!--<span v-for="content in order_detail_list.other_info">
+                {{content.center_name}}
+                </span>-->
+                <!--<span v-html="JSON.parse(order_detail_list.other_info).center_name"></span>
+               {{order_detail_list.other_info.center_name}}-->
+                {{JSON.parse(order_detail_list.other_info).center_name}}
+                
+                </td>
+
                 <td>{{order_detail_list.shop_name_kana}}</td>
                 <td>{{order_detail_list.order_quantity}}</td>
                 <td>
@@ -623,8 +631,8 @@
 export default {
   data() {
     return {
-      sortKey: 'cost_price',
-      reverse:false,
+      sortKey: '',
+      reverse:true,
       order_detail_lists: {},
       order_date: "",
       order_detail_list: [],
@@ -638,7 +646,7 @@ export default {
   },
   methods: {
     sortBycol(sortKey){
-      this.reverse = (this.sortKey == sortKey) ? ! this.reverse : false;
+     this.reverse = (this.sortKey == sortKey) ? 1 : -1;
       this.sortKey = sortKey;
     },
     update_shipment_detail(order_detail){
