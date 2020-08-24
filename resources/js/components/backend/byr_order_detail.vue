@@ -315,7 +315,7 @@
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer"
-                 
+                 @click="sortBynumeric_valu('cost_unit_price')"
                   v-if="show_hide_col_list.includes('cost_unit_price')"
                 >
                   原単価
@@ -326,7 +326,7 @@
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer"
-                 
+                 @click="sortBynumeric_valu('cost_price')"
                   v-if="show_hide_col_list.includes('cost_price')"
                 >
                   原価金額
@@ -633,6 +633,7 @@ export default {
     return {
       sortKey: '',
       reverse:true,
+      order_by:'asc',
       order_detail_lists: {},
       order_date: "",
       order_detail_list: [],
@@ -645,9 +646,18 @@ export default {
     };
   },
   methods: {
-    sortBycol(sortKey){
-     this.reverse = (this.sortKey == sortKey) ? 1 : -1;
-      this.sortKey = sortKey;
+    
+    sortBynumeric_valu(sortKey){
+      
+      // this.order_detail_lists.sort((a, b) => a[sortKey] < b[sortKey] ? 1 : -1);
+      if(this.order_by=='asc'){
+        this.order_by='desc';
+        this.order_detail_lists.sort((a, b) => a[sortKey]-b[sortKey]);
+      }else{
+         this.order_by='asc';
+        this.order_detail_lists.sort((a, b) => b[sortKey]-a[sortKey]);
+      }
+      
     },
     update_shipment_detail(order_detail){
       console.log(order_detail);
