@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Scenarios;
-
+use App\Scenarios\Common;
 use Illuminate\Database\Eloquent\Model;
 use App\Byr_order_detail;
 use App\Byr_order;
@@ -96,21 +96,29 @@ class ouk_order_toj extends Model
     //
     public function exec($request,$sc)
     {
+        $cmn_m_cls = new Common();
+        // include(app_path() . '/scenarios/common.php');
         \Log::debug('ouk_order_toj exec start  ---------------');
         // ファイルアップロード
         // echo $request->file('up_file');exit;
        $file_name = $request->file('up_file')->getClientOriginalName();
         $path = $request->file('up_file')->storeAs(config('const.ORDER_DATA_PATH').date('Y-m'), $file_name);
         \Log::debug('save path:'.$path);
-
-        $file_url = fopen(storage_path().'/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name, 'r');
+        // $custom_paths = storage_path().'/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name;
+        // $file_url = fopen(storage_path().'/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name, 'r');
         $received_path = storage_path().'/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name;
         // フォーマット変換
         // byr_orders,byr_order_details格納
-        $charlist = fread($file_url,filesize(storage_path().'/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name));
+        $get_string = $cmn_m_cls->ebcdic_2_sjis($received_path);
+        $get_string = mb_convert_encoding($get_string, "UTF-8", "SJIS");
+        // echo $get_string;exit;
+        // $charlist = fread($file_url,filesize(storage_path().'/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name));
         // $charlist = $this->convert_from_sjis_to_utf8_recursively($charlist);
         // $charlist = $this->convert_from_utf8_to_sjis__recursively($charlist);
-        $str_arr = $this->mb_str_split($charlist);
+        // $str_arr = $this->mb_str_split($charlist);
+        $str_arr = $this->mb_str_split($get_string);
+        // echo '<pre>';
+        // print_r($str_arr);exit;
         // $str_arr = str_split($charlist);
         $all_array_data = $this->process_array($str_arr);
         $insert_array_b = array();
@@ -126,7 +134,9 @@ class ouk_order_toj extends Model
                 $insert_array_b[$k]['item_data'][] = $this->d_array_process($all_array);
             }
         }
-        
+        // echo '<pre>';
+        // print_r($insert_array_b);
+        // exit;
         $byr_order_id = Byr_order::insertGetId(['receive_file_path'=>$received_path,'cmn_connect_id'=>$sc->cmn_connect_id]);
         $byr_shipment_id = Byr_shipment::insertGetId(['send_file_path'=>$received_path,'cmn_connect_id'=>$sc->cmn_connect_id]);
         $cnt = 0;

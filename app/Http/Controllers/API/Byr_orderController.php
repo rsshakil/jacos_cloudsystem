@@ -83,7 +83,7 @@ class Byr_orderController extends Controller
     }
 
     public function update_shipment_detail(Request $request){
-        Byr_shipment_detail::where('byr_order_detail_id',$request->byr_order_detail_id)->update(['confirm_quantity'=>$request->confirm_quantity]);
+        Byr_shipment_detail::where('byr_order_detail_id',$request->byr_order_detail_id)->update(['confirm_quantity'=>$request->confirm_quantity,'lack_reason'=>$request->lack_reason]);
         return response()->json(['success' => '1']);
     }
     /**

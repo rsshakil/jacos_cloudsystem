@@ -406,36 +406,10 @@
                   ステータス
                   <span id="email_icon"></span>
                 </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="email"
-                  style="cursor: pointer"
-                  
-                >
-                  数量確定
-                  <span id="email_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="email"
-                  style="cursor: pointer"
-                  
-                >
-                  欠品理由
-                  <span id="email_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="email"
-                  style="cursor: pointer"
-                 
-                >
-                  発注データ修正
-                  <span id="email_icon"></span>
-                </th>
+                
+                <th>欠品理由</th>
+                <th>数量確定</th>
+                <th>発注データ修正</th>
               </tr>
             </thead>
             <tbody>
@@ -511,10 +485,11 @@
                 </td>
                 
                 <td v-if="show_hide_col_list.includes('status')">{{order_detail_list.status}}</td>
+                <td><input type="text" class="form-control lack_reasons" style="width:200px" name="lack_r" v-model="order_detail_list.lack_reason"></td>
                 <td>
                   <button @click="update_shipment_detail(order_detail_list)" class="btn btn-primary">確定</button>
                 </td>
-                <td>{{order_detail_list.lack_reason}}</td>
+                
                 <td>
                   <button
                     @click="edit_order_detail(order_detail_list)"
@@ -648,6 +623,8 @@
 export default {
   data() {
     return {
+      sortKey: 'cost_price',
+      reverse:false,
       order_detail_lists: {},
       order_date: "",
       order_detail_list: [],
@@ -660,6 +637,10 @@ export default {
     };
   },
   methods: {
+    sortBycol(sortKey){
+      this.reverse = (this.sortKey == sortKey) ? ! this.reverse : false;
+      this.sortKey = sortKey;
+    },
     update_shipment_detail(order_detail){
       console.log(order_detail);
       axios({
