@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Scenarios;
-use App\Scenarios\Common;
+use App\scenarios\Common;
 use Illuminate\Database\Eloquent\Model;
 use App\Byr_order_detail;
 use App\Byr_order;
