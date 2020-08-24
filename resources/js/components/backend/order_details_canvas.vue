@@ -183,6 +183,8 @@ export default {
                     item=canvasAllDataArray[0]['total_order_qty']
                   }else if(split_element=="total_selling_price"){
                     item=canvasAllDataArray[0]['total_selling_price']
+                  }else if(split_element=="total_cost_price"){
+                    item=canvasAllDataArray[0]['total_cost_price']
                   }else{
                     item=split_element;
                   }
