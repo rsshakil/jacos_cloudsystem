@@ -77,6 +77,13 @@ class Cmn_ScenarioController extends Controller
         \Log::debug('scenario exec start---------------');
         // user info check
         \Log::debug($request);
+        $user = DB::table('adm_users')->where('email',$request->email)->first();
+        if (!$user) {
+            return ['status'=>1, 'message' => 'Authentication faild!'];
+        }
+        if (!Hash::check($request->password, $user->password)) {
+            return ['status'=>1, 'message' => 'Authentication faild!'];
+        }
         // scenario info check
         $sc = cmn_scenario::where('cmn_scenario_id', $id)->first();
         \Log::info($sc);
