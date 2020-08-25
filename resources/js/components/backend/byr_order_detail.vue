@@ -627,12 +627,13 @@ export default {
     };
   },
   methods: {
+
     exec_confirm_qty(order_detail,event){
       if(parseFloat(order_detail.confirm_quantity)>parseFloat(order_detail.order_quantity)){
         Swal.fire({
             icon: 'warning',
-            title: 'Invalid Confirm Quantity',
-            text: 'You can not confrim order more then your order quantity'
+            title: 'Invalid Confirm Quantity!',
+            text: 'You can not confrim order more then your order quantity!'
         });
                 order_detail.confirm_quantity=order_detail.order_quantity
       }
