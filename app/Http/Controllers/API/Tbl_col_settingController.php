@@ -38,6 +38,11 @@ class Tbl_col_settingController extends Controller
                     'header_status' => true
                 ),
                 array(
+                    'header_text' => '店舗名(ｶﾅ)',
+                    'header_field' => 'shop_name_kana',
+                    'header_status' => true
+                ),
+                array(
                     'header_text' => '分類コード',
                     'header_field' => 'category_code',
                     'header_status' => true
@@ -62,11 +67,12 @@ class Tbl_col_settingController extends Controller
                     'header_field' => 'delivery_service_code',
                     'header_status' => true
                 ),
+                /*
                 array(
                     'header_text' => 'ステータス',
                     'header_field' => 'status',
                     'header_status' => true
-                ),
+                ),*/
                 array(
                     'header_text' => 'JAN',
                     'header_field' => 'jan',
@@ -113,15 +119,11 @@ class Tbl_col_settingController extends Controller
                     'header_status' => true
                 ),
                 array(
-                    'header_text' => '発注数量',
-                    'header_field' => 'order_quantity',
-                    'header_status' => true
-                ),
-                array(
                     'header_text' => '発注日時',
                     'header_field' => 'order_date',
                     'header_status' => true
                 ),
+               
                 array(
                     'header_text' => '納品予定日',
                     'header_field' => 'expected_delivery_date',
@@ -150,11 +152,6 @@ class Tbl_col_settingController extends Controller
                 array(
                     'header_text' => '売価金額',
                     'header_field' => 'selling_price',
-                    'header_status' => true
-                ),
-                array(
-                    'header_text' => 'メモ',
-                    'header_field' => 'other_info',
                     'header_status' => true
                 )
             );
