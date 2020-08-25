@@ -18,7 +18,7 @@ class CreateByrOrderDetailsTable extends Migration
             $table->integer('byr_order_id')->unsigned()->comment('byr order id');
             $table->integer('byr_shop_id')->unsigned()->comment('byr shop id');
             $table->integer('byr_item_id')->unsigned()->default('0')->comment('byr item id');
-            $table->enum('order_type', ['normal', 'direct'])->default('normal')->comment('order type');
+            $table->enum('order_type', ['通常', '直送'])->default('通常')->comment('order type');
             $table->integer('category_code')->unsigned()->default('1')->comment('category code');
             $table->string('voucher_category', 10)->comment('voucher category')->nullable();
             $table->string('voucher_number', 20)->comment('voucher number')->nullable();

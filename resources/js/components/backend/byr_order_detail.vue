@@ -77,8 +77,8 @@
           <div class="row">
             <div class="col-6">
               <button class="btn btn-primary">ピッキング表 出力</button>
-              <button class="btn btn-success">すべて確定</button>
-              <button class="btn btn-danger">伝票出力</button>
+              <button class="btn btn-danger">すべて確定</button>
+              <router-link :to="{name:'order_details_canvas',params:{byr_order_id:byr_order_id} }" class="btn btn-success">伝票出力</router-link>
               <button class="btn btn-info">確定送信</button>
             </div>
             <div class="col-6 text-right">
@@ -123,23 +123,12 @@
                 <th>
                   <input type="checkbox" class="form-control check_all" />
                 </th>
+                
                 <th
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="name"
-                  style="cursor: pointer"
-                 
-                  v-if="show_hide_col_list.includes('item_name')"
-                >
-                  商品名
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                 
+                  style="cursor: pointer"  
                   v-if="show_hide_col_list.includes('order_type')"
                 >
                   注文タイプ
@@ -148,9 +137,19 @@
                 <th
                   class="sorting"
                   data-sorting_type="asc"
+                  data-column_name="email"
+                  style="cursor: pointer"
+                   v-if="show_hide_col_list.includes('shop_name_kana')"
+                >
+                  店舗名(ｶﾅ)
+                  <span id="total_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer"
-                 
+                 @click="sortBynumeric_valu('category_code')"
                   v-if="show_hide_col_list.includes('category_code')"
                 >
                   分類コード
@@ -161,7 +160,7 @@
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer"
-                  
+                  @click="sortBynumeric_valu('voucher_category')"
                   v-if="show_hide_col_list.includes('voucher_category')"
                 >
                   伝票区分
@@ -172,7 +171,7 @@
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer"
-                  
+                  @click="sortBynumeric_valu('voucher_number')"
                   v-if="show_hide_col_list.includes('voucher_number')"
                 >
                   伝票番号
@@ -205,10 +204,32 @@
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer"
-                 
+                  @click="sortBynumeric_valu('jan')"
                   v-if="show_hide_col_list.includes('jan')"
                 >
                   JAN
+                  <span id="name_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:220px"
+                 
+                  v-if="show_hide_col_list.includes('item_name')"
+                >
+                  商品名
+                  <span id="name_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:220px"
+                 
+                  v-if="show_hide_col_list.includes('item_name_kana')"
+                >
+                  商品名かな
                   <span id="name_icon"></span>
                 </th>
                 <th
@@ -259,7 +280,7 @@
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="name"
-                  style="cursor: pointer"
+                  style="cursor: pointer;min-width:80px;"
                   
                   v-if="show_hide_col_list.includes('color')"
                 >
@@ -270,7 +291,7 @@
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="name"
-                  style="cursor: pointer"
+                  style="cursor: pointer;min-width:80px"
                   
                   v-if="show_hide_col_list.includes('order_inputs')"
                 >
@@ -281,7 +302,7 @@
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="name"
-                  style="cursor: pointer"
+                  style="cursor: pointer;;min-width:100px;"
                  
                   v-if="show_hide_col_list.includes('order_date')"
                 >
@@ -292,7 +313,7 @@
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="name"
-                  style="cursor: pointer"
+                  style="cursor: pointer;min-width:100px;"
                   
                   v-if="show_hide_col_list.includes('expected_delivery_date')"
                 >
@@ -354,27 +375,8 @@
                   売価金額
                   <span id="name_icon"></span>
                 </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                  
-                  v-if="show_hide_col_list.includes('other_info')"
-                >
-                  メモ
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="email"
-                  style="cursor: pointer"
-                  
-                >
-                  店舗名(ｶﾅ)
-                  <span id="total_icon"></span>
-                </th>
+               
+                
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -400,7 +402,7 @@
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="email"
-                  style="cursor: pointer"
+                  style="cursor: pointer;min-width:80px;"
                  
                 >
                   ステータス
@@ -408,8 +410,8 @@
                 </th>
                 
                 <th>欠品理由</th>
-                <th>数量確定</th>
-                <th>発注データ修正</th>
+                <th style="min-width:100px">数量確定</th>
+                <th style="min-width:100px">発注データ修正</th>
               </tr>
             </thead>
             <tbody>
@@ -421,18 +423,17 @@
                 <td>
                   <input type="checkbox" class="form-control check_item" />
                 </td>
-                <td
-                  v-if="show_hide_col_list.includes('item_name')"
-                >{{order_detail_list.item_name_kana}}</td>
+                
                 <td
                   v-if="show_hide_col_list.includes('order_type')"
                 >{{order_detail_list.order_type}}</td>
+                <td v-if="show_hide_col_list.includes('shop_name_kana')">{{order_detail_list.shop_name_kana}}</td>
                 <td
                   v-if="show_hide_col_list.includes('category_code')"
                 >{{order_detail_list.category_code}}</td>
                 <td
                   v-if="show_hide_col_list.includes('voucher_category')"
-                >{{order_detail_list. voucher_category}}</td>
+                >{{order_detail_list.voucher_category}}</td>
                 <td
                   v-if="show_hide_col_list.includes('voucher_number')"
                 >{{order_detail_list.voucher_number}}</td>
@@ -443,6 +444,12 @@
                   v-if="show_hide_col_list.includes('delivery_service_code')"
                 >{{order_detail_list.delivery_service_code}}</td>
                 <td v-if="show_hide_col_list.includes('jan')">{{order_detail_list.jan}}</td>
+                <td
+                  v-if="show_hide_col_list.includes('item_name')"
+                >{{order_detail_list.item_name}}</td>
+                <td
+                  v-if="show_hide_col_list.includes('item_name_kana')"
+                >{{order_detail_list.item_name_kana}}</td>
                 <td v-if="show_hide_col_list.includes('spec')">{{order_detail_list.spec}}</td>
                 <td v-if="show_hide_col_list.includes('spec_kana')">{{order_detail_list.spec_kana}}</td>
                 <td v-if="show_hide_col_list.includes('inputs')">{{order_detail_list.inputs}}</td>
@@ -472,18 +479,6 @@
                 <td
                   v-if="show_hide_col_list.includes('selling_price')"
                 >{{order_detail_list.selling_price}}</td>
-                
-                <td v-if="show_hide_col_list.includes('other_info')">
-                <!--<span v-for="content in order_detail_list.other_info">
-                {{content.center_name}}
-                </span>-->
-                <!--<span v-html="JSON.parse(order_detail_list.other_info).center_name"></span>
-               {{order_detail_list.other_info.center_name}}-->
-                {{JSON.parse(order_detail_list.other_info).center_name}}
-                
-                </td>
-
-                <td>{{order_detail_list.shop_name_kana}}</td>
                 <td>{{order_detail_list.order_quantity}}</td>
                 <td>
                   <input
@@ -502,7 +497,7 @@
                   <button
                     @click="edit_order_detail(order_detail_list)"
                     class="btn btn-success"
-                  >発注データ修正</button>
+                  >修正</button>
                 </td>
               </tr>
             </tbody>
