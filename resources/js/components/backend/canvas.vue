@@ -8,6 +8,7 @@
                 <b-button variant="primary" @click="printCanvas">Print</b-button>
                 <input class="btn btn-info" @change="bgImageChange" type="file">
                 <b-button variant="warning" @click="clearCanvasObjects">Clear canvas</b-button>
+                <b-button variant="warning" @click="duplicateObjects">Duplicate</b-button>
                 <br>
                 <br>
                 <div class="row">
@@ -106,6 +107,7 @@ data(){
     canvas_height:510,
     pointerX:100,
     pointerY:50,
+    copiedObjects:[],
   }
 },
 methods:{
@@ -120,6 +122,7 @@ methods:{
                 });
           },
           editCanvas(canvasData){
+            // console.log(canvasData.canvas_objects);
             this.selected_buyer={byr_buyer_id:canvasData.byr_buyer_id,company_name:canvasData.company_name};
             // this.canvas.clear();
             this.canvasClear();
@@ -254,6 +257,15 @@ methods:{
                 // }
             }
           },
+
+          duplicateObjects(){
+            var _this=this;
+            var activeObjects = this.canvas.getActiveObjects();
+             var obj_copy=activeObjects;
+                obj_copy.forEach(element => {
+                  this.createObj(element.left,(element.top)+50,element.width,element.height,element.fontSize,element.textAlign,element.lineHeight,element.scaleX,element.scaleY,element.text.toString(),'auto')
+                });
+          },
           printData(divVar) {
             var canvas=this.canvas;
             var thisVar=this;
@@ -322,33 +334,34 @@ methods:{
                 .then(({ data }) => {
                     if (data.message=='created') {
                           this.alert_text="Canvas Created"
+                          this.loadCanvasData()
+                          this.canvas.clear();
+                          this.canvasFieldClead();
                         }else if(data.message=='updated'){
                           this.alert_text="Canvas Updated"
+                          this.loadCanvasData()
                         }else if(data.message=='duplicated'){
                           this.alert_text="Canvas Buyer is duplicated"
                         }
                         this.alert_title=data.title
                         this.alert_icon=data.class_name
                         this.sweet_normal_alert();
-                        this.loadCanvasData()
-                        // this.canvasClear();
-                        this.canvas.clear();
-                        this.canvasFieldClead();
                 })
                 .catch(() => {
                 this.sweet_advance_alert();
                 });
         
           },
-          createReactObj(){
+          // createReactObj(){
+            createObj(left=100,top=50,width=150,height=22,fontSize=20,textAlign="left",lineHeight=1.16,scaleX=1,scaleY=1,text="Created by default",createdBy='auto'){
             var activeObject = this.canvas.getActiveObject();
         var text_data = [{
             originX: "left",
             originY: "top",
-            left: this.pointerX-50,
-            top: this.pointerY,
-            width: 150,
-            height: 22,
+            left: left,
+            top: top,
+            width: width,
+            height: height,
             fill: "black",
             stroke: null,
             strokeWidth: 0,
@@ -357,8 +370,8 @@ methods:{
             strokeDashOffset: 0,
             strokeLineJoin: "miter",
             strokeMiterLimit: 4,
-            scaleX: 1,
-            scaleY: 1,
+            scaleX: scaleX,
+            scaleY: scaleY,
             angle: 0,
             flipX: 0, //false
             flipY: 0, //false
@@ -373,16 +386,16 @@ methods:{
             transformMatrix: null,
             skewX: 0,
             skewY: 0,
-            text: "Created by click",
-            fontSize: 20,
+            text: text,
+            fontSize: fontSize,
             fontWeight: "normal",
             fontFamily: "Times New Roman", //Arial, Times New Roman, Helvetica, sans-serif
             fontStyle: "normal",
-            lineHeight: 1.16,
+            lineHeight: lineHeight,
             underline: 0, //False
             overline: 0, //False
             linethrough: 0, //False
-            textAlign: "left",
+            textAlign: textAlign,
             textBackgroundColor: "",
             charSpacing: 0,
             minWidth: 20,
@@ -390,16 +403,19 @@ methods:{
             objectCaching: false,
         }];
 
-        if (!activeObject) {
+        if (createdBy!='auto') {
+          if (!activeObject) {
             this.addText(text_data);
-            // addText(pageX, pageY, 150, 20, 'Created by click');
+          }
+        }else{
+          this.addText(text_data); 
         }
           },
           doubleClick(option){
             // console.log(option);
             this.pointerX=option.pointer.x
             this.pointerY=option.pointer.y
-            this.createReactObj();
+            this.createObj(this.pointerX-50,this.pointerY,150,22,20,"left",1.16,1,1,"Created by Click",'clicked');
             this.obj_setting=1;
             this.getActiveObjectAttr();
           },
@@ -577,7 +593,15 @@ methods:{
             this.allFontSize.push(i);
           }
           for (let i = .1; i <= 10; i+=.1) {
-            this.allScaleX.push(i.toFixed(1));
+            var new_val = i.toFixed(1)
+            // var first_part=givenString.substring(0, 5);
+            // var main_part=givenString.slice(5,-2);
+            var last_part=new_val.slice(-1);
+            if (last_part==0) {
+              this.allScaleX.push(i.toFixed());
+            }else{
+              this.allScaleX.push(i.toFixed(1));
+            }
           }
           for (let i = .1; i <= 10; i+=.1) {
             this.allScaleY.push(i.toFixed(1));

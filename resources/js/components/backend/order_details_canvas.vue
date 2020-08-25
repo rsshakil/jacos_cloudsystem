@@ -125,7 +125,7 @@ export default {
           byr_order_id: this.byr_order_id,
         })
         .then(({ data }) => {
-          // console.log(data);
+          console.log(data);
           if (data.canvas_data.length>0) {
             this.allName=data.canvas_data
             this.canvasSelectedName=this.allName[0]
@@ -173,6 +173,7 @@ export default {
           // var position_values= JSON.parse(this.canvasSelectedName.position_values);
           var position_values= JSON.parse(this.canvasSelectedName.canvas_objects).objects;
           position_values.forEach(element => {
+            // console.log(element.text);
             var split_element=(this.splitString(element.text))
             var item="";
             if (split_element[1]<canvasAllDataArray.length) {
@@ -185,6 +186,12 @@ export default {
                     item=canvasAllDataArray[0]['total_selling_price']
                   }else if(split_element=="total_cost_price"){
                     item=canvasAllDataArray[0]['total_cost_price']
+                  }else if(split_element=="total_confirm_quantity"){
+                    item=canvasAllDataArray[0]['total_confirm_quantity']
+                  }else if(split_element=="center_code"){
+                    item=canvasAllDataArray[0]['center_code']
+                  }else if(split_element=="center_name"){
+                    item=canvasAllDataArray[0]['center_name']
                   }else{
                     item=split_element;
                   }
