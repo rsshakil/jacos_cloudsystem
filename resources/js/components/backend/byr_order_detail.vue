@@ -138,7 +138,7 @@
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="email"
-                  style="cursor: pointer"
+                  style="cursor: pointer;min-width:100px;"
                    v-if="show_hide_col_list.includes('shop_name_kana')"
                 >
                   店舗名(ｶﾅ)
@@ -487,7 +487,7 @@
                     v-model="order_detail_list.confirm_quantity"/>
                 </td>
                 
-                <td v-if="show_hide_col_list.includes('status')">{{order_detail_list.status}}</td>
+                <td>{{order_detail_list.status}}</td>
                 <td><input type="text" class="form-control lack_reasons" style="width:200px" name="lack_r" v-model="order_detail_list.lack_reason"></td>
                 <td>
                   <button @click="update_shipment_detail(order_detail_list)" class="btn btn-primary">確定</button>
