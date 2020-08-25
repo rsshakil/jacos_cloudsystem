@@ -3,8 +3,13 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\cmn_job;
+use App\User;
+use DB;
+use Auth;
 
 class Cmn_jobController extends Controller
 {
@@ -68,6 +73,14 @@ class Cmn_jobController extends Controller
         \Log::debug('scenario exec start---------------');
         // user info check
         \Log::debug($request);
+        $user = DB::table('adm_users')->where('email',$request->email)->first();
+        if (!$user) {
+            return ['status'=>1, 'message' => 'Authentication faild!'];
+        }
+        if (!Hash::check($request->password, $user->password)) {
+            return ['status'=>1, 'message' => 'Authentication faild!'];
+        }
+
         // scenario info check
         $sc = cmn_job::select('cmn_jobs.cmn_connect_id','cmn_scenarios.*')
         ->join('cmn_scenarios', 'cmn_jobs.cmn_scenario_id', '=', 'cmn_scenarios.cmn_scenario_id')

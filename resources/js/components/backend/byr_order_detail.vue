@@ -124,6 +124,7 @@
                   data-sorting_type="asc"
                   data-column_name="email"
                   style="cursor: pointer;min-width:100px;"
+                  @click="sortByja_valu('shop_name_kana')"
                    v-if="show_hide_col_list.includes('shop_name_kana')"
                 >
                   店舗名(ｶﾅ)
@@ -468,7 +469,7 @@
                 <td>
                   <input
                     type="text"
-                    class="form_input"
+                    class="form_input" v-on:keyup="exec_confirm_qty(order_detail_list,$event)"
                     v-model="order_detail_list.confirm_quantity"/>
                 </td>
                 
@@ -626,7 +627,22 @@ export default {
     };
   },
   methods: {
-    
+    exec_confirm_qty(order_detail,event){
+      if(order_detail.confirm_quantity>order_detail.order_quantity){
+        Swal.fire({
+                    icon: 'warning',
+                    title: 'Invalid Confirm Quantity',
+                    text: 'You can not confrim order more then your order quantity'
+                });
+                order_detail.confirm_quantity=order_detail.order_quantity
+      }
+      if(event.key=='Enter'){
+        event.preventDefault()
+        console.log(event.key);
+        // event.target.nextElementSibling.focus()
+        // console.log(event.target.parent.closest('.lack_reasons'));
+      }
+    },
     sortBynumeric_valu(sortKey){
       
       // this.order_detail_lists.sort((a, b) => a[sortKey] < b[sortKey] ? 1 : -1);
@@ -638,6 +654,15 @@ export default {
         this.order_detail_lists.sort((a, b) => b[sortKey]-a[sortKey]);
       }
       
+    },
+    sortByja_valu(sortKey){
+      if(this.order_by=='asc'){
+        this.order_by='desc';
+        this.order_detail_lists.sort( (a, b) => a[sortKey].localeCompare(b[sortKey], 'ja', {ignorePunctuation: true}));
+      }else{
+         this.order_by='asc';
+        this.order_detail_lists.sort((a, b) =>  b[sortKey].localeCompare(a[sortKey], 'ja', {ignorePunctuation: true}));
+      }
     },
     update_shipment_detail(order_detail){
       console.log(order_detail);
