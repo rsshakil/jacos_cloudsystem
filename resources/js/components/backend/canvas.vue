@@ -28,6 +28,12 @@
                   <div class="col-1" style="padding:0px;">
                     <multiselect v-model="selectedFontSize" :options="allFontSize" :searchable="true" :close-on-select="true" :show-labels="false" @select="changeFontSize($event)"></multiselect>
                   </div>
+                  <div class="col-1" style="padding:0px;">
+                    <multiselect v-model="selectedScaleX" :options="allScaleX" :searchable="true" :close-on-select="true" :show-labels="false" @select="changeScaleXSize($event)"></multiselect>
+                  </div>
+                  <div class="col-1" style="padding:0px;">
+                    <multiselect v-model="selectedScaleY" :options="allScaleY" :searchable="true" :close-on-select="true" :show-labels="false" @select="changeScaleYSize($event)"></multiselect>
+                  </div>
                 </div>
                 <div class="row" style="height:40px;" v-else></div>
                 <br>
@@ -82,6 +88,10 @@ data(){
     selectedJustifier:{},
     allFontSize:[],
     selectedFontSize:[],
+    allScaleX:[],
+    selectedScaleX:[1],
+    allScaleY:[],
+    selectedScaleY:[1],
     obj_setting:0,
     all_buyer:[],
     selected_buyer:[],
@@ -446,6 +456,8 @@ methods:{
             }
             _this.selectedJustifier={name:object.textAlign,icon:icon}
             _this.selectedFontSize=[object.fontSize]
+            _this.selectedScaleX=[object.scaleX]
+            _this.selectedScaleY=[object.scaleY]
                     // canvas.renderAll();
                 });
         }else{
@@ -469,6 +481,26 @@ methods:{
         if (activeObjects.length) {
                 activeObjects.forEach(function(object) {
                   object.fontSize=$event;
+                  canvas.renderAll();
+                });
+            }
+      },
+      changeScaleXSize($event){
+        var canvas=this.canvas;
+        var activeObjects = canvas.getActiveObjects();
+        if (activeObjects.length) {
+                activeObjects.forEach(function(object) {
+                  object.scaleX=$event;
+                  canvas.renderAll();
+                });
+            }
+      },
+      changeScaleYSize($event){
+        var canvas=this.canvas;
+        var activeObjects = canvas.getActiveObjects();
+        if (activeObjects.length) {
+                activeObjects.forEach(function(object) {
+                  object.scaleY=$event;
                   canvas.renderAll();
                 });
             }
@@ -543,6 +575,12 @@ methods:{
           this.loadCanvasData();
           for (let i = 1; i <= 100; i++) {
             this.allFontSize.push(i);
+          }
+          for (let i = .1; i <= 10; i+=.1) {
+            this.allScaleX.push(i.toFixed(1));
+          }
+          for (let i = .1; i <= 10; i+=.1) {
+            this.allScaleY.push(i.toFixed(1));
           }
           this.canvas.on('mouse:dblclick', (e) => {
             this.doubleClick(e)
