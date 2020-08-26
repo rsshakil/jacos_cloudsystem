@@ -45,7 +45,7 @@
                                     <td>{{slr_list.company_name}}</td>
                                     <td>{{slr_list.jcode}}</td>
                                     <td>稼働中</td>
-                                    <td><button class="btn btn-primary">ユーザー管理</button></td>
+                                    <td><router-link :to="{name:'company_seller_user_list',params:{cmn_company_id:slr_list.cmn_company_id} }" class="btn btn-primary">ユーザー管理</router-link></td>
                                     <td><button class="btn btn-info">店舗管理</button></td>
                                     <td><button class="btn btn-danger">取引先管理</button></td>
                                     <td><button class="btn btn-success">発注データ</button></td>

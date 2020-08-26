@@ -73,8 +73,11 @@ Route::post('job_exec/{cmn_scenario_id}', 'API\Cmn_jobController@exec');
 Route::get('/slr_job_list_by_seller_id/{slr_seller_id}', 'API\Cmn_jobController@slr_job_list_by_seller_id');
 
 Route::post('/load_canvas_setting_data', 'API\Byr_orderController@canvasSettingData');
-Route::get('/company_user_list/{byr_buyer_id}', 'API\Jacos_managementController@company_user_list');
+Route::get('/company_user_list/{cmn_company_id}', 'API\Jacos_managementController@company_user_list');
+// Route::get('/company_seller_user_list/{cmn_company_id}', 'API\Jacos_managementController@company_seller_user_list');
 Route::get('/company_partner_list/{byr_buyer_id}', 'API\Jacos_managementController@company_partner_list');
 Route::get('/get_scenario_list', 'API\Cmn_ScenarioController@get_scenario_list');
 Route::get('/slr_management', 'API\Jacos_managementController@slr_management');
 Route::post('/update_shipment_detail', 'API\Byr_orderController@update_shipment_detail');
+Route::post('/byr_buyer_user_create', 'API\Jacos_managementController@byr_buyer_user_create');
+Route::post('/slr_seller_user_create', 'API\Jacos_managementController@slr_seller_user_create');

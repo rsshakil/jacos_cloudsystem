@@ -63,12 +63,12 @@ tabList,
   data() {
     return {
         'company_partner_lists':{},
-        'byr_buyer_id':'',
+        'cmn_company_id':'',
     };
   },
   methods: {
       get_all_partner_users(){
-        axios.get(this.BASE_URL +"api/company_partner_list/"+this.byr_buyer_id).then((data) => {
+        axios.get(this.BASE_URL +"api/company_partner_list/"+this.cmn_company_id).then((data) => {
             this.company_partner_lists = data.data.partner_list;
             console.log(this.company_partner_lists);
         });
@@ -76,7 +76,7 @@ tabList,
   },
 
   created() {
-    this.byr_buyer_id = this.$route.params.byr_buyer_id;
+    this.cmn_company_id = this.$route.params.cmn_company_id;
       this.get_all_partner_users();
       console.log('created jacos management log');
   },

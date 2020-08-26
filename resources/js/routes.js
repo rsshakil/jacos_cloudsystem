@@ -18,6 +18,7 @@ import cmn_company_partner_list from './components/backend/cmn_company_partner_l
 import scenario_management from './components/backend/scenario_management.vue'
 import slr_management from './components/backend/slr_management.vue'
 import slr_job_list from './components/backend/slr_job_list.vue'
+import company_seller_user_list from './components/backend/cmn_company_seller_user_list.vue'
 
 // import login_body from './components/login/login_body.vue'
 
@@ -65,7 +66,7 @@ export const routes = [
         name:'jacos_management'
       },
       {
-        path: '/jacos_management/jacos_management_edit/:byr_buyer_id', 
+        path: '/jacos_management/jacos_management_edit/:cmn_company_id', 
         component: jacos_management_edit,
         name: 'jacos_management_edit',
         meta: {
@@ -73,7 +74,7 @@ export const routes = [
         }
       },
       {
-        path: '/jacos_management/cmn_company_user_list/:byr_buyer_id', 
+        path: '/jacos_management/cmn_company_user_list/:cmn_company_id', 
         component: cmn_company_user_list,
         name: 'cmn_company_user_list',
         meta: {
@@ -81,7 +82,7 @@ export const routes = [
         }
       },
       {
-        path: '/jacos_management/cmn_company_partner_list/:byr_buyer_id', 
+        path: '/jacos_management/cmn_company_partner_list/:cmn_company_id', 
         component: default_parent,
         meta: {
           breadcrumb: '取引先管理'  
@@ -121,6 +122,14 @@ export const routes = [
       path:'/',
       component:slr_management,
       name:'slr_management'
+    },
+    {
+      path:'/slr_management/company_seller_user_list/:cmn_company_id',
+      component:company_seller_user_list,
+      name:'company_seller_user_list',
+      meta: {
+        breadcrumb: 'seller user list'  
+      }
     },
   ]
 
