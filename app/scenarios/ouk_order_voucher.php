@@ -73,6 +73,7 @@ class ouk_order_voucher extends Model
             $total_order_qty=0;
             $total_selling_price=0;
             $total_cost_price=0;
+            $total_confirm_quantity=0;
         }
         return $can_info_array;
     }
