@@ -18,7 +18,7 @@
                             <thead>
                                 <tr>
                                     <th colspan="100%" style="border: none;">
-                                       <button class="btn pull-right text-right btn-primary" style="float:right">新規追加</button>
+                                       <button @click="new_user_create_modal" class="btn pull-right text-right btn-primary" style="float:right">新規追加</button>
                                     </th>
                                 </tr>
                                 <tr>
@@ -52,6 +52,57 @@
                     </div>
                 </div>
             </div>
+
+          <b-modal
+      size="lg"
+      :hide-backdrop="true"
+      title="Add user"
+      ok-title="Save"
+      cancel-title="キャンセル"
+      @ok.prevent="create_new_user()"
+      v-model="user_create_modal"
+    >
+      <!-- <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+      <div class="modal-body">-->
+      <div class="panel-body add_item_body">
+        <form>
+          <div class="form-group row">
+    <label for="name" class="col-sm-2 col-form-label">Name</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('name') }" v-model="form.name">
+      <has-error :form="form" field="name"></has-error>
+    </div>
+  </div>
+   <div class="form-group row">
+    <label for="name" class="col-sm-2 col-form-label">Super code</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('super_code') }" v-model="form.super_code">
+      <has-error :form="form" field="super_code"></has-error>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('email') }" v-model="form.email">
+      <has-error :form="form" field="email"></has-error>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+    <div class="col-sm-10">
+      <input type="password" class="form-control" :class="{ 'is-invalid': form.errors.has('password') }" placeholder="Password" v-model="form.password">
+      <has-error :form="form" field="password"></has-error>
+    </div>
+  </div>
+        </form>
+      </div>
+      <!-- </div>
+        </div>
+      </div>-->
+    </b-modal>
+
+
   </div>
 </template>
 <script>
@@ -64,22 +115,62 @@ tabList,
   data() {
     return {
         'company_user_lists':{},
-        'byr_buyer_id':'',
+        'cmn_company_id':'',
+        'user_create_modal':false,
+        form: new Form({
+                    name : '',
+                    email: '',
+                    password: '',
+                    super_code: '',
+                    cmn_company_id: '',
+                })
     };
   },
   methods: {
        get_all_company_users(){
-        axios.get(this.BASE_URL +"api/company_user_list/"+this.byr_buyer_id).then((data) => {
+        axios.get(this.BASE_URL +"api/company_user_list/"+this.cmn_company_id).then((data) => {
             this.company_user_lists = data.data.user_list;
             console.log(this.company_user_lists);
         });
     },
+    new_user_create_modal(){
+      this.form.reset();
+      this.form.cmn_company_id = this.$route.params.cmn_company_id;
+      this.user_create_modal = true;
+      
+
+    },
+    create_new_user(){
+      this.form.post(this.BASE_URL +'api/byr_buyer_user_create')
+                .then((data)=>{
+                  this.user_create_modal = false;
+                    Fire.$emit('AfterCreateUser');
+                    Swal.fire({
+            icon: 'success',
+            title: 'User added success',
+            text: 'You have successfully added user'
+        });
+                    console.log(data);
+                })
+                .catch((error)=>{
+                  console.log(error);
+                  Swal.fire({
+            icon: 'warning',
+            title: 'Invalid user info',
+            text: 'duplicated email found!'
+        });
+                })
+    },
   },
 
   created() {
-    this.byr_buyer_id = this.$route.params.byr_buyer_id;
-      this.get_all_company_users();
+    this.cmn_company_id = this.$route.params.cmn_company_id;
+    this.form.cmn_company_id = this.$route.params.cmn_company_id;
 
+      this.get_all_company_users();
+      Fire.$on("AfterCreateUser", () => {
+        this.get_all_company_users();
+    });
       console.log('created jacos management log');
   },
   mounted() {

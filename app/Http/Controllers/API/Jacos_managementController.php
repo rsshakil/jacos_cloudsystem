@@ -4,6 +4,17 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\User;
+use App\adm_user_details;
+use App\byr_buyer;
+use App\slr_seller;
+use App\cmn_companies_user;
+// use Auth;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
 use DB;
 class Jacos_managementController extends Controller
 {
@@ -14,31 +25,31 @@ class Jacos_managementController extends Controller
      */
     public function index()
     {
-        $result = DB::table('byr_buyers')
-        ->leftJoin('cmn_companies', 'byr_buyers.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
-        ->select('byr_buyers.super_code', 'cmn_companies.company_name','cmn_companies.cmn_company_id','byr_buyers.byr_buyer_id')
+        $result = DB::table('cmn_companies')
+        ->join('byr_buyers', 'byr_buyers.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
+        ->select('byr_buyers.super_code','cmn_companies.jcode', 'cmn_companies.company_name','cmn_companies.cmn_company_id','byr_buyers.byr_buyer_id')
+        ->groupBy('cmn_companies.cmn_company_id')
         ->get();
         return response()->json(['company_list'=>$result]);
     }
 
-    public function company_user_list($byr_buyer_id){
-        $result = DB::table('byr_buyers')
-        ->join('cmn_companies', 'byr_buyers.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
-        ->join('cmn_companies_users', 'cmn_companies_users.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
+    public function company_user_list($cmn_company_id){
+        $result = DB::table('cmn_companies_users')
         ->join('adm_users', 'adm_users.id', '=', 'cmn_companies_users.adm_user_id')
         ->select('adm_users.*')
-        ->where('byr_buyers.byr_buyer_id',$byr_buyer_id)
+        ->where('cmn_companies_users.cmn_company_id',$cmn_company_id)
         ->get();
         return response()->json(['user_list'=>$result]); 
     }
 
-    public function company_partner_list($byr_buyer_id){
-      $result = DB::table('cmn_connects')
+    public function company_partner_list($cmn_company_id){
+      $result = DB::table('byr_buyers')
+       
+        ->join('cmn_connects', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
         ->join('slr_sellers', 'slr_sellers.slr_seller_id', '=', 'cmn_connects.slr_seller_id')
-        ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
         ->join('cmn_companies', 'slr_sellers.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
-        ->select('cmn_connects.byr_buyer_id','byr_buyers.super_code', 'cmn_companies.company_name', 'cmn_companies.jcode','cmn_connects.partner_code','cmn_connects.is_active', 'slr_sellers.slr_seller_id')
-        ->where('cmn_connects.byr_buyer_id',$byr_buyer_id)
+        ->select('slr_sellers.slr_seller_id','cmn_connects.byr_buyer_id','byr_buyers.super_code', 'cmn_companies.company_name', 'cmn_companies.jcode','cmn_connects.partner_code','cmn_connects.is_active', 'slr_sellers.slr_seller_id')
+        ->where('byr_buyers.cmn_company_id',$cmn_company_id)
         ->get();
         return response()->json(['partner_list'=>$result]); 
     }
@@ -88,9 +99,80 @@ class Jacos_managementController extends Controller
     }
 
     public function slr_management(){
-        $result = DB::table('slr_sellers')
-        ->join('cmn_companies', 'slr_sellers.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
+        $result = DB::table('cmn_companies')
+        ->join('slr_sellers', 'slr_sellers.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
+        ->groupBy('cmn_companies.cmn_company_id')
         ->get();
         return response()->json(['slr_list'=>$result]);
+    }
+
+    public function byr_buyer_user_create(Request $request){
+        $this->validate($request,[
+            'name' => 'required|string|max:191',
+            'email' => 'required|string|email|max:191|unique:adm_users',
+            'password' => 'required|string|min:6',
+            'super_code' => 'required|string|min:3',
+        ]);
+
+        $name = $request->name;
+        $email = $request->email;
+        $password = $request->password;
+        $super_code = $request->super_code;
+        $cmn_company_id = $request->cmn_company_id;
+        $hash_password = Hash::make($password);
+        $user_exist = User::where('email', $email)->first();
+        if ($user_exist) {
+            return response()->json(['title'=>"Exists!",'message' =>"exists", 'class_name' => 'error']);
+        } else {
+            $user = new User;
+            $user->name = $name;
+            $user->email = $email;
+            $user->password = $hash_password;
+            $user->save();
+            $last_user_id = $user->id;
+            $user_details = new adm_user_details;
+            $user_details->user_id = $last_user_id;
+            $user_details->save();
+            $users = User::findOrFail($last_user_id);
+            byr_buyer::insert(['cmn_company_id'=>$cmn_company_id,'super_code'=>$super_code]);
+            cmn_companies_user::insert(['cmn_company_id'=>$cmn_company_id,'adm_user_id'=>$last_user_id]);
+
+            return response()->json(['title'=>"Created!",'message' =>"created", 'class_name' => 'success']);
+        }
+
+    }
+
+
+    public function slr_seller_user_create(Request $request){
+        $this->validate($request,[
+            'name' => 'required|string|max:191',
+            'email' => 'required|string|email|max:191|unique:adm_users',
+            'password' => 'required|string|min:6',
+        ]);
+
+        $name = $request->name;
+        $email = $request->email;
+        $password = $request->password;
+        $cmn_company_id = $request->cmn_company_id;
+        $hash_password = Hash::make($password);
+        $user_exist = User::where('email', $email)->first();
+        if ($user_exist) {
+            return response()->json(['title'=>"Exists!",'message' =>"exists", 'class_name' => 'error']);
+        } else {
+            $user = new User;
+            $user->name = $name;
+            $user->email = $email;
+            $user->password = $hash_password;
+            $user->save();
+            $last_user_id = $user->id;
+            $user_details = new adm_user_details;
+            $user_details->user_id = $last_user_id;
+            $user_details->save();
+            $users = User::findOrFail($last_user_id);
+            slr_seller::insert(['cmn_company_id'=>$cmn_company_id]);
+            cmn_companies_user::insert(['cmn_company_id'=>$cmn_company_id,'adm_user_id'=>$last_user_id]);
+            return response()->json(['title'=>"Created!",'message' =>"created", 'class_name' => 'success']);
+        }
+
     }
 }
