@@ -263,7 +263,7 @@ methods:{
             var activeObjects = this.canvas.getActiveObjects();
              var obj_copy=activeObjects;
                 obj_copy.forEach(element => {
-                  this.createObj(element.left,(element.top)+50,element.width,element.height,element.fontSize,element.textAlign,element.lineHeight,element.scaleX,element.scaleY,element.text.toString(),'auto')
+                  this.createObj(element.left,(element.top)+29,element.width,element.height,element.fontSize,element.textAlign,element.lineHeight,element.scaleX,element.scaleY,element.text.toString(),'auto')
                 });
           },
           printData(divVar) {

@@ -121,11 +121,11 @@ export default {
   methods: {
     loadCanvasData() {
       axios
-        .post(this.BASE_URL + "api/load_canvas_data/4", {
+        .post(this.BASE_URL + "api/load_canvas_data/2", {
           byr_order_id: this.byr_order_id,
         })
         .then(({ data }) => {
-          console.log(data);
+          // console.log(data);
           if (data.canvas_data.length>0) {
             this.allName=data.canvas_data
             this.canvasSelectedName=this.allName[0]
@@ -187,7 +187,7 @@ export default {
                   }else if(split_element=="total_cost_price"){
                     item=canvasAllDataArray[0]['total_cost_price']
                   }else if(split_element=="total_confirm_quantity"){
-                    item=canvasAllDataArray[0]['total_confirm_quantity']
+                    item=(canvasAllDataArray[0]['total_confirm_quantity']==0)?"":canvasAllDataArray[0]['total_confirm_quantity']
                   }else if(split_element=="center_code"){
                     item=canvasAllDataArray[0]['center_code']
                   }else if(split_element=="center_name"){

@@ -29,5 +29,6 @@ class DatabaseSeeder extends Seeder
         $this->call(cmn_connectSeeder::class);
         $this->call(byr_buyerSeeder::class);
         $this->call(slr_sellerSeeder::class);
+        $this->call(cmnPdfCanvasSeeder::class);
     }
 }
