@@ -46,7 +46,7 @@
                             </thead>
                             <tbody>
                                 <tr v-for="(order_list,index) in order_lists" :key="order_list.byr_order_id">
-                                    <td>{{order_list.byr_order_id}}</td>
+                                    <td>{{index+1}}</td>
                                     <td>{{order_list.receive_date}}</td>
                                     <td>{{order_list.expected_delivery_date}}</td>
                                     <td>{{order_list.category}}</td>
