@@ -23,14 +23,13 @@ import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 import { fabric } from 'fabric'
 // import VueKonva from 'vue-konva'
 import VueBreadcrumbs from 'vue-2-breadcrumbs';
-window.Fire =  new Vue();
+window.Fire = new Vue();
 Vue.use(VueRouter);
 Vue.use(VueBreadcrumbs, {
-    template:
-      '        <div v-if="$breadcrumbs.length" aria-label="breadcrumb" class="custm_brd_crumbs">\n' +
-      '             <router-link v-for="(crumb, key) in $breadcrumbs" v-if="crumb.meta.breadcrumb" :key="key" class="breadcrumb-item_custom btn btn-primary btn-arrow-right" :to="{ path: getPath(crumb) }">{{ getBreadcrumb(crumb.meta.breadcrumb) }}</router-link>' +
-      '        </div>'
-  });
+    template: '        <div v-if="$breadcrumbs.length" aria-label="breadcrumb" class="custm_brd_crumbs">\n' +
+        '             <router-link v-for="(crumb, key) in $breadcrumbs" v-if="crumb.meta.breadcrumb" :key="key" class="breadcrumb-item_custom btn btn-primary btn-arrow-right" :to="{ path: getPath(crumb) }">{{ getBreadcrumb(crumb.meta.breadcrumb) }}</router-link>' +
+        '        </div>'
+});
 // Install BootstrapVue
 Vue.use(BootstrapVue)
     //     // Optionally install the BootstrapVue icon components plugin
