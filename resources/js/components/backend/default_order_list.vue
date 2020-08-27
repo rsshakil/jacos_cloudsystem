@@ -1,5 +1,5 @@
 <template>
-    <div class="row">
+    <div class="row" v-can="['byr_view']">
                 <div class="col-12">
                     <h4 class="top_title text-center" style="margin-top:10px;">発注データ確認</h4>
                 </div>
@@ -80,7 +80,7 @@ export default {
   methods: {
     //get Table data
     get_all_order(){
-        axios.get(this.BASE_URL +"api/byrorders ").then((data) => {
+        axios.get(this.BASE_URL +"api/get_byr_order_list/"+Globals.user_info_id).then((data) => {
             this.order_lists = data.data.order_list;
             this.byr_buyer_lists = data.data.byr_buyer_list;
         });

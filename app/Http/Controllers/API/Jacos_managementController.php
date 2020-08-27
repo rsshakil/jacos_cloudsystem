@@ -9,6 +9,7 @@ use App\adm_user_details;
 use App\byr_buyer;
 use App\slr_seller;
 use App\cmn_companies_user;
+use App\cmn_company;
 // use Auth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -30,6 +31,24 @@ class Jacos_managementController extends Controller
         ->select('byr_buyers.super_code','cmn_companies.jcode', 'cmn_companies.company_name','cmn_companies.cmn_company_id','byr_buyers.byr_buyer_id')
         ->groupBy('cmn_companies.cmn_company_id')
         ->get();
+        return response()->json(['company_list'=>$result]);
+    }
+    public function get_all_byr_company_list($adm_user_id)
+    {
+        $authUser=User::find($adm_user_id);
+        if(!$authUser->hasRole('Super Admin')){
+            $cmn_company_info = cmn_companies_user::where('adm_user_id',$adm_user_id)->first();
+            $cmn_company_id = $cmn_company_info->cmn_company_id;
+        }
+       
+        $result = DB::table('cmn_companies')
+        ->join('byr_buyers', 'byr_buyers.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
+        ->select('byr_buyers.super_code','cmn_companies.jcode', 'cmn_companies.company_name','cmn_companies.cmn_company_id','byr_buyers.byr_buyer_id')
+        ->groupBy('cmn_companies.cmn_company_id');
+        if(!$authUser->hasRole('Super Admin')){
+            $result = $result->where('cmn_companies.cmn_company_id',$cmn_company_id);
+        }
+        $result=$result->get();
         return response()->json(['company_list'=>$result]);
     }
 
@@ -98,11 +117,20 @@ class Jacos_managementController extends Controller
         //
     }
 
-    public function slr_management(){
+    public function slr_management($adm_user_id){
+        $authUser=User::find($adm_user_id);
+        if(!$authUser->hasRole('Super Admin')){
+            $cmn_company_info = cmn_companies_user::where('adm_user_id',$adm_user_id)->first();
+            $cmn_company_id = $cmn_company_info->cmn_company_id;
+        }
+        
         $result = DB::table('cmn_companies')
         ->join('slr_sellers', 'slr_sellers.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
-        ->groupBy('cmn_companies.cmn_company_id')
-        ->get();
+        ->groupBy('cmn_companies.cmn_company_id');
+        if(!$authUser->hasRole('Super Admin')){
+            $result = $result->where('cmn_companies.cmn_company_id',$cmn_company_id);
+        }
+        $result= $result->get();
         return response()->json(['slr_list'=>$result]);
     }
 
@@ -110,8 +138,7 @@ class Jacos_managementController extends Controller
         $this->validate($request,[
             'name' => 'required|string|max:191',
             'email' => 'required|string|email|max:191|unique:adm_users',
-            'password' => 'required|string|min:6',
-            'super_code' => 'required|string|min:3',
+            'password' => 'required|string|min:6'
         ]);
 
         $name = $request->name;
@@ -134,7 +161,8 @@ class Jacos_managementController extends Controller
             $user_details->user_id = $last_user_id;
             $user_details->save();
             $users = User::findOrFail($last_user_id);
-            byr_buyer::insert(['cmn_company_id'=>$cmn_company_id,'super_code'=>$super_code]);
+            $users->assignRole('Byr');
+            // byr_buyer::insert(['cmn_company_id'=>$cmn_company_id,'super_code'=>$super_code]);
             cmn_companies_user::insert(['cmn_company_id'=>$cmn_company_id,'adm_user_id'=>$last_user_id]);
 
             return response()->json(['title'=>"Created!",'message' =>"created", 'class_name' => 'success']);
@@ -169,10 +197,29 @@ class Jacos_managementController extends Controller
             $user_details->user_id = $last_user_id;
             $user_details->save();
             $users = User::findOrFail($last_user_id);
-            slr_seller::insert(['cmn_company_id'=>$cmn_company_id]);
+            $users->assignRole('Slr');
+            // slr_seller::insert(['cmn_company_id'=>$cmn_company_id]);
             cmn_companies_user::insert(['cmn_company_id'=>$cmn_company_id,'adm_user_id'=>$last_user_id]);
             return response()->json(['title'=>"Created!",'message' =>"created", 'class_name' => 'success']);
         }
 
+    }
+
+    public function byr_company_create(Request $request){
+        $this->validate($request,[
+            'company_name' => 'required|string|max:191',
+            'super_code' => 'required|string|max:20',
+            'jcode' => 'required|string|min:3',
+            'postal_code' => 'required|string|min:3',
+            'address' => 'required|string|min:3',
+        ]);
+        $cmn_company_id = cmn_company::insertGetId(['company_name'=>$request->company_name,'jcode'=>$request->jcode,'postal_code'=>$request->postal_code,'address'=>$request->address]);
+        byr_buyer::insert(['cmn_company_id'=>$cmn_company_id,'super_code'=>$request->super_code]);
+        return response()->json(['title'=>"Created!",'message' =>"created", 'class_name' => 'success']);
+    }
+
+    public function slr_management_test(){
+        echo '<pre>';
+        print_r(Auth::user());
     }
 }

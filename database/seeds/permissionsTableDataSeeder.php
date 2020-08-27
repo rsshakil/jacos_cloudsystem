@@ -163,6 +163,26 @@ class permissionsTableDataSeeder extends Seeder
                 'name' => 'dashboard_view',
                 'guard_name' => 'web',
                 'is_system' => 1,
+            ],
+            [
+                'name' => 'slr_view',
+                'guard_name' => 'web',
+                'is_system' => 1,
+            ],
+            [
+                'name' => 'byr_view',
+                'guard_name' => 'web',
+                'is_system' => 1,
+            ],
+            [
+                'name' => 'company_create',
+                'guard_name' => 'web',
+                'is_system' => 1,
+            ],
+            [
+                'name' => 'add_company_users',
+                'guard_name' => 'web',
+                'is_system' => 1,
             ]
         );
         Permission::insert($permission_array);

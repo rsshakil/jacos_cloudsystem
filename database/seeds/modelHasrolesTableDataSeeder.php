@@ -24,6 +24,21 @@ class modelHasrolesTableDataSeeder extends Seeder
         $user_user = User::findOrFail($this->user_search('Jacos User'));
         $user_user->assignRole('User');
 
+        $user_user = User::findOrFail($this->user_search('Byr1 User'));
+        $user_user->assignRole('Byr');
+
+        $user_user = User::findOrFail($this->user_search('Slr1 User'));
+        $user_user->assignRole('Slr');
+
+        $user_user = User::findOrFail($this->user_search('Slr2 User'));
+        $user_user->assignRole('Slr');
+
+        $user_user = User::findOrFail($this->user_search('Slr3 User'));
+        $user_user->assignRole('Slr');
+
+        $user_user = User::findOrFail($this->user_search('Slr4 User'));
+        $user_user->assignRole('Slr');
+
 
 
         // $user_user = User::findOrFail($this->user_search('Chairman'));
