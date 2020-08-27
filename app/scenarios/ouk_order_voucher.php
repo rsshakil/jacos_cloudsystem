@@ -55,6 +55,9 @@ class ouk_order_voucher extends Model
                 $nested_value['cost_unit_price']=intval($nested_value['cost_unit_price']);
                 if ($nested_value['order_quantity']!=$nested_value['confirm_quantity']) {
                     $nested_value['confirm_quantity']=intval($nested_value['confirm_quantity']);
+                    if ($nested_value['confirm_quantity']==0) {
+                        $nested_value['confirm_quantity']="";
+                    }
                 }else{
                     $nested_value['confirm_quantity']="";
                 }
