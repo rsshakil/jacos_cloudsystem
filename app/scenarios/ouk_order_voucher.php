@@ -58,13 +58,14 @@ class ouk_order_voucher extends Model
                 }else{
                     $nested_value['confirm_quantity']="";
                 }
+                $nested_value['center_code']="";
+                $nested_value['center_name']="";
                 $other_info=\json_decode($nested_value['other_info']);
-                if ($other_info->center_flg==1) {
-                    $nested_value['center_code']=$other_info->center_code;
-                    $nested_value['center_name']=$other_info->center_name;
-                }else{
-                    $nested_value['center_code']="";
-                    $nested_value['center_name']="";
+                if (!empty($other_info)) {
+                    if ($other_info->center_flg==1) {
+                        $nested_value['center_code']=$other_info->center_code;
+                        $nested_value['center_name']=$other_info->center_name;
+                    }
                 }
                 $nested_value['other_info']=$other_info;
                 $single_info[$key2]=$nested_value;
