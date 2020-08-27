@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-can="['slr_view']">
     <div class="row">
                 <div class="col-12">
                     <h4 class="top_title text-center" style="margin-top:10px;">問屋管理</h4>
@@ -69,7 +69,7 @@
       <!-- <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
       <div class="modal-body">-->
-      <div class="panel-body add_item_body">
+      <div class="panel-body add_item_body" v-can="['company_create']">
             <form>
   <div class="form-group row">
     <label for="staticEmail" class="col-sm-4 col-form-label">問屋名</label>
@@ -134,7 +134,7 @@ export default {
           conosole.log('add new');
       },
        get_all_slr(){
-        axios.get(this.BASE_URL +"api/slr_management").then((data) => {
+        axios.get(this.BASE_URL +"api/slr_management/"+Globals.user_info_id).then((data) => {
             this.slr_lists = data.data.slr_list;
             console.log(this.slr_lists);
         });

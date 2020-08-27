@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-can="['byr_view']">
     <div class="row">
                 <div class="col-12">
                     <h4 class="top_title text-center" style="margin-top:10px;">小売管理</h4>
@@ -69,36 +69,41 @@
       <!-- <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
       <div class="modal-body">-->
-      <div class="panel-body add_item_body">
+      <div class="panel-body add_item_body" v-can="['company_create']">
             <form>
   <div class="form-group row">
     <label for="staticEmail" class="col-sm-4 col-form-label">小売名</label>
     <div class="col-sm-8">
-      <input type="text" class="form-control" id="staticEmail" value="スーパーバリュー">
+      <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('company_name') }" v-model="form.company_name">
+      <has-error :form="form" field="company_name"></has-error>
     </div>
   </div>
   <div class="form-group row">
     <label for="inputPassword" class="col-sm-4 col-form-label">Jコード</label>
     <div class="col-sm-8">
-      <input type="text" class="form-control" id="inputPassword" value="000001">
+      <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('jcode') }" v-model="form.jcode">
+      <has-error :form="form" field="jcode"></has-error>
     </div>
   </div>
   <div class="form-group row">
     <label for="inputPassword" class="col-sm-4 col-form-label">スーパーコード</label>
     <div class="col-sm-8">
-      <input type="text" class="form-control" id="inputPassword" value="JHG">
+      <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('super_code') }" v-model="form.super_code">
+      <has-error :form="form" field="super_code"></has-error>
     </div>
   </div>
   <div class="form-group row">
     <label for="inputPassword" class="col-sm-4 col-form-label">郵便番号</label>
     <div class="col-sm-8">
-      <input type="text" class="form-control" id="inputPassword" value="141-0021">
+      <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('postal_code') }" v-model="form.postal_code">
+      <has-error :form="form" field="postal_code"></has-error>
     </div>
   </div>
   <div class="form-group row">
     <label for="inputPassword" class="col-sm-4 col-form-label">住所</label>
     <div class="col-sm-8">
-      <input type="text" class="form-control" id="inputPassword" value="東京都品川区上大崎1-2-3">
+      <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('address') }" v-model="form.address">
+      <has-error :form="form" field="address"></has-error>
     </div>
   </div>
 </form>
@@ -114,18 +119,46 @@ export default {
   data() {
     return {
         'company_lists':{},
-        'add_cmn_company_modal':false
+        'add_cmn_company_modal':false,
+        form: new Form({
+                    company_name : '',
+                    jcode: '',
+                    super_code: '',
+                    postal_code: '',
+                    address: '',
+                })
     };
   },
   methods: {
       add_new_company_cmn(){
           this.add_cmn_company_modal=true;
+          this.form.reset();
       },
       save_new_company(){
-          conosole.log('add new');
+          console.log('add new');
+          this.form.post(this.BASE_URL +'api/byr_company_create')
+                .then((data)=>{
+                  this.add_cmn_company_modal = false;
+                    Fire.$emit('AfterCreateCompany');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Company added success',
+                        text: 'You have successfully added company'
+                    });
+                    console.log(data);
+                })
+                .catch((error)=>{
+                  console.log(error);
+                  Swal.fire({
+                      icon: 'warning',
+                      title: 'Invalid company info',
+                      text: 'check company info!'
+                  });
+                })
       },
        get_all_company(){
-        axios.get(this.BASE_URL +"api/jacosmanagement ").then((data) => {
+         console.log(Globals.user_info_id);
+        axios.get(this.BASE_URL +"api/get_all_byr_company_list/"+Globals.user_info_id).then((data) => {
             this.company_lists = data.data.company_list;
             console.log(this.company_lists);
         });
@@ -134,6 +167,9 @@ export default {
 
   created() {
       this.get_all_company();
+      Fire.$on("AfterCreateCompany", () => {
+        this.get_all_company();
+    });
       console.log('created jacos management log');
   },
   mounted() {

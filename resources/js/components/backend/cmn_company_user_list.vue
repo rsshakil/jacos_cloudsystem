@@ -74,13 +74,13 @@
       <has-error :form="form" field="name"></has-error>
     </div>
   </div>
-   <div class="form-group row">
+   <!--<div class="form-group row">
     <label for="name" class="col-sm-2 col-form-label">Super code</label>
     <div class="col-sm-10">
       <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('super_code') }" v-model="form.super_code">
       <has-error :form="form" field="super_code"></has-error>
     </div>
-  </div>
+  </div>-->
   <div class="form-group row">
     <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
     <div class="col-sm-10">
@@ -121,7 +121,6 @@ tabList,
                     name : '',
                     email: '',
                     password: '',
-                    super_code: '',
                     cmn_company_id: '',
                 })
     };

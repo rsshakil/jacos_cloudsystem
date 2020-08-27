@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Models\Permission;
 use App\adm_user_details;
+use App\cmn_companies_user;
+use App\byr_buyer;
+use App\slr_seller;
 use Auth;
 class User extends Authenticatable
 {
@@ -63,5 +66,41 @@ class User extends Authenticatable
             }
           }
         return $permissions;
-     }
+    }
+
+    public function getCompanyIdAttribute() 
+    {
+        $user_id= Auth::user()->id;
+        $company_info = cmn_companies_user::where('adm_user_id', $user_id)->first();
+        if($company_info){
+            $cmn_company_id = $company_info->cmn_company_id;
+        } else {
+          $cmn_company_id = null;
+        }        
+        return $cmn_company_id;
+    }
+
+    public function getUserTypeAttribute(){
+      $cmn_company_id= $this->getCompanyIdAttribute();
+      $buyer_list = byr_buyer::where('cmn_company_id',$cmn_company_id)->get();
+      $seller_list = slr_seller::where('cmn_company_id',$cmn_company_id)->get();
+      if($buyer_list){
+        return 'byr';
+      }else{
+        return 'slr';
+      }
+    }
+
+    public function getByrSlrIdAttribute() 
+    {
+        $cmn_company_id= $this->getCompanyIdAttribute();
+        $user_type= $this->getUserTypeAttribute();
+        if($user_type=='slr'){
+          $company_user_list = slr_seller::where('cmn_company_id',$cmn_company_id)->get();
+        }else{
+          $company_user_list = byr_buyer::where('cmn_company_id',$cmn_company_id)->get();
+        }
+        return $company_user_list;
+    }
+
 }

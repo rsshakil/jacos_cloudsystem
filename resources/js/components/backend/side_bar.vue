@@ -71,27 +71,27 @@
             <b-icon icon="person-circle" font-scale="1.2"></b-icon> {{myLang.manage_users}}
           </router-link>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" v-can="['byr_view']">
           <router-link to="/order_list" class="nav-link">
             <b-icon icon="card-checklist" font-scale="1.2"></b-icon> {{myLang.order_list}}
           </router-link>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" v-can="['byr_view']">
           <router-link to="/voucher_setting" class="nav-link">
             <b-icon icon="card-checklist" font-scale="1.2"></b-icon> Jacos Voucher Setting
           </router-link>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" v-can="['byr_view']">
           <router-link to="/jacos_management" class="nav-link">
             <b-icon icon="card-checklist" font-scale="1.2"></b-icon> 小売管理
           </router-link>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" v-can="['manage_user_menu']">
           <router-link to="/scenario_management" class="nav-link">
             <b-icon icon="card-checklist" font-scale="1.2"></b-icon> シナリオ管理
           </router-link>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" v-can="['slr_view']">
           <router-link to="/slr_management" class="nav-link">
             <b-icon icon="card-checklist" font-scale="1.2"></b-icon> 問屋管理
           </router-link>

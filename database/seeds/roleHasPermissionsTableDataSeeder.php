@@ -22,5 +22,9 @@ class roleHasPermissionsTableDataSeeder extends Seeder
        
         $role_user = Role::findByName('User');
         $role_user->givePermissionTo('dashboard_menu','dashboard_view','personal_profile_view','personal_user_update','personal_password_change','all_menu_show');
+        $role_user = Role::findByName('Slr');
+        $role_user->givePermissionTo('slr_view','add_company_users');
+        $role_user = Role::findByName('Byr');
+        $role_user->givePermissionTo('byr_view','add_company_users');
     }
 }
