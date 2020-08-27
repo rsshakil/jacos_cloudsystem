@@ -55,16 +55,20 @@ class ouk_order_voucher extends Model
                 $nested_value['cost_unit_price']=intval($nested_value['cost_unit_price']);
                 if ($nested_value['order_quantity']!=$nested_value['confirm_quantity']) {
                     $nested_value['confirm_quantity']=intval($nested_value['confirm_quantity']);
+                    if ($nested_value['confirm_quantity']==0) {
+                        $nested_value['confirm_quantity']="";
+                    }
                 }else{
                     $nested_value['confirm_quantity']="";
                 }
+                $nested_value['center_code']="";
+                $nested_value['center_name']="";
                 $other_info=\json_decode($nested_value['other_info']);
-                if ($other_info->center_flg==1) {
-                    $nested_value['center_code']=$other_info->center_code;
-                    $nested_value['center_name']=$other_info->center_name;
-                }else{
-                    $nested_value['center_code']="";
-                    $nested_value['center_name']="";
+                if (!empty($other_info)) {
+                    if ($other_info->center_flg==1) {
+                        $nested_value['center_code']=$other_info->center_code;
+                        $nested_value['center_name']=$other_info->center_name;
+                    }
                 }
                 $nested_value['other_info']=$other_info;
                 $single_info[$key2]=$nested_value;

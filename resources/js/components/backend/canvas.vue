@@ -108,6 +108,7 @@ data(){
     pointerX:100,
     pointerY:50,
     copiedObjects:[],
+    copiedObject:[],
   }
 },
 methods:{
@@ -144,14 +145,15 @@ methods:{
             var canvas=this.canvas;
             var activeObjects = canvas.getActiveObjects();
             if (activeObjects.length) {
-                if (confirm('Do you want to delete the selected item??')) {
+                // if (confirm('Do you want to delete the selected item??')) {
                     activeObjects.forEach(function(object) {
                         canvas.remove(object);
                     });
                 }
-            } else {
-                alert('Please select the drawing to delete')
-            }
+                this.obj_setting=0;
+            // } else {
+            //     alert('Please select the drawing to delete')
+            // }
           },
           deleteCanvas(cmn_pdf_canvas_id){
               this.init();
@@ -311,14 +313,6 @@ methods:{
                 return false;
             }
             var canData = this.canvasData();
-            // var objPosArray=[];
-            // (canData.objects).forEach(canObj => {
-            //   canObj.db_val=canObj.text
-            //   canObj.db_flg=1
-            //   objPosArray.push(canObj)
-            // });
-            // console.log(canData['objects']);
-            // return 0;
             if (!canData['objects'].length) {
                 alert("No canvas drown");
                 return false;
@@ -573,8 +567,68 @@ methods:{
               this.canvas.add(oText).setActiveObject(oText);
               this.canvas.renderAll();
           }
+      },
+      keyEventFunc(e){
+        if (e.keyCode == 46 || (e.ctrlKey && e.keyCode == 8)) {
+            this.deleteObjects();
+        } else if (e.ctrlKey && e.shiftKey && e.keyCode == 65) {
+            this.selectAllObjects()
+        }else if (e.ctrlKey && e.keyCode == 67) {
+            this.copyObject()
+        }else if (e.ctrlKey && e.keyCode == 86) {
+            this.pasteObject()
+        }
+      },
+      copyObject(){
+        console.log("Copy function");
+        // copy function start 
+        var canvas=this.canvas;
+        var _this=this;
+        _this.copiedObjects = [];
+        _this.copiedObject = [];
+        var active_objects=canvas.getActiveObjects();
+        var active_object=canvas.getActiveObject();
+        if(active_objects.length>0){
+          active_objects.forEach((element ,i) => {
+            var object = fabric.util.object.clone(element);
+            object.set("top", object.top+5);
+            object.set("left", object.left+5);
+            _this.copiedObjects[i] = object;
+            });
+        // }                    
+    }else if(active_object){
+        var object = fabric.util.object.clone(active_object);
+        object.set("top", object.top+5);
+        object.set("left", object.left+5);
+        _this.copiedObject = object;
+        _this.copiedObjects = [];
+    }
+        // Copy function End 
+      },
+      pasteObject(){
+        var canvas=this.canvas;
+        var _this=this;
+        console.log("Paste function");
+        if(_this.copiedObjects.length > 0){
+            for(var i in _this.copiedObjects){
+               canvas.add(_this.copiedObjects[i]);
+            }                    
+        }
+        else if(_this.copiedObject){
+            canvas.add(_this.copiedObject);
+            console.log(_this.copiedObject);
+        }
+        canvas.renderAll();  
+      },
+      selectAllObjects() {
+        var _this=this;
+          var selection = new fabric.ActiveSelection(this.canvas.getObjects(), { canvas: this.canvas });
+          _this.canvas.setActiveObject(selection);
+          _this.canvas.renderAll();
+          if (selection._objects.length) {
+            this.obj_setting=1;
+          }
       }
-        // }
       },
       created(){
         // this.canvasOpen();
@@ -612,7 +666,13 @@ methods:{
           this.canvas.on('mouse:up', (e) => {
             this.mouseUp(e)
           })
-          // console.log(this.canvas);
+          // this.canvas.__eventListeners('keyup', event => {
+          //   this.keyEventFunc(event);
+          // })
+          document.addEventListener('keyup', event => {
+            this.keyEventFunc(event);
+          })
+          console.log(this.canvas);
           // onKeyDownHandler(event)
     }
 }
