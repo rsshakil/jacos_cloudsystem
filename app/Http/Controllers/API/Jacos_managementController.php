@@ -43,7 +43,7 @@ class Jacos_managementController extends Controller
        
         $result = DB::table('cmn_companies')
         ->join('byr_buyers', 'byr_buyers.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
-        ->select('byr_buyers.super_code','cmn_companies.jcode', 'cmn_companies.company_name','cmn_companies.cmn_company_id','byr_buyers.byr_buyer_id')
+        ->select('byr_buyers.super_code','cmn_companies.*','byr_buyers.byr_buyer_id')
         ->groupBy('cmn_companies.cmn_company_id');
         if(!$authUser->hasRole('Super Admin')){
             $result = $result->where('cmn_companies.cmn_company_id',$cmn_company_id);
@@ -213,8 +213,13 @@ class Jacos_managementController extends Controller
             'postal_code' => 'required|string|min:3',
             'address' => 'required|string|min:3',
         ]);
-        $cmn_company_id = cmn_company::insertGetId(['company_name'=>$request->company_name,'jcode'=>$request->jcode,'postal_code'=>$request->postal_code,'address'=>$request->address]);
-        byr_buyer::insert(['cmn_company_id'=>$cmn_company_id,'super_code'=>$request->super_code]);
+        if($request->cmn_company_id!=null){
+            cmn_company::where('cmn_company_id',$request->cmn_company_id)->update(['company_name'=>$request->company_name,'jcode'=>$request->jcode,'postal_code'=>$request->postal_code,'address'=>$request->address]);
+            byr_buyer::where('cmn_company_id',$request->cmn_company_id)->update(['super_code'=>$request->super_code]);
+        }else{
+            $cmn_company_id = cmn_company::insertGetId(['company_name'=>$request->company_name,'jcode'=>$request->jcode,'postal_code'=>$request->postal_code,'address'=>$request->address]);
+            byr_buyer::insert(['cmn_company_id'=>$cmn_company_id,'super_code'=>$request->super_code]);
+        }
         return response()->json(['title'=>"Created!",'message' =>"created", 'class_name' => 'success']);
     }
 
@@ -222,13 +227,18 @@ class Jacos_managementController extends Controller
         $this->validate($request,[
             'company_name' => 'required|string|max:191',
             'phone' => 'required|string|max:20',
-            'fax_val' => 'required|string|max:20',
+            'fax' => 'required|string|max:20',
             'jcode' => 'required|string|min:3',
             'postal_code' => 'required|string|min:3',
             'address' => 'required|string|min:3',
         ]);
-        $cmn_company_id = cmn_company::insertGetId(['company_name'=>$request->company_name,'jcode'=>$request->jcode,'postal_code'=>$request->postal_code,'address'=>$request->address,'phone'=>$request->phone,'fax'=>$request->fax_val]);
+        if($request->cmn_company_id!=null){
+            cmn_company::where('cmn_company_id',$request->cmn_company_id)->update(['company_name'=>$request->company_name,'jcode'=>$request->jcode,'postal_code'=>$request->postal_code,'address'=>$request->address,'phone'=>$request->phone,'fax'=>$request->fax]);
+        }else{
+            $cmn_company_id = cmn_company::insertGetId(['company_name'=>$request->company_name,'jcode'=>$request->jcode,'postal_code'=>$request->postal_code,'address'=>$request->address,'phone'=>$request->phone,'fax'=>$request->fax]);
         slr_seller::insert(['cmn_company_id'=>$cmn_company_id]);
+        }
+        
         return response()->json(['title'=>"Created!",'message' =>"created", 'class_name' => 'success']);
     }
 

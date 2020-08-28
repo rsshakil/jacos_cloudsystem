@@ -71,6 +71,7 @@
       <div class="modal-body">-->
       <div class="panel-body add_item_body" v-can="['company_create']">
             <form>
+            <input type="hidden" v-model="form.cmn_company_id">
   <div class="form-group row">
     <label for="staticEmail" class="col-sm-4 col-form-label">問屋名</label>
     <div class="col-sm-8">
@@ -112,8 +113,8 @@
   <div class="form-group row">
     <label for="inputPassword" class="col-sm-4 col-form-label">FAX番号</label>
     <div class="col-sm-8">
-      <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('fax_val') }" v-model="form.fax_val">
-      <has-error :form="form" field="fax_val"></has-error>
+      <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('fax') }" v-model="form.fax">
+      <has-error :form="form" field="fax"></has-error>
 
     </div>
   </div>
@@ -132,12 +133,13 @@ export default {
         'slr_lists':{},
         'add_cmn_company_modal':false,
         form: new Form({
+          cmn_company_id:'',
                     company_name : '',
                     jcode: '',
                     postal_code: '',
                     address: '',
                     phone: '',
-                    fax_val: '',
+                    fax: '',
                 })
     };
   },
@@ -148,6 +150,9 @@ export default {
       },
       edit_slr_data(form_data){
         this.add_cmn_company_modal=true;
+
+                this.form.reset();
+                this.form.fill(form_data);
       },
       save_new_slr(){
           console.log('add new');
@@ -155,10 +160,17 @@ export default {
                 .then((data)=>{
                   this.add_cmn_company_modal = false;
                     Fire.$emit('AfterCreatesellerCompany');
+                    if(this.form.cmn_company_id!=''){
+                      var tittles = 'Company Update success';
+                      var msg_text = 'You have successfully updated company';
+                    }else{
+                      var tittles = 'Company added success';
+                      var msg_text = 'You have successfully added company';
+                    }
                     Swal.fire({
                         icon: 'success',
-                        title: 'Company added success',
-                        text: 'You have successfully added company'
+                        title: tittles,
+                        text: msg_text
                     });
                     console.log(data);
                 })

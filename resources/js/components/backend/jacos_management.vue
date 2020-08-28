@@ -43,13 +43,13 @@
                                <tr v-for="(company_list,index) in company_lists" :key="company_list.cmn_company_id">
                                     <td>{{index+1}}</td>
                                     <td>{{company_list.company_name}}</td>
-                                    <td>{{company_list.jcode}}</td>
+                                    <td>{{company_list.super_code}}</td>
                                     <td>稼働中</td>
                                     <td><router-link :to="{name:'cmn_company_user_list',params:{cmn_company_id:company_list.cmn_company_id} }" class="btn btn-primary">ユーザー管理</router-link></td>
                                     <td><button class="btn btn-info">店舗管理</button></td>
                                     <td><router-link :to="{name:'cmn_company_partner_list',params:{cmn_company_id:company_list.cmn_company_id} }" class="btn btn-danger">取引先管理</router-link></td>
                                     <td><button class="btn btn-success">発注データ</button></td>
-                                    <td><router-link :to="{name:'jacos_management_edit',params:{cmn_company_id:company_list.cmn_company_id} }"  class="btn btn-primary">詳細</router-link></td>
+                                    <td><button @click="edit_byr_data(company_list)" class="btn btn-primary">詳細</button></td>
                                 </tr>
                                 
                             </tbody>
@@ -71,6 +71,7 @@
       <div class="modal-body">-->
       <div class="panel-body add_item_body" v-can="['company_create']">
             <form>
+            <input type="hidden" v-model="form.cmn_company_id">
   <div class="form-group row">
     <label for="staticEmail" class="col-sm-4 col-form-label">小売名</label>
     <div class="col-sm-8">
@@ -120,7 +121,9 @@ export default {
     return {
         'company_lists':{},
         'add_cmn_company_modal':false,
+        editmode: false,
         form: new Form({
+                    cmn_company_id:'',
                     company_name : '',
                     jcode: '',
                     super_code: '',
@@ -132,7 +135,14 @@ export default {
   methods: {
       add_new_company_cmn(){
           this.add_cmn_company_modal=true;
+          this.editmode = false;
           this.form.reset();
+      },
+      edit_byr_data(form_data){
+        this.add_cmn_company_modal=true;
+        this.editmode = true;
+                this.form.reset();
+                this.form.fill(form_data);
       },
       save_new_company(){
           console.log('add new');
@@ -140,10 +150,17 @@ export default {
                 .then((data)=>{
                   this.add_cmn_company_modal = false;
                     Fire.$emit('AfterCreateCompany');
+                    if(this.form.cmn_company_id!=''){
+                      var tittles = 'Company Update success';
+                      var msg_text = 'You have successfully updated company';
+                    }else{
+                      var tittles = 'Company added success';
+                      var msg_text = 'You have successfully added company';
+                    }
                     Swal.fire({
                         icon: 'success',
-                        title: 'Company added success',
-                        text: 'You have successfully added company'
+                        title: tittles,
+                        text: msg_text
                     });
                     console.log(data);
                 })
