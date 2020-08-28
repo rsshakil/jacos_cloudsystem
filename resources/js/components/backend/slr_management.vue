@@ -74,37 +74,47 @@
   <div class="form-group row">
     <label for="staticEmail" class="col-sm-4 col-form-label">問屋名</label>
     <div class="col-sm-8">
-      <input type="text" class="form-control" id="staticEmail" value="イトーヨーカドー">
+      <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('company_name') }" v-model="form.company_name">
+      <has-error :form="form" field="company_name"></has-error>
     </div>
   </div>
   <div class="form-group row">
     <label for="inputPassword" class="col-sm-4 col-form-label">Jコード</label>
     <div class="col-sm-8">
-      <input type="text" class="form-control" id="inputPassword" value="000001">
+      <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('jcode') }" v-model="form.jcode">
+      <has-error :form="form" field="jcode"></has-error>
+
     </div>
   </div>
   <div class="form-group row">
     <label for="inputPassword" class="col-sm-4 col-form-label">郵便番号</label>
     <div class="col-sm-8">
-      <input type="text" class="form-control" id="inputPassword" value="JHG">
+      <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('postal_code') }" v-model="form.postal_code">
+      <has-error :form="form" field="postal_code"></has-error>
     </div>
   </div>
   <div class="form-group row">
     <label for="inputPassword" class="col-sm-4 col-form-label">住所</label>
     <div class="col-sm-8">
-      <input type="text" class="form-control" id="inputPassword" value="141-0021">
+      <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('address') }" v-model="form.address">
+      <has-error :form="form" field="address"></has-error>
+
     </div>
   </div>
   <div class="form-group row">
     <label for="inputPassword" class="col-sm-4 col-form-label">電話番号</label>
     <div class="col-sm-8">
-      <input type="text" class="form-control" id="inputPassword" value="東京都品川区上大崎1-2-3">
+      <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('phone') }" v-model="form.phone">
+      <has-error :form="form" field="phone"></has-error>
+
     </div>
   </div>
   <div class="form-group row">
     <label for="inputPassword" class="col-sm-4 col-form-label">FAX番号</label>
     <div class="col-sm-8">
-      <input type="text" class="form-control" id="inputPassword" value="東京都品川区上大崎1-2-3">
+      <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('fax_val') }" v-model="form.fax_val">
+      <has-error :form="form" field="fax_val"></has-error>
+
     </div>
   </div>
 </form>
@@ -120,18 +130,46 @@ export default {
   data() {
     return {
         'slr_lists':{},
-        'add_cmn_company_modal':false
+        'add_cmn_company_modal':false,
+        form: new Form({
+                    company_name : '',
+                    jcode: '',
+                    postal_code: '',
+                    address: '',
+                    phone: '',
+                    fax_val: '',
+                })
     };
   },
   methods: {
       add_new_company_cmn(){
+        this.form.reset();
           this.add_cmn_company_modal=true;
       },
       edit_slr_data(form_data){
         this.add_cmn_company_modal=true;
       },
       save_new_slr(){
-          conosole.log('add new');
+          console.log('add new');
+          this.form.post(this.BASE_URL +'api/slr_company_create')
+                .then((data)=>{
+                  this.add_cmn_company_modal = false;
+                    Fire.$emit('AfterCreatesellerCompany');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Company added success',
+                        text: 'You have successfully added company'
+                    });
+                    console.log(data);
+                })
+                .catch((error)=>{
+                  console.log(error);
+                  Swal.fire({
+                      icon: 'warning',
+                      title: 'Invalid company info',
+                      text: 'check company info!'
+                  });
+                })
       },
        get_all_slr(){
         axios.get(this.BASE_URL +"api/slr_management/"+Globals.user_info_id).then((data) => {
@@ -143,6 +181,9 @@ export default {
 
   created() {
       this.get_all_slr();
+      Fire.$on("AfterCreatesellerCompany", () => {
+        this.get_all_slr();
+    });
       console.log('created jacos management log');
   },
   mounted() {

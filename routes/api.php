@@ -84,3 +84,4 @@ Route::post('/update_shipment_detail', 'API\Byr_orderController@update_shipment_
 Route::post('/byr_buyer_user_create', 'API\Jacos_managementController@byr_buyer_user_create');
 Route::post('/slr_seller_user_create', 'API\Jacos_managementController@slr_seller_user_create');
 Route::post('/byr_company_create', 'API\Jacos_managementController@byr_company_create');
+Route::post('/slr_company_create', 'API\Jacos_managementController@slr_company_create');

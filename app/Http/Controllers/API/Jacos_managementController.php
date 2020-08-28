@@ -218,6 +218,20 @@ class Jacos_managementController extends Controller
         return response()->json(['title'=>"Created!",'message' =>"created", 'class_name' => 'success']);
     }
 
+    public function slr_company_create(Request $request){
+        $this->validate($request,[
+            'company_name' => 'required|string|max:191',
+            'phone' => 'required|string|max:20',
+            'fax_val' => 'required|string|max:20',
+            'jcode' => 'required|string|min:3',
+            'postal_code' => 'required|string|min:3',
+            'address' => 'required|string|min:3',
+        ]);
+        $cmn_company_id = cmn_company::insertGetId(['company_name'=>$request->company_name,'jcode'=>$request->jcode,'postal_code'=>$request->postal_code,'address'=>$request->address,'phone'=>$request->phone,'fax'=>$request->fax_val]);
+        slr_seller::insert(['cmn_company_id'=>$cmn_company_id]);
+        return response()->json(['title'=>"Created!",'message' =>"created", 'class_name' => 'success']);
+    }
+
     public function slr_management_test(){
         echo '<pre>';
         print_r(Auth::user());
