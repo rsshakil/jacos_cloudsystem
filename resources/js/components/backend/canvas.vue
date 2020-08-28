@@ -8,7 +8,7 @@
                 <b-button variant="primary" @click="printCanvas">Print</b-button>
                 <input class="btn btn-info" @change="bgImageChange" type="file">
                 <b-button variant="warning" @click="clearCanvasObjects">Clear canvas</b-button>
-                <b-button variant="warning" @click="duplicateObjects">Duplicate</b-button>
+                <!-- <b-button variant="warning" @click="duplicateObjects">Duplicate</b-button> -->
                 <br>
                 <br>
                 <div class="row">
@@ -569,6 +569,7 @@ methods:{
           }
       },
       keyEventFunc(e){
+        // console.log(e);
         if (e.keyCode == 46 || (e.ctrlKey && e.keyCode == 8)) {
             this.deleteObjects();
         } else if (e.ctrlKey && e.shiftKey && e.keyCode == 65) {
@@ -577,48 +578,83 @@ methods:{
             this.copyObject()
         }else if (e.ctrlKey && e.keyCode == 86) {
             this.pasteObject()
+        }else if (e.ctrlKey && e.keyCode == 90) {
+          console.log(e);
+          this.undo();
+            // this.pasteObject()
         }
       },
+      undo() {
+        var canvas=this.canvas;
+        var _this=this;
+        // https://bountify.co/adding-keyboard-functions-to-undo-redo-functionality-on-fabric-js
+        // https://jsfiddle.net/gableroux/tv29xfkg/10/
+        // if(canvas.mementoConfig.undoFinishedStatus){
+        //     if(canvas.mementoConfig.currentStateIndex === -1){
+        //         canvas.mementoConfig.undoStatus = false;
+        //     }
+        //     else{
+        //         if (canvas.mementoConfig.canvasState.length >= 1) {
+        //             canvas.mementoConfig.undoFinishedStatus = 0;
+        //             if(canvas.mementoConfig.currentStateIndex != 0){
+        //                 canvas.mementoConfig.undoStatus = true;
+        //                 loadJsonIntoCanvas(JSON.parse(canvas.mementoConfig.canvasState[canvas.mementoConfig.currentStateIndex-1]).objects, canvas, true);
+        //                 canvas.mementoConfig.undoStatus = false;
+        //                 canvas.mementoConfig.currentStateIndex -= 1;
+        //                 // $('#undo').prop('disabled', false);
+        //                 if(canvas.mementoConfig.currentStateIndex !== canvas.mementoConfig.canvasState.length-1){
+        //                     // $('#redo').prop('disabled', false);
+        //                 }
+        //                 canvas.mementoConfig.undoFinishedStatus = 1;
+        //             }
+        //             else if(canvas.mementoConfig.currentStateIndex === 0){
+        //                 clearCanvas(canvas);
+        //                 canvas.mementoConfig.undoFinishedStatus = 1;
+        //                 // $('#undo').prop('disabled', true);
+        //                 // $('#redo').prop('disabled', false);
+        //                 canvas.mementoConfig.currentStateIndex -= 1;
+        //             }
+        //         }
+        //     }
+        // }
+    },
       copyObject(){
         console.log("Copy function");
         // copy function start 
         var canvas=this.canvas;
         var _this=this;
-        _this.copiedObjects = [];
-        _this.copiedObject = [];
-        var active_objects=canvas.getActiveObjects();
-        var active_object=canvas.getActiveObject();
-        if(active_objects.length>0){
-          active_objects.forEach((element ,i) => {
-            var object = fabric.util.object.clone(element);
-            object.set("top", object.top+5);
-            object.set("left", object.left+5);
-            _this.copiedObjects[i] = object;
-            });
-        // }                    
-    }else if(active_object){
-        var object = fabric.util.object.clone(active_object);
-        object.set("top", object.top+5);
-        object.set("left", object.left+5);
-        _this.copiedObject = object;
-        _this.copiedObjects = [];
-    }
+        canvas.getActiveObject().clone(function(cloned) {
+          _this.copiedObjects = cloned;
+        });
         // Copy function End 
       },
       pasteObject(){
+        console.log(this.copiedObjects);
         var canvas=this.canvas;
         var _this=this;
-        console.log("Paste function");
-        if(_this.copiedObjects.length > 0){
-            for(var i in _this.copiedObjects){
-               canvas.add(_this.copiedObjects[i]);
-            }                    
+        _this.copiedObjects.clone(function(clonedObj) {
+        canvas.discardActiveObject();
+        clonedObj.set({
+          // left: clonedObj.left + 10,
+          top: clonedObj.top + 30,
+          evented: true,
+        });
+        if (clonedObj.type === 'activeSelection') {
+          // active selection needs a reference to the canvas.
+          clonedObj.canvas = canvas;
+          clonedObj.forEachObject(function(obj) {
+            canvas.add(obj);
+          });
+          // this should solve the unselectability
+          clonedObj.setCoords();
+        } else {
+          canvas.add(clonedObj);
         }
-        else if(_this.copiedObject){
-            canvas.add(_this.copiedObject);
-            console.log(_this.copiedObject);
-        }
-        canvas.renderAll();  
+        _this.copiedObjects.top += 30;
+        // _this.copiedObjects.left += 10;
+        canvas.setActiveObject(clonedObj);
+        canvas.requestRenderAll();
+      });
       },
       selectAllObjects() {
         var _this=this;
