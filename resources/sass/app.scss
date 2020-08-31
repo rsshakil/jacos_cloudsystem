@@ -104,6 +104,7 @@ input:checked+.slider:before {
 .custm_brd_crumbs {
     width: 500px;
     padding-top: 15px;
+    overflow: hidden;
 }
 .custm_brd_crumbs:first-child .btn-arrow-right:before{
     background-color:red;
@@ -242,3 +243,9 @@ input:checked+.slider:before {
     font-weight: 600;
 }
 /*custom tab*/
+.nav-link[data-toggle].collapsed:after {
+    content: "▾";
+}
+.nav-link[data-toggle]:not(.collapsed):after {
+    content: "▴";
+}

@@ -11043,6 +11043,7 @@ input:checked + .slider:before {
 .custm_brd_crumbs {
   width: 500px;
   padding-top: 15px;
+  overflow: hidden;
 }
 
 .custm_brd_crumbs:first-child .btn-arrow-right:before {
@@ -11177,4 +11178,12 @@ input:checked + .slider:before {
 }
 
 /*custom tab*/
+
+.nav-link[data-toggle].collapsed:after {
+  content: "\25BE";
+}
+
+.nav-link[data-toggle]:not(.collapsed):after {
+  content: "\25B4";
+}
 

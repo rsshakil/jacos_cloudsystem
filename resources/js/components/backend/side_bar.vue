@@ -12,7 +12,7 @@
               id="main-logo"
               class="d-inline-block align-top mr-1"
               style="max-width: 25%;"
-              src="/jcs/public/backend/images/logo/jacos_logo.png"
+              src="/public/backend/images/logo/jacos_logo.png"
               alt="Jacos Dashboard"
             />
             <span class="d-none d-md-inline ml-1">{{myLang.heading}}</span>
@@ -40,12 +40,19 @@
     </form>
     <div class="nav-wrapper">
       <ul class="nav flex-column">
+
+
+<li class="nav-item" v-can="['dashboard_menu']">
+          <a class="nav-link collapsed" href="#dashboardmenu1" data-toggle="collapse" data-target="#dashboardmenu1"><b-icon icon="gear-fill" font-scale="1.2"></b-icon> {{myLang.dashboard_text}}</a>
+          <div class="collapse" id="dashboardmenu1" aria-expanded="false">
+            <ul class="flex-column pl-2 nav">
+
+
         <li class="nav-item" v-can="['dashboard_menu']">
           <router-link to="/home" class="nav-link">
-            <b-icon icon="house-fill" font-scale="1.2"></b-icon> {{myLang.dashboard_text}}
+            <b-icon icon="house-fill" font-scale="1.2"></b-icon> Home
           </router-link>
         </li>
-        <!-- v-if="can('role_menu')" -->
         <li class="nav-item" v-can="['role_menu']">
           <router-link to="/role" class="nav-link">
             <b-icon icon="person-check-fill" font-scale="1.2"></b-icon> {{myLang.role_management}}
@@ -71,14 +78,26 @@
             <b-icon icon="person-circle" font-scale="1.2"></b-icon> {{myLang.manage_users}}
           </router-link>
         </li>
+</ul>
+</div>
+</li>
+
+
+
+<li class="nav-item" v-can="['byr_view','slr_view']">
+          <a class="nav-link collapsed" href="#byrslrmenu1" data-toggle="collapse" data-target="#byrslrmenu1"><b-icon icon="grid-fill" font-scale="1.2"></b-icon> 管理</a>
+          <div class="collapse" id="byrslrmenu1" aria-expanded="false">
+            <ul class="flex-column pl-2 nav">
+
+
         <li class="nav-item" v-can="['byr_view']">
           <router-link to="/order_list" class="nav-link">
-            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> {{myLang.order_list}}
+            <b-icon icon="receipt" font-scale="1.2"></b-icon> {{myLang.order_list}}
           </router-link>
         </li>
         <li class="nav-item" v-can="['byr_view']">
           <router-link to="/voucher_setting" class="nav-link">
-            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> Jacos Voucher Setting
+            <b-icon icon="tools" font-scale="1.2"></b-icon> Jacos Voucher Setting
           </router-link>
         </li>
         <li class="nav-item" v-can="['byr_view']">
@@ -91,10 +110,14 @@
             <b-icon icon="card-checklist" font-scale="1.2"></b-icon> シナリオ管理
           </router-link>
         </li>
+
         <li class="nav-item" v-can="['slr_view']">
           <router-link to="/slr_management" class="nav-link">
             <b-icon icon="card-checklist" font-scale="1.2"></b-icon> 問屋管理
           </router-link>
+        </li>
+        </ul>
+        </div>
         </li>
         <!-- <li class="nav-item">
           <router-link to="/shipment_list" class="nav-link">
