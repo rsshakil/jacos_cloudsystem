@@ -33,12 +33,13 @@ class CreateByrOrderDetailsTable extends Migration
             $table->integer('inputs')->unsigned()->default('1')->comment('inputs');
             $table->string('size', 50)->comment('size')->nullable();
             $table->string('color', 50)->comment('color')->nullable();
-            $table->enum('order_inputs', ['ケース', 'ボール', 'バラ'])->default('ケース')->comment('order inputs');
-            $table->decimal('order_quantity', 10, 1)->default('0.0')->comment('order quantity');
+            $table->enum('order_lot_inputs', ['ケース', 'ボール', 'バラ'])->default('ケース')->comment('order lot inputs');
+            $table->decimal('order_lot_quantity', 10, 1)->default('0.0')->comment('order lot quantity');
+            $table->decimal('order_unit_quantity', 10, 1)->default('0.0')->comment('order unit quantity');
             $table->date('order_date')->comment('order date')->nullable();
             $table->date('expected_delivery_date')->comment('expected delivery date')->nullable();
             $table->string('sale_category', 50)->comment('sale_category')->nullable();
-            $table->decimal('cost_unit_price', 10, 2)->default('0.00')->comment('order quantity');
+            $table->decimal('cost_unit_price', 10, 2)->default('0.00')->comment('cost unit price');
             $table->integer('cost_price')->unsigned()->default('0')->comment('cost price');
             $table->mediumInteger('selling_unit_price')->unsigned()->default('0')->comment('selling unit price');
             $table->integer('selling_price')->unsigned()->default('0')->comment('selling price');
