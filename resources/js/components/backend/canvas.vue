@@ -570,19 +570,66 @@ methods:{
       },
       keyEventFunc(e){
         // console.log(e);
-        if (e.keyCode == 46 || (e.ctrlKey && e.keyCode == 8)) {
+        // if (e.keyCode == 46 || (e.ctrlKey && e.keyCode == 8)) {
+        if (e.keyCode == 46 || e.keyCode == 8) {
             this.deleteObjects();
-        } else if (e.ctrlKey && e.shiftKey && e.keyCode == 65) {
+        } else if (e.ctrlKey && e.keyCode == 65) {
             this.selectAllObjects()
         }else if (e.ctrlKey && e.keyCode == 67) {
             this.copyObject()
         }else if (e.ctrlKey && e.keyCode == 86) {
             this.pasteObject()
+        }else if (e.keyCode == 37) {
+            this.leftButton()
+        }else if (e.keyCode == 38) {
+            this.upButton()
+        }else if (e.keyCode == 39) {
+            this.rightButton()
+        }else if (e.keyCode == 40) {
+            this.downButton()
         }else if (e.ctrlKey && e.keyCode == 90) {
-          console.log(e);
-          this.undo();
-            // this.pasteObject()
+            this.undo();
         }
+      },
+      leftButton(){
+        var activeObjects=this.canvas.getActiveObjects();
+        activeObjects.forEach(element => {
+          element.set({
+          left: element.left - 1,
+          evented: true,
+        });
+        });
+        this.canvas.requestRenderAll();
+      },
+      upButton(){
+        var activeObjects=this.canvas.getActiveObjects();
+        activeObjects.forEach(element => {
+          element.set({
+          top: element.top - 1,
+          evented: true,
+        });
+        });
+        this.canvas.requestRenderAll();
+      },
+      rightButton(){
+        var activeObjects=this.canvas.getActiveObjects();
+        activeObjects.forEach(element => {
+          element.set({
+          left: element.left + 1,
+          evented: true,
+        });
+        });
+        this.canvas.requestRenderAll();
+      },
+      downButton(){
+        var activeObjects=this.canvas.getActiveObjects();
+        activeObjects.forEach(element => {
+          element.set({
+          top: element.top + 1,
+          evented: true,
+        });
+        });
+        this.canvas.requestRenderAll();
       },
       undo() {
         var canvas=this.canvas;
@@ -623,15 +670,24 @@ methods:{
         // copy function start 
         var canvas=this.canvas;
         var _this=this;
-        canvas.getActiveObject().clone(function(cloned) {
+        var activeObject=canvas.getActiveObject();
+        if (activeObject) {
+          activeObject.clone(function(cloned) {
           _this.copiedObjects = cloned;
         });
+        }
         // Copy function End 
       },
       pasteObject(){
-        console.log(this.copiedObjects);
+        // console.log(this.copiedObjects);
+        // console.log((this.copiedObjects).aCoords);
         var canvas=this.canvas;
         var _this=this;
+        // if ((this.copiedObjects).length>0) {
+        //   console.log(this.copiedObjects);
+        // }else{
+        //   console.log("No ");
+        // }
         _this.copiedObjects.clone(function(clonedObj) {
         canvas.discardActiveObject();
         clonedObj.set({
@@ -664,7 +720,7 @@ methods:{
           if (selection._objects.length) {
             this.obj_setting=1;
           }
-      }
+      },
       },
       created(){
         // this.canvasOpen();
@@ -702,13 +758,24 @@ methods:{
           this.canvas.on('mouse:up', (e) => {
             this.mouseUp(e)
           })
-          // this.canvas.__eventListeners('keyup', event => {
-          //   this.keyEventFunc(event);
-          // })
-          document.addEventListener('keyup', event => {
-            this.keyEventFunc(event);
+
+          document.addEventListener('keyup', e => {
+            this.keyEventFunc(e);
           })
-          console.log(this.canvas);
+          document.addEventListener('keydown', function(e) {
+              if (e.keyCode == 46 || e.keyCode == 8 || 
+              (e.ctrlKey && e.keyCode == 65) || (e.ctrlKey && e.keyCode == 67) || 
+              (e.ctrlKey && e.keyCode == 86) || e.keyCode == 37 || e.keyCode == 38 || 
+              e.keyCode == 39 || e.keyCode == 40 || (e.ctrlKey && e.keyCode == 90)) {
+                // var activeObjects=this.canvas.getActiveObjects();
+                // if (activeObjects) {
+                  e.preventDefault();
+                // }
+              }
+              // if (e.keyCode == 46 || (e.ctrlKey && e.keyCode == 8)) {
+              // } else if (e.ctrlKey && e.shiftKey && e.keyCode == 65) {
+          });
+          // console.log(this.canvas);
           // onKeyDownHandler(event)
     }
 }
