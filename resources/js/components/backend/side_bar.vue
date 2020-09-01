@@ -12,7 +12,7 @@
               id="main-logo"
               class="d-inline-block align-top mr-1"
               style="max-width: 25%;"
-              src="/public/backend/images/logo/jacos_logo.png"
+              :src="BASE_URL+'/public/backend/images/logo/jacos_logo.png'"
               alt="Jacos Dashboard"
             />
             <span class="d-none d-md-inline ml-1">{{myLang.heading}}</span>
