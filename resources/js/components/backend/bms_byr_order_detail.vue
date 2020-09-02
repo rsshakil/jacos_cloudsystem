@@ -113,292 +113,1426 @@
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="name"
-                  style="cursor: pointer"  
-                  v-if="show_hide_col_list.includes('order_type')"
-                >
-                  注文タイプ
+                  style="cursor: pointer;min-width:100px;">
+                  送信者ＩＤ
                   <span id="name_icon"></span>
                 </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="email"
-                  style="cursor: pointer;min-width:100px;"
-                  @click="sortByja_valu('shop_name_kana')"
-                   v-if="show_hide_col_list.includes('shop_name_kana')"
-                >
-                  店舗名(ｶﾅ)
-                  <span id="total_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                 @click="sortBynumeric_valu('category_code')"
-                  v-if="show_hide_col_list.includes('category_code')"
-                >
-                  分類コード
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                  @click="sortBynumeric_valu('voucher_category')"
-                  v-if="show_hide_col_list.includes('voucher_category')"
-                >
-                  伝票区分
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                  @click="sortBynumeric_valu('voucher_number')"
-                  v-if="show_hide_col_list.includes('voucher_number')"
-                >
-                  伝票番号
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                  
-                  v-if="show_hide_col_list.includes('list_number')"
-                >
-                  明細番号
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                 
-                  v-if="show_hide_col_list.includes('delivery_service_code')"
-                >
-                  便番号
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                  @click="sortBynumeric_valu('jan')"
-                  v-if="show_hide_col_list.includes('jan')"
-                >
-                  JAN
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer;min-width:220px"
-                 
-                  v-if="show_hide_col_list.includes('item_name')"
-                >
-                  商品名
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer;min-width:220px"
-                 
-                  v-if="show_hide_col_list.includes('item_name_kana')"
-                >
-                  商品名かな
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                  
-                  v-if="show_hide_col_list.includes('spec')"
-                >
-                  規格
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                 
-                  v-if="show_hide_col_list.includes('spec_kana')"
-                >
-                  規格かな
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                  
-                  v-if="show_hide_col_list.includes('inputs')"
-                >
-                  入数
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                 
-                  v-if="show_hide_col_list.includes('size')"
-                >
-                  サイズ
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer;min-width:80px;"
-                  
-                  v-if="show_hide_col_list.includes('color')"
-                >
-                  カラー
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer;min-width:80px"
-                  
-                  v-if="show_hide_col_list.includes('order_inputs')"
-                >
-                  発注単位
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer;;min-width:100px;"
-                 
-                  v-if="show_hide_col_list.includes('order_date')"
-                >
-                  発注日時
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer;min-width:100px;"
-                  
-                  v-if="show_hide_col_list.includes('expected_delivery_date')"
-                >
-                  納品予定日
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                  
-                  v-if="show_hide_col_list.includes('sale_category')"
-                >
-                  特売区分
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                 @click="sortBynumeric_valu('cost_unit_price')"
-                  v-if="show_hide_col_list.includes('cost_unit_price')"
-                >
-                  原単価
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                 @click="sortBynumeric_valu('cost_price')"
-                  v-if="show_hide_col_list.includes('cost_price')"
-                >
-                  原価金額
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                 
-                  v-if="show_hide_col_list.includes('selling_unit_price')"
-                >
-                  売単価
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                  
-                  v-if="show_hide_col_list.includes('selling_price')"
-                >
-                  売価金額
-                  <span id="name_icon"></span>
-                </th>
-               
                 
                 <th
                   class="sorting"
                   data-sorting_type="asc"
-                  data-column_name="email"
-                  style="cursor: pointer"
-                  
-                >
-                  発注数量
-                  <span id="total_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="email"
-                  style="cursor: pointer"
-                  
-                >
-                  納品数量
-                  <span id="total_icon"></span>
-                </th>
-
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="email"
-                  style="cursor: pointer;min-width:80px;"
-                 
-                >
-                  ステータス
-                  <span id="email_icon"></span>
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  	送信者ＩＤ発行元
+                  <span id="name_icon"></span>
                 </th>
                 
-                <th>欠品理由</th>
-                <th style="min-width:100px">数量確定</th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  	受信者ＩＤ
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  	受信者ＩＤ発行元
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  	標準名称
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  	バージョン	
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  	インスタンスＩＤ
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		メッセージ種
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  	作成日時
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  	タイプ
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  	テスト区分ＩＤ
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  	最終送信先ＩＤ
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  	メッセージ識別ＩＤ
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  	送信者ステーションアドレス
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		最終受信者ステーションアドレス
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  	直接受信者ステーションアドレス	
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		取引数
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  	システム情報キー
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  	システム情報値
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  	バージョン番号	
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  	バージョン番号
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		名前空間
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		バージョン
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  	支払法人コード
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		支払法人GLN
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  	支払法人名称
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  	支払法人名称カナ
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  	発注者コード
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  	発注者GLN	
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		発注者名称	
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  	発注者名称カナ
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  	取引番号（発注・返品）
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		取引付属番号
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		直接納品先
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		コード
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			直接納品先GLN
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		直接納品先名称
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		直接納品先名称カナ
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		最終納品先コード
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		最終納品先GLN
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		最終納品先名称
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		最終納品先名称カナ
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		計上部署コード
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		計上部署GLN
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			計上部署名称
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		計上部署名称（カナ）
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		陳列場所コード
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			陳列場所名称
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			陳列場所名称カナ
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		請求取引先コード
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		請求取引先GLN
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		請求取引先名
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		請求取引先名カナ
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		取引先コード
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		取引先GLN	
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			取引先名称	
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			取引先名称カナ
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		枝番
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			出荷先コード
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		出荷場所GLN
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			納品経路
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  	便No	
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		通過在庫区分
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			納品区分
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		指定納品時刻
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			輸送手段
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			バーコード情報
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			カテゴリー名称1（印字用）
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			カテゴリー名称2（印字用）
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			最終納品先略称（印字用）
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			ラベル自由使用欄（印字用）
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			ラベル自由使用欄半角カナ（印字用）
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			商品分類（大）
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		商品分類（中）
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			発注日
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			直接納品先納品日
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			最終納品先納品日
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		計上日
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		販促開始日	
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			販促終了日	
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		取引（発注・返品）データ有効日
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			商品区分
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		発注区分
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		出荷データ有無区分
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		PB区分
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		配送温度区分
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			酒区分
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			処理種別	
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			伝票レス区分	
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		取引番号区分
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		パック区分
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			不定貫区分	
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			税区分
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			税率
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		自由使用欄
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		自由使用欄半角カナ
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		原価金額合計
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			売価金額合計
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			税額合計金額
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			数量合計
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		発注単位数量合計
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			重量合計
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		取引明細番号（発注・返品）
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		取引付属明細番号
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		元取引番号	
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			元取引明細番号
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			商品分類（小）
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		商品分類（細）
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			配達予定日	
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		納品期限
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			センター納品詳細指示	
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		メーカーコード
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			商品コード（ＧTIN）
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		商品コード（発注用）
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			商品コード区分
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			商品コード（取引先）
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			商品名
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		商品名カナ
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		規格
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		規格カナ	
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		カラーコード
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			カラー名称	
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		カラー名称カナ
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		サイズコード
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		サイズ名称	
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			サイズ名称カナ
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			入数
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		都道府県コード
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			国コード
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			産地名
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		水域コード
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			水域名
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			原産エリア	
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			等級
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			階級
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			銘柄
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		商品ＰＲ
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		バイオ区分	
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		品種コード
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		養殖区分
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		解凍区分
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  		商品状態区分
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			形状・部位	
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			用途
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			法定管理義務商材区分	
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			原価金額
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			原単価	
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			売価金額
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			売単価
+                  <span id="name_icon"></span>
+                </th>
+                
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  			税額
+                  <span id="name_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="email"
+                  style="cursor: pointer;min-width:100px;">
+                 	発注単位	
+                  <span id="total_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="email"
+                  style="cursor: pointer;min-width:100px;">
+                 		発注単位コード
+                  <span id="total_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="email"
+                  style="cursor: pointer;min-width:100px;">
+                 			発注荷姿コード
+                  <span id="total_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="email"
+                  style="cursor: pointer;min-width:100px;">
+                 			発注数量（バラ）
+                  <span id="total_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="email"
+                  style="cursor: pointer;min-width:100px;">
+                 		発注数量（発注単位数）
+                  <span id="total_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="email"
+                  style="cursor: pointer;min-width:100px;">
+                 			取引単位重量
+                  <span id="total_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="email"
+                  style="cursor: pointer;min-width:100px;">
+                 			単価登録単位
+                  <span id="total_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="email"
+                  style="cursor: pointer;min-width:100px;">
+                 			商品重量	
+                  <span id="total_icon"></span>
+                </th>
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="email"
+                  style="cursor: pointer;min-width:100px;">
+                 		発注重量	
+                  <span id="total_icon"></span>
+                </th>
+                 <th style="min-width:100px">数量確定</th>
                 <th style="min-width:100px">発注データ修正</th>
-              </tr>
+                </tr>
             </thead>
             <tbody>
               <tr
@@ -410,71 +1544,164 @@
                   <input type="checkbox" class="form-control check_item" />
                 </td>
                 
-                <td
-                  v-if="show_hide_col_list.includes('order_type')"
-                >{{order_detail_list.order_type}}</td>
-                <td v-if="show_hide_col_list.includes('shop_name_kana')">{{order_detail_list.shop_name_kana}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('category_code')"
-                >{{order_detail_list.category_code}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('voucher_category')"
-                >{{order_detail_list.voucher_category}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('voucher_number')"
-                >{{order_detail_list.voucher_number}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('list_number')"
-                >{{order_detail_list.list_number}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('delivery_service_code')"
-                >{{order_detail_list.delivery_service_code}}</td>
-                <td v-if="show_hide_col_list.includes('jan')">{{order_detail_list.jan}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('item_name')"
-                >{{order_detail_list.item_name}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('item_name_kana')"
-                >{{order_detail_list.item_name_kana}}</td>
-                <td v-if="show_hide_col_list.includes('spec')">{{order_detail_list.spec}}</td>
-                <td v-if="show_hide_col_list.includes('spec_kana')">{{order_detail_list.spec_kana}}</td>
-                <td v-if="show_hide_col_list.includes('inputs')">{{order_detail_list.inputs}}</td>
-                <td v-if="show_hide_col_list.includes('size')">{{order_detail_list.size}}</td>
-                <td v-if="show_hide_col_list.includes('color')">{{order_detail_list.color}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('order_inputs')"
-                >{{order_detail_list.order_inputs}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('order_date')"
-                >{{order_detail_list.order_date}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('expected_delivery_date')"
-                >{{order_detail_list.expected_delivery_date}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('sale_category')"
-                >{{order_detail_list.sale_category}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('cost_unit_price')"
-                >{{order_detail_list.cost_unit_price}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('cost_price')"
-                >{{order_detail_list.cost_price}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('selling_unit_price')"
-                >{{order_detail_list.selling_unit_price}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('selling_price')"
-                >{{order_detail_list.selling_price}}</td>
-                <td>{{order_detail_list.order_quantity}}</td>
-                <td>
-                  <input
-                    type="text"
-                    class="form_input" v-on:keyup="exec_confirm_qty(order_detail_list,$event)"
-                    v-model="order_detail_list.confirm_quantity"/>
-                </td>
-                
-                <td>{{order_detail_list.status}}</td>
-                <td><input type="text" class="form-control lack_reasons" style="width:200px" name="lack_r" v-model="order_detail_list.lack_reason"></td>
+                <td>{{order_detail_list.sta_sen_identifier}}</td>
+                <td>{{order_detail_list.sta_sen_ide_authority}}</td>
+                <td>{{order_detail_list.sta_rec_identifier}}</td>
+                <td>{{order_detail_list.sta_rec_ide_authority}}</td>
+                <td>{{order_detail_list.sta_doc_standard}}</td>
+                <td>{{order_detail_list.sta_doc_typeVersion}}</td>
+                <td>{{order_detail_list.sta_doc_instanceIdentifier}}</td>
+                <td>{{order_detail_list.sta_doc_type}}</td>
+                <td>{{order_detail_list.sta_doc_creationDateAndTime}}</td>
+                <td>{{order_detail_list.sta_bus_scope_type}}</td>
+                <td>{{order_detail_list.sta_bus_scope_instanceIdentifier}}</td>
+                <td>{{order_detail_list.sta_bus_scope_identifier}}</td>
+                <td>{{order_detail_list.mes_ent_uniqueCreatorIdentification}}</td>
+                <td>{{order_detail_list.mes_mes_senderStationAddress}}</td>
+                <td>{{order_detail_list.mes_mes_ultimateReceiverStationAddress}}</td>
+                <td>{{order_detail_list.mes_mes_immediateReceiverStationAddres}}</td>
+                <td>{{order_detail_list.mes_mes_numberOfTradingDocuments}}</td>
+                <td>{{order_detail_list.mes_mes_sys_key}}</td>
+                <td>{{order_detail_list.mes_mes_sys_value}}</td>
+                <td>{{order_detail_list.mes_lis_con_version}}</td>
+                <td>{{order_detail_list.mes_lis_doc_version}}</td>
+                <td>{{order_detail_list.mes_lis_ext_namespace}}</td>
+                <td>{{order_detail_list.mes_lis_ext_version}}</td>
+                <td>{{order_detail_list.mes_lis_pay_code}}</td>
+                <td>{{order_detail_list.mes_lis_pay_gln}}</td>
+                <td>{{order_detail_list.mes_lis_pay_name}}</td>
+                <td>{{order_detail_list.mes_lis_pay_name_sbcs}}</td>
+                <td>{{order_detail_list.mes_lis_buy_code}}</td>
+                <td>{{order_detail_list.mes_lis_buy_gln}}</td>
+                <td>{{order_detail_list.mes_lis_buy_name}}</td>
+                <td>{{order_detail_list.mes_lis_buy_name_sbcs}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tra_tradeNumber}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tra_additionalTradeNumber}}</td>
+                <td>{{order_detail_list.mes_lis_ord_par_shi_code}}</td>
+                <td>{{order_detail_list.mes_lis_ord_par_shi_gln}}</td>
+                <td>{{order_detail_list.mes_lis_ord_par_shi_name}}</td>
+                <td>{{order_detail_list.mes_lis_ord_par_shi_name_sbcs}}</td>
+                <td>{{order_detail_list.mes_lis_ord_par_rec_code}}</td>
+                <td>{{order_detail_list.mes_lis_ord_par_rec_gln}}</td>
+                <td>{{order_detail_list.mes_lis_ord_par_rec_name}}</td>
+                <td>{{order_detail_list.mes_lis_ord_par_rec_name_sbcs}}</td>
+                <td>{{order_detail_list.mes_lis_ord_par_tra_code}}</td>
+                <td>{{order_detail_list.mes_lis_ord_par_tra_gln}}</td>
+                <td>{{order_detail_list.mes_lis_ord_par_tra_name}}</td>
+                <td>{{order_detail_list.mes_lis_ord_par_tra_name_sbcs}}</td>
+                <td>{{order_detail_list.mes_lis_ord_par_dis_code}}</td>
+                <td>{{order_detail_list.mes_lis_ord_par_dis_name}}</td>
+                <td>{{order_detail_list.mes_lis_ord_par_dis_name_sbcs}}</td>
+                <td>{{order_detail_list.mes_lis_ord_par_pay_code}}</td>
+                <td>{{order_detail_list.mes_lis_ord_par_pay_gln}}</td>
+                <td>{{order_detail_list.mes_lis_ord_par_pay_name}}</td>
+                <td>{{order_detail_list.mes_lis_ord_par_pay_name_sbcs}}</td>
+                <td>{{order_detail_list.mes_lis_ord_par_sel_code}}</td>
+                <td>{{order_detail_list.mes_lis_ord_par_sel_gln}}</td>
+                <td>{{order_detail_list.mes_lis_ord_par_sel_name}}</td>
+                <td>{{order_detail_list.mes_lis_ord_par_sel_name_sbcs}}</td>
+                <td>{{order_detail_list.mes_lis_ord_par_sel_branchNumber}}</td>
+                <td>{{order_detail_list.mes_lis_ord_par_sel_shipLocationCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_log_shi_gln}}</td>
+                <td>{{order_detail_list.mes_lis_ord_log_del_routeCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_log_del_deliveryServiceCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_log_del_stockTransferCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_log_del_deliveryCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_log_del_deliveryTime}}</td>
+                <td>{{order_detail_list.mes_lis_ord_log_del_transportationCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_log_log_barcodePrint}}</td>
+                <td>{{order_detail_list.mes_lis_ord_log_log_categoryNamePrint1}}</td>
+                <td>{{order_detail_list.mes_lis_ord_log_log_categoryNamePrint2}}</td>
+                <td>{{order_detail_list.mes_lis_ord_log_log_receiverAbbrName}}</td>
+                <td>{{order_detail_list.mes_lis_ord_log_log_text}}</td>
+                <td>{{order_detail_list.mes_lis_ord_log_log_text_sbcs}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tra_goo_majorCategory}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tra_goo_subMajorCategory}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tra_dat_orderDate}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tra_dat_deliveryDate}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tra_dat_deliveryDateToReceiver}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tra_dat_transferOfOwnershipDate}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tra_dat_campaignStartDate}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tra_dat_campaignEndDate}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tra_dat_validUntilDate}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tra_ins_goodsClassificationCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tra_ins_orderClassificationCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tra_ins_shipNotificationRequestCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tra_ins_privateBrandCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tra_ins_temperatureCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tra_ins_liquorCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tra_ins_tradeTypeCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tra_ins_paperFormLessCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tra_fre_tradeNumberRequestCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tra_fre_packageCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tra_fre_variableMeasureItemCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tra_tax_taxTypeCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tra_tax_taxRate}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tra_not_text}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tra_not_text_sbcs}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tot_tot_netPriceTotal}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tot_tot_sellingPriceTotal}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tot_tot_taxTotal}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tot_tot_itemTotal}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tot_tot_unitTotal}}</td>
+                <td>{{order_detail_list.mes_lis_ord_tot_fre_unitWeightTotal}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_lin_lineNumber}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_lin_additionalLineNumber}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_fre_tradeNumber}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_fre_lineNumber}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_goo_minorCategory}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_goo_detailedCategory}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_ite_scheduledDate}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_ite_deadlineDate}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_ite_centerDeliveryInstructionCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_ite_makerCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_ite_gtin}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_ite_orderItemCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_ite_codeType}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_ite_supplierItemCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_ite_name}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_ite_name_sbcs}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_ite_ite_spec}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_ite_ite_spec_sbcs}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_ite_col_colorCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_ite_col_description}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_ite_col_description_sbcs}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_ite_siz_sizeCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_ite_siz_description}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_ite_siz_description_sbcs}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_fre_packingQuantity}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_fre_prefectureCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_fre_countryCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_fre_fieldName}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_fre_waterAreaCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_fre_waterAreaName}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_fre_areaOfOrigin}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_fre_itemGrade}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_fre_itemClass}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_fre_brand}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_fre_itemPR}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_fre_bioCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_fre_breedCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_fre_cultivationCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_fre_defrostCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_fre_itemPreservationCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_fre_itemShapeCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_fre_use}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_sta_statutoryClassificationCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_amo_itemNetPrice}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_amo_itemNetPrice_unitPrice}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_amo_itemSellingPrice}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_amo_itemSellingPrice_unitPrice}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_amo_itemTax}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_qua_unitMultiple}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_qua_unitOfMeasure}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_qua_packageIndicator}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_qua_ord_quantity}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_qua_ord_numOfOrderUnits}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_fre_unitWeight}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_fre_unitWeightCode}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_fre_itemWeight}}</td>
+                <td>{{order_detail_list.mes_lis_ord_lin_fre_orderWeight}}</td>
                 <td>
                   <button @click="update_shipment_detail(order_detail_list)" class="btn btn-primary">確定</button>
                 </td>
@@ -685,15 +1912,11 @@ export default {
     //get Table data
     get_all_byr_order_detail() {
       axios
-        .get(this.BASE_URL + "api/byrorders/" + this.byr_order_id)
+        .get(this.BASE_URL + "api/get_bms_order_byr_order_id/" + this.byr_order_id)
         .then(data => {
           console.log(data.data.order_list_detail);
           this.order_detail_lists = data.data.order_list_detail;
           this.show_hide_col_list = data.data.slected_list;
-          this.order_date = data.data.order_list_detail[0].order_date;
-          this.expected_delivery_date =
-            data.data.order_list_detail[0].expected_delivery_date;
-          this.status = data.data.order_list_detail[0].status;
         });
     },
 

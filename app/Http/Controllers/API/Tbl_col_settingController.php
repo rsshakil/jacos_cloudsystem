@@ -115,7 +115,7 @@ class Tbl_col_settingController extends Controller
                 ),
                 array(
                     'header_text' => '発注単位',
-                    'header_field' => 'order_inputs',
+                    'header_field' => 'order_lot_inputs',
                     'header_status' => true
                 ),
                 array(

@@ -77,7 +77,7 @@
           <div class="row">
             <div class="col-6">
               <button class="btn btn-primary">ピッキング表 出力</button>
-              <button class="btn btn-danger">すべて確定</button>
+              <button class="btn btn-danger" @click="update_checked_item_list">すべて確定</button>
               <router-link :to="{name:'order_details_canvas',params:{byr_order_id:byr_order_id} }" class="btn btn-success">伝票出力</router-link>
               <button class="btn btn-info">確定送信</button>
             </div>
@@ -106,7 +106,7 @@
                   <span id="id_icon"></span>
                 </th>
                 <th>
-                  <input type="checkbox" class="form-control check_all" />
+                  <input type="checkbox" @click="checkAll()" v-model="isCheckAll" class="form-control check_all" />
                 </th>
                 
                 <th
@@ -279,7 +279,7 @@
                   data-column_name="name"
                   style="cursor: pointer;min-width:80px"
                   
-                  v-if="show_hide_col_list.includes('order_inputs')"
+                  v-if="show_hide_col_list.includes('order_lot_inputs')"
                 >
                   発注単位
                   <span id="name_icon"></span>
@@ -407,7 +407,7 @@
               >
                 <td>{{index+1}}</td>
                 <td>
-                  <input type="checkbox" class="form-control check_item" />
+                  <input type="checkbox" v-model="selected" :value="order_detail_list.byr_order_detail_id" @change="updateCheckall()" class="form-control check_item" />
                 </td>
                 
                 <td
@@ -442,8 +442,8 @@
                 <td v-if="show_hide_col_list.includes('size')">{{order_detail_list.size}}</td>
                 <td v-if="show_hide_col_list.includes('color')">{{order_detail_list.color}}</td>
                 <td
-                  v-if="show_hide_col_list.includes('order_inputs')"
-                >{{order_detail_list.order_inputs}}</td>
+                  v-if="show_hide_col_list.includes('order_lot_inputs')"
+                >{{order_detail_list.order_lot_inputs}}</td>
                 <td
                   v-if="show_hide_col_list.includes('order_date')"
                 >{{order_detail_list.order_date}}</td>
@@ -465,7 +465,7 @@
                 <td
                   v-if="show_hide_col_list.includes('selling_price')"
                 >{{order_detail_list.selling_price}}</td>
-                <td>{{order_detail_list.order_quantity}}</td>
+                <td>{{order_detail_list.order_unit_quantity}}</td>
                 <td>
                   <input
                     type="text"
@@ -623,10 +623,46 @@ export default {
       status: "",
       byr_order_id: "",
       edit_order_modal: false,
+      selected: [],
+      isCheckAll: false,
       form: new Form({})
     };
   },
   methods: {
+
+checkAll(){
+
+      this.isCheckAll = !this.isCheckAll;
+      this.selected = [];
+      var temp_seleted = [];
+      if(this.isCheckAll){
+this.order_detail_lists.forEach(function (order_detail_list) {
+                        temp_seleted.push(order_detail_list.byr_order_detail_id);
+                    });
+                    this.selected = temp_seleted;
+
+      }
+    },
+    updateCheckall(){
+      if(this.selected.length == this.order_detail_lists.length){
+         this.isCheckAll = true;
+      }else{
+         this.isCheckAll = false;
+      }
+    },
+
+update_checked_item_list(){
+var post_data = {
+          selected_item: this.selected,
+          user_id: Globals.user_info_id
+        };
+        axios
+          .post(this.BASE_URL + "api/update_byr_order_detail_status", post_data)
+          .then(data => {
+            console.log(data);
+            Fire.$emit('LoadByrorderDetail');
+          });
+},
 
     exec_confirm_qty(order_detail,event){
       if(parseFloat(order_detail.confirm_quantity)>parseFloat(order_detail.order_quantity)){

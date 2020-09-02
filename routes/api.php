@@ -89,3 +89,5 @@ Route::get('/get_byr_info_by_byr_order_id/{byr_order_id}', 'API\Byr_orderControl
 Route::get('/dispaly_col_by_user/{url_slug}/{user_id}', 'API\Tbl_col_settingController@dispaly_col_by_user');
 
 Route::post('/bms_order_save/{job_id}', 'API\BmsOrderController@store');
+Route::get('/get_bms_order_byr_order_id/{byr_order_id}', 'API\Byr_orderController@get_bms_order_byr_order_id');
+Route::post('/update_byr_order_detail_status', 'API\Byr_orderController@update_byr_order_detail_status');

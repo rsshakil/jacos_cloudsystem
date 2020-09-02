@@ -26,7 +26,8 @@ export default {
         .get(this.BASE_URL + "api/get_byr_info_by_byr_order_id/" + this.byr_order_id)
         .then(data => {
           console.log(data.data.byr_info);
-          if(data.data.byr_info.super_code=='OUK'){
+          // if(data.data.byr_info.super_code=='OUK'){
+          if(this.byr_order_id=='1'){
             this.component = default_byr_order_detail;
           }else{
             this.component = bms_byr_order_detail;
