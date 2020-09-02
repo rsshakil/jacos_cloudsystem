@@ -10,6 +10,7 @@ use App\Http\Controllers\API\AllUsedFunction;
 use App\User;
 use App\Byr_order;
 use App\bms_order;
+use App\cmn_job;
 
 class BmsOrderController extends Controller
 {
@@ -50,8 +51,9 @@ class BmsOrderController extends Controller
         $baseUrl = public_path('bms_order_files/') . $fileName;
         $dataArr = $this->all_functions->csvReader($baseUrl);
         $data_count=count($dataArr);
+        $cmn_connect_info=cmn_job::select('cmn_connect_id')->where('cmn_job_id',$job_id)->first();
         $order_array=array(
-            "cmn_connect_id"=>1,
+            "cmn_connect_id"=>$cmn_connect_info->cmn_connect_id,
             "receive_file_path"=>$fileName,
             "data_count"=>$data_count,
         );
