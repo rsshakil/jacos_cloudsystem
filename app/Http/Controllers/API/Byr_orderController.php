@@ -101,6 +101,23 @@ class Byr_orderController extends Controller
         return response()->json(['order_list_detail' => $result,'slected_list'=>$slected_list]);
     }
 
+    public function get_bms_order_byr_order_id($byr_order_id)
+    {
+        $result = DB::table('bms_orders')->where('bms_orders.byr_order_id', $byr_order_id)
+            ->get();
+        /*coll setting*/
+        $slected_list = array();
+        $result_data = cmn_tbl_col_setting::where('url_slug', 'order_list_detail')->first();
+            $header_list = json_decode($result_data->content_setting);
+            foreach ($header_list as $header) {
+                if ($header->header_status == true) {
+                    $slected_list[] = $header->header_field;
+                }
+            }
+        /*coll setting*/
+        return response()->json(['order_list_detail' => $result,'slected_list'=>$slected_list]);
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -114,7 +131,19 @@ class Byr_orderController extends Controller
     }
 
     public function update_shipment_detail(Request $request){
+        Byr_order_detail::where('byr_order_detail_id',$request->byr_order_detail_id)->update(['status'=>'確定済み']);
         Byr_shipment_detail::where('byr_order_detail_id',$request->byr_order_detail_id)->update(['confirm_quantity'=>$request->confirm_quantity,'lack_reason'=>$request->lack_reason]);
+        return response()->json(['success' => '1']);
+    }
+
+    public function update_byr_order_detail_status(Request $request){
+        if($request->selected_item){
+            foreach($request->selected_item as $item){
+                Byr_order_detail::where('byr_order_detail_id',$item)->update(['status'=>'確定済み']);
+
+            }
+        }
+        //Byr_shipment_detail::where('byr_order_detail_id',$request->byr_order_detail_id)->update(['confirm_quantity'=>$request->confirm_quantity,'lack_reason'=>$request->lack_reason]);
         return response()->json(['success' => '1']);
     }
     /**

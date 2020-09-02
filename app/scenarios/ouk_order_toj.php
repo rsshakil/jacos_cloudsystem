@@ -159,8 +159,8 @@ class ouk_order_toj extends Model
                     $insert_detail['list_number']=$item['list_number'];
                     $insert_detail['jan']=$item['jan'];
                     $insert_detail['inputs']=$item['inputs'];
-                    $insert_detail['order_inputs']=$item['order_inputs'];
-                    $insert_detail['order_quantity']=$order_quantity;
+                    $insert_detail['order_lot_inputs']=$item['order_inputs'];
+                    $insert_detail['order_unit_quantity']=$order_quantity;
                     $insert_detail['item_name_kana']=$item['item_name_kana'];
                     $insert_detail['cost_price']=$item['cost_price'];
                     $insert_detail['selling_price']=$item['selling_price'];
