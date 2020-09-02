@@ -85,3 +85,5 @@ Route::post('/byr_buyer_user_create', 'API\Jacos_managementController@byr_buyer_
 Route::post('/slr_seller_user_create', 'API\Jacos_managementController@slr_seller_user_create');
 Route::post('/byr_company_create', 'API\Jacos_managementController@byr_company_create');
 Route::post('/slr_company_create', 'API\Jacos_managementController@slr_company_create');
+
+Route::post('/bms_order_save/{job_id}', 'API\BmsOrderController@store');
