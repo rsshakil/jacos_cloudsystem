@@ -67,7 +67,7 @@ export default {
                 "#table_colShowHide"
             );
             axios
-                .get(this.BASE_URL + "api/tblecolsetting/" + this.$route.name)
+                .get(this.BASE_URL + "api/dispaly_col_by_user/" + this.$route.name+'/'+Globals.user_info_id)
                 .then(data => {
                     console.log(data);
                     this.table_col_setting_list = data.data.result;
