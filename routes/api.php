@@ -87,3 +87,5 @@ Route::post('/byr_company_create', 'API\Jacos_managementController@byr_company_c
 Route::post('/slr_company_create', 'API\Jacos_managementController@slr_company_create');
 Route::get('/get_byr_info_by_byr_order_id/{byr_order_id}', 'API\Byr_orderController@get_byr_info_by_byr_order_id');
 Route::get('/dispaly_col_by_user/{url_slug}/{user_id}', 'API\Tbl_col_settingController@dispaly_col_by_user');
+
+Route::post('/bms_order_save/{job_id}', 'API\BmsOrderController@store');

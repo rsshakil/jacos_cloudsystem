@@ -7,6 +7,7 @@ public/backend/images/canvas/Background/*
 public/backend/images/canvas/Canvas_screenshoot/*
 public/backend/images/users/*
 public/dashboard/images/*
+public/bms_order_files/*
 
 /storage/*.key
 .phpunit.result.cache

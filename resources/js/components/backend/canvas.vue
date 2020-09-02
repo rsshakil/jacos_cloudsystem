@@ -304,6 +304,8 @@ methods:{
 
           },
           saveData(){
+            this.init();
+            // return 0;
             if (this.canvas_name==null) {
                 alert("Please fill canvas name");
                 return false;
