@@ -38,22 +38,22 @@ class ouk_order_voucher extends Model
         $total_confirm_quantity=0;
         foreach ($can_info as $key => $single_info) {
             foreach ($single_info as $key1 => $sum_val_array) {
-                $total_order_qty+=$sum_val_array['order_quantity'];
+                $total_order_qty+=$sum_val_array['order_unit_quantity'];
                 $total_selling_price+=$sum_val_array['selling_price'];
                 $total_cost_price+=$sum_val_array['cost_price'];
-                if ($sum_val_array['order_quantity']!=$sum_val_array['confirm_quantity']) {
+                if ($sum_val_array['order_unit_quantity']!=$sum_val_array['confirm_quantity']) {
                     $total_confirm_quantity+=$sum_val_array['confirm_quantity'];
                 }
-                // intval()order_quantity
+                // intval()order_unit_quantity
             }
             foreach ($single_info as $key2 => $nested_value) {
                 $nested_value['total_order_qty']=$total_order_qty;
                 $nested_value['total_selling_price']=$total_selling_price;
                 $nested_value['total_cost_price']=$total_cost_price;
                 $nested_value['total_confirm_quantity']=$total_confirm_quantity;
-                $nested_value['order_quantity']=intval($nested_value['order_quantity']);
+                $nested_value['order_unit_quantity']=intval($nested_value['order_unit_quantity']);
                 $nested_value['cost_unit_price']=intval($nested_value['cost_unit_price']);
-                if ($nested_value['order_quantity']!=$nested_value['confirm_quantity']) {
+                if ($nested_value['order_unit_quantity']!=$nested_value['confirm_quantity']) {
                     $nested_value['confirm_quantity']=intval($nested_value['confirm_quantity']);
                     if ($nested_value['confirm_quantity']==0) {
                         $nested_value['confirm_quantity']="";

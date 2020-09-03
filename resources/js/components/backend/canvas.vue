@@ -123,7 +123,6 @@ methods:{
                 });
           },
           editCanvas(canvasData){
-            // console.log(canvasData.canvas_objects);
             this.selected_buyer={byr_buyer_id:canvasData.byr_buyer_id,company_name:canvasData.company_name};
             // this.canvas.clear();
             this.canvasClear();
