@@ -23,6 +23,8 @@ class BmsOrderController extends Controller
     }
     public function store(Request $request, $job_id){
         // return $request->all();
+        ini_set('max_execution_time', 6000);
+        ini_set('memory_limit', '256M');
         if(isset($request->email) && isset($request->password)){
             $user = User::where('email', '=', $request->email)->first();
             if (!$user) {
