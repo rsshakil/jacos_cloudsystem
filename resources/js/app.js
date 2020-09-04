@@ -23,6 +23,11 @@ import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 import { fabric } from 'fabric'
 // import VueKonva from 'vue-konva'
 import VueBreadcrumbs from 'vue-2-breadcrumbs';
+
+import Loading from 'vue-loading-overlay';
+// Import stylesheet
+import 'vue-loading-overlay/dist/vue-loading.css';
+
 window.Fire = new Vue();
 Vue.use(VueRouter);
 Vue.use(VueBreadcrumbs, {
@@ -45,6 +50,12 @@ Vue.component('multiselect', Multiselect)
 Vue.component('pagination', require('laravel-vue-pagination'));
 // spinner register 
 Vue.component('spinner', require('vue-simple-spinner'));
+Vue.use(Loading, {
+    // props
+    // color: 'red'
+}, {
+    // slots
+})
 
 window.Swal = Swal;
 const Toast = Swal.mixin({

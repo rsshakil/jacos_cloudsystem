@@ -117,6 +117,8 @@ methods:{
                 .then(({ data }) => {
                   this.canvasAllData=data.canvas_info;
                   this.all_buyer=data.all_buyer;
+                  // this.loader.hide();
+                  // Vue.$loading.hide()
                 })
                 .catch(() => {
                 this.sweet_advance_alert();
@@ -776,6 +778,11 @@ methods:{
               // if (e.keyCode == 46 || (e.ctrlKey && e.keyCode == 8)) {
               // } else if (e.ctrlKey && e.shiftKey && e.keyCode == 65) {
           });
+          //  this.loader = Vue.$loading.show({
+          // color: 'blue'
+          // },{
+          //   // slots
+          // });
           // console.log(this.canvas);
           // onKeyDownHandler(event)
     }
