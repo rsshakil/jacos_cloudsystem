@@ -8,7 +8,7 @@ use App\Http\Controllers\API\AllUsedFunction;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use DB;
-use App\User;
+use App\Models\ADM\User;
 
 class AssignPermissionModel extends Controller
 {

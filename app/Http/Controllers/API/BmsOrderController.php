@@ -7,10 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\API\AllUsedFunction;
-use App\User;
-use App\Byr_order;
-use App\bms_order;
-use App\cmn_job;
+use App\Models\ADM\User;
+use App\Models\BYR\byr_order;
+use App\Models\BMS\bms_order;
+use App\Models\CMN\cmn_job;
 
 class BmsOrderController extends Controller
 {
@@ -59,7 +59,7 @@ class BmsOrderController extends Controller
             "receive_file_path"=>$fileName,
             "data_count"=>$data_count,
         );
-        $this->order_id=Byr_order::insertGetId($order_array);
+        $this->order_id=byr_order::insertGetId($order_array);
         // print_r($dataArr);
         // return $dataArr;
         $insert_array=array();

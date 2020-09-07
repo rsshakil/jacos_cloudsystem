@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Permission;
 use App\Http\Controllers\API\AllUsedFunction;
 use Illuminate\Support\Facades\Auth;
-use App\User;
+use App\Models\ADM\User;
 
 class PermissionController extends Controller
 {

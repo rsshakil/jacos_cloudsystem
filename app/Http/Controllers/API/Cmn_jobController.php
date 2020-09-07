@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\cmn_job;
-use App\User;
+use App\Models\CMN\cmn_job;
+use App\Models\ADM\User;
 use DB;
 use Auth;
 
