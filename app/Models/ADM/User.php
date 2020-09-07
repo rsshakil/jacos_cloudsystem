@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models\ADM;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -8,10 +8,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Models\Permission;
-use App\adm_user_details;
-use App\cmn_companies_user;
-use App\byr_buyer;
-use App\slr_seller;
+use App\Models\ADM\adm_user_details;
+use App\Models\CMN\cmn_companies_user;
+use App\Models\BYR\byr_buyer;
+use App\Models\SLR\slr_seller;
 use Auth;
 class User extends Authenticatable
 {

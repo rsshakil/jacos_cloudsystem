@@ -3,11 +3,11 @@
 namespace App\Scenarios;
 use App\scenarios\Common;
 use Illuminate\Database\Eloquent\Model;
-use App\Byr_order_detail;
-use App\Byr_order;
-use App\Byr_shipment_detail;
-use App\Byr_shipment;
-use App\byr_shop;
+use App\Models\BYR\byr_order_detail;
+use App\Models\BYR\byr_order;
+use App\Models\BYR\byr_shipment_detail;
+use App\Models\BYR\byr_shipment;
+use App\Models\BYR\byr_shop;
 
 class ouk_order_toj extends Model
 {
@@ -137,8 +137,8 @@ class ouk_order_toj extends Model
         // echo '<pre>';
         // print_r($insert_array_b);
         // exit;
-        $byr_order_id = Byr_order::insertGetId(['receive_file_path'=>$received_path,'cmn_connect_id'=>$sc->cmn_connect_id]);
-        $byr_shipment_id = Byr_shipment::insertGetId(['send_file_path'=>$received_path,'cmn_connect_id'=>$sc->cmn_connect_id]);
+        $byr_order_id = byr_order::insertGetId(['receive_file_path'=>$received_path,'cmn_connect_id'=>$sc->cmn_connect_id]);
+        $byr_shipment_id = byr_shipment::insertGetId(['send_file_path'=>$received_path,'cmn_connect_id'=>$sc->cmn_connect_id]);
         $cnt = 0;
         if($insert_array_b){
             $insert_detail = array();
@@ -166,14 +166,14 @@ class ouk_order_toj extends Model
                     $insert_detail['selling_price']=$item['selling_price'];
                     $insert_detail['selling_unit_price']=$item['selling_unit_price'];
                     $insert_detail['cost_unit_price']=$item['cost_unit_price'];
-                    $byr_order_detail_id = Byr_order_detail::insertGetId($insert_detail);
-                    Byr_shipment_detail::insert(['byr_order_detail_id'=>$byr_order_detail_id,'byr_shipment_id'=>$byr_shipment_id,'order_quantity'=>$order_quantity,'confirm_quantity'=>$order_quantity]);
+                    $byr_order_detail_id = byr_order_detail::insertGetId($insert_detail);
+                    byr_shipment_detail::insert(['byr_order_detail_id'=>$byr_order_detail_id,'byr_shipment_id'=>$byr_shipment_id,'order_quantity'=>$order_quantity,'confirm_quantity'=>$order_quantity]);
                     $temp[]= $insert_detail;
                     $total++;
                 }
                 
             }
-            Byr_order::where('byr_order_id',$byr_order_id)->update(['data_count'=>$total]);
+            byr_order::where('byr_order_id',$byr_order_id)->update(['data_count'=>$total]);
         }
         echo '<pre>';
         print_r($temp);

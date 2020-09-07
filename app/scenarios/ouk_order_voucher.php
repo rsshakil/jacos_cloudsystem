@@ -3,9 +3,9 @@
 namespace App\Scenarios;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Byr_order_detail;
-use App\Byr_order;
-use App\byr_shop;
+use App\Models\BYR\byr_order_detail;
+use App\Models\BYR\byr_order;
+use App\Models\BYR\byr_shop;
 
 class ouk_order_voucher extends Model
 {
@@ -18,7 +18,7 @@ class ouk_order_voucher extends Model
         // ->join('byr_orders','byr_order_details.byr_order_id','=','byr_orders.byr_order_id')
         // ->where('byr_orders.byr_order_id',$byr_order_id)
         // ->get();
-        $can_info_query=Byr_order_detail::select('byr_order_details.*','byr_shops.shop_name_kana','byr_shops.shop_code',
+        $can_info_query=byr_order_detail::select('byr_order_details.*','byr_shops.shop_name_kana','byr_shops.shop_code',
         'cmn_connects.partner_code','byr_shipment_details.confirm_quantity','byr_shipment_details.revised_cost_price',
         'byr_shipment_details.revised_selling_price')
         ->join('byr_orders','byr_order_details.byr_order_id','=','byr_orders.byr_order_id')
