@@ -30,6 +30,6 @@ class slr_sellerSeeder extends Seeder
                 'adm_role_id'=>0,
             ]
         );
-        App\slr_seller::insert($slr);
+        App\Models\SLR\slr_seller::insert($slr);
     }
 }

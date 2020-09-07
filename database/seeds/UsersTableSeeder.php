@@ -2,8 +2,8 @@
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use App\User;
-use App\adm_user_details;
+use App\Models\ADM\User;
+use App\Models\ADM\adm_user_details;
 
 class UsersTableSeeder extends Seeder
 {

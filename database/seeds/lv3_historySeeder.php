@@ -11,6 +11,6 @@ class lv3_historySeeder extends Seeder
      */
     public function run()
     {
-        factory(App\lv3_history::class, 3)->create();
+        factory(App\Models\LV3\lv3_history::class, 3)->create();
     }
 }

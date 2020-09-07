@@ -11,6 +11,6 @@ class lv3_jobSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\lv3_job::class, 3)->create();
+        factory(App\Models\LV3\lv3_job::class, 3)->create();
     }
 }

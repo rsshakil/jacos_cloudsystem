@@ -63,6 +63,6 @@ class cmn_jobSeeder extends Seeder
                 'is_active'=>1,
             ]
         );
-        App\cmn_job::insert($cmn_job);
+        App\Models\CMN\cmn_job::insert($cmn_job);
     }
 }

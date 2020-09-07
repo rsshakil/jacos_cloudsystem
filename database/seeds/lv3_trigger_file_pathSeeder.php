@@ -11,6 +11,6 @@ class lv3_trigger_file_pathSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\lv3_trigger_file_path::class, 3)->create();
+        factory(App\Models\LV3\lv3_trigger_file_path::class, 3)->create();
     }
 }

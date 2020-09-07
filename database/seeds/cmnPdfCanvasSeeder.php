@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\cmn_pdf_canvas;
+use App\Models\CMN\cmn_pdf_canvas;
 
 class cmnPdfCanvasSeeder extends Seeder
 {

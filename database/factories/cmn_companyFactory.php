@@ -2,7 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\cmn_company;
+use App\Models\CMN\cmn_company;
 use Faker\Generator as Faker;
 
 $factory->define(cmn_company::class, function (Faker $faker) {
