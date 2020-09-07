@@ -4,18 +4,18 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Byr_order_detail;
-use App\Byr_order;
-use App\byr_buyer;
-use App\Byr_shipment;
-use App\Byr_shipment_detail;
-use App\byr_shop;
-use App\cmn_pdf_canvas;
-use App\cmn_tbl_col_setting;
-use App\cmn_scenario;
-use App\cmn_connect;
-use App\User;
-use App\cmn_companies_user;
+use App\Models\BYR\byr_order_detail;
+use App\Models\BYR\byr_order;
+use App\Models\BYR\byr_buyer;
+use App\Models\BYR\byr_shipment;
+use App\Models\BYR\byr_shipment_detail;
+use App\Models\BYR\byr_shop;
+use App\Models\CMN\cmn_pdf_canvas;
+use App\Models\CMN\cmn_tbl_col_setting;
+use App\Models\CMN\cmn_scenario;
+use App\Models\CMN\cmn_connect;
+use App\Models\ADM\User;
+use App\Models\CMN\cmn_companies_user;
 use DB;
 
 
@@ -29,7 +29,7 @@ class Byr_orderController extends Controller
     public function index()
     {
         //test
-        $result = Byr_order::select( 'byr_orders.byr_order_id','byr_orders.receive_file_path','byr_orders.status','byr_orders.receive_date','byr_orders.data_count','byr_orders.category',
+        $result = byr_order::select( 'byr_orders.byr_order_id','byr_orders.receive_file_path','byr_orders.status','byr_orders.receive_date','byr_orders.data_count','byr_orders.category',
         DB::raw('(select expected_delivery_date from byr_order_details where byr_order_id  =   byr_orders.byr_order_id limit 1) as expected_delivery_date')  )->get();
         $byr_buyer = byr_buyer::all();
         return response()->json(['order_list' => $result,'byr_buyer_list'=>$byr_buyer]);
@@ -47,7 +47,7 @@ class Byr_orderController extends Controller
             $byr_buyer_id = $cmn_company_info->byr_buyer_id;
             $cmn_connect_id = $cmn_company_info->cmn_connect_id;
         }
-        $result = Byr_order::select( 'byr_orders.byr_order_id','byr_orders.receive_file_path','byr_orders.status','byr_orders.receive_date','byr_orders.data_count','byr_orders.category',
+        $result = byr_order::select( 'byr_orders.byr_order_id','byr_orders.receive_file_path','byr_orders.status','byr_orders.receive_date','byr_orders.data_count','byr_orders.category',
         DB::raw('(select expected_delivery_date from byr_order_details where byr_order_id  =   byr_orders.byr_order_id limit 1) as expected_delivery_date')  );
         if(!$authUser->hasRole('Super Admin')){
             $result = $result->where('byr_orders.cmn_connect_id',$cmn_connect_id);
@@ -131,15 +131,15 @@ class Byr_orderController extends Controller
     }
 
     public function update_shipment_detail(Request $request){
-        Byr_order_detail::where('byr_order_detail_id',$request->byr_order_detail_id)->update(['status'=>'確定済み']);
-        Byr_shipment_detail::where('byr_order_detail_id',$request->byr_order_detail_id)->update(['confirm_quantity'=>$request->confirm_quantity,'lack_reason'=>$request->lack_reason]);
+        byr_order_detail::where('byr_order_detail_id',$request->byr_order_detail_id)->update(['status'=>'確定済み']);
+        byr_shipment_detail::where('byr_order_detail_id',$request->byr_order_detail_id)->update(['confirm_quantity'=>$request->confirm_quantity,'lack_reason'=>$request->lack_reason]);
         return response()->json(['success' => '1']);
     }
 
     public function update_byr_order_detail_status(Request $request){
         if($request->selected_item){
             foreach($request->selected_item as $item){
-                Byr_order_detail::where('byr_order_detail_id',$item)->update(['status'=>'確定済み']);
+                byr_order_detail::where('byr_order_detail_id',$item)->update(['status'=>'確定済み']);
 
             }
         }

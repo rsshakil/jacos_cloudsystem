@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\cmn_tbl_col_setting;
+use App\Models\CMN\cmn_tbl_col_setting;
 use Auth;
 
 class Tbl_col_settingController extends Controller

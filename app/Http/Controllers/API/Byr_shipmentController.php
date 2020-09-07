@@ -4,10 +4,10 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Byr_order_detail;
-use App\Byr_order;
-use App\Byr_shipment;
-use App\Byr_shipment_detail;
+use App\Models\BYR\byr_order_detail;
+use App\Models\BYR\byr_order;
+use App\Models\BYR\byr_shipment;
+use App\Models\BYR\byr_shipment_detail;
 use DB;
 
 class Byr_shipmentController extends Controller

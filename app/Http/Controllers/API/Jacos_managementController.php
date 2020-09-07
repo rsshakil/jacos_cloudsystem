@@ -4,12 +4,12 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\User;
-use App\adm_user_details;
-use App\byr_buyer;
-use App\slr_seller;
-use App\cmn_companies_user;
-use App\cmn_company;
+use App\Models\ADM\User;
+use App\Models\ADM\adm_user_details;
+use App\Models\BYR\byr_buyer;
+use App\Models\SLR\slr_seller;
+use App\Models\CMN\cmn_companies_user;
+use App\Models\CMN\cmn_company;
 // use Auth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
