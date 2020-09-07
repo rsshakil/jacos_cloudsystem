@@ -15,8 +15,6 @@ class CreateBmsCorrectedReceivesTable extends Migration
     {
         Schema::create('bms_corrected_receives', function (Blueprint $table) {
             $table->increments('bms_corrected_receive_id')->comment('bms_corrected_receive');
-            // $table->string('file_name',100)->comment('発注ファイル名');
-            // $table->string('customer_id', 8)->comment('取引先ID');
             $table->integer('byr_corrected_receive_id')->comment('byr_corrected_receive_id');
             $table->string('sta_sen_identifier', 30)->comment('送信者ＩＤ');
             $table->string('sta_sen_ide_authority', 10)->comment('送信者ＩＤ発行元');
@@ -64,9 +62,6 @@ class CreateBmsCorrectedReceivesTable extends Migration
             $table->string('mes_lis_acc_par_tra_gln', 13)->comment('計上部署GLN');
             $table->string('mes_lis_acc_par_tra_name', 20)->comment('計上部署名称');
             $table->string('mes_lis_acc_par_tra_name_sbcs', 20)->comment('計上部署名称（カナ）');
-            // $table->string('mes_lis_acc_par_dis_code', 13)->comment('陳列場所コード');
-            // $table->string('mes_lis_acc_par_dis_name', 20)->comment('陳列場所名称');
-            // $table->string('mes_lis_acc_par_dis_name_sbcs', 20)->comment('陳列場所名称カナ');
             $table->string('mes_lis_acc_par_pay_code', 13)->comment('請求取引先コード');
             $table->string('mes_lis_acc_par_pay_gln', 13)->comment('請求取引先GLN');
             $table->string('mes_lis_acc_par_pay_name', 20)->comment('請求取引先名');
@@ -77,37 +72,9 @@ class CreateBmsCorrectedReceivesTable extends Migration
             $table->string('mes_lis_acc_par_sel_name_sbcs', 20)->comment('取引先名称カナ');
             $table->string('mes_lis_acc_par_sel_branch_number', 2)->comment('枝番');
             $table->string('mes_lis_acc_par_sel_ship_location_code', 4)->comment('出荷先コード');
-            // as previous
-            // $table->string('mes_lis_acc_log_shi_gln', 13)->comment('出荷場所GLN');
-            // $table->string('mes_lis_acc_log_del_routeCode', 20)->comment('納品経路');
-            // $table->string('mes_lis_acc_log_del_deliveryServiceCode', 20)->comment('便No');
-            // $table->string('mes_lis_acc_log_del_stockTransferCode', 20)->comment('通過在庫区分');
-            // $table->string('mes_lis_acc_log_del_deliveryCode', 20)->comment('納品区分');
-            // $table->string('mes_lis_acc_log_del_deliveryTime', 20)->comment('指定納品時刻');
-            // $table->string('mes_lis_ord_log_del_transportationCode', 20)->comment('輸送手段');
-            // $table->string('mes_lis_acc_log_log_barcodePrint', 20)->comment('バーコード情報');
-            // $table->string('mes_lis_acc_log_log_categoryNamePrint1', 20)->comment('カテゴリー名称1（印字用）');
-            // $table->string('mes_lis_acc_log_log_categoryNamePrint2', 20)->comment('カテゴリー名称2（印字用）');
-            // $table->string('mes_lis_acc_log_log_receiverAbbrName', 20)->comment('最終納品先略称（印字用）');
-            // $table->string('mes_lis_acc_log_log_text', 60)->comment('ラベル自由使用欄（印字用）');
-            // $table->string('mes_lis_acc_log_log_text_sbcs', 60)->comment('ラベル自由使用欄半角カナ（印字用）');
-            // $table->string('mes_lis_acc_log_makerCodeForReceiving', 20)->comment('入荷管理用メーカーコード');
-            // $table->string('mes_lis_acc_log_deliverySlipNumber', 20)->comment('センター納品書番号');
-
             $table->string('mes_lis_acc_tra_goo_major_category', 20)->comment('商品分類（大）');
             $table->string('mes_lis_acc_tra_goo_sub_major_category', 20)->comment('商品分類（中）');
-
-            // $table->date('mes_lis_acc_tra_dat_orderDate')->comment('発注日');
-            // $table->date('mes_lis_acc_tra_dat_deliveryDate')->comment('直接納品先納品日');
-            // $table->date('mes_lis_acc_tra_dat_deliveryDateToReceiver')->comment('最終納品先納品日');
-            // $table->date('mes_lis_acc_tra_dat_revisedDeliveryDate')->comment('訂正後直接納品先納品日');
-            // $table->date('mes_lis_acc_tra_dat_revisedDeliveryDateToReceiver')->comment('訂正後最終納品先納品日');
-            
             $table->date('mes_lis_acc_tra_dat_transfer_of_ownership_date')->comment('計上日');
-
-            // $table->date('mes_lis_acc_tra_dat_campaignStartDate')->comment('販促開始日');
-            // $table->date('mes_lis_acc_tra_dat_campaignEndDate')->comment('販促終了日');
-
             $table->string('mes_lis_acc_tra_ins_goods_classification_code',2)->comment('商品区分');
             $table->string('mes_lis_acc_tra_ins_order_classification_code',2)->comment('発注区分');
             $table->string('mes_lis_acc_tra_ins_ship_notification_request_code',2)->comment('出荷データ有無区分');
@@ -139,10 +106,6 @@ class CreateBmsCorrectedReceivesTable extends Migration
             $table->string('mes_lis_acc_lin_goo_minor_category',10)->comment('商品分類（小）');
             $table->string('mes_lis_acc_lin_goo_detailed_category',10)->comment('商品分類（細）');
             $table->string('mes_lis_acc_lin_reason_code',10)->comment('返品・値引理由コード');
-
-            // $table->date('mes_lis_acc_lin_ite_scheduledDate')->comment('配達予定日');
-            // $table->date('mes_lis_acc_lin_ite_deadlineDate')->comment('納品期限');
-            // $table->string('mes_lis_acc_lin_ite_centerDeliveryInstructionCode',13)->comment('センター納品詳細指示');
             $table->string('mes_lis_acc_lin_ite_maker_code',13)->comment('メーカーコード');
             $table->string('mes_lis_acc_lin_ite_gtin',14)->comment('商品コード（ＧTIN）');
             $table->string('mes_lis_acc_lin_ite_order_item_code',14)->comment('商品コード（発注用）');
@@ -184,23 +147,8 @@ class CreateBmsCorrectedReceivesTable extends Migration
             $table->string('mes_lis_acc_lin_amo_item_selling_price_unit_price')->comment('売単価');
             $table->string('mes_lis_acc_lin_amo_item_tax',20)->comment('税額');
             $table->string('mes_lis_acc_lin_qua_rev_quantity',10)->comment('訂正数量（バラ）');
-
-            // $table->string('mes_lis_acc_lin_qua_unit_multiple',20)->comment('発注単位');
-            // $table->string('mes_lis_acc_lin_qua_unitOfMeasure',20)->comment('発注単位コード');
-            // $table->string('mes_lis_acc_lin_qua_packageIndicator',20)->comment('発注荷姿コード');
-            // $table->string('mes_lis_acc_lin_qua_ord_quantity',20)->comment('発注数量（バラ）');
-            // $table->string('mes_lis_acc_lin_qua_ord_numOfOrderUnits',20)->comment('発注数量（発注単位数）');
-            // $table->string('mes_lis_acc_lin_qua_shi_quantity',20)->comment('出荷数量（バラ）');
-            // $table->string('mes_lis_acc_lin_qua_shi_numOfOrderUnits',20)->comment('出荷数量（発注単位数）');
-            // $table->string('mes_lis_acc_lin_qua_rec_quantity',20)->comment('受領数量（バラ）');
-            // $table->string('mes_lis_acc_lin_qua_rec_numOfOrderUnits',20)->comment('受領数量（発注単位数）');
-            // $table->string('mes_lis_acc_lin_qua_rec_reasonCode',20)->comment('訂正区分');
-            // $table->string('mes_lis_acc_lin_fre_unitWeight',20)->comment('取引単位重量');
             $table->string('mes_lis_acc_lin_fre_unit_weight_code',20)->comment('単価登録単位');
             $table->string('mes_lis_acc_lin_fre_item_weight',20)->comment('商品重量');
-
-            // $table->string('mes_lis_acc_lin_fre_orderWeight',20)->comment('発注重量');
-            // $table->string('mes_lis_acc_lin_fre_shipmentWeight',20)->comment('出荷重量');
             $table->string('mes_lis_acc_lin_fre_received_weight',20)->comment('受領重量');
             $table->smallInteger('deleted')->comment('削除フラグ');
 			$table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
