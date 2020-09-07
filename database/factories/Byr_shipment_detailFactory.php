@@ -2,13 +2,13 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Byr_shipment_detail;
+use App\Models\BYR\byr_shipment_detail;
 use Faker\Generator as Faker;
 
-$factory->define(Byr_shipment_detail::class, function (Faker $faker) {
+$factory->define(byr_shipment_detail::class, function (Faker $faker) {
     return [
-        'byr_shipment_id' => factory(App\Byr_shipment::class),
-        'byr_order_detail_id' => factory(App\Byr_order_detail::class),
+        'byr_shipment_id' => factory(App\Models\BYR\byr_shipment::class),
+        'byr_order_detail_id' => factory(App\Models\BYR\byr_order_detail::class),
         'order_quantity' => rand(1, 10),
         'confirm_quantity' => rand(1, 10),
         'delivery_quantity' => rand(1, 10),

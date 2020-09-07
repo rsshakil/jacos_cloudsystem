@@ -19,6 +19,6 @@ class byr_buyerSeeder extends Seeder
                 'adm_role_id'=>1,
             ]
         );
-        App\byr_buyer::insert($byr_byr);
+        App\Models\BYR\byr_buyer::insert($byr_byr);
     }
 }

@@ -43,6 +43,6 @@ class cmn_connectSeeder extends Seeder
                 'is_active'=>1,
             ]
         );
-        App\cmn_connect::insert($cmn_connect);
+        App\Models\CMN\cmn_connect::insert($cmn_connect);
     }
 }

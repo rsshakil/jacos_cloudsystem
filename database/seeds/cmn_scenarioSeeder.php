@@ -32,6 +32,6 @@ class cmn_scenarioSeeder extends Seeder
                 'file_path' => 'scenarios/ouk_order_voucher',
             ]
         );
-        App\cmn_scenario::insert($scenarios);
+        App\Models\CMN\cmn_scenario::insert($scenarios);
     }
 }

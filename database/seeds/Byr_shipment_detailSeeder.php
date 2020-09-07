@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class Byr_shipment_detailSeeder extends Seeder
+class byr_shipment_detailSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +11,6 @@ class Byr_shipment_detailSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Byr_shipment_detail::class, 3)->create();
+        factory(App\Models\BYR\byr_shipment_detail::class, 3)->create();
     }
 }

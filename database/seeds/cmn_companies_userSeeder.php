@@ -34,6 +34,6 @@ class cmn_companies_userSeeder extends Seeder
                 'adm_user_id'=>8,
             ]
         );
-        App\cmn_companies_user::insert($companies_user);
+        App\Models\CMN\cmn_companies_user::insert($companies_user);
     }
 }

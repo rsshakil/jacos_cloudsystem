@@ -11,6 +11,6 @@ class lv3_trigger_scheduleSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\lv3_trigger_schedule::class, 3)->create();
+        factory(App\Models\LV3\lv3_trigger_schedule::class, 3)->create();
     }
 }

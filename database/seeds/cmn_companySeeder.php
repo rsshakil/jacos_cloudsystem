@@ -58,6 +58,6 @@ class cmn_companySeeder extends Seeder
                 'address' => "",
             ]
         );
-        App\cmn_company::insert($cmn_company_array);
+        App\Models\CMN\cmn_company::insert($cmn_company_array);
     }
 }
