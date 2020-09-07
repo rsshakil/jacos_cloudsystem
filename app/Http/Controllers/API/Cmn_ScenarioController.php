@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 // use App\scenarios\ouk_order_toj;
 use Illuminate\Http\Request;
 use DB;
-use App\Models\Cmn_scenario;
+use App\Models\CMN\cmn_scenario;
 
 class Cmn_ScenarioController extends Controller
 {
