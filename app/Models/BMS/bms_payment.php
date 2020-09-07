@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models\BMS;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Byr_order_detail extends Model
+class bms_payment extends Model
 {
     //
 }

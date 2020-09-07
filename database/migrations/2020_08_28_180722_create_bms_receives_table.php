@@ -14,27 +14,27 @@ class CreateBmsReceivesTable extends Migration
     public function up()
     {
         Schema::create('bms_receives', function (Blueprint $table) {
-            $table->increments('bms_receive_id')->comment('受領データID');
+            $table->increments('bms_corrected_receive_id')->comment('bms_corrected_receive');
             // $table->string('file_name',100)->comment('発注ファイル名');
             // $table->string('customer_id', 8)->comment('取引先ID');
-            $table->integer('byr_receive_id')->comment('byr_receive_id');
+            $table->integer('byr_corrected_receive_id')->comment('byr_corrected_receive_id');
             $table->string('sta_sen_identifier', 30)->comment('送信者ＩＤ');
             $table->string('sta_sen_ide_authority', 10)->comment('送信者ＩＤ発行元');
             $table->string('sta_rec_identifier',20)->comment('受信者ＩＤ');
             $table->string('sta_rec_ide_authority', 10)->comment('受信者ＩＤ発行元');
             $table->string('sta_doc_standard', 20)->comment('標準名称');
-            $table->string('sta_doc_typeVersion', 10)->comment('バージョン');
-            $table->string('sta_doc_instanceIdentifier', 50)->comment('インスタンスＩＤ');
+            $table->string('sta_doc_type_ersion', 10)->comment('バージョン');
+            $table->string('sta_doc_instance_identifier', 50)->comment('インスタンスＩＤ');
             $table->string('sta_doc_type', 10)->comment('メッセージ種');
-            $table->dateTime('sta_doc_creationDateAndTime')->comment('作成日時');
+            $table->dateTime('sta_doc_creation_date_and_time')->comment('作成日時');
             $table->string('sta_bus_scope_type', 20)->comment('タイプ');
-            $table->string('sta_bus_scope_instanceIdentifier', 20)->comment('テスト区分ＩＤ');
+            $table->string('sta_bus_scope_instance_identifier', 20)->comment('テスト区分ＩＤ');
             $table->string('sta_bus_scope_identifier', 20)->comment('最終送信先ＩＤ');
-            $table->string('mes_ent_uniqueCreatorIdentification', 80)->comment('メッセージ識別ＩＤ');
-            $table->string('mes_mes_senderStationAddress', 8)->comment('送信者ステーションアドレス');
-            $table->string('mes_mes_ultimateReceiverStationAddress', 8)->comment('最終受信者ステーションアドレス');
-            $table->string('mes_mes_immediateReceiverStationAddres', 8)->comment('直接受信者ステーションアドレス');
-            $table->string('mes_mes_numberOfTradingDocuments', 7)->comment('取引数');
+            $table->string('mes_ent_unique_creator_identification', 80)->comment('メッセージ識別ＩＤ');
+            $table->string('mes_mes_sender_station_address', 8)->comment('送信者ステーションアドレス');
+            $table->string('mes_mes_ultimate_receiver_station_address', 8)->comment('最終受信者ステーションアドレス');
+            $table->string('mes_mes_immediate_receiver_station_addres', 8)->comment('直接受信者ステーションアドレス');
+            $table->string('mes_mes_number_of_trading_documents', 7)->comment('取引数');
             $table->string('mes_mes_sys_key', 20)->comment('キー');
             $table->string('mes_mes_sys_value', 20)->comment('値');
             $table->string('mes_lis_con_version', 20)->comment('バージョン番号');
@@ -49,9 +49,9 @@ class CreateBmsReceivesTable extends Migration
             $table->string('mes_lis_buy_gln', 13)->comment('発注者GLN');
             $table->string('mes_lis_buy_name', 20)->comment('発注者名称');
             $table->string('mes_lis_buy_name_sbcs', 20)->comment('発注者名称カナ');
-            $table->string('mes_lis_acc_tra_tradeNumber', 10)->comment('取引番号（発注・返品）');
-            $table->string('mes_lis_acc_tra_additionalTradeNumber', 10)->comment('取引付属番号');
-            $table->string('mes_lis_acc_fre_shipmentNumber', 11)->comment('出荷者管理番号');
+            $table->string('mes_lis_acc_tra_trade_number', 10)->comment('取引番号（発注・返品）');
+            $table->string('mes_lis_acc_tra_additional_trade_number', 10)->comment('取引付属番号');
+            $table->string('mes_lis_acc_fre_shipment_number', 11)->comment('出荷者管理番号');
             $table->string('mes_lis_acc_par_shi_code', 13)->comment('直接納品先コード');
             $table->string('mes_lis_acc_par_shi_gln', 13)->comment('直接納品先GLN');
             $table->string('mes_lis_acc_par_shi_name', 20)->comment('直接納品先名称');
@@ -75,8 +75,9 @@ class CreateBmsReceivesTable extends Migration
             $table->string('mes_lis_acc_par_sel_gln', 13)->comment('取引先GLN');
             $table->string('mes_lis_acc_par_sel_name', 20)->comment('取引先名称');
             $table->string('mes_lis_acc_par_sel_name_sbcs', 20)->comment('取引先名称カナ');
-            $table->string('mes_lis_acc_par_sel_branchNumber', 2)->comment('枝番');
-            $table->string('mes_lis_acc_par_sel_shipLocationCode', 4)->comment('出荷先コード');
+            $table->string('mes_lis_acc_par_sel_branch_number', 2)->comment('枝番');
+            $table->string('mes_lis_acc_par_sel_ship_location_code', 4)->comment('出荷先コード');
+            // done 
             $table->string('mes_lis_acc_log_shi_gln', 13)->comment('出荷場所GLN');
             $table->string('mes_lis_acc_log_del_routeCode', 20)->comment('納品経路');
             $table->string('mes_lis_acc_log_del_deliveryServiceCode', 20)->comment('便No');
