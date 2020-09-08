@@ -31,6 +31,7 @@
         "sweetalert2": "^9.15.2",
         "vform": "^1.0.1",
         "vue-2-breadcrumbs": "^0.7.9",
+        "vue-advanced-cropper": "^0.17.2",
         "vue-loading-overlay": "^3.4.0",
         "vue-multiselect": "^2.1.6",
         "vue-progressbar": "^0.7.5",

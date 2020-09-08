@@ -23,6 +23,7 @@ import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 import { fabric } from 'fabric'
 // import VueKonva from 'vue-konva'
 import VueBreadcrumbs from 'vue-2-breadcrumbs';
+import { Cropper } from 'vue-advanced-cropper'
 
 import Loading from 'vue-loading-overlay';
 // Import stylesheet
@@ -42,6 +43,7 @@ Vue.use(IconsPlugin)
     // Vue.use(FlagIcon);
     // Register fabric js globally 
 Vue.use(fabric)
+Vue.use(Cropper)
     // Vue.use(VueKonva)
     // register globally
 Vue.component('multiselect', Multiselect)

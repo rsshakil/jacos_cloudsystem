@@ -6,7 +6,9 @@
                 <div class="col-12">
                   <b-button variant="danger" style="margin-left: 1px;" @click="deleteObjects()">Delete</b-button>
                 <b-button variant="primary" @click="printCanvas">Print</b-button>
-                <input class="btn btn-info" @change="bgImageChange" type="file">
+                <!-- <input class="btn btn-info" @change="bgImageChange" type="file"> -->
+                <b-button variant="info" @click.prevent="backgroundModalFunc">Background</b-button>
+                <!-- <b-button v-b-modal.modal-xl variant="primary">Background</b-button> -->
                 <b-button variant="warning" @click="clearCanvasObjects">Clear canvas</b-button>
                 <!-- <b-button variant="warning" @click="duplicateObjects">Duplicate</b-button> -->
                 <br>
@@ -38,7 +40,7 @@
                 </div>
                 <div class="row" style="height:40px;" v-else></div>
                 <br>
-                    <canvas id="c" style="border:1px solid #000000;">Your browser does not support the canvas element.</canvas>
+                    <canvas id="c">Your browser does not support the canvas element.</canvas>
                 </div>
                 <div class="col-12">
                   <!-- <div class="col"> -->
@@ -74,11 +76,27 @@
                   </div>
     <!-- </div> -->
                 </div>
+                <div class="col-12">
+                  <b-modal size="lg"  :hide-backdrop="true" title="Canvas Background Image" v-model="backgroundModalShow" @cancel.prevent="cancelImage" ok-title="Crop">
+                    <div class="row">
+                        <div class="col-md-12">
+                          <input type="file" class="btn btn-accent" @change="loadImage($event)" accept="image/*">
+                        </div>
+                        <div class="col-md-12">
+                          <cropper
+                            class="cropper"
+                            :src="modal_image"
+                            @change="change"
+                          ></cropper>
+                          
+                            <!-- @change="change" -->
+                          <!-- <img :src="bg_image_path" alt=""> -->
+                        </div>
+                    </div>
+                  </b-modal>
+                </div>
 </div>
-<!-- <div class="row"> -->
 
-    
-<!-- </div> -->
 </template>
 
 <script>
@@ -109,9 +127,44 @@ data(){
     pointerY:50,
     copiedObjects:[],
     copiedObject:[],
+    backgroundModalShow:false,
+    modal_image:null,
+    tmp_modal_image:null,
+    tmp_update_image_info:null,
   }
 },
 methods:{
+          backgroundModalFunc(){
+            this.backgroundModalShow=true;
+            this.modal_image=this.bg_image_path
+            this.tmp_modal_image=this.bg_image_path
+            this.tmp_update_image_info=this.update_image_info
+          },
+          loadImage($event){
+            var input = event.target;
+            // Ensure that you have a file before attempting to read it
+            if (input.files && input.files[0]) {
+              // create a new FileReader to read this image and convert to base64 format
+              var reader = new FileReader();
+              // Define a callback function to run, when FileReader finishes its job
+              reader.onload = (e) => {
+                // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
+                // Read image as base64 and set to imageData
+                this.modal_image = e.target.result;
+              };
+              // Start the reader job - read file as a data url (base64 format)
+              reader.readAsDataURL(input.files[0]);
+            }
+          },
+          change({coordinates, canvas}) {
+            this.backgroundImageSet(canvas.toDataURL());
+            this.update_image_info=1;
+          },
+          cancelImage(){
+            this.backgroundModalShow=false;
+            this.backgroundImageSet(this.tmp_modal_image);
+            this.update_image_info=this.tmp_update_image_info
+          },
           loadCanvasData() {
             axios.post(this.BASE_URL+"api/load_canvas_setting_data")
                 .then(({ data }) => {
@@ -729,7 +782,7 @@ methods:{
         // this.canvasOpen();
       },
       mounted(){
-        this.canvas = new fabric.Canvas("c");
+          this.canvas = new fabric.Canvas("c");
           this.canvas.setWidth(this.canvas_width);
           this.canvas.setHeight(this.canvas_height);
           // this.canvas.controlsAboveOverlay = true;

@@ -79,10 +79,7 @@
       <b-button variant="warning" @click="clearCanvasObjects">Clear canvas</b-button>
       <b-button variant="warning" style="margin-left: 1px;" @click="canvasDesign()">Reset Canvas</b-button>
       <br />
-      <canvas
-        id="c"
-        style="border:1px solid #000000;"
-      >Your browser does not support the canvas element.</canvas>
+      <canvas id="c">Your browser does not support the canvas element.</canvas>
     </div>
     <div class="col-12 text-center">
       <b-button pill variant="info" :disabled="prev==0?true:false" v-if="canvasDataLength>1" @click="canvasDesignLeft"><b-icon icon="caret-left" font-scale="3"></b-icon></b-button>
