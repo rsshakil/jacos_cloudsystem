@@ -15,10 +15,10 @@ class CreateByrItemsTable extends Migration
     {
         Schema::create('byr_items', function (Blueprint $table) {
             $table->increments('byr_item_id')->comment('byr Item Id');
-            $table->integer('shop_id')->unsigned()->comment('shop Id');
-            $table->integer('byr_id')->unsigned()->comment('byr Id');
-            $table->integer('category_id')->unsigned()->comment('Category Id');
-            $table->integer('maker_id')->unsigned()->comment('Maker Id');
+            $table->integer('byr_shop_id')->unsigned()->comment('shop Id');
+            $table->integer('byr_buyer_id')->unsigned()->comment('byr Id');
+            $table->integer('cmn_category_id')->unsigned()->comment('Category Id');
+            $table->integer('cmn_maker_id')->unsigned()->comment('Maker Id');
             $table->smallInteger('case_inputs')->default(1)->comment('Case Inputs');
             $table->smallInteger('ball_inputs')->default(1)->comment('Ball Inputs');
             $table->string('jan',15)->comment('Vendor Jan');

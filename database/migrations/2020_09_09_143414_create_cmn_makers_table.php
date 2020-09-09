@@ -14,9 +14,9 @@ class CreateCmnMakersTable extends Migration
     public function up()
     {
         Schema::create('cmn_makers', function (Blueprint $table) {
-            $table->increments('maker_id')->comment('Maker Id');
-            $table->integer('shop_id')->unsigned()->comment('shop Id');
-            $table->integer('byr_id')->unsigned()->comment('byr Id');
+            $table->increments('cmn_maker_id')->comment('Maker Id');
+            $table->integer('cmn_shop_id')->unsigned()->comment('shop Id');
+            $table->integer('byr_buyer_id')->unsigned()->comment('byr Id');
             $table->string('maker_name',100)->comment('Maker Name');
             $table->string('maker_name_kana',100)->comment('Maker Name kana');
             $table->string('maker_code',10)->comment('Maker Code');

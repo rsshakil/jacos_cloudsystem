@@ -14,7 +14,8 @@ class CreateCmnCategoryDescriptionsTable extends Migration
     public function up()
     {
         Schema::create('cmn_category_descriptions', function (Blueprint $table) {
-            $table->integer('category_id')->unsigned()->comment('category Id');
+            $table->integer('cmn_category_id')->unsigned()->comment('category Id');
+            $table->integer('byr_buyer_id')->unsigned()->default(0)->comment('byr Id');
             $table->string('category_name',80)->comment('category Name');
             $table->string('category_code',6)->comment('category Code');
             $table->string('image',240)->nullable()->comment('Image');

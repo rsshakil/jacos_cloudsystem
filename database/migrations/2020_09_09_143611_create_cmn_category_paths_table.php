@@ -14,7 +14,7 @@ class CreateCmnCategoryPathsTable extends Migration
     public function up()
     {
         Schema::create('cmn_category_paths', function (Blueprint $table) {
-            $table->integer('category_id')->unsigned()->comment('category Id');
+            $table->integer('cmn_category_id')->unsigned()->comment('category Id');
             $table->integer('path_id')->unsigned()->comment('Path Id');
             $table->integer('lavel')->comment('lavel');
         });

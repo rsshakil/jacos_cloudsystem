@@ -45,7 +45,12 @@ Route::apiResources(
 		'jacosmanagement' => 'API\Jacos_managementController'
 	]
 );
+Route::apiResources(
 
+	[
+		'master_item' => 'API\Byr_itemController'
+	]
+);
 Route::get('/all_users_roles', 'API\AssignRoleModel@allUsersAndRoles');
 Route::get('/get_roles/{id}', 'API\AssignRoleModel@getRoleById');
 Route::post('/assign_role_to_user', 'API\AssignRoleModel@assignModelRole');
@@ -91,3 +96,5 @@ Route::get('/dispaly_col_by_user/{url_slug}/{user_id}', 'API\Tbl_col_settingCont
 Route::post('/bms_order_save/{job_id}', 'API\BmsOrderController@store');
 Route::get('/get_bms_order_byr_order_id/{byr_order_id}', 'API\Byr_orderController@get_bms_order_byr_order_id');
 Route::post('/update_byr_order_detail_status', 'API\Byr_orderController@update_byr_order_detail_status');
+Route::post('item_master_exec/{cmn_scenario_id}', 'API\Cmn_jobController@item_master_exec');
+Route::get('get_all_master_item/{adm_user_id}', 'API\Byr_itemController@get_all_master_item');

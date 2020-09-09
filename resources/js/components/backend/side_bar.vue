@@ -119,6 +119,23 @@
         </ul>
         </div>
         </li>
+
+<li class="nav-item" v-can="['byr_view']">
+          <a class="nav-link collapsed" href="#byr_itms_list" data-toggle="collapse" data-target="#byr_itms_list"><b-icon icon="grid-fill" font-scale="1.2"></b-icon> マスターメンテ</a>
+          <div class="collapse" id="byr_itms_list" aria-expanded="false">
+            <ul class="flex-column pl-2 nav">
+
+
+        <li class="nav-item" v-can="['byr_view']">
+          <router-link to="/item_master" class="nav-link">
+            <b-icon icon="receipt" font-scale="1.2"></b-icon>  商品メンテ
+          </router-link>
+        </li>
+        </ul>
+        </div>
+        </li>
+
+
         <!-- <li class="nav-item">
           <router-link to="/shipment_list" class="nav-link">
             <i class="material-icons">local_taxi</i>
