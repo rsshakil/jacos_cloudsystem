@@ -74,7 +74,8 @@
     </div>
     <div class="col-12">
       <b-button variant="danger" style="margin-left: 1px;" @click="deleteObjects()">Delete</b-button>
-      <b-button variant="primary" @click="printCanvas">Print</b-button>
+      <b-button variant="primary" @click="printSingleCanvas">Print This Page</b-button>
+      <b-button variant="primary" @click="printAllCanvas">Print All Page</b-button>
       <!-- <router-link :to="{name: 'UserProfileView', params: {id: 1} }" class="btn btn-primary" target='_blank'>Print</router-link>  -->
       <!-- <input class="btn btn-info" @change="bgImageChange" type="file" /> -->
       <b-button variant="warning" @click="clearCanvasObjects">Clear canvas</b-button>
@@ -95,9 +96,11 @@
 </template>
 
 <script>
+import { jsPDF } from "jspdf";
 export default {
   data() {
     return {
+      isLoading:true,
       allName: [],
       canvasSelectedName: [],
       canvasDataLength:0,
@@ -291,41 +294,49 @@ export default {
       this.canvas.clear();
       this.canvasFieldClead();
     },
-    printCanvas() {
+    printAllCanvas() {
+      let loader =Vue.$loading.show();
+      var img_dym=this.bgImageDymension(this.bg_image_path);
+      var doc = new jsPDF({
+        orientation: "landscape",
+        unit: "in",
+        // format: [15, 10]
+        // format: [((img_dym.width)/96)+1, ((img_dym.height)/96)+1]
+      });
       var imgSrc = this.bg_image_path;
       var canvas=this.canvas;
       canvas.backgroundImage = 0;
       canvas.renderAll();
       var all_image="";
       for (let i = 0; i < (this.canvasDataLength); i++) {
-        // this.deselectObject().then(function(){
-        //   this.canvasDesign(i).then(function(){
-        //     var image_data=this.canvas.toDataURL();
-        //     console.log(image_data);
-        //   });
-        // });
-//         new Promise((resolve) => {
-//           this.deselectObject();
-//           // resolve(`id: ${id}`);
-//         }).then((data) => {
-//           new Promise((resolve) => {
-//             this.canvasDesign(i)
-//           }).then((data1=>{
-// var image_data=this.canvas.toDataURL();
-//             console.log(image_data);
-//           }))
-//         })
         setTimeout(() => { 
           this.deselectObject()
            this.canvasDesign(i);
            var image_data=this.canvas.toDataURL();
-            console.log(image_data);
+           doc.addImage(image_data,"",0,0)
+           if (i!=(this.canvasDataLength-1)) {
+            doc.addPage(); 
+           }
+            // console.log(image_data);
            }, 500);
       }
-      this.canvasDesign(this.itr);
-      // before print options 
-      // this.deselectObject();
-      // this.printData(".canvas-container");
+      setTimeout(()=>{
+        doc.autoPrint();
+        var oHiddFrame = document.createElement("iframe");
+        oHiddFrame.style.position = "fixed";
+        oHiddFrame.style.visibility = "hidden";
+        oHiddFrame.src = doc.output('bloburl');
+        document.body.appendChild(oHiddFrame);
+        // window.open(doc.output('bloburl'), '_blank');
+        this.canvasDesign(this.itr);
+        loader.hide();
+      },(this.canvasDataLength*500))
+      
+      // this.canvasDesign(this.itr);
+    },
+    printSingleCanvas(){
+      this.deselectObject();
+      this.printData(".canvas-container");
     },
     printData(divVar) {
       var canvas = this.canvas;
@@ -518,6 +529,9 @@ export default {
       );
       // canvas size by image size
       this.bgImageWH(imgUrl);
+      // var img_dym=this.bgImageDymension(imgUrl);
+      // mainCanvas.setWidth(img_dym.width);
+      // mainCanvas.setHeight(img_dym.height);
     },
     bgImageWH(imgUrl) {
       var mainCanvas = this.canvas;
@@ -528,7 +542,16 @@ export default {
         mainCanvas.setHeight(img.naturalHeight);
       };
     },
-    
+    bgImageDymension(imgUrl){
+      var img = new Image();
+      img.src = imgUrl;
+      // img.onload = function () {
+         var img_W=img.naturalWidth;
+         var img_H=img.naturalHeight;
+      // };
+      var imageDymension={width:img_W,height:img_H}
+      return imageDymension;
+    },
     // }
   },
   created() {

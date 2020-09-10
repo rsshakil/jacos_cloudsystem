@@ -54,7 +54,7 @@ Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component('spinner', require('vue-simple-spinner'));
 Vue.use(Loading, {
     // props
-    // color: 'red'
+    color: 'red'
 }, {
     // slots
 })
