@@ -19,7 +19,7 @@
                                     </th>
                                 </tr>
                                 <tr>
-                                    <th><input type="checkbox" name="btn_select_all"></th>
+                                    <th><input type="checkbox" @click="checkAll()" v-model="isCheckAll"></th>
                     <th class="sorting" data-input_type="text" data-sorting_type="asc" data-column_name="vendor_items.name"
                         style="cursor: pointer">商品 <span id="vendor_items_name_icon"></span></th>
                     <th class="sorting" data-input_type="text" data-sorting_type="asc" data-column_name="jan"
@@ -45,7 +45,7 @@
                             </thead>
                             <tbody>
                                 <tr v-for="(item_list,index) in item_lists" :key="item_list.byr_item_id">
-                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox" v-model="selected" :value="item_list.byr_item_id" @change="updateCheckall()"></td>
                                     <td>{{item_list.name_kana}}</td>
                                     <td>{{item_list.jan}}</td>
                                     <td>{{item_list.spec}}</td>
@@ -72,9 +72,30 @@ export default {
         'byr_buyer_lists':{},
         'file':'',
         'selected_byr':'OUK',
+        selected:[],
+        isCheckAll:false,
     };
   },
   methods: {
+    checkAll(){
+
+      this.isCheckAll = !this.isCheckAll;
+      this.selected = [];
+      var temp_seleted = [];
+      if(this.isCheckAll){
+          this.item_lists.forEach(function (item_list) {
+            temp_seleted.push(item_list.byr_item_id);
+          });
+          this.selected = temp_seleted;
+      }
+    },
+    updateCheckall(){
+      if(this.selected.length == this.item_lists.length){
+         this.isCheckAll = true;
+      }else{
+         this.isCheckAll = false;
+      }
+    },
     //get Table data
     get_all_master_item(){
         axios.get(this.BASE_URL +"api/get_all_master_item/"+Globals.user_info_id).then((data) => {

@@ -131,6 +131,12 @@
             <b-icon icon="receipt" font-scale="1.2"></b-icon>  商品メンテ
           </router-link>
         </li>
+
+        <li class="nav-item" v-can="['byr_view']">
+          <router-link to="/item_category" class="nav-link">
+            <b-icon icon="receipt" font-scale="1.2"></b-icon>  分類
+          </router-link>
+        </li>
         </ul>
         </div>
         </li>
