@@ -100,7 +100,7 @@ import { jsPDF } from "jspdf";
 export default {
   data() {
     return {
-      isLoading:true,
+      loader:"",
       allName: [],
       canvasSelectedName: [],
       canvasDataLength:0,
@@ -295,7 +295,7 @@ export default {
       this.canvasFieldClead();
     },
     printAllCanvas() {
-      let loader =Vue.$loading.show();
+      this.loader =Vue.$loading.show();
       var img_dym=this.bgImageDymension(this.bg_image_path);
       var doc = new jsPDF({
         orientation: "landscape",
@@ -329,14 +329,18 @@ export default {
         document.body.appendChild(oHiddFrame);
         // window.open(doc.output('bloburl'), '_blank');
         this.canvasDesign(this.itr);
-        loader.hide();
+        this.loader.hide();
       },(this.canvasDataLength*500))
       
       // this.canvasDesign(this.itr);
     },
     printSingleCanvas(){
+      this.loader =Vue.$loading.show();
       this.deselectObject();
       this.printData(".canvas-container");
+      setTimeout(()=>{
+        this.loader.hide();
+      },510)
     },
     printData(divVar) {
       var canvas = this.canvas;
@@ -370,6 +374,7 @@ export default {
       // console.log(ppp);
       setTimeout(function () {
         thisVar.backgroundImageSet(imgSrc);
+        // this.loader.hide();
       }, 510);
     },
     deselectObject() {
