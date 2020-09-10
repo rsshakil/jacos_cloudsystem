@@ -75,13 +75,15 @@
     <div class="col-12">
       <b-button variant="danger" style="margin-left: 1px;" @click="deleteObjects()">Delete</b-button>
       <b-button variant="primary" @click="printCanvas">Print</b-button>
+      <!-- <router-link :to="{name: 'UserProfileView', params: {id: 1} }" class="btn btn-primary" target='_blank'>Print</router-link>  -->
       <!-- <input class="btn btn-info" @change="bgImageChange" type="file" /> -->
       <b-button variant="warning" @click="clearCanvasObjects">Clear canvas</b-button>
-      <b-button variant="warning" style="margin-left: 1px;" @click="canvasDesign()">Reset Canvas</b-button>
+      <b-button variant="warning" style="margin-left: 1px;" @click="canvasDesign(itr)">Reset Canvas</b-button>
       <br />
       <canvas id="c">Your browser does not support the canvas element.</canvas>
     </div>
     <div class="col-12 text-center">
+      <span>{{(itr+1)}} of {{canvasDataLength}} </span>
       <b-button pill variant="info" :disabled="prev==0?true:false" v-if="canvasDataLength>1" @click="canvasDesignLeft"><b-icon icon="caret-left" font-scale="3"></b-icon></b-button>
       <b-button pill variant="info" :disabled="next==0?true:false" v-if="canvasDataLength>1" @click="canvasDesignRight"><b-icon icon="caret-right" font-scale="3"></b-icon></b-button>
     </div>
@@ -126,7 +128,7 @@ export default {
           if (data.canvas_data.length>0) {
             this.allName=data.canvas_data
             this.canvasSelectedName=this.allName[0]
-            this.bg_image_path=this.BASE_URL + "public/backend/images/canvas/Background/"+(this.allName)[0].canvas_bg_image;
+            this.bg_image_path=this.BASE_URL + "storage/app/public/backend/images/canvas/Background/"+(this.allName)[0].canvas_bg_image;
             this.backgroundImageSet(this.bg_image_path);
           }
           if (data.can_info) {
@@ -137,7 +139,7 @@ export default {
               this.next=(this.canvasDataLength-1);
             }
             if (this.canvasDataLength>0) {
-              this.canvasDesign()
+              this.canvasDesign(this.itr)
             }
           
           }
@@ -150,22 +152,22 @@ export default {
           this.prev-=1;
           this.next+=1;
           this.itr-=1;
-          this.canvasDesign()
+          this.canvasDesign(this.itr)
     },
     canvasDesignRight(){
       this.prev+=1;
       this.next-=1;
       this.itr+=1;
-      this.canvasDesign()
+      this.canvasDesign(this.itr)
     },
-    canvasDesign(){
+    canvasDesign(iteration){
       if (!this.canvasSelectedName) {
         alert("Please select canvas name");
         return 0;
       }
       this.clearCanvasObjects();
       if (this.canvasDataLength>0) {
-        var canvasAllDataArray=this.canvasAllData[this.itr];
+        var canvasAllDataArray=this.canvasAllData[iteration];
         if (canvasAllDataArray.length) {
           // var position_values= JSON.parse(this.canvasSelectedName.position_values);
           var position_values= JSON.parse(this.canvasSelectedName.canvas_objects).objects;
@@ -226,9 +228,9 @@ export default {
     },
     showCanvasBg($event) {
       this.canvasSelectedName=$event;
-      this.bg_image_path = this.BASE_URL + "public/backend/images/canvas/Background/"+$event.canvas_bg_image;
+      this.bg_image_path = this.BASE_URL + "storage/app/public/backend/images/canvas/Background/"+$event.canvas_bg_image;
       this.backgroundImageSet(this.bg_image_path);
-      this.canvasDesign();
+      this.canvasDesign(this.itr);
     },
     canvasDataView(text_data) {
       var c = this.canvas;
@@ -259,9 +261,9 @@ export default {
       this.submit_button = "Save";
       this.update_image_info = null;
       if (this.allName.length>0) {
-        this.bg_image_path = this.BASE_URL + "public/backend/images/canvas/Background/"+(this.allName)[0].canvas_bg_image;
+        this.bg_image_path = this.BASE_URL + "storage/app/public/backend/images/canvas/Background/"+(this.allName)[0].canvas_bg_image;
       }else{
-        this.bg_image_path = this.BASE_URL + "public/backend/images/canvas/Background/bg_image.jpg";
+        this.bg_image_path = this.BASE_URL + "storage/app/public/backend/images/canvas/Background/bg_image.jpg";
       }
       this.backgroundImageSet(this.bg_image_path);
     },
@@ -290,25 +292,46 @@ export default {
       this.canvasFieldClead();
     },
     printCanvas() {
-      this.deselectObject();
-      this.printData(".canvas-container");
-    },
-    deselectObject() {
-      var canvas = this.canvas;
-      var activeObjects = canvas.getActiveObjects();
-      if (activeObjects.length) {
-        // if (confirm('Do you want to delete the selected item??')) {
-        activeObjects.forEach(function (object) {
-          canvas.discardActiveObject(object);
-          canvas.renderAll();
-        });
-        // }
+      var imgSrc = this.bg_image_path;
+      var canvas=this.canvas;
+      canvas.backgroundImage = 0;
+      canvas.renderAll();
+      var all_image="";
+      for (let i = 0; i < (this.canvasDataLength); i++) {
+        // this.deselectObject().then(function(){
+        //   this.canvasDesign(i).then(function(){
+        //     var image_data=this.canvas.toDataURL();
+        //     console.log(image_data);
+        //   });
+        // });
+//         new Promise((resolve) => {
+//           this.deselectObject();
+//           // resolve(`id: ${id}`);
+//         }).then((data) => {
+//           new Promise((resolve) => {
+//             this.canvasDesign(i)
+//           }).then((data1=>{
+// var image_data=this.canvas.toDataURL();
+//             console.log(image_data);
+//           }))
+//         })
+        setTimeout(() => { 
+          this.deselectObject()
+           this.canvasDesign(i);
+           var image_data=this.canvas.toDataURL();
+            console.log(image_data);
+           }, 500);
       }
+      this.canvasDesign(this.itr);
+      // before print options 
+      // this.deselectObject();
+      // this.printData(".canvas-container");
     },
     printData(divVar) {
       var canvas = this.canvas;
       var thisVar = this;
-      var imgSrc = canvas.backgroundImage._element.src;
+      var imgSrc = this.bg_image_path;
+      // var imgSrc = canvas.backgroundImage._element.src;
       canvas.backgroundImage = 0;
       canvas.renderAll();
       var ppp = $(divVar).printThis({
@@ -337,6 +360,18 @@ export default {
       setTimeout(function () {
         thisVar.backgroundImageSet(imgSrc);
       }, 510);
+    },
+    deselectObject() {
+      var canvas = this.canvas;
+      var activeObjects = canvas.getActiveObjects();
+      if (activeObjects.length) {
+        // if (confirm('Do you want to delete the selected item??')) {
+        activeObjects.forEach(function (object) {
+          canvas.discardActiveObject(object);
+          canvas.renderAll();
+        });
+        // }
+      }
     },
     createObj(left=100,top=50,width=150,height=22,fontSize=20,textAlign="left",lineHeight=1.16,scaleX=1,scaleY=1,text="Created by default",createdBy='auto') {
       var activeObject = this.canvas.getActiveObject();
@@ -505,7 +540,7 @@ export default {
     this.canvas.setWidth(this.canvas_width);
     this.canvas.setHeight(this.canvas_height);
     // this.canvas.controlsAboveOverlay = true;
-    this.bg_image_path = this.BASE_URL + "public/backend/images/canvas/Background/bg_image.jpg";
+    this.bg_image_path = this.BASE_URL + "storage/app/public/backend/images/canvas/Background/bg_image.jpg";
     this.backgroundImageSet(this.bg_image_path);
     // initAligningGuidelines(this.canvas);
     // initCenteringGuidelines(this.canvas);

@@ -250,13 +250,13 @@ class Byr_orderController extends Controller
 
         $canvasRawBgImg = $canData['backgroundImage']['src'];
         if (!empty($update_image_info)) {
-            $canvasBgImg = $this->save_base64_image($canvasRawBgImg, 'canvas_bg_image_'. time().'_'.$byr_id, $path_with_end_slash = "public/backend/images/canvas/Background/");
+            $canvasBgImg = $this->save_base64_image($canvasRawBgImg, 'canvas_bg_image_'. time().'_'.$byr_id, $path_with_end_slash = "storage/app/public/backend/images/canvas/Background/");
         } else {
             $canvasBgImgTmp = explode('/', $canvasRawBgImg);
             $canvasBgImg = $canvasBgImgTmp[count($canvasBgImgTmp) - 1];
         }
         // return $canvasBgImg;
-        $canvas_image = $this->save_base64_image($base64_canvas_image, 'canvas_image_'. time().'_'.$byr_id, $path_with_end_slash = "public/backend/images/canvas/Canvas_screenshoot/");
+        $canvas_image = $this->save_base64_image($base64_canvas_image, 'canvas_image_'. time().'_'.$byr_id, $path_with_end_slash = "storage/app/public/backend/images/canvas/Canvas_screenshoot/");
         // Serialize the above data
         // $canData_string = serialize($canData);
         $canvas_array = array(
