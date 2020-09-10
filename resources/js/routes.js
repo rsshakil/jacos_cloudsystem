@@ -20,6 +20,7 @@ import slr_management from './components/backend/slr_management.vue'
 import slr_job_list from './components/backend/slr_job_list.vue'
 import company_seller_user_list from './components/backend/cmn_company_seller_user_list.vue'
 import item_master from './components/backend/byr_item_master.vue'
+import item_category from './components/backend/item_category.vue'
 
 // import login_body from './components/login/login_body.vue'
 
@@ -141,6 +142,13 @@ export const routes = [
         path:'/',
         component:item_master,
         name:'item_master'
+      },{
+        path:'/item_category',
+        component:item_category,
+        name:'item_category',
+        meta: {
+          breadcrumb: '分類'  
+        }
       },
     ]
 
