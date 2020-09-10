@@ -63,7 +63,7 @@
                                   <tr v-for="(canvasData,i) in canvasAllData" :key="i">
                                     <td>{{(i+1)}}</td>
                                     <td>{{canvasData.canvas_name}}</td>
-                                    <td><img :src="BASE_URL+'public/backend/images/canvas/Canvas_screenshoot/'+canvasData.canvas_image" alt="No image" class="img-responsive img-thumbnail" width="150" height="100" style="border: 1px solid gray;"></td>
+                                    <td><img :src="BASE_URL+'storage/app/public/backend/images/canvas/Canvas_screenshoot/'+canvasData.canvas_image" alt="No image" class="img-responsive img-thumbnail" width="150" height="100" style="border: 1px solid gray;"></td>
                                     <td v-html="formatDate(canvasData.updated_at)"></td>
                                     <td>
                                       <b-button variant="info" @click="editCanvas(canvasData)"><b-icon icon="pencil-square" font-scale="1.2"></b-icon></b-button>
@@ -184,7 +184,7 @@ methods:{
             this.canvas_name=canvasData.canvas_name;
             this.canvas_id=canvasData.cmn_pdf_canvas_id;
             this.submit_button='Update'
-            this.bg_image_path=this.BASE_URL + 'public/backend/images/canvas/Background/'+canvasData.canvas_bg_image;
+            this.bg_image_path=this.BASE_URL + 'storage/app/public/backend/images/canvas/Background/'+canvasData.canvas_bg_image;
             this.backgroundImageSet(this.bg_image_path);
             $("html, body").animate({ scrollTop: 0 }, "slow");
             this.canvasDataView(canvasData.canvas_objects);
@@ -274,7 +274,7 @@ methods:{
             this.update_image_info=null
             this.obj_setting=0;
             this.selected_buyer=[]
-            this.bg_image_path=this.BASE_URL + 'public/backend/images/canvas/Background/bg_image.jpg'
+            this.bg_image_path=this.BASE_URL + 'storage/app/public/backend/images/canvas/Background/bg_image.jpg'
             this.backgroundImageSet(this.bg_image_path);
           },
           bgImageProcess(bg_image) {
@@ -627,9 +627,9 @@ methods:{
       keyEventFunc(e){
         // console.log(e);
         // if (e.keyCode == 46 || (e.ctrlKey && e.keyCode == 8)) {
-        if (e.keyCode == 46 || e.keyCode == 8) {
+        if (e.keyCode == 46 || (e.ctrlKey && e.keyCode == 8)) {
             this.deleteObjects();
-        } else if (e.ctrlKey && e.keyCode == 65) {
+        } else if (e.ctrlKey && e.shiftKey && e.keyCode == 65) {
             this.selectAllObjects()
         }else if (e.ctrlKey && e.keyCode == 67) {
             this.copyObject()
@@ -786,7 +786,7 @@ methods:{
           this.canvas.setWidth(this.canvas_width);
           this.canvas.setHeight(this.canvas_height);
           // this.canvas.controlsAboveOverlay = true;
-          this.bg_image_path=this.BASE_URL + 'public/backend/images/canvas/Background/bg_image.jpg'
+          this.bg_image_path=this.BASE_URL + 'storage/app/public/backend/images/canvas/Background/bg_image.jpg'
           this.backgroundImageSet(this.bg_image_path);
           // initAligningGuidelines(this.canvas);
           // initCenteringGuidelines(this.canvas);
@@ -819,8 +819,8 @@ methods:{
             this.keyEventFunc(e);
           })
           document.addEventListener('keydown', function(e) {
-              if (e.keyCode == 46 || e.keyCode == 8 || 
-              (e.ctrlKey && e.keyCode == 65) || (e.ctrlKey && e.keyCode == 67) || 
+              if (e.keyCode == 46 || (e.ctrlKey && e.keyCode == 8) || 
+              (e.ctrlKey && e.shiftKey && e.keyCode == 65) || (e.ctrlKey && e.keyCode == 67) || 
               (e.ctrlKey && e.keyCode == 86) || e.keyCode == 37 || e.keyCode == 38 || 
               e.keyCode == 39 || e.keyCode == 40 || (e.ctrlKey && e.keyCode == 90)) {
                 // var activeObjects=this.canvas.getActiveObjects();
