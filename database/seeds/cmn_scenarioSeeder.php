@@ -30,6 +30,15 @@ class cmn_scenarioSeeder extends Seeder
                 'name' => 'OUK_ORDER_VOUCHER',
                 'description' => 'OUK_ORDER_VOUCHER',
                 'file_path' => 'scenarios/ouk_order_voucher',
+            ],
+            [
+                'byr_buyer_id' => 1,
+                'slr_seller_id' => 0,
+                'class' => 'order',
+                'vector' => 'to_jacos',
+                'name' => 'MASTER_ITEM_INSERTION',
+                'description' => 'MASTER_ITEM_INSERTION',
+                'file_path' => 'scenarios/item_master',
             ]
         );
         App\Models\CMN\cmn_scenario::insert($scenarios);

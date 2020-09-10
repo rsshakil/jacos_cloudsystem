@@ -1,0 +1,136 @@
+<template>
+    <div class="row" v-can="['byr_view']">
+                <div class="col-12">
+                    <h4 class="top_title text-center" style="margin-top:10px;">マスターメンテ</h4>
+                </div>
+                <div class="col-12 text-center">
+                    
+      <label>
+        <input type="file" id="file" ref="file" v-on:change="onChangeFileUpload()"/>
+      </label>
+                </div>
+                <div class="col-12">
+                    <div class="">
+                        <table class="table table-striped table-bordered data_table">
+                            <thead>
+                                <tr>
+                                    <th colspan="100%" style="border: none;">
+                                        
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th><input type="checkbox" name="btn_select_all"></th>
+                    <th class="sorting" data-input_type="text" data-sorting_type="asc" data-column_name="vendor_items.name"
+                        style="cursor: pointer">商品 <span id="vendor_items_name_icon"></span></th>
+                    <th class="sorting" data-input_type="text" data-sorting_type="asc" data-column_name="jan"
+                        style="cursor: pointer">JAN <span id="jan_icon"></span></th>
+                    <th class="sorting" data-input_type="text" data-sorting_type="asc" data-column_name="spec"
+                    style="cursor: pointer">規格 <span id="spec_icon"></span></th>
+                    <th class="sorting" data-input_type="text" data-sorting_type="asc" data-column_name="case_inputs"
+                    style="cursor: pointer">ケース入数 <span id="case_inputs_icon"></span></th>
+                    <th class="sorting" data-input_type="text" data-sorting_type="asc" data-column_name="cost_price"
+                    style="cursor: pointer">原価 <span id="cost_price_icon"></span></th>
+                    <th class="sorting" data-input_type="text" data-sorting_type="asc" data-column_name="shop_price"
+                    style="cursor: pointer">売価 <span id="shop_price_icon"></span></th>
+                    <th class="sorting" data-input_type="select" data-sorting_type="asc" data-column_name="vendors.name"
+                    style="cursor: pointer">取引先 <span id="vendors_name_icon"></span></th>
+                    <th class="sorting" data-input_type="select" data-sorting_type="asc" data-column_name="c.category_name"
+                    style="cursor: pointer">部門名 <span id="c_category_name_icon"></span></th>
+                    <th class="sorting" data-input_type="date" data-sorting_type="asc" data-column_name="start_date"
+                    style="cursor: pointer">開始 <span id="start_date_icon"></span></th>
+                    <th class="sorting" data-input_type="date" data-sorting_type="asc" data-column_name="end_date"
+                    style="cursor: pointer">終了 <span id="end_date_icon"></span></th>
+                                </tr>
+                                
+                            </thead>
+                            <tbody>
+                                <tr v-for="(item_list,index) in item_lists" :key="item_list.byr_item_id">
+                                    <td><input type="checkbox"></td>
+                                    <td>{{item_list.name_kana}}</td>
+                                    <td>{{item_list.jan}}</td>
+                                    <td>{{item_list.spec}}</td>
+                                    <td>{{item_list.case_inputs}}</td>
+                                    <td>{{item_list.cost_price}}</td>
+                                    <td>{{item_list.shop_price}}</td>
+                                    <td>{{item_list.maker_name_kana}}</td>
+                                    <td>{{item_list.category_name}}</td>
+                                    <td>{{item_list.start_date}}</td>
+                                    <td>{{item_list.end_date}}</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+        'item_lists':{},
+        'byr_buyer_lists':{},
+        'file':'',
+        'selected_byr':'OUK',
+    };
+  },
+  methods: {
+    //get Table data
+    get_all_master_item(){
+        axios.get(this.BASE_URL +"api/get_all_master_item/"+Globals.user_info_id).then((data) => {
+            this.item_lists = data.data.item_list;
+            this.byr_buyer_lists = data.data.byr_buyer_list;
+        });
+    },
+    check_byr_item_master_api(){
+       let formData = new FormData();
+    formData.append("up_file", this.file);
+    formData.append("email", 'user@jacos.co.jp');
+    formData.append("password", 'Qe75ymSr');
+        axios({
+    method: 'POST',
+    url: this.BASE_URL + "api/item_master_exec/9",
+    data: formData,
+    headers: {'Content-Type': 'multipart/form-data' }
+    })
+    .then(function (response) {
+        //handle success
+        console.log(response);
+       Fire.$emit('LoadByrmasterItem');
+    })
+    .catch(function (response) {
+        //handle error
+        console.log(response);
+    });
+    },
+    onChangeFileUpload(){
+        this.file = this.$refs.file.files[0];
+        this.check_byr_item_master_api();
+      },
+      selectedOption(option) {
+      if (this.value) {
+        return option.byr_buyer_id === this.value.byr_buyer_id;
+      }
+      return false;
+    },
+    change(e) {
+      const selectedCode = e.target.value;
+      const option = this.options.find((option) => {
+        return selectedCode === option.byr_buyer_id;
+      });
+    //   this.$emit("input", option);
+    }
+  },
+
+  created() {
+      this.get_all_master_item();
+      Fire.$on("LoadByrmasterItem", () => {
+      this.get_all_master_item();
+    });
+      console.log('created byr order log');
+  },
+  mounted() {
+    console.log("User page loaded");
+  }
+};
+</script>
