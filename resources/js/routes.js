@@ -21,6 +21,11 @@ import slr_job_list from './components/backend/SLR/slr_job_list.vue'
 import company_seller_user_list from './components/backend/CMN/cmn_company_seller_user_list.vue'
 import item_master from './components/backend/BYR/byr_item_master.vue'
 import item_category from './components/backend/item_category.vue'
+import order_receive from './components/backend/order_receive.vue'
+import order_corrected_receive from './components/backend/order_corrected_receive.vue'
+import return_item_list from './components/backend/return_item_list.vue'
+import payment_list from './components/backend/payment_list.vue'
+import invoice_list from './components/backend/invoice_list.vue'
 
 // import login_body from './components/login/login_body.vue'
 
@@ -157,6 +162,62 @@ export const routes = [
             meta: {
                 breadcrumb: '分類'
             }
+        }, ]
+
+    },
+    
+    {
+        path: '/order_receive',
+        component: default_parent,
+        meta: { breadcrumb: '受領データ' },
+        children: [{
+            path: '/',
+            component: order_receive,
+            name: 'order_receive'
+        }, ]
+
+    },
+    {
+        path: '/order_corrected_receive',
+        component: default_parent,
+        meta: { breadcrumb: '受領訂正データ' },
+        children: [{
+            path: '/',
+            component: order_corrected_receive,
+            name: 'order_corrected_receive'
+        }, ]
+
+    },
+    {
+        path: '/return_item_list',
+        component: default_parent,
+        meta: { breadcrumb: '返品データ' },
+        children: [{
+            path: '/',
+            component: return_item_list,
+            name: 'return_item_list'
+        }, ]
+
+    },
+    {
+        path: '/payment_list',
+        component: default_parent,
+        meta: { breadcrumb: '支払データ' },
+        children: [{
+            path: '/',
+            component: payment_list,
+            name: 'payment_list'
+        }, ]
+
+    },
+    {
+        path: '/invoice_list',
+        component: default_parent,
+        meta: { breadcrumb: '請求' },
+        children: [{
+            path: '/',
+            component: invoice_list,
+            name: 'invoice_list'
         }, ]
 
     },

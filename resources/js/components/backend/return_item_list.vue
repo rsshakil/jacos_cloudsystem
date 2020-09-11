@@ -1,0 +1,127 @@
+<template>
+    <div class="row" v-can="['byr_view']">
+                <div class="col-12">
+                    <h4 class="top_title text-center" style="margin-top:10px;">返品</h4>
+                </div>
+                <div class="col-12 text-center">
+                    
+      <label>
+        <!--<input type="file" id="file" ref="file" v-on:change="onChangeFileUpload()"/>-->
+      </label>
+                </div>
+                <div class="col-12">
+                    <div class="">
+                        <table class="table table-striped table-bordered data_table">
+                            <thead>
+                                <tr>
+                                    <th colspan="100%" style="border: none;">
+                                        <div class="input-group mb-1" style="margin-left: 10px;max-width: 250px; float: left;">
+                                            <div class="input-group-prepend">
+                                                <button class="btn btn-outline-primary" type="button">小売選択</button>
+                                            </div>
+                                            <select class="form-control" v-model="selected_byr">
+                                              <option v-for="(option, index) in byr_buyer_lists" 
+                    :key="index" :value="option.super_code"
+                    :selected="selectedOption(option)">
+                    {{ option.super_code }}
+            </option>
+                                            </select>
+                                        </div>
+                                        <!--<div class="active-pink-3 active-pink-4 mb-1" style="margin-left: 10px;max-width: 100%; float: left;">
+                                            <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+                                        </div>-->
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer">No <span id="id_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">受信日時<span id="orderdate_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">ダウンロード日時 <span id="delivery_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">受領データ<span id="ordertype_icon"></span></th>
+                                </tr>
+                                
+                            </thead>
+                            <tbody>
+                                <tr v-for="(value,index) in return_lists" :key="value.byr_return_id">
+                                    <td>{{index+1}}</td>
+                                    <td>{{value.receive_date}}</td>
+                                    <td>{{value.download_date}}</td>
+                                    <td><button class="btn btn-primary">受領データ</button></td>
+                                   
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+        'return_lists':{},
+        'byr_buyer_lists':{},
+        'file':'',
+        'selected_byr':'OUK',
+    };
+  },
+  methods: {
+    //get Table data
+    get_all_order(){
+        axios.get(this.BASE_URL +"api/get_byr_return_list/"+Globals.user_info_id).then((data) => {
+            this.return_lists = data.data.return_list;
+            this.byr_buyer_lists = data.data.byr_buyer_list;
+        });
+    },
+    check_byr_order_api(){
+       let formData = new FormData();
+    formData.append("up_file", this.file);
+    formData.append("email", 'user@jacos.co.jp');
+    formData.append("password", 'Qe75ymSr');
+        axios({
+    method: 'POST',
+    url: this.BASE_URL + "api/job_exec/1",
+    data: formData,
+    headers: {'Content-Type': 'multipart/form-data' }
+    })
+    .then(function (response) {
+        //handle success
+        console.log(response);
+       Fire.$emit('LoadByrorder');
+    })
+    .catch(function (response) {
+        //handle error
+        console.log(response);
+    });
+    },
+    onChangeFileUpload(){
+        this.file = this.$refs.file.files[0];
+        this.check_byr_order_api();
+      },
+      selectedOption(option) {
+      if (this.value) {
+        return option.byr_buyer_id === this.value.byr_buyer_id;
+      }
+      return false;
+    },
+    change(e) {
+      const selectedCode = e.target.value;
+      const option = this.options.find((option) => {
+        return selectedCode === option.byr_buyer_id;
+      });
+    //   this.$emit("input", option);
+    }
+  },
+
+  created() {
+      this.get_all_order();
+      Fire.$on("LoadByrorder", () => {
+      this.get_all_order();
+    });
+      console.log('created byr order log');
+  },
+  mounted() {
+    console.log("User page loaded");
+  }
+};
+</script>
