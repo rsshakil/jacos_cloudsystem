@@ -116,6 +116,38 @@
             <b-icon icon="card-checklist" font-scale="1.2"></b-icon> 問屋管理
           </router-link>
         </li>
+
+        <li class="nav-item" v-can="['slr_view,byr_view']">
+          <router-link to="/order_receive" class="nav-link">
+            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> 受領データ
+          </router-link>
+        </li>
+
+        <li class="nav-item" v-can="['slr_view,byr_view']">
+          <router-link to="/order_corrected_receive" class="nav-link">
+            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> 受領訂正データ
+          </router-link>
+        </li>
+
+        <li class="nav-item" v-can="['slr_view,byr_view']">
+          <router-link to="/return_item_list" class="nav-link">
+            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> 返品データ
+          </router-link>
+        </li>
+
+        <li class="nav-item" v-can="['slr_view,byr_view']">
+          <router-link to="/payment_list" class="nav-link">
+            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> 支払データ
+          </router-link>
+        </li>
+
+        <li class="nav-item" v-can="['slr_view,byr_view']">
+          <router-link to="/invoice_list" class="nav-link">
+            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> 請求
+          </router-link>
+        </li>
+
+
         </ul>
         </div>
         </li>
