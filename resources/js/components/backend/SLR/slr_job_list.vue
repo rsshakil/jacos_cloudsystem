@@ -105,7 +105,7 @@
   </div>
 </template>
 <script>
-import tabList from './tabList'
+import tabList from '../tabList'
 export default {
   name:'app',
 components:{

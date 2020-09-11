@@ -4,8 +4,10 @@
   </div>
 </template>
 <script>
+// './bms_byr_order_detail.vue'
+
 import default_byr_order_detail from './default_byr_order_detail.vue'
-import bms_byr_order_detail from './bms_byr_order_detail.vue'
+import bms_byr_order_detail from '../BMS/bms_byr_order_detail'
 export default {
   components: {
     default_byr_order_detail,
