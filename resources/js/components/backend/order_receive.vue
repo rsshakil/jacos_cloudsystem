@@ -1,7 +1,7 @@
 <template>
     <div class="row" v-can="['byr_view']">
                 <div class="col-12">
-                    <h4 class="top_title text-center" style="margin-top:10px;">受領</h4>
+                    <h4 class="top_title text-center" style="margin-top:10px;">受領データ</h4>
                 </div>
                 <div class="col-12 text-center">
                     

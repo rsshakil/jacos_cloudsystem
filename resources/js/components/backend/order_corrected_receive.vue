@@ -1,7 +1,7 @@
 <template>
     <div class="row" v-can="['byr_view']">
                 <div class="col-12">
-                    <h4 class="top_title text-center" style="margin-top:10px;">受領訂正</h4>
+                    <h4 class="top_title text-center" style="margin-top:10px;">受領訂正データ</h4>
                 </div>
                 <div class="col-12 text-center">
                     
@@ -36,16 +36,16 @@
                                     <th class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer">No <span id="id_icon"></span></th>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">受信日時<span id="orderdate_icon"></span></th>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">ダウンロード日時 <span id="delivery_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">受領データ<span id="ordertype_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">受領訂正データ<span id="ordertype_icon"></span></th>
                                 </tr>
                                 
                             </thead>
                             <tbody>
-                                <tr v-for="(value,index) in order_corrected_receive_lists" :key="value.byr_receive_id">
+                                <tr v-for="(value,index) in order_corrected_receive_lists" :key="value.byr_corrected_receive_id">
                                     <td>{{index+1}}</td>
                                     <td>{{value.receive_date}}</td>
                                     <td>{{value.download_date}}</td>
-                                    <td><button class="btn btn-primary">受領データ</button></td>
+                                    <td><button class="btn btn-primary">受領訂正データ</button></td>
                                    
                                 </tr>
                                 
