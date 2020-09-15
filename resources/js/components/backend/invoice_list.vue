@@ -1,7 +1,7 @@
 <template>
     <div class="row" v-can="['byr_view']">
                 <div class="col-12">
-                    <h4 class="top_title text-center" style="margin-top:10px;">受領</h4>
+                    <h4 class="top_title text-center" style="margin-top:10px;">請求一覧</h4>
                 </div>
                 <div class="col-12 text-center">
                     
@@ -34,20 +34,19 @@
                                 </tr>
                                 <tr>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer">No <span id="id_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">受信日時<span id="orderdate_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">ダウンロード日時 <span id="delivery_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">受領データ<span id="ordertype_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">小売名<span id="orderdate_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">請求日時 <span id="delivery_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">請求対象期間<span id="ordertype_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">請求金額<span id="ordertype_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">ステータス<span id="ordertype_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">詳細<span id="ordertype_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">請求データ<span id="ordertype_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">請求書<span id="ordertype_icon"></span></th>
                                 </tr>
                                 
                             </thead>
                             <tbody>
-                                <tr v-for="(order_receive_list,index) in order_receive_lists" :key="order_receive_list.byr_receive_id">
-                                    <td>{{index+1}}</td>
-                                    <td>{{order_receive_list.receive_date}}</td>
-                                    <td>{{order_receive_list.download_date}}</td>
-                                    <td><button class="btn btn-primary">受領データ</button></td>
-                                   
-                                </tr>
+                                
                                 
                             </tbody>
                         </table>
