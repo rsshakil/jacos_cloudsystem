@@ -26,22 +26,77 @@
                 </div>
                 <div class="row" v-if="obj_setting!=0">
                   <div class="col-1" style="padding-right:0px;">
-                    <multiselect v-model="selectedJustifier" :options="allJustifier" :searchable="true" :close-on-select="true" :show-labels="false" label="icon" track-by="name" @select="changeJustifier($event)"></multiselect>
+                          <multiselect v-model="selectedJustifier" :options="allJustifier" :searchable="true" :close-on-select="true" :show-labels="false" label="icon" track-by="name" @select="changeJustifier($event)"></multiselect>
+                    <!-- <multiselect v-model="selectedJustifier" :options="allJustifier" :searchable="true" :close-on-select="true" :show-labels="false" label="icon" track-by="name" @select="changeObjectSetting($event)"></multiselect> -->
                   </div>
                   <div class="col-1" style="padding:0px;">
-                    <multiselect v-model="selectedFontSize" :options="allFontSize" :searchable="true" :close-on-select="true" :show-labels="false" @select="changeFontSize($event)"></multiselect>
+                    <input type="text" placeholder="Font Size" v-model="fontSize" @keyup="changeFontSize()" class="form-control">
+                    <!-- <multiselect v-model="fontSize" :options="allFontSize" :searchable="true" :close-on-select="true" :show-labels="false" @select="changeFontSize($event)"></multiselect> -->
                   </div>
                   <div class="col-1" style="padding:0px;">
-                    <multiselect v-model="selectedScaleX" :options="allScaleX" :searchable="true" :close-on-select="true" :show-labels="false" @select="changeScaleXSize($event)"></multiselect>
+                    <input type="text" placeholder="ScaleX" v-model="scaleX" @keyup="changeScaleXSize()" class="form-control">
+                    <!-- <multiselect v-model="selectedScaleX" :options="allScaleX" :searchable="true" :close-on-select="true" :show-labels="false" @select="changeScaleXSize($event)"></multiselect> -->
                   </div>
                   <div class="col-1" style="padding:0px;">
-                    <multiselect v-model="selectedScaleY" :options="allScaleY" :searchable="true" :close-on-select="true" :show-labels="false" @select="changeScaleYSize($event)"></multiselect>
+                    <input type="text" placeholder="ScaleY" v-model="scaleY" @keyup="changeScaleYSize()" class="form-control">
+                    <!-- <multiselect v-model="selectedScaleY" :options="allScaleY" :searchable="true" :close-on-select="true" :show-labels="false" @select="changeScaleYSize($event)"></multiselect> -->
                   </div>
+                  <div class="col-1" style="padding:0px;">
+                    <input type="text" placeholder="Left" v-model="leftPos" @keyup="changeObjectLeftPos()" class="form-control">
+                  </div>
+                  <div class="col-1" style="padding:0px;">
+                    <input type="text" placeholder="Top" v-model="topPos" @keyup="changeObjectTopPos()" class="form-control">
+                  </div>
+                  <div class="col-1" style="padding:0px;">
+                    <input type="text" placeholder="line height" v-model="lineHeight" @keyup="changeObjectLineHeight()" class="form-control">
+                  </div>
+                  <div class="col-1" style="padding:0px;">
+                    <input type="text" placeholder="Width" v-model="width" @keyup="changeObjectWidth()" class="form-control">
+                  </div>
+                  <!-- <div class="col-1" style="padding:0px;">
+                    <input type="text" placeholder="Height" v-model="height" @keyup="changeObjectSetting()" class="form-control">
+                  </div> -->
                 </div>
                 <div class="row" style="height:40px;" v-else></div>
                 <br>
+                </div>
+                <!-- <div class="col-12"> -->
+                <!-- <div class="col-8" style="height:500px; overflow:auto"> -->
+                <div class="col-12" style="overflow:auto">
                     <canvas id="c">Your browser does not support the canvas element.</canvas>
                 </div>
+                <!-- <div class="col-4" style="height:500px; overflow:auto">
+                    <table class="table table-bordered">
+                      <thead>
+                        <th>
+                          <input type="checkbox">
+                        </th>
+                        <th><abbr title="Column Name">Col name </abbr></th>
+                        <th><abbr title="Justification"><b-icon icon="filter" aria-hidden="true"></b-icon></abbr></th>
+                        <th><abbr title="Font Size"><b-icon icon="textarea-t" aria-hidden="true"></b-icon></abbr></th>
+                        <th><abbr title="ScaleX"><b-icon icon="layout-sidebar" aria-hidden="true"></b-icon></abbr></th>
+                        <th><abbr title="ScaleY"><b-icon icon="fullscreen-exit" aria-hidden="true"></b-icon></abbr></th>
+                        <th><abbr title="Left">X</abbr></th>
+                        <th><abbr title="Top">Y</abbr></th>
+                        <th><abbr title="Width"><b-icon icon="crop" aria-hidden="true"></b-icon></abbr></th>
+                        <th><abbr title="Line Height"><b-icon icon="arrow-down-short" aria-hidden="true"></b-icon></abbr></th>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><input type="checkbox"></td>
+                          <td contenteditable>db_1</td>
+                          <td contenteditable v-html="'Left'"></td>
+                          <td contenteditable v-html="fontSize"></td>
+                          <td contenteditable>1</td>
+                          <td contenteditable>1</td>
+                          <td contenteditable>300</td>
+                          <td contenteditable>20</td>
+                          <td contenteditable>150</td>
+                          <td contenteditable>1.16</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                </div> -->
                 <div class="col-12">
                   <!-- <div class="col"> -->
                   <div class="card card-small mb-8" style="margin-top: 25px;">
@@ -105,12 +160,14 @@ data(){
   return {
     allJustifier:[{name:"left",icon:"Left"},{name:"center",icon:"Center"},{name:"right",icon:"Right"}],
     selectedJustifier:{},
-    allFontSize:[],
-    selectedFontSize:[],
-    allScaleX:[],
-    selectedScaleX:[1],
-    allScaleY:[],
-    selectedScaleY:[1],
+    fontSize:0,
+    scaleX:0,
+    scaleY:0,
+    leftPos:0,
+    topPos:0,
+    width:0,
+    height:0,
+    lineHeight:0,
     obj_setting:0,
     all_buyer:[],
     selected_buyer:[],
@@ -131,6 +188,7 @@ data(){
     modal_image:null,
     tmp_modal_image:null,
     tmp_update_image_info:null,
+    activeObjects:[],
   }
 },
 methods:{
@@ -521,54 +579,166 @@ methods:{
               icon="Right"
             }
             _this.selectedJustifier={name:object.textAlign,icon:icon}
-            _this.selectedFontSize=[object.fontSize]
-            _this.selectedScaleX=[object.scaleX]
-            _this.selectedScaleY=[object.scaleY]
-                    // canvas.renderAll();
+            _this.fontSize=object.fontSize
+            _this.scaleX=object.scaleX
+            _this.scaleY=object.scaleY
+            _this.width=object.width
+            _this.height=object.height
+            _this.lineHeight=object.lineHeight
+            if (activeObjects.length>1) {
+              _this.leftPos=object.group.left
+              _this.topPos=object.group.top
+            }else{
+              _this.leftPos=object.left
+              _this.topPos=object.top
+            }
+            // console.log(object.left)
+            // console.log(object.group._objects)
+            // console.log(object.group)
+            // console.log(object.group)
+            // _this.scaleX=object.scaleX.toFixed(1)
+            // _this.scaleY=object.scaleY.toFixed(1)
+            // _this.leftPos=object.left.toFixed(2)
+            // _this.topPos=object.top.toFixed(2)
+            // _this.lineHeight=object.lineHeight.toFixed(2)
+                   
                 });
+                // canvas.requestRenderAll();
+                // canvas.renderAll();
         }else{
           this.obj_setting=0;
+          // canvas.renderAll();
+          // canvas.requestRenderAll();
           // console.log("No")
         }
       },
+      getActiveObject(){
+        this.activeObjects = this.canvas.getActiveObjects();
+      },
+      // changeObjectSetting($event=null){
+      //   var canvas=this.canvas;
+      //   var _this=this;
+      //   this.getActiveObject()
+      //   if (this.activeObjects.length) {
+      //           this.activeObjects.forEach(function(object) {
+      //             object.set({ 
+      //             // textAlign:$event==null?_this.selectedJustifier.name:$event.name,
+      //             width:Number(_this.width), 
+      //             height:Number(_this.height),
+      //             // fontSize:Number(_this.fontSize),
+      //             // strokeWidth: val,
+      //             // scaleX: Number(_this.scaleX),
+      //             // scaleY: Number(_this.scaleY),
+      //             left: Number(_this.leftPos),
+      //             top: Number(_this.topPos),
+      //             lineHeight:Number(_this.lineHeight),
+      //             evented: true,
+      //         });
+      //         // object.setCoords();
+      //           });
+      //           // canvas.setActiveObject(activeObjects);
+      //           // canvas.requestRenderAll();
+      //       }
+      //       canvas.renderAll();
+      // },
       changeJustifier($event){
         var canvas=this.canvas;
-        var activeObjects = canvas.getActiveObjects();
-        if (activeObjects.length) {
-                activeObjects.forEach(function(object) {
+        // var _this=this;
+        this.getActiveObject()
+        if (this.activeObjects.length) {
+                this.activeObjects.forEach(function(object) {
                   object.textAlign=$event.name;
                   canvas.renderAll();
                 });
             }
       },
-      changeFontSize($event){
+      changeFontSize(){
         var canvas=this.canvas;
-        var activeObjects = canvas.getActiveObjects();
-        if (activeObjects.length) {
-                activeObjects.forEach(function(object) {
-                  object.fontSize=$event;
+        var _this=this;
+        this.getActiveObject()
+        if (this.activeObjects.length) {
+                this.activeObjects.forEach(function(object) {
+                  object.fontSize=Number(_this.fontSize);
                   canvas.renderAll();
                 });
             }
       },
-      changeScaleXSize($event){
+      changeScaleXSize(){
         var canvas=this.canvas;
-        var activeObjects = canvas.getActiveObjects();
-        if (activeObjects.length) {
-                activeObjects.forEach(function(object) {
-                  object.scaleX=$event;
+        var _this=this;
+        this.getActiveObject()
+        if (_this.activeObjects.length) {
+                _this.activeObjects.forEach(function(object) {
+                  object.scaleX=Number(_this.scaleX);
                   canvas.renderAll();
                 });
             }
       },
-      changeScaleYSize($event){
+      changeScaleYSize(){
         var canvas=this.canvas;
-        var activeObjects = canvas.getActiveObjects();
-        if (activeObjects.length) {
-                activeObjects.forEach(function(object) {
-                  object.scaleY=$event;
+        var _this=this;
+        this.getActiveObject()
+        if (_this.activeObjects.length) {
+                _this.activeObjects.forEach(function(object) {
+                  object.scaleY=Number(_this.scaleY);
                   canvas.renderAll();
                 });
+            }
+      },
+      changeObjectLeftPos(){
+        var canvas=this.canvas;
+        var _this=this;
+        this.getActiveObject()
+        if (_this.activeObjects.length) {
+                canvas.discardActiveObject();
+          _this.activeObjects.forEach(function(object) {
+                  object.left=Number(_this.leftPos);
+                  // object.evented= true,
+                  // object.setCoords();
+                  // object.set('active', true);
+                  // canvas.setActiveObject(object);
+                });
+                var selection = new fabric.ActiveSelection(_this.activeObjects, {
+                  canvas: canvas
+                });
+                canvas.setActiveObject(selection).renderAll();
+            }
+      },
+      changeObjectTopPos(){
+        var canvas=this.canvas;
+        var _this=this;
+        this.getActiveObject()
+        if (_this.activeObjects.length) {
+          canvas.discardActiveObject();
+          _this.activeObjects.forEach(function(object) {
+                  object.top=Number(_this.topPos);
+                });
+                var selection = new fabric.ActiveSelection(_this.activeObjects, {
+                  canvas: canvas
+                });
+                canvas.setActiveObject(selection).renderAll();
+        }
+      },
+      changeObjectLineHeight(){
+        var canvas=this.canvas;
+        var _this=this;
+        this.getActiveObject()
+        if (_this.activeObjects.length) {
+                _this.activeObjects.forEach(function(object) {
+                  object.lineHeight=Number(_this.lineHeight);
+                });
+                canvas.renderAll();
+            }
+      },
+      changeObjectWidth(){
+        var canvas=this.canvas;
+        var _this=this;
+        this.getActiveObject()
+        if (_this.activeObjects.length) {
+                _this.activeObjects.forEach(function(object) {
+                  object.width=Number(_this.width);
+                });
+                canvas.renderAll();
             }
       },
       addText(text_data) {
@@ -654,6 +824,7 @@ methods:{
           left: element.left - 1,
           evented: true,
         });
+        element.setCoords();
         });
         this.canvas.requestRenderAll();
       },
@@ -664,6 +835,7 @@ methods:{
           top: element.top - 1,
           evented: true,
         });
+        element.setCoords();
         });
         this.canvas.requestRenderAll();
       },
@@ -674,6 +846,7 @@ methods:{
           left: element.left + 1,
           evented: true,
         });
+        element.setCoords();
         });
         this.canvas.requestRenderAll();
       },
@@ -684,6 +857,7 @@ methods:{
           top: element.top + 1,
           evented: true,
         });
+        element.setCoords();
         });
         this.canvas.requestRenderAll();
       },
@@ -791,23 +965,23 @@ methods:{
           // initAligningGuidelines(this.canvas);
           // initCenteringGuidelines(this.canvas);
           this.loadCanvasData();
-          for (let i = 1; i <= 100; i++) {
-            this.allFontSize.push(i);
-          }
-          for (let i = .1; i <= 10; i+=.1) {
-            var new_val = i.toFixed(1)
-            // var first_part=givenString.substring(0, 5);
-            // var main_part=givenString.slice(5,-2);
-            var last_part=new_val.slice(-1);
-            if (last_part==0) {
-              this.allScaleX.push(i.toFixed());
-            }else{
-              this.allScaleX.push(i.toFixed(1));
-            }
-          }
-          for (let i = .1; i <= 10; i+=.1) {
-            this.allScaleY.push(i.toFixed(1));
-          }
+          // for (let i = 1; i <= 100; i++) {
+          //   this.allFontSize.push(i);
+          // }
+          // for (let i = .1; i <= 10; i+=.1) {
+          //   var new_val = i.toFixed(1)
+          //   // var first_part=givenString.substring(0, 5);
+          //   // var main_part=givenString.slice(5,-2);
+          //   var last_part=new_val.slice(-1);
+          //   if (last_part==0) {
+          //     this.allScaleX.push(i.toFixed());
+          //   }else{
+          //     this.allScaleX.push(i.toFixed(1));
+          //   }
+          // }
+          // for (let i = .1; i <= 10; i+=.1) {
+          //   this.allScaleY.push(i.toFixed(1));
+          // }
           this.canvas.on('mouse:dblclick', (e) => {
             this.doubleClick(e)
           })
