@@ -103,4 +103,6 @@ Route::get('get_byr_order_corrected_receive_list/{adm_user_id}', 'API\Byr_order_
 Route::get('get_byr_payment_list/{adm_user_id}', 'API\Byr_paymentController@get_byr_payment_list');
 Route::get('get_byr_return_list/{adm_user_id}', 'API\Byr_return_itemController@get_byr_return_list');
 Route::get('get_all_cat_list/{adm_user_id}', 'API\Cmn_categoryController@get_all_cat_list');
+Route::get('get_all_invoice_list/{adm_user_id}', 'API\Byr_invoiceController@get_all_invoice_list');
+Route::get('get_all_invoice_detail_list/{byr_invoice_id}', 'API\Byr_invoiceController@get_all_invoice_detail_list');
 Route::post('/cmn_category_create', 'API\Cmn_categoryController@store');

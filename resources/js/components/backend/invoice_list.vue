@@ -20,6 +20,7 @@
                                                 <button class="btn btn-outline-primary" type="button">小売選択</button>
                                             </div>
                                             <select class="form-control" v-model="selected_byr">
+                                            <option :value="0">全小売</option>
                                               <option v-for="(option, index) in byr_buyer_lists" 
                     :key="index" :value="option.super_code"
                     :selected="selectedOption(option)">
@@ -30,6 +31,8 @@
                                         <!--<div class="active-pink-3 active-pink-4 mb-1" style="margin-left: 10px;max-width: 100%; float: left;">
                                             <input class="form-control" type="text" placeholder="Search" aria-label="Search">
                                         </div>-->
+                                        <button style="float:right" class="btn btn-primary">請求データアップロード</button>
+                                        <button style="float:right" class="btn btn-success">伝票一覧・新規請求</button>
                                     </th>
                                 </tr>
                                 <tr>
@@ -47,6 +50,18 @@
                             </thead>
                             <tbody>
                                 
+                                <tr v-for="(value,index) in invoice_lists" :key="value.byr_invoice_id">
+                                    <td>{{index+1}}</td>
+                                    <td>{{value.company_name}}</td>
+                                    <td>{{value.send_date}}</td>
+                                    <td>{{value.start_date}}~{{value.start_date}}</td>
+                                    <td>{{value.request_amount}}</td>
+                                    <td>{{value.status}}</td>
+                                    <td><router-link :to="{name:'invoice_detail',params:{byr_invoice_id:value.byr_invoice_id} }" class="btn btn-info">詳細</router-link></td>
+                                    <td><button class="btn btn-success">ダウンロード</button></td>
+                                    <td><button class="btn btn-primary">ダウンロード</button></td>
+                                   
+                                </tr>
                                 
                             </tbody>
                         </table>
@@ -58,17 +73,17 @@
 export default {
   data() {
     return {
-        'order_lists':{},
+        'invoice_lists':{},
         'byr_buyer_lists':{},
         'file':'',
-        'selected_byr':'OUK',
+        'selected_byr':'0',
     };
   },
   methods: {
     //get Table data
-    get_all_order(){
-        axios.get(this.BASE_URL +"api/get_byr_order_receive_list/"+Globals.user_info_id).then((data) => {
-            this.order_lists = data.data.order_list;
+    get_all_invoice_list(){
+        axios.get(this.BASE_URL +"api/get_all_invoice_list/"+Globals.user_info_id).then((data) => {
+            this.invoice_lists = data.data.invoice_list;
             this.byr_buyer_lists = data.data.byr_buyer_list;
         });
     },
@@ -113,9 +128,9 @@ export default {
   },
 
   created() {
-      this.get_all_order();
-      Fire.$on("LoadByrorder", () => {
-      this.get_all_order();
+      this.get_all_invoice_list();
+      Fire.$on("LoadByrinvoice", () => {
+      this.get_all_invoice_list();
     });
       console.log('created byr order log');
   },

@@ -26,6 +26,8 @@ import order_corrected_receive from './components/backend/order_corrected_receiv
 import return_item_list from './components/backend/return_item_list.vue'
 import payment_list from './components/backend/payment_list.vue'
 import invoice_list from './components/backend/invoice_list.vue'
+import invoice_detail from './components/backend/invoice_detail.vue'
+import voucher_detail from './components/backend/voucher_detail.vue'
 
 // import login_body from './components/login/login_body.vue'
 
@@ -214,11 +216,23 @@ export const routes = [
         path: '/invoice_list',
         component: default_parent,
         meta: { breadcrumb: '請求' },
-        children: [{
+        children: [
+            {
             path: '/',
             component: invoice_list,
             name: 'invoice_list'
-        }, ]
+        }, {
+            path: '/invoice_list/invoice_detail/:byr_invoice_id',
+            component: invoice_detail,
+            name: 'invoice_detail',
+            meta:{breadcrumb:'伝票一覧・新規請求'}
+        }, {
+            path: '/invoice_list/voucher_detail/:voucher_number',
+            component: voucher_detail,
+            name: 'voucher_detail',
+            meta:{breadcrumb:'伝票一覧・新規請求'}
+        }
+    ]
 
     },
     // { path: '/login', name: 'login', component: login_body },
