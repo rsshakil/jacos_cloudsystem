@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\API\AllUsedFunction;
 use Illuminate\Http\Request;
 use App\Models\CMN\cmn_tbl_col_setting;
 use App\Models\CMN\cmn_scenario;
@@ -15,6 +16,12 @@ use App\Models\BYR\byr_buyer;
 use App\Models\BYR\byr_payment;
 class Byr_paymentController extends Controller
 {
+
+    private $all_used_fun;
+
+    public function __construct(){
+        $this->all_used_fun = new AllUsedFunction();
+    }
     /**
      * Display a listing of the resource.
      *
@@ -27,22 +34,26 @@ class Byr_paymentController extends Controller
 
     public function get_byr_payment_list($adm_user_id){
         $authUser=User::find($adm_user_id);
+        $cmn_company_id = 0;
         if(!$authUser->hasRole('Super Admin')){
-            $cmn_company_info = cmn_companies_user::select('byr_buyers.cmn_company_id','byr_buyers.byr_buyer_id','cmn_connects.cmn_connect_id')
-            ->join('byr_buyers', 'byr_buyers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
-            ->join('cmn_connects', 'cmn_connects.byr_buyer_id', '=', 'byr_buyers.byr_buyer_id')
-            ->where('cmn_companies_users.adm_user_id',$adm_user_id)->first();
-            $cmn_company_id = $cmn_company_info->cmn_company_id;
-            $byr_buyer_id = $cmn_company_info->byr_buyer_id;
-            $cmn_connect_id = $cmn_company_info->cmn_connect_id;
-            $result = byr_payment::where('cmn_connect_id',$cmn_connect_id)->get();
-            $byr_buyer = byr_buyer::where('byr_buyer_id',$byr_buyer_id)->get();
+            $cmn_company_info = $this->all_used_fun->get_user_info($adm_user_id);
+            $cmn_company_id = $cmn_company_info['cmn_company_id'];
+            $byr_buyer_id = $cmn_company_info['byr_buyer_id'];
+            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+            $result = byr_payment::select('byr_payments.*','cmn_companies.company_name')
+            ->join('cmn_connects','cmn_connects.cmn_connect_id','=','byr_payments.cmn_connect_id')
+            ->join('byr_buyers','byr_buyers.byr_buyer_id','=','cmn_connects.byr_buyer_id')
+            ->join('cmn_companies','cmn_companies.cmn_company_id','=','byr_buyers.cmn_company_id')
+            ->where('byr_payments.cmn_connect_id',$cmn_connect_id)->get();
+           
         }else{
-            $result = byr_payment::get();
-            $byr_buyer = byr_buyer::all();
+            $result = byr_payment::select('byr_payments.*','cmn_companies.company_name')
+            ->join('cmn_connects','cmn_connects.cmn_connect_id','=','byr_payments.cmn_connect_id')
+            ->join('byr_buyers','byr_buyers.byr_buyer_id','=','cmn_connects.byr_buyer_id')
+            ->join('cmn_companies','cmn_companies.cmn_company_id','=','byr_buyers.cmn_company_id')->get();
         }
 
-   
+        $byr_buyer =$this->all_used_fun->get_company_list($cmn_company_id);
         
         return response()->json(['payment_list' => $result,'byr_buyer_list'=>$byr_buyer]);
     }

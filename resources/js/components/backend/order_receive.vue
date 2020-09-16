@@ -20,11 +20,13 @@
                                                 <button class="btn btn-outline-primary" type="button">小売選択</button>
                                             </div>
                                             <select class="form-control" v-model="selected_byr">
+                                             <option :value="0">全小売</option>
                                               <option v-for="(option, index) in byr_buyer_lists" 
-                    :key="index" :value="option.super_code"
+                    :key="index" :value="option.cmn_company_id"
                     :selected="selectedOption(option)">
-                    {{ option.super_code }}
+                    {{ option.company_name }}
             </option>
+                                     
                                             </select>
                                         </div>
                                         <!--<div class="active-pink-3 active-pink-4 mb-1" style="margin-left: 10px;max-width: 100%; float: left;">
@@ -34,6 +36,7 @@
                                 </tr>
                                 <tr>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer">No <span id="id_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">小売名<span id="orderdate_icon"></span></th>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">受信日時<span id="orderdate_icon"></span></th>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">ダウンロード日時 <span id="delivery_icon"></span></th>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">受領データ<span id="ordertype_icon"></span></th>
@@ -43,6 +46,7 @@
                             <tbody>
                                 <tr v-for="(order_receive_list,index) in order_receive_lists" :key="order_receive_list.byr_receive_id">
                                     <td>{{index+1}}</td>
+                                    <td>{{order_receive_list.company_name}}</td>
                                     <td>{{order_receive_list.receive_date}}</td>
                                     <td>{{order_receive_list.download_date}}</td>
                                     <td><button class="btn btn-primary">受領データ</button></td>
@@ -62,7 +66,7 @@ export default {
         'order_receive_lists':{},
         'byr_buyer_lists':{},
         'file':'',
-        'selected_byr':'OUK',
+        'selected_byr':'0',
     };
   },
   methods: {
@@ -98,12 +102,6 @@ export default {
         this.file = this.$refs.file.files[0];
         this.check_byr_order_api();
       },
-      selectedOption(option) {
-      if (this.value) {
-        return option.byr_buyer_id === this.value.byr_buyer_id;
-      }
-      return false;
-    },
     change(e) {
       const selectedCode = e.target.value;
       const option = this.options.find((option) => {

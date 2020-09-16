@@ -5,52 +5,25 @@
                 </div>
                 <div class="col-12 text-center">
         <div class="row">
+        <div class="col"></div>
+        <div class="col-4">
+        <table class="table table-bordered top_info_table">
+          <thead>
+            <th>発注日</th>
+            <th>納品日</th>
+            <th>請求日</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
           <div class="col"></div>
-          <div class="col-3">
-            <div class="card mb-4 box-shadow">
-              <div class="card-header">
-                <h4 class="my-0 font-weight-normal">請求対象期間</h4>
-              </div>
-              <div class="card-body p-0 d-flex flex-column justify-content-between">
-                <div>
-                  <div class="form-group mb-0">
-                    <input
-                      type="text"
-                      v-model="start_date"
-                      name="start_date" style="float:left;width:50%;"
-                      class="form-control text-center"
-                    />
-                    <input
-                      type="text"
-                      v-model="end_date" style="float:left;width:50%;"
-                      name="end_date"
-                      class="form-control text-center"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-3">
-            <div class="card mb-4 box-shadow">
-              <div class="card-header">
-                <h4 class="my-0 font-weight-normal">請求合計金額</h4>
-              </div>
-              <div class="card-body p-0 d-flex flex-column justify-content-between">
-                <div>
-                  <div class="form-group mb-0">
-                    <input
-                      type="text"
-                      v-model="total_price"
-                      name="total_price"
-                      class="form-control text-center"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col"></div>
+          
         </div>
       </div>
                 <div class="col-12 text-center">
@@ -78,6 +51,33 @@
             </option>
                                             </select>
                                         </div>
+                                         <div class="input-group mb-1" style="margin-left: 10px;max-width: 250px; float: left;">
+                                            <div class="input-group-prepend">
+                                                <button class="btn btn-outline-primary" type="button">店舗</button>
+                                            </div>
+                                            <select class="form-control" v-model="selected_byr_shop">
+                                            <option :value="0">全店舗</option>
+                                              <option v-for="(option, index) in byr_shop_lists" 
+                    :key="index" :value="option.byr_shop_id"
+                    :selected="selectedOption_shop(option)">
+                    {{ option.shop_name }}
+            </option>
+                                            </select>
+                                        </div>
+
+                                         <div class="input-group mb-1" style="margin-left: 10px;max-width: 250px; float: left;">
+                                            <div class="input-group-prepend">
+                                                <button class="btn btn-outline-primary" type="button">伝票番号</button>
+                                            </div>
+                                            <select class="form-control" v-model="selected_byr_voucher">
+                                            <option :value="0">全伝票</option>
+                                              <option v-for="(option, index) in byr_voucher_lists" 
+                    :key="index" :value="option.voucher_number"
+                    :selected="selectedOption_voucher(option)">
+                    {{ option.voucher_number }}
+            </option>
+                                            </select>
+                                        </div>
                                         <!--<div class="active-pink-3 active-pink-4 mb-1" style="margin-left: 10px;max-width: 100%; float: left;">
                                             <input class="form-control" type="text" placeholder="Search" aria-label="Search">
                                         </div>-->
@@ -86,13 +86,13 @@
                                 </tr>
                                 <tr>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer">No <span id="id_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer"><input type="checkbox" class="form-control"> 新規請求<span id="orderdate_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">店舗名 <span id="delivery_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">納品日<span id="ordertype_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">伝票番号<span id="ordertype_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">商品名<span id="orderdate_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">JANコード <span id="delivery_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">発注数量<span id="ordertype_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">納品数量<span id="ordertype_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">欠品理由<span id="ordertype_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">単価<span id="ordertype_icon"></span></th>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">合計金額<span id="ordertype_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">請求日時<span id="ordertype_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">明細<span id="ordertype_icon"></span></th>
                                 </tr>
                                 
                             </thead>
@@ -100,14 +100,13 @@
                                 
                                 <tr v-for="(value,index) in invoice_detail_lists" :key="value.byr_invoice_detail_id">
                                     <td>{{index+1}}</td>
-                                    <td><input type="checkbox" class="form-control"></td>
-                                    <td>{{value.shop_name}}</td>
-                                    <td>{{value.revised_delivery_date}}</td>
-                                    <td>{{value.voucher_number}}</td>
-                                    <td>{{value.cost_price}}</td>
-                                    <td>{{value.send_date}}</td>
-                                    <td><router-link :to="{name:'voucher_detail',params:{byr_voucher_number:value.voucher_number} }" class="btn btn-info">詳細</router-link></td>
-                                   
+                                    <td>{{value.item_name}}</td>
+                                    <td>{{value.jan}}</td>
+                                    <td>{{value.order_quantity}}</td>
+                                    <td>{{value.delivery_quantity}}</td>
+                                    <td>{{value.lack_reason}}</td>
+                                    <td>{{value.revised_cost_unit_price}}</td>
+                                    <td>{{value.revised_cost_unit_price*value.order_quantity}}</td>
                                 </tr>
                                 
                             </tbody>
@@ -122,9 +121,14 @@ export default {
     return {
         'invoice_detail_lists':{},
         'byr_buyer_lists':{},
+        'selected_byr':'0',
+        'byr_shop_lists':{},
+        'selected_byr_shop':'0',
+        'byr_voucher_lists':{},
+        'selected_byr_voucher':'0',
         'file':'',
         'byr_invoice_id':'',
-        'selected_byr':'0',
+        'voucher_number':'',
         'start_date':'',
         'end_date':'',
         'total_price':'',
@@ -133,9 +137,11 @@ export default {
   methods: {
     //get Table data
     get_all_invoice_detail(){
-        axios.get(this.BASE_URL +"api/get_all_invoice_detail_list/"+this.byr_invoice_id).then((data) => {
+        axios.get(this.BASE_URL +"api/get_all_invoice_by_voucher_number/"+this.voucher_number).then((data) => {
             this.invoice_detail_lists = data.data.invoice_list;
             this.byr_buyer_lists = data.data.byr_buyer_list;
+            this.byr_shop_lists = data.data.shop_list;
+            this.byr_voucher_lists = data.data.voucher_list;
         });
     },
     check_byr_order_api(){
@@ -169,6 +175,18 @@ export default {
       }
       return false;
     },
+    selectedOption_shop(option) {
+      if (this.value) {
+        return option.byr_shop_id === this.value.byr_shop_id;
+      }
+      return false;
+    },
+      selectedOption_voucher(option) {
+      if (this.value) {
+        return option.voucher_number === this.value.voucher_number;
+      }
+      return false;
+    },
     change(e) {
       const selectedCode = e.target.value;
       const option = this.options.find((option) => {
@@ -179,7 +197,7 @@ export default {
   },
 
   created() {
-    this.byr_invoice_id = this.$route.params.byr_invoice_id;
+    this.voucher_number = this.$route.params.voucher_number;
       this.get_all_invoice_detail();
       Fire.$on("LoadByrinvoice_detail", () => {
       this.get_all_invoice_detail();

@@ -11183,3 +11183,13 @@ input:checked + .slider:before {
   content: "\25BE";
 }
 
+.top_info_table thead th {
+  background: #E7F1FD;
+  border: 1px solid #ddd;
+}
+
+.data_table thead tr:nth-child(2) th {
+  background: #E7F1FD;
+  border: 1px solid #ddd;
+}
+

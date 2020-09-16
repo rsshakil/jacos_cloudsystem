@@ -6,8 +6,17 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
-use DB;
+use App\Models\CMN\cmn_tbl_col_setting;
+use App\Models\CMN\cmn_scenario;
+use App\Models\CMN\cmn_connect;
+use App\Models\CMN\cmn_company;
 use App\Models\ADM\User;
+use App\Models\CMN\cmn_companies_user;
+use App\Models\BYR\byr_receive;
+use App\Models\BYR\byr_corrected_receive;
+use App\Models\BYR\byr_buyer;
+use App\Models\BYR\byr_return;
+use DB;
 
 class AllUsedFunction extends Controller
 {
@@ -188,5 +197,33 @@ class AllUsedFunction extends Controller
         $file_name_without_ext = $file_array[$array_size - 2];
         $today_for_file = date("YmdHis");
         return $file_name = $file_name_without_ext . "_" . $today_for_file . "." . $file_array[$array_size - 1];
+    }
+
+    public function get_company_list($cmn_company_id=0){
+        if($cmn_company_id!=0){
+            return $results  = cmn_company::where('cmn_company_id',$cmn_company_id)->get();
+        }else{
+            return $byr_buyer = byr_buyer::select('cmn_companies.*')
+            ->join('cmn_companies','cmn_companies.cmn_company_id','=','byr_buyers.cmn_company_id')->get();
+        }
+    }
+
+    public function get_user_info($adm_user_id=0){
+        $arr=array('cmn_company_id'=>0,'byr_buyer_id'=>0,'cmn_connect_id'=>0);
+        if($adm_user_id=!0){
+            $cmn_company_info = cmn_companies_user::select('byr_buyers.cmn_company_id','byr_buyers.byr_buyer_id','cmn_connects.cmn_connect_id')
+            ->join('byr_buyers', 'byr_buyers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
+            ->join('cmn_connects', 'cmn_connects.byr_buyer_id', '=', 'byr_buyers.byr_buyer_id')
+            ->where('cmn_companies_users.adm_user_id',$adm_user_id)->first();
+            $cmn_company_id = $cmn_company_info->cmn_company_id;
+            $byr_buyer_id = $cmn_company_info->byr_buyer_id;
+            $cmn_connect_id = $cmn_company_info->cmn_connect_id;
+            $arr = array(
+                'cmn_company_id'=>$cmn_company_id,
+                'byr_buyer_id'=>$byr_buyer_id,
+                'cmn_connect_id'=>$cmn_connect_id
+            );
+        }
+        return $ar;
     }
 }
