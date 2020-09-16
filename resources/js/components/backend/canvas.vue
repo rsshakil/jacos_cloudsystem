@@ -26,38 +26,83 @@
                 </div>
                 <div class="row" v-if="obj_setting!=0">
                   <div class="col-1" style="padding-right:0px;">
-                          <multiselect v-model="selectedJustifier" :options="allJustifier" :searchable="true" :close-on-select="true" :show-labels="false" label="icon" track-by="name" @select="changeJustifier($event)"></multiselect>
-                    <!-- <multiselect v-model="selectedJustifier" :options="allJustifier" :searchable="true" :close-on-select="true" :show-labels="false" label="icon" track-by="name" @select="changeObjectSetting($event)"></multiselect> -->
+                    <b-button-group class="mr-1">
+                      <b-button title="Align left" variant="outline-secondary justificationButton" size="sm" :class="justifier=='left'?'active':''" @click.prevent="changeJustifier('left')">
+                        <b-icon icon="text-left" aria-hidden="true"></b-icon>
+                      </b-button>
+                      <b-button title="Align center" variant="outline-secondary justificationButton" size="sm" :class="justifier=='center'?'active':''" @click.prevent="changeJustifier('center')">
+                        <b-icon icon="text-center" aria-hidden="true"></b-icon>
+                      </b-button>
+                      <b-button title="Align right" variant="outline-secondary justificationButton" size="sm" :class="justifier=='right'?'active':''" @click.prevent="changeJustifier('right')">
+                        <b-icon icon="text-right" aria-hidden="true"></b-icon>
+                      </b-button>
+                    </b-button-group>
                   </div>
-                  <div class="col-1" style="padding:0px;">
-                    <input type="text" placeholder="Font Size" v-model="fontSize" @keyup="changeFontSize()" class="form-control">
-                    <!-- <multiselect v-model="fontSize" :options="allFontSize" :searchable="true" :close-on-select="true" :show-labels="false" @select="changeFontSize($event)"></multiselect> -->
+                  <div class="col-1" style="padding:2px;">
+                    <b-input-group class="mb-2">
+                      <b-input-group-prepend is-text>
+                        <b-icon icon="type"></b-icon>
+                      </b-input-group-prepend>
+                      <b-form-input title="Font Size" type="text" placeholder="Font Size" v-model="fontSize" @keyup="changeFontSize()"></b-form-input>
+                    </b-input-group>
                   </div>
-                  <div class="col-1" style="padding:0px;">
-                    <input type="text" placeholder="ScaleX" v-model="scaleX" @keyup="changeScaleXSize()" class="form-control">
-                    <!-- <multiselect v-model="selectedScaleX" :options="allScaleX" :searchable="true" :close-on-select="true" :show-labels="false" @select="changeScaleXSize($event)"></multiselect> -->
+                  <div class="col-1" style="padding:2px;">
+                    <b-input-group class="mb-2">
+                      <b-input-group-prepend is-text>
+                        SX
+                        <!-- <b-icon icon="fonts"></b-icon> -->
+                      </b-input-group-prepend>
+                      <b-form-input type="text" title="ScaleX" placeholder="ScaleX" v-model="scaleX" @keyup="changeScaleXSize()"></b-form-input>
+                    </b-input-group>
                   </div>
-                  <div class="col-1" style="padding:0px;">
-                    <input type="text" placeholder="ScaleY" v-model="scaleY" @keyup="changeScaleYSize()" class="form-control">
-                    <!-- <multiselect v-model="selectedScaleY" :options="allScaleY" :searchable="true" :close-on-select="true" :show-labels="false" @select="changeScaleYSize($event)"></multiselect> -->
+                  <div class="col-1" style="padding:2px;">
+                    <b-input-group class="mb-2">
+                      <b-input-group-prepend is-text>
+                        SY
+                        <!-- <b-icon icon="fonts"></b-icon> -->
+                      </b-input-group-prepend>
+                      <b-form-input type="text" title="ScaleY" placeholder="ScaleY" v-model="scaleY" @keyup="changeScaleYSize()"></b-form-input>
+                    </b-input-group>
                   </div>
-                  <div class="col-1" style="padding:0px;">
-                    <input type="text" placeholder="Left" v-model="leftPos" @keyup="changeObjectLeftPos()" class="form-control">
+                  <div class="col-1" style="padding:2px;">
+                    <b-input-group class="mb-2">
+                      <b-input-group-prepend is-text>
+                        X
+                        <!-- <b-icon icon="fonts"></b-icon> -->
+                      </b-input-group-prepend>
+                      <b-form-input type="text" title="Left" placeholder="Left" v-model="leftPos" @keyup="changeObjectLeftPos()"></b-form-input>
+                    </b-input-group>
                   </div>
-                  <div class="col-1" style="padding:0px;">
-                    <input type="text" placeholder="Top" v-model="topPos" @keyup="changeObjectTopPos()" class="form-control">
+                  <div class="col-1" style="padding:2px;">
+                    <b-input-group class="mb-2">
+                      <b-input-group-prepend is-text>
+                        Y
+                        <!-- <b-icon icon="fonts"></b-icon> -->
+                      </b-input-group-prepend>
+                      <b-form-input type="text" title="Top" placeholder="Top" v-model="topPos" @keyup="changeObjectTopPos()"></b-form-input>
+                    </b-input-group>
                   </div>
-                  <div class="col-1" style="padding:0px;">
-                    <input type="text" placeholder="line height" v-model="lineHeight" @keyup="changeObjectLineHeight()" class="form-control">
+                  <div class="col-1" style="padding:2px;">
+                    <b-input-group class="mb-2">
+                      <b-input-group-prepend is-text>
+                        <b-icon icon="type-h1"></b-icon>
+                      </b-input-group-prepend>
+                      <b-form-input type="text" title="Line Height" placeholder="Line Height" v-model="lineHeight" @keyup="changeObjectLineHeight()"></b-form-input>
+                    </b-input-group>
                   </div>
-                  <div class="col-1" style="padding:0px;">
-                    <input type="text" placeholder="Width" v-model="width" @keyup="changeObjectWidth()" class="form-control">
+                  <div class="col-1" style="padding:2px;">
+                    <b-input-group class="mb-2">
+                      <b-input-group-prepend is-text>
+                        <b-icon icon="crop"></b-icon>
+                      </b-input-group-prepend>
+                      <b-form-input type="text" title="Width" placeholder="Width" v-model="width" @keyup="changeObjectWidth()"></b-form-input>
+                    </b-input-group>
                   </div>
                   <!-- <div class="col-1" style="padding:0px;">
                     <input type="text" placeholder="Height" v-model="height" @keyup="changeObjectSetting()" class="form-control">
                   </div> -->
                 </div>
-                <div class="row" style="height:40px;" v-else></div>
+                <div class="row" style="height:47.5px;" v-else></div>
                 <br>
                 </div>
                 <!-- <div class="col-12"> -->
@@ -153,13 +198,22 @@
 </div>
 
 </template>
-
+<style>
+.input-group{
+  min-width: 5rem
+}
+.justificationButton{
+      width: 30px;
+    padding: 0;
+    height: 30px;
+    margin-top: 4px;
+}
+</style>
 <script>
 export default {
 data(){
   return {
-    allJustifier:[{name:"left",icon:"Left"},{name:"center",icon:"Center"},{name:"right",icon:"Right"}],
-    selectedJustifier:{},
+    justifier:"left",
     fontSize:0,
     scaleX:0,
     scaleY:0,
@@ -570,46 +624,20 @@ methods:{
         if (activeObjects.length>0) {
           this.obj_setting=1;
           activeObjects.forEach(function(object) {
-            var icon;
-            if (object.textAlign=="left") {
-              icon="Left"
-            }else if(object.textAlign=="center"){
-              icon="Center"
-            }else if(object.textAlign=="right"){
-              icon="Right"
-            }
-            _this.selectedJustifier={name:object.textAlign,icon:icon}
+            _this.justifier=object.textAlign=="left"?"left":(object.textAlign=="center"?"center":(object.textAlign=="right"?"right":''))
             _this.fontSize=object.fontSize
             _this.scaleX=object.scaleX
             _this.scaleY=object.scaleY
             _this.width=object.width
             _this.height=object.height
             _this.lineHeight=object.lineHeight
-            if (activeObjects.length>1) {
-              _this.leftPos=object.group.left
-              _this.topPos=object.group.top
-            }else{
-              _this.leftPos=object.left
-              _this.topPos=object.top
-            }
-            // console.log(object.left)
-            // console.log(object.group._objects)
-            // console.log(object.group)
-            // console.log(object.group)
-            // _this.scaleX=object.scaleX.toFixed(1)
-            // _this.scaleY=object.scaleY.toFixed(1)
-            // _this.leftPos=object.left.toFixed(2)
-            // _this.topPos=object.top.toFixed(2)
-            // _this.lineHeight=object.lineHeight.toFixed(2)
-                   
+            // _this.leftPos=activeObjects.length>1?object.group.left:object.left;
+            // _this.topPos=activeObjects.length>1?object.group.top:object.top;
+            _this.leftPos=activeObjects.length>1?object.group.left.toFixed(2):object.left.toFixed(2);
+            _this.topPos=activeObjects.length>1?object.group.top.toFixed(2):object.top.toFixed(2);
                 });
-                // canvas.requestRenderAll();
-                // canvas.renderAll();
         }else{
           this.obj_setting=0;
-          // canvas.renderAll();
-          // canvas.requestRenderAll();
-          // console.log("No")
         }
       },
       getActiveObject(){
@@ -641,15 +669,16 @@ methods:{
       //       }
       //       canvas.renderAll();
       // },
-      changeJustifier($event){
+      changeJustifier(justifierVal){
         var canvas=this.canvas;
         // var _this=this;
         this.getActiveObject()
         if (this.activeObjects.length) {
                 this.activeObjects.forEach(function(object) {
-                  object.textAlign=$event.name;
+                  object.textAlign=justifierVal;
                   canvas.renderAll();
                 });
+                this.justifier=justifierVal
             }
       },
       changeFontSize(){
@@ -827,6 +856,7 @@ methods:{
         element.setCoords();
         });
         this.canvas.requestRenderAll();
+        this.getActiveObjectAttr()
       },
       upButton(){
         var activeObjects=this.canvas.getActiveObjects();
@@ -838,6 +868,7 @@ methods:{
         element.setCoords();
         });
         this.canvas.requestRenderAll();
+        this.getActiveObjectAttr()
       },
       rightButton(){
         var activeObjects=this.canvas.getActiveObjects();
@@ -849,6 +880,7 @@ methods:{
         element.setCoords();
         });
         this.canvas.requestRenderAll();
+        this.getActiveObjectAttr()
       },
       downButton(){
         var activeObjects=this.canvas.getActiveObjects();
@@ -860,6 +892,7 @@ methods:{
         element.setCoords();
         });
         this.canvas.requestRenderAll();
+        this.getActiveObjectAttr()
       },
       undo() {
         var canvas=this.canvas;
@@ -909,15 +942,8 @@ methods:{
         // Copy function End 
       },
       pasteObject(){
-        // console.log(this.copiedObjects);
-        // console.log((this.copiedObjects).aCoords);
         var canvas=this.canvas;
         var _this=this;
-        // if ((this.copiedObjects).length>0) {
-        //   console.log(this.copiedObjects);
-        // }else{
-        //   console.log("No ");
-        // }
         _this.copiedObjects.clone(function(clonedObj) {
         canvas.discardActiveObject();
         clonedObj.set({
@@ -962,26 +988,7 @@ methods:{
           // this.canvas.controlsAboveOverlay = true;
           this.bg_image_path=this.BASE_URL + 'storage/app/public/backend/images/canvas/Background/bg_image.jpg'
           this.backgroundImageSet(this.bg_image_path);
-          // initAligningGuidelines(this.canvas);
-          // initCenteringGuidelines(this.canvas);
           this.loadCanvasData();
-          // for (let i = 1; i <= 100; i++) {
-          //   this.allFontSize.push(i);
-          // }
-          // for (let i = .1; i <= 10; i+=.1) {
-          //   var new_val = i.toFixed(1)
-          //   // var first_part=givenString.substring(0, 5);
-          //   // var main_part=givenString.slice(5,-2);
-          //   var last_part=new_val.slice(-1);
-          //   if (last_part==0) {
-          //     this.allScaleX.push(i.toFixed());
-          //   }else{
-          //     this.allScaleX.push(i.toFixed(1));
-          //   }
-          // }
-          // for (let i = .1; i <= 10; i+=.1) {
-          //   this.allScaleY.push(i.toFixed(1));
-          // }
           this.canvas.on('mouse:dblclick', (e) => {
             this.doubleClick(e)
           })
@@ -997,21 +1004,9 @@ methods:{
               (e.ctrlKey && e.shiftKey && e.keyCode == 65) || (e.ctrlKey && e.keyCode == 67) || 
               (e.ctrlKey && e.keyCode == 86) || e.keyCode == 37 || e.keyCode == 38 || 
               e.keyCode == 39 || e.keyCode == 40 || (e.ctrlKey && e.keyCode == 90)) {
-                // var activeObjects=this.canvas.getActiveObjects();
-                // if (activeObjects) {
                   e.preventDefault();
-                // }
               }
-              // if (e.keyCode == 46 || (e.ctrlKey && e.keyCode == 8)) {
-              // } else if (e.ctrlKey && e.shiftKey && e.keyCode == 65) {
           });
-          //  this.loader = Vue.$loading.show({
-          // color: 'blue'
-          // },{
-          //   // slots
-          // });
-          // console.log(this.canvas);
-          // onKeyDownHandler(event)
     }
 }
 </script>
