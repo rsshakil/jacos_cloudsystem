@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\BYR\byr_buyer;
 use App\Models\BYR\byr_invoice;
 use App\Models\BYR\byr_invoice_detail;
+use App\Models\BYR\byr_shipment;
+use App\Models\BYR\byr_shipment_detail;
 use App\Models\BYR\byr_item;
 use App\Models\BYR\byr_item_class;
 use App\Models\CMN\cmn_maker;
@@ -78,9 +80,38 @@ class Byr_invoiceController extends Controller
         ->leftJoin('byr_shipment_details', 'byr_shipment_details.byr_shipment_id', '=', 'byr_shipments.byr_shipment_id')
         ->where('byr_invoices.byr_invoice_id',$byr_invoice_id)
         ->get();
-        $byr_buyer = byr_buyer::all();
+        $voucher_list = byr_invoice::select('byr_invoices.byr_invoice_id','byr_invoices.cmn_connect_id','byr_order_details.voucher_number')
+       
+        ->leftJoin('byr_orders', 'byr_orders.cmn_connect_id', '=', 'byr_invoices.cmn_connect_id')
+        ->leftJoin('byr_order_details', 'byr_order_details.byr_order_id', '=', 'byr_orders.byr_order_id')
+        ->where('byr_invoices.byr_invoice_id',$byr_invoice_id)
+        ->groupBy('byr_order_details.voucher_number')
+        ->get();
+        $shop_list = byr_invoice::select('byr_invoices.byr_invoice_id','byr_invoices.cmn_connect_id','byr_shops.shop_name','byr_shops.byr_shop_id')
+       
+        ->leftJoin('byr_orders', 'byr_orders.cmn_connect_id', '=', 'byr_invoices.cmn_connect_id')
+        ->leftJoin('byr_order_details', 'byr_order_details.byr_order_id', '=', 'byr_orders.byr_order_id')
+        ->leftJoin('byr_shops', 'byr_shops.byr_shop_id', '=', 'byr_order_details.byr_shop_id')
+        ->where('byr_invoices.byr_invoice_id',$byr_invoice_id)
+        ->groupBy('byr_order_details.byr_shop_id')
+        ->get();
 
-        return response()->json(['invoice_list' => $result,'byr_buyer_list'=>$byr_buyer]);
+        $byr_buyer = byr_invoice::select('byr_buyers.super_code')
+        ->leftJoin('cmn_connects','cmn_connects.cmn_connect_id','=','byr_invoices.cmn_connect_id')
+        ->leftJoin('byr_buyers','byr_buyers.byr_buyer_id','=','cmn_connects.byr_buyer_id')
+        ->where('byr_invoices.byr_invoice_id',$byr_invoice_id)
+        ->get();
+
+        return response()->json(['invoice_list' => $result,'byr_buyer_list'=>$byr_buyer,'shop_list'=>$shop_list,'voucher_list'=>$voucher_list]);
+    }
+
+    public function get_all_invoice_by_voucher_number($voucher_number){
+
+        $result = byr_shipment_detail::where('voucher_number',$voucher_number)->get();
+        $shop_list = array();
+        $voucher_list = array();
+        $byr_buyer = array();
+        return response()->json(['invoice_list' => $result,'byr_buyer_list'=>$byr_buyer,'shop_list'=>$shop_list,'voucher_list'=>$voucher_list]);
     }
     /**
      * Store a newly created resource in storage.

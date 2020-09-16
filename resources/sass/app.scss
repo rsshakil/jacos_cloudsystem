@@ -246,6 +246,14 @@ input:checked+.slider:before {
 .nav-link[data-toggle].collapsed:after {
     content: "▾";
 }
+.top_info_table thead th {
+    background: #E7F1FD;
+    border: 1px solid #ddd;
+}
+.data_table thead tr:nth-child(2) th{
+    background: #E7F1FD;
+    border: 1px solid #ddd;
+}
 // .nav-link[data-toggle]:not(.collapsed):after {
 //     content: "▴";
 // }

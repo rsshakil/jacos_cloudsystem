@@ -168,7 +168,13 @@ export default {
             // axios.post(this.BASE_URL + "user").catch(err => {
             //     window.location.reload();
             // });
-        }
+        },
+        selectedOption(option) {
+            if (this.value) {
+              return option.cmn_company_id === this.value.cmn_company_id;
+            }
+            return false;
+          }
     },
     created() {
 

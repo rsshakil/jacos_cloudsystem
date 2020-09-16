@@ -78,6 +78,34 @@
             </option>
                                             </select>
                                         </div>
+
+                                         <div class="input-group mb-1" style="margin-left: 10px;max-width: 250px; float: left;">
+                                            <div class="input-group-prepend">
+                                                <button class="btn btn-outline-primary" type="button">店舗</button>
+                                            </div>
+                                            <select class="form-control" v-model="selected_byr_shop">
+                                            <option :value="0">全店舗</option>
+                                              <option v-for="(option, index) in byr_shop_lists" 
+                    :key="index" :value="option.byr_shop_id"
+                    :selected="selectedOption_shop(option)">
+                    {{ option.shop_name }}
+            </option>
+                                            </select>
+                                        </div>
+
+                                         <div class="input-group mb-1" style="margin-left: 10px;max-width: 250px; float: left;">
+                                            <div class="input-group-prepend">
+                                                <button class="btn btn-outline-primary" type="button">伝票番号</button>
+                                            </div>
+                                            <select class="form-control" v-model="selected_byr_voucher">
+                                            <option :value="0">全伝票</option>
+                                              <option v-for="(option, index) in byr_voucher_lists" 
+                    :key="index" :value="option.voucher_number"
+                    :selected="selectedOption_voucher(option)">
+                    {{ option.voucher_number }}
+            </option>
+                                            </select>
+                                        </div>
                                         <!--<div class="active-pink-3 active-pink-4 mb-1" style="margin-left: 10px;max-width: 100%; float: left;">
                                             <input class="form-control" type="text" placeholder="Search" aria-label="Search">
                                         </div>-->
@@ -106,7 +134,7 @@
                                     <td>{{value.voucher_number}}</td>
                                     <td>{{value.cost_price}}</td>
                                     <td>{{value.send_date}}</td>
-                                    <td><router-link :to="{name:'voucher_detail',params:{byr_voucher_number:value.voucher_number} }" class="btn btn-info">詳細</router-link></td>
+                                    <td><router-link :to="{name:'voucher_detail',params:{voucher_number:'353534'} }" class="btn btn-info">詳細</router-link></td>
                                    
                                 </tr>
                                 
@@ -122,9 +150,13 @@ export default {
     return {
         'invoice_detail_lists':{},
         'byr_buyer_lists':{},
-        'file':'',
-        'byr_invoice_id':'',
         'selected_byr':'0',
+        'byr_shop_lists':{},
+        'selected_byr_shop':'0',
+        'byr_voucher_lists':{},
+        'selected_byr_voucher':'0',
+        'file':'',
+        'byr_invoice_id':'',   
         'start_date':'',
         'end_date':'',
         'total_price':'',
@@ -136,6 +168,8 @@ export default {
         axios.get(this.BASE_URL +"api/get_all_invoice_detail_list/"+this.byr_invoice_id).then((data) => {
             this.invoice_detail_lists = data.data.invoice_list;
             this.byr_buyer_lists = data.data.byr_buyer_list;
+            this.byr_shop_lists = data.data.shop_list;
+            this.byr_voucher_lists = data.data.voucher_list;
         });
     },
     check_byr_order_api(){
@@ -166,6 +200,18 @@ export default {
       selectedOption(option) {
       if (this.value) {
         return option.byr_buyer_id === this.value.byr_buyer_id;
+      }
+      return false;
+    },
+      selectedOption_shop(option) {
+      if (this.value) {
+        return option.byr_shop_id === this.value.byr_shop_id;
+      }
+      return false;
+    },
+      selectedOption_voucher(option) {
+      if (this.value) {
+        return option.voucher_number === this.value.voucher_number;
       }
       return false;
     },

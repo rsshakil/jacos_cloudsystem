@@ -20,10 +20,11 @@
                                                 <button class="btn btn-outline-primary" type="button">小売選択</button>
                                             </div>
                                             <select class="form-control" v-model="selected_byr">
+                                             <option :value="0">全小売</option>
                                               <option v-for="(option, index) in byr_buyer_lists" 
-                    :key="index" :value="option.super_code"
+                    :key="index" :value="option.cmn_company_id"
                     :selected="selectedOption(option)">
-                    {{ option.super_code }}
+                    {{ option.company_name }}
             </option>
                                             </select>
                                         </div>
@@ -34,6 +35,7 @@
                                 </tr>
                                 <tr>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer">No <span id="id_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">小売名<span id="orderdate_icon"></span></th>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">受信日時<span id="orderdate_icon"></span></th>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">ダウンロード日時 <span id="delivery_icon"></span></th>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">支払データ<span id="ordertype_icon"></span></th>
@@ -43,6 +45,7 @@
                             <tbody>
                                 <tr v-for="(value,index) in payment_lists" :key="value.byr_payment_id">
                                     <td>{{index+1}}</td>
+                                    <td>{{value.company_name}}</td>
                                     <td>{{value.receive_date}}</td>
                                     <td>{{value.download_date}}</td>
                                     <td><button class="btn btn-primary">支払データ</button></td>
@@ -62,7 +65,7 @@ export default {
         'payment_lists':{},
         'byr_buyer_lists':{},
         'file':'',
-        'selected_byr':'OUK',
+        'selected_byr':'0',
     };
   },
   methods: {
@@ -98,12 +101,7 @@ export default {
         this.file = this.$refs.file.files[0];
         this.check_byr_order_api();
       },
-      selectedOption(option) {
-      if (this.value) {
-        return option.byr_buyer_id === this.value.byr_buyer_id;
-      }
-      return false;
-    },
+    
     change(e) {
       const selectedCode = e.target.value;
       const option = this.options.find((option) => {
