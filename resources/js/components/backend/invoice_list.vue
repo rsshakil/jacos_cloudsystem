@@ -22,9 +22,9 @@
                                             <select class="form-control" v-model="selected_byr">
                                             <option :value="0">全小売</option>
                                               <option v-for="(option, index) in byr_buyer_lists" 
-                    :key="index" :value="option.super_code"
+                    :key="index" :value="option.cmn_company_id"
                     :selected="selectedOption(option)">
-                    {{ option.super_code }}
+                    {{ option.company_name }}
             </option>
                                             </select>
                                         </div>
@@ -112,12 +112,7 @@ export default {
         this.file = this.$refs.file.files[0];
         this.check_byr_order_api();
       },
-      selectedOption(option) {
-      if (this.value) {
-        return option.byr_buyer_id === this.value.byr_buyer_id;
-      }
-      return false;
-    },
+
     change(e) {
       const selectedCode = e.target.value;
       const option = this.options.find((option) => {
