@@ -68,16 +68,13 @@ Route::post('/users_update', 'API\UsersController@update');
 
 Route::get('/home_lang_data', 'API\LanguageController@homeLangData');
 
-Route::post('/canvas_data_save', 'API\Byr_orderController@canvasDataSave');
-Route::post('load_canvas_data/{cmn_scenario_id}', 'API\Byr_orderController@canvasAllData');
-Route::post('/delete_canvas', 'API\Byr_orderController@deleteCanvasData');
+
 		// Route::post('/permission_check', 'API\PermissionController@check');
         
 Route::post('scenario_exec/{cmn_scenario_id}', 'API\Cmn_ScenarioController@exec');
 Route::post('job_exec/{cmn_scenario_id}', 'API\Cmn_jobController@exec');
 Route::get('/slr_job_list_by_seller_id/{slr_seller_id}', 'API\Cmn_jobController@slr_job_list_by_seller_id');
 
-Route::post('/load_canvas_setting_data', 'API\Byr_orderController@canvasSettingData');
 Route::get('/company_user_list/{cmn_company_id}', 'API\Jacos_managementController@company_user_list');
 // Route::get('/company_seller_user_list/{cmn_company_id}', 'API\Jacos_managementController@company_seller_user_list');
 Route::get('/company_partner_list/{byr_buyer_id}', 'API\Jacos_managementController@company_partner_list');
@@ -107,4 +104,14 @@ Route::get('get_all_invoice_list/{adm_user_id}', 'API\Byr_invoiceController@get_
 Route::get('get_all_invoice_detail_list/{byr_invoice_id}', 'API\Byr_invoiceController@get_all_invoice_detail_list');
 Route::get('get_all_invoice_by_voucher_number/{voucher_number}', 'API\Byr_invoiceController@get_all_invoice_by_voucher_number');
 Route::post('/cmn_category_create', 'API\Cmn_categoryController@store');
-Route::post('bms_csv_exec/{cmn_scenario_id}', 'API\Cmn_jobController@bms_csv_exec');
+
+// Mayeen
+Route::post('/load_canvas_setting_data', 'API\Byr_orderController@canvasSettingData');
+Route::post('/canvas_data_save', 'API\Byr_orderController@canvasDataSave');
+Route::post('load_canvas_data/{cmn_scenario_id}', 'API\Byr_orderController@canvasAllData');
+Route::post('/delete_canvas', 'API\Byr_orderController@deleteCanvasData');
+
+Route::post('/load_pdf_platform_canvas_setting_data', 'API\CmnPdfPlatformSettings@canvasSettingData');
+Route::post('/pdf_platform_canvas_data_save', 'API\CmnPdfPlatformSettings@canvasDataSave');
+// Route::post('load_canvas_data/{cmn_scenario_id}', 'API\Byr_orderController@canvasAllData');
+Route::post('/delete_pdf_platform_canvas', 'API\CmnPdfPlatformSettings@deleteCanvasData');
