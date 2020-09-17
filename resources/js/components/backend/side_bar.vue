@@ -172,6 +172,18 @@
         </ul>
         </div>
         </li>
+        <li class="nav-item" v-can="['byr_view']">
+          <a class="nav-link collapsed" href="#pdf_platform_setting" data-toggle="collapse" data-target="#pdf_platform_setting"><b-icon icon="grid-fill" font-scale="1.2"></b-icon> マスターメンテ</a>
+          <div class="collapse" id="pdf_platform_setting" aria-expanded="false">
+            <ul class="flex-column pl-2 nav">
+              <li class="nav-item" v-can="['byr_view']">
+                <router-link to="/pdf_platform_setting" class="nav-link">
+                  <b-icon icon="receipt" font-scale="1.2"></b-icon>  PDF Platform
+                </router-link>
+              </li>
+            </ul>
+        </div>
+        </li>
 
 
         <!-- <li class="nav-item">

@@ -28,6 +28,7 @@ import payment_list from './components/backend/payment_list.vue'
 import invoice_list from './components/backend/invoice_list.vue'
 import invoice_detail from './components/backend/invoice_detail.vue'
 import voucher_detail from './components/backend/voucher_detail.vue'
+import pdf_platform_setting from './components/backend/PDF_PLATFORM/pdf_platform_setting.vue'
 
 // import login_body from './components/login/login_body.vue'
 
@@ -167,7 +168,7 @@ export const routes = [
         }, ]
 
     },
-    
+
     {
         path: '/order_receive',
         component: default_parent,
@@ -216,8 +217,7 @@ export const routes = [
         path: '/invoice_list',
         component: default_parent,
         meta: { breadcrumb: '請求' },
-        children: [
-            {
+        children: [{
             path: '/',
             component: invoice_list,
             name: 'invoice_list'
@@ -225,14 +225,20 @@ export const routes = [
             path: '/invoice_list/invoice_detail/:byr_invoice_id',
             component: invoice_detail,
             name: 'invoice_detail',
-            meta:{breadcrumb:'伝票一覧・新規請求'}
+            meta: { breadcrumb: '伝票一覧・新規請求' }
         }, {
             path: '/invoice_list/voucher_detail/:voucher_number',
             component: voucher_detail,
             name: 'voucher_detail',
-            meta:{breadcrumb:'伝票一覧・新規請求'}
-        }
-    ]
+            meta: { breadcrumb: '伝票一覧・新規請求' }
+        }]
+
+    },
+    {
+        path: '/pdf_platform_setting',
+        component: pdf_platform_setting,
+        meta: { breadcrumb: 'pdf_platform_setting' },
+        children: []
 
     },
     // { path: '/login', name: 'login', component: login_body },

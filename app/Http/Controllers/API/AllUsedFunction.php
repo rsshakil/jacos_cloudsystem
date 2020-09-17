@@ -226,4 +226,86 @@ class AllUsedFunction extends Controller
         }
         return $ar;
     }
+    private function UnserializedCanvasData($canvas_objects)
+    {
+        $canvas_data = unserialize($canvas_objects);
+        $canvas_array = array();
+        foreach ($canvas_data['objects'] as $key => $value) {
+            $temp_array['type'] = $value['type'];
+            $temp_array['version'] = $value['version'];
+            $temp_array['originX'] = $value['originX'];
+            $temp_array['originY'] = $value['originY'];
+            $temp_array['left'] = (float) $value['left'];
+            $temp_array['top'] = (float) $value['top'];
+            $temp_array['width'] = (float) $value['width'];
+            $temp_array['height'] = (float) $value['height'];
+            $temp_array['fill'] = $value['fill'];
+            $temp_array['stroke'] = $value['stroke'];
+            $temp_array['strokeWidth'] = (float) $value['strokeWidth'];
+            $temp_array['strokeDashArray'] = $value['strokeDashArray'];
+            $temp_array['strokeLineCap'] = $value['strokeLineCap'];
+            $temp_array['strokeDashOffset'] = (float) $value['strokeDashOffset'];
+            $temp_array['strokeLineJoin'] = $value['strokeLineJoin'];
+            $temp_array['strokeMiterLimit'] = (float) $value['strokeMiterLimit'];
+            $temp_array['scaleX'] = (float) $value['scaleX'];
+            $temp_array['scaleY'] = (float) $value['scaleY'];
+            $temp_array['angle'] = (float) $value['angle'];
+            $temp_array['flipX'] = (float) $value['flipX'];
+            $temp_array['flipY'] = (float) $value['flipY'];
+            $temp_array['opacity'] = (float) $value['opacity'];
+            $temp_array['shadow'] = $value['shadow'];
+            $temp_array['visible'] = (float) $value['visible'];
+            $temp_array['clipTo'] = $value['clipTo'];
+            $temp_array['backgroundColor'] = $value['backgroundColor'];
+            $temp_array['fillRule'] = $value['fillRule'];
+            $temp_array['paintFirst'] = $value['paintFirst'];
+            $temp_array['globalCompositeOperation'] = $value['globalCompositeOperation'];
+            $temp_array['transformMatrix'] = $value['transformMatrix'];
+            $temp_array['skewX'] = (float) $value['skewX'];
+            $temp_array['skewY'] = (float) $value['skewY'];
+            $temp_array['text'] = $value['text'];
+            $temp_array['fontSize'] = (float) $value['fontSize'];
+            $temp_array['fontWeight'] = $value['fontWeight'];
+            $temp_array['fontFamily'] = $value['fontFamily'];
+            $temp_array['fontStyle'] = $value['fontStyle'];
+            $temp_array['lineHeight'] = (float) $value['lineHeight'];
+            $temp_array['underline'] = (float) $value['underline'];
+            $temp_array['overline'] = (float) $value['overline'];
+            $temp_array['linethrough'] = (float) $value['linethrough'];
+            $temp_array['textAlign'] = $value['textAlign'];
+            $temp_array['textBackgroundColor'] = $value['textBackgroundColor'];
+            $temp_array['charSpacing'] = (float) $value['charSpacing'];
+            $temp_array['minWidth'] = (float) $value['minWidth'];
+            $temp_array['splitByGrapheme'] = (float) $value['splitByGrapheme'];
+            $canvas_array[] = $temp_array;
+        }
+        // return $canvas_array;
+
+        $new_array = array(
+            'version' => $canvas_data['version'],
+            'objects' => $canvas_array,
+        );
+        return $new_array;
+    }
+    public function save_base64_image($base64_image_string, $output_file_without_extension, $path_with_end_slash = "")
+    {
+        $splited = explode(',', substr($base64_image_string, 5), 2);
+        $mime = $splited[0];
+        $data = $splited[1];
+
+        $mime_split_without_base64 = explode(';', $mime, 2);
+        $mime_split = explode('/', $mime_split_without_base64[0], 2);
+        if (count($mime_split) == 2) {
+            $extension = $mime_split[1];
+            if ($extension == 'jpeg') {
+                $extension = 'jpg';
+            }
+            //if($extension=='javascript')$extension='js';
+            //if($extension=='text')$extension='txt';
+            $output_file_with_extension = $output_file_without_extension . '.' . $extension;
+        }
+        file_put_contents($path_with_end_slash . $output_file_with_extension, base64_decode($data));
+        // move_uploaded_file(base64_decode($data),$path_with_end_slash . $output_file_with_extension);
+        return $output_file_with_extension;
+    }
 }
