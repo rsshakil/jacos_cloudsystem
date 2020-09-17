@@ -72,9 +72,9 @@
                                             <select class="form-control" v-model="selected_byr">
                                             <option :value="0">全小売</option>
                                               <option v-for="(option, index) in byr_buyer_lists" 
-                    :key="index" :value="option.super_code"
+                    :key="index" :value="option.cmn_company_id"
                     :selected="selectedOption(option)">
-                    {{ option.super_code }}
+                    {{ option.company_name }}
             </option>
                                             </select>
                                         </div>
@@ -126,15 +126,17 @@
                             </thead>
                             <tbody>
                                 
-                                <tr v-for="(value,index) in invoice_detail_lists" :key="value.byr_invoice_detail_id">
+                                <tr v-for="(value,index) in invoice_detail_lists" :key="value.byr_order_detail_id">
                                     <td>{{index+1}}</td>
                                     <td><input type="checkbox" class="form-control"></td>
                                     <td>{{value.shop_name}}</td>
-                                    <td>{{value.revised_delivery_date}}</td>
+                                    <td v-tooltip.html="''+value.expected_delivery_date+'<br>'+value.revised_delivery_date+''">{{value.expected_delivery_date}}</td>
+                                    
                                     <td>{{value.voucher_number}}</td>
-                                    <td>{{value.cost_price}}</td>
+                                    <td v-tooltip.html="''+value.cost_price+'<br>'+value.revised_cost_price+''">{{value.cost_price}}</td>
+                                   
                                     <td>{{value.send_date}}</td>
-                                    <td><router-link :to="{name:'voucher_detail',params:{voucher_number:'353534'} }" class="btn btn-info">詳細</router-link></td>
+                                    <td><router-link :to="{name:'voucher_detail',params:{voucher_number:value.voucher_number} }" class="btn btn-info">詳細</router-link></td>
                                    
                                 </tr>
                                 
@@ -197,12 +199,7 @@ export default {
         this.file = this.$refs.file.files[0];
         this.check_byr_order_api();
       },
-      selectedOption(option) {
-      if (this.value) {
-        return option.byr_buyer_id === this.value.byr_buyer_id;
-      }
-      return false;
-    },
+     
       selectedOption_shop(option) {
       if (this.value) {
         return option.byr_shop_id === this.value.byr_shop_id;

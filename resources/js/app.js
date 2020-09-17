@@ -103,6 +103,15 @@ Vue.directive("can", function(el, binding, vnode) {
         }
     }
 });
+
+import { VTooltip, VPopover, VClosePopover } from 'v-tooltip'
+
+Vue.directive('tooltip', VTooltip)
+Vue.directive('close-popover', VClosePopover)
+Vue.component('v-popover', VPopover)
+
+
+
 var router = new VueRouter({
     routes: routes,
     linkActiveClass: "active", // active class for non-exact links.

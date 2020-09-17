@@ -77,34 +77,34 @@ class Byr_invoiceController extends Controller
     }
 
     public function get_all_invoice_detail_list($byr_invoice_id){
-        $result = byr_invoice::select('byr_invoices.byr_invoice_id','byr_invoices.cmn_connect_id','byr_invoices.send_date','byr_shops.shop_name','byr_order_details.voucher_number','byr_shipment_details.revised_delivery_date','byr_order_details.expected_delivery_date','byr_order_details.cost_price','byr_shipment_details.revised_cost_price')
+        $result = byr_invoice::select('byr_invoices.byr_invoice_id','byr_invoices.cmn_connect_id','byr_invoices.send_date','byr_shops.shop_name','byr_order_details.voucher_number','byr_shipment_details.revised_delivery_date','byr_order_details.expected_delivery_date','byr_order_details.byr_order_detail_id','byr_order_details.cost_price','byr_shipment_details.revised_cost_price')
        
-        ->leftJoin('byr_orders', 'byr_orders.cmn_connect_id', '=', 'byr_invoices.cmn_connect_id')
-        ->leftJoin('byr_order_details', 'byr_order_details.byr_order_id', '=', 'byr_orders.byr_order_id')
-        ->leftJoin('byr_shops', 'byr_shops.byr_shop_id', '=', 'byr_order_details.byr_shop_id')
-        ->leftJoin('byr_shipments', 'byr_shipments.cmn_connect_id', '=', 'byr_invoices.cmn_connect_id')
-        ->leftJoin('byr_shipment_details', 'byr_shipment_details.byr_shipment_id', '=', 'byr_shipments.byr_shipment_id')
+        ->join('byr_orders', 'byr_orders.cmn_connect_id', '=', 'byr_invoices.cmn_connect_id')
+        ->join('byr_order_details', 'byr_order_details.byr_order_id', '=', 'byr_orders.byr_order_id')
+        ->join('byr_shops', 'byr_shops.byr_shop_id', '=', 'byr_order_details.byr_shop_id')
+        ->join('byr_shipment_details', 'byr_shipment_details.byr_order_detail_id', '=', 'byr_order_details.byr_order_detail_id')
         ->where('byr_invoices.byr_invoice_id',$byr_invoice_id)
         ->get();
         $voucher_list = byr_invoice::select('byr_invoices.byr_invoice_id','byr_invoices.cmn_connect_id','byr_order_details.voucher_number')
        
-        ->leftJoin('byr_orders', 'byr_orders.cmn_connect_id', '=', 'byr_invoices.cmn_connect_id')
-        ->leftJoin('byr_order_details', 'byr_order_details.byr_order_id', '=', 'byr_orders.byr_order_id')
+        ->join('byr_orders', 'byr_orders.cmn_connect_id', '=', 'byr_invoices.cmn_connect_id')
+        ->join('byr_order_details', 'byr_order_details.byr_order_id', '=', 'byr_orders.byr_order_id')
         ->where('byr_invoices.byr_invoice_id',$byr_invoice_id)
         ->groupBy('byr_order_details.voucher_number')
         ->get();
         $shop_list = byr_invoice::select('byr_invoices.byr_invoice_id','byr_invoices.cmn_connect_id','byr_shops.shop_name','byr_shops.byr_shop_id')
        
-        ->leftJoin('byr_orders', 'byr_orders.cmn_connect_id', '=', 'byr_invoices.cmn_connect_id')
-        ->leftJoin('byr_order_details', 'byr_order_details.byr_order_id', '=', 'byr_orders.byr_order_id')
-        ->leftJoin('byr_shops', 'byr_shops.byr_shop_id', '=', 'byr_order_details.byr_shop_id')
+        ->join('byr_orders', 'byr_orders.cmn_connect_id', '=', 'byr_invoices.cmn_connect_id')
+        ->join('byr_order_details', 'byr_order_details.byr_order_id', '=', 'byr_orders.byr_order_id')
+        ->join('byr_shops', 'byr_shops.byr_shop_id', '=', 'byr_order_details.byr_shop_id')
         ->where('byr_invoices.byr_invoice_id',$byr_invoice_id)
         ->groupBy('byr_order_details.byr_shop_id')
         ->get();
 
-        $byr_buyer = byr_invoice::select('byr_buyers.super_code')
-        ->leftJoin('cmn_connects','cmn_connects.cmn_connect_id','=','byr_invoices.cmn_connect_id')
-        ->leftJoin('byr_buyers','byr_buyers.byr_buyer_id','=','cmn_connects.byr_buyer_id')
+        $byr_buyer = byr_invoice::select('cmn_companies.cmn_company_id','cmn_companies.company_name')
+        ->join('cmn_connects','cmn_connects.cmn_connect_id','=','byr_invoices.cmn_connect_id')
+        ->join('byr_buyers','byr_buyers.byr_buyer_id','=','cmn_connects.byr_buyer_id')
+        ->join('cmn_companies','cmn_companies.cmn_company_id','=','byr_buyers.byr_buyer_id')
         ->where('byr_invoices.byr_invoice_id',$byr_invoice_id)
         ->get();
 
