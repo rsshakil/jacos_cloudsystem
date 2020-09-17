@@ -39,6 +39,15 @@ class cmn_scenarioSeeder extends Seeder
                 'name' => 'MASTER_ITEM_INSERTION',
                 'description' => 'MASTER_ITEM_INSERTION',
                 'file_path' => 'scenarios/item_master',
+            ],
+            [
+                'byr_buyer_id' => 1,
+                'slr_seller_id' => 0,
+                'class' => 'order',
+                'vector' => 'to_jacos',
+                'name' => 'BMS_ORDER_CSV_INSERTION',
+                'description' => 'BMS_ORDER_CSV_INSERTION',
+                'file_path' => 'scenarios/bms_csv_order',
             ]
         );
         App\Models\CMN\cmn_scenario::insert($scenarios);

@@ -10,6 +10,8 @@ use App\Models\BYR\byr_invoice;
 use App\Models\BYR\byr_invoice_detail;
 use App\Models\BYR\byr_shipment;
 use App\Models\BYR\byr_shipment_detail;
+use App\Models\BYR\byr_order;
+use App\Models\BYR\byr_order_detail;
 use App\Models\BYR\byr_item;
 use App\Models\BYR\byr_item_class;
 use App\Models\CMN\cmn_maker;
@@ -111,7 +113,9 @@ class Byr_invoiceController extends Controller
 
     public function get_all_invoice_by_voucher_number($voucher_number){
 
-        $result = byr_shipment_detail::where('voucher_number',$voucher_number)->get();
+        $result = byr_order_detail::select('byr_order_details.*','byr_shipment_details.*')
+        ->join('byr_shipment_details','byr_shipment_details.byr_order_detail_id','=','byr_order_details.byr_order_detail_id')
+        ->where('voucher_number',$voucher_number)->get();
         $shop_list = array();
         $voucher_list = array();
         $byr_buyer = array();

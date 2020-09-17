@@ -67,6 +67,12 @@ class cmn_jobSeeder extends Seeder
                 'vector'=>'to_jacos',
                 'cmn_scenario_id'=>3,
                 'is_active'=>1,
+            ],[
+                'cmn_connect_id'=>1,
+                'class'=>'order',
+                'vector'=>'to_jacos',
+                'cmn_scenario_id'=>4,
+                'is_active'=>1,
             ]
         );
         App\Models\CMN\cmn_job::insert($cmn_job);

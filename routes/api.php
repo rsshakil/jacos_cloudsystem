@@ -107,3 +107,4 @@ Route::get('get_all_invoice_list/{adm_user_id}', 'API\Byr_invoiceController@get_
 Route::get('get_all_invoice_detail_list/{byr_invoice_id}', 'API\Byr_invoiceController@get_all_invoice_detail_list');
 Route::get('get_all_invoice_by_voucher_number/{voucher_number}', 'API\Byr_invoiceController@get_all_invoice_by_voucher_number');
 Route::post('/cmn_category_create', 'API\Cmn_categoryController@store');
+Route::post('bms_csv_exec/{cmn_scenario_id}', 'API\Cmn_jobController@bms_csv_exec');
