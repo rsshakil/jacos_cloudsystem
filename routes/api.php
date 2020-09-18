@@ -113,5 +113,5 @@ Route::post('/delete_canvas', 'API\Byr_orderController@deleteCanvasData');
 
 Route::post('/load_pdf_platform_canvas_setting_data', 'API\CmnPdfPlatformSettings@canvasSettingData');
 Route::post('/pdf_platform_canvas_data_save', 'API\CmnPdfPlatformSettings@canvasDataSave');
-// Route::post('load_canvas_data/{cmn_scenario_id}', 'API\Byr_orderController@canvasAllData');
+Route::post('load_pdf_platform_canvas_data/{cmn_scenario_id}', 'API\CmnPdfPlatformSettings@pdfPlatformAllData');
 Route::post('/delete_pdf_platform_canvas', 'API\CmnPdfPlatformSettings@deleteCanvasData');

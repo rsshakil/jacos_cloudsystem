@@ -27,7 +27,7 @@ class CmnPdfPlatformSettings extends Controller
     public function __construct(){
         $this->all_used_func = new AllUsedFunction();
     }
-    public function canvasAllData(Request $request, $cmn_scenario_id){
+    public function pdfPlatformAllData(Request $request, $cmn_scenario_id){
         $sc=cmn_scenario::where('cmn_scenario_id',$cmn_scenario_id)->first();
         // return app_path().'/'.$sc->file_path.'.php';
         // scenario call
