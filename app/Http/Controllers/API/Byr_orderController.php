@@ -276,6 +276,14 @@ class Byr_orderController extends Controller
             $can_exist=cmn_pdf_canvas::where('cmn_pdf_canvas_id', $canvas_id)->first();
             if ($can_exist['byr_buyer_id']!=$byr_id) {
                 if (cmn_pdf_canvas::where('byr_buyer_id', $byr_id)->exists()) {
+                    if (file_exists($file_path .'Canvas_screenshoot/'. $canvas_image)) {
+                        @unlink($file_path .'Canvas_screenshoot/'. $canvas_image);
+                    }
+                    if (!empty($update_image_info)) {
+                        if (file_exists($file_path .'Background/'. $canvasBgImg)) {
+                            @unlink($file_path .'Background/'. $canvasBgImg);
+                        }
+                    }
                     return response()->json(['message' =>'duplicated', 'class_name' => 'error','title'=>'Not Updated!']);
                 }
             }
@@ -300,6 +308,14 @@ class Byr_orderController extends Controller
                 cmn_pdf_canvas::insert($canvas_array);
                 return response()->json(['message' =>'created', 'class_name' => 'success','title'=>'Created!']);
             }else{
+                if (file_exists($file_path .'Canvas_screenshoot/'. $canvas_image)) {
+                    @unlink($file_path .'Canvas_screenshoot/'. $canvas_image);
+                }
+                if (!empty($update_image_info)) {
+                    if (file_exists($file_path .'Background/'. $canvasBgImg)) {
+                        @unlink($file_path .'Background/'. $canvasBgImg);
+                    }
+                }
                 return response()->json(['message' =>'duplicated', 'class_name' => 'error','title'=>'Not Created!']);
             }
         }

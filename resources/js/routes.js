@@ -29,6 +29,7 @@ import invoice_list from './components/backend/invoice_list.vue'
 import invoice_detail from './components/backend/invoice_detail.vue'
 import voucher_detail from './components/backend/voucher_detail.vue'
 import pdf_platform_setting from './components/backend/PDF_PLATFORM/pdf_platform_setting.vue'
+import pdf_platform_view from './components/backend/PDF_PLATFORM/pdf_platform_view.vue'
 
 // import login_body from './components/login/login_body.vue'
 
@@ -238,6 +239,13 @@ export const routes = [
         path: '/pdf_platform_setting',
         component: pdf_platform_setting,
         meta: { breadcrumb: 'pdf_platform_setting' },
+        children: []
+
+    },
+    {
+        path: '/pdf_platform_view',
+        component: pdf_platform_view,
+        meta: { breadcrumb: 'pdf_platform_view' },
         children: []
 
     },
