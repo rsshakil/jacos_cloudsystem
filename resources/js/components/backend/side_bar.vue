@@ -152,7 +152,7 @@
         </div>
         </li>
 
-<li class="nav-item" v-can="['byr_view']">
+        <li class="nav-item" v-can="['byr_view']">
           <a class="nav-link collapsed" href="#byr_itms_list" data-toggle="collapse" data-target="#byr_itms_list"><b-icon icon="grid-fill" font-scale="1.2"></b-icon> マスターメンテ</a>
           <div class="collapse" id="byr_itms_list" aria-expanded="false">
             <ul class="flex-column pl-2 nav">
