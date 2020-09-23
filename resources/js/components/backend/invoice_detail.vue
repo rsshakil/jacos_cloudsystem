@@ -1,5 +1,5 @@
 <template>
-    <div class="row" v-can="['byr_view']">
+    <div class="row" v-can="['byr_view','slr_view']">
                 <div class="col-12">
                     <h4 class="top_title text-center" style="margin-top:10px;">伝票一覧・新規請求</h4>
                 </div>
@@ -41,7 +41,7 @@
                   <div class="form-group mb-0">
                     <input
                       type="text"
-                      v-model="total_price"
+                      v-model="total_price_vl"
                       name="total_price"
                       class="form-control text-center"
                     />
@@ -130,11 +130,12 @@
                                     <td>{{index+1}}</td>
                                     <td><input type="checkbox" class="form-control"></td>
                                     <td>{{value.shop_name}}</td>
-                                    <td v-tooltip.html="''+value.expected_delivery_date+'<br>'+value.revised_delivery_date+''">{{value.expected_delivery_date}}</td>
-                                    
+                                    <!--v-tooltip.html="''+value.expected_delivery_date+'<br>'+value.revised_delivery_date+''"-->
+                                    <td v-if="value.revised_delivery_date !== null && value.revised_delivery_date !== ''">{{value.revised_delivery_date}}</td>
+                                    <td v-else>{{value.expected_delivery_date}}</td>
                                     <td>{{value.voucher_number}}</td>
-                                    <td v-tooltip.html="''+value.cost_price+'<br>'+value.revised_cost_price+''">{{value.cost_price}}</td>
-                                   
+                                    <td v-if="value.revised_cost_price !== null && value.revised_cost_price !== 0 && value.revised_cost_price !== ''">{{value.revised_cost_price}}</td>
+                                   <td v-else>{{value.cost_price}}</td>
                                     <td>{{value.send_date}}</td>
                                     <td><router-link :to="{name:'voucher_detail',params:{voucher_number:value.voucher_number} }" class="btn btn-info">詳細</router-link></td>
                                    
@@ -161,7 +162,7 @@ export default {
         'byr_invoice_id':'',   
         'start_date':'',
         'end_date':'',
-        'total_price':'',
+        'total_price':0,
     };
   },
   methods: {
@@ -229,6 +230,17 @@ export default {
     });
       console.log('created byr order log');
   },
+  computed: {
+    total_price_vl: function(){
+      let sum = 0;
+      for(let i = 0; i < this.invoice_detail_lists.length; i++){
+          var price = (this.invoice_detail_lists[i].revised_cost_price !== null && this.invoice_detail_lists[i].revised_cost_price !== 0 && this.invoice_detail_lists[i].revised_cost_price !== ''?this.invoice_detail_lists[i].revised_cost_price:this.invoice_detail_lists[i].cost_price);
+         sum += parseInt(price);
+      }
+
+     return sum;
+   }
+},
   mounted() {
     console.log("User page loaded");
   }

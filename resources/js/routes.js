@@ -30,12 +30,13 @@ import invoice_detail from './components/backend/invoice_detail.vue'
 import voucher_detail from './components/backend/voucher_detail.vue'
 import pdf_platform_setting from './components/backend/PDF_PLATFORM/pdf_platform_setting.vue'
 import pdf_platform_view from './components/backend/PDF_PLATFORM/pdf_platform_view.vue'
-
+import blog from './components/backend/CMN/cmn_blog_list.vue'
 // import login_body from './components/login/login_body.vue'
 
 export const routes = [
     { path: '/', component: Home },
     { path: '/home', component: Home },
+    { path: '/blog', component: blog },
     { path: '/role', component: Role },
     { path: '/permission', component: permission },
     { path: '/assign_role_to_user', component: assign_role_model },

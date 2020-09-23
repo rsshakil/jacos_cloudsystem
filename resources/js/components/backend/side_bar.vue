@@ -53,6 +53,11 @@
             <b-icon icon="house-fill" font-scale="1.2"></b-icon> Home
           </router-link>
         </li>
+        <li class="nav-item" v-can="['dashboard_menu']">
+          <router-link to="/blog" class="nav-link">
+            <b-icon icon="house-fill" font-scale="1.2"></b-icon> Blog
+          </router-link>
+        </li>
         <li class="nav-item" v-can="['role_menu']">
           <router-link to="/role" class="nav-link">
             <b-icon icon="person-check-fill" font-scale="1.2"></b-icon> {{myLang.role_management}}

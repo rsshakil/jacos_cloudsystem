@@ -100,13 +100,17 @@
                                 
                                 <tr v-for="(value,index) in invoice_detail_lists" :key="value.byr_invoice_detail_id">
                                     <td>{{index+1}}</td>
-                                    <td>{{value.item_name}}</td>
+                                    <td v-if="value.item_name !== null && value.item_name !== ''">{{value.item_name}}</td>
+                                    <td v-else>{{value.item_name_kana}}</td>
                                     <td>{{value.jan}}</td>
                                     <td>{{value.order_quantity}}</td>
-                                    <td>{{value.delivery_quantity}}</td>
+                                    <td v-if="value.confirm_quantity !== null && value.confirm_quantity !== 0 && value.confirm_quantity !== ''"><b-icon v-if="value.order_quantity != value.confirm_quantity" v-tooltip.html="'Quantity details<br>'+value.order_quantity+'<br>'+value.confirm_quantity+''" icon="exclamation-circle" scale="0.5" class="bg-info"></b-icon>{{value.confirm_quantity}}</td>
+                                   <td v-else>{{value.order_quantity}}</td>
                                     <td>{{value.lack_reason}}</td>
-                                    <td>{{value.revised_cost_unit_price}}</td>
-                                    <td>{{value.revised_cost_unit_price*value.order_quantity}}</td>
+                                    <td v-if="value.revised_cost_unit_price !== null && value.revised_cost_unit_price !== 0 && value.revised_cost_unit_price !== ''">{{value.revised_cost_unit_price}}</td>
+                                   <td v-else>{{value.cost_unit_price}}</td>
+                                   <td v-if="value.revised_cost_price !== null && value.revised_cost_price !== 0 && value.revised_cost_price !== ''">{{value.revised_cost_price}}</td>
+                                   <td v-else>{{value.cost_price}}</td>
                                 </tr>
                                 
                             </tbody>
