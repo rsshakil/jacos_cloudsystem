@@ -257,7 +257,13 @@ input:checked+.slider:before {
 // .nav-link[data-toggle]:not(.collapsed):after {
 //     content: "▴";
 // }
-
+.blog_titles{
+  color:#000;
+}
+.blogs_content{
+  margin-top:15px;
+  margin-bottom:15px;
+}
 .tooltip {
     display: block !important;
     z-index: 10000;

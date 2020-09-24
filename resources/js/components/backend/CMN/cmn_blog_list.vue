@@ -20,8 +20,6 @@
                                     <th class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer">No <span id="id_icon"></span></th>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">Title<span id="orderdate_icon"></span></th>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">feature Image<span id="delivery_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">Content <span id="ordertype_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">ステータス <span id="status_icon"></span></th>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">Action <span id="btn1_icon"></span></th>
                                 </tr>
                                 
@@ -30,10 +28,14 @@
                                 <tr v-for="(value,index) in blog_lists" :key="value.cmn_blog_id">
                                     <td>{{index+1}}</td>
                                     <td>{{value.blog_title}}</td>
-                                    <td>{{value.feature_img}}</td>
-                                    <td>{{value.blog_content}}</td>
-                                    <td>{{value.blog_status}}</td>
-                                    <td><button class="btn btn-danger">Delete</button> <button class="btn btn-success">Make top</button>  <button class="btn btn-info">Edit</button></td>
+                                    <td><img :src="BASE_URL+'storage/app/public/backend/images/blog_images/'+value.feature_img" alt="No image" class="img-responsive img-thumbnail" width="150" height="100" style="border: 1px solid gray;"></td>
+                                    <td><b-icon v-if="value.blog_status=='published'" font-scale="2" style="cursor:pointer" icon="eye-fill" variant="success" class="custom_blog_font" @click="blog_update_info(value,0)"></b-icon>
+                                    <b-icon v-if="value.blog_status=='unpublished'" font-scale="2" style="cursor:pointer" icon="eye-slash-fill" variant="danger" class="custom_blog_font" @click="blog_update_info(value,1)"></b-icon>
+                                    
+                                    <b-icon icon="arrow-bar-up" font-scale="2" style="cursor:pointer" variant="primary" class="custom_blog_font" @click="blog_update_info(value,2)"></b-icon>
+                                    <b-icon icon="trash-fill" font-scale="2" style="cursor:pointer" class="custom_blog_font" @click="blog_update_info(value,3)" variant="danger"></b-icon>
+                                    <b-icon icon="file-earmark-code" font-scale="2" style="cursor:pointer" variant="success" class="custom_blog_font" @click="blog_update_info(value,4)"></b-icon>
+                                    </td>
                                     
                                 </tr>
                                 
@@ -75,7 +77,8 @@
   <div class="form-group row">
     <label for="staticEmail" class="col-sm-2 col-form-label">Content</label>
     <div class="col-sm-10">
-     <ckeditor :editor="editor" v-model="form.blog_content" :config="editorConfig"></ckeditor>
+     <ckeditor :editor="editor" v-model="form.blog_content" :config="editorConfig" :class="{ 'is-invalid': form.errors.has('blog_content') }"></ckeditor>
+    <has-error :form="form" field="blog_content"></has-error>
     </div>
   </div>
         </form>
@@ -90,6 +93,7 @@
 </template>
 <script>
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import '@ckeditor/ckeditor5-build-classic/build/translations/ja';
 export default {
   
   data() {
@@ -105,7 +109,7 @@ export default {
         form: new Form({
                     blog_title : '',
                     feature_img: '',
-                    blog_content: '<p>Write your new here.</p>',
+                    blog_content: '',
                     cmn_blog_id: '',
                     blog_by:Globals.user_info_id
                     
@@ -113,6 +117,57 @@ export default {
     };
   },
   methods: {
+    blog_update_info(blog,action_type){
+      if(action_type==4){
+        this.blog_create_modal = true;
+        this.form.fill(blog);
+      }else if(action_type==3){
+      this.delete_sweet().then((value)=>{
+        console.log(value);
+        if(value.isConfirmed){
+          this.blog_update(blog,action_type);
+        }
+      })
+      
+      }else{
+        this.blog_update(blog,action_type);
+      }
+    },
+    blog_update(blog,action_type){
+      var post_data = {
+                blog: blog,
+                action_type: action_type,
+            };
+            axios.post(
+                    this.BASE_URL + "api/update_blog_infos",
+                    post_data
+                )
+                .then(data => {
+                    Fire.$emit('AfterCreateblog');
+                    if(action_type==0){
+                      var alert_icon='warning';
+                      var alert_title= 'blog unpublished';
+                      var alert_text= 'You have successfully unpublished the blog';
+                    }else if(action_type==1){
+                      var alert_icon='success';
+                      var alert_title= 'blog published';
+                      var alert_text= 'You have successfully published the blog';
+                    }else if(action_type==2){
+                      var alert_icon='success';
+                      var alert_title= 'Top Blog';
+                      var alert_text= 'You have successfully toped the blog';
+                    }else{
+                      var alert_icon='success';
+                      var alert_title= 'Blog Delete';
+                      var alert_text= 'You have successfully delete the blog';
+                    }
+                    Swal.fire({
+                icon: alert_icon,
+                title: alert_title,
+                text: alert_text
+            });
+                });
+    },
     onUploadFiles(e){
       let file = e.target.files[0];
                 let reader = new FileReader();  
@@ -129,12 +184,12 @@ export default {
                 }
     },
     getPhoto(){
-               let photo = (this.form.feature_img.length > 100) ? this.form.feature_img : "blog_images/"+ this.form.feature_img;
+               let photo = (this.form.feature_img.length > 100) ? this.form.feature_img : this.BASE_URL+'storage/app/public/backend/images/blog_images/'+ this.form.feature_img;
                 return photo;
             },
        get_all_blogs(){
-        axios.get(this.BASE_URL +"api/company_user_list/"+this.cmn_company_id).then((data) => {
-            this.blog_lists = data.data.user_list;
+        axios.get(this.BASE_URL +"api/get_all_blog_list").then((data) => {
+            this.blog_lists = data.data.blog_list;
             console.log(this.blog_lists);
         });
     },

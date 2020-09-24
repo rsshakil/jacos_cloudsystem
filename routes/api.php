@@ -116,3 +116,7 @@ Route::post('/pdf_platform_canvas_data_save', 'API\CmnPdfPlatformSettings@canvas
 Route::post('load_pdf_platform_canvas_data/{cmn_scenario_id}', 'API\CmnPdfPlatformSettings@pdfPlatformAllData');
 Route::post('/delete_pdf_platform_canvas', 'API\CmnPdfPlatformSettings@deleteCanvasData');
 Route::post('/blog_create', 'API\Cmn_blogController@store');
+Route::get('/get_all_blog_list', 'API\Cmn_blogController@index');
+Route::get('/get_all_published_blog_list', 'API\Cmn_blogController@get_all_published_blog_list');
+Route::get('/get_signle_top_blog', 'API\Cmn_blogController@get_signle_top_blog');
+Route::post('/update_blog_infos', 'API\Cmn_blogController@update_blog_infos');

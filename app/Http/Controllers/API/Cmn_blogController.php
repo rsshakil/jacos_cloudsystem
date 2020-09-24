@@ -26,6 +26,20 @@ class Cmn_blogController extends Controller
     public function index()
     {
         //
+        $result = cmn_blog::where('is_delete','0')->orderBy('is_top_blog','ASC')->orderBy('cmn_blog_id','DESC')->get();
+        return response()->json(['blog_list' => $result]);
+    }
+    public function get_all_published_blog_list()
+    {
+        //
+        $result = cmn_blog::where('is_delete','0')->where('blog_status','published')->where('is_top_blog','0')->orderBy('is_top_blog','DESC')->orderBy('cmn_blog_id','DESC')->get();
+        return response()->json(['blog_list' => $result]);
+    }
+    public function get_signle_top_blog()
+    {
+        //
+        $result = cmn_blog::where('is_delete','0')->where('blog_status','published')->where('is_top_blog','1')->first();
+        return response()->json(['blog_list' => $result]);
     }
 
     /**
@@ -36,11 +50,11 @@ class Cmn_blogController extends Controller
      */
     public function store(Request $request)
     {
-        return $request->all();
+        // return $request->all();
         //
         $this->validate($request,[
             'blog_title' => 'required|string|min:5',
-            'feature_img' => 'required',
+            'blog_content'=>'required'
         ]);
         $arr =array(
             'blog_title'=>$request->blog_title,
@@ -48,18 +62,43 @@ class Cmn_blogController extends Controller
             'blog_by'=>$request->blog_by
         );
         $feature_img = $request->feature_img;
+        $img = '';
         if (!empty($feature_img)) {
-            $imgs = $this->all_used_fun->save_base64_image($feature_img, 'blog_image_'. time(), $path_with_end_slash = "storage/app/public/backend/images/blog_images/");
-            $arr['feature_img'] = $imgs;
+            if($request->cmn_blog_id!=''){
+                $info=cmn_blog::where('cmn_blog_id',$request->cmn_blog_id)->first();
+                $img = $info->feature_img;
+            }
+            if($img!=$feature_img){
+                $imgs = $this->all_used_fun->save_base64_image($feature_img, 'blog_image_'. time(), $path_with_end_slash = "storage/app/public/backend/images/blog_images/");
+                $arr['feature_img'] = $imgs;
+            }
         }
         if($request->cmn_blog_id!=''){
             cmn_blog::where('cmn_blog_id',$request->cmn_blog_id)->update($arr);
         }else{
+            $this->validate($request,[
+                'feature_img' => 'required'
+            ]);
             cmn_blog::insert($arr);
         }
         return response()->json(['success' => 1]);
     }
 
+    public function update_blog_infos(Request $request){
+        $act_type = $request->action_type;
+        $blog_info = $request->blog;
+        $cmn_blog_id = $blog_info['cmn_blog_id'];
+        if($act_type==0 || $act_type==1){
+            $pub_type = ($act_type==0?'unpublished':'published');
+            cmn_blog::where('cmn_blog_id',$cmn_blog_id)->update(['blog_status'=>$pub_type]);
+        }else if($act_type==2){
+            cmn_blog::where('cmn_blog_id', '>', 0)->update(['is_top_blog'=>'0']);
+            cmn_blog::where('cmn_blog_id',$cmn_blog_id)->update(['is_top_blog'=>'1']);
+        }else{
+            cmn_blog::where('cmn_blog_id',$cmn_blog_id)->update(['is_delete'=>'1']);
+        }
+        return response()->json(['success' => 1]);
+    }
     /**
      * Display the specified resource.
      *

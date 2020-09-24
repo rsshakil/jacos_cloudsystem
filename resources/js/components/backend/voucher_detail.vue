@@ -104,7 +104,7 @@
                                     <td v-else>{{value.item_name_kana}}</td>
                                     <td>{{value.jan}}</td>
                                     <td>{{value.order_quantity}}</td>
-                                    <td v-if="value.confirm_quantity !== null && value.confirm_quantity !== 0 && value.confirm_quantity !== ''"><b-icon v-if="value.order_quantity != value.confirm_quantity" v-tooltip.html="'Quantity details<br>'+value.order_quantity+'<br>'+value.confirm_quantity+''" icon="exclamation-circle" scale="0.5" class="bg-info"></b-icon>{{value.confirm_quantity}}</td>
+                                    <td v-if="value.confirm_quantity !== null && value.confirm_quantity !== 0 && value.confirm_quantity !== ''"><b-icon v-if="value.order_quantity != value.confirm_quantity" v-tooltip.html="'Quantity details<br>'+value.order_quantity+'<br>'+value.confirm_quantity+''" icon="exclamation-circle-fill" variant="warning" scale="0.5"></b-icon>{{value.confirm_quantity}}</td>
                                    <td v-else>{{value.order_quantity}}</td>
                                     <td>{{value.lack_reason}}</td>
                                     <td v-if="value.revised_cost_unit_price !== null && value.revised_cost_unit_price !== 0 && value.revised_cost_unit_price !== ''">{{value.revised_cost_unit_price}}</td>

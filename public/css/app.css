@@ -11193,6 +11193,15 @@ input:checked + .slider:before {
   border: 1px solid #ddd;
 }
 
+.blog_titles {
+  color: #000;
+}
+
+.blogs_content {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
 .tooltip {
   display: block !important;
   z-index: 10000;
