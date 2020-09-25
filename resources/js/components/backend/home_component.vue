@@ -23,13 +23,12 @@
   <br>
   <br>
   <b-row>
-    <b-col>                    
+    <b-col v-if="single_blog.length!=0">                    
 
   <h4 class="my-3 blog_titles">{{single_blog.blog_title}}</h4>
   <p class="created_at">Created at @{{ single_blog.created_at | ja_date_time }}</p>
   <b-img :src="BASE_URL+'storage/app/public/backend/images/blog_images/'+single_blog.feature_img" fluid-grow alt="Fluid-grow image"></b-img>
     <div class="blogs_content" v-html="single_blog.blog_content">
-        <p>sdfjskdfg fkjskdfjhgksfg skjdfgkshdfgkjsdhfgkjs dgkjshdfkghsdkgjhsk dfgsdkhfgksjdhgks dgjd</p>
     </div>
     </b-col>
   </b-row>

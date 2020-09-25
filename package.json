@@ -24,7 +24,13 @@
         "vue-template-compiler": "^2.6.11"
     },
     "dependencies": {
+        "@ckeditor/ckeditor5-basic-styles": "^22.0.0",
         "@ckeditor/ckeditor5-build-classic": "^22.0.0",
+        "@ckeditor/ckeditor5-editor-classic": "^22.0.0",
+        "@ckeditor/ckeditor5-essentials": "^22.0.0",
+        "@ckeditor/ckeditor5-link": "^22.0.0",
+        "@ckeditor/ckeditor5-paragraph": "^22.0.0",
+        "@ckeditor/ckeditor5-theme-lark": "^22.0.0",
         "@ckeditor/ckeditor5-vue": "^1.0.3",
         "bootstrap-vue": "^2.15.0",
         "fabric": "^3.6.3",

@@ -48,6 +48,14 @@ class Cmn_blogController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function ckeditor_file_up(Request $request)
+    {
+        $file_name = $request->file('upload')->getClientOriginalName();
+        $path = $request->file('upload')->storeAs(config('const.ORDER_DATA_PATH').date('Y-m'), $file_name);
+        // $received_path = base_path().'/storage/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name;
+        $received_path = url('/storage/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name);
+        return response()->json(['url' => $received_path]);
+    }
     public function store(Request $request)
     {
         // return $request->all();

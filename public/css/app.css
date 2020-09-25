@@ -11202,6 +11202,10 @@ input:checked + .slider:before {
   margin-bottom: 15px;
 }
 
+.blogs_content img {
+  width: 100%;
+}
+
 .tooltip {
   display: block !important;
   z-index: 10000;

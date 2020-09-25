@@ -178,7 +178,7 @@ export default {
           }
     },
     filters: {
-  
+        
         subStr: function(string) {
           return string.substring(0,300) + '...';
           },

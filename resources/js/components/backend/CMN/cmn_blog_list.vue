@@ -71,7 +71,7 @@
     <div class="col-sm-10">
       <input type="file" name="feature_img" class="form-control" :class="{ 'is-invalid': form.errors.has('feature_img') }" @change="onUploadFiles" accept="image/jpeg, image/png">
     <has-error :form="form" field="feature_img"></has-error>
-    <img class="profile-user-img img-fluid img-circle" :src="getPhoto()" alt="Blog Images">
+    <img v-if="form.feature_img.length>0" class="profile-user-img img-fluid img-circle" :src="getPhoto()" alt="Blog Images">
     </div>
   </div>
   <div class="form-group row">
@@ -93,7 +93,10 @@
 </template>
 <script>
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+// import ClassicEditor from '@ckeditor/ckeditor5-editor-classic';
 import '@ckeditor/ckeditor5-build-classic/build/translations/ja';
+import UploadAdapter from '../../../UploadAdapter';
+// import BoldPlugin from '@ckeditor/ckeditor5-basic-styles/src/bold';
 export default {
   
   data() {
@@ -104,7 +107,9 @@ export default {
         
         editorConfig: {
             // The configuration of the editor.
-            language: 'ja'
+            language: 'ja',
+            extraPlugins: [ this.uploader ],
+            
         },
         form: new Form({
                     blog_title : '',
@@ -117,6 +122,12 @@ export default {
     };
   },
   methods: {
+    uploader(editor)
+            {
+                editor.plugins.get( 'FileRepository' ).createUploadAdapter = ( loader ) => {
+                    return new UploadAdapter( loader,Globals.base_url + "api/ckeditor_file_up" );
+                };
+            },
     blog_update_info(blog,action_type){
       if(action_type==4){
         this.blog_create_modal = true;
