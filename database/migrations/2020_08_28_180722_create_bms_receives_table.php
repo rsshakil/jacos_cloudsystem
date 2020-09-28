@@ -169,10 +169,10 @@ class CreateBmsReceivesTable extends Migration
             $table->string('mes_lis_acc_lin_fre_item_shape_code',20)->comment('形状・部位');
             $table->string('mes_lis_acc_lin_fre_use',20)->comment('用途');
             $table->string('mes_lis_acc_lin_sta_statutory_classification_code',20)->comment('法定管理義務商材区分');
-            $table->string('mes_lis_acc_lin_amo_item_net_price')->comment('原価金額');
+            $table->string('mes_lis_acc_lin_amo_item_net_price',20)->comment('原価金額');
             $table->string('mes_lis_acc_lin_amo_item_net_price_unit_price',20)->comment('原単価');
-            $table->string('mes_lis_acc_lin_amo_item_selling_price')->comment('売価金額');
-            $table->string('mes_lis_acc_lin_amo_item_selling_price_unit_price')->comment('売単価');
+            $table->string('mes_lis_acc_lin_amo_item_selling_price',20)->comment('売価金額');
+            $table->string('mes_lis_acc_lin_amo_item_selling_price_unit_price',20)->comment('売単価');
             $table->string('mes_lis_acc_lin_amo_item_tax',20)->comment('税額');
             $table->string('mes_lis_acc_lin_qua_unit_multiple',20)->comment('発注単位');
             $table->string('mes_lis_acc_lin_qua_unit_of_measure',20)->comment('発注単位コード');

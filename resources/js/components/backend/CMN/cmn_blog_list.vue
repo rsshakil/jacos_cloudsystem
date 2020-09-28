@@ -20,6 +20,7 @@
                                     <th class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer">No <span id="id_icon"></span></th>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">Title<span id="orderdate_icon"></span></th>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">feature Image<span id="delivery_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">Update date<span id="delivery_icon"></span></th>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">Action <span id="btn1_icon"></span></th>
                                 </tr>
                                 
@@ -29,12 +30,13 @@
                                     <td>{{index+1}}</td>
                                     <td>{{value.blog_title}}</td>
                                     <td><img :src="BASE_URL+'storage/app/public/backend/images/blog_images/'+value.feature_img" alt="No image" class="img-responsive img-thumbnail" width="150" height="100" style="border: 1px solid gray;"></td>
-                                    <td><b-icon v-if="value.blog_status=='published'" font-scale="2" style="cursor:pointer" icon="eye-fill" variant="success" class="custom_blog_font" @click="blog_update_info(value,0)"></b-icon>
-                                    <b-icon v-if="value.blog_status=='unpublished'" font-scale="2" style="cursor:pointer" icon="eye-slash-fill" variant="danger" class="custom_blog_font" @click="blog_update_info(value,1)"></b-icon>
+                                    <td>{{value.updated_at | ja_date_time}}</td>
+                                    <td><b-icon v-if="value.blog_status=='published'" v-tooltip.html="'disable this blog user'" font-scale="2" style="cursor:pointer" icon="eye-fill" variant="success" class="custom_blog_font" @click="blog_update_info(value,0)"></b-icon>
+                                    <b-icon v-if="value.blog_status=='unpublished'" v-tooltip.html="'enable this blog for user'" font-scale="2" style="cursor:pointer" icon="eye-slash-fill" variant="danger" class="custom_blog_font" @click="blog_update_info(value,1)"></b-icon>
                                     
-                                    <b-icon icon="arrow-bar-up" font-scale="2" style="cursor:pointer" variant="primary" class="custom_blog_font" @click="blog_update_info(value,2)"></b-icon>
-                                    <b-icon icon="trash-fill" font-scale="2" style="cursor:pointer" class="custom_blog_font" @click="blog_update_info(value,3)" variant="danger"></b-icon>
-                                    <b-icon icon="file-earmark-code" font-scale="2" style="cursor:pointer" variant="success" class="custom_blog_font" @click="blog_update_info(value,4)"></b-icon>
+                                    <b-icon icon="arrow-bar-up" v-tooltip.html="'Make it top Blog'" font-scale="2" style="cursor:pointer" variant="primary" class="custom_blog_font" @click="blog_update_info(value,2)"></b-icon>
+                                    <b-icon icon="trash-fill" v-tooltip.html="'Update this top Blog'" font-scale="2" style="cursor:pointer" class="custom_blog_font" @click="blog_update_info(value,3)" variant="danger"></b-icon>
+                                    <b-icon icon="file-earmark-code" v-tooltip.html="'Delete this top Blog'" font-scale="2" style="cursor:pointer" variant="success" class="custom_blog_font" @click="blog_update_info(value,4)"></b-icon>
                                     </td>
                                     
                                 </tr>
@@ -96,7 +98,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 // import ClassicEditor from '@ckeditor/ckeditor5-editor-classic';
 import '@ckeditor/ckeditor5-build-classic/build/translations/ja';
 import UploadAdapter from '../../../UploadAdapter';
-// import BoldPlugin from '@ckeditor/ckeditor5-basic-styles/src/bold';
+// import MediaEmbed from '@ckeditor/ckeditor5-media-embed/src/mediaembed';
 export default {
   
   data() {
