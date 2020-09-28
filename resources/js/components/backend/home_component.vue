@@ -12,10 +12,10 @@
             <div class="stats-small stats-small--1 card card-small">
                 <div class="card-body p-0 d-flex">
                 <b-container class="bv-example-row">
-                <b-row>
+                <b-row v-if="single_blog.length>0">
     <b-col>
     <div class="text-center">
-    <h2>Important Notice</h2>
+    <h2>お知らせ</h2>
     </div>
      </b-col>
      
@@ -23,7 +23,7 @@
   <br>
   <br>
   <b-row>
-    <b-col v-if="single_blog.length!=0">                    
+    <b-col v-if="single_blog.length>0">                    
 
   <h4 class="my-3 blog_titles">{{single_blog.blog_title}}</h4>
   <p class="created_at">Created at @{{ single_blog.created_at | ja_date_time }}</p>
@@ -38,7 +38,7 @@
                 <b-row>
     <b-col>
     <div class="text-center">
-    <h2>Blog List</h2>
+    <h2>過去情報</h2>
     </div>
      </b-col>
      
@@ -88,6 +88,7 @@
             get_signle_top_blog(){
                 axios.get(this.BASE_URL +"api/get_signle_top_blog").then((data) => {
                     this.single_blog = data.data.blog_list;
+                    console.log(this.single_blog);
                 });
             },
         },

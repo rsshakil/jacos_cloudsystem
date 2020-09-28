@@ -37,9 +37,14 @@ class Cmn_blogController extends Controller
     }
     public function get_signle_top_blog()
     {
-        //
         $result = cmn_blog::where('is_delete','0')->where('blog_status','published')->where('is_top_blog','1')->first();
-        return response()->json(['blog_list' => $result]);
+        if($result){
+            return response()->json(['blog_list' => $result]);
+        }else{
+            $result = array();
+            return response()->json(['blog_list' => $result]);
+        }
+        
     }
 
     /**
