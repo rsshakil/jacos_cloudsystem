@@ -38,11 +38,13 @@
                                     <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">小売名<span id="orderdate_icon"></span></th>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">受注日時<span id="orderdate_icon"></span></th>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">納品日 <span id="delivery_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">オンライン/手書き <span id="ordertype_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">ステータス <span id="status_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">ピッキング表 <span id="btn1_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer"> 数量確定 <span id="btn2_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer"> 伝票データ <span id="btn3_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">部門コード <span id="ordertype_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">便 <span id="status_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">配送温度区分 <span id="btn1_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer"> 伝票枚数 <span id="btn2_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer"> 未確定伝票数 <span id="btn3_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer"> 未印刷伝票数 <span id="btn3_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer"> 参照状況 <span id="btn3_icon"></span></th>
                                 </tr>
                                 
                             </thead>
@@ -52,16 +54,13 @@
                                     <td>{{order_list.company_name}}</td>
                                     <td>{{order_list.receive_date}}</td>
                                     <td>{{order_list.expected_delivery_date}}</td>
-                                    <td>{{order_list.category}}</td>
-                                    <td>{{order_list.status}}</td>
-                                    <td><button class="btn btn-primary">ピッキング表</button></td>
-                                    <!-- <td><a href="confirm_quantity.html" class="btn btn-info">数量確定</a></td> -->
-                                    <td>
-                                        <router-link :to="{name:'order_list_detail',params:{byr_order_id:order_list.byr_order_id} }" class="btn btn-info">数量確定</router-link>
-                                    </td>
-                                    <td>
-                                    <router-link :to="{name:'order_details_canvas',params:{byr_order_id:order_list.byr_order_id} }" class="btn btn-success">伝票データ</router-link>
-                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td> </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                 </tr>
                                 
                             </tbody>
