@@ -107,14 +107,15 @@ class CmnPdfPlatformSettings extends Controller
         $canData = $request->canData;
         // $objPosArray = $request->objPosArray;
 
-        $canvasRawBgImg = $canData['backgroundImage']['src'];
-        if (!empty($update_image_info)) {
-            $canvasBgImg = $this->all_used_func->save_base64_image($canvasRawBgImg, 'canvas_bg_image_'. time().'_'.$byr_id, $path_with_end_slash = "storage/app/public/backend/images/canvas/pdf_platform/Background/");
-        } else {
-            $canvasBgImgTmp = explode('/', $canvasRawBgImg);
-            $canvasBgImg = $canvasBgImgTmp[count($canvasBgImgTmp) - 1];
-        }
+        // $canvasRawBgImg = $canData['backgroundImage']['src'];
+        // if (!empty($update_image_info)) {
+        //     $canvasBgImg = $this->all_used_func->save_base64_image($canvasRawBgImg, 'canvas_bg_image_'. time().'_'.$byr_id, $path_with_end_slash = "storage/app/public/backend/images/canvas/pdf_platform/Background/");
+        // } else {
+        //     $canvasBgImgTmp = explode('/', $canvasRawBgImg);
+        //     $canvasBgImg = $canvasBgImgTmp[count($canvasBgImgTmp) - 1];
+        // }
         // return $canvasBgImg;
+        $canvasBgImg="";
         $canvas_image = $this->all_used_func->save_base64_image($base64_canvas_image, 'canvas_image_'. time().'_'.$byr_id, $path_with_end_slash = "storage/app/public/backend/images/canvas/pdf_platform/Canvas_screenshoot/");
         // Serialize the above data
         // $canData_string = serialize($canData);
@@ -135,11 +136,11 @@ class CmnPdfPlatformSettings extends Controller
                     if (file_exists($file_path .'Canvas_screenshoot/'. $canvas_image)) {
                         @unlink($file_path .'Canvas_screenshoot/'. $canvas_image);
                     }
-                    if (!empty($update_image_info)) {
-                        if (file_exists($file_path .'Background/'. $canvasBgImg)) {
-                            @unlink($file_path .'Background/'. $canvasBgImg);
-                        }
-                    }
+                    // if (!empty($update_image_info)) {
+                    //     if (file_exists($file_path .'Background/'. $canvasBgImg)) {
+                    //         @unlink($file_path .'Background/'. $canvasBgImg);
+                    //     }
+                    // }
                     return response()->json(['message' =>'duplicated', 'class_name' => 'error','title'=>'Not Updated!']);
                 }
             }
@@ -150,13 +151,13 @@ class CmnPdfPlatformSettings extends Controller
             if (file_exists($file_path .'Canvas_screenshoot/'. $canvas_image_info['canvas_image'])) {
                 @unlink($file_path .'Canvas_screenshoot/'. $canvas_image_info['canvas_image']);
             }
-            if (!empty($update_image_info)) {
-                if ($canvas_image_info['canvas_bg_image']!="bg_image.png") {
-                    if (file_exists($file_path.'Background/' . $canvas_image_info['canvas_bg_image'])) {
-                        @unlink($file_path.'Background/' . $canvas_image_info['canvas_bg_image']);
-                    }
-                }
-            }
+            // if (!empty($update_image_info)) {
+            //     if ($canvas_image_info['canvas_bg_image']!="bg_image.png") {
+            //         if (file_exists($file_path.'Background/' . $canvas_image_info['canvas_bg_image'])) {
+            //             @unlink($file_path.'Background/' . $canvas_image_info['canvas_bg_image']);
+            //         }
+            //     }
+            // }
             cmn_pdf_platform_canvas::where('cmn_pdf_platform_canvas_id', $canvas_id)->update($canvas_array);
             return response()->json(['message' =>'updated', 'class_name' => 'success','title'=>'Updated!']);
         } else {
@@ -167,11 +168,11 @@ class CmnPdfPlatformSettings extends Controller
                 if (file_exists($file_path .'Canvas_screenshoot/'. $canvas_image)) {
                     @unlink($file_path .'Canvas_screenshoot/'. $canvas_image);
                 }
-                if (!empty($update_image_info)) {
-                    if (file_exists($file_path .'Background/'. $canvasBgImg)) {
-                        @unlink($file_path .'Background/'. $canvasBgImg);
-                    }
-                }
+                // if (!empty($update_image_info)) {
+                //     if (file_exists($file_path .'Background/'. $canvasBgImg)) {
+                //         @unlink($file_path .'Background/'. $canvasBgImg);
+                //     }
+                // }
                 return response()->json(['message' =>'duplicated', 'class_name' => 'error','title'=>'Not Created!']);
             }
         }
@@ -184,11 +185,11 @@ class CmnPdfPlatformSettings extends Controller
             if (file_exists($file_path .'Canvas_screenshoot/'. $canvas_image_info['canvas_image'])) {
                 @unlink($file_path .'Canvas_screenshoot/'. $canvas_image_info['canvas_image']);
             }
-            if ($canvas_image_info['canvas_bg_image']!="bg_image.png") {
-                if (file_exists($file_path .'Background/'. $canvas_image_info['canvas_bg_image'])) {
-                    @unlink($file_path .'Background/'. $canvas_image_info['canvas_bg_image']);
-                }
-            }
+            // if ($canvas_image_info['canvas_bg_image']!="bg_image.png") {
+            //     if (file_exists($file_path .'Background/'. $canvas_image_info['canvas_bg_image'])) {
+            //         @unlink($file_path .'Background/'. $canvas_image_info['canvas_bg_image']);
+            //     }
+            // }
             $canvas_del=cmn_pdf_platform_canvas::where('cmn_pdf_platform_canvas_id', $canvas_id)->delete();
             if ($canvas_del) {
                 return response()->json(['message' =>'success', 'class_name' => 'success','title'=>'Deleted!']);
