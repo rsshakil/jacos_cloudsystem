@@ -18,6 +18,7 @@ class CreateByrOrdersTable extends Migration
             $table->integer('cmn_connect_id')->unsigned()->comment('cmn connect id');
             $table->enum('category', ['edi', 'manual'])->default('edi')->comment('order category');
             $table->enum('status', ['未確定', '確定済み', '未出荷', '出荷中', '出荷済み'])->default('未確定')->comment('order status');
+            $table->dateTime('download_date')->comment('Time of creation')->nullable();
             $table->dateTime('receive_date')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('Time of creation');
             $table->string('receive_file_path', 500)->comment('receive file path')->nullable();
             $table->mediumInteger('data_count')->unsigned()->default('0')->comment('totall order')->nullable();
