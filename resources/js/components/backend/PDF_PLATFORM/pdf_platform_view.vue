@@ -81,6 +81,7 @@
       <b-button variant="warning" @click="clearCanvasObjects">Clear canvas</b-button>
       <b-button variant="warning" style="margin-left: 1px;" @click="canvasDesign(itr)">Reset Canvas</b-button>
       <br />
+      <br />
       <center><canvas id="c">Your browser does not support the canvas element.</canvas></center>
     </div>
     <div class="col-12 text-center">
@@ -114,8 +115,10 @@ export default {
       canvas_name: null,
       canvas_id: null,
       byr_order_id: 1,
-      canvas_width: 1219,
-      canvas_height: 510,
+      canvas_width:790,
+      canvas_height:1040,
+      // canvas_width: 1219,
+      // canvas_height: 510,
       pointerX: 100,
       pointerY: 50,
     };
@@ -126,12 +129,12 @@ export default {
           byr_order_id: this.byr_order_id,
         })
         .then(({ data }) => {
-          console.log(data);
+          // console.log(data);
           if (data.canvas_data.length>0) {
             this.allName=data.canvas_data
             this.canvasSelectedName=this.allName[0]
-            this.bg_image_path=this.BASE_URL + "storage/app/public/backend/images/canvas/pdf_platform/Background/"+(this.allName)[0].canvas_bg_image;
-            this.backgroundImageSet(this.bg_image_path);
+            // this.bg_image_path=this.BASE_URL + "storage/app/public/backend/images/canvas/pdf_platform/Background/"+(this.allName)[0].canvas_bg_image;
+            // this.backgroundImageSet(this.bg_image_path);
           }
           if (data.can_info) {
             this.canvasAllData=data.can_info
@@ -169,37 +172,33 @@ export default {
       }
       this.clearCanvasObjects();
       if (this.canvasDataLength>0) {
-        var canvasAllDataArray=this.canvasAllData[iteration].data;
+        var canvasAllDataArray=this.canvasAllData[iteration];
+        // console.log(canvasAllDataArray)
         if (canvasAllDataArray.length) {
           // var position_values= JSON.parse(this.canvasSelectedName.position_values);
           var position_values= JSON.parse(this.canvasSelectedName.canvas_objects).objects;
           position_values.forEach(element => {
+            var positionTop=element.top;
             // console.log(element.text);
             var split_element=(this.splitString(element.text))
+            // console.log(split_element)
             var item="";
-            if (split_element[1]<canvasAllDataArray.length) {
-                item=canvasAllDataArray[split_element[1]][split_element[0]];
-            }else{
-                if(!(Array.isArray(split_element))){
-                  if (split_element=="total_order_qty") {
-                    item=canvasAllDataArray[0]['total_order_qty']
-                  }else if(split_element=="total_selling_price"){
-                    item=canvasAllDataArray[0]['total_selling_price']
-                  }else if(split_element=="total_cost_price"){
-                    item=canvasAllDataArray[0]['total_cost_price']
-                  }else if(split_element=="total_confirm_quantity"){
-                    item=(canvasAllDataArray[0]['total_confirm_quantity']==0)?"":canvasAllDataArray[0]['total_confirm_quantity']
-                  }else if(split_element=="center_code"){
-                    item=canvasAllDataArray[0]['center_code']
-                  }else if(split_element=="center_name"){
-                    item=canvasAllDataArray[0]['center_name']
-                  }else{
-                    item=split_element;
-                  }
-                  // console.log(item);
-                }
-              }
-            this.createObj(element.left,element.top,element.width,element.height,element.fontSize,element.textAlign,element.lineHeight,element.scaleX,element.scaleY,item.toString(),'auto')
+             if(!(Array.isArray(split_element))){
+               item=split_element;
+               this.createObj(element.left,element.top,element.width,element.height,element.fontSize,element.textAlign,element.lineHeight,element.scaleX,element.scaleY,item.toString(),'auto')
+             }else{
+               if (split_element.length>1) {
+                //  item=canvasAllDataArray[split_element[1]][split_element[0]];
+                 item=canvasAllDataArray[0][split_element[0]];
+                 this.createObj(element.left,element.top,element.width,element.height,element.fontSize,element.textAlign,element.lineHeight,element.scaleX,element.scaleY,item.toString(),'auto')
+               }else{
+                 for (let i = 0; i < canvasAllDataArray.length; i++) {
+                 item=canvasAllDataArray[i][split_element[0]];
+                 this.createObj(element.left,positionTop,element.width,element.height,element.fontSize,element.textAlign,element.lineHeight,element.scaleX,element.scaleY,item.toString(),'auto')
+                  positionTop+=28;
+               }
+               }
+             }
           });
         }
         this.emptyObjRemove();
@@ -217,12 +216,20 @@ export default {
     },
     splitString(givenString){
       var first_part=givenString.substring(0, 5);
-      var main_part=givenString.slice(5,-2);
+      
       var last_part=givenString.slice(-1);
+      var main_part="";
+      if (last_part==0) {
+        main_part=givenString.slice(5,-2);
+      }else{
+        main_part=givenString.slice(5);
+      }
       var result=[];
-      if (first_part=="[db]_") {
+      if (first_part=="[db]_" && last_part==0) {
         result.push(main_part)
         result.push(last_part)
+      }else if (first_part=="[db]_" && last_part!=0) {
+        result.push(main_part)
       }else{
         result=givenString
       }
@@ -230,8 +237,8 @@ export default {
     },
     showCanvasBg($event) {
       this.canvasSelectedName=$event;
-      this.bg_image_path = this.BASE_URL + "storage/app/public/backend/images/canvas/pdf_platform/Background/"+$event.canvas_bg_image;
-      this.backgroundImageSet(this.bg_image_path);
+      // this.bg_image_path = this.BASE_URL + "storage/app/public/backend/images/canvas/pdf_platform/Background/"+$event.canvas_bg_image;
+      // this.backgroundImageSet(this.bg_image_path);
       this.canvasDesign(this.itr);
     },
     canvasDataView(text_data) {
@@ -262,12 +269,13 @@ export default {
       this.canvas_id = null;
       this.submit_button = "Save";
       this.update_image_info = null;
-      if (this.allName.length>0) {
-        this.bg_image_path = this.BASE_URL + "storage/app/public/backend/images/canvas/pdf_platform/Background/"+(this.allName)[0].canvas_bg_image;
-      }else{
-        this.bg_image_path = this.BASE_URL + "storage/app/public/backend/images/canvas/pdf_platform/Background/bg_image.png";
-      }
-      this.backgroundImageSet(this.bg_image_path);
+      this.canvas.setBackgroundColor("#fff");
+      // if (this.allName.length>0) {
+      //   this.bg_image_path = this.BASE_URL + "storage/app/public/backend/images/canvas/pdf_platform/Background/"+(this.allName)[0].canvas_bg_image;
+      // }else{
+      //   this.bg_image_path = this.BASE_URL + "storage/app/public/backend/images/canvas/pdf_platform/Background/bg_image.png";
+      // }
+      // this.backgroundImageSet(this.bg_image_path);
     },
     bgImageProcess(bg_image) {
       var img = new Image();
@@ -297,7 +305,7 @@ export default {
       this.loader =Vue.$loading.show();
       var img_dym=this.bgImageDymension(this.bg_image_path);
       var doc = new jsPDF({
-        orientation: "landscape",
+        orientation: "portrait", //portrait or landscape
         unit: "in",
         // format: [15, 10]
         // format: [((img_dym.width)/96)+1, ((img_dym.height)/96)+1]
@@ -372,7 +380,7 @@ export default {
       });
       // console.log(ppp);
       setTimeout(function () {
-        thisVar.backgroundImageSet(imgSrc);
+        // thisVar.backgroundImageSet(imgSrc);
         // this.loader.hide();
       }, 510);
     },
@@ -566,9 +574,10 @@ export default {
     this.canvas = new fabric.Canvas("c");
     this.canvas.setWidth(this.canvas_width);
     this.canvas.setHeight(this.canvas_height);
+    this.canvas.setBackgroundColor("#fff");
     // this.canvas.controlsAboveOverlay = true;
-    this.bg_image_path = this.BASE_URL + "storage/app/public/backend/images/canvas/pdf_platform/Background/bg_image.png";
-    this.backgroundImageSet(this.bg_image_path);
+    // this.bg_image_path = this.BASE_URL + "storage/app/public/backend/images/canvas/pdf_platform/Background/bg_image.png";
+    // this.backgroundImageSet(this.bg_image_path);
     // initAligningGuidelines(this.canvas);
     // initCenteringGuidelines(this.canvas);
     this.loadCanvasData();

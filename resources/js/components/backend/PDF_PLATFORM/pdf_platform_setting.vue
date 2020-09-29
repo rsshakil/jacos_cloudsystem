@@ -6,9 +6,8 @@
                 <div class="col-12">
                   <b-button variant="danger" style="margin-left: 1px;" @click="deleteObjects()">Delete</b-button>
                 <b-button variant="primary" @click="printCanvas">Print</b-button>
-                <!-- <input class="btn btn-info" @change="bgImageChange" type="file"> -->
-                <b-button variant="info" @click.prevent="backgroundModalFunc">Background</b-button>
-                <!-- <b-button v-b-modal.modal-xl variant="primary">Background</b-button> -->
+                <b-button variant="primary" @click="createLine">Line</b-button>
+                <!-- <b-button variant="info" @click.prevent="backgroundModalFunc">Background</b-button> -->
                 <b-button variant="warning" @click="clearCanvasObjects">Clear canvas</b-button>
                 <!-- <b-button variant="warning" @click="duplicateObjects">Duplicate</b-button> -->
                 <br>
@@ -107,7 +106,8 @@
                 </div>
                 <!-- <div class="col-12"> -->
                 <!-- <div class="col-8" style="height:500px; overflow:auto"> -->
-                <div class="col-12" style="height:500px;overflow:auto;">
+                <!-- <div class="col-12" style="height:500px;overflow:auto;"> -->
+                <div class="col-12">
                     <center><canvas id="c">Your browser does not support the canvas element.</canvas></center>
                 </div>
                 <div class="col-12">
@@ -200,7 +200,7 @@ data(){
     canvas_id:null,
     update_image_info:null,
     submit_button:'Save',
-    canvas_width:800,
+    canvas_width:790,
     canvas_height:1040,
     // canvas_width:793.92,
     // canvas_height:1122.24,
@@ -268,8 +268,8 @@ methods:{
             this.canvas_name=canvasData.canvas_name;
             this.canvas_id=canvasData.cmn_pdf_platform_canvas_id;
             this.submit_button='Update'
-            this.bg_image_path=this.BASE_URL + 'storage/app/public/backend/images/canvas/pdf_platform/Background/'+canvasData.canvas_bg_image;
-            this.backgroundImageSet(this.bg_image_path);
+            // this.bg_image_path=this.BASE_URL + 'storage/app/public/backend/images/canvas/pdf_platform/Background/'+canvasData.canvas_bg_image;
+            // this.backgroundImageSet(this.bg_image_path);
             $("html, body").animate({ scrollTop: 0 }, "slow");
             this.canvasDataView(canvasData.canvas_objects);
           },
@@ -358,8 +358,9 @@ methods:{
             this.update_image_info=null
             this.obj_setting=0;
             this.selected_buyer=[]
-            this.bg_image_path=this.BASE_URL + 'storage/app/public/backend/images/canvas/pdf_platform/Background/bg_image.png'
-            this.backgroundImageSet(this.bg_image_path);
+            this.canvas.setBackgroundColor("#fff");
+            // this.bg_image_path=this.BASE_URL + 'storage/app/public/backend/images/canvas/pdf_platform/Background/bg_image.png'
+            // this.backgroundImageSet(this.bg_image_path);
           },
           bgImageProcess(bg_image) {
               var img = new Image();
@@ -439,7 +440,7 @@ methods:{
               // console.log(ppp);
               if (this.bg_image_path) {
                setTimeout(function() {
-                  thisVar.backgroundImageSet(imgSrc);
+                  // thisVar.backgroundImageSet(imgSrc);
               }, 510);
             }
 
@@ -619,6 +620,14 @@ methods:{
       },
       getActiveObject(){
         this.activeObjects = this.canvas.getActiveObjects();
+      },
+      createLine(){
+        var line = new fabric.Line([50, 10, 890, 10], { 
+            stroke: 'black' 
+        }); 
+   
+        // Render the rectanle in canvas 
+        this.canvas.add(line);
       },
       // changeObjectSetting($event=null){
       //   var canvas=this.canvas;
@@ -807,9 +816,9 @@ methods:{
             this.deleteObjects();
         } else if (e.ctrlKey && e.shiftKey && e.keyCode == 65) {
             this.selectAllObjects()
-        }else if (e.ctrlKey && e.keyCode == 67) {
+        }else if (e.ctrlKey && e.shiftKey && e.keyCode == 67) {
             this.copyObject()
-        }else if (e.ctrlKey && e.keyCode == 86) {
+        }else if (e.ctrlKey && e.shiftKey && e.keyCode == 86) {
             this.pasteObject()
         }else if (e.keyCode == 37) {
             this.leftButton()
@@ -962,11 +971,12 @@ methods:{
           this.canvas = new fabric.Canvas("c");
           this.canvas.setWidth(this.canvas_width);
           this.canvas.setHeight(this.canvas_height);
+          this.canvas.setBackgroundColor("#fff");
         //   this.canvas = new fabric.Canvas('c', {width: 720, height: 1280});
         //   this.canvas.setDimensions({width: '640px', height: '360px'}, {cssOnly: true});
           // this.canvas.controlsAboveOverlay = true;
-          this.bg_image_path=this.BASE_URL + 'storage/app/public/backend/images/canvas/pdf_platform/Background/bg_image.png'
-          this.backgroundImageSet(this.bg_image_path);
+          // this.bg_image_path=this.BASE_URL + 'storage/app/public/backend/images/canvas/pdf_platform/Background/bg_image.png'
+          // this.backgroundImageSet(this.bg_image_path);
           this.loadCanvasData();
           this.canvas.on('mouse:dblclick', (e) => {
             this.doubleClick(e)
@@ -980,8 +990,8 @@ methods:{
           })
           document.addEventListener('keydown', function(e) {
               if (e.keyCode == 46 || (e.ctrlKey && e.keyCode == 8) || 
-              (e.ctrlKey && e.shiftKey && e.keyCode == 65) || (e.ctrlKey && e.keyCode == 67) || 
-              (e.ctrlKey && e.keyCode == 86) || e.keyCode == 37 || e.keyCode == 38 || 
+              (e.ctrlKey && e.shiftKey && e.keyCode == 65) || (e.ctrlKey && e.shiftKey && e.keyCode == 67) || 
+              (e.ctrlKey && e.shiftKey && e.keyCode == 86) || e.keyCode == 37 || e.keyCode == 38 || 
               e.keyCode == 39 || e.keyCode == 40 || (e.ctrlKey && e.keyCode == 90)) {
                   e.preventDefault();
               }
