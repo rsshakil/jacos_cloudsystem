@@ -54,13 +54,13 @@
                                     <td>{{order_list.company_name}}</td>
                                     <td>{{order_list.receive_date}}</td>
                                     <td>{{order_list.expected_delivery_date}}</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td> </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>{{order_list.category_code}}</td>
+                                    <td>{{order_list.delivery_service_code}}</td>
+                                    <td>{{order_list.temperature}}</td>
+                                    <td> {{order_list.total_voucher_number}}</td>
+                                    <td>{{order_list.total_confirm_date}}</td>
+                                    <td>{{order_list.total_print_out_date}}</td>
+                                    <td>{{order_list.checked_date}}</td>
                                 </tr>
                                 
                             </tbody>
@@ -84,6 +84,7 @@ export default {
     get_all_order(){
         axios.get(this.BASE_URL +"api/get_byr_order_list/"+Globals.user_info_id).then((data) => {
             this.order_lists = data.data.order_list;
+            console.log(this.order_lists);
             this.byr_buyer_lists = data.data.byr_buyer_list;
         });
     },

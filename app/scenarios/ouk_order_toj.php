@@ -8,6 +8,10 @@ use App\Models\BYR\byr_order;
 use App\Models\BYR\byr_shipment_detail;
 use App\Models\BYR\byr_shipment;
 use App\Models\BYR\byr_shop;
+use App\Models\BYR\byr_order_item;
+use App\Models\BYR\byr_order_voucher;
+use App\Models\BYR\byr_shipment_item;
+use App\Models\BYR\byr_shipment_voucher;
 
 class ouk_order_toj extends Model
 {
@@ -141,34 +145,34 @@ class ouk_order_toj extends Model
         $byr_shipment_id = byr_shipment::insertGetId(['send_file_path'=>$received_path,'cmn_connect_id'=>$sc->cmn_connect_id]);
         $cnt = 0;
         if($insert_array_b){
+            $voucher_list = array();
             $insert_detail = array();
             $total = 0;
             foreach($insert_array_b as $value){
-                $byr_shop_id = $this->get_shop_id_by_shop_code($value['shop_code'],$value['shop_name_kana'],$sc);
+                    $voucher_list['byr_order_id']=$byr_order_id;
+                    $voucher_list['voucher_number']=$value['voucher_number'];
+                    $voucher_list['category_code']=$value['category_code'];
+                    $voucher_list['voucher_category']=$value['voucher_category'];
+                    $voucher_list['other_info']=$value['other_info'];
+                    $voucher_list['expected_delivery_date']=$value['expected_delivery_date'];
+                    $voucher_list['order_date']=$value['order_date'];
+                    $voucher_list['delivery_service_code']=$value['delivery_service_code'];
+                    $byr_order_voucher_id = byr_order_voucher::insertGetId($voucher_list);
                 foreach($value['item_data'] as $item){
                     $order_quantity = $item['order_quantity'];
-                    $insert_detail['byr_order_id']=$byr_order_id;
-                    $insert_detail['byr_shop_id']=$byr_shop_id;
-                    $insert_detail['voucher_number']=$value['voucher_number'];
-                    $insert_detail['category_code']=$value['category_code'];
-                    $insert_detail['voucher_category']=$value['voucher_category'];
-                    $insert_detail['other_info']=$value['other_info'];
-                    $insert_detail['expected_delivery_date']=$value['expected_delivery_date'];
-                    $insert_detail['order_date']=$value['order_date'];
-                    $insert_detail['delivery_service_code']=$value['delivery_service_code'];
+                    $insert_detail['byr_order_voucher_id']=$byr_order_voucher_id;
                     $insert_detail['list_number']=$item['list_number'];
                     $insert_detail['jan']=$item['jan'];
                     $insert_detail['inputs']=$item['inputs'];
-                    $insert_detail['order_lot_inputs']=$item['order_inputs'];
-                    $insert_detail['order_unit_quantity']=$order_quantity;
+                    $insert_detail['order_inputs']=$item['order_inputs'];
+                    $insert_detail['order_quantity']=$order_quantity;
                     $insert_detail['item_name_kana']=$item['item_name_kana'];
                     $insert_detail['cost_price']=$item['cost_price'];
+                    $insert_detail['cost_unit_price']=$item['cost_unit_price'];
                     $insert_detail['selling_price']=$item['selling_price'];
                     $insert_detail['selling_unit_price']=$item['selling_unit_price'];
-                    $insert_detail['cost_unit_price']=$item['cost_unit_price'];
-                    $byr_order_detail_id = byr_order_detail::insertGetId($insert_detail);
-                    byr_shipment_detail::insert(['byr_order_detail_id'=>$byr_order_detail_id,'byr_shipment_id'=>$byr_shipment_id,'order_quantity'=>$order_quantity,'confirm_quantity'=>$order_quantity]);
-                    $temp[]= $insert_detail;
+                    byr_order_item::insert($insert_detail);
+                    
                     $total++;
                 }
                 
