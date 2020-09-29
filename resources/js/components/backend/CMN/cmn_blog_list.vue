@@ -2,7 +2,7 @@
   <div>
     <div class="row">
                 <div class="col-12">
-                    <h4 class="top_title text-center" style="margin-top:10px;">Blog list</h4>
+                    <h4 class="top_title text-center" style="margin-top:10px;">お知らせ管理</h4>
                 </div>
                 
              
@@ -18,10 +18,10 @@
                                 </tr>
                                 <tr>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer">No <span id="id_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">Title<span id="orderdate_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">feature Image<span id="delivery_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">Update date<span id="delivery_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">Action <span id="btn1_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">タイトル<span id="orderdate_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">画像<span id="delivery_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">更新日<span id="delivery_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">操作 <span id="btn1_icon"></span></th>
                                 </tr>
                                 
                             </thead>
@@ -50,8 +50,8 @@
           <b-modal
       size="lg"
       :hide-backdrop="true"
-      title="Blog"
-      ok-title="Save"
+      title="新規　お知らせ"
+      ok-title="保存"
       cancel-title="キャンセル"
       @ok.prevent="create_new_blog()"
       v-model="blog_create_modal">
@@ -62,14 +62,14 @@
         <form enctype="multipart/form-data">
         <input type="hidden" v-model="form.cmn_blog_id">
           <div class="form-group row">
-    <label for="name" class="col-sm-2 col-form-label">Title</label>
+    <label for="name" class="col-sm-2 col-form-label">タイトル</label>
     <div class="col-sm-10">
       <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('blog_title') }" v-model="form.blog_title">
       <has-error :form="form" field="blog_title"></has-error>
     </div>
   </div>
   <div class="form-group row">
-    <label for="staticEmail" class="col-sm-2 col-form-label">Feature Image</label>
+    <label for="staticEmail" class="col-sm-2 col-form-label">画像</label>
     <div class="col-sm-10">
       <input type="file" name="feature_img" class="form-control" :class="{ 'is-invalid': form.errors.has('feature_img') }" @change="onUploadFiles" accept="image/jpeg, image/png">
     <has-error :form="form" field="feature_img"></has-error>
@@ -77,7 +77,7 @@
     </div>
   </div>
   <div class="form-group row">
-    <label for="staticEmail" class="col-sm-2 col-form-label">Content</label>
+    <label for="staticEmail" class="col-sm-2 col-form-label">内容</label>
     <div class="col-sm-10">
      <ckeditor :editor="editor" v-model="form.blog_content" :config="editorConfig" :class="{ 'is-invalid': form.errors.has('blog_content') }"></ckeditor>
     <has-error :form="form" field="blog_content"></has-error>

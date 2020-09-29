@@ -55,7 +55,7 @@
         </li>
         <li class="nav-item" v-can="['dashboard_menu']">
           <router-link to="/blog" class="nav-link">
-            <b-icon icon="house-fill" font-scale="1.2"></b-icon> Blog
+            <b-icon icon="house-fill" font-scale="1.2"></b-icon> 新規　お知らせ
           </router-link>
         </li>
         <li class="nav-item" v-can="['role_menu']">
@@ -97,7 +97,12 @@
 
         <li class="nav-item" v-can="['byr_view']">
           <router-link to="/order_list" class="nav-link">
-            <b-icon icon="receipt" font-scale="1.2"></b-icon> {{myLang.order_list}}
+            <b-icon icon="receipt" font-scale="1.2"></b-icon> 発注データ
+          </router-link>
+        </li>
+        <li class="nav-item" v-can="['slr_view']">
+          <router-link to="/order_list" class="nav-link">
+            <b-icon icon="receipt" font-scale="1.2"></b-icon> 受注データ
           </router-link>
         </li>
         <li class="nav-item" v-can="['byr_view']">
@@ -148,7 +153,7 @@
 
         <li class="nav-item" v-can="['slr_view','byr_view']">
           <router-link to="/invoice_list" class="nav-link">
-            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> 請求
+            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> 請求データ
           </router-link>
         </li>
 
