@@ -13,14 +13,35 @@
                 <br>
                 <br>
                 <div class="row">
-                  <div class="col-4">
+                  <div class="col-3">
                     <multiselect v-model="selected_buyer" :options="all_buyer" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Select buyers" label="company_name" track-by="byr_buyer_id"></multiselect>
                   </div>
-                  <div class="col-3">
-                    <input type="text" v-model="canvas_name" class="form-control" placeholder="Please enter canvas name" style="width:300px !important">
+                  <div class="col-3" style="padding:2px;">
+                    <b-input-group class="mb-2">
+                      <b-input-group-prepend is-text>
+                        canvas name
+                      </b-input-group-prepend>
+                      <b-form-input title="Canvas name" type="text" placeholder="Please enter canvas name" v-model="canvas_name"></b-form-input>
+                    </b-input-group>
                   </div>
-                  <div class="col-4">
-                    <b-button variant="info" style="margin-left: 5px;" @click="saveData">{{submit_button}}</b-button>
+                  <div class="col-2" style="padding:2px;">
+                    <b-input-group class="mb-2">
+                      <b-input-group-prepend is-text>
+                        Line gap
+                      </b-input-group-prepend>
+                      <b-form-input title="Line gap" type="number" placeholder="Line gap" v-model="line_gap"></b-form-input>
+                    </b-input-group>
+                  </div>
+                  <div class="col-2" style="padding:2px;">
+                    <b-input-group class="mb-2">
+                      <b-input-group-prepend is-text>
+                        Line per page
+                      </b-input-group-prepend>
+                      <b-form-input title="Line per page" type="number" placeholder="Line per page" v-model="line_per_page"></b-form-input>
+                    </b-input-group>
+                  </div>
+                  <div class="col-1" style="margin-left: -15px; margin-top: 3px;">
+                    <b-button variant="info" @click="saveData">{{submit_button}}</b-button>
                   </div>
                 </div>
                 <div class="row" v-if="obj_setting!=0">
@@ -215,6 +236,8 @@ data(){
     tmp_modal_image:null,
     tmp_update_image_info:null,
     activeObjects:[],
+    line_gap:28,
+    line_per_page:26,
   }
 },
 methods:{
@@ -252,6 +275,7 @@ methods:{
           loadCanvasData() {
             axios.post(this.BASE_URL+"api/load_pdf_platform_canvas_setting_data")
                 .then(({ data }) => {
+                  console.log(data);
                   this.canvasAllData=data.canvas_info;
                   this.all_buyer=data.all_buyer;
                   // this.loader.hide();
@@ -266,6 +290,8 @@ methods:{
             // this.canvas.clear();
             this.canvasClear();
             this.canvas_name=canvasData.canvas_name;
+            this.line_gap=canvasData.line_gap;
+            this.line_per_page=canvasData.line_per_page;
             this.canvas_id=canvasData.cmn_pdf_platform_canvas_id;
             this.submit_button='Update'
             // this.bg_image_path=this.BASE_URL + 'storage/app/public/backend/images/canvas/pdf_platform/Background/'+canvasData.canvas_bg_image;
@@ -453,6 +479,14 @@ methods:{
                 alert("Please fill canvas name");
                 return false;
             }
+            if (this.line_gap==null||this.line_gap<=0) {
+                alert("Please write line gap");
+                return false;
+            }
+            if (this.line_per_page==null||this.line_per_page<=0) {
+                alert("Please write line per page");
+                return false;
+            }
             if (this.selected_buyer.length<=0) {
               alert("Please select buyer name");
                 return false;
@@ -466,7 +500,7 @@ methods:{
             // this.selected_buyer.forEach(element => {
             //   buyer_id.push(element.byr_buyer_id)
             // });
-            var canvas_data= { canvas_id: this.canvas_id, update_image_info: this.update_image_info,byr_id:buyer_id, canvas_name: this.canvas_name, canData: canData, canvasImage: this.getCanvasBgImage() }
+            var canvas_data= { canvas_id: this.canvas_id, update_image_info: this.update_image_info,byr_id:buyer_id, canvas_name: this.canvas_name, canData: canData, canvasImage: this.getCanvasBgImage(),line_gap:this.line_gap,line_per_page:this.line_per_page }
             // console.log(this.canvas_id);
             // console.log(canvas_data);
             // return 0;
@@ -622,10 +656,10 @@ methods:{
         this.activeObjects = this.canvas.getActiveObjects();
       },
       createLine(){
-        var line = new fabric.Line([50, 10, 890, 10], { 
-            stroke: 'black' 
+        var line = new fabric.Line([0, 211, 795, 211], { 
+            stroke: 'black',
         }); 
-   
+    console.log(line);
         // Render the rectanle in canvas 
         this.canvas.add(line);
       },

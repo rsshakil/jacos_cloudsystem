@@ -10,10 +10,11 @@ use App\Models\BYR\byr_shop;
 class ouk_pdf_platform
 {
     //
-    public function exec($request,$sc)
+    public function exec($request,$sc,$line_per_page=26)
     {
         $byr_order_id=$request->byr_order_id;
         $path = public_path() . "/json_files/delivery_report_array.json"; // ie: /var/www/laravel/app/storage/json/filename.json
+        $today=date("Y/m/d h:s");
 
         $json = json_decode(file_get_contents($path), true); 
         $report_array=$json['report_array'];
@@ -49,10 +50,6 @@ class ouk_pdf_platform
             }
         }
         $new_report_array=array();
-        // ----------
-            $line_per_page=26;
-            $today=date("Y/m/d h:s");
-    //    ---------------
         foreach ($report_arr_final as $key => $value) {
             $total_item=count($value);
             $total_page=ceil($total_item / $line_per_page); 

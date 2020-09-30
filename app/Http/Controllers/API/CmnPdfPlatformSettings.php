@@ -29,6 +29,17 @@ class CmnPdfPlatformSettings extends Controller
     }
     public function pdfPlatformAllData(Request $request, $cmn_scenario_id){
         // return $request->all();
+        $byr_order_id=$request->byr_order_id;
+        $canvas_data=byr_order::select('cmn_pdf_platform_canvas.*','byr_orders.byr_order_id')
+        ->join('cmn_connects','cmn_connects.cmn_connect_id','=','byr_orders.cmn_connect_id')
+        ->join('cmn_pdf_platform_canvas','cmn_pdf_platform_canvas.byr_buyer_id','=','cmn_connects.byr_buyer_id')
+        ->where('byr_orders.byr_order_id',$byr_order_id)
+        ->get();
+        $line_per_page=26;
+        if (!empty($canvas_data)) {
+            $line_per_page=$canvas_data[0]->line_per_page;
+        }
+
         $sc=cmn_scenario::where('cmn_scenario_id',$cmn_scenario_id)->first();
         // return app_path().'/'.$sc->file_path.'.php';
         // scenario call
@@ -50,7 +61,7 @@ class CmnPdfPlatformSettings extends Controller
             \Log::error('scenario exec error');
             return ['status'=>'1','message'=>'Scenario exec function is not exist!'];
         }
-        $ret = $sc_obj->exec($request,$sc);
+        $ret = $sc_obj->exec($request,$sc,$line_per_page);
         // if ($ret !== 0) {
         //     // error
         //     \Log::debug('scenario exec error');
@@ -59,13 +70,6 @@ class CmnPdfPlatformSettings extends Controller
         //     \Log::debug('scenario exec success');
         // }
         // return $ret;
-
-        $byr_order_id=$request->byr_order_id;
-        $canvas_data=byr_order::select('cmn_pdf_platform_canvas.*','byr_orders.byr_order_id')
-        ->join('cmn_connects','cmn_connects.cmn_connect_id','=','byr_orders.cmn_connect_id')
-        ->join('cmn_pdf_platform_canvas','cmn_pdf_platform_canvas.byr_buyer_id','=','cmn_connects.byr_buyer_id')
-        ->where('byr_orders.byr_order_id',$byr_order_id)
-        ->get();
         return response()->json(['canvas_data'=>$canvas_data,'can_info'=>$ret]);
     }
     public function canvasSettingData(){
@@ -88,8 +92,8 @@ class CmnPdfPlatformSettings extends Controller
                 $tmp['canvas_image']=$canvas->canvas_image;
                 $tmp['canvas_bg_image']=$canvas->canvas_bg_image;
                 $tmp['canvas_objects']=\json_decode($canvas->canvas_objects);
-                // $tmp['canvas_objects']=$canvas->canvas_objects;
-                // $tmp['canvas_objects']=$this->UnserializedCanvasData($canvas->canvas_objects);;
+                $tmp['line_gap']=$canvas->line_gap;
+                $tmp['line_per_page']=$canvas->line_per_page;
                 $tmp['created_at']=$canvas->created_at;
                 $tmp['updated_at']=$canvas->updated_at;
                 $canvas_array[]=$tmp;
@@ -105,6 +109,8 @@ class CmnPdfPlatformSettings extends Controller
         $canvas_name = $request->canvas_name;
         $base64_canvas_image = $request->canvasImage;
         $canData = $request->canData;
+        $line_gap = $request->line_gap;
+        $line_per_page = $request->line_per_page;
         // $objPosArray = $request->objPosArray;
 
         // $canvasRawBgImg = $canData['backgroundImage']['src'];
@@ -125,8 +131,8 @@ class CmnPdfPlatformSettings extends Controller
             'canvas_image' => $canvas_image,
             'canvas_bg_image' => $canvasBgImg,
             'canvas_objects' => json_encode($canData),
-            // 'canvas_objects' => $canData_string,
-            // 'position_values' => \json_encode($objPosArray),
+            'line_gap' => $line_gap,
+            'line_per_page' => $line_per_page,
         );
         $file_path = \storage_path() . '/app/public/backend/images/canvas/pdf_platform/';
         if (!empty($canvas_id)) {
