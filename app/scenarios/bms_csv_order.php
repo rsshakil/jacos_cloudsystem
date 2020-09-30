@@ -15,6 +15,11 @@ use App\Models\CMN\cmn_category;
 use App\Models\CMN\cmn_category_description;
 use App\Models\CMN\cmn_category_path;
 use App\Models\BMS\bms_order;
+use App\Models\BMS\bms_shipment;
+use App\Models\BYR\byr_order_item;
+use App\Models\BYR\byr_order_voucher;
+use App\Models\BYR\byr_shipment_item;
+use App\Models\BYR\byr_shipment_voucher;
 use DB;
 class bms_csv_order extends Model
 {
@@ -164,15 +169,55 @@ class bms_csv_order extends Model
        
 
         $byr_order_id = byr_order::insertGetId(['receive_file_path'=>$received_path,'cmn_connect_id'=>$sc->cmn_connect_id,'data_count'=>$data_count]);
-        // $byr_shipment_id = byr_shipment::insertGetId(['send_file_path'=>$received_path,'cmn_connect_id'=>$sc->cmn_connect_id]);
+        $byr_shipment_id = byr_shipment::insertGetId(['send_file_path'=>$received_path,'cmn_connect_id'=>$sc->cmn_connect_id,'byr_order_id'=>$byr_order_id]);
 
 
         // print_r($dataArr);
         // return $dataArr;
-        $insert_array=array();
+        $insert_array_bms_order=array();
+        $insert_array_bms_shipment=array();
+        $voucher_array=array();
+        $item_array=array();
         foreach ($dataArr as $key => $value) {
             // $temp_array['file_name']=$fileName;
-            $temp_array['byr_order_id']=$byr_order_id;
+            $bms_orders['byr_order_id']=$byr_order_id;
+            $bms_shipments['byr_shipment_id']=$byr_shipment_id;
+            $voucher_array['byr_order_id']=$byr_order_id;
+            $voucher_array['voucher_category'] = $value[86];
+            $voucher_array['tax_type'] = $value[91];
+            $voucher_array['tax_rate'] = $value[92];
+            $voucher_array['total_cost_price'] = $value[95];
+            $voucher_array['total_selling_price'] = $value[96];
+            $voucher_array['expected_delivery_date'] = $value[74];
+            $voucher_array['order_date'] = $value[73];
+            $voucher_array['category_code'] = $value[72];
+            $voucher_array['delivery_service_code'] = $value[60];
+            $voucher_array['receiver_name_kana'] = $value[40];
+            $voucher_array['receiver_code'] = $value[37];
+            $voucher_array['receiver_name'] = $value[39];
+            $voucher_array['ship_name_kana'] = $value[36];
+            $voucher_array['ship_name'] = $value[35];
+            $voucher_array['ship_code'] = $value[33];
+            $voucher_array['voucher_number'] = $value[31];
+            //make items array
+            $item_array['list_number']=$value[101];
+            $item_array['jan']=$value[111];
+            $item_array['item_name']=$value[115];
+            $item_array['item_name_kana']=$value[116];
+            $item_array['spac']=$value[117];
+            $item_array['spec_kana']=$value[118];
+            $item_array['color']=$value[120];
+            $item_array['size']=$value[123];
+            $item_array['inputs']=$value[125];
+            $item_array['cost_price']=$value[144];
+            $item_array['cost_unit_price']=$value[145];
+            $item_array['selling_price']=$value[146];
+            $item_array['selling_unit_price']=$value[147];
+            $item_array['tax_price']=$value[148];
+            $item_array['order_inputs']=$value[151];
+            $item_array['order_unit_quantity']=$value[152];
+            $item_array['order_quantity']=$value[153];
+            $item_array['weight']=$value[156];
             // $temp_array['customer_id']=$this->customer_id;
             $temp_array['sta_sen_identifier']=$value[0];
             $temp_array['sta_sen_ide_authority']=$value[1];
@@ -333,16 +378,29 @@ class bms_csv_order extends Model
             $temp_array['mes_lis_ord_lin_fre_item_weight']=$value[156];
             $temp_array['mes_lis_ord_lin_fre_order_weight']=$value[157];
             // 158 done 
-            $insert_array[]=$temp_array;
+            $byr_order_voucher_id = byr_order_voucher::insertGetId($voucher_array);
+            $item_array['byr_order_voucher_id']=$byr_order_voucher_id;
+            $byr_order_item_id = byr_order_item::insertGetId($item_array);
+            $byr_shipment_voucher_id = byr_shipment_voucher::insertGetId(['byr_shipment_id'=>$byr_shipment_id,'byr_order_voucher_id'=>$byr_order_voucher_id]);
+            $byr_shipment_item_id = byr_shipment_item::insertGetId(['byr_shipment_voucher_id'=>$byr_shipment_voucher_id,'byr_order_item_id'=>$byr_order_item_id,'order_quantity'=>$value[153]]);
+            $new_bms_order = array_merge($temp_array,$bms_orders);
+            $new_bms_shipment = array_merge($temp_array,$bms_shipments);
+            $insert_array_bms_order[]=$new_bms_order;
+            $insert_array_bms_shipment[]=$new_bms_shipment;
         }
         // return $insert_array;
-        foreach (array_chunk($insert_array,300) as $t)  
+        foreach (array_chunk($insert_array_bms_order,300) as $t)  
         {
             bms_order::insert($t); 
         }
+        // foreach (array_chunk($insert_array_bms_shipment,300) as $t)  
+        // {
+        //     bms_shipment::insert($t); 
+        // }
 
         echo '<pre>';
-        print_r($insert_array);
+        print_r($insert_array_bms_order);
+        print_r($insert_array_bms_shipment);
         echo 'save path:'.$path;exit;
 
 
