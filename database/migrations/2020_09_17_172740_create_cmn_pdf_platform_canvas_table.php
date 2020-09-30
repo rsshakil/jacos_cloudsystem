@@ -20,6 +20,8 @@ class CreateCmnPdfPlatformCanvasTable extends Migration
             $table->string('canvas_image',100)->nullable()->comment('Canvas live image');
             $table->string('canvas_bg_image',100)->nullable()->comment('Canvas Background Image');
             $table->json('canvas_objects')->nullable()->comment('Canvas Data');
+            $table->string('line_gap',10)->default(28)->comment('Canvas line gap');
+            $table->string('line_per_page',10)->default(26)->comment('Line per page');
 			$table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('Time of creation');
 			$table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('Time of Update');
         });

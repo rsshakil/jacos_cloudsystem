@@ -121,6 +121,8 @@ export default {
       // canvas_height: 510,
       pointerX: 100,
       pointerY: 50,
+      line_gap:28,
+      // line_per_page:26,
     };
   },
   methods: {
@@ -130,9 +132,11 @@ export default {
         })
         .then(({ data }) => {
           // console.log(data);
-          if (data.canvas_data.length>0) {
+          var canvas_data=data.canvas_data;
+          if (canvas_data.length>0) {
             this.allName=data.canvas_data
             this.canvasSelectedName=this.allName[0]
+            this.line_gap=Number(this.canvasSelectedName.line_gap);
             // this.bg_image_path=this.BASE_URL + "storage/app/public/backend/images/canvas/pdf_platform/Background/"+(this.allName)[0].canvas_bg_image;
             // this.backgroundImageSet(this.bg_image_path);
           }
@@ -166,6 +170,7 @@ export default {
       this.canvasDesign(this.itr)
     },
     canvasDesign(iteration){
+      var canvas=this.canvas;
       if (!this.canvasSelectedName) {
         alert("Please select canvas name");
         return 0;
@@ -178,13 +183,14 @@ export default {
           // var position_values= JSON.parse(this.canvasSelectedName.position_values);
           var position_values= JSON.parse(this.canvasSelectedName.canvas_objects).objects;
           position_values.forEach(element => {
-            var positionTop=element.top;
-            // console.log(element.text);
-            var split_element=(this.splitString(element.text))
+            if (element.type==="textbox") {
+              var positionTop=element.top;
+              var split_element=(this.splitString(element.text))
             // console.log(split_element)
             var item="";
              if(!(Array.isArray(split_element))){
                item=split_element;
+              //  canvas.add(item)
                this.createObj(element.left,element.top,element.width,element.height,element.fontSize,element.textAlign,element.lineHeight,element.scaleX,element.scaleY,item.toString(),'auto')
              }else{
                if (split_element.length>1) {
@@ -195,10 +201,19 @@ export default {
                  for (let i = 0; i < canvasAllDataArray.length; i++) {
                  item=canvasAllDataArray[i][split_element[0]];
                  this.createObj(element.left,positionTop,element.width,element.height,element.fontSize,element.textAlign,element.lineHeight,element.scaleX,element.scaleY,item.toString(),'auto')
-                  positionTop+=28;
+                  positionTop+=this.line_gap;
                }
                }
              }
+            }else{
+                if (element.type=="line") {
+                  var line = new fabric.Line([Number(element.left), Number(element.top), Number(element.width), Number(element.top)], { 
+                    stroke: 'black' 
+                  }); 
+                  canvas.add(line);
+                }
+            }
+            
           });
         }
         this.emptyObjRemove();
