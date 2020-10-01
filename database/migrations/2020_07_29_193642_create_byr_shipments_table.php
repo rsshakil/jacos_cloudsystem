@@ -19,6 +19,7 @@ class CreateByrShipmentsTable extends Migration
             $table->integer('cmn_connect_id')->unsigned()->comment('cmn connect id');
             $table->enum('category', ['edi', 'manual'])->default('edi')->comment('order category');
             $table->dateTime('send_date')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('send of creation');
+            $table->dateTime('upload_date')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('send of creation');
             $table->string('send_file_path', 500)->comment('send file path')->nullable();
             $table->mediumInteger('data_count')->unsigned()->default('0')->comment('totall order');
             $table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('Time of creation');
