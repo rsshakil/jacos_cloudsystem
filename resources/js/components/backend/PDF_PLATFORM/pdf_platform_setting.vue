@@ -7,8 +7,12 @@
                   <b-button variant="danger" style="margin-left: 1px;" @click="deleteObjects()">Delete</b-button>
                 <b-button variant="primary" @click="printCanvas">Print</b-button>
                 <b-button variant="primary" @click="createLine">Line</b-button>
-                <!-- <b-button variant="info" @click.prevent="backgroundModalFunc">Background</b-button> -->
+                <b-button variant="primary" @click="createRect">Rectangle</b-button>
+                <b-button variant="primary" @click="createCircle">Circle</b-button>
+                <b-button variant="info" @click.prevent="backgroundModalFunc">Set Background</b-button>
+                <b-button variant="danger" @click.prevent="backgroundDelete">Delete Background</b-button>
                 <b-button variant="warning" @click="clearCanvasObjects">Clear canvas</b-button>
+                <label for="printBg">Print Background</label> <input type="checkbox" v-model="printBg" id="printBg">
                 <!-- <b-button variant="warning" @click="duplicateObjects">Duplicate</b-button> -->
                 <br>
                 <br>
@@ -221,6 +225,7 @@ data(){
     canvas_id:null,
     update_image_info:null,
     submit_button:'Save',
+    printBg:false,
     canvas_width:790,
     canvas_height:1040,
     // canvas_width:793.92,
@@ -247,6 +252,12 @@ methods:{
             this.tmp_modal_image=this.bg_image_path
             this.tmp_update_image_info=this.update_image_info
           },
+          backgroundDelete(){
+            this.canvas.backgroundImage=0;
+            this.canvas.setBackgroundColor("#fff");
+            this.canvas.renderAll();
+            this.update_image_info=null
+          },
           loadImage($event){
             var input = event.target;
             // Ensure that you have a file before attempting to read it
@@ -266,10 +277,16 @@ methods:{
           change({coordinates, canvas}) {
             this.backgroundImageSet(canvas.toDataURL());
             this.update_image_info=1;
+            this.bg_image_path=canvas.toDataURL();
           },
           cancelImage(){
             this.backgroundModalShow=false;
-            this.backgroundImageSet(this.tmp_modal_image);
+            if (this.tmp_modal_image==null) {
+              this.canvas.backgroundImage = 0; 
+              this.canvas.renderAll();
+            }else{
+              this.backgroundImageSet(this.tmp_modal_image);
+            }
             this.update_image_info=this.tmp_update_image_info
           },
           loadCanvasData() {
@@ -294,8 +311,10 @@ methods:{
             this.line_per_page=canvasData.line_per_page;
             this.canvas_id=canvasData.cmn_pdf_platform_canvas_id;
             this.submit_button='Update'
-            // this.bg_image_path=this.BASE_URL + 'storage/app/public/backend/images/canvas/pdf_platform/Background/'+canvasData.canvas_bg_image;
-            // this.backgroundImageSet(this.bg_image_path);
+            if (canvasData.canvas_bg_image) {
+              this.bg_image_path=this.BASE_URL + 'storage/app/public/backend/images/canvas/pdf_platform/Background/'+canvasData.canvas_bg_image;
+              this.backgroundImageSet(this.bg_image_path);
+            }
             $("html, body").animate({ scrollTop: 0 }, "slow");
             this.canvasDataView(canvasData.canvas_objects);
           },
@@ -394,13 +413,13 @@ methods:{
               img.onload = function() {
                   var f_img = new fabric.Image(img);
                   mainCanvas.setBackgroundImage(f_img, mainCanvas.renderAll.bind(mainCanvas), {
-                      // width: mainCanvas.width,
-                      // height: mainCanvas.height,
+                      width: mainCanvas.width,
+                      height: mainCanvas.height,
                       originX: 'left',
                       originY: 'top'
                   });
-                  mainCanvas.setWidth(img.width);
-                  mainCanvas.setHeight(img.height);
+                  // mainCanvas.setWidth(img.width);
+                  // mainCanvas.setHeight(img.height);
               };
               img.src = bg_image;
           },
@@ -436,10 +455,13 @@ methods:{
           printData(divVar) {
             var canvas=this.canvas;
             var thisVar=this;
-            if (this.bg_image_path) {
-               var imgSrc = canvas.backgroundImage._element.src;
+            console.log(this.bg_image_path)
+            if (this.printBg==false) {
+              if (this.bg_image_path) {
+                var imgSrc = canvas.backgroundImage._element.src;
                 canvas.backgroundImage = 0; 
                 canvas.renderAll();
+              }
             }
               var ppp = $(divVar).printThis({
                   debug: false, // show the iframe for debugging
@@ -464,11 +486,13 @@ methods:{
                   afterPrint: null // function called before iframe is removed
               });
               // console.log(ppp);
-              if (this.bg_image_path) {
-               setTimeout(function() {
-                  // thisVar.backgroundImageSet(imgSrc);
-              }, 510);
-            }
+              if (this.printBg==false) {
+                  if (this.bg_image_path) {
+                  setTimeout(function() {
+                      thisVar.backgroundImageSet(imgSrc);
+                  }, 510);
+                }
+              }
 
 
           },
@@ -611,11 +635,11 @@ methods:{
             // should the image be resized to fit the container?
             backgroundImageStretch: false,
             // image size as canvas size 
-            // width: this.canvas.width,
-            // height: this.canvas.height
+            width: this.canvas.width,
+            height: this.canvas.height
         });
         // canvas size by image size 
-        this.bgImageWH(imgUrl);
+        // this.bgImageWH(imgUrl);
       },
       bgImageWH(imgUrl){
         var mainCanvas=this.canvas;
@@ -659,9 +683,31 @@ methods:{
         var line = new fabric.Line([0, 211, 795, 211], { 
             stroke: 'black',
         }); 
-    console.log(line);
         // Render the rectanle in canvas 
-        this.canvas.add(line);
+        this.canvas.add(line).setActiveObject(line);
+      },
+      createRect(){
+        var rect = new fabric.Rect({
+        left: 100,
+        top: 50,
+        width: 100,
+        height: 100,
+        fill: 'green',
+        angle: 0,
+        padding: 1
+      });
+      console.log(rect);
+      this.canvas.add(rect).setActiveObject(rect);
+      },
+      createCircle(){
+        var circle = new fabric.Circle({ 
+            radius: 50, 
+            fill: '', 
+            stroke: 'green', 
+            strokeWidth: 3 
+        }); 
+        // Render the circle in canvas 
+        this.canvas.add(circle).setActiveObject(circle);
       },
       // changeObjectSetting($event=null){
       //   var canvas=this.canvas;

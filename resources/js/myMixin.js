@@ -172,29 +172,29 @@ export default {
         },
         selectedOption(option) {
             if (this.value) {
-              return option.cmn_company_id === this.value.cmn_company_id;
+                return option.cmn_company_id === this.value.cmn_company_id;
             }
             return false;
-          }
+        }
     },
     filters: {
-        
+
         subStr: function(string) {
-          return string.substring(0,300) + '...';
-          },
-          diffForHumans(str) {
+            return string.substring(0, 300) + '...';
+        },
+        diffForHumans(str) {
             moment.locale('ja');
             return moment(str).from(moment());
-          },
-          ja_date_time(str) {
+        },
+        ja_date_time(str) {
             moment.locale('ja');
             return moment(str).format('LLL');
-          },
-          ja_date(str) {
+        },
+        ja_date(str) {
             moment.locale('ja');
             return moment(str).format('LL');
-          },
-    
+        },
+
     },
     created() {
 

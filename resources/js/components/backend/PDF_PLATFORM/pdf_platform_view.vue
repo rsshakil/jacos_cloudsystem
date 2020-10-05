@@ -80,6 +80,7 @@
       <!-- <input class="btn btn-info" @change="bgImageChange" type="file" /> -->
       <b-button variant="warning" @click="clearCanvasObjects">Clear canvas</b-button>
       <b-button variant="warning" style="margin-left: 1px;" @click="canvasDesign(itr)">Reset Canvas</b-button>
+      <label for="printBg">Print Background</label> <input type="checkbox" v-model="printBg" id="printBg">
       <br />
       <br />
       <center><canvas id="c">Your browser does not support the canvas element.</canvas></center>
@@ -122,6 +123,7 @@ export default {
       pointerX: 100,
       pointerY: 50,
       line_gap:28,
+      printBg:false,
       // line_per_page:26,
     };
   },
@@ -137,8 +139,10 @@ export default {
             this.allName=data.canvas_data
             this.canvasSelectedName=this.allName[0]
             this.line_gap=Number(this.canvasSelectedName.line_gap);
-            // this.bg_image_path=this.BASE_URL + "storage/app/public/backend/images/canvas/pdf_platform/Background/"+(this.allName)[0].canvas_bg_image;
-            // this.backgroundImageSet(this.bg_image_path);
+            if ((this.allName)[0].canvas_bg_image) {
+              this.bg_image_path=this.BASE_URL + "storage/app/public/backend/images/canvas/pdf_platform/Background/"+(this.allName)[0].canvas_bg_image;
+              this.backgroundImageSet(this.bg_image_path);
+            }
           }
           if (data.can_info) {
             this.canvasAllData=data.can_info
@@ -169,13 +173,17 @@ export default {
       this.itr+=1;
       this.canvasDesign(this.itr)
     },
-    canvasDesign(iteration){
+    canvasDesign(iteration,loopVal=0){
       var canvas=this.canvas;
+      var _this=this;
       if (!this.canvasSelectedName) {
         alert("Please select canvas name");
         return 0;
       }
-      this.clearCanvasObjects();
+      // this.canvasClear();
+      // setTimeout(_this.clearCanvasObjects,1000)
+      
+      this.clearCanvasObjects(loopVal);
       if (this.canvasDataLength>0) {
         var canvasAllDataArray=this.canvasAllData[iteration];
         // console.log(canvasAllDataArray)
@@ -211,6 +219,29 @@ export default {
                     stroke: 'black' 
                   }); 
                   canvas.add(line);
+                }else if (element.type=="rect") {
+                  var rect = new fabric.Rect({
+                  left: Number(element.left),
+                  top: Number(element.top),
+                  width: Number(element.width),
+                  height: Number(element.height),
+                  fill: element.fill,
+                  angle: Number(element.angle),
+                  padding: Number(element.padding)
+                });
+                  canvas.add(rect);
+                }else if(element.type=="circle"){
+                  var circle = new fabric.Circle({ 
+                  left: element.left, 
+                  top: element.top, 
+                  radius: element.radius, 
+                  fill: element.fill, 
+                  stroke: element.stroke, 
+                  strokeWidth: element.strokeWidth
+                  });
+                  canvas.add(circle); 
+                }else{
+                  // console.log(element);
                 }
             }
             
@@ -252,8 +283,10 @@ export default {
     },
     showCanvasBg($event) {
       this.canvasSelectedName=$event;
-      // this.bg_image_path = this.BASE_URL + "storage/app/public/backend/images/canvas/pdf_platform/Background/"+$event.canvas_bg_image;
-      // this.backgroundImageSet(this.bg_image_path);
+      if ($event.canvas_bg_image) {
+        this.bg_image_path = this.BASE_URL + "storage/app/public/backend/images/canvas/pdf_platform/Background/"+$event.canvas_bg_image;
+        this.backgroundImageSet(this.bg_image_path); 
+      }
       this.canvasDesign(this.itr);
     },
     canvasDataView(text_data) {
@@ -279,18 +312,29 @@ export default {
       var obj = this.canvas.getObjects();
       this.canvas.remove(obj);
     },
-    canvasFieldClead() {
-      this.canvas_name = null;
-      this.canvas_id = null;
-      this.submit_button = "Save";
-      this.update_image_info = null;
-      this.canvas.setBackgroundColor("#fff");
-      // if (this.allName.length>0) {
-      //   this.bg_image_path = this.BASE_URL + "storage/app/public/backend/images/canvas/pdf_platform/Background/"+(this.allName)[0].canvas_bg_image;
-      // }else{
+    canvasFieldClead(loopVal=0) {
+      var _this=this;
+      // this.canvas_name = null;
+      // this.canvas_id = null;
+      // this.submit_button = "Save";
+      // this.update_image_info = null;
+      
+      // setTimeout(function(){
+        // if (loopVal!=1) {
+        if (_this.allName.length>0) {
+        if ((_this.allName)[0].canvas_bg_image) {
+          // console.log((_this.allName)[0].canvas_bg_image)
+          _this.bg_image_path = _this.BASE_URL + "storage/app/public/backend/images/canvas/pdf_platform/Background/"+(_this.allName)[0].canvas_bg_image; 
+          _this.backgroundImageSet(_this.bg_image_path);
+        }else{
+          _this.canvas.setBackgroundColor("#fff");
+        }
+      // }
+    }
+      // },1000)
+      // else{
       //   this.bg_image_path = this.BASE_URL + "storage/app/public/backend/images/canvas/pdf_platform/Background/bg_image.png";
       // }
-      // this.backgroundImageSet(this.bg_image_path);
     },
     bgImageProcess(bg_image) {
       var img = new Image();
@@ -312,9 +356,28 @@ export default {
       };
       img.src = bg_image;
     },
-    clearCanvasObjects() {
-      this.canvas.clear();
-      this.canvasFieldClead();
+    clearCanvasObjects(loopVal=0) {
+      // this.canvasClear();
+      var _this=this;
+      if (loopVal==1) {
+        var obj = _this.canvas.getObjects();
+        obj.forEach(function(o){
+          _this.canvas.remove(o);
+          });
+         if (_this.allName.length>0) {
+        if ((_this.allName)[0].canvas_bg_image) {
+          // console.log((_this.allName)[0].canvas_bg_image)
+          _this.bg_image_path = _this.BASE_URL + "storage/app/public/backend/images/canvas/pdf_platform/Background/"+(_this.allName)[0].canvas_bg_image; 
+          _this.backgroundImageSet(_this.bg_image_path);
+        }else{
+          _this.canvas.setBackgroundColor("#fff");
+        }
+      }
+      // this.canvas.renderAll();
+      }else{
+        this.canvas.clear();
+        this.canvasFieldClead(loopVal);
+      }
     },
     printAllCanvas() {
       this.loader =Vue.$loading.show();
@@ -327,20 +390,25 @@ export default {
       });
       var imgSrc = this.bg_image_path;
       var canvas=this.canvas;
-      canvas.backgroundImage = 0;
-      canvas.renderAll();
-      var all_image="";
+      
       for (let i = 0; i < (this.canvasDataLength); i++) {
         setTimeout(() => { 
+          if (this.printBg==false) {
+            if (imgSrc) {
+              // var imgSrc = canvas.backgroundImage._element.src;
+              canvas.backgroundImage = 0; 
+              canvas.renderAll();
+            }
+          }
           this.deselectObject()
-           this.canvasDesign(i);
+           this.canvasDesign(i,1);
            var image_data=this.canvas.toDataURL();
            doc.addImage(image_data,"",0,0)
            if (i!=(this.canvasDataLength-1)) {
             doc.addPage(); 
            }
             // console.log(image_data);
-           }, 500);
+           }, 400);
       }
       setTimeout(()=>{
         doc.autoPrint();
@@ -352,7 +420,7 @@ export default {
         // window.open(doc.output('bloburl'), '_blank');
         this.canvasDesign(this.itr);
         this.loader.hide();
-      },(this.canvasDataLength*500))
+      },(this.canvasDataLength*300))
       
       // this.canvasDesign(this.itr);
     },
@@ -368,9 +436,16 @@ export default {
       var canvas = this.canvas;
       var thisVar = this;
       var imgSrc = this.bg_image_path;
+      if (this.printBg==false) {
+        if (imgSrc) {
+          // var imgSrc = canvas.backgroundImage._element.src;
+          canvas.backgroundImage = 0; 
+          canvas.renderAll();
+        }
+      }
       // var imgSrc = canvas.backgroundImage._element.src;
-      canvas.backgroundImage = 0;
-      canvas.renderAll();
+      // canvas.backgroundImage = 0;
+      // canvas.renderAll();
       var ppp = $(divVar).printThis({
         debug: false, // show the iframe for debugging
         importCSS: false, // import parent page css
@@ -394,10 +469,15 @@ export default {
         afterPrint: null, // function called before iframe is removed
       });
       // console.log(ppp);
+      if (this.printBg==false) {
+        // console.log()
+         if (imgSrc) {
       setTimeout(function () {
-        // thisVar.backgroundImageSet(imgSrc);
-        // this.loader.hide();
+        thisVar.backgroundImageSet(imgSrc);
+        thisVar.loader.hide();
       }, 510);
+         }
+      }
     },
     deselectObject() {
       var canvas = this.canvas;
@@ -541,21 +621,21 @@ export default {
     },
     backgroundImageSet(imgUrl) {
       var mainCanvas = this.canvas;
-      this.canvas.setBackgroundImage(
-        imgUrl,
-        this.canvas.renderAll.bind(this.canvas),
+      mainCanvas.setBackgroundImage(imgUrl,
+        mainCanvas.renderAll.bind(mainCanvas),
         {
           // Optionally add an opacity lvl to the image
           backgroundImageOpacity: 0,
           // should the image be resized to fit the container?
           backgroundImageStretch: false,
           // image size as canvas size
-          // width: this.canvas.width,
-          // height: this.canvas.height
+          width: this.canvas.width,
+          height: this.canvas.height
         }
       );
+      // console.log(imgUrl);
       // canvas size by image size
-      this.bgImageWH(imgUrl);
+      // this.bgImageWH(imgUrl);
       // var img_dym=this.bgImageDymension(imgUrl);
       // mainCanvas.setWidth(img_dym.width);
       // mainCanvas.setHeight(img_dym.height);
