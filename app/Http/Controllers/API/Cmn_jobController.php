@@ -68,7 +68,7 @@ class Cmn_jobController extends Controller
         //
     }
 
-    public function exec(Request $request, $id)
+    public function exec(Request $request)
     {
         \Log::debug('scenario exec start---------------');
         // user info check
@@ -82,9 +82,30 @@ class Cmn_jobController extends Controller
         }
 
         // scenario info check
-        $sc = cmn_job::select('cmn_jobs.cmn_connect_id','cmn_scenarios.*')
+        // byr_buyers.spr_code
+        // cmn_connects.partner_code
+        // cmn_jobs.class
+        // cmn_job_id
+        if (array_key_exists("spr_code",$request) && array_key_exists("partner_code",$request) && array_key_exists("class",$request)) {
+            $spr_code=$request->spr_code;
+            $partner_code=$request->partner_code;
+            $class=$request->class;
+            $sc=cmn_job::select('cmn_jobs.cmn_connect_id','cmn_scenarios.*')
+            ->join('cmn_scenarios', 'cmn_jobs.cmn_scenario_id', '=', 'cmn_scenarios.cmn_scenario_id')
+            ->join('cmn_connects','cmn_connects.cmn_connect_id','=','cmn_jobs.cmn_connect_id')
+            ->join('byr_buyers','cmn_connects.byr_buyer_id','=','byr_buyers.byr_buyer_id')
+            ->where([
+                ['byr_buyers.spr_code','=',$spr_code],
+                ['cmn_connects.partner_code','=',$partner_code],
+                ['cmn_jobs.class','=',$class],
+            ])
+            ->first();
+        }else{
+            $cmn_job_id=$request->cmn_job_id;
+            $sc = cmn_job::select('cmn_jobs.cmn_connect_id','cmn_scenarios.*')
         ->join('cmn_scenarios', 'cmn_jobs.cmn_scenario_id', '=', 'cmn_scenarios.cmn_scenario_id')
-        ->where('cmn_jobs.cmn_job_id', $id)->where('cmn_jobs.is_active',1)->first();
+        ->where('cmn_jobs.cmn_job_id', $cmn_job_id)->where('cmn_jobs.is_active',1)->first();
+        }
         \Log::info($sc);
         
         // scenario call

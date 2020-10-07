@@ -72,7 +72,7 @@ Route::get('/home_lang_data', 'API\LanguageController@homeLangData');
 		// Route::post('/permission_check', 'API\PermissionController@check');
         
 Route::post('scenario_exec/{cmn_scenario_id}', 'API\Cmn_ScenarioController@exec');
-Route::post('job_exec/{cmn_scenario_id}', 'API\Cmn_jobController@exec');
+Route::post('job_exec', 'API\Cmn_jobController@exec');
 Route::get('/slr_job_list_by_seller_id/{slr_seller_id}', 'API\Cmn_jobController@slr_job_list_by_seller_id');
 
 Route::get('/company_user_list/{cmn_company_id}', 'API\Jacos_managementController@company_user_list');
@@ -93,8 +93,8 @@ Route::get('/dispaly_col_by_user/{url_slug}/{user_id}', 'API\Tbl_col_settingCont
 Route::post('/bms_order_save/{job_id}', 'API\BmsOrderController@store');
 Route::get('/get_bms_order_byr_order_id/{byr_order_id}', 'API\Byr_orderController@get_bms_order_byr_order_id');
 Route::post('/update_byr_order_detail_status', 'API\Byr_orderController@update_byr_order_detail_status');
-Route::post('item_master_exec/{cmn_scenario_id}', 'API\Cmn_jobController@exec');
-Route::post('bms_csv_exec/{cmn_scenario_id}', 'API\Cmn_jobController@exec');
+Route::post('item_master_exec', 'API\Cmn_jobController@exec');
+Route::post('bms_csv_exec', 'API\Cmn_jobController@exec');
 Route::get('get_all_master_item/{adm_user_id}', 'API\Byr_itemController@get_all_master_item');
 Route::get('get_byr_order_receive_list/{adm_user_id}', 'API\Byr_order_receiveController@get_byr_order_receive_list');
 Route::get('get_byr_order_corrected_receive_list/{adm_user_id}', 'API\Byr_order_receiveController@get_byr_order_corrected_receive_list');

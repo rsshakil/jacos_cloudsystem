@@ -108,9 +108,10 @@ export default {
     formData.append("up_file", this.file);
     formData.append("email", 'user@jacos.co.jp');
     formData.append("password", 'Qe75ymSr');
+    formData.append("cmn_job_id", 9);
         axios({
     method: 'POST',
-    url: this.BASE_URL + "api/item_master_exec/9",
+    url: this.BASE_URL + "api/item_master_exec",
     data: formData,
     headers: {'Content-Type': 'multipart/form-data' }
     })
