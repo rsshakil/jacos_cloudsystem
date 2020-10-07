@@ -308,4 +308,16 @@ class AllUsedFunction extends Controller
         // move_uploaded_file(base64_decode($data),$path_with_end_slash . $output_file_with_extension);
         return $output_file_with_extension;
     }
+    function itsBase64($image){
+        if(substr($image, 0,11) === 'data:image/'){     
+            return 1;
+        }else{
+            return 0;
+        }
+        // if ( base64_encode(base64_decode($data)) === $data){
+        //     return 1;
+        //  } else {
+        //     return 0;
+        //  }
+     }
 }

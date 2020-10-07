@@ -323,7 +323,7 @@ export default {
         // if (loopVal!=1) {
         if (_this.allName.length>0) {
         if ((_this.allName)[0].canvas_bg_image) {
-          // console.log((_this.allName)[0].canvas_bg_image)
+          console.log((_this.allName)[0].canvas_bg_image)
           _this.bg_image_path = _this.BASE_URL + "storage/app/public/backend/images/canvas/pdf_platform/Background/"+(_this.allName)[0].canvas_bg_image; 
           _this.backgroundImageSet(_this.bg_image_path);
         }else{

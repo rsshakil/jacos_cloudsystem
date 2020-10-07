@@ -112,14 +112,19 @@ class CmnPdfPlatformSettings extends Controller
         $line_gap = $request->line_gap;
         $line_per_page = $request->line_per_page;
         if (array_key_exists("backgroundImage",$canData)) {
+            // return "OK";
             $canvasRawBgImg = $canData['backgroundImage']['src'];
-            if (!empty($update_image_info)) {
-                $canvasBgImg = $this->all_used_func->save_base64_image($canvasRawBgImg, 'canvas_bg_image_'. time().'_'.$byr_id, $path_with_end_slash = "storage/app/public/backend/images/canvas/pdf_platform/Background/");
-            } else {
+            // return $this->all_used_func->itsBase64($canvasRawBgImg);
+            if ($this->all_used_func->itsBase64($canvasRawBgImg)==1) {
+                // return "Base";
+                $canvasBgImg = $this->all_used_func->save_base64_image($canvasRawBgImg, 'canvas_bg_image_'. time().'_'.$byr_id, $path_with_end_slash = "storage/app/public/backend/images/canvas/pdf_platform/Background/");# code...
+            }else{
+                // return "Non Base";
                 $canvasBgImgTmp = explode('/', $canvasRawBgImg);
                 $canvasBgImg = $canvasBgImgTmp[count($canvasBgImgTmp) - 1];
             }
         }else{
+            // return "Null";
             $canvasBgImg="";
         }
         // return $canvasBgImg;
@@ -144,7 +149,7 @@ class CmnPdfPlatformSettings extends Controller
                     if (file_exists($file_path .'Canvas_screenshoot/'. $canvas_image)) {
                         @unlink($file_path .'Canvas_screenshoot/'. $canvas_image);
                     }
-                    if (!empty($update_image_info)) {
+                    if ($this->all_used_func->itsBase64($canvasRawBgImg)==1) {
                         if (file_exists($file_path .'Background/'. $canvasBgImg)) {
                             @unlink($file_path .'Background/'. $canvasBgImg);
                         }
@@ -159,7 +164,7 @@ class CmnPdfPlatformSettings extends Controller
             if (file_exists($file_path .'Canvas_screenshoot/'. $canvas_image_info['canvas_image'])) {
                 @unlink($file_path .'Canvas_screenshoot/'. $canvas_image_info['canvas_image']);
             }
-            if (!empty($update_image_info)) {
+            if ($this->all_used_func->itsBase64($canvasRawBgImg)==1) {
                 if ($canvas_image_info['canvas_bg_image']!="bg_image.png") {
                     if (file_exists($file_path.'Background/' . $canvas_image_info['canvas_bg_image'])) {
                         @unlink($file_path.'Background/' . $canvas_image_info['canvas_bg_image']);
@@ -176,7 +181,7 @@ class CmnPdfPlatformSettings extends Controller
                 if (file_exists($file_path .'Canvas_screenshoot/'. $canvas_image)) {
                     @unlink($file_path .'Canvas_screenshoot/'. $canvas_image);
                 }
-                if (!empty($update_image_info)) {
+                if ($this->all_used_func->itsBase64($canvasRawBgImg)==1) {
                     if (file_exists($file_path .'Background/'. $canvasBgImg)) {
                         @unlink($file_path .'Background/'. $canvasBgImg);
                     }
