@@ -122,3 +122,33 @@ Route::get('/get_all_published_blog_list', 'API\Cmn_blogController@get_all_publi
 Route::get('/get_signle_top_blog', 'API\Cmn_blogController@get_signle_top_blog');
 Route::post('/update_blog_infos', 'API\Cmn_blogController@update_blog_infos');
 Route::post('/ckeditor_file_up', 'API\Cmn_blogController@ckeditor_file_up');
+
+// level3
+Route::post('get_user_login', 'API\Level3\Level3Controller@userLogin');
+Route::post('history_url', 'API\Level3\Level3Controller@historyData');
+Route::post('get_customer', 'API\Level3\Level3Controller@getCustomer');
+
+Route::post('get_schedule_data', 'API\Level3\Level3Controller@scheduleData');
+Route::post('set_schedule_data', 'API\Level3\Level3Controller@setScheduleData');
+Route::post('schedule_file_data', 'API\Level3\Level3Controller@setScheduleFileData');
+Route::post('schedule_time_data', 'API\Level3\Level3Controller@scheduleTimeData');
+
+// Route::post('get_file_path', 'ApiController@getFilePath');
+Route::post('set_file_path', 'API\Level3\Level3Controller@setFilePath');
+
+Route::post('file_send_url', 'API\Level3\Level3Controller@fileSave');
+Route::post('get_shipment_file', 'API\Level3\Level3Controller@getShipmentFile');
+
+Route::post('add_customer', 'API\Level3\Level3Controller@addCustomer');
+
+Route::post('delete_customer_url', 'API\Level3\Level3Controller@deleteCustomer');
+
+Route::post('history_create', 'API\Level3\Level3Controller@historyCreate');
+
+Route::post('add_service', 'ApiController@addService');
+Route::post('show_service_url', 'API\Level3\Level3Controller@showServiceData');
+Route::post('delete_service', 'API\Level3\Level3Controller@deleteService');
+
+Route::post('set_job_data', 'API\Level3\Level3Controller@setJobData');
+Route::post('get_service_data', 'API\Level3\Level3Controller@getServiceData');
+Route::post('/job_list', 'API\Level3\Level3Controller@job_list');

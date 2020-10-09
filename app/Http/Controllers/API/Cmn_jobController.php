@@ -100,11 +100,11 @@ class Cmn_jobController extends Controller
                 ['cmn_jobs.class','=',$class],
             ])
             ->first();
-        }else{
+        }else if (array_key_exists("cmn_job_id",$request)){
             $cmn_job_id=$request->cmn_job_id;
             $sc = cmn_job::select('cmn_jobs.cmn_connect_id','cmn_scenarios.*')
-        ->join('cmn_scenarios', 'cmn_jobs.cmn_scenario_id', '=', 'cmn_scenarios.cmn_scenario_id')
-        ->where('cmn_jobs.cmn_job_id', $cmn_job_id)->where('cmn_jobs.is_active',1)->first();
+            ->join('cmn_scenarios', 'cmn_jobs.cmn_scenario_id', '=', 'cmn_scenarios.cmn_scenario_id')
+            ->where('cmn_jobs.cmn_job_id', $cmn_job_id)->where('cmn_jobs.is_active',1)->first();
         }
         \Log::info($sc);
         
