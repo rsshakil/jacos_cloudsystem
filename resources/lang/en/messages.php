@@ -2,9 +2,6 @@
 
 return [
     //menu namne 
-
-    'role_management' => 'Manage Role',
-    'permission_management' => 'Manage Permission',
     'role_permission_menu' => 'Assign Role to User',
     'assign_role' => 'Assign role to an user',
     'user_role' => 'User Role',
@@ -14,10 +11,7 @@ return [
     'manage_role' => 'Manage Role',
     'manage_permission' => 'Manage Permission',
     'assign_permission_to_role' => 'Assign Permission to Role',
-    'assign_role_to_user' => 'Role Assigned',
-    'assign_permission_to_user' => 'Assign Permission to User',
     'permission_assigned' => 'Permission Assigned',
-    'manage_users' => 'Manage Users',
     'user_update' => 'User management updated',
     'email_text' => 'Please enter an email address',
     'password_text' => 'Please enter your password',

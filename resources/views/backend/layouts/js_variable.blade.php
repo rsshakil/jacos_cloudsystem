@@ -4,8 +4,6 @@ var Globals = <?php echo json_encode(array(
     'base_url' => \Config::get('app.url'),
     'user_info_id' => (\Auth::User())?\Auth::User()->id:'',
     'welcome_text' => __('messages.welcome'),
-    'role_management' => __('messages.role_management'),
-    'permission_management' => __('messages.permission_management'),
     'role_permission_menu' => __('messages.role_permission_menu'),
     'assign_role' => __('messages.assign_role'),
     'user_role' => __('messages.user_role'),
@@ -14,10 +12,7 @@ var Globals = <?php echo json_encode(array(
     'manage_role' => __('messages.manage_role'),
     'manage_permission' => __('messages.manage_permission'),
     'assign_permission_to_role' => __('messages.assign_permission_to_role'),
-    'assign_role_to_user' => __('messages.assign_role_to_user'),
-    'assign_permission_to_user' => __('messages.assign_permission_to_user'),
     'permission_assigned' => __('messages.permission_assigned'),
-    'manage_users' => __('messages.manage_users'),
     'user_update' => __('messages.user_update'),
     'email_text' => __('messages.email_text'),
     'password_text' => __('messages.password_text'),
@@ -136,6 +131,33 @@ var Globals = <?php echo json_encode(array(
     'set_up' => __('messages.set_up'),
     'order_list' => __('messages.order_list'),
     'shipment_list' => __('messages.shipment_list'),
+    // Menu 
+    'role_management' => __('menu.role_management'),
+    'permission_management' => __('menu.permission_management'),
+    'assign_role_to_user' => __('menu.assign_role_to_user'),
+    'assign_permission_to_user' => __('menu.assign_permission_to_user'),
+    'manage_users' => __('menu.manage_users'),
+    'new_notice' => __('menu.new_notice'),
+    // Management
+    'management' => __('menu.management'),
+    'order_list' => __('menu.order_list'),
+    'jacos_voucher_setting' => __('menu.jacos_voucher_setting'),
+    'buyer_management' => __('menu.buyer_management'),
+    'scenario_management' => __('menu.scenario_management'),
+    'wholesaler_management' => __('menu.wholesaler_management'),
+    'order_receive' => __('menu.order_receive'),
+    'order_corrected_receive' => __('menu.order_corrected_receive'),
+    'return_data' => __('menu.return_data'),
+    'payment_list' => __('menu.payment_list'),
+    'invoice_data' => __('menu.invoice_data'),
+    // Master Management
+    'master_management' => __('menu.master_management'),
+    'product_management' => __('menu.product_management'),
+    'category_management' => __('menu.category_management'),
+    // PDF Platform 
+    'pdf_platform' => __('menu.pdf_platform'),
+    'pdf_platform_setting' => __('menu.pdf_platform_setting'),
+    'pdf_platform_show' => __('menu.pdf_platform_show'),
 
 )); ?>;
 </script>

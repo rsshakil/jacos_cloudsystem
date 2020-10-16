@@ -123,8 +123,9 @@ export default {
   methods: {
     loadCanvasData() {
       axios
-        .post(this.BASE_URL + "api/load_canvas_data/2", {
+        .post(this.BASE_URL + "api/load_canvas_data", {
           byr_order_id: this.byr_order_id,
+          cmn_scenario_id:2,
         })
         .then(({ data }) => {
           // console.log(data);

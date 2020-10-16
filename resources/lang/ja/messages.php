@@ -2,9 +2,6 @@
 
 return [
     //menu Name
-
-    'role_management' => 'ロール管理',
-    'permission_management' => '権限管理',
     'role_permission_menu' => 'ロール-権限',
     'assign_role' => 'ユーザーにロールを割り当てる',
     'user_role' => 'ユーザー-ロール',
@@ -14,10 +11,7 @@ return [
     'manage_role' => '新規ロール作成',
     'manage_permission' => '新規権限作成',
     'assign_permission_to_role' => 'ユーザ-権限',
-    'assign_role_to_user' => 'ユーザ-ロール',
-    'assign_permission_to_user' => 'ユーザ-権限',
     'permission_assigned' => 'Permission Assigned',
-    'manage_users' => 'ユーザ管理',
     'user_update' => 'ユーザー管理を更新しました',
     'email_text' => 'メールアドレスを入力してください',
     'password_text' => 'パスワードを入力してください',

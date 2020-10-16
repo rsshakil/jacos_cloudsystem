@@ -109,7 +109,7 @@ Route::post('/cmn_category_create', 'API\Cmn_categoryController@store');
 // Mayeen
 Route::post('/load_canvas_setting_data', 'API\Byr_orderController@canvasSettingData');
 Route::post('/canvas_data_save', 'API\Byr_orderController@canvasDataSave');
-Route::post('load_canvas_data/{cmn_scenario_id}', 'API\Byr_orderController@canvasAllData');
+Route::post('/load_canvas_data', 'API\Byr_orderController@canvasAllData');
 Route::post('/delete_canvas', 'API\Byr_orderController@deleteCanvasData');
 
 Route::post('/load_pdf_platform_canvas_setting_data', 'API\CmnPdfPlatformSettings@canvasSettingData');
@@ -127,14 +127,22 @@ Route::post('/ckeditor_file_up', 'API\Cmn_blogController@ckeditor_file_up');
 Route::post('get_user_login', 'API\Level3\Level3Controller@userLogin');
 Route::post('history_url', 'API\Level3\Level3Controller@historyData');
 Route::post('get_customer', 'API\Level3\Level3Controller@getCustomer');
-
+Route::post('show_service_url', 'API\Level3\Level3Controller@showServiceData');
+Route::post('add_service', 'API\Level3\Level3Controller@addService');
 Route::post('get_schedule_data', 'API\Level3\Level3Controller@scheduleData');
 Route::post('set_schedule_data', 'API\Level3\Level3Controller@setScheduleData');
-Route::post('schedule_file_data', 'API\Level3\Level3Controller@setScheduleFileData');
+Route::post('set_file_path', 'API\Level3\Level3Controller@setFilePath');
+Route::post('set_job_data', 'API\Level3\Level3Controller@setJobData');
 Route::post('schedule_time_data', 'API\Level3\Level3Controller@scheduleTimeData');
+Route::post('get_service_data', 'API\Level3\Level3Controller@getServiceData');
+Route::post('history_create', 'API\Level3\Level3Controller@historyCreate');
+Route::post('job_scenario', 'API\Level3\Level3Controller@jobScenario');
+
+Route::post('schedule_file_data', 'API\Level3\Level3Controller@setScheduleFileData');
+
 
 // Route::post('get_file_path', 'ApiController@getFilePath');
-Route::post('set_file_path', 'API\Level3\Level3Controller@setFilePath');
+
 
 Route::post('file_send_url', 'API\Level3\Level3Controller@fileSave');
 Route::post('get_shipment_file', 'API\Level3\Level3Controller@getShipmentFile');
@@ -143,12 +151,12 @@ Route::post('add_customer', 'API\Level3\Level3Controller@addCustomer');
 
 Route::post('delete_customer_url', 'API\Level3\Level3Controller@deleteCustomer');
 
-Route::post('history_create', 'API\Level3\Level3Controller@historyCreate');
 
-Route::post('add_service', 'ApiController@addService');
-Route::post('show_service_url', 'API\Level3\Level3Controller@showServiceData');
+
+
+
 Route::post('delete_service', 'API\Level3\Level3Controller@deleteService');
 
-Route::post('set_job_data', 'API\Level3\Level3Controller@setJobData');
-Route::post('get_service_data', 'API\Level3\Level3Controller@getServiceData');
+
+
 Route::post('/job_list', 'API\Level3\Level3Controller@job_list');

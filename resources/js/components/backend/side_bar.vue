@@ -55,7 +55,7 @@
         </li>
         <li class="nav-item" v-can="['dashboard_menu']">
           <router-link to="/blog" class="nav-link">
-            <b-icon icon="house-fill" font-scale="1.2"></b-icon> 新規　お知らせ
+            <b-icon icon="house-fill" font-scale="1.2"></b-icon> {{myLang.new_notice}}
           </router-link>
         </li>
         <li class="nav-item" v-can="['role_menu']">
@@ -90,70 +90,70 @@
 
 
 <li class="nav-item" v-can="['byr_view','slr_view']">
-          <a class="nav-link collapsed" href="#byrslrmenu1" data-toggle="collapse" data-target="#byrslrmenu1"><b-icon icon="grid-fill" font-scale="1.2"></b-icon> 管理</a>
+          <a class="nav-link collapsed" href="#byrslrmenu1" data-toggle="collapse" data-target="#byrslrmenu1"><b-icon icon="grid-fill" font-scale="1.2"></b-icon> {{myLang.management}}</a>
           <div class="collapse" id="byrslrmenu1" aria-expanded="false">
             <ul class="flex-column pl-2 nav">
 
 
         <li class="nav-item" v-can="['byr_view']">
           <router-link to="/order_list" class="nav-link">
-            <b-icon icon="receipt" font-scale="1.2"></b-icon> 発注データ
+            <b-icon icon="receipt" font-scale="1.2"></b-icon> {{myLang.order_list}}
           </router-link>
         </li>
         <li class="nav-item" v-can="['slr_view']">
           <router-link to="/order_list" class="nav-link">
-            <b-icon icon="receipt" font-scale="1.2"></b-icon> 受注データ
+            <b-icon icon="receipt" font-scale="1.2"></b-icon> {{myLang.order_list}}
           </router-link>
         </li>
         <li class="nav-item" v-can="['byr_view']">
           <router-link to="/voucher_setting" class="nav-link">
-            <b-icon icon="tools" font-scale="1.2"></b-icon> Jacos Voucher Setting
+            <b-icon icon="tools" font-scale="1.2"></b-icon> {{myLang.jacos_voucher_setting}}
           </router-link>
         </li>
         <li class="nav-item" v-can="['byr_view']">
           <router-link to="/jacos_management" class="nav-link">
-            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> 小売管理
+            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> {{myLang.buyer_management}}
           </router-link>
         </li>
         <li class="nav-item" v-can="['manage_user_menu']">
           <router-link to="/scenario_management" class="nav-link">
-            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> シナリオ管理
+            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> {{myLang.scenario_management}}
           </router-link>
         </li>
 
         <li class="nav-item" v-can="['slr_view']">
           <router-link to="/slr_management" class="nav-link">
-            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> 問屋管理
+            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> {{myLang.wholesaler_management}}
           </router-link>
         </li>
 
         <li class="nav-item" v-can="['slr_view','byr_view']">
           <router-link to="/order_receive" class="nav-link">
-            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> 受領データ
+            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> {{myLang.order_receive}}
           </router-link>
         </li>
 
         <li class="nav-item" v-can="['slr_view','byr_view']">
           <router-link to="/order_corrected_receive" class="nav-link">
-            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> 受領訂正データ
+            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> {{myLang.order_corrected_receive}}
           </router-link>
         </li>
 
         <li class="nav-item" v-can="['slr_view','byr_view']">
           <router-link to="/return_item_list" class="nav-link">
-            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> 返品データ
+            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> {{myLang.return_data}}
           </router-link>
         </li>
 
         <li class="nav-item" v-can="['slr_view','byr_view']">
           <router-link to="/payment_list" class="nav-link">
-            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> 支払データ
+            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> {{myLang.payment_list}}
           </router-link>
         </li>
 
         <li class="nav-item" v-can="['slr_view','byr_view']">
           <router-link to="/invoice_list" class="nav-link">
-            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> 請求データ
+            <b-icon icon="card-checklist" font-scale="1.2"></b-icon> {{myLang.invoice_data}}
           </router-link>
         </li>
 
@@ -163,37 +163,37 @@
         </li>
 
         <li class="nav-item" v-can="['byr_view']">
-          <a class="nav-link collapsed" href="#byr_itms_list" data-toggle="collapse" data-target="#byr_itms_list"><b-icon icon="grid-fill" font-scale="1.2"></b-icon> マスターメンテ</a>
+          <a class="nav-link collapsed" href="#byr_itms_list" data-toggle="collapse" data-target="#byr_itms_list"><b-icon icon="grid-fill" font-scale="1.2"></b-icon> {{myLang.master_management}}</a>
           <div class="collapse" id="byr_itms_list" aria-expanded="false">
             <ul class="flex-column pl-2 nav">
 
 
         <li class="nav-item" v-can="['byr_view']">
           <router-link to="/item_master" class="nav-link">
-            <b-icon icon="receipt" font-scale="1.2"></b-icon>  商品メンテ
+            <b-icon icon="receipt" font-scale="1.2"></b-icon> {{myLang.product_management}}
           </router-link>
         </li>
 
         <li class="nav-item" v-can="['byr_view']">
           <router-link to="/item_category" class="nav-link">
-            <b-icon icon="receipt" font-scale="1.2"></b-icon>  分類
+            <b-icon icon="receipt" font-scale="1.2"></b-icon> {{myLang.category_management}}
           </router-link>
         </li>
         </ul>
         </div>
         </li>
         <li class="nav-item" v-can="['byr_view']">
-          <a class="nav-link collapsed" href="#pdf_platform_setting" data-toggle="collapse" data-target="#pdf_platform_setting"><b-icon icon="grid-fill" font-scale="1.2"></b-icon> PDF Platform</a>
+          <a class="nav-link collapsed" href="#pdf_platform_setting" data-toggle="collapse" data-target="#pdf_platform_setting"><b-icon icon="grid-fill" font-scale="1.2"></b-icon> {{myLang.pdf_platform}}</a>
           <div class="collapse" id="pdf_platform_setting" aria-expanded="false">
             <ul class="flex-column pl-2 nav">
               <li class="nav-item" v-can="['byr_view']">
                 <router-link to="/pdf_platform_setting" class="nav-link">
-                  <b-icon icon="receipt" font-scale="1.2"></b-icon>  PDF Platform Settings
+                  <b-icon icon="receipt" font-scale="1.2"></b-icon>  {{myLang.pdf_platform_setting}}
                 </router-link>
               </li>
               <li class="nav-item" v-can="['byr_view']">
                 <router-link to="/pdf_platform_view" class="nav-link">
-                  <b-icon icon="receipt" font-scale="1.2"></b-icon>  PDF Platform View
+                  <b-icon icon="receipt" font-scale="1.2"></b-icon> {{myLang.pdf_platform_show}}
                 </router-link>
               </li>
             </ul>
