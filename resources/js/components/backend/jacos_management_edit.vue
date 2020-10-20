@@ -2,7 +2,7 @@
   <div>
     <div class="row">
                 <div class="col-12">
-                    <h4 class="top_title text-center" style="margin-top:10px;">スーパーバリュー</h4>
+                    <h4 class="top_title text-center" style="margin-top:10px;">{{myLang.super_value_head}}</h4>
                 </div>
                 <div class="col-3"></div>
                 <div class="col-6">
@@ -14,33 +14,33 @@
                     <div class="">
                       <form>
   <div class="form-group row">
-    <label for="staticEmail" class="col-sm-4 col-form-label">小売名</label>
+    <label for="buyer_name" class="col-sm-4 col-form-label">{{myLang.buyer_name}}</label>
     <div class="col-sm-8">
-      <input type="text" class="form-control" id="staticEmail" value="スーパーバリュー">
+      <input type="text" class="form-control" id="buyer_name" value="スーパーバリュー">
     </div>
   </div>
   <div class="form-group row">
-    <label for="inputPassword" class="col-sm-4 col-form-label">Jコード</label>
+    <label for="jan_code" class="col-sm-4 col-form-label">{{myLang.jan_code}}</label>
     <div class="col-sm-8">
-      <input type="text" class="form-control" id="inputPassword" value="000001">
+      <input type="text" class="form-control" id="jan_code" value="000001">
     </div>
   </div>
   <div class="form-group row">
-    <label for="inputPassword" class="col-sm-4 col-form-label">スーパーコード</label>
+    <label for="super_code" class="col-sm-4 col-form-label">{{myLang.super_code}}</label>
     <div class="col-sm-8">
-      <input type="text" class="form-control" id="inputPassword" value="JHG">
+      <input type="text" class="form-control" id="super_code" value="JHG">
     </div>
   </div>
   <div class="form-group row">
-    <label for="inputPassword" class="col-sm-4 col-form-label">郵便番号</label>
+    <label for="postal_code" class="col-sm-4 col-form-label">{{myLang.postal_code}}</label>
     <div class="col-sm-8">
-      <input type="text" class="form-control" id="inputPassword" value="141-0021">
+      <input type="text" class="form-control" id="postal_code" value="141-0021">
     </div>
   </div>
   <div class="form-group row">
-    <label for="inputPassword" class="col-sm-4 col-form-label">住所</label>
+    <label for="street" class="col-sm-4 col-form-label">{{myLang.street}}</label>
     <div class="col-sm-8">
-      <input type="text" class="form-control" id="inputPassword" value="東京都品川区上大崎1-2-3">
+      <input type="text" class="form-control" id="street" value="東京都品川区上大崎1-2-3">
     </div>
   </div>
 </form>
@@ -48,9 +48,9 @@
                 </div>
                 <div class="col-5"></div>
                 <div class="col-12">
-                    <button class="btn btn-danger" @click="delete_company">削除</button>
-                    <button class="btn btn-info" @click="delete_company">キャンセル</button>
-                    <button class="btn btn-primary" @click="delete_company">変更を保存</button>
+                    <button class="btn btn-danger" @click="delete_company">{{myLang.delete}}</button>
+                    <button class="btn btn-info" @click="delete_company">{{myLang.cancel}}</button>
+                    <button class="btn btn-primary" @click="delete_company">{{myLang.save_changes}}</button>
                 </div>
             </div>
   </div>

@@ -1,7 +1,7 @@
 <template>
     <div class="row" v-can="['byr_view']">
                 <div class="col-12">
-                    <h4 class="top_title text-center" style="margin-top:10px;">請求一覧</h4>
+                    <h4 class="top_title text-center" style="margin-top:10px;">{{myLang.invoice_list}}</h4>
                 </div>
                 <div class="col-12 text-center">
                     
@@ -17,10 +17,10 @@
                                     <th colspan="100%" style="border: none;">
                                         <div class="input-group mb-1" style="margin-left: 10px;max-width: 250px; float: left;">
                                             <div class="input-group-prepend">
-                                                <button class="btn btn-outline-primary" type="button">小売選択</button>
+                                                <button class="btn btn-outline-primary" type="button">{{myLang.buyer_selection}}</button>
                                             </div>
                                             <select class="form-control" v-model="selected_byr">
-                                            <option :value="0">全小売</option>
+                                            <option :value="0">{{myLang.select_buyer}}</option>
                                               <option v-for="(option, index) in byr_buyer_lists" 
                     :key="index" :value="option.cmn_company_id"
                     :selected="selectedOption(option)">
@@ -31,20 +31,20 @@
                                         <!--<div class="active-pink-3 active-pink-4 mb-1" style="margin-left: 10px;max-width: 100%; float: left;">
                                             <input class="form-control" type="text" placeholder="Search" aria-label="Search">
                                         </div>-->
-                                        <button style="float:right" class="btn btn-primary">請求データアップロード</button>
-                                        <button style="float:right" class="btn btn-success">伝票一覧・新規請求</button>
+                                        <button style="float:right" class="btn btn-primary">{{myLang.Invoice_data_upload}}</button>
+                                        <button style="float:right" class="btn btn-success">{{myLang.list_of_slip}}</button>
                                     </th>
                                 </tr>
                                 <tr>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer">No <span id="id_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">小売名<span id="orderdate_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">請求日時 <span id="delivery_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">請求対象期間<span id="ordertype_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">請求金額<span id="ordertype_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">ステータス<span id="ordertype_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">詳細<span id="ordertype_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">請求データ<span id="ordertype_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">請求書<span id="ordertype_icon"></span></th>
+                                    <th style="cursor: pointer">No</th>
+                                    <th style="cursor: pointer">{{myLang.buyer_name}}</th>
+                                    <th style="cursor: pointer">{{myLang.invoice_date}}</th>
+                                    <th style="cursor: pointer">{{myLang.biling_period}}</th>
+                                    <th style="cursor: pointer">{{myLang.biling_amount}}</th>
+                                    <th style="cursor: pointer">{{myLang.status}}</th>
+                                    <th style="cursor: pointer">{{myLang.details}}</th>
+                                    <th style="cursor: pointer">{{myLang.billing_data}}</th>
+                                    <th style="cursor: pointer">{{myLang.invoice}}</th>
                                 </tr>
                                 
                             </thead>
@@ -57,9 +57,9 @@
                                     <td>{{value.start_date}}~{{value.start_date}}</td>
                                     <td>{{value.request_amount}}</td>
                                     <td>{{value.status}}</td>
-                                    <td><router-link :to="{name:'invoice_detail',params:{byr_invoice_id:value.byr_invoice_id} }" class="btn btn-info">詳細</router-link></td>
-                                    <td><button class="btn btn-success">ダウンロード</button></td>
-                                    <td><button class="btn btn-primary">ダウンロード</button></td>
+                                    <td><router-link :to="{name:'invoice_detail',params:{byr_invoice_id:value.byr_invoice_id} }" class="btn btn-info">{{myLang.details}}</router-link></td>
+                                    <td><button class="btn btn-success">{{myLang.download}}</button></td>
+                                    <td><button class="btn btn-primary">{{myLang.download}}</button></td>
                                    
                                 </tr>
                                 

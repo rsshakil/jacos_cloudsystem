@@ -2,7 +2,7 @@
   <div>
     <div class="row">
                 <div class="col-12">
-                    <h4 class="top_title text-center" style="margin-top:10px;">スーパーバリュー</h4>
+                    <h4 class="top_title text-center" style="margin-top:10px;">{{myLang.super_value_head}}</h4>
                 </div>
                 
                 <div class="col-3"></div>
@@ -18,16 +18,16 @@
                             <thead>
                                 <tr>
                                     <th colspan="100%" style="border: none;">
-                                       <button class="btn pull-right text-right btn-primary" style="float:right">新規作成</button>
+                                       <button class="btn pull-right text-right btn-primary" style="float:right">{{myLang.add_new}}</button>
                                     </th>
                                 </tr>
                                 <tr>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer">No <span id="id_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">問屋名<span id="orderdate_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">問屋コード <span id="delivery_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">取引先コード <span id="ordertype_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">ステータス <span id="status_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">詳細 <span id="btn1_icon"></span></th>
+                                    <th style="cursor: pointer">No</th>
+                                    <th style="cursor: pointer">{{myLang.wholesaler_name}}</th>
+                                    <th style="cursor: pointer">{{myLang.wholesaler_code}}</th>
+                                    <th style="cursor: pointer">{{myLang.customer_code}}</th>
+                                    <th style="cursor: pointer">{{myLang.status}}</th>
+                                    <th style="cursor: pointer">{{myLang.details}}</th>
                                 </tr>
                                 
                             </thead>
@@ -38,10 +38,10 @@
                                     <td>{{value.jcode}}</td>
                                     <td>{{value.partner_code}}</td>
                                     <td><select name="user_status" v-model="value.is_active" class="form-control">
-                                      <option :value="1">稼働中</option>
-                                      <option :value="0">稼働</option>
+                                      <option :value="1">{{myLang.status_in_operation}}</option>
+                                      <option :value="0">{{myLang.status_operation}}</option>
                                     </select></td>
-                                    <td><router-link :to="{name:'slr_job_list',params:{slr_seller_id:value.slr_seller_id} }" class="btn btn-info">詳細</router-link></td>
+                                    <td><router-link :to="{name:'slr_job_list',params:{slr_seller_id:value.slr_seller_id} }" class="btn btn-info">{{myLang.details}}</router-link></td>
                                     
                                 </tr>
                                 

@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'heading' => 'Jacos User Management',
+    'dashboard_text' => 'Dashboard',
     'role_management' => 'Manage Role',
     'permission_management' => 'Manage Permission',
     'assign_role_to_user' => 'Role Assigned',

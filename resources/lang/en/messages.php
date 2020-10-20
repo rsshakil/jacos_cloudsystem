@@ -6,8 +6,6 @@ return [
     'assign_role' => 'Assign role to an user',
     'user_role' => 'User Role',
     'welcome' => 'Welcome to jacos user management',
-    'heading' => 'Jacos User Management',
-    'dashboard_text' => 'Dashboard',
     'manage_role' => 'Manage Role',
     'manage_permission' => 'Manage Permission',
     'assign_permission_to_role' => 'Assign Permission to Role',

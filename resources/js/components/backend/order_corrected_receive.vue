@@ -1,7 +1,7 @@
 <template>
     <div class="row" v-can="['byr_view']">
                 <div class="col-12">
-                    <h4 class="top_title text-center" style="margin-top:10px;">受領訂正データ</h4>
+                    <h4 class="top_title text-center" style="margin-top:10px;">{{myLang.corrected_receive_data}}</h4>
                 </div>
                 <div class="col-12 text-center">
                     
@@ -17,10 +17,10 @@
                                     <th colspan="100%" style="border: none;">
                                         <div class="input-group mb-1" style="margin-left: 10px;max-width: 250px; float: left;">
                                             <div class="input-group-prepend">
-                                                <button class="btn btn-outline-primary" type="button">小売選択</button>
+                                                <button class="btn btn-outline-primary" type="button">{{myLang.buyer_selection}}</button>
                                             </div>
                                             <select class="form-control" v-model="selected_byr">
-                                              <option :value="0">全小売</option>
+                                              <option :value="0">{{myLang.select_buyer}}</option>
                                               <option v-for="(option, index) in byr_buyer_lists" 
                     :key="index" :value="option.cmn_company_id"
                     :selected="selectedOption(option)">
@@ -34,11 +34,11 @@
                                     </th>
                                 </tr>
                                 <tr>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer">No <span id="id_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">小売名<span id="orderdate_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">受信日時<span id="orderdate_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">ダウンロード日時 <span id="delivery_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">受領訂正データ<span id="ordertype_icon"></span></th>
+                                    <th style="cursor: pointer">No</th>
+                                    <th style="cursor: pointer">{{myLang.buyer_name}}</th>
+                                    <th style="cursor: pointer">{{myLang.receive_date}}</th>
+                                    <th style="cursor: pointer">{{myLang.download_date}}</th>
+                                    <th style="cursor: pointer">{{myLang.received_data}}</th>
                                 </tr>
                                 
                             </thead>
@@ -48,7 +48,7 @@
                                      <td>{{value.company_name}}</td>
                                     <td>{{value.receive_date}}</td>
                                     <td>{{value.download_date}}</td>
-                                    <td><button class="btn btn-primary">受領訂正データ</button></td>
+                                    <td><button class="btn btn-primary">{{myLang.received_data}}</button></td>
                                    
                                 </tr>
                                 

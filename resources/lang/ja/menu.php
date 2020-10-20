@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'heading' => 'ジャコスユーザー管理',
+    'dashboard_text' => 'ダッシュボード',
     'role_management' => 'ロール管理',
     'permission_management' => '権限管理',
     'assign_role_to_user' => 'ユーザ-ロール',

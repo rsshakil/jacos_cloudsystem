@@ -15,7 +15,7 @@
                 <b-row v-if="single_blog.length!='0'">
     <b-col>
     <div class="text-center">
-    <h2>お知らせ</h2>
+    <h2>{{myLang.notice_text}}</h2>
     </div>
      </b-col>
      
@@ -38,13 +38,13 @@
                 <b-row>
     <b-col>
     <div class="text-center">
-    <h2>過去情報</h2>
+    <h2>{{myLang.previous_notice}}</h2>
     </div>
      </b-col>
      
   </b-row>
   <b-row>
-    <b-col cols="6" v-for="(value,index) in blog_lists" :key="value.cmn_blog_id">                    
+    <b-col cols="6" v-for="(value) in blog_lists" :key="value.cmn_blog_id">                    
 
   <h4 class="my-3 blog_titles">{{value.blog_title}}</h4>
   <p class="created_at">Created at @ {{ value.created_at | diffForHumans }}</p>

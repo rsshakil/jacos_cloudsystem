@@ -2,7 +2,7 @@
   <div>
     <div class="row">
                 <div class="col-12">
-                    <h4 class="top_title text-center" style="margin-top:10px;">お知らせ管理</h4>
+                    <h4 class="top_title text-center" style="margin-top:10px;">{{myLang.notice_management}}</h4>
                 </div>
                 
              
@@ -13,15 +13,15 @@
                             <thead>
                                 <tr>
                                     <th colspan="100%" style="border: none;">
-                                       <button @click="new_blog_create_modal" class="btn pull-right text-right btn-primary" style="float:right">新規追加</button>
+                                       <button @click="new_blog_create_modal" class="btn pull-right text-right btn-primary" style="float:right">{{myLang.add_new}}</button>
                                     </th>
                                 </tr>
                                 <tr>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer">No <span id="id_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">タイトル<span id="orderdate_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">画像<span id="delivery_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">更新日<span id="delivery_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">操作 <span id="btn1_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">{{myLang.title}}<span id="orderdate_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">{{myLang.image}}<span id="delivery_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">{{myLang.update_date}}<span id="delivery_icon"></span></th>
+                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">{{myLang.operation}}<span id="btn1_icon"></span></th>
                                 </tr>
                                 
                             </thead>
@@ -51,8 +51,8 @@
       size="lg"
       :hide-backdrop="true"
       title="新規　お知らせ"
-      ok-title="保存"
-      cancel-title="キャンセル"
+      :ok-title="myLang.save"
+      :cancel-title="myLang.cancel"
       @ok.prevent="create_new_blog()"
       v-model="blog_create_modal">
       <!-- <div class="modal-dialog modal-lg" role="document">
@@ -62,14 +62,14 @@
         <form enctype="multipart/form-data">
         <input type="hidden" v-model="form.cmn_blog_id">
           <div class="form-group row">
-    <label for="name" class="col-sm-2 col-form-label">タイトル</label>
+    <label for="name" class="col-sm-2 col-form-label">{{myLang.title}}</label>
     <div class="col-sm-10">
       <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('blog_title') }" v-model="form.blog_title">
       <has-error :form="form" field="blog_title"></has-error>
     </div>
   </div>
   <div class="form-group row">
-    <label for="staticEmail" class="col-sm-2 col-form-label">画像</label>
+    <label for="staticEmail" class="col-sm-2 col-form-label">{{myLang.image}}</label>
     <div class="col-sm-10">
       <input type="file" name="feature_img" class="form-control" :class="{ 'is-invalid': form.errors.has('feature_img') }" @change="onUploadFiles" accept="image/jpeg, image/png">
     <has-error :form="form" field="feature_img"></has-error>
@@ -77,7 +77,7 @@
     </div>
   </div>
   <div class="form-group row">
-    <label for="staticEmail" class="col-sm-2 col-form-label">内容</label>
+    <label for="staticEmail" class="col-sm-2 col-form-label">{{myLang.contents}}</label>
     <div class="col-sm-10">
      <ckeditor :editor="editor" v-model="form.blog_content" :config="editorConfig" :class="{ 'is-invalid': form.errors.has('blog_content') }"></ckeditor>
     <has-error :form="form" field="blog_content"></has-error>
@@ -109,7 +109,8 @@ export default {
         
         editorConfig: {
             // The configuration of the editor.
-            language: 'ja',
+            // language: "ja",
+            // language: this.myLang.editor_lang,
             extraPlugins: [ this.uploader ],
             
         },
@@ -244,6 +245,7 @@ export default {
       console.log('created jacos management log');
   },
   mounted() {
+    this.editorConfig.language=this.myLang.editor_lang;
     console.log("User page loaded");
   }
 };

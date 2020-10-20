@@ -2,7 +2,7 @@
   <div>
     <div class="row">
                 <div class="col-12">
-                    <h4 class="top_title text-center" style="margin-top:10px;">スーパーバリュー</h4>
+                    <h4 class="top_title text-center" style="margin-top:10px;">{{myLang.super_value_head}}</h4>
                 </div>
                 
                 <div class="col-3"></div>
@@ -18,16 +18,16 @@
                             <thead>
                                 <tr>
                                     <th colspan="100%" style="border: none;">
-                                       <button @click="new_user_create_modal" class="btn pull-right text-right btn-primary" style="float:right">新規追加</button>
+                                       <button @click="new_user_create_modal" class="btn pull-right text-right btn-primary" style="float:right">{{myLang.add_new}}</button>
                                     </th>
                                 </tr>
                                 <tr>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer">No <span id="id_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">区分<span id="orderdate_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">名前 <span id="delivery_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">メールアドレス <span id="ordertype_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">ステータス <span id="status_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">詳細 <span id="btn1_icon"></span></th>
+                                    <th style="cursor: pointer">No</th>
+                                    <th style="cursor: pointer">{{myLang.user_type}}</th>
+                                    <th style="cursor: pointer">{{myLang.name}}</th>
+                                    <th style="cursor: pointer">{{myLang.email}}</th>
+                                    <th style="cursor: pointer">{{myLang.status}}</th>
+                                    <th style="cursor: pointer">{{myLang.details}}</th>
                                 </tr>
                                 
                             </thead>
@@ -38,17 +38,17 @@
                                     <td>{{value.name}}</td>
                                     <td>{{value.email}}</td>
                                     <td><select name="user_status" class="form-control">
-                                      <option value="稼働中" selected>稼働中</option>
-                                      <option value="稼働">稼働</option>
+                                      <option value="稼働中" selected>{{myLang.status_in_operation}}</option>
+                                      <option value="稼働">{{myLang.status_operation}}</option>
                                     </select></td>
-                                    <td><button class="btn btn-info">詳細</button></td>
+                                    <td><button class="btn btn-info">{{myLang.details}}</button></td>
                                     
                                 </tr>
                                 
                             </tbody>
                         </table>
-                        <button class="btn btn-danger" style="float:right">変更を保存</button>
-                        <button class="btn btn-primary" style="float:right">変更を保存</button>
+                        <button class="btn btn-danger" style="float:right">{{myLang.cancel}}</button>
+                        <button class="btn btn-primary" style="float:right">{{myLang.save_changes}}</button>
                     </div>
                 </div>
             </div>
@@ -56,9 +56,9 @@
           <b-modal
       size="lg"
       :hide-backdrop="true"
-      title="Add user"
-      ok-title="Save"
-      cancel-title="キャンセル"
+      :title="myLang.add_user"
+      :ok-title="myLang.save"
+      :cancel-title="myLang.cancel"
       @ok.prevent="create_new_user()"
       v-model="user_create_modal"
     >
@@ -68,7 +68,7 @@
       <div class="panel-body add_item_body">
         <form>
           <div class="form-group row">
-    <label for="name" class="col-sm-2 col-form-label">Name</label>
+    <label for="name" class="col-sm-2 col-form-label">{{myLang.name}}</label>
     <div class="col-sm-10">
       <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('name') }" v-model="form.name">
       <has-error :form="form" field="name"></has-error>
@@ -82,14 +82,14 @@
     </div>
   </div>-->
   <div class="form-group row">
-    <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+    <label for="staticEmail" class="col-sm-2 col-form-label">{{myLang.email}}</label>
     <div class="col-sm-10">
       <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('email') }" v-model="form.email">
       <has-error :form="form" field="email"></has-error>
     </div>
   </div>
   <div class="form-group row">
-    <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+    <label for="inputPassword" class="col-sm-2 col-form-label">{{myLang.password}}</label>
     <div class="col-sm-10">
       <input type="password" class="form-control" :class="{ 'is-invalid': form.errors.has('password') }" placeholder="Password" v-model="form.password">
       <has-error :form="form" field="password"></has-error>

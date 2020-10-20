@@ -2,7 +2,7 @@
   <div>
     <div class="row">
                 <div class="col-12">
-                    <h4 class="top_title text-center" style="margin-top:10px;">スーパーバリュー</h4>
+                    <h4 class="top_title text-center" style="margin-top:10px;">{{myLang.super_value_head}}</h4>
                 </div>
                 
                 <div class="col-3"></div>
@@ -17,25 +17,25 @@
                 </div>
 
                 <div class="col-12">
-                                       <button class="btn pull-right text-right btn-primary" style="float:right">新規追加</button>
+                                       <button class="btn pull-right text-right btn-primary" style="float:right">{{myLang.add_new}}</button>
                     <div class="">
                        <table class="table table-striped table-bordered data_table">
                             <thead>
                                 <tr>
                                     <th colspan="100%" style="border: none;width:150px;">
                                     <select name="job_status" class="form-control">
-                                      <option value="稼働中" selected>稼働中</option>
-                                      <option value="稼働">稼働</option>
+                                      <option value="稼働中" selected>{{myLang.status_in_operation}}</option>
+                                      <option value="稼働">{{myLang.status_operation}}</option>
                                     </select>
                                     </th>
                                 </tr>
                                 <tr>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer">No <span id="id_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">Job ID<span id="orderdate_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">種別 <span id="delivery_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">経路 <span id="ordertype_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">シナリオ <span id="status_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">スケジュール設定 <span id="btn1_icon"></span></th>
+                                    <th style="cursor: pointer">No</th>
+                                    <th style="cursor: pointer">Job ID</th>
+                                    <th style="cursor: pointer">{{myLang.user_type}}</th>
+                                    <th style="cursor: pointer">{{myLang.route}}</th>
+                                    <th style="cursor: pointer">{{myLang.scenario}}</th>
+                                    <th style="cursor: pointer">{{myLang.schedule_setting}}</th>
                                 </tr>
                                 
                             </thead>
@@ -47,25 +47,25 @@
                                     <td>{{value.vector}}</td>
                                     <td>{{value.name}}</td>
                                     <td><select name="user_status" class="form-control">
-                                      <option value="稼働中" selected>稼働中</option>
-                                      <option value="稼働">稼働</option>
+                                      <option value="稼働中" selected>{{myLang.status_in_operation}}</option>
+                                      <option value="稼働">{{myLang.status_operation}}</option>
                                     </select></td>
-                                    <td><button @click="job_exe_modal_show(value)" class="btn btn-info">スケジュール設定</button></td>
+                                    <td><button @click="job_exe_modal_show(value)" class="btn btn-info">{{myLang.schedule_setting}}</button></td>
                                     
                                 </tr>
                                 
                             </tbody>
                         </table>
-                        <button class="btn btn-primary" style="float:right">変更を保存</button>
+                        <button class="btn btn-primary" style="float:right">{{myLang.save_changes}}</button>
                     </div>
                 </div>
             </div>
             <b-modal
       size="md"
       :hide-backdrop="true"
-      title="フォルダ監視"
-      ok-title="保存"
-      cancel-title="キャンセル"
+      :title="myLang.folder_monitoring"
+      :ok-title="myLang.save"
+      :cancel-title="myLang.cancel"
       @ok.prevent="save_edit_job()"
       v-model="job_exe_modal"
     >
@@ -76,10 +76,10 @@
         <table class="table table-striped table-bordered data_table">
                             <thead>
                                 <tr>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">Job ID<span id="orderdate_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">種別 <span id="delivery_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">経路 <span id="ordertype_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">シナリオ <span id="status_icon"></span></th>
+                                    <th style="cursor: pointer">Job ID</th>
+                                    <th style="cursor: pointer">{{myLang.user_type}}</th>
+                                    <th style="cursor: pointer">{{myLang.route}}</th>
+                                    <th style="cursor: pointer">{{myLang.scenario}}</th>
                                 </tr>
                                 
                             </thead>

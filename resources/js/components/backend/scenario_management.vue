@@ -2,7 +2,7 @@
   <div>
     <div class="row">
                 <div class="col-12">
-                    <h4 class="top_title text-center" style="margin-top:10px;">シナリオ管理</h4>
+                    <h4 class="top_title text-center" style="margin-top:10px;">{{myLang.scenario_heading}}</h4>
                 </div>
                 <div class="col-12">
                     <div class="">
@@ -10,17 +10,17 @@
                             <thead>
                                 <tr>
                                     <th colspan="100%" style="border: none;">
-                                       <button class="btn pull-right text-right btn-primary" style="float:right">新規作成</button>
+                                       <button class="btn pull-right text-right btn-primary" style="float:right">{{myLang.add_new}}</button>
                                     </th>
                                 </tr>
                                 <tr>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer">No <span id="id_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">シナリオ名<span id="orderdate_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">小売名 <span id="delivery_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">問屋名 <span id="ordertype_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">シナリオ説明 <span id="status_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">シナリオファイルパス <span id="btn1_icon"></span></th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">詳細 <span id="btn2_icon"></span></th>
+                                    <th style="cursor: pointer">No</th>
+                                    <th style="cursor: pointer">{{myLang.scenario_name}}</th>
+                                    <th style="cursor: pointer">{{myLang.buyer_name}}</th>
+                                    <th style="cursor: pointer">{{myLang.wholesaler_name}}</th>
+                                    <th style="cursor: pointer">{{myLang.scenario_description}}</th>
+                                    <th style="cursor: pointer">{{myLang.scenario_file_path}}</th>
+                                    <th style="cursor: pointer">{{myLang.details}}</th>
                                 </tr>
                                 
                             </thead>
@@ -33,7 +33,7 @@
                                     <td></td>
                                     <td>{{value.description}}</td>
                                     <td>{{value.file_path}}</td>
-                                    <td><button class="btn btn-info">詳細</button></td>
+                                    <td><button class="btn btn-info">{{myLang.details}}</button></td>
                                 </tr>
                                 
                             </tbody>

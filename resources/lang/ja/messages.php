@@ -6,8 +6,6 @@ return [
     'assign_role' => 'ユーザーにロールを割り当てる',
     'user_role' => 'ユーザー-ロール',
     'welcome' => 'ジャコスのユーザー管理へようこそ',
-    'heading' => 'ジャコスユーザー管理',
-    'dashboard_text' => 'ダッシュボード',
     'manage_role' => '新規ロール作成',
     'manage_permission' => '新規権限作成',
     'assign_permission_to_role' => 'ユーザ-権限',

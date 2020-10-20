@@ -2,7 +2,7 @@
   <div v-can="['byr_view']">
     <div class="row">
                 <div class="col-12">
-                    <h4 class="top_title text-center" style="margin-top:10px;">小売管理</h4>
+                    <h4 class="top_title text-center" style="margin-top:10px;">{{myLang.buyer_management_head}}</h4>
                 </div>
                 
                 <div class="col-12">
@@ -14,28 +14,28 @@
                                         <div class="row">
                                         <div class="col-6">
                                         <form class="form-inline">
-                                            <input class="form-control" type="text" placeholder="Search" aria-label="Search">
-                                            <button class="btn btn-primary">検索</button>
+                                            <input class="form-control" type="text" :placeholder="myLang.search" aria-label="Search">
+                                            <button class="btn btn-primary">{{myLang.search}}</button>
 
                                             </form>
                                        </div>
                                        <div class="col-6">
-                                    <button @click="add_new_company_cmn" class="btn custom_right btn-primary">新規追加</button>
+                                    <button @click="add_new_company_cmn" class="btn custom_right btn-primary">{{myLang.add_new}}</button>
 
     </div>
     </div>
                                     </th>
                                 </tr>
                                 <tr>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer">No </th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">小売名</th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">スーパーコード </th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">ステータス </th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">ユーザー管理 </th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">店舗管理 </th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer"> 取引先管理 </th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer"> 発注データ </th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer"> 詳細</th>
+                                    <th style="cursor: pointer">No </th>
+                                    <th style="cursor: pointer">{{myLang.company_name}}</th>
+                                    <th style="cursor: pointer">{{myLang.super_code}}</th>
+                                    <th style="cursor: pointer">{{myLang.status}}</th>
+                                    <th style="cursor: pointer">{{myLang.user_management}}</th>
+                                    <th style="cursor: pointer">{{myLang.shop_management}}</th>
+                                    <th style="cursor: pointer">{{myLang.partner_management}}</th>
+                                    <th style="cursor: pointer">{{myLang.ordering_data}}</th>
+                                    <th style="cursor: pointer">{{myLang.details}}</th>
                                 </tr>
                                 
                             </thead>
@@ -44,12 +44,12 @@
                                     <td>{{index+1}}</td>
                                     <td>{{company_list.company_name}}</td>
                                     <td>{{company_list.super_code}}</td>
-                                    <td>稼働中</td>
-                                    <td><router-link :to="{name:'cmn_company_user_list',params:{cmn_company_id:company_list.cmn_company_id} }" class="btn btn-primary">ユーザー管理</router-link></td>
-                                    <td><button class="btn btn-info">店舗管理</button></td>
-                                    <td><router-link :to="{name:'cmn_company_partner_list',params:{cmn_company_id:company_list.cmn_company_id} }" class="btn btn-danger">取引先管理</router-link></td>
-                                    <td><button class="btn btn-success">発注データ</button></td>
-                                    <td><button @click="edit_byr_data(company_list)" class="btn btn-primary">詳細</button></td>
+                                    <td>{{myLang.status_in_operation}}</td>
+                                    <td><router-link :to="{name:'cmn_company_user_list',params:{cmn_company_id:company_list.cmn_company_id} }" class="btn btn-primary">{{myLang.user_management}}</router-link></td>
+                                    <td><button class="btn btn-info">{{myLang.shop_management}}</button></td>
+                                    <td><router-link :to="{name:'cmn_company_partner_list',params:{cmn_company_id:company_list.cmn_company_id} }" class="btn btn-danger">{{myLang.partner_management}}</router-link></td>
+                                    <td><button class="btn btn-success">{{myLang.ordering_data}}</button></td>
+                                    <td><button @click="edit_byr_data(company_list)" class="btn btn-primary">{{myLang.details}}</button></td>
                                 </tr>
                                 
                             </tbody>
@@ -60,9 +60,9 @@
             <b-modal
       size="md"
       :hide-backdrop="true"
-      title="小売　新規追加"
-      ok-title="新規追加"
-      cancel-title="キャンセル"
+      :title="myLang.add_new_buyer_title"
+      :ok-title="myLang.add_new"
+      :cancel-title="myLang.cancel"
       @ok.prevent="save_new_company()"
       v-model="add_cmn_company_modal"
     >
@@ -73,35 +73,35 @@
             <form>
             <input type="hidden" v-model="form.cmn_company_id">
   <div class="form-group row">
-    <label for="staticEmail" class="col-sm-4 col-form-label">小売名</label>
+    <label for="staticEmail" class="col-sm-4 col-form-label">{{myLang.company_name}}</label>
     <div class="col-sm-8">
       <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('company_name') }" v-model="form.company_name">
       <has-error :form="form" field="company_name"></has-error>
     </div>
   </div>
   <div class="form-group row">
-    <label for="inputPassword" class="col-sm-4 col-form-label">Jコード</label>
+    <label for="inputPassword" class="col-sm-4 col-form-label">{{myLang.jan_code}}</label>
     <div class="col-sm-8">
       <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('jcode') }" v-model="form.jcode">
       <has-error :form="form" field="jcode"></has-error>
     </div>
   </div>
   <div class="form-group row">
-    <label for="inputPassword" class="col-sm-4 col-form-label">スーパーコード</label>
+    <label for="inputPassword" class="col-sm-4 col-form-label">{{myLang.super_code}}</label>
     <div class="col-sm-8">
       <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('super_code') }" v-model="form.super_code">
       <has-error :form="form" field="super_code"></has-error>
     </div>
   </div>
   <div class="form-group row">
-    <label for="inputPassword" class="col-sm-4 col-form-label">郵便番号</label>
+    <label for="inputPassword" class="col-sm-4 col-form-label">{{myLang.postal_code}}</label>
     <div class="col-sm-8">
       <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('postal_code') }" v-model="form.postal_code">
       <has-error :form="form" field="postal_code"></has-error>
     </div>
   </div>
   <div class="form-group row">
-    <label for="inputPassword" class="col-sm-4 col-form-label">住所</label>
+    <label for="inputPassword" class="col-sm-4 col-form-label">{{myLang.street}}</label>
     <div class="col-sm-8">
       <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('address') }" v-model="form.address">
       <has-error :form="form" field="address"></has-error>
