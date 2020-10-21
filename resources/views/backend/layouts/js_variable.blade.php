@@ -243,6 +243,20 @@ var Globals = <?php echo json_encode(array(
     'billing_data' => __('order_receive.billing_data'),
     'invoice' => __('order_receive.invoice'),
     'download' => __('order_receive.download'),
+    // Master Management->item_master
+    'product_name' => __('master_management.product_name'),
+    'standerd' => __('master_management.standerd'),
+    'number_of_case' => __('master_management.number_of_case'),
+    'cost_price' => __('master_management.cost_price'),
+    'selling_price' => __('master_management.selling_price'),
+    'maker_name' => __('master_management.maker_name'),
+    'category_name' => __('master_management.category_name'),
+    'start_date' => __('master_management.start_date'),
+    'end_date' => __('master_management.end_date'),
+    // Master Management->item_category
+    'category_modal_title' => __('master_management.category_modal_title'),
+    'select_parent_category' => __('master_management.select_parent_category'),
+    'select_category' => __('master_management.select_category'),
 
 )); ?>;
 </script>

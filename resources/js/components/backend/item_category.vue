@@ -2,7 +2,7 @@
   <div v-can="['slr_view']">
     <div class="row">
                 <div class="col-12">
-                    <h4 class="top_title text-center" style="margin-top:10px;">問屋管理</h4>
+                    <h4 class="top_title text-center" style="margin-top:10px;">{{myLang.wholesaler_management}}</h4>
                 </div>
                 
                 <div class="col-12">
@@ -20,17 +20,17 @@
                                             </form>
                                        </div>
                                        <div class="col-6">
-                                    <button @click="add_new_category_cmn" class="btn custom_right btn-primary"> 新規ユーザ追加 </button>
+                                    <button @click="add_new_category_cmn" class="btn custom_right btn-primary"> {{myLang.add_user}} </button>
 
     </div>
     </div>
                                     </th>
                                 </tr>
                                 <tr>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer">No </th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">名前</th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">前コード </th>
-                                    <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer"> 詳細</th>
+                                    <th style="cursor: pointer">No </th>
+                                    <th style="cursor: pointer">{{myLang.wholesaler_name}}</th>
+                                    <th style="cursor: pointer">{{myLang.category_code}} </th>
+                                    <th style="cursor: pointer"> {{myLang.details}}</th>
                                 </tr>
                                 
                             </thead>
@@ -39,7 +39,7 @@
                                     <td>{{index+1}}</td>
                                     <td>{{cat_list.name}}</td>
                                     <td>{{cat_list.category_code}}</td>
-                                    <td><button @click="edit_category_data(cat_list)" class="btn btn-primary">詳細</button><button @click="delete_category_data(cat_list)" class="btn btn-danger">取引先管理</button></td>
+                                    <td><button @click="edit_category_data(cat_list)" class="btn btn-primary">{{myLang.details}}</button><button @click="delete_category_data(cat_list)" class="btn btn-danger">{{myLang.delete}}</button></td>
                                 </tr>
                                 
                             </tbody>
@@ -50,9 +50,9 @@
             <b-modal
       size="md"
       :hide-backdrop="true"
-      title="Category"
-      ok-title="新規追加"
-      cancel-title="キャンセル"
+      :title="myLang.category_modal_title"
+      :ok-title="myLang.add_new"
+      :cancel-title="myLang.cancel"
       @ok.prevent="save_new_cat()"
       v-model="add_cmn_cat_modal"
     >
@@ -70,7 +70,7 @@
     </div>
   </div>-->
   <div class="form-group row">
-    <label for="inputPassword" class="col-sm-4 col-form-label">Category コード</label>
+    <label for="inputPassword" class="col-sm-4 col-form-label">{{myLang.category_code}}</label>
     <div class="col-sm-8">
       <input type="text" class="form-control" maxlength="2" :class="{ 'is-invalid': form.errors.has('category_code') }" v-model="form.category_code">
       <has-error :form="form" field="category_code"></has-error>
@@ -79,11 +79,11 @@
   </div>
   
   <div class="form-group row">
-    <label for="inputPassword" class="col-sm-4 col-form-label">Select Parent</label>
+    <label for="inputPassword" class="col-sm-4 col-form-label">{{myLang.select_parent_category}}</label>
     <div class="col-sm-8">
       <select class="form-control" :class="{ 'is-invalid': form.errors.has('parent_id') }" v-model="form.parent_id">
-          <option v-bind:value="0">Select a Category</option>
-          <option v-for="option in options" v-bind:value="option.cmn_category_id">
+          <option v-bind:value="0">{{myLang.select_category}}</option>
+          <option v-for="option in options" v-bind:value="option.cmn_category_id" v-bind:key="option.cmn_category_id">
     {{ option.name }}
   </option>
       </select>

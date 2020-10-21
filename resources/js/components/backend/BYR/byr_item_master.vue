@@ -1,7 +1,7 @@
 <template>
     <div class="row" v-can="['byr_view']">
                 <div class="col-12">
-                    <h4 class="top_title text-center" style="margin-top:10px;">マスターメンテ</h4>
+                    <h4 class="top_title text-center" style="margin-top:10px;">{{myLang.master_management}}</h4>
                 </div>
                 <div class="col-12 text-center">
                     
@@ -20,31 +20,31 @@
                                 </tr>
                                 <tr>
                                     <th><input type="checkbox" @click="checkAll()" v-model="isCheckAll"></th>
-                    <th class="sorting" data-input_type="text" data-sorting_type="asc" data-column_name="vendor_items.name"
-                        style="cursor: pointer">商品 <span id="vendor_items_name_icon"></span></th>
-                    <th class="sorting" data-input_type="text" data-sorting_type="asc" data-column_name="jan"
-                        style="cursor: pointer">JAN <span id="jan_icon"></span></th>
-                    <th class="sorting" data-input_type="text" data-sorting_type="asc" data-column_name="spec"
-                    style="cursor: pointer">規格 <span id="spec_icon"></span></th>
-                    <th class="sorting" data-input_type="text" data-sorting_type="asc" data-column_name="case_inputs"
-                    style="cursor: pointer">ケース入数 <span id="case_inputs_icon"></span></th>
-                    <th class="sorting" data-input_type="text" data-sorting_type="asc" data-column_name="cost_price"
-                    style="cursor: pointer">原価 <span id="cost_price_icon"></span></th>
-                    <th class="sorting" data-input_type="text" data-sorting_type="asc" data-column_name="shop_price"
-                    style="cursor: pointer">売価 <span id="shop_price_icon"></span></th>
-                    <th class="sorting" data-input_type="select" data-sorting_type="asc" data-column_name="vendors.name"
-                    style="cursor: pointer">取引先 <span id="vendors_name_icon"></span></th>
-                    <th class="sorting" data-input_type="select" data-sorting_type="asc" data-column_name="c.category_name"
-                    style="cursor: pointer">部門名 <span id="c_category_name_icon"></span></th>
-                    <th class="sorting" data-input_type="date" data-sorting_type="asc" data-column_name="start_date"
-                    style="cursor: pointer">開始 <span id="start_date_icon"></span></th>
-                    <th class="sorting" data-input_type="date" data-sorting_type="asc" data-column_name="end_date"
-                    style="cursor: pointer">終了 <span id="end_date_icon"></span></th>
+                                    <th class="sorting" data-input_type="text" data-sorting_type="asc" data-column_name="vendor_items.name"
+                                        style="cursor: pointer">{{myLang.product_name}} <span id="vendor_items_name_icon"></span></th>
+                                    <th class="sorting" data-input_type="text" data-sorting_type="asc" data-column_name="jan"
+                                        style="cursor: pointer">{{myLang.jan_code}} <span id="jan_icon"></span></th>
+                                    <th class="sorting" data-input_type="text" data-sorting_type="asc" data-column_name="spec"
+                                    style="cursor: pointer">{{myLang.standerd}} <span id="spec_icon"></span></th>
+                                    <th class="sorting" data-input_type="text" data-sorting_type="asc" data-column_name="case_inputs"
+                                    style="cursor: pointer">{{myLang.number_of_case}} <span id="case_inputs_icon"></span></th>
+                                    <th class="sorting" data-input_type="text" data-sorting_type="asc" data-column_name="cost_price"
+                                    style="cursor: pointer">{{myLang.cost_price}} <span id="cost_price_icon"></span></th>
+                                    <th class="sorting" data-input_type="text" data-sorting_type="asc" data-column_name="shop_price"
+                                    style="cursor: pointer">{{myLang.selling_price}} <span id="shop_price_icon"></span></th>
+                                    <th class="sorting" data-input_type="select" data-sorting_type="asc" data-column_name="vendors.name"
+                                    style="cursor: pointer">{{myLang.maker_name}} <span id="vendors_name_icon"></span></th>
+                                    <th class="sorting" data-input_type="select" data-sorting_type="asc" data-column_name="c.category_name"
+                                    style="cursor: pointer">{{myLang.category_name}} <span id="c_category_name_icon"></span></th>
+                                    <th class="sorting" data-input_type="date" data-sorting_type="asc" data-column_name="start_date"
+                                    style="cursor: pointer">{{myLang.start_date}} <span id="start_date_icon"></span></th>
+                                    <th class="sorting" data-input_type="date" data-sorting_type="asc" data-column_name="end_date"
+                                    style="cursor: pointer">{{myLang.end_date}} <span id="end_date_icon"></span></th>
                                 </tr>
                                 
                             </thead>
                             <tbody>
-                                <tr v-for="(item_list,index) in item_lists" :key="item_list.byr_item_id">
+                                <tr v-for="(item_list) in item_lists" :key="item_list.byr_item_id">
                                     <td><input type="checkbox" v-model="selected" :value="item_list.byr_item_id" @change="updateCheckall()"></td>
                                     <td>{{item_list.name_kana}}</td>
                                     <td>{{item_list.jan}}</td>

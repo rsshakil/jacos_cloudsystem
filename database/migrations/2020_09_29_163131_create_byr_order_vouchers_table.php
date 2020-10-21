@@ -32,9 +32,9 @@ class CreateByrOrderVouchersTable extends Migration
             $table->smallInteger('delivery_service_code')->unsigned()->default('1')->comment('delivery service code');
             $table->tinyInteger('tax_rate')->unsigned()->default('0')->comment('tax rate');
 
-            $table->date('order_date')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('order date');
+            $table->date('order_date')->nullable()->comment('order date');
             $table->date('expected_delivery_date')->comment('expected delivery date')->nullable();
-           $table->integer('total_cost_price')->unsigned()->default('0')->comment('total cost price');
+            $table->integer('total_cost_price')->unsigned()->default('0')->comment('total cost price');
             $table->integer('total_selling_price')->unsigned()->default('0')->comment('total selling price');
             $table->longText('other_info')->comment('other info')->nullable();
             $table->dateTime('checked_date')->comment('checked date')->nullable();
