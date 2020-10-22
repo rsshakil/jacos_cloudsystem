@@ -9,6 +9,9 @@ tmpLOG=taskCtrlTrace\\`date +"%Y-%m-%d"`.Log
 # dir move
 cd $(cd $(dirname $0); pwd)
 
+# start
+echo "[`date +"%Y-%m-%d %H:%M:%S"`] taskCtrl start -----" >> $LOG
+
 # execute
 out=`java -jar taskctrl.jar $1 $2 $3 $4 $5`
 
@@ -25,4 +28,5 @@ fi
 echo -e "$out" | grep -v "^$"  >> $LOG
 
 #echo "end"
+echo "[`date +"%Y-%m-%d %H:%M:%S"`] taskCtrl end --------" >> $LOG
 exit $ret
