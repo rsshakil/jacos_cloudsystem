@@ -12,7 +12,7 @@ use App\Models\CMN\cmn_scenario;
 
 class ShipmentConroller extends Controller
 {
-    public function createShipmentCSV(Request $request){
+    public function shipmentCSVCreate(Request $request){
         // return $request->all();
         if(isset($request->email) && isset($request->password)){
             $user = User::where('email', '=', $request->email)->first();
@@ -27,6 +27,7 @@ class ShipmentConroller extends Controller
         }
         $cmn_scenario_id=$request->scenario_id;
         $sc=cmn_scenario::where('cmn_scenario_id',$cmn_scenario_id)->first();
+        // return $sc;
         // return app_path().'/'.$sc->file_path.'.php';
         // scenario call
         if (!file_exists(app_path().'/'.$sc->file_path.'.php')) {

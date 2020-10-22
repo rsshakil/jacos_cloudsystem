@@ -7,5 +7,6 @@ return [
     // Scenarios
     // Order data
     'ORDER_DATA_PATH' => 'order/',
+    'SHIPMENT_CSV_PATH' => '/shipment_csv',
     
 ];

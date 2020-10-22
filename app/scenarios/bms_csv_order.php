@@ -167,9 +167,9 @@ class bms_csv_order extends Model
        
         $data_count=count($dataArr);
        
-
-        $byr_order_id = byr_order::insertGetId(['receive_file_path'=>$received_path,'cmn_connect_id'=>$sc->cmn_connect_id,'data_count'=>$data_count]);
-        $byr_shipment_id = byr_shipment::insertGetId(['send_file_path'=>$received_path,'cmn_connect_id'=>$sc->cmn_connect_id,'byr_order_id'=>$byr_order_id]);
+        // $received_path
+        $byr_order_id = byr_order::insertGetId(['receive_file_path'=>$file_name,'cmn_connect_id'=>$sc->cmn_connect_id,'data_count'=>$data_count]);
+        $byr_shipment_id = byr_shipment::insertGetId(['send_file_path'=>$file_name,'cmn_connect_id'=>$sc->cmn_connect_id,'byr_order_id'=>$byr_order_id]);
 
 
         // print_r($dataArr);
