@@ -177,7 +177,9 @@ return [
         App\Providers\RouteServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
 // Image
-        Intervention\Image\ImageServiceProvider::class
+        Intervention\Image\ImageServiceProvider::class,
+        // Excel/CSV 
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
     ],
 
@@ -229,6 +231,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 // Image
         'Image' => Intervention\Image\Facades\Image::class,
+        // Excel/CSV 
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 

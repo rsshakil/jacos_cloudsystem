@@ -12,4 +12,6 @@ return [
     // Tools
     'TASKCTRL' => 'tools/taskctrl/taskctrlWrapper.sh',
 
+    'SHIPMENT_CSV_PATH' => '/shipment_csv',
+    
 ];
