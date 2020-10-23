@@ -20,10 +20,10 @@ class ShipmentCSVExport implements FromQuery,WithHeadings,WithMapping,ShouldAuto
         $this->order_id = $order_id;
     }
     
-    private $writerType = Excel::CSV;
-    private $headers = [
-        'Content-Type' => 'text/csv',
-    ];
+    // private $writerType = Excel::CSV;
+    // private $headers = [
+    //     'Content-Type' => 'text/csv',
+    // ];
     public function headings(): array
     {
         return [
