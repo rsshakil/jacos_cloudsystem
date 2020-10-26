@@ -14,23 +14,25 @@
                         <div class="col-12" style="background:#D5DADC; padding:10px">
                             <table class="table table-bordered" style="width:100%">
                                 <tr>
-                                    <td>
+                                    <td style="width: 9%;">
                                         {{myLang.receive_date}}
                                     </td>
-                                    <td>
+                                    <td style="width: 15%;">
                                         <input type="date" class="form-control" v-model="today">
                                     </td>
-                                    <td> ~ </td>
-                                    <td>
+                                    <td style="width: 9%; text-align:center">
+                                       <b-icon icon="forward" aria-hidden="true" font-scale="1.5"></b-icon>
+                                    </td>
+                                    <td style="width: 15%;">
                                         <input type="date" class="form-control" v-model="today">
                                     </td>
-                                    <td>{{myLang.customer_code}}</td>
-                                    <td style="width:30%">
+                                    <td style="width: 10%;">{{myLang.customer_code}}</td>
+                                    <td style="width:17%">
                                         <select class="form-control">
                                             <option :value="0">{{myLang.customer_code}}</option>
                                         </select>
                                     </td>
-                                    <td>
+                                    <td style="width:10%">
                                         <button class="btn btn-primary" type="button">{{myLang.refer}}</button>
                                     </td>
                                     <td></td>
@@ -40,7 +42,9 @@
                                     <td>
                                         <input type="date" class="form-control" v-model="today">
                                     </td>
-                                    <td> ~ </td>
+                                    <td style="width: 9%; text-align:center">
+                                        <b-icon icon="forward" aria-hidden="true" font-scale="1.5"></b-icon>
+                                    </td>
                                     <td>
                                         <input type="date" class="form-control" v-model="today">
                                     </td>
@@ -51,7 +55,7 @@
                                         </select>
                                     </td>
                                     <td>{{myLang.temperature}}</td>
-                                    <td style="width:35%">
+                                    <td style="width:15%">
                                         <select class="form-control">
                                             <option :value="0">{{myLang.temperature}}</option>
                                         </select>
