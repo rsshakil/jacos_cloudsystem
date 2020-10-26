@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Auth;
 Route::get('language/{locale}', function ($locale) {
     // return $locale;
     Session::put('locale',$locale);
-
+    App::setLocale($locale);
+    // return App::getLocale();
     return redirect()->back();
 });
 Route::get('/', function () {

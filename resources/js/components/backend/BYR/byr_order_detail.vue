@@ -24,10 +24,11 @@ export default {
 
   created() {
     this.byr_order_id = this.$route.params.byr_order_id;
-     axios
-        .get(this.BASE_URL + "api/get_byr_info_by_byr_order_id/" + this.byr_order_id)
+    this.order_receive_date = this.$route.params.order_receive_date;
+    // console.log(this.order_receive_date);
+     axios.post(this.BASE_URL + "api/get_byr_info_by_byr_order_id",{byr_order_id:this.byr_order_id,order_receive_date:this.order_receive_date})
         .then(data => {
-          console.log(data.data.byr_info);
+          // console.log(data);
           // if(data.data.byr_info.super_code=='OUK'){
           if(this.byr_order_id=='1'){
             this.component = default_byr_order_detail;

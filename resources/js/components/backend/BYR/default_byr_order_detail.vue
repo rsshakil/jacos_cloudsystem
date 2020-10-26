@@ -2,9 +2,9 @@
   <div>
     <div class="row">
       <div class="col-12">
-        <h2 class="top_title text-center">数量確定</h2>
+        <h2 class="top_title text-center">{{myLang.quantity_confirmed}}</h2>
       </div>
-      <div class="col-12 text-center">
+      <!-- <div class="col-12 text-center">
         <div class="row">
           <div class="col"></div>
           <div class="col-3">
@@ -71,10 +71,153 @@
           </div>
           <div class="col"></div>
         </div>
-      </div>
+      </div> -->
       <div class="col-12">
-        <div class>
-          <div class="row">
+        {{myLang.voucher_list}}
+        <hr>
+      </div>
+      <div class="col-12" style="background:#D5DADC; padding:10px">
+                            <table class="table table-bordered" style="width:100%">
+                                <tr>
+                                    <td>{{myLang.receive_date}}</td>
+                                    <td>
+                                        <input type="date" class="form-control" v-model="today">
+                                    </td>
+                                    <td>{{myLang.customer_name}}</td>
+                                    <td colspan="5">
+                                        <input type="text" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>{{myLang.delivery_date}}</td>
+                                    <td>
+                                        <input type="date" class="form-control" v-model="today">
+                                    </td>
+                                    <td>{{myLang.category_code}}</td>
+                                    <td>
+                                        001
+                                    </td>
+                                    <td>{{myLang.shipment}}</td>
+                                    <td>
+                                        001 便
+                                    </td>
+                                    <td>{{myLang.temperature}}</td>
+                                    <td>
+                                     Blank   
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>{{myLang.confirmation_status}}</td>
+                                    <td colspan="7">
+                                       T/A
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-12" style="background:#D5DADC; padding:10px; margin-top:20px;">
+                            <table class="table table-bordered" style="width:100%">
+                                <tr>
+                                    <td>{{myLang.direct_delivery_code}}</td>
+                                    <td>
+                                        <input type="search" class="form-control">
+                                    </td>
+                                    <td> <button class="btn btn-primary" type="button">{{myLang.search}}</button> </td>
+                                    <td>
+                                       {{myLang.final_delivery_code}}
+                                    </td>
+                                    <td>
+                                        <input type="search" class="form-control" v-model="today">
+                                    </td>
+                                    <td> <button class="btn btn-primary" type="button">{{myLang.search}}</button> </td>
+                                    <td>
+                                       {{myLang.total_voucher_number}} <!--伝票番号-->
+                                    </td>
+                                    <td> <input type="text" class="form-control" v-model="today"> </td>
+                                </tr>
+                                <tr>
+                                    <td>{{myLang.product_code}}</td>
+                                    <td>
+                                        <input type="text" class="form-control" v-model="today">
+                                    </td>
+                                    <td> <button class="btn btn-primary" type="button">{{myLang.search}}</button> </td>
+                                    <td>{{myLang.specific}}</td>
+                                    <td colspan="2">
+                                        <select class="form-control">
+                                            <option :value="0">{{myLang.specific}}</option>
+                                        </select>
+                                    </td>
+                                    <td>{{myLang.confirmation_status}}</td>
+                                    <td>
+                                      <select class="form-control">
+                                            <option :value="0">{{myLang.confirmation_status}}</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td>{{myLang.printing_status}}</td>
+                                    <td>
+                                       <select class="form-control">
+                                            <option :value="0">{{myLang.printing_status}}</option>
+                                        </select>
+                                    </td>
+                                    <td colspan="6"></td>
+                                    
+                                </tr>
+                            </table>
+                            
+                        </div>
+                        <br>
+                        <div class="col-12" style="text-align:center">
+                            <button class="btn btn-primary" type="button">{{myLang.search}}</button> 
+                        </div>
+                <div class="col-12">
+                  <br/>
+                  {{myLang.search_result}}
+                    <hr/>
+                </div>
+                <div class="col-12">
+                  <table class="table table-bordered">
+                    <tr>
+                      <td>
+                        <button type="button">{{myLang.registrad_by_product}}</button>
+                      </td>
+                      <td>
+                        <select class="form-control">
+                            <option :value="0">{{myLang.product_list}}</option>
+                        </select>
+                      </td>
+                      <td>
+                        <button type="button">{{myLang.printing}}</button>
+                      </td>
+                      <td>
+                        <button class="btn btn-outline-primary" type="button">
+                          <b-icon icon="download" animation="fade" font-scale="1.2"></b-icon> {{myLang.download}}
+                        </button>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+                <div class="col-12">
+                  <table class="table table-bordered">
+                    <tr>
+                      <td>
+                        <button type="button">File Upload</button>
+                      </td>
+                      <td>
+                        File Upload <input type="checkbox">
+                      </td>
+                      <td>
+                        <button class="btn btn-outline-primary" type="button">
+                          <b-icon icon="download" animation="fade" font-scale="1.2"></b-icon> {{myLang.download}}
+                        </button>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+      <div class="col-12">
+        <div class="">
+          <!-- <div class="row">
             <div class="col-6">
               <button class="btn btn-primary">ピッキング表 出力</button>
               <button class="btn btn-danger" @click="update_checked_item_list">すべて確定</button>
@@ -86,319 +229,91 @@
               <button class="btn btn-dark">確定データ 取込</button>
               <a href="index.html" class="btn btn-primary">発注データ一覧へ戻る</a>
             </div>
-          </div>
+          </div> -->
           <table class="table table-striped table-bordered data_table">
             <thead>
               <tr>
+                <th>No</th>
+                <th>{{myLang.direct_delivery_code}}</th>
+                <th>{{myLang.final_delivery_code}}</th>
+                <th>{{myLang.total_voucher_number}}</th>
+                <th>{{myLang.specific}}</th>
+                <th>{{myLang.total_cost_amount}}</th>
+                <th>{{myLang.shipping_status}}</th>
+                <th>{{myLang.last_modified_date}}</th>
+                <th>{{myLang.confirmation_status}}</th>
+                <th>
+                  {{myLang.delivery_statement}}
+                  {{myLang.printing_status}}
+                </th>
+                <th>{{myLang.send}}</th>
+              </tr>
+              <!-- <tr>
                 <th colspan="100%" style="border: none;">
           
                 </th>
-              </tr>
-              <tr>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="id"
-                  style="cursor: pointer"
-                  
-                >
-                  No
-                  <span id="id_icon"></span>
-                </th>
+              </tr> -->
+              <!-- <tr>
+                <th style="cursor: pointer"> No </th>
                 <th>
                   <input type="checkbox" @click="checkAll()" v-model="isCheckAll" class="form-control check_all" />
                 </th>
                 
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"  
-                  v-if="show_hide_col_list.includes('order_type')"
-                >
-                  注文タイプ
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="email"
-                  style="cursor: pointer;min-width:100px;"
-                  @click="sortByja_valu('shop_name_kana')"
-                   v-if="show_hide_col_list.includes('shop_name_kana')"
-                >
-                  店舗名(ｶﾅ)
-                  <span id="total_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                 @click="sortBynumeric_valu('category_code')"
-                  v-if="show_hide_col_list.includes('category_code')"
-                >
-                  分類コード
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                  @click="sortBynumeric_valu('voucher_category')"
-                  v-if="show_hide_col_list.includes('voucher_category')"
-                >
-                  伝票区分
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                  @click="sortBynumeric_valu('voucher_number')"
-                  v-if="show_hide_col_list.includes('voucher_number')"
-                >
-                  伝票番号
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                  
-                  v-if="show_hide_col_list.includes('list_number')"
-                >
-                  明細番号
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                 
-                  v-if="show_hide_col_list.includes('delivery_service_code')"
-                >
-                  便番号
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                  @click="sortBynumeric_valu('jan')"
-                  v-if="show_hide_col_list.includes('jan')"
-                >
-                  JAN
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer;min-width:220px"
-                 
-                  v-if="show_hide_col_list.includes('item_name')"
-                >
-                  商品名
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer;min-width:220px"
-                 
-                  v-if="show_hide_col_list.includes('item_name_kana')"
-                >
-                  商品名かな
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                  
-                  v-if="show_hide_col_list.includes('spec')"
-                >
-                  規格
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                 
-                  v-if="show_hide_col_list.includes('spec_kana')"
-                >
-                  規格かな
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                  
-                  v-if="show_hide_col_list.includes('inputs')"
-                >
-                  入数
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                 
-                  v-if="show_hide_col_list.includes('size')"
-                >
-                  サイズ
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer;min-width:80px;"
-                  
-                  v-if="show_hide_col_list.includes('color')"
-                >
-                  カラー
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer;min-width:80px"
-                  
-                  v-if="show_hide_col_list.includes('order_lot_inputs')"
-                >
-                  発注単位
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer;;min-width:100px;"
-                 
-                  v-if="show_hide_col_list.includes('order_date')"
-                >
-                  発注日時
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer;min-width:100px;"
-                  
-                  v-if="show_hide_col_list.includes('expected_delivery_date')"
-                >
-                  納品予定日
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                  
-                  v-if="show_hide_col_list.includes('sale_category')"
-                >
-                  特売区分
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                 @click="sortBynumeric_valu('cost_unit_price')"
-                  v-if="show_hide_col_list.includes('cost_unit_price')"
-                >
-                  原単価
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                 @click="sortBynumeric_valu('cost_price')"
-                  v-if="show_hide_col_list.includes('cost_price')"
-                >
-                  原価金額
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                 
-                  v-if="show_hide_col_list.includes('selling_unit_price')"
-                >
-                  売単価
-                  <span id="name_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer"
-                  
-                  v-if="show_hide_col_list.includes('selling_price')"
-                >
-                  売価金額
-                  <span id="name_icon"></span>
-                </th>
-               
-                
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="email"
-                  style="cursor: pointer"
-                  
-                >
-                  発注数量
-                  <span id="total_icon"></span>
-                </th>
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="email"
-                  style="cursor: pointer"
-                  
-                >
-                  納品数量
-                  <span id="total_icon"></span>
-                </th>
-
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="email"
-                  style="cursor: pointer;min-width:80px;"
-                 
-                >
-                  ステータス
-                  <span id="email_icon"></span>
-                </th>
-                
+                <th style="cursor: pointer" v-if="show_hide_col_list.includes('order_type')">注文タイプ</th>
+                <th style="cursor: pointer;min-width:100px;" @click="sortByja_valu('shop_name_kana')" v-if="show_hide_col_list.includes('shop_name_kana')">
+                  店舗名(ｶﾅ)</th>
+                <th @click="sortBynumeric_valu('category_code')" v-if="show_hide_col_list.includes('category_code')">
+                  分類コード</th>
+                <th style="cursor: pointer" @click="sortBynumeric_valu('voucher_category')" v-if="show_hide_col_list.includes('voucher_category')">
+                  伝票区分</th>
+                <th style="cursor: pointer" @click="sortBynumeric_valu('voucher_number')" v-if="show_hide_col_list.includes('voucher_number')">
+                  伝票番号</th>
+                <th style="cursor: pointer" v-if="show_hide_col_list.includes('list_number')">
+                  明細番号</th>
+                <th style="cursor: pointer" v-if="show_hide_col_list.includes('delivery_service_code')">
+                  便番号</th>
+                <th style="cursor: pointer" @click="sortBynumeric_valu('jan')" v-if="show_hide_col_list.includes('jan')">
+                  JAN</th>
+                <th style="cursor: pointer;min-width:220px" v-if="show_hide_col_list.includes('item_name')">
+                  商品名 </th>
+                <th style="cursor: pointer;min-width:220px" v-if="show_hide_col_list.includes('item_name_kana')">
+                  商品名かな</th>
+                <th style="cursor: pointer" v-if="show_hide_col_list.includes('spec')">
+                  規格</th>
+                <th style="cursor: pointer" v-if="show_hide_col_list.includes('spec_kana')">
+                  規格かな</th>
+                <th style="cursor: pointer" v-if="show_hide_col_list.includes('inputs')">
+                  入数</th>
+                <th style="cursor: pointer" v-if="show_hide_col_list.includes('size')">
+                  サイズ</th>
+                <th style="cursor: pointer;min-width:80px;" v-if="show_hide_col_list.includes('color')">
+                  カラー</th>
+                <th style="cursor: pointer;min-width:80px" v-if="show_hide_col_list.includes('order_lot_inputs')">
+                  発注単位</th>
+                <th style="cursor: pointer;;min-width:100px;" v-if="show_hide_col_list.includes('order_date')">
+                  発注日時</th>
+                <th style="cursor: pointer;min-width:100px;" v-if="show_hide_col_list.includes('expected_delivery_date')">
+                  納品予定日</th>
+                <th style="cursor: pointer" v-if="show_hide_col_list.includes('sale_category')">
+                  特売区分</th>
+                <th style="cursor: pointer" @click="sortBynumeric_valu('cost_unit_price')" v-if="show_hide_col_list.includes('cost_unit_price')">
+                  原単価</th>
+                <th style="cursor: pointer" @click="sortBynumeric_valu('cost_price')" v-if="show_hide_col_list.includes('cost_price')">
+                  原価金額</th>
+                <th style="cursor: pointer" v-if="show_hide_col_list.includes('selling_unit_price')">
+                  売単価 </th>
+                <th style="cursor: pointer" v-if="show_hide_col_list.includes('selling_price')">
+                  売価金額</th>
+                <th style="cursor: pointer">
+                  発注数量 </th>
+                <th style="cursor: pointer">
+                  納品数量</th>
+                <th style="cursor: pointer;min-width:80px;">
+                  ステータス</th>
                 <th>欠品理由</th>
                 <th style="min-width:100px">数量確定</th>
                 <th style="min-width:100px">発注データ修正</th>
-              </tr>
+              </tr> -->
             </thead>
             <tbody>
               <tr
@@ -612,6 +527,7 @@
 export default {
   data() {
     return {
+      today:new Date().toISOString().slice(0, 10),
       sortKey: '',
       reverse:true,
       order_by:'asc',

@@ -135,6 +135,7 @@ export default {
       this.form
         .post(this.BASE_URL+"api/role")
         .then(({data}) => {
+          // console.log(data);
           if (data.alert_text=='required') {
             this.alert_text=this.myLang.role_name_required
           }else if(data.alert_text=='updated'){
