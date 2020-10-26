@@ -3,17 +3,119 @@
                 <div class="col-12">
                     <h4 class="top_title text-center" style="margin-top:10px;">{{myLang.order_data_heading}}</h4>
                 </div>
-                <div class="col-12 text-center">
+                <!-- <div class="col-12 text-center">
                     
       <label>
         <input type="file" id="file" ref="file" v-on:change="onChangeFileUpload()"/>
       </label>
+                </div> -->
+                <!-- <div class="col-12"> -->
+                    <!-- <div class="row" style="background:#D5DADC; padding:10px"> -->
+                        <div class="col-12" style="background:#D5DADC; padding:10px">
+                            <table class="table table-bordered" style="width:100%">
+                                <tr>
+                                    <td>
+                                        {{myLang.receive_date}}
+                                    </td>
+                                    <td>
+                                        <input type="date" class="form-control" v-model="today">
+                                    </td>
+                                    <td> ~ </td>
+                                    <td>
+                                        <input type="date" class="form-control" v-model="today">
+                                    </td>
+                                    <td>{{myLang.customer_code}}</td>
+                                    <td style="width:30%">
+                                        <select class="form-control">
+                                            <option :value="0">{{myLang.customer_code}}</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-primary" type="button">{{myLang.refer}}</button>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>{{myLang.delivery_date}}</td>
+                                    <td>
+                                        <input type="date" class="form-control" v-model="today">
+                                    </td>
+                                    <td> ~ </td>
+                                    <td>
+                                        <input type="date" class="form-control" v-model="today">
+                                    </td>
+                                    <td>{{myLang.shipment}}</td>
+                                    <td>
+                                        <select class="form-control">
+                                            <option :value="0">{{myLang.shipment}}</option>
+                                        </select>
+                                    </td>
+                                    <td>{{myLang.temperature}}</td>
+                                    <td style="width:35%">
+                                        <select class="form-control">
+                                            <option :value="0">{{myLang.temperature}}</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>{{myLang.confirmation_status}}</td>
+                                    <td>
+                                        <select class="form-control">
+                                            <option :value="0">{{myLang.confirmation_status}}</option>
+                                        </select>
+                                    </td>
+                                    <td>{{myLang.voucher_type}}</td>
+                                    <td>
+                                        <select class="form-control">
+                                            <option :value="0">{{myLang.voucher_type}}</option>
+                                        </select>
+                                    </td>
+                                    <td>{{myLang.printing_status}}</td>
+                                    <td>
+                                        <select class="form-control">
+                                            <option :value="0">{{myLang.printing_status}}</option>
+                                        </select>
+                                    </td>
+                                    <td>{{myLang.confirmation_status}}</td>
+                                    <td>
+                                        <select class="form-control">
+                                            <option :value="0">{{myLang.confirmation_status}}</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <!-- <tr>
+                                    <td>{{myLang.voucher_type}}</td>
+                                    <td>
+                                        <select class="form-control">
+                                            <option :value="0">{{myLang.voucher_type}}</option>
+                                        </select>
+                                    </td>
+                                    <td colspan="6"></td>
+                                </tr> -->
+                            </table>
+                            
+                        </div>
+                    <!-- </div> -->
+                    <br>
+                    <!-- <div class="row"> -->
+                        <div class="col-12" style="text-align:center">
+                            <button class="btn btn-primary" type="button">{{myLang.search}}</button> 
+                        </div>
+                    <!-- </div> -->
+                <!-- </div> -->
+                <div class="col-12">
+                    <hr/>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-outline-primary" type="button">
+                        <b-icon icon="download" animation="fade" font-scale="1.2"></b-icon> {{myLang.download}}
+                    </button>
                 </div>
                 <div class="col-12">
                     <div class="">
                         <table class="table table-striped table-bordered data_table">
                             <thead>
-                                <tr>
+                                <!-- <tr>
                                     <th colspan="100%" style="border: none;">
                                         <div class="input-group mb-1" style="margin-left: 10px;max-width: 250px; float: left;">
                                             <div class="input-group-prepend">
@@ -21,25 +123,22 @@
                                             </div>
                                             <select class="form-control" v-model="selected_byr">
                                             <option :value="0">{{myLang.select_buyer}}</option>
-                                              <option v-for="(option, index) in byr_buyer_lists" 
-                    :key="index" :value="option.cmn_company_id"
-                    :selected="selectedOption(option)">
-                    {{ option.company_name }}
-            </option>
+                                            <option v-for="(option, index) in byr_buyer_lists" 
+                                                :key="index" :value="option.cmn_company_id"
+                                                :selected="selectedOption(option)">
+                                                {{ option.company_name }}
+                                            </option>
                                             </select>
                                         </div>
-                                        <!--<div class="active-pink-3 active-pink-4 mb-1" style="margin-left: 10px;max-width: 100%; float: left;">
-                                            <input class="form-control" type="text" placeholder="Search" aria-label="Search">
-                                        </div>-->
                                     </th>
-                                </tr>
+                                </tr> -->
                                 <tr>
                                     <th style="cursor: pointer">No</th>
-                                    <th style="cursor: pointer">{{myLang.buyer_name}}</th>
                                     <th style="cursor: pointer">{{myLang.order_date_time}}</th>
+                                    <th style="cursor: pointer">{{myLang.buyer_name}}</th>
                                     <th style="cursor: pointer">{{myLang.delivery_date}}</th>
                                     <th style="cursor: pointer">{{myLang.category_code}}</th>
-                                    <th style="cursor: pointer">{{myLang.delivery_service_code}}</th>
+                                    <th style="cursor: pointer">{{myLang.shipment}}</th>
                                     <th style="cursor: pointer">{{myLang.temperature}}</th>
                                     <th style="cursor: pointer">{{myLang.total_voucher_number}}</th>
                                     <th style="cursor: pointer">{{myLang.total_confirm_date}}</th>
@@ -51,8 +150,10 @@
                             <tbody>
                                 <tr v-for="(order_list,index) in order_lists" :key="order_list.byr_order_id">
                                     <td>{{index+1}}</td>
+                                    <!-- <td>{{order_list.receive_date.valueOf() }}</td> -->
+                                    <!-- ,order_receive_date:order_list.receive_date -->
+                                    <td><router-link :to="{name:'order_list_detail',params:{byr_order_id:order_list.byr_order_id,order_receive_date:(order_list.receive_date).valueOf()} }" class="btn btn-primary">{{order_list.receive_date}}</router-link></td>
                                     <td>{{order_list.company_name}}</td>
-                                    <td>{{order_list.receive_date}}</td>
                                     <td>{{order_list.expected_delivery_date}}</td>
                                     <td>{{order_list.category_code}}</td>
                                     <td>{{order_list.delivery_service_code}}</td>
@@ -73,6 +174,8 @@
 export default {
   data() {
     return {
+        today:new Date().toISOString().slice(0, 10),
+        // today:new Date().toLocaleDateString(),
         'order_lists':{},
         'byr_buyer_lists':{},
         'file':'',

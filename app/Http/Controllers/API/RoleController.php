@@ -57,6 +57,8 @@ class RoleController extends Controller
     {
         if (!(Validator::make($request->all(), ['role_name' => 'required | max:50',])->passes())) {
             return response()->json(['alert_text' => 'required', 'class_name' => 'error','title'=>'Required!']);
+            // return response()->json(['alert_text' => 'required', 'class_name' => 'error','title'=>'Required!','message'=>\Session::get('locale')]);
+            // return response()->json(['alert_text' => 'required', 'class_name' => 'error','title'=>'Required!','message'=>\Lang::get('blog.title',array(),\App::getLocale())]);
         }
         $role_update_id = $request->role_update_id;
         $permission_full = $request->permissions;

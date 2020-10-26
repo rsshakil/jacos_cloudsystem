@@ -350,7 +350,8 @@ class Byr_orderController extends Controller
             
     }
 
-    public function get_byr_info_by_byr_order_id($byr_order_id){
+    public function get_byr_info_by_byr_order_id(Request $request){
+        $byr_order_id=$request->byr_order_id;
         $result = DB::table('byr_orders')
             ->select('byr_buyers.*')
             ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'byr_orders.cmn_connect_id')

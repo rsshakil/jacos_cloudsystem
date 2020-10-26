@@ -54,7 +54,7 @@ export const routes = [
                 name: 'order_list',
             },
             {
-                path: '/order_list/order_list_detail/:byr_order_id',
+                path: '/order_list/order_list_detail/:byr_order_id/:order_receive_date',
                 component: byr_order_detail,
                 name: 'order_list_detail',
                 meta: {
