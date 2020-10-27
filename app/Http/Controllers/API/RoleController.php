@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\API\AllUsedFunction;
+use Auth;
 // use App\Http\Controllers\API\LanguageController;
 
 class RoleController extends Controller
@@ -57,8 +58,10 @@ class RoleController extends Controller
     {
         if (!(Validator::make($request->all(), ['role_name' => 'required | max:50',])->passes())) {
             return response()->json(['alert_text' => 'required', 'class_name' => 'error','title'=>'Required!']);
-            // return response()->json(['alert_text' => 'required', 'class_name' => 'error','title'=>'Required!','message'=>\Session::get('locale')]);
+            // return response()->json(['alert_text' => 'required', 'class_name' => 'error','title'=>'Required!','message'=>Auth::User()]);
             // return response()->json(['alert_text' => 'required', 'class_name' => 'error','title'=>'Required!','message'=>\Lang::get('blog.title',array(),\App::getLocale())]);
+            // return response()->json(['alert_text' => 'required', 'class_name' => 'error','title'=>'Required!','message'=>trans('blog.title')]);
+            // return response()->json(['alert_text' => 'required', 'class_name' => 'error','title'=>'Required!','message'=>__('blog.title')]);
         }
         $role_update_id = $request->role_update_id;
         $permission_full = $request->permissions;
