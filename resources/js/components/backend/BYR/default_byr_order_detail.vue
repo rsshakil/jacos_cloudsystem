@@ -84,9 +84,10 @@
                                         <input type="date" class="form-control" v-model="today">
                                     </td>
                                     <td>{{myLang.customer_name}}</td>
-                                    <td colspan="5">
+                                    <td>
                                         <input type="text" class="form-control">
                                     </td>
+                                    <td colspan="4"></td>
                                 </tr>
                                 <tr>
                                     <td>{{myLang.delivery_date}}</td>
@@ -95,22 +96,25 @@
                                     </td>
                                     <td>{{myLang.category_code}}</td>
                                     <td>
-                                        001
+                                        <input type="text" class="form-control">
                                     </td>
                                     <td>{{myLang.shipment}}</td>
                                     <td>
-                                        001 便
+                                        <input type="text" class="form-control">
                                     </td>
                                     <td>{{myLang.temperature}}</td>
                                     <td>
-                                     Blank   
+                                      <input type="text" class="form-control">  
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>{{myLang.confirmation_status}}</td>
-                                    <td colspan="7">
-                                       T/A
+                                    <td>
+                                      <select class="form-control">
+                                          <option :value="0">{{myLang.confirmation_status}}</option>
+                                      </select>
                                     </td>
+                                    <td colspan="6"></td>
                                 </tr>
                             </table>
                         </div>
@@ -132,12 +136,12 @@
                                     <td>
                                        {{myLang.total_voucher_number}} <!--伝票番号-->
                                     </td>
-                                    <td> <input type="text" class="form-control" v-model="today"> </td>
+                                    <td> <input type="search" class="form-control" v-model="today"> </td>
                                 </tr>
                                 <tr>
                                     <td>{{myLang.product_code}}</td>
                                     <td>
-                                        <input type="text" class="form-control" v-model="today">
+                                        <input type="search" class="form-control" v-model="today">
                                     </td>
                                     <td> <button class="btn btn-primary" type="button">{{myLang.search}}</button> </td>
                                     <td>{{myLang.specific}}</td>
@@ -202,10 +206,11 @@
                   <table class="table table-bordered">
                     <tr>
                       <td>
-                        <button type="button">File Upload</button>
+                        <!-- <button type="button">File Upload</button> -->
+                        <input type="file" class="form-control">
                       </td>
                       <td>
-                        File Upload <input type="checkbox">
+                        <input type="checkbox" class="form-control">
                       </td>
                       <td>
                         <button class="btn btn-outline-primary" type="button">
