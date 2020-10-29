@@ -21,19 +21,20 @@ class BmsOrderController extends Controller
         $this->order_id = '';
         $this->all_functions = new AllUsedFunction();
     }
-    public function store(Request $request, $job_id){
+    public function store(Request $request, $job_id)
+    {
         // return $request->all();
         ini_set('max_execution_time', 6000);
         ini_set('memory_limit', '256M');
-        if(isset($request->email) && isset($request->password)){
+        if (isset($request->email) && isset($request->password)) {
             $user = User::where('email', '=', $request->email)->first();
             if (!$user) {
                 return ['status'=>1, 'message' => 'Authentication faild!'];
             }
             if (!Hash::check($request->password, $user->password)) {
                 return ['status'=>1, 'message' => 'Authentication faild!'];
-            } 
-        }else{
+            }
+        } else {
             return ['status'=>1, 'message' => 'Authentication faild!'];
         }
         if (!(Validator::make($request->all(), ['order_file' => 'required'])->passes())) {
@@ -44,7 +45,7 @@ class BmsOrderController extends Controller
         $file = $request->file('order_file');
         // return $file_name = $file->getClientOriginalName();
         $file_name = $file->getClientOriginalName();
-        // File Name change 
+        // File Name change
         $fileName = $this->all_functions->file_name_change($file_name);
         // $this->all_functions->public_folder_create('bms_order_files');
         $file_temp_path = public_path('bms_order_files');
@@ -53,7 +54,7 @@ class BmsOrderController extends Controller
         $baseUrl = public_path('bms_order_files/') . $fileName;
         $dataArr = $this->all_functions->csvReader($baseUrl);
         $data_count=count($dataArr);
-        $cmn_connect_info=cmn_job::select('cmn_connect_id')->where('cmn_job_id',$job_id)->first();
+        $cmn_connect_info=cmn_job::select('cmn_connect_id')->where('cmn_job_id', $job_id)->first();
         $order_array=array(
             "cmn_connect_id"=>$cmn_connect_info->cmn_connect_id,
             "receive_file_path"=>$fileName,
@@ -225,45 +226,94 @@ class BmsOrderController extends Controller
             $temp_array['mes_lis_ord_lin_fre_unit_weight_code']=$value[155];
             $temp_array['mes_lis_ord_lin_fre_item_weight']=$value[156];
             $temp_array['mes_lis_ord_lin_fre_order_weight']=$value[157];
-            // 158 done 
+            // 158 done
             $insert_array[]=$temp_array;
         }
         // return $insert_array;
-        foreach (array_chunk($insert_array,300) as $t)  
-        {
-            bms_order::insert($t); 
+        foreach (array_chunk($insert_array, 300) as $t) {
+            bms_order::insert($t);
         }
         return response()->json(['message' => 'File inserted', 'class_name' => 'alert-success', 'status_code' => 200]);
-       
     }
 
-    public function orderCreateFixedLength(Request $request){
+    public function orderCreateFixedLength(Request $request)
+    {
         // return $request->all();
         $byr_order_id=$request->order_id;
-        $all_bms_data=bms_order::select('sta_doc_creation_date_and_time','sta_doc_creation_date_and_time','mes_lis_ord_tra_dat_order_date',
-        'mes_lis_ord_par_sel_code','mes_lis_ord_tra_trade_number','mes_lis_ord_par_rec_code','mes_lis_ord_tra_goo_major_category',
-        'mes_lis_ord_tra_dat_order_date','mes_lis_ord_tra_dat_delivery_date','mes_lis_ord_par_sel_code','mes_lis_ord_log_del_delivery_service_code',
-        'mes_lis_ord_par_rec_name_sbcs','mes_lis_ord_par_sel_name_sbcs','mes_lis_ord_tra_ins_goods_classification_code',
-        'mes_lis_ord_log_del_route_code','mes_lis_ord_par_shi_code','mes_lis_ord_par_shi_name_sbcs','mes_lis_ord_lin_lin_line_number',
-        'mes_lis_ord_lin_ite_order_item_code','mes_lis_ord_lin_fre_packing_quantity','mes_lis_ord_lin_qua_ord_num_of_order_units',
-        'mes_lis_ord_lin_qua_ord_quantity','mes_lis_ord_lin_amo_item_net_price_unit_price','mes_lis_ord_lin_amo_item_selling_price_unit_price',
-        'mes_lis_ord_lin_amo_item_net_price','mes_lis_ord_lin_amo_item_selling_price','mes_lis_ord_lin_ite_name_sbcs')
-        ->where('byr_order_id',$byr_order_id)->get();
+        $all_bms_data=bms_order::select(
+            'sta_doc_creation_date_and_time',
+            'mes_lis_ord_tra_dat_order_date',
+            'mes_lis_ord_par_sel_code',
+            'mes_lis_ord_tra_trade_number',
+            'mes_lis_ord_par_rec_code',
+            'mes_lis_ord_tra_goo_major_category',
+            'mes_lis_ord_tra_dat_delivery_date',
+            'mes_lis_ord_log_del_delivery_service_code',
+            'mes_lis_ord_par_rec_name_sbcs',
+            'mes_lis_ord_par_sel_name_sbcs',
+            'mes_lis_ord_tra_ins_goods_classification_code',
+            'mes_lis_ord_log_del_route_code',
+            'mes_lis_ord_par_shi_code',
+            'mes_lis_ord_par_shi_name_sbcs',
+            'mes_lis_ord_lin_lin_line_number',
+            'mes_lis_ord_lin_ite_order_item_code',
+            'mes_lis_ord_lin_fre_packing_quantity',
+            'mes_lis_ord_lin_qua_ord_num_of_order_units',
+            'mes_lis_ord_lin_qua_ord_quantity',
+            'mes_lis_ord_lin_amo_item_net_price_unit_price',
+            'mes_lis_ord_lin_amo_item_selling_price_unit_price',
+            'mes_lis_ord_lin_amo_item_net_price',
+            'mes_lis_ord_lin_amo_item_selling_price',
+            'mes_lis_ord_lin_ite_name_sbcs'
+        )
+        ->where('byr_order_id', $byr_order_id)->get();
+
+        $data=[];
+        foreach ($all_bms_data as $key => $val) {
+            \Log::debug($key.':'.$val);
+            // file head
+            echo($val['sta_doc_creation_date_and_time'].PHP_EOL);
+            echo($val['mes_lis_ord_tra_dat_order_date'].PHP_EOL);
+            $dt = date('ymdHis', strtotime($val['sta_doc_creation_date_and_time']));
+            $do = date('ymd', strtotime($val['mes_lis_ord_tra_dat_order_date']));
+            $file_head = 'A00'.$dt.$do.'82105578';
+            echo($file_head.PHP_EOL);
+
+            // vouchers
+            $voucher_head = 'B010'.$val['mes_lis_ord_tra_trade_number'].'000'.$val['mes_lis_ord_par_rec_code'];
+
+            // items
+            $items = 'D01'.$val['mes_lis_ord_lin_lin_line_number'].$val['mes_lis_ord_lin_ite_order_item_code'];
+
+            $data[$file_head][$voucher_head] = $items;
+
+            print_r($data);
+            return ;
+        }
+
+        return;
+
+
+
+
+
+
+
+
+
+
         $initial_array=array();
 
         $collection = collect($all_bms_data);
         $grouped = $collection->groupBy('sta_doc_creation_date_and_time');
         $a_array= $grouped->toArray();
-            $tmp_array1=array();
-            $tmp_array2=array();
-            $tmp_array3=array();
 
-        for ($i=0; $i < count($a_array); $i++) { 
+        for ($i=0; $i < count($a_array); $i++) {
             $step0=array_keys($a_array)[$i];
             $step0_data_array=$a_array[$step0];
             $tmp_array1[]=$step0_data_array;
         }
-// return $tmp_array1;
+        // return $tmp_array1;
         foreach ($tmp_array1 as $key => $tmp_arr) {
             $initial_array['a_array']=array(
                 'sta_doc_creation_date_and_time'=>$tmp_arr[0]['sta_doc_creation_date_and_time'],
