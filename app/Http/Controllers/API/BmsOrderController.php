@@ -236,4 +236,44 @@ class BmsOrderController extends Controller
         return response()->json(['message' => 'File inserted', 'class_name' => 'alert-success', 'status_code' => 200]);
        
     }
+
+    public function orderCreateFixedLength(Request $request){
+        // return $request->all();
+        $byr_order_id=$request->order_id;
+        $all_bms_data=bms_order::select('sta_doc_creation_date_and_time','sta_doc_creation_date_and_time','mes_lis_ord_tra_dat_order_date',
+        'mes_lis_ord_par_sel_code','mes_lis_ord_tra_trade_number','mes_lis_ord_par_rec_code','mes_lis_ord_tra_goo_major_category',
+        'mes_lis_ord_tra_dat_order_date','mes_lis_ord_tra_dat_delivery_date','mes_lis_ord_par_sel_code','mes_lis_ord_log_del_delivery_service_code',
+        'mes_lis_ord_par_rec_name_sbcs','mes_lis_ord_par_sel_name_sbcs','mes_lis_ord_tra_ins_goods_classification_code',
+        'mes_lis_ord_log_del_route_code','mes_lis_ord_par_shi_code','mes_lis_ord_par_shi_name_sbcs','mes_lis_ord_lin_lin_line_number',
+        'mes_lis_ord_lin_ite_order_item_code','mes_lis_ord_lin_fre_packing_quantity','mes_lis_ord_lin_qua_ord_num_of_order_units',
+        'mes_lis_ord_lin_qua_ord_quantity','mes_lis_ord_lin_amo_item_net_price_unit_price','mes_lis_ord_lin_amo_item_selling_price_unit_price',
+        'mes_lis_ord_lin_amo_item_net_price','mes_lis_ord_lin_amo_item_selling_price','mes_lis_ord_lin_ite_name_sbcs')
+        ->where('byr_order_id',$byr_order_id)->get();
+        $initial_array=array();
+
+        $collection = collect($all_bms_data);
+        $grouped = $collection->groupBy('sta_doc_creation_date_and_time');
+        $a_array= $grouped->toArray();
+            $tmp_array1=array();
+            $tmp_array2=array();
+            $tmp_array3=array();
+
+        for ($i=0; $i < count($a_array); $i++) { 
+            $step0=array_keys($a_array)[$i];
+            $step0_data_array=$a_array[$step0];
+            $tmp_array1[]=$step0_data_array;
+        }
+// return $tmp_array1;
+        foreach ($tmp_array1 as $key => $tmp_arr) {
+            $initial_array['a_array']=array(
+                'sta_doc_creation_date_and_time'=>$tmp_arr[0]['sta_doc_creation_date_and_time'],
+                'mes_lis_ord_tra_dat_order_date'=>$tmp_arr[0]['mes_lis_ord_tra_dat_order_date'],
+                'mes_lis_ord_par_sel_code'=>$tmp_arr[0]['mes_lis_ord_par_sel_code'],
+            );
+            $initial_array['b_array']=$tmp_arr;
+            $temp_array2[]=$initial_array;
+        }
+        // return \count($temp_array2);
+        return $temp_array2;
+    }
 }
