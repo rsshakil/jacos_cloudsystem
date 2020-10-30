@@ -286,27 +286,24 @@ class BmsOrderController extends Controller
 
             // vouchers
             $ddd_d = date('ymd', strtotime($val['mes_lis_ord_tra_dat_delivery_date']));
-            $voucher_head = 'B010'.$val['mes_lis_ord_tra_trade_number'].'000'.$val['mes_lis_ord_par_rec_code'];
+            $voucher_head = 'B0100'.$val['mes_lis_ord_tra_trade_number'].'000'.'00'.$val['mes_lis_ord_par_rec_code'].'0';
             $voucher_head.=$val['mes_lis_ord_tra_goo_major_category'].'50'.$do.$ddd_d.$val['mes_lis_ord_par_sel_code'].'00';
-            $voucher_head.=$val['mes_lis_ord_log_del_delivery_service_code'].$val['mes_lis_ord_par_rec_name_sbcs'];
-            $voucher_head.='      '.$val['mes_lis_ord_par_sel_name_sbcs'].$val['mes_lis_ord_tra_ins_goods_classification_code'];
-            $voucher_head.=$val['mes_lis_ord_log_del_route_code'].$val['mes_lis_ord_par_shi_code'];
-            $voucher_head.=$val['mes_lis_ord_par_shi_name_sbcs'].'                ';
+            $voucher_head.=$val['mes_lis_ord_log_del_delivery_service_code'].$val['mes_lis_ord_par_rec_name_sbcs'].'   ';
+            $voucher_head.='      '.$val['mes_lis_ord_par_sel_name_sbcs'].'                 '.$val['mes_lis_ord_tra_ins_goods_classification_code'];
+            $voucher_head.=$val['mes_lis_ord_log_del_route_code'].'00'.$val['mes_lis_ord_par_shi_code'];
+            $voucher_head.=$val['mes_lis_ord_par_shi_name_sbcs'].'                   '.'                ';
 
             // items
+            // $var1 = str_replace(".", "", $var1);
             // echo($val['mes_lis_ord_lin_amo_item_net_price_unit_price'].PHP_EOL);
-            $items = 'D01'.$val['mes_lis_ord_lin_lin_line_number'].$val['mes_lis_ord_lin_ite_order_item_code'];
-            $items.= $val['mes_lis_ord_lin_fre_packing_quantity'].$val['mes_lis_ord_lin_qua_ord_num_of_order_units'].'   ';
-            $items.= $val['mes_lis_ord_lin_qua_ord_quantity'].'0'.$val['mes_lis_ord_lin_amo_item_net_price_unit_price'].'0'; //Here . has
-            $items.= $val['mes_lis_ord_lin_amo_item_selling_price_unit_price'].'0'.$val['mes_lis_ord_lin_amo_item_net_price'].'0';
-            $items.= $val['mes_lis_ord_lin_amo_item_selling_price'].'         '.$val['mes_lis_ord_lin_ite_name_sbcs'].'                       ';
-            // Sakaki san's Line 
-            // $data[$file_head][$voucher_head] = $items;
-            // Mayeen Line 
-            $data[$file_head][$voucher_head][$items] = $items;
-
+            $items = 'D01'.'0'.$val['mes_lis_ord_lin_lin_line_number'].$val['mes_lis_ord_lin_ite_order_item_code'].'   ';
+            $items.= '0000'.$val['mes_lis_ord_lin_fre_packing_quantity'].'000'.$val['mes_lis_ord_lin_qua_ord_num_of_order_units'].'   ';
+            $items.= '0000'.str_replace(".", "", $val['mes_lis_ord_lin_qua_ord_quantity']).'0'.'000'.str_replace(".", "", $val['mes_lis_ord_lin_amo_item_net_price_unit_price']).'0'; //Here . has
+            $items.= '000'.$val['mes_lis_ord_lin_amo_item_selling_price_unit_price'].'0'.'000000'.$val['mes_lis_ord_lin_amo_item_net_price'].'0';
+            $items.= '000000'.$val['mes_lis_ord_lin_amo_item_selling_price'].'         '.$val['mes_lis_ord_lin_ite_name_sbcs'].'    '.'                       ';
             
-            // return ;
+            $data[$file_head][$voucher_head][] = $items;
+
         }
         // return count($data);
         // return $data;
@@ -328,13 +325,14 @@ class BmsOrderController extends Controller
 
                 for ($k=0; $k <$step1_data_count ; $k++) { 
                     $step2=array_keys($step1_data_array)[$k];
+                    // $string_data.=$step2."\n";
                     $string_data.=$step1_data_array[$step2]."\n";
                 }
             }
         }
         $txt_file_name='Text_File_'.time().".txt";
         \File::put(storage_path('app/fixed_length_files/'.$txt_file_name),$string_data);
-
+        return $data;
         return response()->json(['message'=>"File has been created",'url'=>\Config('app.url').'storage/app/fixed_length_files/'.$txt_file_name]);
     }
 }
