@@ -11,6 +11,7 @@ use App\Models\ADM\User;
 use App\Models\BYR\byr_order;
 use App\Models\BMS\bms_order;
 use App\Models\CMN\cmn_job;
+use App\Models\CMN\cmn_scenario;
 
 class BmsOrderController extends Controller
 {
@@ -239,121 +240,40 @@ class BmsOrderController extends Controller
     public function orderCreateFixedLength(Request $request)
     {
         // return $request->all();
-        $byr_order_id=$request->order_id;
-        $all_bms_data=bms_order::select(
-            'sta_doc_creation_date_and_time',
-            'mes_lis_ord_tra_dat_order_date',
-            'mes_lis_ord_par_sel_code',
-            'mes_lis_ord_tra_trade_number',
-            'mes_lis_ord_par_rec_code',
-            'mes_lis_ord_tra_goo_major_category',
-            'mes_lis_ord_tra_dat_delivery_date',
-            'mes_lis_ord_log_del_delivery_service_code',
-            'mes_lis_ord_par_rec_name_sbcs',
-            'mes_lis_ord_par_sel_name_sbcs',
-            'mes_lis_ord_tra_ins_goods_classification_code',
-            'mes_lis_ord_log_del_route_code',
-            'mes_lis_ord_par_shi_code',
-            'mes_lis_ord_par_shi_name_sbcs',
-            'mes_lis_ord_lin_lin_line_number',
-            'mes_lis_ord_lin_ite_order_item_code',
-            'mes_lis_ord_lin_fre_packing_quantity',
-            'mes_lis_ord_lin_qua_ord_num_of_order_units',
-            'mes_lis_ord_lin_qua_ord_quantity',
-            'mes_lis_ord_lin_amo_item_net_price_unit_price',
-            'mes_lis_ord_lin_amo_item_selling_price_unit_price',
-            'mes_lis_ord_lin_amo_item_net_price',
-            'mes_lis_ord_lin_amo_item_selling_price',
-            'mes_lis_ord_lin_ite_name_sbcs'
-        )
-        ->where('byr_order_id', $byr_order_id)->get();
-
-        $data=[];
-        foreach ($all_bms_data as $key => $val) {
-            \Log::debug($key.':'.$val);
-            // file head
-            // echo($val['sta_doc_creation_date_and_time'].PHP_EOL);
-            // echo($val['mes_lis_ord_tra_dat_order_date'].PHP_EOL);
-            // $dt = date('ymdHis', strtotime($val['sta_doc_creation_date_and_time']));
-            // $do = date('ymd', strtotime($val['mes_lis_ord_tra_dat_order_date']));
-            $dt_d = date('ymd', strtotime($val['sta_doc_creation_date_and_time']));
-            $dt_t = date('His', strtotime($val['sta_doc_creation_date_and_time']));
-            $do = date('ymd', strtotime($val['mes_lis_ord_tra_dat_order_date']));
-            $psc=$val['mes_lis_ord_par_sel_code']."HI";
-            $file_head = 'A00'.$dt_d.$dt_t.$do.'82105578'.$psc.'82105578'.'128'.'000000'.'00000'.'               '.'                                                      ';
-            // $file_head = 'A00'.$dt_d.$dt_t.$do.'82105578';
-            // echo($file_head.PHP_EOL);
-
-            // vouchers
-            $ddd_d = date('ymd', strtotime($val['mes_lis_ord_tra_dat_delivery_date']));
-            $voucher_head = 'B010';
-            $voucher_head .= str_pad($val['mes_lis_ord_tra_trade_number'], 8, '0', STR_PAD_LEFT);
-            $voucher_head .= '000';
-            $voucher_head .= str_pad($val['mes_lis_ord_par_rec_code'], 6, '0', STR_PAD_LEFT);
-            $voucher_head .= str_pad($val['mes_lis_ord_tra_goo_major_category'], 4, '0', STR_PAD_LEFT);
-            $voucher_head .='50';
-            $voucher_head .= $do;
-            $voucher_head .= $ddd_d;
-            $voucher_head .= str_pad($val['mes_lis_ord_par_sel_code'], 6, '0', STR_PAD_LEFT);
-            $voucher_head .= '00';
-            $voucher_head .= substr($val['mes_lis_ord_log_del_delivery_service_code'], -1);
-            $voucher_head .= self::mb_str_pad($val['mes_lis_ord_par_rec_name_sbcs'], 6);
-            $voucher_head .= str_repeat(" ", 6);
-            $voucher_head .= self::mb_str_pad($val['mes_lis_ord_par_sel_name_sbcs'], 22);
-            $voucher_head .= substr($val['mes_lis_ord_tra_ins_goods_classification_code'], -1);
-            $voucher_head .= self::mb_str_pad($val['mes_lis_ord_log_del_route_code'], 1);
-            $voucher_head .= str_pad($val['mes_lis_ord_par_shi_code'], 6, '0', STR_PAD_LEFT);
-            $voucher_head .= self::mb_str_pad($val['mes_lis_ord_par_shi_name_sbcs'], 22);
-            $voucher_head .= str_repeat(" ", 16);
-
-            // items
-            // $var1 = str_replace(".", "", $var1);
-            // echo($val['mes_lis_ord_lin_amo_item_net_price_unit_price'].PHP_EOL);
-            $items = 'D01'.'0'.$val['mes_lis_ord_lin_lin_line_number'].$val['mes_lis_ord_lin_ite_order_item_code'].'   ';
-            $items.= '0000'.$val['mes_lis_ord_lin_fre_packing_quantity'].'000'.$val['mes_lis_ord_lin_qua_ord_num_of_order_units'].'   ';
-            $items.= '0000'.str_replace(".", "", $val['mes_lis_ord_lin_qua_ord_quantity']).'0'.'000'.str_replace(".", "", $val['mes_lis_ord_lin_amo_item_net_price_unit_price']).'0'; //Here . has
-            $items.= '000'.$val['mes_lis_ord_lin_amo_item_selling_price_unit_price'].'0'.'000000'.$val['mes_lis_ord_lin_amo_item_net_price'].'0';
-            $items.= '000000'.$val['mes_lis_ord_lin_amo_item_selling_price'].'         '.$val['mes_lis_ord_lin_ite_name_sbcs'].'    '.'                       ';
-            
-            $data[$file_head][$voucher_head][] = $items;
+        $cmn_scenario_id=$request->scenario_id;
+        $sc=cmn_scenario::where('cmn_scenario_id',$cmn_scenario_id)->first();
+        // return $sc;
+        // return app_path().'/'.$sc->file_path.'.php';
+        // scenario call
+        if (!file_exists(app_path().'/'.$sc->file_path.'.php')) {
+            \Log::error('Scenario file is not exist!:'.$sc->file_path);
+            return ['status'=>'1','message'=>'Scenario file is not exist!'.$sc->file_path];
         }
-        // return count($data);
-        // return $data;
-        // print_r($data);
-        $string_data="";
-        for ($i=0; $i < count($data); $i++) {
-            $step0=array_keys($data)[$i];
-            $string_data.=$step0."\n";
-            $step0_data_array=$data[$step0];
-
-            $step0_data_count=count($step0_data_array);
-            
-            for ($j=0; $j < $step0_data_count; $j++) {
-                $step1=array_keys($step0_data_array)[$j];
-                $string_data.=$step1."\n";
-
-                $step1_data_array=$step0_data_array[$step1];
-                $step1_data_count=count($step1_data_array);
-
-                for ($k=0; $k <$step1_data_count ; $k++) {
-                    $step2=array_keys($step1_data_array)[$k];
-                    // $string_data.=$step2."\n";
-                    $string_data.=$step1_data_array[$step2]."\n";
-                }
-            }
+        // ファイル読み込み
+        
+        // $sc_obj = new ouk_order_toj();//$sc->file_path;
+        $customClassPath = "\\App\\";
+        $nw_f_pth = explode('/',$sc->file_path);
+        foreach($nw_f_pth as $p){
+            $customClassPath .= $p.'\\';
         }
-        $txt_file_name='Text_File_'.time().".txt";
-        \File::put(storage_path('app/fixed_length_files/'.$txt_file_name), $string_data);
-        return $data;
-        return response()->json(['message'=>"File has been created",'url'=>\Config('app.url').'storage/app/fixed_length_files/'.$txt_file_name]);
+        $customClassPath = rtrim($customClassPath,"\\");
+        $sc_obj = new $customClassPath;
+        if (!method_exists($sc_obj, 'exec')) {
+            \Log::error('scenario exec error');
+            return ['status'=>'1','message'=>'Scenario exec function is not exist!'];
+        }
+        $ret = $sc_obj->exec($request,$sc);
+        if ($ret !== 0) {
+            // error
+            \Log::debug('scenario exec error');
+        } else {
+            // success
+            \Log::debug('scenario exec success');
+        }
+        return $ret;
+       
     }
 
-    public function mb_str_pad($input, $pad_length)
-    {
-        $len = $pad_length - mb_strlen($input);
-        if ($len<0) {
-            return mb_substr($input, 0, $pad_length);
-        }
-        return $input.str_repeat(' ', $len);
-    }
+    
 }
