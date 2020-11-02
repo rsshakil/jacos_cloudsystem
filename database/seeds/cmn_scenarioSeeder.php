@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Models\CMN\cmn_scenario;
 
 class cmn_scenarioSeeder extends Seeder
 {
@@ -72,8 +73,18 @@ class cmn_scenarioSeeder extends Seeder
                 'name' => 'SHIPMENT CSV GENERATE',
                 'description' => 'SHIPMENT CSV GENERATE',
                 'file_path' => 'scenarios/shipment_csv_generate',
+            ],
+            [
+                'byr_buyer_id' => 1,
+                'slr_seller_id' => 0,
+                'adm_role_id' => 4,
+                'class' => 'order',
+                'vector' => 'to_jacos',
+                'name' => 'ORDER FIXED LENGT GENERATE',
+                'description' => 'BMS ORDER FIXED LENGT GENERATE',
+                'file_path' => 'scenarios/fixed_length_generate',
             ]
         );
-        App\Models\CMN\cmn_scenario::insert($scenarios);
+        cmn_scenario::insert($scenarios);
     }
 }
