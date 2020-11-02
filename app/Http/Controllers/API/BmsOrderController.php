@@ -286,12 +286,25 @@ class BmsOrderController extends Controller
 
             // vouchers
             $ddd_d = date('ymd', strtotime($val['mes_lis_ord_tra_dat_delivery_date']));
-            $voucher_head = 'B0100'.$val['mes_lis_ord_tra_trade_number'].'000'.'00'.$val['mes_lis_ord_par_rec_code'].'0';
-            $voucher_head.=$val['mes_lis_ord_tra_goo_major_category'].'50'.$do.$ddd_d.$val['mes_lis_ord_par_sel_code'].'00';
-            $voucher_head.=$val['mes_lis_ord_log_del_delivery_service_code'].$val['mes_lis_ord_par_rec_name_sbcs'].'   ';
-            $voucher_head.='      '.$val['mes_lis_ord_par_sel_name_sbcs'].'                 '.$val['mes_lis_ord_tra_ins_goods_classification_code'];
-            $voucher_head.=$val['mes_lis_ord_log_del_route_code'].'00'.$val['mes_lis_ord_par_shi_code'];
-            $voucher_head.=$val['mes_lis_ord_par_shi_name_sbcs'].'                   '.'                ';
+            $voucher_head = 'B010';
+            $voucher_head .= str_pad($val['mes_lis_ord_tra_trade_number'], 8, '0', STR_PAD_LEFT);
+            $voucher_head .= '000';
+            $voucher_head .= str_pad($val['mes_lis_ord_par_rec_code'], 6, '0', STR_PAD_LEFT);
+            $voucher_head .= str_pad($val['mes_lis_ord_tra_goo_major_category'], 4, '0', STR_PAD_LEFT);
+            $voucher_head .='50';
+            $voucher_head .= $do;
+            $voucher_head .= $ddd_d;
+            $voucher_head .= str_pad($val['mes_lis_ord_par_sel_code'], 6, '0', STR_PAD_LEFT);
+            $voucher_head .= '00';
+            $voucher_head .= substr($val['mes_lis_ord_log_del_delivery_service_code'], -1);
+            $voucher_head .= self::mb_str_pad($val['mes_lis_ord_par_rec_name_sbcs'], 6);
+            $voucher_head .= str_repeat(" ", 6);
+            $voucher_head .= self::mb_str_pad($val['mes_lis_ord_par_sel_name_sbcs'], 22);
+            $voucher_head .= substr($val['mes_lis_ord_tra_ins_goods_classification_code'], -1);
+            $voucher_head .= self::mb_str_pad($val['mes_lis_ord_log_del_route_code'], 1);
+            $voucher_head .= str_pad($val['mes_lis_ord_par_shi_code'], 6, '0', STR_PAD_LEFT);
+            $voucher_head .= self::mb_str_pad($val['mes_lis_ord_par_shi_name_sbcs'], 22);
+            $voucher_head .= str_repeat(" ", 16);
 
             // items
             // $var1 = str_replace(".", "", $var1);
@@ -303,27 +316,26 @@ class BmsOrderController extends Controller
             $items.= '000000'.$val['mes_lis_ord_lin_amo_item_selling_price'].'         '.$val['mes_lis_ord_lin_ite_name_sbcs'].'    '.'                       ';
             
             $data[$file_head][$voucher_head][] = $items;
-
         }
         // return count($data);
         // return $data;
         // print_r($data);
         $string_data="";
-        for ($i=0; $i < count($data); $i++) { 
+        for ($i=0; $i < count($data); $i++) {
             $step0=array_keys($data)[$i];
             $string_data.=$step0."\n";
             $step0_data_array=$data[$step0];
 
             $step0_data_count=count($step0_data_array);
             
-            for ($j=0; $j < $step0_data_count; $j++) { 
+            for ($j=0; $j < $step0_data_count; $j++) {
                 $step1=array_keys($step0_data_array)[$j];
                 $string_data.=$step1."\n";
 
                 $step1_data_array=$step0_data_array[$step1];
                 $step1_data_count=count($step1_data_array);
 
-                for ($k=0; $k <$step1_data_count ; $k++) { 
+                for ($k=0; $k <$step1_data_count ; $k++) {
                     $step2=array_keys($step1_data_array)[$k];
                     // $string_data.=$step2."\n";
                     $string_data.=$step1_data_array[$step2]."\n";
@@ -331,8 +343,17 @@ class BmsOrderController extends Controller
             }
         }
         $txt_file_name='Text_File_'.time().".txt";
-        \File::put(storage_path('app/fixed_length_files/'.$txt_file_name),$string_data);
+        \File::put(storage_path('app/fixed_length_files/'.$txt_file_name), $string_data);
         return $data;
         return response()->json(['message'=>"File has been created",'url'=>\Config('app.url').'storage/app/fixed_length_files/'.$txt_file_name]);
+    }
+
+    public function mb_str_pad($input, $pad_length)
+    {
+        $len = $pad_length - mb_strlen($input);
+        if ($len<0) {
+            return mb_substr($input, 0, $pad_length);
+        }
+        return $input.str_repeat(' ', $len);
     }
 }
