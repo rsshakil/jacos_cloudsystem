@@ -83,6 +83,16 @@ class cmn_scenarioSeeder extends Seeder
                 'name' => 'ORDER FIXED LENGT GENERATE',
                 'description' => 'BMS ORDER FIXED LENGT GENERATE',
                 'file_path' => 'scenarios/fixed_length_generate',
+            ],
+            [
+                'byr_buyer_id' => 1,
+                'slr_seller_id' => 0,
+                'adm_role_id' => 4,
+                'class' => 'order',
+                'vector' => 'in_jacos',
+                'name' => 'ORDER FILE DELETE',
+                'description' => 'BMS ORDER ORDER FILE DELETE',
+                'file_path' => 'scenarios/file_delete_scenario',
             ]
         );
         cmn_scenario::insert($scenarios);

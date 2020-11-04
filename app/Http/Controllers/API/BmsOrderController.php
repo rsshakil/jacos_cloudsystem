@@ -13,6 +13,7 @@ use App\Models\BMS\bms_order;
 use App\Models\CMN\cmn_job;
 use App\Models\CMN\cmn_scenario;
 
+
 class BmsOrderController extends Controller
 {
     private $order_id;
@@ -237,7 +238,7 @@ class BmsOrderController extends Controller
         return response()->json(['message' => 'File inserted', 'class_name' => 'alert-success', 'status_code' => 200]);
     }
 
-    public function orderCreateFixedLength(Request $request)
+    public function orderCreateDeleteFixedLength(Request $request)
     {
         // return $request->all();
         $cmn_scenario_id=$request->scenario_id;

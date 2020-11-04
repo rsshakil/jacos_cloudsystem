@@ -112,7 +112,8 @@ Route::post('/canvas_data_save', 'API\Byr_orderController@canvasDataSave');
 Route::post('/load_canvas_data', 'API\Byr_orderController@canvasAllData');
 Route::post('/delete_canvas', 'API\Byr_orderController@deleteCanvasData');
 Route::post('/shipment_csv_create', 'API\ShipmentConroller@shipmentCSVCreate');
-Route::post('/order_create_fixed_length', 'API\BmsOrderController@orderCreateFixedLength');
+Route::post('/order_create_fixed_length', 'API\BmsOrderController@orderCreateDeleteFixedLength');
+Route::post('/delete_old_files', 'API\BmsOrderController@orderCreateDeleteFixedLength');
 
 Route::post('/load_pdf_platform_canvas_setting_data', 'API\CmnPdfPlatformSettings@canvasSettingData');
 Route::post('/pdf_platform_canvas_data_save', 'API\CmnPdfPlatformSettings@canvasDataSave');
