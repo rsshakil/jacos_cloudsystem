@@ -134,6 +134,7 @@ class fixed_length_generate
             }
         }
         $txt_file_name=date('y-m-d').'_Text_File_'.time().".txt";
+        $string_data=$this->all_functions->convert_from_utf8_to_sjis__recursively($string_data);
         \File::put(storage_path('app/fixed_length_files/'.$txt_file_name), $string_data);
         // return $data;
         return response()->json(['message'=>"File has been created",'url'=>\Config('app.url').'storage/app/fixed_length_files/'.$txt_file_name]);
