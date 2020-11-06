@@ -138,7 +138,11 @@ class fixed_length_generate
         }
         $txt_file_name=date('y-m-d').'_Text_File_'.time().".txt";
         $string_data=$this->all_functions->convert_from_utf8_to_sjis__recursively($string_data);
-        $string_data=$this->common_class_obj->sjis_2_ebcdic($string_data,1);
+        $string_data=$this->common_class_obj->sjis_2_ebcdic(null,$string_data);
+
+        // $string_data = $this->common_class_obj->ebcdic_2_sjis(null,$string_data);
+        // $string_data = mb_convert_encoding($string_data, "UTF-8", "SJIS");
+
         \File::put(storage_path('app/fixed_length_files/'.$txt_file_name), $string_data);
         // return $data;
         return response()->json(['message'=>"File has been created",'url'=>\Config('app.url').'storage/app/fixed_length_files/'.$txt_file_name]);
