@@ -54,6 +54,11 @@ class UsersTableSeeder extends Seeder
                 'name' => 'Slr4 User',
                 'email' => 'slr04@test.jp',
                 'password' => bcrypt('Qe75ymSr')
+            ],
+            [
+                'name' => 'biware_1 User',
+                'email' => 'biware_1@jacos.co.jp',
+                'password' => bcrypt('8NMS6TNT')
             ]
         );
 
@@ -67,6 +72,7 @@ class UsersTableSeeder extends Seeder
             ['user_id'=>6],
             ['user_id'=>7],
             ['user_id'=>8],
+            ['user_id'=>9],
         );
         User::insert($user_array);
         adm_user_details::insert($user_details_array);

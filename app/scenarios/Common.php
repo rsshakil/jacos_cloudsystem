@@ -70,10 +70,11 @@ class Common
     /** ////////////////////////////////////////////
      * ebcdic to shift jis
      * EBCDICをSJISに文字コード変換
-     * @param  String ファイルパス
+     * @param  String file_path ファイルパス
+     * @param  int data_type identifying ファイルパス/string ,   0 for file_path and 1 for String
      * @return String 変換結果
      *//////////////////////////////////////////////
-    public function sjis_2_ebcdic($file_path)
+    public function sjis_2_ebcdic($file_path,$data_type)
     {
         $ebcdic_map = array(
              '00'=>'00', '01'=>'01', '02'=>'02', '03'=>'03', '1A'=>'04', '09'=>'05', '1A'=>'06', '7F'=>'07',
@@ -110,7 +111,12 @@ class Common
              '38'=>'F8', '39'=>'F9', '1A'=>'FA', '1A'=>'FB', '1A'=>'FC', '1A'=>'FD', '1A'=>'FE',
              );
            
-        $file_data = file_get_contents($file_path);
+        
+        if ($data_type==0) {
+            $file_data = file_get_contents($file_path);
+        }elseif ($data_type==1) {
+            $file_data = $file_path;
+        }
         //  echo($file_data.PHP_EOL);
         $hex_data = bin2hex($file_data);
         $ascii_data = '';
