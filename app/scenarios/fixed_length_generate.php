@@ -1,14 +1,17 @@
 <?php
 
 namespace App\Scenarios;
+use App\scenarios\Common;
 use App\Models\BMS\bms_order;
 use App\Http\Controllers\API\AllUsedFunction;
 
 class fixed_length_generate
 {
     private $all_functions;
+    private $common_class_obj;
     public function __construct()
     {
+        $this->common_class_obj = new Common();
         $this->all_functions = new AllUsedFunction();
     }
 
@@ -135,6 +138,7 @@ class fixed_length_generate
         }
         $txt_file_name=date('y-m-d').'_Text_File_'.time().".txt";
         $string_data=$this->all_functions->convert_from_utf8_to_sjis__recursively($string_data);
+        $string_data=$this->common_class_obj->sjis_2_ebcdic($string_data,1);
         \File::put(storage_path('app/fixed_length_files/'.$txt_file_name), $string_data);
         // return $data;
         return response()->json(['message'=>"File has been created",'url'=>\Config('app.url').'storage/app/fixed_length_files/'.$txt_file_name]);
