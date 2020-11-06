@@ -12,30 +12,17 @@ use App\Models\BYR\byr_order_item;
 use App\Models\BYR\byr_order_voucher;
 use App\Models\BYR\byr_shipment_item;
 use App\Models\BYR\byr_shipment_voucher;
+use App\Http\Controllers\API\AllUsedFunction;
 
 class ouk_order_toj extends Model
 {
-    // private $b;
-    // private $d;
-    // private $voucher_number;
-    // private $shop_code;
-    // private $category_code;
-    // private $voucher_category;
-    // private $order_date;
-    // private $expected_delivery_date;
-    // private $partner_code;
-    // private $delivery_service_code;
-    // private $shop_name_kana;
-    // private $list_number;
-    // private $order_quantity;
-    // private $inputs;
-    // private $jan;
-    // private $order_inputs;
-    // private $cost_unit_price;
-    // private $cost_price;
-    // private $selling_unit_price;
-    // private $selling_price;
-    // private $item_name_kana;
+    private $all_functions;
+    private $common_class_obj;
+    public function __construct()
+    {
+        $this->common_class_obj = new Common();
+        $this->all_functions = new AllUsedFunction();
+    }
     private $format = [
         [
             "type"=>"header",
@@ -100,7 +87,6 @@ class ouk_order_toj extends Model
     //
     public function exec($request,$sc)
     {
-        $cmn_m_cls = new Common();
         // include(app_path() . '/scenarios/common.php');
         \Log::debug('ouk_order_toj exec start  ---------------');
         // ファイルアップロード
@@ -113,12 +99,14 @@ class ouk_order_toj extends Model
         $received_path = storage_path().'/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name;
         // フォーマット変換
         // byr_orders,byr_order_details格納
-        $get_string = $cmn_m_cls->ebcdic_2_sjis($received_path);
-        $get_string = mb_convert_encoding($get_string, "UTF-8", "SJIS");
+        // $get_string = $this->common_class_obj->ebcdic_2_sjis($received_path,0);
+        $get_string = $this->common_class_obj->ebcdic_2_sjis($received_path,null);
+        // $get_string = mb_convert_encoding($get_string, "UTF-8", "SJIS");
+        $get_string = $this->all_functions->convert_from_sjis_to_utf8_recursively($get_string);
         // echo $get_string;exit;
         // $charlist = fread($file_url,filesize(storage_path().'/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name));
         // $charlist = $this->convert_from_sjis_to_utf8_recursively($charlist);
-        // $charlist = $this->convert_from_utf8_to_sjis__recursively($charlist);
+        // $charlist = $this->all_functions->convert_from_utf8_to_sjis__recursively($charlist);
         // $str_arr = $this->mb_str_split($charlist);
         $str_arr = $this->mb_str_split($get_string);
         // echo '<pre>';
@@ -430,57 +418,5 @@ $new_cost_unit_price = $str[0].'.'.$str[1];
             }
         }
         return $data;
-    }
-
-    public static function convert_from_sjis_to_utf8_recursively($dat)
-    {
-        if (is_string($dat)) {
-            \Log::debug('----- SJIJ to UTF-8 conversion completed -----');
-            return mb_convert_encoding($dat, "UTF-8", "sjis-win");
-        } elseif (is_array($dat)) {
-            $ret = [];
-            foreach ($dat as $i => $d) {
-                $ret[$i] = self::convert_from_sjis_to_utf8_recursively($d);
-            }
-
-            return $ret;
-        } elseif (is_object($dat)) {
-            foreach ($dat as $i => $d) {
-                $dat->$i = self::convert_from_sjis_to_utf8_recursively($d);
-            }
-
-            return $dat;
-        } else {
-            return $dat;
-        }
-    }
-    /**
-     * File encoding from utf8 to SJIJ
-     * @param utf-8 String or array
-     * @return  SJIJ encoded string
-     */
-    public static function convert_from_utf8_to_sjis__recursively($dat)
-    {
-        if (is_string($dat)) {
-            \Log::debug('----- UTF-8 to SJIJ conversion completed -----');
-            // Original
-            return mb_convert_encoding($dat, "sjis-win", "UTF-8");
-            // return mb_convert_encoding($dat, "SJIS", "UTF-8");
-        } elseif (is_array($dat)) {
-            $ret = [];
-            foreach ($dat as $i => $d) {
-                $ret[$i] = self::convert_from_utf8_to_sjis__recursively($d);
-            }
-
-            return $ret;
-        } elseif (is_object($dat)) {
-            foreach ($dat as $i => $d) {
-                $dat->$i = self::convert_from_utf8_to_sjis__recursively($d);
-            }
-
-            return $dat;
-        } else {
-            return $dat;
-        }
     }
 }
