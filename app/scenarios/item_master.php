@@ -14,30 +14,17 @@ use App\Models\CMN\cmn_maker;
 use App\Models\CMN\cmn_category;
 use App\Models\CMN\cmn_category_description;
 use App\Models\CMN\cmn_category_path;
+use App\Http\Controllers\API\AllUsedFunction;
 use DB;
 class item_master extends Model
 {
-    // private $b;
-    // private $d;
-    // private $voucher_number;
-    // private $shop_code;
-    // private $category_code;
-    // private $voucher_category;
-    // private $order_date;
-    // private $expected_delivery_date;
-    // private $partner_code;
-    // private $delivery_service_code;
-    // private $shop_name_kana;
-    // private $list_number;
-    // private $order_quantity;
-    // private $inputs;
-    // private $jan;
-    // private $order_inputs;
-    // private $cost_unit_price;
-    // private $cost_price;
-    // private $selling_unit_price;
-    // private $selling_price;
-    // private $item_name_kana;
+    private $all_functions;
+    private $common_class_obj;
+    public function __construct()
+    {
+        $this->common_class_obj = new Common();
+        $this->all_functions = new AllUsedFunction();
+    }
     private $format = [
         [
             "type"=>"header",
@@ -98,48 +85,6 @@ class item_master extends Model
             ]
         ],
     ];
-/**
-     * File encoding from SJIJ to utf8
-     * @param  SJIJ String or array
-     * @return utf-8 encoded string
-     */
-    public static function convert_from_sjis_to_utf8_recursively($dat)
-    {
-        if (is_string($dat)) {
-            \Log::debug('----- SJIJ to UTF-8 conversion completed -----');
-            // $dat=str_replace("\u{00a0}", ' ', $dat);
-            if(mb_detect_encoding($dat) != "UTF-8"){
-                return mb_convert_encoding($dat, "UTF-8", "sjis-win");
-                // return utf8_encode($dat);   
-            }else{
-                return mb_convert_encoding($dat,"UTF-8","auto");
-                // return $dat;
-            }
-        } elseif (is_array($dat)) {
-            $ret = [];
-            foreach ($dat as $i => $d) {
-                $ret[$i] = self::convert_from_sjis_to_utf8_recursively($d);
-            }
-
-            return $ret;
-        } elseif (is_object($dat)) {
-            foreach ($dat as $i => $d) {
-                $dat->$i = self::convert_from_sjis_to_utf8_recursively($d);
-            }
-
-            return $dat;
-        } else {
-            return $dat;
-        }
-    }
-    public function csvReader($baseUrl)
-    {
-        $data = array_map('str_getcsv', file($baseUrl));
-        $csv_data = array_slice($data, 1);
-        $rowData = $this->convert_from_sjis_to_utf8_recursively($csv_data);
-        \Log::debug('----- CSV file read completed from this url: (' . $baseUrl . ')-----');
-        return $rowData;
-    }
 
     //
     public function exec($request,$sc)
@@ -157,7 +102,7 @@ class item_master extends Model
         $received_path = storage_path().'/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name;
         // フォーマット変換
         // byr_orders,byr_order_details格納
-        $collection = $this->csvReader($received_path);
+        $collection = $this->all_functions->csvReader($received_path);
         $customer_order_array=array();
         $byr_buyer_id = $sc->byr_buyer_id;
         foreach($collection as $vl){
@@ -280,155 +225,148 @@ class item_master extends Model
         return 0;
     }
 
-    public function get_shop_id_by_shop_code($shop_code,$shop_name_kana,$sc){
-        if(byr_shop::where('shop_code',$shop_code)->exists()){
-             $row = byr_shop::where('shop_code',$shop_code)->first();
-             return $row->byr_shop_id;
-        }else{
-            $id = byr_shop::insertGetId(['shop_code'=>$shop_code,'shop_name_kana'=>$shop_name_kana,'byr_buyer_id'=>$sc->byr_buyer_id,'slr_seller_id'=>$sc->slr_seller_id]);
-            return $id;
-        }
-    }
+    // public function get_shop_id_by_shop_code($shop_code,$shop_name_kana,$sc){
+    //     if(byr_shop::where('shop_code',$shop_code)->exists()){
+    //          $row = byr_shop::where('shop_code',$shop_code)->first();
+    //          return $row->byr_shop_id;
+    //     }else{
+    //         $id = byr_shop::insertGetId(['shop_code'=>$shop_code,'shop_name_kana'=>$shop_name_kana,'byr_buyer_id'=>$sc->byr_buyer_id,'slr_seller_id'=>$sc->slr_seller_id]);
+    //         return $id;
+    //     }
+    // }
 
-    /*jacos string analyze*/
-    public function mb_str_split($string)
-    {
-        # Split at all position not after the start: ^
-        # and not before the end: $
-        return preg_split('/(?<!^)(?!$)/u', $string);
-    }
-    public function process_array($charlist)
-    {
-        $total = count($charlist);
-        $k = 0;
-        $num__index = 0;
-        $arr1 = array();
-        for ($i = 0; $i < $total; $i++) {
-            if ($k <= 128) {
-                $arr1[$num__index][] = $charlist[$i];
-                $k++;
-            }
-            if ($k == 128) {
-                $num__index++;
-                $k = 0;
-            }
-        }
-        return $arr1;
-    }
+    // public function process_array($charlist)
+    // {
+    //     $total = count($charlist);
+    //     $k = 0;
+    //     $num__index = 0;
+    //     $arr1 = array();
+    //     for ($i = 0; $i < $total; $i++) {
+    //         if ($k <= 128) {
+    //             $arr1[$num__index][] = $charlist[$i];
+    //             $k++;
+    //         }
+    //         if ($k == 128) {
+    //             $num__index++;
+    //             $k = 0;
+    //         }
+    //     }
+    //     return $arr1;
+    // }
 
-    public function b_array_process($all_array)
-    {
-        $b = '';
-        $voucher_number = '';
-        $shop_code = '';
-        $category_code = '';
-        $voucher_category = '';
-        $order_date = '';
-        $expected_delivery_date = '';
-        $partner_code = '';
-        $delivery_service_code = '';
-        $shop_name_kana = '';
-        $center_flg = '';
-        $center_code = '';
-        $center_name = '';
-        for ($i = 0; $i < count($all_array); $i++) {
-            if ($i == 0) {
-                $b .= $all_array[$i];
-            } elseif ($i >= 4 && $i < 12) {
-                $voucher_number .= $all_array[$i];
-            } elseif ($i >= 15 && $i < 21) {
-                $shop_code .= $all_array[$i];
-            } elseif ($i >= 21 && $i < 25) {
-                $category_code .= $all_array[$i];
-            } elseif ($i >= 25 && $i < 27) {
-                $voucher_category .= $all_array[$i];
-            } elseif ($i >= 27 && $i < 33) {
-                $order_date .= $all_array[$i];
-            } elseif ($i >= 33 && $i < 39) {
-                $expected_delivery_date .= $all_array[$i];
-            } elseif ($i >= 39 && $i < 45) {
-                $partner_code .= $all_array[$i];
-            } elseif ($i >= 47 && $i < 48) {
-                $delivery_service_code .= $all_array[$i];
-            } elseif ($i >= 48 && $i < 54) {
-                $shop_name_kana .= $all_array[$i];
-            } elseif ($i >= 83 && $i < 84) {
-                $center_flg .= $all_array[$i];
-            } elseif ($i >= 84 && $i < 90) {
-                $center_code .= $all_array[$i];
-            } elseif ($i >= 90 && $i < 112) {
-                $center_name .= $all_array[$i];
-            }
-        }
-        $other_infos = json_encode(array('center_flg'=>$center_flg,'center_code'=>$center_code,'center_name'=>$center_name));
-        $insert_array_b = array(
-            'voucher_number'=>$voucher_number,
-            'shop_code'=>$shop_code,
-            'category_code'=>$category_code,
-            'voucher_category'=>$voucher_category,
-            'expected_delivery_date'=>$expected_delivery_date,
-            'order_date'=>$order_date,
-            'shop_name_kana'=>$shop_name_kana,
-            'partner_code'=>$partner_code,
-            'delivery_service_code'=>$delivery_service_code,
-            'other_info'=>$other_infos,
-        );
-        return $insert_array_b;
-    }
-    public function d_array_process($all_array)
-    {
-        $d='';
-        $list_number='';
-       $jan='';
-        $inputs='';
-         $order_inputs='';
-        $order_quantity='';
-        $item_name_kana='';
-         $cost_price='';
-        $selling_price='';
-         $cost_unit_price='';
-        $selling_unit_price='';
-        for ($j = 0; $j < count($all_array); $j++) {
-            if ($j == 0) {
-                $d .= $all_array[$j];
-            } elseif ($j >= 3 && $j < 5) {
-                $list_number .= $all_array[$j];
-            } elseif ($j >= 5 && $j < 18) {
-                $jan .= $all_array[$j];
-            } elseif ($j >= 18 && $j < 22) {
-                $inputs .= $all_array[$j];
-            } elseif ($j >= 22 && $j < 26) {
-                $order_inputs .= $all_array[$j];
-            } elseif ($j >= 29 && $j < 35) {
-                $order_quantity .= $all_array[$j];
-            } elseif ($j >= 36 && $j < 44) {
-                $cost_unit_price .= $all_array[$j];
-            } elseif ($j >= 45 && $j < 51) {
-                $selling_unit_price .= $all_array[$j];
-            } elseif ($j >= 52 && $j < 61) {
-                $cost_price .= $all_array[$j];
-            } elseif ($j >= 62 && $j < 71) {
-                $selling_price .= $all_array[$j];
-            } elseif ($j >= 80 && $j < 105) {
-                $item_name_kana .= $all_array[$j];
-            }
-        }
-        $str = str_split($cost_unit_price, strlen($cost_unit_price) - 2);
-$new_cost_unit_price = $str[0].'.'.$str[1];
-        $insert_array_d = array(
-            'list_number' => $list_number,
-            'jan' => $jan,
-            'inputs' => ltrim($inputs,'0'),
-            'order_inputs' => 'バラ',
-            'order_quantity' => ltrim($order_quantity,'0'),
-            'item_name_kana' => $item_name_kana,
-            'cost_price' => ltrim($cost_price,'0'),
-            'selling_price' => ltrim($selling_price,'0'),
-            'cost_unit_price' => ltrim($new_cost_unit_price,'0'),
-            'selling_unit_price' => ltrim($selling_unit_price,'0'),
-        );
-        return $insert_array_d;
-    }
+    // public function b_array_process($all_array)
+    // {
+    //     $b = '';
+    //     $voucher_number = '';
+    //     $shop_code = '';
+    //     $category_code = '';
+    //     $voucher_category = '';
+    //     $order_date = '';
+    //     $expected_delivery_date = '';
+    //     $partner_code = '';
+    //     $delivery_service_code = '';
+    //     $shop_name_kana = '';
+    //     $center_flg = '';
+    //     $center_code = '';
+    //     $center_name = '';
+    //     for ($i = 0; $i < count($all_array); $i++) {
+    //         if ($i == 0) {
+    //             $b .= $all_array[$i];
+    //         } elseif ($i >= 4 && $i < 12) {
+    //             $voucher_number .= $all_array[$i];
+    //         } elseif ($i >= 15 && $i < 21) {
+    //             $shop_code .= $all_array[$i];
+    //         } elseif ($i >= 21 && $i < 25) {
+    //             $category_code .= $all_array[$i];
+    //         } elseif ($i >= 25 && $i < 27) {
+    //             $voucher_category .= $all_array[$i];
+    //         } elseif ($i >= 27 && $i < 33) {
+    //             $order_date .= $all_array[$i];
+    //         } elseif ($i >= 33 && $i < 39) {
+    //             $expected_delivery_date .= $all_array[$i];
+    //         } elseif ($i >= 39 && $i < 45) {
+    //             $partner_code .= $all_array[$i];
+    //         } elseif ($i >= 47 && $i < 48) {
+    //             $delivery_service_code .= $all_array[$i];
+    //         } elseif ($i >= 48 && $i < 54) {
+    //             $shop_name_kana .= $all_array[$i];
+    //         } elseif ($i >= 83 && $i < 84) {
+    //             $center_flg .= $all_array[$i];
+    //         } elseif ($i >= 84 && $i < 90) {
+    //             $center_code .= $all_array[$i];
+    //         } elseif ($i >= 90 && $i < 112) {
+    //             $center_name .= $all_array[$i];
+    //         }
+    //     }
+    //     $other_infos = json_encode(array('center_flg'=>$center_flg,'center_code'=>$center_code,'center_name'=>$center_name));
+    //     $insert_array_b = array(
+    //         'voucher_number'=>$voucher_number,
+    //         'shop_code'=>$shop_code,
+    //         'category_code'=>$category_code,
+    //         'voucher_category'=>$voucher_category,
+    //         'expected_delivery_date'=>$expected_delivery_date,
+    //         'order_date'=>$order_date,
+    //         'shop_name_kana'=>$shop_name_kana,
+    //         'partner_code'=>$partner_code,
+    //         'delivery_service_code'=>$delivery_service_code,
+    //         'other_info'=>$other_infos,
+    //     );
+    //     return $insert_array_b;
+    // }
+//     public function d_array_process($all_array)
+//     {
+//         $d='';
+//         $list_number='';
+//        $jan='';
+//         $inputs='';
+//          $order_inputs='';
+//         $order_quantity='';
+//         $item_name_kana='';
+//          $cost_price='';
+//         $selling_price='';
+//          $cost_unit_price='';
+//         $selling_unit_price='';
+//         for ($j = 0; $j < count($all_array); $j++) {
+//             if ($j == 0) {
+//                 $d .= $all_array[$j];
+//             } elseif ($j >= 3 && $j < 5) {
+//                 $list_number .= $all_array[$j];
+//             } elseif ($j >= 5 && $j < 18) {
+//                 $jan .= $all_array[$j];
+//             } elseif ($j >= 18 && $j < 22) {
+//                 $inputs .= $all_array[$j];
+//             } elseif ($j >= 22 && $j < 26) {
+//                 $order_inputs .= $all_array[$j];
+//             } elseif ($j >= 29 && $j < 35) {
+//                 $order_quantity .= $all_array[$j];
+//             } elseif ($j >= 36 && $j < 44) {
+//                 $cost_unit_price .= $all_array[$j];
+//             } elseif ($j >= 45 && $j < 51) {
+//                 $selling_unit_price .= $all_array[$j];
+//             } elseif ($j >= 52 && $j < 61) {
+//                 $cost_price .= $all_array[$j];
+//             } elseif ($j >= 62 && $j < 71) {
+//                 $selling_price .= $all_array[$j];
+//             } elseif ($j >= 80 && $j < 105) {
+//                 $item_name_kana .= $all_array[$j];
+//             }
+//         }
+//         $str = str_split($cost_unit_price, strlen($cost_unit_price) - 2);
+// $new_cost_unit_price = $str[0].'.'.$str[1];
+//         $insert_array_d = array(
+//             'list_number' => $list_number,
+//             'jan' => $jan,
+//             'inputs' => ltrim($inputs,'0'),
+//             'order_inputs' => 'バラ',
+//             'order_quantity' => ltrim($order_quantity,'0'),
+//             'item_name_kana' => $item_name_kana,
+//             'cost_price' => ltrim($cost_price,'0'),
+//             'selling_price' => ltrim($selling_price,'0'),
+//             'cost_unit_price' => ltrim($new_cost_unit_price,'0'),
+//             'selling_unit_price' => ltrim($selling_unit_price,'0'),
+//         );
+//         return $insert_array_d;
+//     }
 
     /*jacos string analyze*/
     /**
@@ -438,115 +376,86 @@ $new_cost_unit_price = $str[0].'.'.$str[1];
      * @param  Array フォーマット(連想配列)
      * @return boolean
      */
-    public function analyze($filePath, $format)
-    {
-        $data = null;
+    // public function analyze($filePath, $format)
+    // {
+    //     $data = null;
 
-        $head = [];		// ヘッダー
-        $cdata = [];	// データ
-        $foot = [];		// フッター
+    //     $head = [];		// ヘッダー
+    //     $cdata = [];	// データ
+    //     $foot = [];		// フッター
 
-        // header行
-        foreach ($format as $f) {
-            if ($f['type']==='header') {
-                foreach ($f['fmt'] as $fdata) {
-                    $head[$fdata['name']] = $fdata['name_jp'];
-                }
-            } elseif ($f['type']==='data') {
-                foreach ($f['fmt'] as $fdata) {
-                    $cdata[$fdata['name']] = $fdata['name_jp'];
-                }
-            } elseif ($f['type']==='footer') {
-                foreach ($f['fmt'] as $fdata) {
-                    $foot[$fdata['name']] = $fdata['name_jp'];
-                }
-            }
-        }
-        $cnt = 0;
-        //		$data[$cnt] = array_merge($head,$cdata,$foot);
-        $data[$cnt] = array_merge($cdata, $head, $foot);
-        mb_convert_variables('SJIS-win', 'UTF-8', $data[$cnt]);
-        $cnt++;
+    //     // header行
+    //     foreach ($format as $f) {
+    //         if ($f['type']==='header') {
+    //             foreach ($f['fmt'] as $fdata) {
+    //                 $head[$fdata['name']] = $fdata['name_jp'];
+    //             }
+    //         } elseif ($f['type']==='data') {
+    //             foreach ($f['fmt'] as $fdata) {
+    //                 $cdata[$fdata['name']] = $fdata['name_jp'];
+    //             }
+    //         } elseif ($f['type']==='footer') {
+    //             foreach ($f['fmt'] as $fdata) {
+    //                 $foot[$fdata['name']] = $fdata['name_jp'];
+    //             }
+    //         }
+    //     }
+    //     $cnt = 0;
+    //     //		$data[$cnt] = array_merge($head,$cdata,$foot);
+    //     $data[$cnt] = array_merge($cdata, $head, $foot);
+    //     mb_convert_variables('SJIS-win', 'UTF-8', $data[$cnt]);
+    //     $cnt++;
 
-        $head = [];		// ヘッダー
-        $cdata = [];	// データ
-        $foot = [];		// フッター
-        $ccnt = 0;
+    //     $head = [];		// ヘッダー
+    //     $cdata = [];	// データ
+    //     $foot = [];		// フッター
+    //     $ccnt = 0;
 
-        // 読み込み
-        $lines = file($filePath);
-        foreach ($lines as $key => $line) {
-            foreach ($format as $f) {
+    //     // 読み込み
+    //     $lines = file($filePath);
+    //     foreach ($lines as $key => $line) {
+    //         foreach ($format as $f) {
 
-                // key値と指定文字列との比較
-                if ($f['key']['value'] == substr($line, $f['key']['start']-1, $f['key']['length'])) {
+    //             // key値と指定文字列との比較
+    //             if ($f['key']['value'] == substr($line, $f['key']['start']-1, $f['key']['length'])) {
 
-                    // type判定
-                    if ($f['type']==='header') {
-                        // ヘッダー行
-                        foreach ($f['fmt'] as $fdata) {
-                            //							$head[$fdata['name']] = trim(mb_convert_encoding(mb_strcut ($line,$fdata['start']-1,$fdata['length'],'SJIS-win'),'UTF-8', 'SJIS-win'));
-                            $head[$fdata['name']] = trim(mb_strcut($line, $fdata['start']-1, $fdata['length'], 'SJIS-win'));
-                            //							log_message('info',$fdata['name'].':'.$head[$fdata['name']]);
-                        }
+    //                 // type判定
+    //                 if ($f['type']==='header') {
+    //                     // ヘッダー行
+    //                     foreach ($f['fmt'] as $fdata) {
+    //                         //							$head[$fdata['name']] = trim(mb_convert_encoding(mb_strcut ($line,$fdata['start']-1,$fdata['length'],'SJIS-win'),'UTF-8', 'SJIS-win'));
+    //                         $head[$fdata['name']] = trim(mb_strcut($line, $fdata['start']-1, $fdata['length'], 'SJIS-win'));
+    //                         //							log_message('info',$fdata['name'].':'.$head[$fdata['name']]);
+    //                     }
 
-                        // クリア
-                        $ccnt = 0;
-                        $cdata = [];
-                    } elseif ($f['type']==='data') {
-                        // データ行
-                        foreach ($f['fmt'] as $fdata) {
-                            //							$cdata[$ccnt][$fdata['name']] = trim(mb_convert_encoding(mb_strcut ($line,$fdata['start']-1,$fdata['length'],'SJIS-win'),'UTF-8', 'SJIS-win'));
-                            $cdata[$ccnt][$fdata['name']] = trim(mb_strcut($line, $fdata['start']-1, $fdata['length'], 'SJIS-win'));
-                        }
-                        // データ行
-                        $ccnt++;
-                    } elseif ($f['type']==='footer') {
-                        // フッター行
-                        foreach ($f['fmt'] as $fdata) {
-                            //							$foot[$fdata['name']] = trim(mb_convert_encoding(mb_strcut ($line,$fdata['start']-1,$fdata['length'],'SJIS-win'),'UTF-8', 'SJIS-win'));
-                            $foot[$fdata['name']] = trim(mb_strcut($line, $fdata['start']-1, $fdata['length'], 'SJIS-win'));
-                        }
+    //                     // クリア
+    //                     $ccnt = 0;
+    //                     $cdata = [];
+    //                 } elseif ($f['type']==='data') {
+    //                     // データ行
+    //                     foreach ($f['fmt'] as $fdata) {
+    //                         //							$cdata[$ccnt][$fdata['name']] = trim(mb_convert_encoding(mb_strcut ($line,$fdata['start']-1,$fdata['length'],'SJIS-win'),'UTF-8', 'SJIS-win'));
+    //                         $cdata[$ccnt][$fdata['name']] = trim(mb_strcut($line, $fdata['start']-1, $fdata['length'], 'SJIS-win'));
+    //                     }
+    //                     // データ行
+    //                     $ccnt++;
+    //                 } elseif ($f['type']==='footer') {
+    //                     // フッター行
+    //                     foreach ($f['fmt'] as $fdata) {
+    //                         //							$foot[$fdata['name']] = trim(mb_convert_encoding(mb_strcut ($line,$fdata['start']-1,$fdata['length'],'SJIS-win'),'UTF-8', 'SJIS-win'));
+    //                         $foot[$fdata['name']] = trim(mb_strcut($line, $fdata['start']-1, $fdata['length'], 'SJIS-win'));
+    //                     }
 
-                        // データ結合
-                        foreach ($cdata as $cval) {
-                            //							$data[$cnt] = array_merge($head,$cval,$foot);
-                            $data[$cnt] = array_merge($cval, $head, $foot);
-                            $cnt++;
-                        }
-                    }
-                }
-            }
-        }
-        return $data;
-    }
-    /**
-     * File encoding from utf8 to SJIJ
-     * @param utf-8 String or array
-     * @return  SJIJ encoded string
-     */
-    public static function convert_from_utf8_to_sjis__recursively($dat)
-    {
-        if (is_string($dat)) {
-            \Log::debug('----- UTF-8 to SJIJ conversion completed -----');
-            // Original
-            return mb_convert_encoding($dat, "sjis-win", "UTF-8");
-            // return mb_convert_encoding($dat, "SJIS", "UTF-8");
-        } elseif (is_array($dat)) {
-            $ret = [];
-            foreach ($dat as $i => $d) {
-                $ret[$i] = self::convert_from_utf8_to_sjis__recursively($d);
-            }
-
-            return $ret;
-        } elseif (is_object($dat)) {
-            foreach ($dat as $i => $d) {
-                $dat->$i = self::convert_from_utf8_to_sjis__recursively($d);
-            }
-
-            return $dat;
-        } else {
-            return $dat;
-        }
-    }
+    //                     // データ結合
+    //                     foreach ($cdata as $cval) {
+    //                         //							$data[$cnt] = array_merge($head,$cval,$foot);
+    //                         $data[$cnt] = array_merge($cval, $head, $foot);
+    //                         $cnt++;
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     return $data;
+    // }
 }

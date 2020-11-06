@@ -113,7 +113,7 @@ class AllUsedFunction extends Controller
     public static function convert_from_sjis_to_utf8_recursively($dat)
     {
         if (is_string($dat)) {
-            \Log::debug('----- SJIJ to UTF-8 conversion completed -----');
+            // \Log::debug('----- SJIJ to UTF-8 conversion completed -----');
             // $dat=str_replace("\u{00a0}", ' ', $dat);
             if(mb_detect_encoding($dat) != "UTF-8"){
                 return mb_convert_encoding($dat, "UTF-8", "sjis-win");
@@ -147,7 +147,7 @@ class AllUsedFunction extends Controller
     public static function convert_from_utf8_to_sjis__recursively($dat)
     {
         if (is_string($dat)) {
-            \Log::debug('----- UTF-8 to SJIJ conversion completed -----');
+            // \Log::debug('----- UTF-8 to SJIJ conversion completed -----');
             // Original
             return mb_convert_encoding($dat, "sjis-win", "UTF-8");
             // return mb_convert_encoding($dat, "SJIS", "UTF-8");
@@ -330,5 +330,39 @@ class AllUsedFunction extends Controller
     public function header_part($file_name){
         $header=\substr($file_name,0,8);
         return $header;
+    }
+    public function mb_str_split($string)
+    {
+        # Split at all position not after the start: ^
+        # and not before the end: $
+        return preg_split('/(?<!^)(?!$)/u', $string);
+    }
+    private function binary_format($binary_number)
+    {
+        $binary_length = strlen($binary_number);
+
+        $formated_binary_number = null;
+        if ($binary_length < 7) {
+            $addable = 7 - $binary_length;
+            $formated_binary_number = str_repeat('0', $addable) . $binary_number;
+        } else {
+            $formated_binary_number = $binary_number;
+        }
+        return $formated_binary_number;
+    }
+    private function binary_to_decimal($binary)
+    {
+        return bindec($binary);
+    }
+    private function decimal_to_binary($decimal)
+    {
+        $bos = null;
+        while ($decimal >= 1) {$bin = $decimal % 2;
+            $decimal = round($decimal / 2, 0,
+                PHP_ROUND_HALF_DOWN);
+            $bos .= $bin;
+        }
+        return strrev($bos);
+
     }
 }

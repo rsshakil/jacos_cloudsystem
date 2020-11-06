@@ -14,6 +14,7 @@ use App\Models\CMN\cmn_job;
 use App\Models\CMN\cmn_companies_user;
 use App\Models\CMN\cmn_scenario;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\API\AllUsedFunction;
 use GuzzleHttp\Client;
 use DB;
 
@@ -25,6 +26,7 @@ class Level3Controller extends Controller
     private $lst_customer_id;
     private $lst_service_id;
     private $flag;
+    private $all_functions;
     public function __ApiController()
     {
         $this->message = '';
@@ -33,6 +35,7 @@ class Level3Controller extends Controller
         $this->lst_customer_id = '';
         $this->lst_service_id = '';
         $this->flag = '';
+        $this->all_functions = new AllUsedFunction();
     }
     public function userLogin(Request $request)
     {
@@ -165,7 +168,7 @@ class Level3Controller extends Controller
                 // $test['customer_id'] = $value->customer_id;
                 // $test['schedule_name'] = $value->name;
                 $test['day'] = $value->day;
-                $test['weekday'] = str_split($this->binary_format($this->decimal_to_binary($value->weekday)));
+                $test['weekday'] = str_split($this->all_functions->binary_format($this->all_functions->decimal_to_binary($value->weekday)));
                 $test['time'] = $value->time;
                 $test['last_day'] = $value->last_day;
                 $test['disabled'] = $value->disabled;
@@ -225,7 +228,7 @@ class Level3Controller extends Controller
             // $test_first['user_id'] = $user_id;
             // $test_first['customer_id'] = $customer_id;
             // $test_first['name'] = "No Name";
-            $test_first['weekday'] = $this->binary_to_decimal($data_array[$i]);
+            $test_first['weekday'] = $this->all_functions->binary_to_decimal($data_array[$i]);
             $test_first['time'] = $time_array[$i];
             $test_first['disabled'] = 0;
             $insert_first_array[] = $test_first;
@@ -321,7 +324,7 @@ class Level3Controller extends Controller
 
         if (!empty($schedule_time_data)) {
             foreach ($schedule_time_data as $key => $value) {
-                $weekday=str_split($this->binary_format($this->decimal_to_binary($value->weekday)));
+                $weekday=str_split($this->all_functions->binary_format($this->all_functions->decimal_to_binary($value->weekday)));
                 $key_day = array_search('1', $weekday);
 
                 foreach ($weekday as $key1 => $value1) {
@@ -612,33 +615,5 @@ class Level3Controller extends Controller
     
     public function job_list(Request $request){
         return $request->all();
-    }
-    private function binary_to_decimal($binary)
-    {
-        return bindec($binary);
-    }
-    private function decimal_to_binary($decimal)
-    {
-        $bos = null;
-        while ($decimal >= 1) {$bin = $decimal % 2;
-            $decimal = round($decimal / 2, 0,
-                PHP_ROUND_HALF_DOWN);
-            $bos .= $bin;
-        }
-        return strrev($bos);
-
-    }
-    private function binary_format($binary_number)
-    {
-        $binary_length = strlen($binary_number);
-
-        $formated_binary_number = null;
-        if ($binary_length < 7) {
-            $addable = 7 - $binary_length;
-            $formated_binary_number = str_repeat('0', $addable) . $binary_number;
-        } else {
-            $formated_binary_number = $binary_number;
-        }
-        return $formated_binary_number;
     }
 }

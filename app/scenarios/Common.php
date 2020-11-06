@@ -8,9 +8,10 @@ class Common
      * ebcdic to shift jis
      * EBCDICをSJISに文字コード変換
      * @param  String ファイルパス
+     * * @param  int data_type identifying ファイルパス/string ,   0 for file_path and 1 for String
      * @return String 変換結果
      *//////////////////////////////////////////////
-    public function ebcdic_2_sjis($file_path)
+    public function ebcdic_2_sjis($file_path=null,$file_data=null)
     {
         $ebcdic_map = array(
              '00'=>'00', '01'=>'01', '02'=>'02', '03'=>'03', '04'=>'1A', '05'=>'09', '06'=>'1A', '07'=>'7F',
@@ -47,7 +48,10 @@ class Common
              'F8'=>'38', 'F9'=>'39', 'FA'=>'1A', 'FB'=>'1A', 'FC'=>'1A', 'FD'=>'1A', 'FE'=>'1A',
              );
            
-        $file_data = file_get_contents($file_path);
+        // $file_data = file_get_contents($file_path);
+        if ($file_path!=null) {
+            $file_data = file_get_contents($file_path);
+        }
         //  echo($file_data.PHP_EOL);
         $hex_data = bin2hex($file_data);
         $ascii_data = '';
@@ -74,7 +78,7 @@ class Common
      * @param  int data_type identifying ファイルパス/string ,   0 for file_path and 1 for String
      * @return String 変換結果
      *//////////////////////////////////////////////
-    public function sjis_2_ebcdic($file_path,$data_type)
+    public function sjis_2_ebcdic($file_path=null,$file_data=null)
     {
         $ebcdic_map = array(
              '00'=>'00', '01'=>'01', '02'=>'02', '03'=>'03', '1A'=>'04', '09'=>'05', '1A'=>'06', '7F'=>'07',
@@ -112,10 +116,8 @@ class Common
              );
            
         
-        if ($data_type==0) {
+        if ($file_path!=null) {
             $file_data = file_get_contents($file_path);
-        }elseif ($data_type==1) {
-            $file_data = $file_path;
         }
         //  echo($file_data.PHP_EOL);
         $hex_data = bin2hex($file_data);

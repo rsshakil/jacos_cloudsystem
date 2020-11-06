@@ -107,8 +107,8 @@ class ouk_order_toj extends Model
         // $charlist = fread($file_url,filesize(storage_path().'/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name));
         // $charlist = $this->convert_from_sjis_to_utf8_recursively($charlist);
         // $charlist = $this->all_functions->convert_from_utf8_to_sjis__recursively($charlist);
-        // $str_arr = $this->mb_str_split($charlist);
-        $str_arr = $this->mb_str_split($get_string);
+        // $str_arr = $this->all_functions->mb_str_split($charlist);
+        $str_arr = $this->all_functions->mb_str_split($get_string);
         // echo '<pre>';
         // print_r($str_arr);exit;
         // $str_arr = str_split($charlist);
@@ -179,23 +179,15 @@ class ouk_order_toj extends Model
         return 0;
     }
 
-    public function get_shop_id_by_shop_code($shop_code,$shop_name_kana,$sc){
-        if(byr_shop::where('shop_code',$shop_code)->exists()){
-             $row = byr_shop::where('shop_code',$shop_code)->first();
-             return $row->byr_shop_id;
-        }else{
-            $id = byr_shop::insertGetId(['shop_code'=>$shop_code,'shop_name_kana'=>$shop_name_kana,'byr_buyer_id'=>$sc->byr_buyer_id,'slr_seller_id'=>$sc->slr_seller_id]);
-            return $id;
-        }
-    }
-
-    /*jacos string analyze*/
-    public function mb_str_split($string)
-    {
-        # Split at all position not after the start: ^
-        # and not before the end: $
-        return preg_split('/(?<!^)(?!$)/u', $string);
-    }
+    // public function get_shop_id_by_shop_code($shop_code,$shop_name_kana,$sc){
+    //     if(byr_shop::where('shop_code',$shop_code)->exists()){
+    //          $row = byr_shop::where('shop_code',$shop_code)->first();
+    //          return $row->byr_shop_id;
+    //     }else{
+    //         $id = byr_shop::insertGetId(['shop_code'=>$shop_code,'shop_name_kana'=>$shop_name_kana,'byr_buyer_id'=>$sc->byr_buyer_id,'slr_seller_id'=>$sc->slr_seller_id]);
+    //         return $id;
+    //     }
+    // }
     public function process_array($charlist)
     {
         $total = count($charlist);
@@ -337,86 +329,86 @@ $new_cost_unit_price = $str[0].'.'.$str[1];
      * @param  Array フォーマット(連想配列)
      * @return boolean
      */
-    public function analyze($filePath, $format)
-    {
-        $data = null;
+    // public function analyze($filePath, $format)
+    // {
+    //     $data = null;
 
-        $head = [];		// ヘッダー
-        $cdata = [];	// データ
-        $foot = [];		// フッター
+    //     $head = [];		// ヘッダー
+    //     $cdata = [];	// データ
+    //     $foot = [];		// フッター
 
-        // header行
-        foreach ($format as $f) {
-            if ($f['type']==='header') {
-                foreach ($f['fmt'] as $fdata) {
-                    $head[$fdata['name']] = $fdata['name_jp'];
-                }
-            } elseif ($f['type']==='data') {
-                foreach ($f['fmt'] as $fdata) {
-                    $cdata[$fdata['name']] = $fdata['name_jp'];
-                }
-            } elseif ($f['type']==='footer') {
-                foreach ($f['fmt'] as $fdata) {
-                    $foot[$fdata['name']] = $fdata['name_jp'];
-                }
-            }
-        }
-        $cnt = 0;
-        //		$data[$cnt] = array_merge($head,$cdata,$foot);
-        $data[$cnt] = array_merge($cdata, $head, $foot);
-        mb_convert_variables('SJIS-win', 'UTF-8', $data[$cnt]);
-        $cnt++;
+    //     // header行
+    //     foreach ($format as $f) {
+    //         if ($f['type']==='header') {
+    //             foreach ($f['fmt'] as $fdata) {
+    //                 $head[$fdata['name']] = $fdata['name_jp'];
+    //             }
+    //         } elseif ($f['type']==='data') {
+    //             foreach ($f['fmt'] as $fdata) {
+    //                 $cdata[$fdata['name']] = $fdata['name_jp'];
+    //             }
+    //         } elseif ($f['type']==='footer') {
+    //             foreach ($f['fmt'] as $fdata) {
+    //                 $foot[$fdata['name']] = $fdata['name_jp'];
+    //             }
+    //         }
+    //     }
+    //     $cnt = 0;
+    //     //		$data[$cnt] = array_merge($head,$cdata,$foot);
+    //     $data[$cnt] = array_merge($cdata, $head, $foot);
+    //     mb_convert_variables('SJIS-win', 'UTF-8', $data[$cnt]);
+    //     $cnt++;
 
-        $head = [];		// ヘッダー
-        $cdata = [];	// データ
-        $foot = [];		// フッター
-        $ccnt = 0;
+    //     $head = [];		// ヘッダー
+    //     $cdata = [];	// データ
+    //     $foot = [];		// フッター
+    //     $ccnt = 0;
 
-        // 読み込み
-        $lines = file($filePath);
-        foreach ($lines as $key => $line) {
-            foreach ($format as $f) {
+    //     // 読み込み
+    //     $lines = file($filePath);
+    //     foreach ($lines as $key => $line) {
+    //         foreach ($format as $f) {
 
-                // key値と指定文字列との比較
-                if ($f['key']['value'] == substr($line, $f['key']['start']-1, $f['key']['length'])) {
+    //             // key値と指定文字列との比較
+    //             if ($f['key']['value'] == substr($line, $f['key']['start']-1, $f['key']['length'])) {
 
-                    // type判定
-                    if ($f['type']==='header') {
-                        // ヘッダー行
-                        foreach ($f['fmt'] as $fdata) {
-                            //							$head[$fdata['name']] = trim(mb_convert_encoding(mb_strcut ($line,$fdata['start']-1,$fdata['length'],'SJIS-win'),'UTF-8', 'SJIS-win'));
-                            $head[$fdata['name']] = trim(mb_strcut($line, $fdata['start']-1, $fdata['length'], 'SJIS-win'));
-                            //							log_message('info',$fdata['name'].':'.$head[$fdata['name']]);
-                        }
+    //                 // type判定
+    //                 if ($f['type']==='header') {
+    //                     // ヘッダー行
+    //                     foreach ($f['fmt'] as $fdata) {
+    //                         //							$head[$fdata['name']] = trim(mb_convert_encoding(mb_strcut ($line,$fdata['start']-1,$fdata['length'],'SJIS-win'),'UTF-8', 'SJIS-win'));
+    //                         $head[$fdata['name']] = trim(mb_strcut($line, $fdata['start']-1, $fdata['length'], 'SJIS-win'));
+    //                         //							log_message('info',$fdata['name'].':'.$head[$fdata['name']]);
+    //                     }
 
-                        // クリア
-                        $ccnt = 0;
-                        $cdata = [];
-                    } elseif ($f['type']==='data') {
-                        // データ行
-                        foreach ($f['fmt'] as $fdata) {
-                            //							$cdata[$ccnt][$fdata['name']] = trim(mb_convert_encoding(mb_strcut ($line,$fdata['start']-1,$fdata['length'],'SJIS-win'),'UTF-8', 'SJIS-win'));
-                            $cdata[$ccnt][$fdata['name']] = trim(mb_strcut($line, $fdata['start']-1, $fdata['length'], 'SJIS-win'));
-                        }
-                        // データ行
-                        $ccnt++;
-                    } elseif ($f['type']==='footer') {
-                        // フッター行
-                        foreach ($f['fmt'] as $fdata) {
-                            //							$foot[$fdata['name']] = trim(mb_convert_encoding(mb_strcut ($line,$fdata['start']-1,$fdata['length'],'SJIS-win'),'UTF-8', 'SJIS-win'));
-                            $foot[$fdata['name']] = trim(mb_strcut($line, $fdata['start']-1, $fdata['length'], 'SJIS-win'));
-                        }
+    //                     // クリア
+    //                     $ccnt = 0;
+    //                     $cdata = [];
+    //                 } elseif ($f['type']==='data') {
+    //                     // データ行
+    //                     foreach ($f['fmt'] as $fdata) {
+    //                         //							$cdata[$ccnt][$fdata['name']] = trim(mb_convert_encoding(mb_strcut ($line,$fdata['start']-1,$fdata['length'],'SJIS-win'),'UTF-8', 'SJIS-win'));
+    //                         $cdata[$ccnt][$fdata['name']] = trim(mb_strcut($line, $fdata['start']-1, $fdata['length'], 'SJIS-win'));
+    //                     }
+    //                     // データ行
+    //                     $ccnt++;
+    //                 } elseif ($f['type']==='footer') {
+    //                     // フッター行
+    //                     foreach ($f['fmt'] as $fdata) {
+    //                         //							$foot[$fdata['name']] = trim(mb_convert_encoding(mb_strcut ($line,$fdata['start']-1,$fdata['length'],'SJIS-win'),'UTF-8', 'SJIS-win'));
+    //                         $foot[$fdata['name']] = trim(mb_strcut($line, $fdata['start']-1, $fdata['length'], 'SJIS-win'));
+    //                     }
 
-                        // データ結合
-                        foreach ($cdata as $cval) {
-                            //							$data[$cnt] = array_merge($head,$cval,$foot);
-                            $data[$cnt] = array_merge($cval, $head, $foot);
-                            $cnt++;
-                        }
-                    }
-                }
-            }
-        }
-        return $data;
-    }
+    //                     // データ結合
+    //                     foreach ($cdata as $cval) {
+    //                         //							$data[$cnt] = array_merge($head,$cval,$foot);
+    //                         $data[$cnt] = array_merge($cval, $head, $foot);
+    //                         $cnt++;
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     return $data;
+    // }
 }
