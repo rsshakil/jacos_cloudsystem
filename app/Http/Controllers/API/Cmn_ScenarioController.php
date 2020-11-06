@@ -72,8 +72,9 @@ class Cmn_ScenarioController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function exec(Request $request, $id)
+    public function exec(Request $request)
     {
+        $cmn_scenario_id=$request->scenario_id;
         \Log::debug('scenario exec start---------------');
         // user info check
         \Log::debug($request);
@@ -81,11 +82,11 @@ class Cmn_ScenarioController extends Controller
         if (!$user) {
             return ['status'=>1, 'message' => 'Authentication faild!'];
         }
-        if (!Hash::check($request->password, $user->password)) {
+        if (!\Hash::check($request->password, $user->password)) {
             return ['status'=>1, 'message' => 'Authentication faild!'];
         }
         // scenario info check
-        $sc = cmn_scenario::where('cmn_scenario_id', $id)->first();
+        $sc = cmn_scenario::where('cmn_scenario_id', $cmn_scenario_id)->first();
         \Log::info($sc);
         
         // scenario call
@@ -119,7 +120,7 @@ class Cmn_ScenarioController extends Controller
 
 
         \Log::debug('scenario exec end  ---------------');
-        return;
+        return $ret;
     }
 
     public function exec_demo(Request $request, $id)

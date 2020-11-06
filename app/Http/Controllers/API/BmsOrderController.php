@@ -13,6 +13,7 @@ use App\Models\BMS\bms_order;
 use App\Models\CMN\cmn_job;
 use App\Models\CMN\cmn_scenario;
 
+
 class BmsOrderController extends Controller
 {
     private $order_id;
@@ -237,43 +238,43 @@ class BmsOrderController extends Controller
         return response()->json(['message' => 'File inserted', 'class_name' => 'alert-success', 'status_code' => 200]);
     }
 
-    public function orderCreateFixedLength(Request $request)
-    {
-        // return $request->all();
-        $cmn_scenario_id=$request->scenario_id;
-        $sc=cmn_scenario::where('cmn_scenario_id',$cmn_scenario_id)->first();
-        // return $sc;
-        // return app_path().'/'.$sc->file_path.'.php';
-        // scenario call
-        if (!file_exists(app_path().'/'.$sc->file_path.'.php')) {
-            \Log::error('Scenario file is not exist!:'.$sc->file_path);
-            return ['status'=>'1','message'=>'Scenario file is not exist!'.$sc->file_path];
-        }
-        // ファイル読み込み
+    // public function orderCreateDeleteFixedLength(Request $request)
+    // {
+    //     // return $request->all();
+    //     $cmn_scenario_id=$request->scenario_id;
+    //     $sc=cmn_scenario::where('cmn_scenario_id',$cmn_scenario_id)->first();
+    //     // return $sc;
+    //     // return app_path().'/'.$sc->file_path.'.php';
+    //     // scenario call
+    //     if (!file_exists(app_path().'/'.$sc->file_path.'.php')) {
+    //         \Log::error('Scenario file is not exist!:'.$sc->file_path);
+    //         return ['status'=>'1','message'=>'Scenario file is not exist!'.$sc->file_path];
+    //     }
+    //     // ファイル読み込み
         
-        // $sc_obj = new ouk_order_toj();//$sc->file_path;
-        $customClassPath = "\\App\\";
-        $nw_f_pth = explode('/',$sc->file_path);
-        foreach($nw_f_pth as $p){
-            $customClassPath .= $p.'\\';
-        }
-        $customClassPath = rtrim($customClassPath,"\\");
-        $sc_obj = new $customClassPath;
-        if (!method_exists($sc_obj, 'exec')) {
-            \Log::error('scenario exec error');
-            return ['status'=>'1','message'=>'Scenario exec function is not exist!'];
-        }
-        $ret = $sc_obj->exec($request,$sc);
-        if ($ret !== 0) {
-            // error
-            \Log::debug('scenario exec error');
-        } else {
-            // success
-            \Log::debug('scenario exec success');
-        }
-        return $ret;
+    //     // $sc_obj = new ouk_order_toj();//$sc->file_path;
+    //     $customClassPath = "\\App\\";
+    //     $nw_f_pth = explode('/',$sc->file_path);
+    //     foreach($nw_f_pth as $p){
+    //         $customClassPath .= $p.'\\';
+    //     }
+    //     $customClassPath = rtrim($customClassPath,"\\");
+    //     $sc_obj = new $customClassPath;
+    //     if (!method_exists($sc_obj, 'exec')) {
+    //         \Log::error('scenario exec error');
+    //         return ['status'=>'1','message'=>'Scenario exec function is not exist!'];
+    //     }
+    //     $ret = $sc_obj->exec($request,$sc);
+    //     if ($ret !== 0) {
+    //         // error
+    //         \Log::debug('scenario exec error');
+    //     } else {
+    //         // success
+    //         \Log::debug('scenario exec success');
+    //     }
+    //     return $ret;
        
-    }
+    // }
 
     
 }

@@ -71,7 +71,7 @@ Route::get('/home_lang_data', 'API\LanguageController@homeLangData');
 
 		// Route::post('/permission_check', 'API\PermissionController@check');
         
-Route::post('scenario_exec/{cmn_scenario_id}', 'API\Cmn_ScenarioController@exec');
+Route::post('scenario_exec', 'API\Cmn_ScenarioController@exec');
 Route::post('job_exec', 'API\Cmn_jobController@exec');
 Route::get('/slr_job_list_by_seller_id/{slr_seller_id}', 'API\Cmn_jobController@slr_job_list_by_seller_id');
 
@@ -112,7 +112,8 @@ Route::post('/canvas_data_save', 'API\Byr_orderController@canvasDataSave');
 Route::post('/load_canvas_data', 'API\Byr_orderController@canvasAllData');
 Route::post('/delete_canvas', 'API\Byr_orderController@deleteCanvasData');
 Route::post('/shipment_csv_create', 'API\ShipmentConroller@shipmentCSVCreate');
-Route::post('/order_create_fixed_length', 'API\BmsOrderController@orderCreateFixedLength');
+// Route::post('/order_create_fixed_length', 'API\BmsOrderController@orderCreateDeleteFixedLength');
+// Route::post('/delete_old_files', 'API\BmsOrderController@orderCreateDeleteFixedLength');
 
 Route::post('/load_pdf_platform_canvas_setting_data', 'API\CmnPdfPlatformSettings@canvasSettingData');
 Route::post('/pdf_platform_canvas_data_save', 'API\CmnPdfPlatformSettings@canvasDataSave');

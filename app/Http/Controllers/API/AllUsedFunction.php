@@ -323,4 +323,12 @@ class AllUsedFunction extends Controller
         }
         return $input.str_repeat(' ', $len);
     }
+    public function ext_check($file_name){
+        $ext=\explode('.',$file_name)[1];
+        return $ext;
+    }
+    public function header_part($file_name){
+        $header=\substr($file_name,0,8);
+        return $header;
+    }
 }
