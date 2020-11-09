@@ -20,11 +20,20 @@ use DB;
 
 class AllUsedFunction extends Controller
 {
-    
+    /**
+     * Get all User by customize id and name
+     *
+     * @return All Users as an array.
+     */
     public function allUsers(){
         $users = User::select('id as user_id','name as user_name')->get();
         return $users;
     }
+    /**
+     * Get all Users as default
+     *
+     * @return All Users as an array.
+     */
     public function allUsersAll(){
         $users = User::all();
         return $users;
@@ -75,7 +84,12 @@ class AllUsedFunction extends Controller
      return $permissions;
         
     }
-    
+    /**
+     * Get all permission for a desired user
+     *
+     * @param  array $user
+     * @return All permissions as an array.
+     */
     public function allPermissionForUser($user){
         $all_permissions_for_user= $user->getAllPermissions();
         $all_permissions_for_user_array=array();
@@ -84,17 +98,36 @@ class AllUsedFunction extends Controller
         }
         return $all_permissions_for_user_array;
     }
-
+    /**
+     * Get all Permissions by customize id and name
+     *
+     * @return All Permissions as an array.
+     */
     public function get_permission_custom_field(){
         return $permissions = Permission::select('id as permission_id','name as permission_name')->get();
     }
+    /**
+     * Get all Roles by customize id and name
+     *
+     * @return All Roles as an array.
+     */
     public function get_role_custom_field(){
         return $roles = Role::select('id as role_id','name as role_name')->get();
     }
+    /**
+     * Get all Roles as default
+     *
+     * @return All Roles as an array.
+     */
     public function get_roles(){
         return $roles = Role::all();
     }
-
+    /**
+     * Read a csv file by path
+     *
+     * @param  string $baseUrl
+     * @return All csv data as an array.
+     */
     public function csvReader($baseUrl)
     {
         $data = array_map('str_getcsv', file($baseUrl));
@@ -190,6 +223,11 @@ class AllUsedFunction extends Controller
          return $dat;
       }
    }
+   /**
+     * Change a file name from a given file name
+     * @param  String File name
+     * @return String formated file name
+     */
     public function file_name_change($file_name)
     {
         $file_array = explode('.', $file_name);
@@ -198,7 +236,11 @@ class AllUsedFunction extends Controller
         $today_for_file = date("YmdHis");
         return $file_name = $file_name_without_ext . "_" . $today_for_file . "." . $file_array[$array_size - 1];
     }
-
+    /**
+     * Get cmn_companies information by cmn_company_id or not
+     * @param  int $cmn_company_id
+     * @return Array Company information
+     */
     public function get_company_list($cmn_company_id=0){
         if($cmn_company_id!=0){
             return $results  = cmn_company::where('cmn_company_id',$cmn_company_id)->get();
@@ -207,7 +249,11 @@ class AllUsedFunction extends Controller
             ->join('cmn_companies','cmn_companies.cmn_company_id','=','byr_buyers.cmn_company_id')->get();
         }
     }
-
+    /**
+     * Get cmn_companies_users information by adm_user_id or not
+     * @param  int $adm_user_id
+     * @return Array Formated Company information
+     */
     public function get_user_info($adm_user_id=0){
         $arr=array('cmn_company_id'=>0,'byr_buyer_id'=>0,'cmn_connect_id'=>0);
         if($adm_user_id=!0){
@@ -226,6 +272,11 @@ class AllUsedFunction extends Controller
         }
         return $ar;
     }
+    /**
+     * Unserialize Canvas object from serialized Canvas Object
+     * @param  Object $canvas_objects Serialized Canvas Object
+     * @return Array Formated Object Array
+     */
     private function UnserializedCanvasData($canvas_objects)
     {
         $canvas_data = unserialize($canvas_objects);
@@ -287,6 +338,13 @@ class AllUsedFunction extends Controller
         );
         return $new_array;
     }
+     /**
+     * Save Base64 image in Directory
+     * @param  Object $base64_image_string Base64 Image Object
+     * @param  String $output_file_without_extension File name without extension which will be returned as file name
+     * @param  String $path_with_end_slash Directory path with end slash where the file will be saved
+     * @return Array Formated Object Array
+     */
     public function save_base64_image($base64_image_string, $output_file_without_extension, $path_with_end_slash = "")
     {
         $splited = explode(',', substr($base64_image_string, 5), 2);
@@ -308,13 +366,24 @@ class AllUsedFunction extends Controller
         // move_uploaded_file(base64_decode($data),$path_with_end_slash . $output_file_with_extension);
         return $output_file_with_extension;
     }
-    public function itsBase64($image){
-        if(substr($image, 0,11) === 'data:image/'){     
+    /**
+     * Check an Object is an base64 image or not
+     * @param  object $base64_obj Base64 Image Object
+     * @return boolean If base64 return 1 else 0
+     */
+    public function itsBase64($base64_obj){
+        if(substr($base64_obj, 0,11) === 'data:image/'){     
             return 1;
         }else{
             return 0;
         }
      }
+     /**
+     * Check string length and add space padding after the string until desired length
+     * @param  string $input desired string
+     * @param  int $pad_length desired string length
+     * @return string formated string with space padding added
+     */
      public function mb_str_pad($input, $pad_length)
     {
         $len = $pad_length - mb_strlen($input);
@@ -323,20 +392,38 @@ class AllUsedFunction extends Controller
         }
         return $input.str_repeat(' ', $len);
     }
+    /**
+     * Get file extension from a file name
+     * @param  string $file_name desired file name
+     * @return string File extension
+     */
     public function ext_check($file_name){
         $ext=\explode('.',$file_name)[1];
         return $ext;
     }
+    /**
+     * Get first 8 character from a date based file name for date
+     * @param  string $file_name desired file name
+     * @return string date string from file name
+     */
     public function header_part($file_name){
         $header=\substr($file_name,0,8);
         return $header;
     }
+    /**
+     * Split at all position not after the start: ^ and not before the end: $
+     * @param  string $string desired string
+     * @return string Formated string
+     */
     public function mb_str_split($string)
     {
-        # Split at all position not after the start: ^
-        # and not before the end: $
         return preg_split('/(?<!^)(?!$)/u', $string);
     }
+    /**
+     * Binary number set for date schedule
+     * @param  int $binary_number desired binary number Like: 11011
+     * @return int Formated binary number as 7 days like: 0011011
+     */
     private function binary_format($binary_number)
     {
         $binary_length = strlen($binary_number);
@@ -350,10 +437,20 @@ class AllUsedFunction extends Controller
         }
         return $formated_binary_number;
     }
+    /**
+     * Get binary to decimal number
+     * @param  int $binary desired binary number Like: 0000011
+     * @return int decimal number as like: 3
+     */
     private function binary_to_decimal($binary)
     {
         return bindec($binary);
     }
+    /**
+     * Get decimal to binary number
+     * @param  int $decimal desired decimal number Like: 3
+     * @return int binary number as like: 11
+     */
     private function decimal_to_binary($decimal)
     {
         $bos = null;
