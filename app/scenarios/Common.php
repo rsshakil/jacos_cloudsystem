@@ -8,8 +8,8 @@ class Common
      * ebcdic to shift jis
      * EBCDICをSJISに文字コード変換
      * @param  String ファイルパス
-     * * @param  int data_type identifying ファイルパス/string ,   0 for file_path and 1 for String
-     * @return String 変換結果
+     * * @param  String file_data 
+     * @return string if success then String else null
      *//////////////////////////////////////////////
     public function ebcdic_2_sjis($file_path=null,$file_data=null)
     {
@@ -48,35 +48,43 @@ class Common
              'F8'=>'38', 'F9'=>'39', 'FA'=>'1A', 'FB'=>'1A', 'FC'=>'1A', 'FD'=>'1A', 'FE'=>'1A',
              );
            
-        // $file_data = file_get_contents($file_path);
-        if ($file_path!=null) {
-            $file_data = file_get_contents($file_path);
-        }
-        //  echo($file_data.PHP_EOL);
-        $hex_data = bin2hex($file_data);
-        $ascii_data = '';
-        $string_data = '';
-        for ($i = 0; $i < strlen($hex_data); $i++) {
-            $ebcdic_char = $hex_data[$i];
-            $i++;
-            $ebcdic_char .= $hex_data[$i];
-            $ebcdic_char = strtoupper($ebcdic_char);
-           
-            $ascii_char = $ebcdic_map[$ebcdic_char];
-            $ascii_data .= $ascii_char;
-        }
+             if ($file_path!=null) {
+                if (is_file($file_path)) {
+                    $file_data = file_get_contents($file_path);
+                }else{
+                    $file_data =null;
+                    // echo "The file $file_path does not exist";
+                }
+            }
+            // return $file_data;
+            //  echo($file_data.PHP_EOL);
+            $ascii_bin_data=null;
+            if ($file_data !=null) {
+                $hex_data = bin2hex($file_data);
+                $ascii_data = '';
+                $string_data = '';
+                for ($i = 0; $i < strlen($hex_data); $i++) {
+                    $ebcdic_char = $hex_data[$i];
+                    $i++;
+                    $ebcdic_char .= $hex_data[$i];
+                    $ebcdic_char = strtoupper($ebcdic_char);
+                
+                    $ascii_char = $ebcdic_map[$ebcdic_char];
+                    $ascii_data .= $ascii_char;
+                }
 
-        // $ascii_bin_data = hex2bin($ascii_data);
-        $ascii_bin_data = pack('H*', $ascii_data);
-        return $ascii_bin_data;
+                // $ascii_bin_data = hex2bin($ascii_data);
+                $ascii_bin_data = pack('H*', $ascii_data);
+            }
+            return $ascii_bin_data;
     }
 
     /** ////////////////////////////////////////////
-     * ebcdic to shift jis
-     * EBCDICをSJISに文字コード変換
+     * shift jis to ebcdic
+     * SJISをEBCDICに文字コード変換
      * @param  String file_path ファイルパス
-     * @param  int data_type identifying ファイルパス/string ,   0 for file_path and 1 for String
-     * @return String 変換結果
+     * @param  String file_data 
+     * @return string if success then String else null
      *//////////////////////////////////////////////
     public function sjis_2_ebcdic($file_path=null,$file_data=null)
     {
@@ -115,26 +123,36 @@ class Common
              '38'=>'F8', '39'=>'F9', '1A'=>'FA', '1A'=>'FB', '1A'=>'FC', '1A'=>'FD', '1A'=>'FE',
              );
            
-        
+            //  $file_path="storage/app/fixed_length_files/20-11-091_Text_File_1604902103.txt";
         if ($file_path!=null) {
-            $file_data = file_get_contents($file_path);
+            if (is_file($file_path)) {
+                $file_data = file_get_contents($file_path);
+            }else{
+                $file_data =null;
+                // echo "The file $file_path does not exist";
+            }
         }
+        // return $file_data;
         //  echo($file_data.PHP_EOL);
-        $hex_data = bin2hex($file_data);
-        $ascii_data = '';
-        $string_data = '';
-        for ($i = 0; $i < strlen($hex_data); $i++) {
-            $ebcdic_char = $hex_data[$i];
-            $i++;
-            $ebcdic_char .= $hex_data[$i];
-            $ebcdic_char = strtoupper($ebcdic_char);
-           
-            $ascii_char = $ebcdic_map[$ebcdic_char];
-            $ascii_data .= $ascii_char;
-        }
+        $ascii_bin_data=null;
+        if ($file_data !=null) {
+            $hex_data = bin2hex($file_data);
+            $ascii_data = '';
+            $string_data = '';
+            for ($i = 0; $i < strlen($hex_data); $i++) {
+                $ebcdic_char = $hex_data[$i];
+                $i++;
+                $ebcdic_char .= $hex_data[$i];
+                $ebcdic_char = strtoupper($ebcdic_char);
+            
+                $ascii_char = $ebcdic_map[$ebcdic_char];
+                $ascii_data .= $ascii_char;
+            }
 
-        // $ascii_bin_data = hex2bin($ascii_data);
-        $ascii_bin_data = pack('H*', $ascii_data);
+            // $ascii_bin_data = hex2bin($ascii_data);
+            $ascii_bin_data = pack('H*', $ascii_data);
+        }
         return $ascii_bin_data;
-    }
+    
+}
 }
