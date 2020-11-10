@@ -27,6 +27,7 @@ class CreateBmsInvoicesTable extends Migration
             $table->string('sta_doc_type', 10)->comment('メッセージ種');
             $table->string('sta_doc_creation_date_and_time', 10)->comment('作成日時');
             $table->string('sta_bus_scope_instance_identifier', 10)->comment('テスト区分ＩＤ');
+            $table->string('sta_bus_scope_type', 10)->comment('タイプ');
             $table->string('sta_bus_scope_identifier', 10)->comment('最終送信先ＩＤ');
             $table->string('mes_ent_unique_creator_identification', 10)->comment('メッセージ識別ＩＤ');
             $table->string('mes_mes_sender_station_address', 10)->comment('送信者ステーションアドレス');
