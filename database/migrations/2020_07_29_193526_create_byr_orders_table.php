@@ -16,8 +16,14 @@ class CreateByrOrdersTable extends Migration
         Schema::create('byr_orders', function (Blueprint $table) {
             $table->increments('byr_order_id')->comment('byr order id');
             $table->integer('cmn_connect_id')->unsigned()->comment('cmn connect id');
-            $table->enum('category', ['edi', 'manual'])->default('edi')->comment('order category');
-            $table->enum('status', ['未確定', '確定済み', '未出荷', '出荷中', '出荷済み'])->default('未確定')->comment('order status');
+            $table->string('byr_name',50)->nullable()->comment('byr_name');
+            $table->string('byr_name_kana',50)->nullable()->comment('byr_name_kana');
+            $table->string('slr_name',50)->nullable()->comment('slr_name');
+            $table->string('slr_name_kana',50)->nullable()->comment('slr_name_kana');
+            $table->string('partner_code',50)->nullable()->comment('partner_code');
+            // $table->enum('category', ['edi', 'manual'])->default('edi')->comment('order category');
+            // $table->enum('status', ['未確定', '確定済み', '未出荷', '出荷中', '出荷済み'])->default('未確定')->comment('order status');
+            $table->enum('manual', ['未確定', '確定済み', '未出荷', '出荷中', '出荷済み'])->default('未確定')->comment('manual');
             $table->dateTime('download_date')->comment('Time of creation')->nullable();
             $table->dateTime('receive_date')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('Time of creation');
             $table->string('receive_file_path', 500)->comment('receive file path')->nullable();
