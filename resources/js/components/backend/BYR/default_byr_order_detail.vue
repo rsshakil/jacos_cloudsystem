@@ -192,7 +192,10 @@
                         </select>
                       </td>
                       <td>
-                        <button type="button">{{myLang.printing}}</button>
+                        <router-link :to="{name:'order_details_canvas',params:{byr_order_id:byr_order_id} }" class="btn btn-info">
+                          {{myLang.printing}}
+                        </router-link>
+                        <!-- <button type="button">{{myLang.printing}}</button> -->
                       </td>
                       <td>
                         <button class="btn btn-outline-primary" type="button">

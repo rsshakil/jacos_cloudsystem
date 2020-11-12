@@ -6,10 +6,13 @@
     <div class="main-navbar sticky-top bg-white">
       <!-- Main Navbar -->
       <nav class="navbar align-items-stretch navbar-light flex-md-nowrap p-0">
-        <div class="custom_bredcrubs" style="margin-left:260px;">
+        <div class="custom_bredcrubs" style="margin-left: 260px">
           <Breadcrumbs></Breadcrumbs>
         </div>
-        <form action="#" class="main-navbar__search w-100 d-none d-md-flex d-lg-flex">
+        <form
+          action="#"
+          class="main-navbar__search w-100 d-none d-md-flex d-lg-flex"
+        >
           <div class="input-group input-group-seamless ml-3">
             <div class="input-group-prepend">
               <div class="input-group-text"></div>
@@ -34,16 +37,25 @@
               aria-expanded="false"
             >
               <span class="h4">
-                <b-icon icon="gear-fill" aria-hidden="true" style="color:#007BFF"></b-icon>
+                <b-icon
+                  icon="gear-fill"
+                  aria-hidden="true"
+                  style="color: #007BFF"
+                ></b-icon>
               </span>
             </a>
-            <div class="dropdown-menu dropdown-menu-small" aria-labelledby="navbarDropdown_setting">
+            <div
+              class="dropdown-menu dropdown-menu-small"
+              aria-labelledby="navbarDropdown_setting"
+            >
               <!-- <a class="dropdown-item csv_output" href="#">CSV出力</a>
               <div class="dropdown-divider"></div>-->
               <button
                 @click="display_table_col_setting"
                 class="dropdown-item display_item_setting"
-              >表示項目設定</button>
+              >
+                表示項目設定
+              </button>
               <!-- <div class="dropdown-divider"></div>
               <a class="dropdown-item setting_printing" href="#">印刷</a>
               <div class="dropdown-divider"></div>
@@ -65,7 +77,10 @@
               <span class="flag-icon flag-icon-us" v-if="local == 'en'"></span>
               {{ local == "en" ? "English" : "日本語" }}
             </a>
-            <div class="dropdown-menu dropdown-menu-small" aria-labelledby="navbarDropdown">
+            <div
+              class="dropdown-menu dropdown-menu-small"
+              aria-labelledby="navbarDropdown"
+            >
               <a class="dropdown-item" :href="BASE_URL + '/language/en'">
                 <span class="flag-icon flag-icon-us"></span>
                 English
@@ -89,7 +104,7 @@
               <!-- @if(Auth::user()->image) -->
               <img
                 class="user-avatar rounded-circle mr-2"
-                style="max-height: 46px !important;"
+                style="max-height: 46px !important"
                 v-if="user_data.user"
                 :src="imageSrc()"
                 alt
@@ -97,12 +112,13 @@
               <!-- <img class="rounded-circle" v-if="user_image" :src="user_image" alt="No image" width="110" /> -->
               <!-- @endif -->
               <span class="d-none d-md-inline-block">
-                {{
-                user_data.user ? user_data.user.name : ""
-                }}
+                {{ user_data.user ? user_data.user.name : "" }}
               </span>
             </a>
-            <div class="dropdown-menu dropdown-menu-small" style="margin-left: -60px;">
+            <div
+              class="dropdown-menu dropdown-menu-small"
+              style="margin-left: -60px"
+            >
               <!-- @can('personal_profile_view') -->
               <!-- <a class="dropdown-item"
                             :href="BASE_URL+'/users/1'">
@@ -110,12 +126,12 @@
               </a>-->
               <router-link
                 :to="{
-                                    name: 'users',
-                                    params: {
-                                        id: global_user_id,
-                                        auth_id: global_user_id
-                                    }
-                                }"
+                  name: 'users',
+                  params: {
+                    id: global_user_id,
+                    auth_id: global_user_id,
+                  },
+                }"
                 class="dropdown-item"
               >
                 <i class="material-icons">&#xE7FD;</i> Profile
@@ -124,12 +140,12 @@
               @can('personal_password_change')-->
               <router-link
                 :to="{
-                                    name: 'password_reset',
-                                    params: {
-                                        id: global_user_id,
-                                        auth_id: global_user_id
-                                    }
-                                }"
+                  name: 'password_reset',
+                  params: {
+                    id: global_user_id,
+                    auth_id: global_user_id,
+                  },
+                }"
                 class="dropdown-item pc"
               >
                 <i class="fas fa-edit"></i>
@@ -187,7 +203,7 @@
         </thead>
         <tbody>
           <tr v-for="table_col in table_col_arry" :key="table_col.header_field">
-            <td>{{table_col.header_text}}</td>
+            <td>{{ table_col.header_text }}</td>
             <td>
               <label class="switch">
                 <input
@@ -222,7 +238,7 @@ export default {
   data() {
     return {
       local: Globals.local,
-      user_data: null
+      user_data: null,
       // BASE_URL:BASE_URL,
     };
   },
@@ -233,10 +249,10 @@ export default {
         "/storage/app/public/backend/images/users/" +
         this.user_data.user.image
       );
-    }
+    },
   },
   created() {
     this.user_data = this.app._data;
-  }
+  },
 };
 </script>

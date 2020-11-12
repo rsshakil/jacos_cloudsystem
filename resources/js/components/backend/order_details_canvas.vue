@@ -128,7 +128,8 @@ export default {
           cmn_scenario_id:2,
         })
         .then(({ data }) => {
-          // console.log(data);
+          console.log(data);
+          // return 0;
           if (data.canvas_data.length>0) {
             this.allName=data.canvas_data
             this.canvasSelectedName=this.allName[0]
@@ -180,7 +181,16 @@ export default {
             var split_element=(this.splitString(element.text))
             var item="";
             if (split_element[1]<canvasAllDataArray.length) {
-                item=canvasAllDataArray[split_element[1]][split_element[0]];
+                // item=canvasAllDataArray[split_element[1]][split_element[0]];
+                
+                if (canvasAllDataArray[split_element[1]][split_element[0]]!=null) {
+                  item=canvasAllDataArray[split_element[1]][split_element[0]];
+                }else if(canvasAllDataArray[split_element[1]][split_element[0]]!=null){
+                  item=canvasAllDataArray[split_element[1]][split_element[0]];
+                }else{
+                  item=split_element[0];
+                }
+                // "order_lot_inputs" not in database
             }else{
                 if(!(Array.isArray(split_element))){
                   if (split_element=="total_order_qty") {
@@ -201,6 +211,7 @@ export default {
                   // console.log(item);
                 }
               }
+              // console.log(item);
             this.createObj(element.left,element.top,element.width,element.height,element.fontSize,element.textAlign,element.lineHeight,element.scaleX,element.scaleY,item.toString(),'auto')
           });
         }

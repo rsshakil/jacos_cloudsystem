@@ -3,11 +3,11 @@
 namespace App\Scenarios;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\BYR\byr_order_detail;
+use App\Models\BYR\byr_order_voucher;
 use App\Models\BYR\byr_order;
-use App\Models\BYR\byr_shop;
+// use App\Models\BYR\byr_shop;
 
-class ouk_order_voucher extends Model
+class ouk_order_voucher
 {
     //
     public function exec($request,$sc)
@@ -18,15 +18,26 @@ class ouk_order_voucher extends Model
         // ->join('byr_orders','byr_order_details.byr_order_id','=','byr_orders.byr_order_id')
         // ->where('byr_orders.byr_order_id',$byr_order_id)
         // ->get();
-        $can_info_query=byr_order_detail::select('byr_order_details.*','byr_shops.shop_name_kana','byr_shops.shop_code',
-        'cmn_connects.partner_code','byr_shipment_details.confirm_quantity','byr_shipment_details.revised_cost_price',
-        'byr_shipment_details.revised_selling_price')
-        ->join('byr_orders','byr_order_details.byr_order_id','=','byr_orders.byr_order_id')
+        // $can_info_query=byr_order_detail::select('byr_order_details.*','byr_shops.shop_name_kana','byr_shops.shop_code',
+        // 'cmn_connects.partner_code','byr_shipment_details.confirm_quantity','byr_shipment_details.revised_cost_price',
+        // 'byr_shipment_details.revised_selling_price')
+        // ->join('byr_orders','byr_order_details.byr_order_id','=','byr_orders.byr_order_id')
+        // ->join('cmn_connects','cmn_connects.cmn_connect_id','=','byr_orders.cmn_connect_id')
+        // ->join('byr_shops','byr_shops.byr_shop_id','=','byr_order_details.byr_shop_id')
+        // ->join('byr_shipment_details','byr_shipment_details.byr_order_detail_id','=','byr_order_details.byr_order_detail_id')
+        // ->where('byr_orders.byr_order_id',$byr_order_id)
+        // ->get();
+        $can_info_query=byr_order_voucher::select('byr_order_vouchers.*','byr_order_items.*',
+        'cmn_connects.partner_code','byr_shipment_items.confirm_quantity','byr_shipment_items.revised_cost_price',
+        'byr_shipment_items.revised_selling_price')
+        ->join('byr_order_items','byr_order_items.byr_order_voucher_id','=','byr_order_vouchers.byr_order_voucher_id')
+        ->join('byr_orders','byr_orders.byr_order_id','=','byr_order_vouchers.byr_order_id')
         ->join('cmn_connects','cmn_connects.cmn_connect_id','=','byr_orders.cmn_connect_id')
-        ->join('byr_shops','byr_shops.byr_shop_id','=','byr_order_details.byr_shop_id')
-        ->join('byr_shipment_details','byr_shipment_details.byr_order_detail_id','=','byr_order_details.byr_order_detail_id')
-        ->where('byr_orders.byr_order_id',$byr_order_id)
+        // ->join('byr_shops','byr_shops.byr_shop_id','=','byr_order_details.byr_shop_id')
+        ->join('byr_shipment_items','byr_shipment_items.byr_order_item_id','=','byr_order_items.byr_order_item_id')
+        ->where('byr_order_vouchers.byr_order_id',$byr_order_id)
         ->get();
+        // return $can_info_query;
         $collection = collect($can_info_query);
         $grouped = $collection->groupBy('voucher_number');
         $can_info=$grouped->toArray();
