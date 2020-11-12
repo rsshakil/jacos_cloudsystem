@@ -104,6 +104,16 @@ class cmn_scenarioSeeder extends Seeder
                 'description' => 'BYR ORDER INDEPEN FIXED LENGTH GENERATE',
                 'file_path' => 'scenarios/indepen_fixed_length_generate',
             ],
+            [
+                'byr_buyer_id' => 1,
+                'slr_seller_id' => 0,
+                'adm_role_id' => 4,
+                'class' => 'order',
+                'vector' => 'in_jacos',
+                'name' => 'BYR ORDER INDEPEN CSV GENERATE',
+                'description' => 'BYR ORDER INDEPEN CSV GENERATE',
+                'file_path' => 'scenarios/indepen_csv_generate',
+            ],
         );
         cmn_scenario::insert($scenarios);
     }

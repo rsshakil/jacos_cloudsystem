@@ -139,9 +139,9 @@ class bms_csv_order extends Model
             $voucher_array['receiver_name_kana'] = $value[40];
             $voucher_array['receiver_code'] = $value[37];
             $voucher_array['receiver_name'] = $value[39];
-            $voucher_array['ship_name_kana'] = $value[36];
-            $voucher_array['ship_name'] = $value[35];
-            $voucher_array['ship_code'] = $value[33];
+            $voucher_array['shop_name_kana'] = $value[36];
+            $voucher_array['shop_name'] = $value[35];
+            $voucher_array['shop_code'] = $value[33];
             $voucher_array['voucher_number'] = $value[31];
             //make items array
             $item_array['list_number']=$value[101];
