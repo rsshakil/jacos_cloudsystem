@@ -16,6 +16,7 @@ export default {
   data() {
     return {
       component:"default_byr_order_detail",
+      byr_order_id:null,
     };
   },
   methods: {

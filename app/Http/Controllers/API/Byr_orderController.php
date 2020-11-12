@@ -5,11 +5,11 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\API\AllUsedFunction;
 use Illuminate\Http\Request;
-use App\Models\BYR\byr_order_detail;
+use App\Models\BYR\byr_order_item;
 use App\Models\BYR\byr_order;
 use App\Models\BYR\byr_buyer;
 use App\Models\BYR\byr_shipment;
-use App\Models\BYR\byr_shipment_detail;
+use App\Models\BYR\byr_shipment_item;
 use App\Models\BYR\byr_shop;
 use App\Models\CMN\cmn_pdf_canvas;
 use App\Models\CMN\cmn_tbl_col_setting;
@@ -37,7 +37,7 @@ class Byr_orderController extends Controller
     {
         //test
         $result = byr_order::select( 'byr_orders.byr_order_id','byr_orders.receive_file_path','byr_orders.status','byr_orders.receive_date','byr_orders.data_count','byr_orders.category',
-        DB::raw('(select expected_delivery_date from byr_order_details where byr_order_id  =   byr_orders.byr_order_id limit 1) as expected_delivery_date')  )->get();
+        DB::raw('(select expected_delivery_date from byr_order_vouchers where byr_order_id  =   byr_orders.byr_order_id limit 1) as expected_delivery_date')  )->get();
         $byr_buyer = byr_buyer::all();
         return response()->json(['order_list' => $result,'byr_buyer_list'=>$byr_buyer]);
     }
@@ -93,11 +93,13 @@ class Byr_orderController extends Controller
     public function show($byr_order_id)
     {
 
-        $result = DB::table('byr_order_details')
-            ->select('byr_order_details.*', 'byr_shipment_details.confirm_quantity', 'byr_shipment_details.lack_reason','byr_shops.shop_name_kana')
-            ->leftJoin('byr_shipment_details', 'byr_shipment_details.byr_order_detail_id', '=', 'byr_order_details.byr_order_detail_id')
-            ->leftJoin('byr_shops', 'byr_shops.byr_shop_id', '=', 'byr_order_details.byr_shop_id')
-            ->where('byr_order_details.byr_order_id', $byr_order_id)
+        $result = DB::table('byr_order_vouchers')
+            ->select('byr_order_vouchers.*','byr_order_items.*', 'byr_shipment_items.confirm_quantity', 'byr_shipment_items.lack_reason')
+            ->join('byr_order_items', 'byr_order_items.byr_order_voucher_id', '=', 'byr_order_vouchers.byr_order_voucher_id')
+            ->leftJoin('byr_shipment_vouchers', 'byr_shipment_vouchers.byr_order_voucher_id', '=', 'byr_order_vouchers.byr_order_voucher_id')
+            ->leftJoin('byr_shipment_items', 'byr_shipment_items.byr_shipment_voucher_id', '=', 'byr_shipment_vouchers.byr_shipment_voucher_id')
+            // ->leftJoin('byr_shops', 'byr_shops.byr_shop_id', '=', 'byr_order_details.byr_shop_id')
+            ->where('byr_order_vouchers.byr_order_id', $byr_order_id)
             ->get();
         /*coll setting*/
         $slected_list = array();
@@ -142,15 +144,15 @@ class Byr_orderController extends Controller
     }
 
     public function update_shipment_detail(Request $request){
-        byr_order_detail::where('byr_order_detail_id',$request->byr_order_detail_id)->update(['status'=>'確定済み']);
-        byr_shipment_detail::where('byr_order_detail_id',$request->byr_order_detail_id)->update(['confirm_quantity'=>$request->confirm_quantity,'lack_reason'=>$request->lack_reason]);
+        byr_order_item::where('byr_order_item_id',$request->byr_order_item_id)->update(['status'=>'確定済み']);
+        byr_shipment_item::where('byr_order_item_id',$request->byr_order_item_id)->update(['confirm_quantity'=>$request->confirm_quantity,'lack_reason'=>$request->lack_reason]);
         return response()->json(['success' => '1']);
     }
 
     public function update_byr_order_detail_status(Request $request){
         if($request->selected_item){
             foreach($request->selected_item as $item){
-                byr_order_detail::where('byr_order_detail_id',$item)->update(['status'=>'確定済み']);
+                byr_order_item::where('byr_order_item_id',$item)->update(['status'=>'確定済み']);
 
             }
         }
