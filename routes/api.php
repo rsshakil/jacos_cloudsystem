@@ -94,7 +94,7 @@ Route::post('/bms_order_save/{job_id}', 'API\BmsOrderController@store');
 Route::get('/get_bms_order_byr_order_id/{byr_order_id}', 'API\Byr_orderController@get_bms_order_byr_order_id');
 Route::post('/update_byr_order_detail_status', 'API\Byr_orderController@update_byr_order_detail_status');
 Route::post('item_master_exec', 'API\Cmn_jobController@exec');
-Route::post('bms_csv_exec', 'API\Cmn_jobController@exec');
+// Route::post('bms_csv_exec', 'API\Cmn_jobController@exec');
 Route::get('get_all_master_item/{adm_user_id}', 'API\Byr_itemController@get_all_master_item');
 Route::get('get_byr_order_receive_list/{adm_user_id}', 'API\Byr_order_receiveController@get_byr_order_receive_list');
 Route::get('get_byr_order_corrected_receive_list/{adm_user_id}', 'API\Byr_order_receiveController@get_byr_order_corrected_receive_list');

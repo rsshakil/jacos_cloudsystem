@@ -40,7 +40,7 @@ class indepen_fixed_length_generate
             'byr_order_vouchers.total_selling_price',
             'byr_order_items.list_number',
             'byr_order_items.jan',
-            'byr_order_items.item_name',
+            'byr_order_items.item_name_kana',
             'byr_order_items.spec_kana',
             'byr_order_items.color',
             'byr_order_items.size',
@@ -84,20 +84,21 @@ class indepen_fixed_length_generate
             // echo($file_head.PHP_EOL);
 
             // vouchers
+            $order_inputs=$val['order_inputs']=='ケース'?'CS':($val['order_inputs']=='ボール'?'BL':str_repeat(" ",2));
             $voucher_head = 'D'; //default value wich length is 1
             $voucher_head .= str_repeat("0",6); //0 added for 6 times which length is 6
             $voucher_head.= $val['voucher_number']; // length is 7
             $voucher_head .= str_pad($val['list_number'], 2, '0', STR_PAD_LEFT); //0 added before string until length is 8
             $voucher_head .= str_pad($val['jan'], 13, '0', STR_PAD_LEFT); //0 added before string until length is 8
             $voucher_head .= str_repeat(" ",15); //Seventeen space added which length is 15
-            $voucher_head .= $this->all_functions->mb_str_pad($val['item_name'], 25); //space padding added after string until length is 25
+            $voucher_head .= $this->all_functions->mb_str_pad($val['item_name_kana'], 25); //space padding added after string until length is 25
             $voucher_head .= str_pad($val['spec_kana'], 5, '0', STR_PAD_LEFT); //0 added before string until length is 5
             $voucher_head .= str_repeat(" ",5); //Seventeen space added which length is 5
             $voucher_head .= str_pad($val['color'], 7, '0', STR_PAD_LEFT); //0 added before string until length is 7
             $voucher_head .= str_pad($val['size'], 5, '0', STR_PAD_LEFT); //0 added before string until length is 5
             $voucher_head .= str_pad($val['inputs'], 7, '0', STR_PAD_LEFT); //0 added before string until length is 7
             $voucher_head .= str_pad(str_replace(".", "", $val['order_unit_quantity']), 5, '0', STR_PAD_LEFT); //Remove dot from decimal value and added 0 before string until the length is 5
-            $voucher_head.= $val['order_inputs']; // length is 2 //may be problem
+            $voucher_head.= $order_inputs; // length is 2 //may be problem
             $voucher_head .= str_pad(str_replace(".", "", $val['order_quantity']), 6, '0', STR_PAD_LEFT); //Remove dot from decimal value and added 0 before string until the length is 6
             $voucher_head .= str_pad(str_replace(".", "", $val['cost_unit_price']), 8, '0', STR_PAD_LEFT); //Remove dot from decimal value and added 0 before string until the length is 8
             $voucher_head .= str_pad($val['selling_unit_price'], 6, '0', STR_PAD_LEFT); //0 added before string until length is 6
@@ -122,7 +123,7 @@ class indepen_fixed_length_generate
         }
         $txt_file_name=date('y-m-d').'_Text_File_'.time().".txt";
         $string_data=$this->all_functions->convert_from_utf8_to_sjis__recursively($string_data);
-        // $string_data=$this->common_class_obj->sjis_2_ebcdic(null,$string_data);
+        $string_data=$this->common_class_obj->sjis_2_ebcdic(null,$string_data);
         
         if ($string_data!=null) {
             // $string_data = $this->common_class_obj->ebcdic_2_sjis(null,$string_data);
