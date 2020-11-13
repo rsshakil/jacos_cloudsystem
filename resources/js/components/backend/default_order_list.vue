@@ -193,6 +193,7 @@ export default {
             this.order_lists = data.data.order_list;
             console.log(this.order_lists);
             this.byr_buyer_lists = data.data.byr_buyer_list;
+            this.loader.hide();
         });
     },
     check_byr_order_api(){
@@ -232,6 +233,7 @@ export default {
   },
 
   created() {
+      this.loader =Vue.$loading.show();
       this.get_all_order();
       Fire.$on("LoadByrorder", () => {
       this.get_all_order();

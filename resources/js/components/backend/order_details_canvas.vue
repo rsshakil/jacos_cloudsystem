@@ -148,9 +148,11 @@ export default {
             }
           
           }
+          this.loader.hide();
         })
         .catch(() => {
           this.sweet_advance_alert();
+          this.loader.hide();
         });
     },
     canvasDesignLeft(){
@@ -575,6 +577,7 @@ export default {
     // this.canvasOpen();
   },
   mounted() {
+    this.loader =Vue.$loading.show();
     this.byr_order_id = this.$route.params.byr_order_id;
     this.canvas = new fabric.Canvas("c");
     this.canvas.setWidth(this.canvas_width);

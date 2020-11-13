@@ -654,6 +654,7 @@ var post_data = {
           this.expected_delivery_date =
             data.data.order_list_detail[0].expected_delivery_date;
           this.status = data.data.order_list_detail[0].status;
+          this.loader.hide();
         });
     },
 
@@ -677,6 +678,7 @@ var post_data = {
   },
 
   created() {
+    this.loader =Vue.$loading.show();
     this.byr_order_id = this.$route.params.byr_order_id;
     this.get_all_byr_order_detail();
     Fire.$on("LoadByrorderDetail", () => {
