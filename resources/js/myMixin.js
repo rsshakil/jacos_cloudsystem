@@ -13,7 +13,8 @@ export default {
             table_col_setting_list: "",
             table_col_arry: [],
             selected_columns: [],
-            col_lists: []
+            col_lists: [],
+            loader: "",
         };
     },
     methods: {
