@@ -3,8 +3,22 @@
 /public/hot
 /public/storage
 
-public/backend/images/canvas/Background/*
-public/backend/images/canvas/Canvas_screenshoot/*
+storage/app/public/backend/images/canvas/Background/*
+!storage/app/public/backend/images/canvas/Background/canvas_bg_image_seeder.png
+!storage/app/public/backend/images/canvas/Background/bg_image.jpg
+storage/app/public/backend/images/canvas/Canvas_screenshoot/*
+!storage/app/public/backend/images/canvas/Canvas_screenshoot/canvas_image_screenshoot_seeder.png
+
+storage/app/public/backend/images/canvas/pdf_platform/*
+storage/app/public/backend/images/users/*
+storage/app/public/backend/images/default/*
+
+storage/app/fixed_length_files/*
+storage/app/indepen_csv_files/*
+storage/app/indepen_files/*
+storage/app/shipment_csv/*
+storage/app/order/*
+
 public/backend/images/users/*
 public/dashboard/images/*
 public/bms_order_files/*
@@ -21,3 +35,4 @@ yarn-error.log
 !.gitkeep
 
 composer.lock
+node_modules
