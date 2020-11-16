@@ -9,6 +9,8 @@ storage/app/public/backend/images/canvas/Background/*
 storage/app/public/backend/images/canvas/Canvas_screenshoot/*
 !storage/app/public/backend/images/canvas/Canvas_screenshoot/canvas_image_screenshoot_seeder.png
 
+storage/app/public/backend/images/blog_images/*
+
 storage/app/public/backend/images/canvas/pdf_platform/*
 storage/app/public/backend/images/users/*
 storage/app/public/backend/images/default/*
