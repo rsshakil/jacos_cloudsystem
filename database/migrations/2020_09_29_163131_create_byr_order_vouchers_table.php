@@ -17,9 +17,9 @@ class CreateByrOrderVouchersTable extends Migration
             $table->increments('byr_order_voucher_id')->comment('byr order voucher id');
             $table->integer('byr_order_id')->unsigned()->comment('byr order id');
             $table->string('route_code', 50)->comment('route code')->nullable();
-            $table->string('shop_code', 50)->comment('shop_code')->nullable();
-            $table->string('shop_name', 50)->comment('shop_name')->nullable();
-            $table->string('shop_name_kana', 50)->comment('shop_name_kana')->nullable();
+            $table->string('ship_code', 50)->comment('shop_code')->nullable();
+            $table->string('ship_name', 50)->comment('shop_name')->nullable();
+            $table->string('ship_name_kana', 50)->comment('shop_name_kana')->nullable();
             $table->string('receiver_code', 50)->comment('receiver_code')->nullable();
             $table->string('receiver_name', 50)->comment('receiver_name')->nullable();
             $table->string('receiver_name_kana', 50)->comment('receiver_name_kana')->nullable();

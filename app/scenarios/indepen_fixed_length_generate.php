@@ -26,7 +26,7 @@ class indepen_fixed_length_generate
             // 'byr_orders.slr_name_kana',
             // 'byr_orders.partner_code',
             'byr_order_vouchers.voucher_number',
-            'byr_order_vouchers.shop_code',
+            'byr_order_vouchers.ship_code',
             'byr_order_vouchers.category_code',
             'byr_order_vouchers.voucher_category',
             'byr_order_vouchers.receiver_code',
@@ -67,7 +67,7 @@ class indepen_fixed_length_generate
             $file_head = 'H'; //default value wich length is 1
             $file_head .= str_repeat("0",6); //0 added for 6 times which length is 6
             $file_head.= $val['voucher_number']; // length is 7
-            $file_head .= str_pad($val['shop_code'], 6, '0', STR_PAD_LEFT); //0 added before string until length is 6
+            $file_head .= str_pad($val['ship_code'], 6, '0', STR_PAD_LEFT); //0 added before string until length is 6
             $file_head .= str_pad($val['category_code'], 2, '0', STR_PAD_LEFT); //0 added before string until length is 2
             $file_head.= $val['voucher_category']; // length is 2
             $file_head .= str_pad($val['receiver_code'], 6, '0', STR_PAD_LEFT); //0 added before string until length is 6

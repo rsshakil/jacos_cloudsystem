@@ -260,40 +260,29 @@ class Byr_orderController extends Controller
         $canvas_name = $request->canvas_name;
         $base64_canvas_image = $request->canvasImage;
         $canData = $request->canData;
-        // $objPosArray = $request->objPosArray;
 
         $canvasRawBgImg = $canData['backgroundImage']['src'];
-        if (!empty($update_image_info)) {
-            $canvasBgImg = $this->all_used_fun->save_base64_image($canvasRawBgImg, 'canvas_bg_image_'. time().'_'.$byr_id, $path_with_end_slash = "storage/app/public/backend/images/canvas/Background/");
-        } else {
-            $canvasBgImgTmp = explode('/', $canvasRawBgImg);
-            $canvasBgImg = $canvasBgImgTmp[count($canvasBgImgTmp) - 1];
-        }
+
+        // if (!empty($update_image_info)) {
+            
+        // } else {
+            
+        // }
         // return $canvasBgImg;
-        $canvas_image = $this->all_used_fun->save_base64_image($base64_canvas_image, 'canvas_image_'. time().'_'.$byr_id, $path_with_end_slash = "storage/app/public/backend/images/canvas/Canvas_screenshoot/");
+        
         // Serialize the above data
         // $canData_string = serialize($canData);
         $canvas_array = array(
             'byr_buyer_id' => $byr_id,
             'canvas_name' => $canvas_name,
-            'canvas_image' => $canvas_image,
-            'canvas_bg_image' => $canvasBgImg,
+            // 'canvas_image' => $canvas_image,
+            // 'canvas_bg_image' => $canvasBgImg,
             'canvas_objects' => json_encode($canData),
-            // 'canvas_objects' => $canData_string,
-            // 'position_values' => \json_encode($objPosArray),
         );
         if (!empty($canvas_id)) {
             $can_exist=cmn_pdf_canvas::where('cmn_pdf_canvas_id', $canvas_id)->first();
             if ($can_exist['byr_buyer_id']!=$byr_id) {
                 if (cmn_pdf_canvas::where('byr_buyer_id', $byr_id)->exists()) {
-                    if (file_exists($file_path .'Canvas_screenshoot/'. $canvas_image)) {
-                        @unlink($file_path .'Canvas_screenshoot/'. $canvas_image);
-                    }
-                    if (!empty($update_image_info)) {
-                        if (file_exists($file_path .'Background/'. $canvasBgImg)) {
-                            @unlink($file_path .'Background/'. $canvasBgImg);
-                        }
-                    }
                     return response()->json(['message' =>'duplicated', 'class_name' => 'error','title'=>'Not Updated!']);
                 }
             }
@@ -301,31 +290,42 @@ class Byr_orderController extends Controller
             $canvas_image_info = cmn_pdf_canvas::select('canvas_image','canvas_bg_image')->where('cmn_pdf_canvas_id', $canvas_id)->first();
             $file_path = \storage_path() . '/app/public/backend/images/canvas/';
             \Log::info('file_name_new=' . $file_path);
-            if (file_exists($file_path .'Canvas_screenshoot/'. $canvas_image_info['canvas_image'])) {
-                @unlink($file_path .'Canvas_screenshoot/'. $canvas_image_info['canvas_image']);
+            if ($canvas_image_info['canvas_image']!="canvas_image_screenshoot_seeder.png") {
+                if (file_exists($file_path .'Canvas_screenshoot/'. $canvas_image_info['canvas_image'])) {
+                    @unlink($file_path .'Canvas_screenshoot/'. $canvas_image_info['canvas_image']);
+                }
             }
+            $canvas_image = $this->all_used_fun->save_base64_image($base64_canvas_image, 'canvas_image_'. time().'_'.$byr_id, $path_with_end_slash = "storage/app/public/backend/images/canvas/Canvas_screenshoot/");
+            
             if (!empty($update_image_info)) {
-                if ($canvas_image_info['canvas_bg_image']!="bg_image.jpg") {
+                if ($canvas_image_info['canvas_bg_image']!="bg_image.jpg" ||$canvas_image_info['canvas_bg_image']!="canvas_bg_image_seeder.png") {
                     if (file_exists($file_path.'Background/' . $canvas_image_info['canvas_bg_image'])) {
                         @unlink($file_path.'Background/' . $canvas_image_info['canvas_bg_image']);
                     }
                 }
+                $canvasBgImg = $this->all_used_fun->save_base64_image($canvasRawBgImg, 'canvas_bg_image_'. time().'_'.$byr_id, $path_with_end_slash = "storage/app/public/backend/images/canvas/Background/");
+            }else{
+                $canvasBgImgTmp = explode('/', $canvasRawBgImg);
+                $canvasBgImg = $canvasBgImgTmp[count($canvasBgImgTmp) - 1];
             }
+            $canvas_array['canvas_image']=$canvas_image;
+            $canvas_array['canvas_bg_image']=$canvasBgImg;
             cmn_pdf_canvas::where('cmn_pdf_canvas_id', $canvas_id)->update($canvas_array);
             return response()->json(['message' =>'updated', 'class_name' => 'success','title'=>'Updated!']);
         } else {
             if (!(cmn_pdf_canvas::where('byr_buyer_id', $byr_id)->exists())) {
+                if (!empty($update_image_info)) {
+                    $canvasBgImg = $this->all_used_fun->save_base64_image($canvasRawBgImg, 'canvas_bg_image_'. time().'_'.$byr_id, $path_with_end_slash = "storage/app/public/backend/images/canvas/Background/");
+                } else {
+                    $canvasBgImgTmp = explode('/', $canvasRawBgImg);
+                    $canvasBgImg = $canvasBgImgTmp[count($canvasBgImgTmp) - 1];
+                }
+                $canvas_image = $this->all_used_fun->save_base64_image($base64_canvas_image, 'canvas_image_'. time().'_'.$byr_id, $path_with_end_slash = "storage/app/public/backend/images/canvas/Canvas_screenshoot/");
+                $canvas_array['canvas_image']=$canvas_image;
+                $canvas_array['canvas_bg_image']=$canvasBgImg;
                 cmn_pdf_canvas::insert($canvas_array);
                 return response()->json(['message' =>'created', 'class_name' => 'success','title'=>'Created!']);
             }else{
-                if (file_exists($file_path .'Canvas_screenshoot/'. $canvas_image)) {
-                    @unlink($file_path .'Canvas_screenshoot/'. $canvas_image);
-                }
-                if (!empty($update_image_info)) {
-                    if (file_exists($file_path .'Background/'. $canvasBgImg)) {
-                        @unlink($file_path .'Background/'. $canvasBgImg);
-                    }
-                }
                 return response()->json(['message' =>'duplicated', 'class_name' => 'error','title'=>'Not Created!']);
             }
         }
