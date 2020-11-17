@@ -7,65 +7,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
 use App\Models\CMN\cmn_scenario;
+use App\Models\CMN\cmn_scenario_history;
 
 class Cmn_ScenarioController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //test
-        return ;
+    private $sc_history_array;
+    public function __construct(){
+        $this->sc_history_array = array();
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($byr_order_id)
-    {
-        return ;
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
 
     /**
      * Execute scenario
@@ -75,23 +24,43 @@ class Cmn_ScenarioController extends Controller
     public function exec(Request $request)
     {
         $cmn_scenario_id=$request->scenario_id;
+        $this->sc_history_array['cmn_scenario_id']=$request->scenario_id;
+        if (array_key_exists('order_id',$request->all())) {
+            $this->sc_history_array['byr_order_id']=$request->order_id;
+            // $this->byr_order_id = $request->order_id;
+        }
+        if (array_key_exists('job_id',$request->all())) {
+            // $this->cmn_job_id = $request->job_id;
+            $this->sc_history_array['cmn_job_id']=$request->job_id;
+        }
         \Log::debug('scenario exec start---------------');
+        // $sc_history_array=array(
+        //     'cmn_scenario_id'=>$this->cmn_scenario_id,
+        //     'adm_user_id'=>null,
+        //     'byr_order_id'=>$this->byr_order_id,
+        //     'cmn_job_id'=>$this->cmn_job_id,
+        //     'status'=>null,
+        //     'information'=>null,
+        // );
         // user info check
-        \Log::debug($request);
         $user = DB::table('adm_users')->where('email',$request->email)->first();
         if (!$user) {
+            self::history_create('error',"User Name Error");
             return ['status'=>1, 'message' => 'Authentication faild!'];
         }
         if (!\Hash::check($request->password, $user->password)) {
+            self::history_create('error',"Password Error");
             return ['status'=>1, 'message' => 'Authentication faild!'];
         }
+        $this->sc_history_array['adm_user_id']=$user->id;
         // scenario info check
         $sc = cmn_scenario::where('cmn_scenario_id', $cmn_scenario_id)->first();
         \Log::info($sc);
-        
-        // scenario call
+        if (!empty($sc)) {
+            // scenario call
         if (!file_exists(app_path().'/'.$sc->file_path.'.php')) {
             \Log::error('Scenario file is not exist!:'.$sc->file_path);
+            self::history_create('error','Scenario file is not exist!'.$sc->file_path);
             return ['status'=>'1','message'=>'Scenario file is not exist!'.$sc->file_path];
         }
         // ファイル読み込み
@@ -107,20 +76,32 @@ class Cmn_ScenarioController extends Controller
         // シナリオ実行
         if (!method_exists($sc_obj, 'exec')) {
             \Log::error('scenario exec error');
+            self::history_create('error',"Scenario exec function is not exist!");
             return ['status'=>'1','message'=>'Scenario exec function is not exist!'];
         }
         $ret = $sc_obj->exec($request,$sc);
-        if ($ret !== 0) {
-            // error
-            \Log::debug('scenario exec error');
-        } else {
-            // success
-            \Log::debug('scenario exec success');
-        }
-
-
+        // if ($ret !== 0) {
+        //     // error
+        //     self::history_create('error',"scenario exec error!");
+        //     \Log::debug('scenario exec error');
+        // } else {
+        //     // success
+        //     self::history_create('success',"scenario exec success");
+        //     \Log::debug('scenario exec success');
+        // }
         \Log::debug('scenario exec end  ---------------');
+        self::history_create('success',"scenario exec success");
         return $ret;
+        }else{
+            self::history_create('error',"No scenario found");
+            return ['status'=>1, 'message' => 'No scenario found!'];
+        }
+    }
+
+    private function history_create($status,$information){
+        $this->sc_history_array['status']=$status;
+        $this->sc_history_array['information']=$information;
+        cmn_scenario_history::insert($this->sc_history_array);
     }
 
     public function exec_demo(Request $request, $id)
