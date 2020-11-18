@@ -39,9 +39,9 @@ Route::post('/user', function(Request $request){
     ->select('cmn_companies.cmn_company_id', 'cmn_companies.company_name')
     ->where('cmn_companies_users.adm_user_id',Auth::user()->id)
     ->first();
-    $user['cmn_company_id']='';
+    $user['cmn_company_id']='0';
     $user['company_name']='';
-    if($user_company_info){
+    if(!empty($user_company_info)){
         $user['cmn_company_id']=$user_company_info->cmn_company_id;
         $user['company_name']=$user_company_info->company_name;
     }

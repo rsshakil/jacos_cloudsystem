@@ -21,20 +21,25 @@
       color:#fff !important;
       margin-top: 10px !important;
   }
-  .jcs_left_side_bar_menu li:first-child{
-      border-top:1px solid #fff;
-  }
+
   .jcs_left_side_bar_menu li{
       background: #538ED3 !important;
       
-      border-bottom: 1px solid #fff !important;
+      border-top: 1px solid #fff !important;
   }
   .jcs_left_side_bar_menu li a{ 
     color:#fff !important;
   }
+  .jcs_left_side_bar_menu li .active{ 
+    color:#538ED3 !important;
+  }
+
   .jcs_left_side_bar_menu li a:hover{
     color:#538ED3 !important;
    }
    .pl-2 li a{
     color:#fff !important;
+   }
+   .pl-2 li .active{
+    color:#538ED3 !important;
    }

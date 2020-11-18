@@ -25,7 +25,7 @@
           </div>
           <div class="col-1 p-0">
 
-            <button v-if="user_data.user.company_name!=''" class="btn btn-default byr_list_show">得意先選択</button>
+            <button v-if="user_data.user.company_name" class="btn btn-default byr_list_show">得意先選択</button>
           </div>
           <div class="col-5 p-0 ">
           
@@ -33,8 +33,8 @@
           
         
           
-          <li class="nav-item" v-if="user_data.user.company_name!=''">
-            <a class="uer_company nav-link top_menu_custom_a"> <b-icon icon="grid3x3-gap-fill"></b-icon> {{ user_data.user.company_name!='' ? user_data.user.company_name : "" }}</a>
+          <li class="nav-item" v-if="user_data.user.company_name">
+            <a class="uer_company nav-link top_menu_custom_a"> <b-icon icon="grid3x3-gap-fill"></b-icon> {{ user_data.user.company_name ? user_data.user.company_name : "" }}</a>
           </li>
           
           <li class="nav-item dropdown">
@@ -259,6 +259,7 @@ export default {
     return {
       local: Globals.local,
       user_data: null,
+      company_name:null,
       // BASE_URL:BASE_URL,
     };
   },

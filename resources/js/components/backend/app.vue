@@ -60,7 +60,7 @@ methods:{
     init_user(){
         this.loading=true;
        axios.post(this.BASE_URL+'user').then(response=>{
-            // console.log(response);
+            console.log(response);
             this.user=response.data;
             this.loading=false;
             this.initiated=true;
