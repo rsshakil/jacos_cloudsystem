@@ -138,5 +138,9 @@ return [
     'shipment_list' => 'Shipment list',
 
 
+    'save_bookmark' => 'お気に入り登録',
+    'register_favorite' => '当システムをお気に入りに登録してください。',
+
+
 
 ];

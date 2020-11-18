@@ -136,4 +136,7 @@ return [
     'order_list' => 'Order list',
     'shipment_list' => 'Shipment list',
 
+    'save_bookmark' => 'Save as Bookmark',
+    'register_favorite' => 'Please register this system as a favorite',
+
 ];
