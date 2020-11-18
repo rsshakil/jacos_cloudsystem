@@ -3,12 +3,17 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12 p-0">
+        
             <navbar :app="this"></navbar>
         </div>
+    </div>
+    <div class="row">
+        
         <div class="col-md-2 px-0">
             <sidebar :app="this"></sidebar>
         </div>
         <div class="col-md-10">
+        
             <router-view/>
         </div>
         <!-- <spinner v-if="loading"></spinner>
