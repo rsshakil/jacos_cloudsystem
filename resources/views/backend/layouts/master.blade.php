@@ -17,6 +17,7 @@
     <script src="{{Config::get('app.url').'/public/js/buttons.js'}}"></script>
     <link rel="stylesheet" href="{{Config::get('app.url').'/public/css/vue-multiselect.min.css'}}">
     <link rel="stylesheet" href="{{Config::get('app.url').'/public/css/canvas_css.css'}}">
+    <link rel="stylesheet" href="{{Config::get('app.url').'/public/css/custom.css'}}">
     @include('backend.layouts.js_variable')
 </head>
 

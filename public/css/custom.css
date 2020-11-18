@@ -1,0 +1,40 @@
+
+ .main-content>.main-navbar,
+.bg_custom_color{
+    background:#538ED3 !important;
+  }
+  .byr_list_show{
+      background: #AAC2DF !important;
+      color:#fff !important;
+      margin-top:13px;
+  }
+  .logout_btn{
+      background: #fff !important;
+      color:#000 !important;
+      margin-top:13px;
+  }
+  .top_custom_ul{
+      float: right;
+  }
+
+  .top_custom_ul li .top_menu_custom_a{
+      color:#fff !important;
+      margin-top: 10px !important;
+  }
+  .jcs_left_side_bar_menu li:first-child{
+      border-top:1px solid #fff;
+  }
+  .jcs_left_side_bar_menu li{
+      background: #538ED3 !important;
+      
+      border-bottom: 1px solid #fff !important;
+  }
+  .jcs_left_side_bar_menu li a{ 
+    color:#fff !important;
+  }
+  .jcs_left_side_bar_menu li a:hover{
+    color:#538ED3 !important;
+   }
+   .pl-2 li a{
+    color:#fff !important;
+   }

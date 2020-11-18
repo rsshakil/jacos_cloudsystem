@@ -1,20 +1,14 @@
 <template>
   <!-- Main Sidebar -->
   <!-- main-sidebar -->
-  <aside class="main-sidebar" style="position: absolute; top: -60px">
-    <div class="main-navbar">
+  <aside class="main-sidebar" style="position: absolute; top: 0px">
+    <!--<div class="main-navbar">
       <nav
-        class="navbar align-items-stretch navbar-light bg-white flex-md-nowrap border-bottom p-0"
+        class="navbar align-items-stretch navbar-light flex-md-nowrap border-bottom p-0"
       >
         <router-link to="/" class="nav-link" style="line-height: 25px">
           <div class="d-table m-auto">
-            <img
-              id="main-logo"
-              class="d-inline-block align-top mr-1"
-              style="max-width: 25%"
-              :src="BASE_URL + '/public/backend/images/logo/jacos_logo.png'"
-              alt="Jacos Dashboard"
-            />
+           
             <span class="d-none d-md-inline ml-1">{{ myLang.heading }}</span>
           </div>
         </router-link>
@@ -22,27 +16,10 @@
           <i class="material-icons">&#xE5C4;</i>
         </a>
       </nav>
-    </div>
-    <form
-      action="#"
-      class="main-sidebar__search w-100 border-right d-sm-flex d-md-none d-lg-none"
-    >
-      <div class="input-group input-group-seamless ml-3">
-        <div class="input-group-prepend">
-          <div class="input-group-text">
-            <i class="fas fa-search"></i>
-          </div>
-        </div>
-        <input
-          class="navbar-search form-control"
-          type="text"
-          placeholder="Search for something..."
-          aria-label="Search"
-        />
-      </div>
-    </form>
+    </div>-->
+  
     <div class="nav-wrapper">
-      <ul class="nav flex-column">
+      <ul class="nav jcs_left_side_bar_menu flex-column">
         <li class="nav-item" v-can="['dashboard_menu']">
           <a
             class="nav-link collapsed"
