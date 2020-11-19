@@ -1,4 +1,5 @@
 import Home from './components/backend/home_component.vue'
+import default_home_page_with_blog from './components/backend/default_home_page_with_blog.vue'
 import Role from './components/backend/ADM/role_component.vue'
 import permission from './components/backend/ADM/permission_component.vue'
 import assign_role_model from './components/backend/ADM/assign_role_model.vue'
@@ -34,7 +35,7 @@ import blog from './components/backend/CMN/cmn_blog_list.vue'
 // import login_body from './components/login/login_body.vue'
 
 export const routes = [
-    { path: '/', component: Home },
+  
     { path: '/home', component: Home },
     { path: '/blog', component: blog },
     { path: '/role', component: Role },

@@ -19,9 +19,9 @@
       </div>
           </div>
           <div class="col-4">
-           <div class="custom_bredcrubs">
-          <Breadcrumbs></Breadcrumbs>
-        </div>
+           <!--<div class="custom_bredcrubs">
+              <Breadcrumbs></Breadcrumbs>
+          </div>-->
           </div>
           <div class="col-1 p-0">
 
