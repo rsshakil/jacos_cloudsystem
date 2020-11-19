@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\CMN\cmn_tbl_col_setting;
 use App\Models\CMN\cmn_scenario;
@@ -11,6 +12,8 @@ use App\Models\CMN\cmn_blog;
 use App\Models\ADM\User;
 use App\Models\CMN\cmn_companies_user;
 use DB;
+use session;
+
 class Cmn_blogController extends Controller
 {
     private $all_used_fun;
@@ -26,13 +29,13 @@ class Cmn_blogController extends Controller
     public function index()
     {
         //
-        $result = cmn_blog::where('is_delete','0')->orderBy('is_top_blog','ASC')->orderBy('cmn_blog_id','DESC')->get();
+        $result = cmn_blog::where('is_delete','0')->where('blog_by',Auth::user()->id)->orderBy('is_top_blog','ASC')->orderBy('cmn_blog_id','DESC')->get();
         return response()->json(['blog_list' => $result]);
     }
     public function get_all_published_blog_list()
     {
         //
-        $result = cmn_blog::where('is_delete','0')->where('blog_status','published')->where('is_top_blog','0')->orderBy('is_top_blog','DESC')->orderBy('cmn_blog_id','DESC')->get();
+        $result = cmn_blog::where('is_delete','0')->where('blog_status','published')->where('blog_by',Auth::user()->id)->where('is_top_blog','0')->orderBy('is_top_blog','DESC')->orderBy('cmn_blog_id','DESC')->get();
         return response()->json(['blog_list' => $result]);
     }
     public function get_signle_top_blog()
@@ -68,6 +71,10 @@ class Cmn_blogController extends Controller
         $this->validate($request,[
             'blog_title' => 'required|string|min:5',
             'blog_content'=>'required'
+        ],[
+            'blog_title.required' =>'ブログのタイトルを入力してください',
+            'blog_title.string|min:5' => 'ブログのタイトルは5文字以上にする必要があります',
+            'blog_content.required' => 'ブログの内容を入力してください',
         ]);
         $arr =array(
             'blog_title'=>$request->blog_title,
@@ -89,9 +96,9 @@ class Cmn_blogController extends Controller
         if($request->cmn_blog_id!=''){
             cmn_blog::where('cmn_blog_id',$request->cmn_blog_id)->update($arr);
         }else{
-            $this->validate($request,[
-                'feature_img' => 'required'
-            ]);
+            // $this->validate($request,[
+            //     'feature_img' => 'required'
+            // ]);
             cmn_blog::insert($arr);
         }
         return response()->json(['success' => 1]);
@@ -145,4 +152,5 @@ class Cmn_blogController extends Controller
     {
         //
     }
+  
 }

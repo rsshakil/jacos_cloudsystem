@@ -9,4 +9,7 @@ return [
     'operation'=>"操作",
     'contents'=>"内容",
     'editor_lang'=>"ja",
+    'blog_title_required'=>'ブログのタイトルを入力してください',
+    'blog_title_required_min'=>'ブログのタイトルは5文字以上にする必要があります',
+    'blog_content_required'=>'ブログの内容を入力してください',
 ];

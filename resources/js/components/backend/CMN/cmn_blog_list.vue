@@ -29,7 +29,7 @@
                                 <tr v-for="(value,index) in blog_lists" :key="value.cmn_blog_id">
                                     <td>{{index+1}}</td>
                                     <td>{{value.blog_title}}</td>
-                                    <td><img :src="BASE_URL+'storage/app/public/backend/images/blog_images/'+value.feature_img" alt="No image" class="img-responsive img-thumbnail" width="150" height="100" style="border: 1px solid gray;"></td>
+                                    <td><img v-if="value.feature_img!=null" :src="BASE_URL+'storage/app/public/backend/images/blog_images/'+value.feature_img" alt="No image" class="img-responsive img-thumbnail" width="150" height="100" style="border: 1px solid gray;"></td>
                                     <td>{{value.updated_at | ja_date_time}}</td>
                                     <td><b-icon v-if="value.blog_status=='published'" v-tooltip.html="'disable this blog user'" font-scale="2" style="cursor:pointer" icon="eye-fill" variant="success" class="custom_blog_font" @click="blog_update_info(value,0)"></b-icon>
                                     <b-icon v-if="value.blog_status=='unpublished'" v-tooltip.html="'enable this blog for user'" font-scale="2" style="cursor:pointer" icon="eye-slash-fill" variant="danger" class="custom_blog_font" @click="blog_update_info(value,1)"></b-icon>
@@ -72,7 +72,7 @@
     <label for="staticEmail" class="col-sm-2 col-form-label">{{myLang.image}}</label>
     <div class="col-sm-10">
       <input type="file" name="feature_img" class="form-control" :class="{ 'is-invalid': form.errors.has('feature_img') }" @change="onUploadFiles" accept="image/jpeg, image/png">
-    <has-error :form="form" field="feature_img"></has-error>
+    <!--<has-error :form="form" field="feature_img"></has-error>-->
     <img v-if="form.feature_img.length>0" class="profile-user-img img-fluid img-circle" :src="getPhoto()" alt="Blog Images">
     </div>
   </div>
