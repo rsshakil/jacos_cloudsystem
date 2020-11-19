@@ -71,7 +71,7 @@
                                     value="{{ old('email') }}" required autofocus>
                                 @if ($errors->has('email'))
                                 <span class="invalid-feedback" role="alert" style="display:block">
-                                    <strong>{{ __('messages.u_p_incorrect') }}</strong>
+                                    <strong>{{ __('auth.u_p_incorrect') }}</strong>
                                 </span>
                                 @endif
                             </div>
@@ -84,7 +84,7 @@
                                     value="{{ old('password') }}" required autofocus>
                                 @if ($errors->has('password'))
                                 <span class="invalid-feedback" role="alert" style="display:block">
-                                    <strong>{{ __('messages.u_p_incorrect') }}</strong>
+                                    <strong>{{ __('auth.u_p_incorrect') }}</strong>
                                 </span>
                                 @endif
                             </div>
@@ -142,6 +142,17 @@
         // console.log(bookmarkUrl);
         // console.log(bookmarkTitle);
         if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) { 
+//             var e = $.Event("keydown", { keyCode: 112}); 
+// $("body").trigger(e);
+            var e = jQuery.Event("keydown");
+            e.which = 68;       // # F1 code value
+            e.ctrlkey = true;     // control key pressed
+            $(document).trigger(e);// trigger event on document
+
+            // var evt = jQuery.Event("keypress");
+            // evt.keyCode = 83; // d
+            // evt.ctrlKey = true;
+            // $(document).trigger(evt);
                 alert("This function is not available in Google Chrome. Click the star symbol at the end of the address-bar or hit Ctrl-D (Command+D for Macs) to create a bookmark.");      
         }else if (window.sidebar) { // For Mozilla Firefox Bookmark
             window.sidebar.addPanel(bookmarkTitle, bookmarkUrl,"");
