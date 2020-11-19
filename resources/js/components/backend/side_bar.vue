@@ -1,7 +1,7 @@
 <template>
   <!-- Main Sidebar -->
   <!-- main-sidebar -->
-  <aside class="main-sidebar" style="position: absolute; top: 0px">
+  <aside class="main-sidebar" style="position: absolute; top: 0px;width:100%">
     <!--<div class="main-navbar">
       <nav
         class="navbar align-items-stretch navbar-light flex-md-nowrap border-bottom p-0"

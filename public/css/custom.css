@@ -43,3 +43,11 @@
    .pl-2 li .active{
     color:#538ED3 !important;
    }
+   /* .page_c_title_bar{
+     border-bottom: 2px solid #538ED3;
+     color: #538ED3;
+   } */
+   .page_custom_title{
+     border-bottom: 4px solid #538ED3;
+     color: #538ED3;
+   }
