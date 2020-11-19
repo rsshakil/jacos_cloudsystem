@@ -126,6 +126,8 @@ Route::get('/get_signle_top_blog', 'API\Cmn_blogController@get_signle_top_blog')
 Route::post('/update_blog_infos', 'API\Cmn_blogController@update_blog_infos');
 Route::post('/ckeditor_file_up', 'API\Cmn_blogController@ckeditor_file_up');
 
+Route::post('/get_byr_slr_data', 'API\Byr_orderController@getByrSlrData');
+
 // level3
 Route::post('get_user_login', 'API\Level3\Level3Controller@userLogin');
 Route::post('history_url', 'API\Level3\Level3Controller@historyData');

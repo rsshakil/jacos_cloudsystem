@@ -2,7 +2,9 @@
 <div>
      <div class="row">
         <div class="col-12">
-            <button class="btn btn-primary">Byr1</button>
+            <div v-for="order_item in slr_order_list" :key="order_item.byr_buyer_id">
+                <button class="btn btn-primary">{{order_item.buyer_name}} &nbsp &nbsp {{order_item.total_order}}件</button>
+            </div>
         </div>
     </div>
 </div>
@@ -15,9 +17,18 @@
         data(){
             return {
                'byr_slr_list':'',
+               slr_order_list:null,
             }
         },
         methods:{
+            loadData(){
+                axios.post(this.myLang.base_url+'api/get_byr_slr_data',{user_id:this.myLang.user_info_id})
+                .then(({data})=>{
+                    // console.log("Hi");
+                    console.log(data);
+                    this.slr_order_list=data.slr_order_info;
+                })
+            }
             
         },
           created() {
@@ -27,6 +38,7 @@
         mounted() {
             this.init();
             console.log('Home Component mounted.')
+            this.loadData();
         }
     }
 </script>

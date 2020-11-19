@@ -362,4 +362,17 @@ class Byr_orderController extends Controller
             ->first();
         return response()->json(['byr_info'=>$result]);
     }
+    public function getByrSlrData(Request $request){
+        $slr_id=$request->user_id;
+        // count(byr_orders.byr_order_id) as total_order
+        $slr_order_info=byr_order::select(DB::raw('count(byr_orders.byr_order_id) as total_order'),'byr_buyers.byr_buyer_id','cmn_companies.company_name as buyer_name')
+        ->join('cmn_connects','cmn_connects.cmn_connect_id','=','byr_orders.cmn_connect_id')
+        ->join('byr_buyers','byr_buyers.byr_buyer_id','=','cmn_connects.byr_buyer_id')
+        ->join('cmn_companies','cmn_companies.cmn_company_id','=','byr_buyers.cmn_company_id')
+        ->where('cmn_connects.slr_seller_id',$slr_id)
+        ->get();
+        return response()->json(['slr_order_info'=>$slr_order_info]);
+        // return $byr_info;
+        // return $request->all();
+    }
 }
