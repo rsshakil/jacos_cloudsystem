@@ -103,6 +103,29 @@ Vue.directive("can", function(el, binding, vnode) {
         }
     }
 });
+// Role check directive
+Vue.directive("role", function(el, binding, vnode) {
+    var given_role = binding.value;
+    if (typeof given_role == "string") {
+        given_role = [given_role];
+    }
+    if (given_role) {
+        var true_array = [];
+        var false_array = [];
+        for (let i = 0; i < given_role.length; i++) {
+            if (Roles.indexOf(given_role[i]) !== -1) {
+                true_array.push(true);
+            } else {
+                false_array.push(false);
+            }
+        }
+        if (true_array.length) {
+            return (vnode.elm.hidden = false);
+        } else {
+            return (vnode.elm.hidden = true);
+        }
+    }
+});
 
 import { VTooltip, VPopover, VClosePopover } from 'v-tooltip'
 
@@ -110,7 +133,7 @@ Vue.directive('tooltip', VTooltip)
 Vue.directive('close-popover', VClosePopover)
 Vue.component('v-popover', VPopover)
 import CKEditor from '@ckeditor/ckeditor5-vue';
-Vue.use( CKEditor );
+Vue.use(CKEditor);
 
 
 
