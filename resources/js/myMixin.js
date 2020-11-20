@@ -14,7 +14,7 @@ export default {
             table_col_arry: [],
             selected_columns: [],
             col_lists: [],
-            loader: "",
+            // loader: "",
         };
     },
     methods: {

@@ -41,7 +41,7 @@ projectfooter,
 data(){
     return{
         user:null,
-        loading:false,
+        // loading:false,
         initiated:false,
         // BASE_URL:Globals.base_url,
         req: axios.create({
@@ -58,12 +58,12 @@ methods:{
         this.user_update_id=user_id;
     },
     init_user(){
-        this.loading=true;
+        // this.loading=true;
        axios.post(this.BASE_URL+'user').then(response=>{
             console.log(response);
             this.user=response.data;
-            this.loading=false;
-            this.initiated=true;
+            // this.loading=false;
+            // this.initiated=true;
         })
     },
 },

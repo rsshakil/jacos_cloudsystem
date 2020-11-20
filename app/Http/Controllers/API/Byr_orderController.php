@@ -44,6 +44,7 @@ class Byr_orderController extends Controller
 
     public function get_byr_order_list($adm_user_id)
     {
+        // return \Auth::User()->id;
         $authUser=User::find($adm_user_id);
         $cmn_company_id = 0;
         if(!$authUser->hasRole('Super Admin')){

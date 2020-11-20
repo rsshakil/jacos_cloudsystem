@@ -2,7 +2,7 @@
   <div>
     <div class="row">
       <div class="col-12">
-        <h2 class="top_title text-center">{{myLang.quantity_confirmed}}</h2>
+        <h2 class="top_title text-center">{{ myLang.quantity_confirmed }}</h2>
       </div>
       <!-- <div class="col-12 text-center">
         <div class="row">
@@ -73,156 +73,190 @@
         </div>
       </div> -->
       <div class="col-12">
-        {{myLang.voucher_list}}
-        <hr>
+        {{ myLang.voucher_list }}
+        <hr />
       </div>
-      <div class="col-12" style="background:#D5DADC; padding:10px">
-                            <table class="table table-bordered" style="width:100%">
-                                <tr>
-                                    <td>{{myLang.receive_date}}</td>
-                                    <td>
-                                        <input type="date" class="form-control" v-model="today">
-                                    </td>
-                                    <td>{{myLang.customer_name}}</td>
-                                    <td>
-                                        <input type="text" class="form-control">
-                                    </td>
-                                    <td colspan="4"></td>
-                                </tr>
-                                <tr>
-                                    <td>{{myLang.delivery_date}}</td>
-                                    <td>
-                                        <input type="date" class="form-control" v-model="today">
-                                    </td>
-                                    <td>{{myLang.category_code}}</td>
-                                    <td>
-                                        <input type="text" class="form-control">
-                                    </td>
-                                    <td>{{myLang.shipment}}</td>
-                                    <td>
-                                        <input type="text" class="form-control">
-                                    </td>
-                                    <td>{{myLang.temperature}}</td>
-                                    <td>
-                                      <input type="text" class="form-control">  
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>{{myLang.confirmation_status}}</td>
-                                    <td>
-                                      <select class="form-control">
-                                          <option :value="0">{{myLang.confirmation_status}}</option>
-                                      </select>
-                                    </td>
-                                    <td colspan="6"></td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="col-12" style="background:#D5DADC; padding:10px; margin-top:20px;">
-                            <table class="table table-bordered" style="width:100%">
-                                <tr>
-                                    <td>{{myLang.direct_delivery_code}}</td>
-                                    <td>
-                                        <input type="search" class="form-control">
-                                    </td>
-                                    <td> <button class="btn btn-primary" type="button">{{myLang.search}}</button> </td>
-                                    <td>
-                                       {{myLang.final_delivery_code}}
-                                    </td>
-                                    <td>
-                                        <input type="search" class="form-control" v-model="today">
-                                    </td>
-                                    <td> <button class="btn btn-primary" type="button">{{myLang.search}}</button> </td>
-                                    <td>
-                                       {{myLang.total_voucher_number}} <!--伝票番号-->
-                                    </td>
-                                    <td> <input type="search" class="form-control" v-model="today"> </td>
-                                </tr>
-                                <tr>
-                                    <td>{{myLang.product_code}}</td>
-                                    <td>
-                                        <input type="search" class="form-control" v-model="today">
-                                    </td>
-                                    <td> <button class="btn btn-primary" type="button">{{myLang.search}}</button> </td>
-                                    <td>{{myLang.specific}}</td>
-                                    <td colspan="2">
-                                        <select class="form-control">
-                                            <option :value="0">{{myLang.specific}}</option>
-                                        </select>
-                                    </td>
-                                    <td>{{myLang.confirmation_status}}</td>
-                                    <td>
-                                      <select class="form-control">
-                                            <option :value="0">{{myLang.confirmation_status}}</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                
-                                <tr>
-                                    <td>{{myLang.printing_status}}</td>
-                                    <td>
-                                       <select class="form-control">
-                                            <option :value="0">{{myLang.printing_status}}</option>
-                                        </select>
-                                    </td>
-                                    <td colspan="6"></td>
-                                    
-                                </tr>
-                            </table>
-                            
-                        </div>
-                        <br>
-                        <div class="col-12" style="text-align:center">
-                            <button class="btn btn-primary" type="button">{{myLang.search}}</button> 
-                        </div>
-                <div class="col-12">
-                  <br/>
-                  {{myLang.search_result}}
-                    <hr/>
-                </div>
-                <div class="col-12">
-                  <table class="table table-bordered">
-                    <tr>
-                      <td>
-                        <button type="button">{{myLang.registrad_by_product}}</button>
-                      </td>
-                      <td>
-                        <select class="form-control">
-                            <option :value="0">{{myLang.product_list}}</option>
-                        </select>
-                      </td>
-                      <td>
-                        <router-link :to="{name:'order_details_canvas',params:{byr_order_id:byr_order_id} }" class="btn btn-info">
-                          {{myLang.printing}}
-                        </router-link>
-                        <!-- <button type="button">{{myLang.printing}}</button> -->
-                      </td>
-                      <td>
-                        <button class="btn btn-outline-primary" type="button">
-                          <b-icon icon="download" animation="fade" font-scale="1.2"></b-icon> {{myLang.download}}
-                        </button>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-                <div class="col-12">
-                  <table class="table table-bordered">
-                    <tr>
-                      <td>
-                        <!-- <button type="button">File Upload</button> -->
-                        <input type="file" class="form-control">
-                      </td>
-                      <td>
-                        <input type="checkbox" class="form-control">
-                      </td>
-                      <td>
-                        <button class="btn btn-outline-primary" type="button">
-                          <b-icon icon="download" animation="fade" font-scale="1.2"></b-icon> {{myLang.download}}
-                        </button>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
+      <div class="col-12" style="background: #d5dadc; padding: 10px">
+        <table class="table table-bordered" style="width: 100%">
+          <tr>
+            <td>{{ myLang.receive_date }}</td>
+            <td>
+              <input type="date" class="form-control" v-model="today" />
+            </td>
+            <td>{{ myLang.customer_name }}</td>
+            <td>
+              <input type="text" class="form-control" />
+            </td>
+            <td colspan="4"></td>
+          </tr>
+          <tr>
+            <td>{{ myLang.delivery_date }}</td>
+            <td>
+              <input type="date" class="form-control" v-model="today" />
+            </td>
+            <td>{{ myLang.category_code }}</td>
+            <td>
+              <input type="text" class="form-control" />
+            </td>
+            <td>{{ myLang.shipment }}</td>
+            <td>
+              <input type="text" class="form-control" />
+            </td>
+            <td>{{ myLang.temperature }}</td>
+            <td>
+              <input type="text" class="form-control" />
+            </td>
+          </tr>
+          <tr>
+            <td>{{ myLang.confirmation_status }}</td>
+            <td>
+              <select class="form-control">
+                <option :value="0">{{ myLang.confirmation_status }}</option>
+              </select>
+            </td>
+            <td colspan="6"></td>
+          </tr>
+        </table>
+      </div>
+      <div
+        class="col-12"
+        style="background: #d5dadc; padding: 10px; margin-top: 20px"
+      >
+        <table class="table table-bordered" style="width: 100%">
+          <tr>
+            <td>{{ myLang.direct_delivery_code }}</td>
+            <td>
+              <input type="search" class="form-control" />
+            </td>
+            <td>
+              <button class="btn btn-primary" type="button">
+                {{ myLang.search }}
+              </button>
+            </td>
+            <td>
+              {{ myLang.final_delivery_code }}
+            </td>
+            <td>
+              <input type="search" class="form-control" v-model="today" />
+            </td>
+            <td>
+              <button class="btn btn-primary" type="button">
+                {{ myLang.search }}
+              </button>
+            </td>
+            <td>
+              {{ myLang.total_voucher_number }}
+              <!--伝票番号-->
+            </td>
+            <td>
+              <input type="search" class="form-control" v-model="today" />
+            </td>
+          </tr>
+          <tr>
+            <td>{{ myLang.product_code }}</td>
+            <td>
+              <input type="search" class="form-control" v-model="today" />
+            </td>
+            <td>
+              <button class="btn btn-primary" type="button">
+                {{ myLang.search }}
+              </button>
+            </td>
+            <td>{{ myLang.specific }}</td>
+            <td colspan="2">
+              <select class="form-control">
+                <option :value="0">{{ myLang.specific }}</option>
+              </select>
+            </td>
+            <td>{{ myLang.confirmation_status }}</td>
+            <td>
+              <select class="form-control">
+                <option :value="0">{{ myLang.confirmation_status }}</option>
+              </select>
+            </td>
+          </tr>
+
+          <tr>
+            <td>{{ myLang.printing_status }}</td>
+            <td>
+              <select class="form-control">
+                <option :value="0">{{ myLang.printing_status }}</option>
+              </select>
+            </td>
+            <td colspan="6"></td>
+          </tr>
+        </table>
+      </div>
+      <br />
+      <div class="col-12" style="text-align: center">
+        <button class="btn btn-primary" type="button">
+          {{ myLang.search }}
+        </button>
+      </div>
+      <div class="col-12">
+        <br />
+        {{ myLang.search_result }}
+        <hr />
+      </div>
+      <div class="col-12">
+        <table class="table table-bordered">
+          <tr>
+            <td>
+              <button type="button">{{ myLang.registrad_by_product }}</button>
+            </td>
+            <td>
+              <select class="form-control">
+                <option :value="0">{{ myLang.product_list }}</option>
+              </select>
+            </td>
+            <td>
+              <router-link
+                :to="{
+                  name: 'order_details_canvas',
+                  params: { byr_order_id: byr_order_id },
+                }"
+                class="btn btn-info"
+              >
+                {{ myLang.printing }}
+              </router-link>
+              <!-- <button type="button">{{myLang.printing}}</button> -->
+            </td>
+            <td>
+              <button class="btn btn-outline-primary" type="button">
+                <b-icon
+                  icon="download"
+                  animation="fade"
+                  font-scale="1.2"
+                ></b-icon>
+                {{ myLang.download }}
+              </button>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-12">
+        <table class="table table-bordered">
+          <tr>
+            <td>
+              <!-- <button type="button">File Upload</button> -->
+              <input type="file" class="form-control" />
+            </td>
+            <td>
+              <input type="checkbox" class="form-control" />
+            </td>
+            <td>
+              <button class="btn btn-outline-primary" type="button">
+                <b-icon
+                  icon="download"
+                  animation="fade"
+                  font-scale="1.2"
+                ></b-icon>
+                {{ myLang.download }}
+              </button>
+            </td>
+          </tr>
+        </table>
+      </div>
       <div class="col-12">
         <div class="">
           <!-- <div class="row">
@@ -242,19 +276,19 @@
             <thead>
               <tr>
                 <th>No</th>
-                <th>{{myLang.direct_delivery_code}}</th>
-                <th>{{myLang.final_delivery_code}}</th>
-                <th>{{myLang.total_voucher_number}}</th>
-                <th>{{myLang.specific}}</th>
-                <th>{{myLang.total_cost_amount}}</th>
-                <th>{{myLang.shipping_status}}</th>
-                <th>{{myLang.last_modified_date}}</th>
-                <th>{{myLang.confirmation_status}}</th>
+                <th>{{ myLang.direct_delivery_code }}</th>
+                <th>{{ myLang.final_delivery_code }}</th>
+                <th>{{ myLang.total_voucher_number }}</th>
+                <th>{{ myLang.specific }}</th>
+                <th>{{ myLang.total_cost_amount }}</th>
+                <th>{{ myLang.shipping_status }}</th>
+                <th>{{ myLang.last_modified_date }}</th>
+                <th>{{ myLang.confirmation_status }}</th>
                 <th>
-                  {{myLang.delivery_statement}}
-                  {{myLang.printing_status}}
+                  {{ myLang.delivery_statement }}
+                  {{ myLang.printing_status }}
                 </th>
-                <th>{{myLang.send}}</th>
+                <th>{{ myLang.send }}</th>
               </tr>
               <!-- <tr>
                 <th colspan="100%" style="border: none;">
@@ -325,88 +359,127 @@
             </thead>
             <tbody>
               <tr
-                v-for="(order_detail_list,index) in order_detail_lists"
+                v-for="(order_detail_list, index) in order_detail_lists"
                 :key="order_detail_list.byr_order_detail_id"
               >
-                <td>{{index+1}}</td>
+                <td>{{ index + 1 }}</td>
                 <td>
-                  <input type="checkbox" v-model="selected" :value="order_detail_list.byr_order_detail_id" @change="updateCheckall()" class="form-control check_item" />
+                  <input
+                    type="checkbox"
+                    v-model="selected"
+                    :value="order_detail_list.byr_order_detail_id"
+                    @change="updateCheckall()"
+                    class="form-control check_item"
+                  />
                 </td>
-                
-                <td
-                  v-if="show_hide_col_list.includes('order_type')"
-                >{{order_detail_list.order_type}}</td>
-                <td v-if="show_hide_col_list.includes('shop_name_kana')">{{order_detail_list.shop_name_kana}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('category_code')"
-                >{{order_detail_list.category_code}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('voucher_category')"
-                >{{order_detail_list.voucher_category}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('voucher_number')"
-                >{{order_detail_list.voucher_number}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('list_number')"
-                >{{order_detail_list.list_number}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('delivery_service_code')"
-                >{{order_detail_list.delivery_service_code}}</td>
-                <td v-if="show_hide_col_list.includes('jan')">{{order_detail_list.jan}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('item_name')"
-                >{{order_detail_list.item_name}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('item_name_kana')"
-                >{{order_detail_list.item_name_kana}}</td>
-                <td v-if="show_hide_col_list.includes('spec')">{{order_detail_list.spec}}</td>
-                <td v-if="show_hide_col_list.includes('spec_kana')">{{order_detail_list.spec_kana}}</td>
-                <td v-if="show_hide_col_list.includes('inputs')">{{order_detail_list.inputs}}</td>
-                <td v-if="show_hide_col_list.includes('size')">{{order_detail_list.size}}</td>
-                <td v-if="show_hide_col_list.includes('color')">{{order_detail_list.color}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('order_lot_inputs')"
-                >{{order_detail_list.order_lot_inputs}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('order_date')"
-                >{{order_detail_list.order_date}}</td>
+
+                <td v-if="show_hide_col_list.includes('order_type')">
+                  {{ order_detail_list.order_type }}
+                </td>
+                <td v-if="show_hide_col_list.includes('shop_name_kana')">
+                  {{ order_detail_list.shop_name_kana }}
+                </td>
+                <td v-if="show_hide_col_list.includes('category_code')">
+                  {{ order_detail_list.category_code }}
+                </td>
+                <td v-if="show_hide_col_list.includes('voucher_category')">
+                  {{ order_detail_list.voucher_category }}
+                </td>
+                <td v-if="show_hide_col_list.includes('voucher_number')">
+                  {{ order_detail_list.voucher_number }}
+                </td>
+                <td v-if="show_hide_col_list.includes('list_number')">
+                  {{ order_detail_list.list_number }}
+                </td>
+                <td v-if="show_hide_col_list.includes('delivery_service_code')">
+                  {{ order_detail_list.delivery_service_code }}
+                </td>
+                <td v-if="show_hide_col_list.includes('jan')">
+                  {{ order_detail_list.jan }}
+                </td>
+                <td v-if="show_hide_col_list.includes('item_name')">
+                  {{ order_detail_list.item_name }}
+                </td>
+                <td v-if="show_hide_col_list.includes('item_name_kana')">
+                  {{ order_detail_list.item_name_kana }}
+                </td>
+                <td v-if="show_hide_col_list.includes('spec')">
+                  {{ order_detail_list.spec }}
+                </td>
+                <td v-if="show_hide_col_list.includes('spec_kana')">
+                  {{ order_detail_list.spec_kana }}
+                </td>
+                <td v-if="show_hide_col_list.includes('inputs')">
+                  {{ order_detail_list.inputs }}
+                </td>
+                <td v-if="show_hide_col_list.includes('size')">
+                  {{ order_detail_list.size }}
+                </td>
+                <td v-if="show_hide_col_list.includes('color')">
+                  {{ order_detail_list.color }}
+                </td>
+                <td v-if="show_hide_col_list.includes('order_lot_inputs')">
+                  {{ order_detail_list.order_lot_inputs }}
+                </td>
+                <td v-if="show_hide_col_list.includes('order_date')">
+                  {{ order_detail_list.order_date }}
+                </td>
                 <td
                   v-if="show_hide_col_list.includes('expected_delivery_date')"
-                >{{order_detail_list.expected_delivery_date}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('sale_category')"
-                >{{order_detail_list.sale_category}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('cost_unit_price')"
-                >{{order_detail_list.cost_unit_price}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('cost_price')"
-                >{{order_detail_list.cost_price}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('selling_unit_price')"
-                >{{order_detail_list.selling_unit_price}}</td>
-                <td
-                  v-if="show_hide_col_list.includes('selling_price')"
-                >{{order_detail_list.selling_price}}</td>
-                <td>{{order_detail_list.order_unit_quantity}}</td>
+                >
+                  {{ order_detail_list.expected_delivery_date }}
+                </td>
+                <td v-if="show_hide_col_list.includes('sale_category')">
+                  {{ order_detail_list.sale_category }}
+                </td>
+                <td v-if="show_hide_col_list.includes('cost_unit_price')">
+                  {{ order_detail_list.cost_unit_price }}
+                </td>
+                <td v-if="show_hide_col_list.includes('cost_price')">
+                  {{ order_detail_list.cost_price }}
+                </td>
+                <td v-if="show_hide_col_list.includes('selling_unit_price')">
+                  {{ order_detail_list.selling_unit_price }}
+                </td>
+                <td v-if="show_hide_col_list.includes('selling_price')">
+                  {{ order_detail_list.selling_price }}
+                </td>
+                <td>{{ order_detail_list.order_unit_quantity }}</td>
                 <td>
                   <input
                     type="text"
-                    class="form_input" v-on:keyup="exec_confirm_qty(order_detail_list,$event)"
-                    v-model="order_detail_list.confirm_quantity"/>
+                    class="form_input"
+                    v-on:keyup="exec_confirm_qty(order_detail_list, $event)"
+                    v-model="order_detail_list.confirm_quantity"
+                  />
                 </td>
-                
-                <td>{{order_detail_list.status}}</td>
-                <td><input type="text" class="form-control lack_reasons" style="width:200px" name="lack_r" v-model="order_detail_list.lack_reason"></td>
+
+                <td>{{ order_detail_list.status }}</td>
                 <td>
-                  <button @click="update_shipment_detail(order_detail_list)" class="btn btn-primary">確定</button>
+                  <input
+                    type="text"
+                    class="form-control lack_reasons"
+                    style="width: 200px"
+                    name="lack_r"
+                    v-model="order_detail_list.lack_reason"
+                  />
                 </td>
-                
+                <td>
+                  <button
+                    @click="update_shipment_detail(order_detail_list)"
+                    class="btn btn-primary"
+                  >
+                    確定
+                  </button>
+                </td>
+
                 <td>
                   <button
                     @click="edit_order_detail(order_detail_list)"
                     class="btn btn-success"
-                  >修正</button>
+                  >
+                    修正
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -428,12 +501,19 @@
       <div class="modal-body">-->
       <div class="panel-body add_item_body">
         <form>
-          <input type="hidden" name="vendor_item_id" id="vendor_item_id" value />
+          <input
+            type="hidden"
+            name="vendor_item_id"
+            id="vendor_item_id"
+            value
+          />
           <div class="row">
             <div class="col-6">
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                  <span class="input-group-text" id="basic-addon3">伝票番号</span>
+                  <span class="input-group-text" id="basic-addon3"
+                    >伝票番号</span
+                  >
                 </div>
                 <input
                   type="text"
@@ -535,10 +615,10 @@
 export default {
   data() {
     return {
-      today:new Date().toISOString().slice(0, 10),
-      sortKey: '',
-      reverse:true,
-      order_by:'asc',
+      today: new Date().toISOString().slice(0, 10),
+      sortKey: "",
+      reverse: true,
+      order_by: "asc",
       order_detail_lists: {},
       order_date: "",
       order_detail_list: [],
@@ -549,104 +629,110 @@ export default {
       edit_order_modal: false,
       selected: [],
       isCheckAll: false,
-      form: new Form({})
+      form: new Form({}),
     };
   },
   methods: {
-
-checkAll(){
-
+    checkAll() {
       this.isCheckAll = !this.isCheckAll;
       this.selected = [];
       var temp_seleted = [];
-      if(this.isCheckAll){
-this.order_detail_lists.forEach(function (order_detail_list) {
-                        temp_seleted.push(order_detail_list.byr_order_detail_id);
-                    });
-                    this.selected = temp_seleted;
-
-      }
-    },
-    updateCheckall(){
-      if(this.selected.length == this.order_detail_lists.length){
-         this.isCheckAll = true;
-      }else{
-         this.isCheckAll = false;
-      }
-    },
-
-update_checked_item_list(){
-var post_data = {
-          selected_item: this.selected,
-          user_id: Globals.user_info_id
-        };
-        axios
-          .post(this.BASE_URL + "api/update_byr_order_detail_status", post_data)
-          .then(data => {
-            console.log(data);
-            Fire.$emit('LoadByrorderDetail');
-          });
-},
-
-    exec_confirm_qty(order_detail,event){
-      if(parseFloat(order_detail.confirm_quantity)>parseFloat(order_detail.order_quantity)){
-        Swal.fire({
-            icon: 'warning',
-            title: 'Invalid Confirm Quantity!',
-            text: 'You can not confrim order more then your order quantity!'
+      if (this.isCheckAll) {
+        this.order_detail_lists.forEach(function (order_detail_list) {
+          temp_seleted.push(order_detail_list.byr_order_detail_id);
         });
-                order_detail.confirm_quantity=order_detail.order_quantity
+        this.selected = temp_seleted;
       }
-      if(event.key=='Enter'){
-        event.preventDefault()
+    },
+    updateCheckall() {
+      if (this.selected.length == this.order_detail_lists.length) {
+        this.isCheckAll = true;
+      } else {
+        this.isCheckAll = false;
+      }
+    },
+
+    update_checked_item_list() {
+      var post_data = {
+        selected_item: this.selected,
+        user_id: Globals.user_info_id,
+      };
+      axios
+        .post(this.BASE_URL + "api/update_byr_order_detail_status", post_data)
+        .then((data) => {
+          console.log(data);
+          Fire.$emit("LoadByrorderDetail");
+        });
+    },
+
+    exec_confirm_qty(order_detail, event) {
+      if (
+        parseFloat(order_detail.confirm_quantity) >
+        parseFloat(order_detail.order_quantity)
+      ) {
+        Swal.fire({
+          icon: "warning",
+          title: "Invalid Confirm Quantity!",
+          text: "You can not confrim order more then your order quantity!",
+        });
+        order_detail.confirm_quantity = order_detail.order_quantity;
+      }
+      if (event.key == "Enter") {
+        event.preventDefault();
         console.log(event.key);
         // event.target.nextElementSibling.focus()
         // console.log(event.target.parent.closest('.lack_reasons'));
       }
     },
-    sortBynumeric_valu(sortKey){
-      
+    sortBynumeric_valu(sortKey) {
       // this.order_detail_lists.sort((a, b) => a[sortKey] < b[sortKey] ? 1 : -1);
-      if(this.order_by=='asc'){
-        this.order_by='desc';
-        this.order_detail_lists.sort((a, b) => a[sortKey]-b[sortKey]);
-      }else{
-         this.order_by='asc';
-        this.order_detail_lists.sort((a, b) => b[sortKey]-a[sortKey]);
-      }
-      
-    },
-    sortByja_valu(sortKey){
-      if(this.order_by=='asc'){
-        this.order_by='desc';
-        this.order_detail_lists.sort( (a, b) => a[sortKey].localeCompare(b[sortKey], 'ja', {ignorePunctuation: true}));
-      }else{
-         this.order_by='asc';
-        this.order_detail_lists.sort((a, b) =>  b[sortKey].localeCompare(a[sortKey], 'ja', {ignorePunctuation: true}));
+      if (this.order_by == "asc") {
+        this.order_by = "desc";
+        this.order_detail_lists.sort((a, b) => a[sortKey] - b[sortKey]);
+      } else {
+        this.order_by = "asc";
+        this.order_detail_lists.sort((a, b) => b[sortKey] - a[sortKey]);
       }
     },
-    update_shipment_detail(order_detail){
+    sortByja_valu(sortKey) {
+      if (this.order_by == "asc") {
+        this.order_by = "desc";
+        this.order_detail_lists.sort((a, b) =>
+          a[sortKey].localeCompare(b[sortKey], "ja", {
+            ignorePunctuation: true,
+          })
+        );
+      } else {
+        this.order_by = "asc";
+        this.order_detail_lists.sort((a, b) =>
+          b[sortKey].localeCompare(a[sortKey], "ja", {
+            ignorePunctuation: true,
+          })
+        );
+      }
+    },
+    update_shipment_detail(order_detail) {
       console.log(order_detail);
       axios({
-    method: 'POST',
-    url: this.BASE_URL + "api/update_shipment_detail",
-    data: order_detail
-    })
-    .then(function (response) {
-        //handle success
-        console.log(response);
-       Fire.$emit('LoadByrorderDetail');
-    })
-    .catch(function (response) {
-        //handle error
-        console.log(response);
-    });
+        method: "POST",
+        url: this.BASE_URL + "api/update_shipment_detail",
+        data: order_detail,
+      })
+        .then(function (response) {
+          //handle success
+          console.log(response);
+          Fire.$emit("LoadByrorderDetail");
+        })
+        .catch(function (response) {
+          //handle error
+          console.log(response);
+        });
     },
     //get Table data
     get_all_byr_order_detail() {
       axios
         .get(this.BASE_URL + "api/byrorders/" + this.byr_order_id)
-        .then(data => {
+        .then((data) => {
           console.log(data.data.order_list_detail);
           this.order_detail_lists = data.data.order_list_detail;
           this.show_hide_col_list = data.data.slected_list;
@@ -663,22 +749,22 @@ var post_data = {
       if (this.show_hide_col_list.length == 0) {
         var post_data = {
           url_slug: url_slug,
-          user_id: Globals.user_info_id
+          user_id: Globals.user_info_id,
         };
         axios
           .post(this.BASE_URL + "api/tblecolsetting", post_data)
-          .then(data => {
+          .then((data) => {
             console.log(data);
           });
       }
     },
     edit_order_detail(order_detail_list) {
       this.edit_order_modal = true;
-    }
+    },
   },
 
   created() {
-    this.loader =Vue.$loading.show();
+    this.loader = Vue.$loading.show();
     this.byr_order_id = this.$route.params.byr_order_id;
     this.get_all_byr_order_detail();
     Fire.$on("LoadByrorderDetail", () => {
@@ -688,6 +774,6 @@ var post_data = {
   },
   mounted() {
     console.log("byr order detail page loaded");
-  }
+  },
 };
 </script>
