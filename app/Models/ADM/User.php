@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use App\Models\ADM\adm_user_details;
 use App\Models\CMN\cmn_companies_user;
 use App\Models\BYR\byr_buyer;
@@ -66,6 +67,16 @@ class User extends Authenticatable
             }
           }
         return $permissions;
+    }
+    // For check roles like canrole in vue 
+    public function getAllRolesAttribute() {
+        $roles = [];
+          foreach (Role::all() as $role) {
+            if (Auth::user()->hasrole($role->name)) {
+              $roles[] = $role->name;
+            }
+          }
+        return $roles;
     }
 
     public function getCompanyIdAttribute() 

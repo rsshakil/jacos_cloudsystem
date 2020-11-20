@@ -1,9 +1,9 @@
 <template>
 <div>
      <div class="row">
-        <div class="col-12">
+        <div class="col-12" v-role="['Slr','Byr']">
             <div v-for="order_item in slr_order_list" :key="order_item.byr_buyer_id">
-                <button class="btn btn-primary">{{order_item.buyer_name}} &nbsp &nbsp {{order_item.total_order}}件</button>
+                 <b-button variant="outline-primary">{{order_item.buyer_name}} &nbsp &nbsp {{order_item.total_order}}件</b-button>
             </div>
         </div>
     </div>
