@@ -2,7 +2,7 @@
 <div>
 <div class="row">
            <div class="col-12 text-center page_c_title_bar text-sm-left mb-0">
-            <h4 class="page_custom_title"><i class="fas fa-wrench custom_warnce"></i> 得意先一覧</h4>
+            <h4 class="page_custom_title"> <i class="fas fa-wrench custom_wrench"></i> 得意先一覧</h4>
        
         </div>
     </div>
