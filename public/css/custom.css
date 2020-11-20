@@ -51,3 +51,22 @@
      border-bottom: 4px solid #538ED3;
      color: #538ED3;
    }
+   .top_byr_slr_list{
+    position: absolute;
+    top: 60px;
+    background: #fff;
+    width: 300px;
+   }
+   .custom_slr_byr_top_table thead tr th{
+     background: #AAC2DF;
+     text-align: center;
+     vertical-align: middle;
+     color:#fff;
+     border: 1px solid #538ED3 !important;
+   }
+   .custom_slr_byr_top_table tbody tr td{
+     background: #EFEFEF;
+     text-align: center;
+     vertical-align: middle;
+     border: 1px solid #538ED3 !important;
+   }

@@ -165,3 +165,6 @@ Route::post('delete_service', 'API\Level3\Level3Controller@deleteService');
 
 
 Route::post('/job_list', 'API\Level3\Level3Controller@job_list');
+
+//get user company byr slr list
+Route::post('/get_user_company_byr_slr_list', 'API\UsersController@get_user_company_byr_slr_list');

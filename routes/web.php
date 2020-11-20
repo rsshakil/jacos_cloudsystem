@@ -34,17 +34,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::post('/user', function(Request $request){
     $user_image=Auth::user()->image;
     $user=Auth::User();
-    $user_company_info = \DB::table('cmn_companies_users')
-    ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
-    ->select('cmn_companies.cmn_company_id', 'cmn_companies.company_name')
-    ->where('cmn_companies_users.adm_user_id',Auth::user()->id)
-    ->first();
-    $user['cmn_company_id']='0';
-    $user['company_name']='';
-    if(!empty($user_company_info)){
-        $user['cmn_company_id']=$user_company_info->cmn_company_id;
-        $user['company_name']=$user_company_info->company_name;
-    }
     $user['image']=$user_image;
     return $user;
     // return response()->json(['user'=>$user]);

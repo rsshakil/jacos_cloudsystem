@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\API\AllUsedFunction;
 use App\Models\ADM\User;
 use App\Models\ADM\adm_user_details;
+use App\Models\BYR\byr_order_item;
+use App\Models\BYR\byr_order;
 // use Auth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -267,6 +269,29 @@ public function changePassword(Request $request)
     } else {
         return response()->json(['title'=>"Not Updated!",'message' =>'required', 'class_name' => 'error']);
     }
+}
+
+public function get_user_company_byr_slr_list(){
+    $user_comp_info = array();
+    $slr_order_info = array();
+    $user_company_info = \DB::table('cmn_companies_users')
+    ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
+    ->select('cmn_companies.cmn_company_id', 'cmn_companies.company_name')
+    ->where('cmn_companies_users.adm_user_id',Auth::user()->id)
+    ->first();
+    $user_comp_info['cmn_company_id']='0';
+    $user_comp_info['company_name']='';
+    if(!empty($user_company_info)){
+        $user_comp_info['cmn_company_id']=$user_company_info->cmn_company_id;
+        $user_comp_info['company_name']=$user_company_info->company_name;
+        $slr_order_info=byr_order::select(DB::raw('count(byr_orders.byr_order_id) as total_order'),'byr_buyers.byr_buyer_id','cmn_companies.company_name as buyer_name')
+        ->join('cmn_connects','cmn_connects.cmn_connect_id','=','byr_orders.cmn_connect_id')
+        ->join('byr_buyers','byr_buyers.byr_buyer_id','=','cmn_connects.byr_buyer_id')
+        ->join('cmn_companies','cmn_companies.cmn_company_id','=','byr_buyers.cmn_company_id')
+        ->where('cmn_connects.slr_seller_id',5)
+        ->get();
+    }
+    return response()->json(['user_company_info'=>$user_comp_info,'byr_slr_list'=>$slr_order_info]);
 }
 
 }

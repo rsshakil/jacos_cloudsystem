@@ -25,7 +25,49 @@
           </div>
           <div class="col-1 p-0">
 
-            <button v-if="user_data.user.company_name" class="btn btn-default byr_list_show">得意先選択</button>
+            <button v-if="company_name!=''" @click='toggle = !toggle' class="btn btn-default byr_list_show">得意先選択</button>
+            <div class="top_byr_slr_list" v-if="company_name!=''" v-show='toggle'>
+              <table class="table b-table custom_slr_byr_top_table table-bordered">
+                <thead>
+                  <tr>
+                    <th>得意先名</th>
+                    <th>受注件数</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                  <td>イオン</td>
+                  <td>500件</td>
+
+                  </tr>
+                   <tr>
+                  <td>イオン</td>
+                  <td>500件</td>
+
+                  </tr>
+                   <tr>
+                  <td>イオン</td>
+                  <td>500件</td>
+
+                  </tr>
+                   <tr>
+                  <td>イオン</td>
+                  <td>500件</td>
+
+                  </tr>
+                   <tr>
+                  <td>イオン</td>
+                  <td>500件</td>
+
+                  </tr>
+                   <tr>
+                  <td>イオン</td>
+                  <td>500件</td>
+
+                  </tr>
+                </tbody>
+                </table>
+              </div>
           </div>
           <div class="col-5 p-0 ">
           
@@ -33,8 +75,8 @@
           
         
           
-          <li class="nav-item" v-if="user_data.user.company_name">
-            <a class="uer_company nav-link top_menu_custom_a"> <b-icon icon="grid3x3-gap-fill"></b-icon> {{ user_data.user.company_name ? user_data.user.company_name : "" }}</a>
+          <li class="nav-item" v-if="company_name!=''">
+            <a class="uer_company nav-link top_menu_custom_a"> <b-icon icon="grid3x3-gap-fill"></b-icon> {{ company_name }}</a>
           </li>
           
           <li class="nav-item dropdown">
@@ -260,6 +302,23 @@ export default {
       local: Globals.local,
       user_data: null,
       company_name:null,
+      user_byr_slr_list:[],
+      toggle: false,
+      fields: [{
+            key: 'header_1',
+             label: '得意先名',
+            sortable: false,
+          },
+          {
+            key: 'header_2',
+             label: '受注件数',
+            sortable: false
+          },],
+      byrslrlst:[{isActive: true,header_1: 'イオン', header_2: '500件'},
+      {isActive: true,header_1: 'イオン', header_2: '500件'},
+      {isActive: true,header_1: 'イオン', header_2: '500件'},
+      {isActive: true,header_1: 'イオン', header_2: '500件'},
+      {isActive: true,header_1: 'イオン', header_2: '500件'}]
       // BASE_URL:BASE_URL,
     };
   },
@@ -271,8 +330,16 @@ export default {
         this.user_data.user.image
       );
     },
+    get_user_company_info(){
+      axios.post(this.BASE_URL+'api/get_user_company_byr_slr_list').then(response=>{
+            this.company_name=response.data.user_company_info.company_name;
+            this.user_byr_slr_list = response.data.byr_slr_list;
+            console.log(this.company_name);
+        })
+    },
   },
   created() {
+    this.get_user_company_info();
     this.user_data = this.app._data;
   },
 };
