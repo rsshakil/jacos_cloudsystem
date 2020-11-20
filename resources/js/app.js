@@ -28,6 +28,17 @@ import { Cropper } from 'vue-advanced-cropper'
 import Loading from 'vue-loading-overlay';
 // Import stylesheet
 import 'vue-loading-overlay/dist/vue-loading.css';
+ //vue font awsam
+
+ import { library } from '@fortawesome/fontawesome-svg-core'
+ import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
+ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+  
+ library.add(faUserSecret)
+  
+ Vue.component('font-awesome-icon', FontAwesomeIcon)
+  
+ Vue.config.productionTip = false
 
 window.Fire = new Vue();
 Vue.use(VueRouter);
@@ -48,6 +59,7 @@ Vue.use(Cropper)
     // register globally
 Vue.component('multiselect', Multiselect)
     // Vue.use(vueselect);
+   
     //Pagination laravel-vue-pagination
 Vue.component('pagination', require('laravel-vue-pagination'));
 // spinner register 
