@@ -15,8 +15,10 @@ use App\Models\CMN\cmn_companies_user;
 use App\Models\BYR\byr_receive;
 use App\Models\BYR\byr_corrected_receive;
 use App\Models\BYR\byr_buyer;
+use App\Models\SLR\slr_seller;
 use App\Models\BYR\byr_return;
 use DB;
+use Auth;
 
 class AllUsedFunction extends Controller
 {
@@ -467,5 +469,20 @@ class AllUsedFunction extends Controller
         }
         return strrev($bos);
 
+    }
+
+    public function get_slrs_byr_id(){
+        $byrs_info = array();
+        $byr_id_info = cmn_companies_user::select('byr_buyers.byr_buyer_id')
+        ->join('slr_sellers','slr_sellers.cmn_company_id','=','cmn_companies_users.cmn_company_id')
+        ->join('cmn_connects','cmn_connects.slr_seller_id','=','slr_sellers.slr_seller_id')
+        ->join('byr_buyers','byr_buyers.byr_buyer_id','=','cmn_connects.byr_buyer_id')
+        ->where('cmn_companies_users.adm_user_id',Auth::user()->id)->first();
+
+        $byrs_info = byr_buyer::select('byr_buyers.byr_buyer_id','cmn_companies_users.adm_user_id','cmn_companies.*')
+        ->join('cmn_companies_users','cmn_companies_users.cmn_company_id','=','byr_buyers.cmn_company_id')
+        ->join('cmn_companies','cmn_companies.cmn_company_id','=','cmn_companies_users.cmn_company_id')
+        ->where('byr_buyers.byr_buyer_id',$byr_id_info->byr_buyer_id)->first();
+        return $byrs_info;
     }
 }
