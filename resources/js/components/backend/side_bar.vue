@@ -20,7 +20,7 @@
   
     <div class="nav-wrapper">
       <ul class="nav jcs_left_side_bar_menu flex-column">
-        <li class="nav-item" v-can="['dashboard_menu']">
+        <li class="nav-item">
           <a
             class="nav-link collapsed"
             href="#dashboardmenu1"
@@ -31,12 +31,12 @@
           >
           <div class="collapse" id="dashboardmenu1" aria-expanded="false">
             <ul class="flex-column pl-2 nav">
-              <li class="nav-item" v-can="['dashboard_menu']">
+              <li class="nav-item">
                 <router-link to="/home" class="nav-link">
                   <b-icon icon="house-fill" font-scale="1.2"></b-icon> Home
                 </router-link>
               </li>
-              <li class="nav-item" v-can="['dashboard_menu']">
+              <li class="nav-item">
                 <router-link to="/blog" class="nav-link">
                   <b-icon icon="house-fill" font-scale="1.2"></b-icon>
                   {{ myLang.new_notice }}

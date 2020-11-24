@@ -44,7 +44,7 @@ class Byr_orderController extends Controller
 
     public function get_byr_order_list($adm_user_id)
     {
-        // return \Auth::User()->id;
+        // $authUser=\Auth::User()->id;
         $authUser=User::find($adm_user_id);
         $cmn_company_id = 0;
         if(!$authUser->hasRole('Super Admin')){
@@ -53,7 +53,8 @@ class Byr_orderController extends Controller
             $byr_buyer_id = $cmn_company_info['byr_buyer_id'];
             $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
-        $result = byr_order::select( 'byr_orders.*','cmn_companies.company_name','byr_order_vouchers.*',
+        // return $cmn_company_id ;
+        $result = byr_order::select('byr_orders.*','cmn_companies.company_name','byr_order_vouchers.*',
         DB::raw('(select count(voucher_number) from byr_order_vouchers where byr_order_vouchers.byr_order_id  =   byr_orders.byr_order_id group by byr_order_vouchers.expected_delivery_date,byr_order_vouchers.temperature,byr_order_vouchers.category_code,byr_order_vouchers.expected_delivery_date limit 1) as total_voucher_number'),
         DB::raw('(select count(confirm_date) from byr_shipment_vouchers where byr_shipment_vouchers.byr_order_voucher_id  =   byr_order_vouchers.byr_order_voucher_id limit 1) as total_confirm_date'),
         DB::raw('(select count(print_out_date) from byr_shipment_vouchers where byr_shipment_vouchers.byr_order_voucher_id  =   byr_order_vouchers.byr_order_voucher_id limit 1) as total_print_out_date')
@@ -69,6 +70,7 @@ class Byr_orderController extends Controller
         }
         // echo $result->toSql();exit;
         $result = $result->get();
+        // return $result;
         $byr_buyer =$this->all_used_fun->get_company_list($cmn_company_id);
         
         return response()->json(['order_list' => $result,'byr_buyer_list'=>$byr_buyer]);

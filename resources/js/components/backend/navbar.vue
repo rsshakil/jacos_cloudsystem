@@ -6,28 +6,41 @@
     <div class="main-navbar sticky-top bg_custom_color">
       <!-- Main Navbar -->
       <nav class="navbar align-items-stretch navbar-light flex-md-nowrap p-0">
-        <div class="row" style="margin-right:0;margin-left:0;width:100%;">
+        <div class="row" style="margin-right: 0; margin-left: 0; width: 100%">
           <div class="col-2">
-                 <div class="site_logo">
-         <img
-              id="main-logo"
-              class="d-inline-block align-top mr-1"
-              style="max-width: 100%;height:60px;"
-              :src="BASE_URL + '/public/backend/images/logo/jacos_logo.png'"
-              alt="Jacos Dashboard"
-            />
-      </div>
+            <div class="site_logo">
+              <router-link to="/home">
+                <img
+                id="main-logo"
+                class="d-inline-block align-top mr-1"
+                style="max-width: 100%; height: 60px"
+                :src="BASE_URL + '/public/backend/images/logo/jacos_logo.png'"
+                alt="Jacos Dashboard"
+              />
+              </router-link>
+            </div>
           </div>
           <div class="col-4">
-           <!--<div class="custom_bredcrubs">
+            <!--<div class="custom_bredcrubs">
               <Breadcrumbs></Breadcrumbs>
           </div>-->
           </div>
           <div class="col-1 p-0">
-
-            <button v-if="company_name!=''" @click='toggle = !toggle' class="btn btn-default byr_list_show">得意先選択</button>
-            <div class="top_byr_slr_list" v-if="company_name!=''" v-show='toggle'>
-              <table class="table b-table custom_slr_byr_top_table table-bordered">
+            <button
+              v-if="company_name != ''"
+              @click="toggle = !toggle"
+              class="btn btn-default byr_list_show"
+            >
+              得意先選択
+            </button>
+            <div
+              class="top_byr_slr_list"
+              v-if="company_name != ''"
+              v-show="toggle"
+            >
+              <table
+                class="table b-table custom_slr_byr_top_table table-bordered"
+              >
                 <thead>
                   <tr>
                     <th>得意先名</th>
@@ -36,60 +49,53 @@
                 </thead>
                 <tbody>
                   <tr>
-                  <td>イオン</td>
-                  <td>500件</td>
-
+                    <td>イオン</td>
+                    <td>500件</td>
                   </tr>
-                   <tr>
-                  <td>イオン</td>
-                  <td>500件</td>
-
+                  <tr>
+                    <td>イオン</td>
+                    <td>500件</td>
                   </tr>
-                   <tr>
-                  <td>イオン</td>
-                  <td>500件</td>
-
+                  <tr>
+                    <td>イオン</td>
+                    <td>500件</td>
                   </tr>
-                   <tr>
-                  <td>イオン</td>
-                  <td>500件</td>
-
+                  <tr>
+                    <td>イオン</td>
+                    <td>500件</td>
                   </tr>
-                   <tr>
-                  <td>イオン</td>
-                  <td>500件</td>
-
+                  <tr>
+                    <td>イオン</td>
+                    <td>500件</td>
                   </tr>
-                   <tr>
-                  <td>イオン</td>
-                  <td>500件</td>
-
+                  <tr>
+                    <td>イオン</td>
+                    <td>500件</td>
                   </tr>
                 </tbody>
-                </table>
-              </div>
+              </table>
+            </div>
           </div>
-          <div class="col-5 p-0 ">
-          
-        <ul class="navbar-nav top_custom_ul flex-row">
-          
-        
-          
-          <li class="nav-item" v-if="company_name!=''">
-            <a class="uer_company nav-link top_menu_custom_a"> <b-icon icon="grid3x3-gap-fill"></b-icon> {{ company_name }}</a>
-          </li>
-          
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link top_menu_custom_a dropdown-toggle text-nowrap px-3"
-              data-toggle="dropdown"
-              href="#"
-              role="button"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <!-- @if(Auth::user()->image) -->
-              <!--
+          <div class="col-5 p-0">
+            <ul class="navbar-nav top_custom_ul flex-row">
+              <li class="nav-item" v-if="company_name != ''">
+                <a class="uer_company nav-link top_menu_custom_a">
+                  <b-icon icon="grid3x3-gap-fill"></b-icon>
+                  {{ company_name }}</a
+                >
+              </li>
+
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link top_menu_custom_a dropdown-toggle text-nowrap px-3"
+                  data-toggle="dropdown"
+                  href="#"
+                  role="button"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <!-- @if(Auth::user()->image) -->
+                  <!--
               <img
                 class="user-avatar rounded-circle mr-2"
                 style="max-height: 46px !important"
@@ -97,139 +103,146 @@
                 :src="imageSrc()"
                 alt
               />-->
-              <!-- <img class="rounded-circle" v-if="user_image" :src="user_image" alt="No image" width="110" /> -->
-              <!-- @endif -->
-              <span class="d-none d-md-inline-block">
-                <b-avatar variant=""></b-avatar> {{ user_data.user ? user_data.user.name : "" }}
-              </span>
-            </a>
-            <div
-              class="dropdown-menu dropdown-menu-small"
-              style="margin-left: -60px"
-            >
-              <!-- @can('personal_profile_view') -->
-              <!-- <a class="dropdown-item"
+                  <!-- <img class="rounded-circle" v-if="user_image" :src="user_image" alt="No image" width="110" /> -->
+                  <!-- @endif -->
+                  <span class="d-none d-md-inline-block">
+                    <b-avatar variant=""></b-avatar>
+                    {{ user_data.user ? user_data.user.name : "" }}
+                  </span>
+                </a>
+                <div
+                  class="dropdown-menu dropdown-menu-small"
+                  style="margin-left: -60px"
+                >
+                  <!-- @can('personal_profile_view') -->
+                  <!-- <a class="dropdown-item"
                             :href="BASE_URL+'/users/1'">
                             <i class="material-icons">&#xE7FD;</i> Profile
               </a>-->
-              <router-link
-                :to="{
-                  name: 'users',
-                  params: {
-                    id: global_user_id,
-                    auth_id: global_user_id,
-                  },
-                }"
-                class="dropdown-item"
-              >
-                <i class="material-icons">&#xE7FD;</i> Profile
-              </router-link>
-              <!-- @endcan
+                  <router-link
+                    :to="{
+                      name: 'users',
+                      params: {
+                        id: global_user_id,
+                        auth_id: global_user_id,
+                      },
+                    }"
+                    class="dropdown-item"
+                  >
+                    <i class="material-icons">&#xE7FD;</i> Profile
+                  </router-link>
+                  <!-- @endcan
               @can('personal_password_change')-->
-              <router-link
-                :to="{
-                  name: 'password_reset',
-                  params: {
-                    id: global_user_id,
-                    auth_id: global_user_id,
-                  },
-                }"
-                class="dropdown-item pc"
-              >
-                <i class="fas fa-edit"></i>
-                {{ myLang.change_password }}
-              </router-link>
-              <!-- <button class="dropdown-item pc" id="auth_user_id">
+                  <router-link
+                    :to="{
+                      name: 'password_reset',
+                      params: {
+                        id: global_user_id,
+                        auth_id: global_user_id,
+                      },
+                    }"
+                    class="dropdown-item pc"
+                  >
+                    <i class="fas fa-edit"></i>
+                    {{ myLang.change_password }}
+                  </router-link>
+                  <!-- <button class="dropdown-item pc" id="auth_user_id">
                             <i class="material-icons">vertical_split</i> Change Password
               </button>-->
-              <!-- @endcan -->
-              <!-- <a class="dropdown-item" href="add-new-post.html">
+                  <!-- @endcan -->
+                  <!-- <a class="dropdown-item" href="add-new-post.html">
                     <i class="material-icons">note_add</i> Add New Post
               </a>-->
-              <div class="dropdown-divider"></div>
-              <!-- <a class="dropdown-item text-danger" href="#">
+                  <div class="dropdown-divider"></div>
+                  <!-- <a class="dropdown-item text-danger" href="#">
               <i class="material-icons text-danger">&#xE879;</i> Logout </a>-->
-              
-            </div>
-          </li>
-            <li class="nav-item">
-            <button class="btn btn-defalut logout_btn text-danger" @click="logout()">
-                
-                Logout
-              </button>
-          </li>
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle_backup text-nowrap px-3"
-              href="#"
-              id="navbarDropdown_setting"
-              role="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <span class="h4">
-                <b-icon
-                  icon="gear-fill"
-                  aria-hidden="true"
-                  style="color: #fff"
-                ></b-icon>
-              </span>
-            </a>
-            <div
-              class="dropdown-menu dropdown-menu-small"
-              aria-labelledby="navbarDropdown_setting"
-            >
-              <!-- <a class="dropdown-item csv_output" href="#">CSV出力</a>
+                </div>
+              </li>
+              <li class="nav-item">
+                <button
+                  class="btn btn-defalut logout_btn text-danger"
+                  @click="logout()"
+                >
+                  Logout
+                </button>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle_backup text-nowrap px-3"
+                  href="#"
+                  id="navbarDropdown_setting"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <span class="h4">
+                    <b-icon
+                      icon="gear-fill"
+                      aria-hidden="true"
+                      style="color: #fff"
+                    ></b-icon>
+                  </span>
+                </a>
+                <div
+                  class="dropdown-menu dropdown-menu-small"
+                  aria-labelledby="navbarDropdown_setting"
+                >
+                  <!-- <a class="dropdown-item csv_output" href="#">CSV出力</a>
               <div class="dropdown-divider"></div>-->
-              <button
-                @click="display_table_col_setting"
-                class="dropdown-item display_item_setting"
-              >
-                表示項目設定
-              </button>
-              <!-- <div class="dropdown-divider"></div>
+                  <button
+                    @click="display_table_col_setting"
+                    class="dropdown-item display_item_setting"
+                  >
+                    表示項目設定
+                  </button>
+                  <!-- <div class="dropdown-divider"></div>
               <a class="dropdown-item setting_printing" href="#">印刷</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item csv_import_jan" href="#">CSVインポート JAN</a>
               <button class="dropdown-item display_arrow_setting">セル移動</button>-->
-            </div>
-          </li>
-         
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link top_menu_custom_a dropdown-toggle text-nowrap px-3"
-              href="#"
-              id="navbarDropdown"
-              role="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <span class="flag-icon flag-icon-jp" v-if="local == 'ja'"></span>
-              <span class="flag-icon flag-icon-us" v-if="local == 'en'"></span>
-              {{ local == "en" ? "English" : "日本語" }}
-            </a>
-            <div
-              class="dropdown-menu dropdown-menu-small"
-              aria-labelledby="navbarDropdown"
-            >
-              <a class="dropdown-item" :href="BASE_URL + '/language/en'">
-                <span class="flag-icon flag-icon-us"></span>
-                English
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" :href="BASE_URL + '/language/ja'">
-                <span class="flag-icon flag-icon-jp"></span>
-                日本語
-              </a>
-            </div>
-          </li>
-        </ul>
+                </div>
+              </li>
+
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link top_menu_custom_a dropdown-toggle text-nowrap px-3"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <span
+                    class="flag-icon flag-icon-jp"
+                    v-if="local == 'ja'"
+                  ></span>
+                  <span
+                    class="flag-icon flag-icon-us"
+                    v-if="local == 'en'"
+                  ></span>
+                  {{ local == "en" ? "English" : "日本語" }}
+                </a>
+                <div
+                  class="dropdown-menu dropdown-menu-small"
+                  aria-labelledby="navbarDropdown"
+                >
+                  <a class="dropdown-item" :href="BASE_URL + '/language/en'">
+                    <span class="flag-icon flag-icon-us"></span>
+                    English
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" :href="BASE_URL + '/language/ja'">
+                    <span class="flag-icon flag-icon-jp"></span>
+                    日本語
+                  </a>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
-       
-  
+
         <nav class="nav">
           <a
             href="#"
@@ -301,24 +314,28 @@ export default {
     return {
       local: Globals.local,
       user_data: null,
-      company_name:null,
-      user_byr_slr_list:[],
+      company_name: null,
+      user_byr_slr_list: [],
       toggle: false,
-      fields: [{
-            key: 'header_1',
-             label: '得意先名',
-            sortable: false,
-          },
-          {
-            key: 'header_2',
-             label: '受注件数',
-            sortable: false
-          },],
-      byrslrlst:[{isActive: true,header_1: 'イオン', header_2: '500件'},
-      {isActive: true,header_1: 'イオン', header_2: '500件'},
-      {isActive: true,header_1: 'イオン', header_2: '500件'},
-      {isActive: true,header_1: 'イオン', header_2: '500件'},
-      {isActive: true,header_1: 'イオン', header_2: '500件'}]
+      fields: [
+        {
+          key: "header_1",
+          label: "得意先名",
+          sortable: false,
+        },
+        {
+          key: "header_2",
+          label: "受注件数",
+          sortable: false,
+        },
+      ],
+      byrslrlst: [
+        { isActive: true, header_1: "イオン", header_2: "500件" },
+        { isActive: true, header_1: "イオン", header_2: "500件" },
+        { isActive: true, header_1: "イオン", header_2: "500件" },
+        { isActive: true, header_1: "イオン", header_2: "500件" },
+        { isActive: true, header_1: "イオン", header_2: "500件" },
+      ],
       // BASE_URL:BASE_URL,
     };
   },
@@ -330,12 +347,14 @@ export default {
         this.user_data.user.image
       );
     },
-    get_user_company_info(){
-      axios.post(this.BASE_URL+'api/get_user_company_byr_slr_list').then(response=>{
-            this.company_name=response.data.user_company_info.company_name;
-            this.user_byr_slr_list = response.data.byr_slr_list;
-            console.log(this.company_name);
-        })
+    get_user_company_info() {
+      axios
+        .post(this.BASE_URL + "api/get_user_company_byr_slr_list")
+        .then((response) => {
+          this.company_name = response.data.user_company_info.company_name;
+          this.user_byr_slr_list = response.data.byr_slr_list;
+          console.log(this.company_name);
+        });
     },
   },
   created() {
