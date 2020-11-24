@@ -19,7 +19,7 @@ use App\Models\CMN\cmn_company;
 use App\Models\ADM\User;
 use App\Models\CMN\cmn_companies_user;
 use DB;
-
+use Auth;
 
 class Byr_orderController extends Controller
 {

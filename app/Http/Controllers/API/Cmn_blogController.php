@@ -40,14 +40,42 @@ class Cmn_blogController extends Controller
     }
     public function get_signle_top_blog()
     {
-        $result = cmn_blog::where('is_delete','0')->where('blog_status','published')->where('is_top_blog','1')->first();
+        //admin top blog
+        $super_admin_user_id = User::where('name','Jacos Super Admin')->first();
+        $result = cmn_blog::where('is_delete','0')->where('blog_status','published')->where('blog_by',$super_admin_user_id->id)->where('is_top_blog','1')->first();
         if($result){
             return response()->json(['blog_list' => $result]);
         }else{
-            $result = array();
+            $result = cmn_blog::where('is_delete','0')->where('blog_status','published')->where('blog_by',$super_admin_user_id->id)->orderBy('cmn_blog_id','DESC')->first();
+            if($result){
             return response()->json(['blog_list' => $result]);
+            }else{
+                $result = array();
+                return response()->json(['blog_list' => $result]);
+            }
         }
         
+    }
+    public function get_user_top_blog()
+    {
+        $authUser = Auth::user();
+        if($authUser->hasRole('Slr')){
+            $byr_info = $this->all_used_fun->get_slrs_byr_id();
+        $result = cmn_blog::where('is_delete','0')->where('blog_status','published')->where('blog_by',$byr_info->adm_user_id)->where('is_top_blog','1')->orderBy('cmn_blog_id','DESC')->first();
+        if($result){
+            return response()->json(['blog_list' => $result]);
+        }else{
+
+            $result =cmn_blog::where('is_delete','0')->where('blog_status','published')->where('blog_by',$byr_info->adm_user_id)->orderBy('cmn_blog_id','DESC')->first();
+            if($result){
+                return response()->json(['blog_list' => $result]);
+            }else{
+                $result = array();
+                return response()->json(['blog_list' => $result]);
+            }
+            
+        }
+    }
     }
 
     /**
@@ -112,7 +140,7 @@ class Cmn_blogController extends Controller
             $pub_type = ($act_type==0?'unpublished':'published');
             cmn_blog::where('cmn_blog_id',$cmn_blog_id)->update(['blog_status'=>$pub_type]);
         }else if($act_type==2){
-            cmn_blog::where('cmn_blog_id', '>', 0)->update(['is_top_blog'=>'0']);
+            cmn_blog::where('blog_by',Auth::user()->id)->update(['is_top_blog'=>'0']);
             cmn_blog::where('cmn_blog_id',$cmn_blog_id)->update(['is_top_blog'=>'1']);
         }else{
             cmn_blog::where('cmn_blog_id',$cmn_blog_id)->update(['is_delete'=>'1']);

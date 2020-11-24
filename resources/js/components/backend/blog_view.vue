@@ -5,50 +5,42 @@
             <div class="col-12">
            
                 <b-container class="bv-example-row">
-                <b-row v-if="single_blog.length!='0'">
-    <b-col>
-    <div class="text-center">
-    <h2>{{myLang.notice_text}}</h2>
-
-    </div>
-     </b-col>
-     
-  </b-row>
-  <br>
-  <br>
+       <!--admin blog-->           
   <b-row>
     <b-col v-if="single_blog.length!='0'">                    
 
-  <h4 class="my-3 blog_titles">{{single_blog.blog_title}}</h4>
-  <p class="created_at">Created at @{{ single_blog.created_at | ja_date_time }}</p>
-  <b-img :src="BASE_URL+'storage/app/public/backend/images/blog_images/'+single_blog.feature_img" fluid-grow alt="Fluid-grow image"></b-img>
+  <h4 class="my-3 blog_titles"><i class="fas custom_blog_square fa-square-full"></i>  {{single_blog.blog_title}}</h4>
+  <!--<p class="created_at">Created at @{{ single_blog.created_at | ja_date_time }}</p>-->
+  <!--<b-img v-if="single_blog.feature_img!='null'" :src="BASE_URL+'storage/app/public/backend/images/blog_images/'+single_blog.feature_img" fluid-grow alt="Fluid-grow image"></b-img>-->
     <div class="blogs_content" v-html="single_blog.blog_content">
     </div>
     </b-col>
   </b-row>
-  <br>
-  <br>
-  <br>
-                <b-row>
-    <b-col>
-    <div class="text-center">
-    <h2>{{myLang.previous_notice}}</h2>
-    </div>
-     </b-col>
-     
-  </b-row>
-  <b-row>
-    <b-col cols="6" v-for="(value) in blog_lists" :key="value.cmn_blog_id">                    
+      <!--admin blog end-->  
+<!--user blog-->       
+  <b-row v-can="['byr_view', 'slr_view']">
+    <b-col v-if="user_blog.length!='0'">                    
 
-  <h4 class="my-3 blog_titles">{{value.blog_title}}</h4>
-  <p class="created_at">Created at @ {{ value.created_at | diffForHumans }}</p>
-  <b-img :src="BASE_URL+'storage/app/public/backend/images/blog_images/'+value.feature_img" fluid-grow alt="Fluid-grow image"></b-img>
+  <h4 class="my-3 blog_titles"><i class="fas custom_blog_square fa-square-full"></i> {{user_blog.blog_title}}</h4>
+  <!--<p class="created_at">Created at @{{ single_blog.created_at | ja_date_time }}</p>-->
+  <!--<b-img v-if="single_blog.feature_img!='null'" :src="BASE_URL+'storage/app/public/backend/images/blog_images/'+single_blog.feature_img" fluid-grow alt="Fluid-grow image"></b-img>-->
+    <div class="blogs_content" v-html="user_blog.blog_content">
+    </div>
+    </b-col>
+  </b-row>
+  <!--user blog end-->  
+  <!--
+  <b-row>
+    <b-col cols="12" v-for="(value) in blog_lists" :key="value.cmn_blog_id">                    
+
+  <h5 class="my-3 blog_titles"><i class="fas custom_blog_square fa-square-full"></i> {{value.blog_title}}</h5>
+  <p class="created_at">Created at @ {{ value.created_at | diffForHumans }}</p>-->
+  <!--<b-img v-if="value.feature_img!=null" :src="BASE_URL+'storage/app/public/backend/images/blog_images/'+value.feature_img" fluid-grow alt="Fluid-grow image"></b-img>
   <div class="blogs_content" v-html="value.blog_content"></div>
   </b-col>
    
   </b-row>
-  <br>
-  <br>
+-->
 </b-container>
 
 
@@ -68,6 +60,7 @@
                 activeVal: 'home',
                 blog_lists:{},
                 single_blog:{},
+                user_blog:{},
             }
         },
         methods:{
@@ -82,10 +75,18 @@
                     console.log(this.single_blog.length);
                 });
             },
+            get_user_top_blog(){
+                axios.get(this.BASE_URL +"api/get_user_top_blog").then((data) => {
+                    this.user_blog = data.data.blog_list;
+                    console.log(this.single_blog.length);
+                });
+            },
+
         },
           created() {
       this.get_all_blogs();
       this.get_signle_top_blog();
+      this.get_user_top_blog();
       Fire.$on("AfterCreateblog", () => {
         this.get_all_blogs();
     });
