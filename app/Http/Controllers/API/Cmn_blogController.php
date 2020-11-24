@@ -75,6 +75,9 @@ class Cmn_blogController extends Controller
             }
             
         }
+    }else{
+        $result = array();
+                return response()->json(['blog_list' => $result]);
     }
     }
 

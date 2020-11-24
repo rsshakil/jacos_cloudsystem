@@ -5,7 +5,20 @@
             <div class="col-12">
            
                 <b-container class="bv-example-row">
-       <!--admin blog-->           
+      
+<!--user blog-->       
+  <b-row v-can="['slr_view']">
+    <b-col v-if="user_blog.length!='0'">                    
+
+  <h4 class="my-3 blog_titles"><i class="fas custom_blog_square fa-square-full"></i> {{user_blog.blog_title}}</h4>
+  <!--<p class="created_at">Created at @{{ single_blog.created_at | ja_date_time }}</p>-->
+  <!--<b-img v-if="single_blog.feature_img!='null'" :src="BASE_URL+'storage/app/public/backend/images/blog_images/'+single_blog.feature_img" fluid-grow alt="Fluid-grow image"></b-img>-->
+    <div class="blogs_content" v-html="user_blog.blog_content">
+    </div>
+    </b-col>
+  </b-row>
+  <!--user blog end-->  
+   <!--admin blog-->           
   <b-row>
     <b-col v-if="single_blog.length!='0'">                    
 
@@ -17,18 +30,6 @@
     </b-col>
   </b-row>
       <!--admin blog end-->  
-<!--user blog-->       
-  <b-row v-can="['byr_view', 'slr_view']">
-    <b-col v-if="user_blog.length!='0'">                    
-
-  <h4 class="my-3 blog_titles"><i class="fas custom_blog_square fa-square-full"></i> {{user_blog.blog_title}}</h4>
-  <!--<p class="created_at">Created at @{{ single_blog.created_at | ja_date_time }}</p>-->
-  <!--<b-img v-if="single_blog.feature_img!='null'" :src="BASE_URL+'storage/app/public/backend/images/blog_images/'+single_blog.feature_img" fluid-grow alt="Fluid-grow image"></b-img>-->
-    <div class="blogs_content" v-html="user_blog.blog_content">
-    </div>
-    </b-col>
-  </b-row>
-  <!--user blog end-->  
   <!--
   <b-row>
     <b-col cols="12" v-for="(value) in blog_lists" :key="value.cmn_blog_id">                    
@@ -72,13 +73,11 @@
             get_signle_top_blog(){
                 axios.get(this.BASE_URL +"api/get_signle_top_blog").then((data) => {
                     this.single_blog = data.data.blog_list;
-                    console.log(this.single_blog.length);
                 });
             },
             get_user_top_blog(){
                 axios.get(this.BASE_URL +"api/get_user_top_blog").then((data) => {
                     this.user_blog = data.data.blog_list;
-                    console.log(this.single_blog.length);
                 });
             },
 
@@ -90,11 +89,10 @@
       Fire.$on("AfterCreateblog", () => {
         this.get_all_blogs();
     });
-      console.log('created jacos management log');
   },
         mounted() {
             this.init();
-            console.log('Home Component mounted.')
+            console.log('Home blog Component mounted.')
         }
     }
 </script>
