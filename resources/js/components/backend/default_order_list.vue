@@ -209,7 +209,7 @@ export default {
       axios
         .get(this.BASE_URL + "api/get_byr_order_list/" + Globals.user_info_id)
         .then(({data}) => {
-            console.log(data)
+            // console.log(data)
           this.order_lists = data.order_list;
           this.byr_buyer_lists = data.byr_buyer_list;
           this.loader.hide();

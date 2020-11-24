@@ -49,8 +49,8 @@ class bms_csv_order extends Model
                 ["start" => 1864,	"length" => 6,"name" => "purchase_code",	"name_jp"=>"仕入先コード"],
                 ["start" => 1877,	"length" => 20,"name" => "purchase_name_kana",	"name_jp"=>"仕入先名称(ｶﾅ)"],
                 ["start" => 1897,	"length" => 20,"name" => "purchase_name",	"name_jp"=>"仕入先名称(漢字)"],
-                ["start" => 2141,	"length" => 10,"name" => "shop_name_kana",	"name_jp"=>"店舗名称(ｶﾅ)"],
-                ["start" => 2171,	"length" => 50,"name" => "shop_name",	"name_jp"=>"店舗名称(漢字)"],
+                ["start" => 2141,	"length" => 10,"name" => "ship_name_kana",	"name_jp"=>"店舗名称(ｶﾅ)"],
+                ["start" => 2171,	"length" => 50,"name" => "ship_name",	"name_jp"=>"店舗名称(漢字)"],
                 ["start" => 2405,	"length" => 6,"name" => "transmission_code",	"name_jp"=>"送受信コード"],
                 ["start" => 2811,	"length" => 3,"name" => "major_category_code",	"name_jp"=>"大分類コード"],
                 ["start" => 2817,	"length" => 20,"name" => "major_category_name_kana",	"name_jp"=>"大分類名称(ｶﾅ)"],
@@ -139,9 +139,9 @@ class bms_csv_order extends Model
             $voucher_array['receiver_name_kana'] = $value[40];
             $voucher_array['receiver_code'] = $value[37];
             $voucher_array['receiver_name'] = $value[39];
-            $voucher_array['shop_name_kana'] = $value[36];
-            $voucher_array['shop_name'] = $value[35];
-            $voucher_array['shop_code'] = $value[33];
+            $voucher_array['ship_name_kana'] = $value[36];
+            $voucher_array['ship_name'] = $value[35];
+            $voucher_array['ship_code'] = $value[33];
             $voucher_array['voucher_number'] = $value[31];
             //make items array
             $item_array['list_number']=$value[101];
