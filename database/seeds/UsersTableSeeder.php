@@ -59,6 +59,17 @@ class UsersTableSeeder extends Seeder
                 'name' => 'biware_1 User',
                 'email' => 'biware_1@jacos.co.jp',
                 'password' => bcrypt('8NMS6TNT')
+            ],
+            
+            [
+                'name' => 'Byr2 User',
+                'email' => 'byr02@test.jp',
+                'password' => bcrypt('Qe75ymSr')
+            ],
+            [
+                'name' => 'Byr3 User',
+                'email' => 'byr03@test.jp',
+                'password' => bcrypt('Qe75ymSr')
             ]
         );
 

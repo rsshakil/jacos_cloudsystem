@@ -56,6 +56,24 @@ class cmn_companySeeder extends Seeder
                 'fax' => "",
                 'postal_code' => "",
                 'address' => "",
+            ],
+            [
+                'company_name' => "トヨタ",
+                'company_name_kana' => "トヨタ",
+                'jcode' => 24802,
+                'phone' => "",
+                'fax' => "",
+                'postal_code' => "",
+                'address' => "",
+            ],
+            [
+                'company_name' => "ソニー",
+                'company_name_kana' => "ソニー",
+                'jcode' => 24802,
+                'phone' => "",
+                'fax' => "",
+                'postal_code' => "",
+                'address' => "",
             ]
         );
         App\Models\CMN\cmn_company::insert($cmn_company_array);
