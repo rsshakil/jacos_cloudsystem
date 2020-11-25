@@ -73,7 +73,7 @@
     <div class="col-sm-10">
       <input type="file" name="feature_img" class="form-control" @change="onUploadFiles" accept="image/jpeg, image/png">
     <!--<has-error :form="form" field="feature_img"></has-error>-->
-    <img v-if="form.feature_img!=null" class="profile-user-img img-fluid img-circle" :src="getPhoto()" alt="Blog Images">
+    <img v-if="form.feature_img!=null && form.feature_img" class="profile-user-img img-fluid img-circle" :src="getPhoto()" alt="Blog Images">
     </div>
   </div>
   <div class="form-group row">

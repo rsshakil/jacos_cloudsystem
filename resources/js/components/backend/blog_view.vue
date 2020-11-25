@@ -7,16 +7,13 @@
                 <b-container class="bv-example-row">
       
 <!--user blog-->       
-  <b-row v-can="['slr_view']">
-    <b-col v-if="user_blog.length!='0'">                    
-
+  <!--<b-row v-can="['slr_view']">
+    <b-col v-if="user_blog.length!='0'">      
   <h4 class="my-3 blog_titles"><i class="fas custom_blog_square fa-square-full"></i> {{user_blog.blog_title}}</h4>
-  <!--<p class="created_at">Created at @{{ single_blog.created_at | ja_date_time }}</p>-->
-  <!--<b-img v-if="single_blog.feature_img!='null'" :src="BASE_URL+'storage/app/public/backend/images/blog_images/'+single_blog.feature_img" fluid-grow alt="Fluid-grow image"></b-img>-->
     <div class="blogs_content" v-html="user_blog.blog_content">
     </div>
     </b-col>
-  </b-row>
+  </b-row>-->
   <!--user blog end-->  
    <!--admin blog-->           
   <b-row>
