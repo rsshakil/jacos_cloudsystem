@@ -493,6 +493,14 @@ class AllUsedFunction extends Controller
         ->where('byr_buyers.byr_buyer_id',$byr_id_info->byr_buyer_id)->first();
         return $byrs_info;
     }
+    public function get_byr_info_by_byr_buyer_id($byr_buyer_id){
+
+        $byrs_info = byr_buyer::select('byr_buyers.byr_buyer_id','cmn_companies_users.adm_user_id','cmn_companies.*')
+        ->join('cmn_companies_users','cmn_companies_users.cmn_company_id','=','byr_buyers.cmn_company_id')
+        ->join('cmn_companies','cmn_companies.cmn_company_id','=','cmn_companies_users.cmn_company_id')
+        ->where('byr_buyers.byr_buyer_id',$byr_buyer_id)->first();
+        return $byrs_info;
+    }
     /**
      * Get buyer info by slr id
      * @param  int Saller id

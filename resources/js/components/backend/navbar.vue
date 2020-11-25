@@ -24,7 +24,7 @@
             <!--<div class="custom_bredcrubs">
               <Breadcrumbs></Breadcrumbs>
           </div>-->
-          <h4 class="selected_byr_by_sly">得意先名：<span class="selected_byr_customer">{{selected_customer_list}}</span></h4>
+          <h4 class="selected_byr_by_sly">得意先名：<span v-if="selected_byr_info" class="selected_byr_customer">{{selected_byr_info.company_name}}</span><span v-else class="selected_byr_customer">{{selected_customer_list}}</span></h4>
           </div>
           <!-- @focusout="toggle = false" -->
           
@@ -302,6 +302,7 @@ export default {
       user_byr_slr_list: [],
       toggle: false,
       selected_customer_list:'未選択',
+      selected_byr_info:{},
       // buyer_info_for_saller:[],
       fields: [
         {
@@ -347,6 +348,16 @@ export default {
           
         });
     },
+    get_slected_byr_info(){
+               axios
+                    .get(this.BASE_URL + "api/get_selected_byr_info/" + this.$route.params.byr_buyer_id)
+                    .then(({data}) => {
+                        console.log(data);
+                        this.selected_byr_info = data.byr_info;
+                         
+                         console.log(data.byr_info);
+                    });
+           }
   },
   created() {
     this.get_user_company_info();
@@ -355,6 +366,9 @@ export default {
     this.allBuyerInfoBySaller(this.global_user_id)
     // console.log(this.buyer_info_for_saller);
     // this.allBuyerInfoBySaller(this.user_data.user.id);
+     Fire.$on("byr_has_selected", () => {
+      this.get_slected_byr_info();
+    });
   },
 };
 </script>
