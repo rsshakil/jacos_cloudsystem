@@ -16,6 +16,14 @@ class cmn_connectSeeder extends Seeder
             [
                 'byr_buyer_id'=>1,
                 'byr_shop_id'=>0,
+                'slr_seller_id'=>5,
+                'slr_ware_house_id'=>0,
+                'partner_code'=>'012060',
+                'is_active'=>1,
+            ],
+            [
+                'byr_buyer_id'=>1,
+                'byr_shop_id'=>0,
                 'slr_seller_id'=>1,
                 'slr_ware_house_id'=>0,
                 'partner_code'=>'010690',
@@ -41,7 +49,7 @@ class cmn_connectSeeder extends Seeder
                 'slr_ware_house_id'=>0,
                 'partner_code'=>'012060',
                 'is_active'=>1,
-            ]
+            ],
         );
         App\Models\CMN\cmn_connect::insert($cmn_connect);
     }

@@ -59,9 +59,10 @@ methods:{
     },
     init_user(){
         // this.loading=true;
-       axios.post(this.BASE_URL+'user').then(response=>{
-            console.log(response);
-            this.user=response.data;
+       axios.post(this.BASE_URL+'user').then(({data})=>{
+            // console.log(data);
+            this.user=data;
+            // this.allBuyerInfoBySaller(this.user.id)
             // this.loading=false;
             // this.initiated=true;
         })

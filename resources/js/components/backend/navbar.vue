@@ -25,6 +25,8 @@
               <Breadcrumbs></Breadcrumbs>
           </div>-->
           </div>
+          <!-- @focusout="toggle = false" -->
+          
           <div class="col-1 p-0">
             <button
               v-if="company_name != ''"
@@ -33,8 +35,9 @@
             >
               得意先選択
             </button>
+           
             <div
-              class="top_byr_slr_list"
+              class="top_byr_slr_list" style="display:none"
               v-if="company_name != ''"
               v-show="toggle"
             >
@@ -48,29 +51,9 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>イオン</td>
-                    <td>500件</td>
-                  </tr>
-                  <tr>
-                    <td>イオン</td>
-                    <td>500件</td>
-                  </tr>
-                  <tr>
-                    <td>イオン</td>
-                    <td>500件</td>
-                  </tr>
-                  <tr>
-                    <td>イオン</td>
-                    <td>500件</td>
-                  </tr>
-                  <tr>
-                    <td>イオン</td>
-                    <td>500件</td>
-                  </tr>
-                  <tr>
-                    <td>イオン</td>
-                    <td>500件</td>
+                  <tr v-for="buyer in buyer_info_for_saller" :key="buyer.byr_buyer_id">
+                    <td>{{buyer.buyer_name}}</td>
+                    <td>{{buyer.total_order}}件</td>
                   </tr>
                 </tbody>
               </table>
@@ -317,6 +300,7 @@ export default {
       company_name: null,
       user_byr_slr_list: [],
       toggle: false,
+      // buyer_info_for_saller:[],
       fields: [
         {
           key: "header_1",
@@ -350,16 +334,30 @@ export default {
     get_user_company_info() {
       axios
         .post(this.BASE_URL + "api/get_user_company_byr_slr_list")
-        .then((response) => {
-          this.company_name = response.data.user_company_info.company_name;
-          this.user_byr_slr_list = response.data.byr_slr_list;
-          console.log(this.company_name);
+        .then(({data}) => {
+          this.company_name = data.user_company_info.company_name;
+          this.user_byr_slr_list = data.byr_slr_list;
+          // console.log(this.global_user_id)
+          // this.buyer_info_for_saller=this.allBuyerInfoBySaller(this.global_user_id)
+          
+          // console.log(this.buyer_info_for_saller);
+          // console.log(this.user_data.user.id);
+          
         });
     },
   },
   created() {
     this.get_user_company_info();
     this.user_data = this.app._data;
+    // console.log(this.global_user_id)
+    this.allBuyerInfoBySaller(this.global_user_id)
+    // console.log(this.buyer_info_for_saller);
+    // this.allBuyerInfoBySaller(this.user_data.user.id);
   },
 };
 </script>
+<style>
+/* .byr_list_show:focus .top_byr_slr_list{
+  display: block;
+} */
+</style>

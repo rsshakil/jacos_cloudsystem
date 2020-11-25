@@ -157,14 +157,7 @@ Route::post('job_scenario', 'API\Level3\Level3Controller@jobScenario');
 
 // Route::post('delete_customer_url', 'API\Level3\Level3Controller@deleteCustomer');
 
-
-
-
-
 Route::post('delete_service', 'API\Level3\Level3Controller@deleteService');
-
-
-
 Route::post('/job_list', 'API\Level3\Level3Controller@job_list');
 
 //get user company byr slr list

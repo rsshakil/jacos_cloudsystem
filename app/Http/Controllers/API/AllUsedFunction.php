@@ -471,13 +471,21 @@ class AllUsedFunction extends Controller
 
     }
 
-    public function get_slrs_byr_id(){
+    /**
+     * Get buyer info by slr id
+     * @param  int Saller id
+     * @return array buyer info
+     */
+    public function get_slrs_byr_id($slr_id=null){
         $byrs_info = array();
+        if ($slr_id==null) {
+            $slr_id=Auth::user()->id;
+        }
         $byr_id_info = cmn_companies_user::select('byr_buyers.byr_buyer_id')
         ->join('slr_sellers','slr_sellers.cmn_company_id','=','cmn_companies_users.cmn_company_id')
         ->join('cmn_connects','cmn_connects.slr_seller_id','=','slr_sellers.slr_seller_id')
         ->join('byr_buyers','byr_buyers.byr_buyer_id','=','cmn_connects.byr_buyer_id')
-        ->where('cmn_companies_users.adm_user_id',Auth::user()->id)->first();
+        ->where('cmn_companies_users.adm_user_id',$slr_id)->first();
 
         $byrs_info = byr_buyer::select('byr_buyers.byr_buyer_id','cmn_companies_users.adm_user_id','cmn_companies.*')
         ->join('cmn_companies_users','cmn_companies_users.cmn_company_id','=','byr_buyers.cmn_company_id')
@@ -485,4 +493,22 @@ class AllUsedFunction extends Controller
         ->where('byr_buyers.byr_buyer_id',$byr_id_info->byr_buyer_id)->first();
         return $byrs_info;
     }
+    /**
+     * Get buyer info by slr id
+     * @param  int Saller id
+     * @return array buyer info
+     */
+    // public function getByrSlrData(Request $request){
+    //     $slr_id=$request->user_id;
+    //     // count(byr_orders.byr_order_id) as total_order
+    //     $slr_order_info=byr_order::select(DB::raw('count(byr_orders.byr_order_id) as total_order'),'byr_buyers.byr_buyer_id','cmn_companies.company_name as buyer_name')
+    //     ->join('cmn_connects','cmn_connects.cmn_connect_id','=','byr_orders.cmn_connect_id')
+    //     ->join('byr_buyers','byr_buyers.byr_buyer_id','=','cmn_connects.byr_buyer_id')
+    //     ->join('cmn_companies','cmn_companies.cmn_company_id','=','byr_buyers.cmn_company_id')
+    //     ->where('cmn_connects.slr_seller_id',$slr_id)
+    //     ->get();
+    //     return response()->json(['slr_order_info'=>$slr_order_info]);
+    //     // return $byr_info;
+    //     // return $request->all();
+    // }
 }

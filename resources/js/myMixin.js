@@ -14,6 +14,7 @@ export default {
             table_col_arry: [],
             selected_columns: [],
             col_lists: [],
+            buyer_info_for_saller: [],
             // loader: "",
         };
     },
@@ -176,6 +177,16 @@ export default {
                 return option.cmn_company_id === this.value.cmn_company_id;
             }
             return false;
+        },
+        allBuyerInfoBySaller(user_id) {
+            // console.log(user_id);
+            // return 0;
+            axios.post(this.BASE_URL + "api/get_byr_slr_data", { user_id: user_id })
+                .then(({ data }) => {
+                    // console.log(data);
+                    this.buyer_info_for_saller = data.slr_order_info;
+                    // return data.slr_order_info;
+                });
         }
     },
     filters: {
@@ -198,7 +209,9 @@ export default {
 
     },
     created() {
+        // this.user_data = this.app._data;
 
+        // this.global_user_id = Globals.user_info_id;
         // axios
         //     .get(this.BASE_URL + "api/tblecolsetting/" + this.$route.name)
         //     .then(data => {
