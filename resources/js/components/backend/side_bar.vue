@@ -36,7 +36,7 @@
                   <b-icon icon="house-fill" font-scale="1.2"></b-icon> Home
                 </router-link>
               </li>
-              <li class="nav-item">
+              <li v-can="['byr_view','manage_user_menu']" class="nav-item">
                 <router-link to="/blog" class="nav-link">
                   <b-icon icon="house-fill" font-scale="1.2"></b-icon>
                   {{ myLang.new_notice }}

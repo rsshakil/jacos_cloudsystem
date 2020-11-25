@@ -84,6 +84,8 @@ class UsersTableSeeder extends Seeder
             ['user_id'=>7],
             ['user_id'=>8],
             ['user_id'=>9],
+            ['user_id'=>10],
+            ['user_id'=>11],
         );
         User::insert($user_array);
         adm_user_details::insert($user_details_array);
