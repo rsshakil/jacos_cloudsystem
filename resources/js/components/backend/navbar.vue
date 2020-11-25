@@ -53,7 +53,11 @@
                 </thead>
                 <tbody>
                   <tr v-for="buyer in buyer_info_for_saller" :key="buyer.byr_buyer_id">
-                    <td>{{buyer.buyer_name}}</td>
+                    <td style="text-align:left">
+                      <router-link :to="{name: 'selected_buyer',params: {byr_buyer_id: buyer.byr_buyer_id,},}" class="btn" style="border:none; display:block; height:100%">
+                        {{buyer.buyer_name}}
+                      </router-link>
+                    </td>
                     <td>{{buyer.total_order}}件</td>
                   </tr>
                 </tbody>
