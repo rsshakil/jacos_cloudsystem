@@ -32,10 +32,11 @@ import voucher_detail from './components/backend/voucher_detail.vue'
 import pdf_platform_setting from './components/backend/PDF_PLATFORM/pdf_platform_setting.vue'
 import pdf_platform_view from './components/backend/PDF_PLATFORM/pdf_platform_view.vue'
 import blog from './components/backend/CMN/cmn_blog_list.vue'
+import selected_buyer from './components/backend/SLR/selected_byr_page.vue'
 // import login_body from './components/login/login_body.vue'
 
 export const routes = [
-  
+
     { path: '/home', component: Home },
     { path: '/blog', component: blog },
     { path: '/role', component: Role },
@@ -249,6 +250,27 @@ export const routes = [
         component: pdf_platform_view,
         meta: { breadcrumb: 'pdf_platform_view' },
         children: []
+
+    },
+    {
+        path: '/home/selected_buyer/:byr_buyer_id',
+        component: selected_buyer,
+        name: 'selected_buyer'
+            // meta: { breadcrumb: 'Selected Buyer' },
+            // children: [{
+            //         path: '/',
+            //         component: selected_buyer,
+            //         name: 'selected_buyer'
+            //     },
+            // {
+            //     path: '/slr_management/company_seller_user_list/:cmn_company_id',
+            //     component: company_seller_user_list,
+            //     name: 'company_seller_user_list',
+            //     meta: {
+            //         breadcrumb: 'seller user list'
+            //     }
+            // },
+            // ]
 
     },
     // { path: '/login', name: 'login', component: login_body },

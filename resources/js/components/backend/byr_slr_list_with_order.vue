@@ -7,10 +7,16 @@
             v-for="order_item in slr_order_list"
             :key="order_item.byr_buyer_id"
           >
-            <b-button variant="outline-primary"
-              >{{ order_item.buyer_name }} &nbsp &nbsp
-              {{ order_item.total_order }}件</b-button
-            >
+          <router-link :to="{
+                    name: 'selected_buyer',
+                    params: {
+                      byr_buyer_id: order_item.byr_buyer_id,
+                    },
+                  }"
+                  class="btn btn-outline-primary">
+                  {{ order_item.buyer_name }} &nbsp &nbsp
+                 {{ order_item.total_order }}件
+                    </router-link>
           </li>
         </ul>
       </div>
