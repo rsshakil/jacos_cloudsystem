@@ -106,3 +106,8 @@
     float: left;
     margin: 2px
 }
+.selected_byr_by_sly{
+    color: #fff;
+    font-size: 14px;
+    padding-top: 13px;
+}

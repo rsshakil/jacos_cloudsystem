@@ -24,6 +24,7 @@
             <!--<div class="custom_bredcrubs">
               <Breadcrumbs></Breadcrumbs>
           </div>-->
+          <h4 class="selected_byr_by_sly">得意先名：<span class="selected_byr_customer">{{selected_customer_list}}</span></h4>
           </div>
           <!-- @focusout="toggle = false" -->
           
@@ -300,6 +301,7 @@ export default {
       company_name: null,
       user_byr_slr_list: [],
       toggle: false,
+      selected_customer_list:'未選択',
       // buyer_info_for_saller:[],
       fields: [
         {
