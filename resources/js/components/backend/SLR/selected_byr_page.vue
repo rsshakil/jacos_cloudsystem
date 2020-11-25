@@ -39,7 +39,7 @@
            
         },
           created() {
-                
+             Fire.$emit('byr_has_selected');
             },
         mounted() {
             this.init();
