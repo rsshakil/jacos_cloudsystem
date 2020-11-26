@@ -42,7 +42,7 @@ Route::apiResources(
 Route::apiResources(
 
 	[
-		'jacosmanagement' => 'API\Jacos_managementController'
+		'get_all_buyer' => 'API\BYR\ByrController'
 	]
 );
 Route::apiResources(
@@ -75,18 +75,18 @@ Route::post('scenario_exec', 'API\Cmn_ScenarioController@exec');
 Route::post('job_exec', 'API\Cmn_jobController@exec');
 Route::get('/slr_job_list_by_seller_id/{slr_seller_id}', 'API\Cmn_jobController@slr_job_list_by_seller_id');
 
-Route::get('/company_user_list/{cmn_company_id}', 'API\Jacos_managementController@company_user_list');
-// Route::get('/company_seller_user_list/{cmn_company_id}', 'API\Jacos_managementController@company_seller_user_list');
-Route::get('/company_partner_list/{byr_buyer_id}', 'API\Jacos_managementController@company_partner_list');
+Route::get('/company_user_list/{cmn_company_id}', 'API\BYR\ByrController@company_user_list');
+// Route::get('/company_seller_user_list/{cmn_company_id}', 'API\BYR\ByrController@company_seller_user_list');
+Route::get('/company_partner_list/{byr_buyer_id}', 'API\BYR\ByrController@company_partner_list');
 Route::get('/get_scenario_list', 'API\Cmn_ScenarioController@get_scenario_list');
-Route::get('/slr_management/{adm_user_id}', 'API\Jacos_managementController@slr_management');
+Route::get('/slr_management/{adm_user_id}', 'API\BYR\ByrController@slr_management');
 Route::get('/get_byr_order_list/{adm_user_id}', 'API\Byr_orderController@get_byr_order_list');
-Route::get('/get_all_byr_company_list/{adm_user_id}', 'API\Jacos_managementController@get_all_byr_company_list');
+Route::get('/get_all_byr_company_list/{adm_user_id}', 'API\BYR\ByrController@get_all_byr_company_list');
 Route::post('/update_shipment_detail', 'API\Byr_orderController@update_shipment_detail');
-Route::post('/byr_buyer_user_create', 'API\Jacos_managementController@byr_buyer_user_create');
-Route::post('/slr_seller_user_create', 'API\Jacos_managementController@slr_seller_user_create');
-Route::post('/byr_company_create', 'API\Jacos_managementController@byr_company_create');
-Route::post('/slr_company_create', 'API\Jacos_managementController@slr_company_create');
+Route::post('/byr_buyer_user_create', 'API\BYR\ByrController@byr_buyer_user_create');
+Route::post('/slr_seller_user_create', 'API\BYR\ByrController@slr_seller_user_create');
+Route::post('/byr_company_create', 'API\BYR\ByrController@byr_company_create');
+Route::post('/slr_company_create', 'API\BYR\ByrController@slr_company_create');
 Route::post('/get_byr_info_by_byr_order_id', 'API\Byr_orderController@get_byr_info_by_byr_order_id');
 Route::get('/dispaly_col_by_user/{url_slug}/{user_id}', 'API\Tbl_col_settingController@dispaly_col_by_user');
 

@@ -72,16 +72,17 @@ tabList,
       delete_company(){
           console.log('delected');
       },
-       get_all_company(){
-        axios.get(this.BASE_URL +"api/jacosmanagement").then((data) => {
-            this.company_lists = data.data.company_list;
-            console.log(this.company_lists);
+       get_all_buyer(){
+        axios.get(this.BASE_URL +"api/get_all_buyer").then(({data}) => {
+          console.log(data)
+            this.company_lists = data.company_list;
+            // console.log(this.company_lists);
         });
     },
   },
 
   created() {
-      this.get_all_company();
+      this.get_all_buyer();
       console.log('created jacos management log');
   },
   mounted() {

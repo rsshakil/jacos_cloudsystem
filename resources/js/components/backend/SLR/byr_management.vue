@@ -255,23 +255,23 @@ export default {
           });
         });
     },
-    get_all_company() {
+    get_all_buyer() {
       console.log(Globals.user_info_id);
       axios
         .get(
           this.BASE_URL + "api/get_all_byr_company_list/" + Globals.user_info_id
         )
-        .then((data) => {
-          this.company_lists = data.data.company_list;
+        .then(({data}) => {
+          this.company_lists = data.company_list;
           console.log(this.company_lists);
         });
     },
   },
 
   created() {
-    this.get_all_company();
+    this.get_all_buyer();
     Fire.$on("AfterCreateCompany", () => {
-      this.get_all_company();
+      this.get_all_buyer();
     });
     console.log("created jacos management log");
   },
