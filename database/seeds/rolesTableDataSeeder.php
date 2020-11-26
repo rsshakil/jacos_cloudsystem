@@ -16,27 +16,27 @@ class rolesTableDataSeeder extends Seeder
             [
                 'name' => 'Super Admin',
                 'guard_name' => 'web',
-                'is_system' => 1,
+                'is_system' => 0,
             ],
             [
                 'name' => 'Admin',
                 'guard_name' => 'web',
-                'is_system' => 1,
+                'is_system' => 0,
             ],
             [
                 'name' => 'User',
                 'guard_name' => 'web',
-                'is_system' => 1,
+                'is_system' => 0,
             ],
             [
                 'name' => 'Slr',
                 'guard_name' => 'web',
-                'is_system' => 1,
+                'is_system' => 0,
             ],
             [
                 'name' => 'Byr',
                 'guard_name' => 'web',
-                'is_system' => 1,
+                'is_system' => 0,
             ]
         );
 
