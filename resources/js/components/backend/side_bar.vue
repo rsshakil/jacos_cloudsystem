@@ -76,7 +76,7 @@
           </div>
         </li>
 
-        <li class="nav-item" v-can="['byr_view', 'slr_view']">
+        <li class="nav-item" v-can="['byr_view','slr_view']">
           <a
             class="nav-link collapsed"
             href="#byrslrmenu1"
@@ -87,19 +87,19 @@
           >
           <div class="collapse" id="byrslrmenu1" aria-expanded="false">
             <ul class="flex-column pl-2 nav">
-              <li class="nav-item" v-can="['byr_view']">
+              <!-- <li class="nav-item" v-can="['byr_view']">
+                <router-link to="/order_list" class="nav-link">
+                  <b-icon icon="receipt" font-scale="1.2"></b-icon>
+                  {{ myLang.order_list }}
+                </router-link>
+              </li> -->
+              <li class="nav-item" v-can="['order_list']">
                 <router-link to="/order_list" class="nav-link">
                   <b-icon icon="receipt" font-scale="1.2"></b-icon>
                   {{ myLang.order_list }}
                 </router-link>
               </li>
-              <li class="nav-item" v-can="['slr_view','order_list']">
-                <router-link to="/order_list" class="nav-link">
-                  <b-icon icon="receipt" font-scale="1.2"></b-icon>
-                  {{ myLang.order_list }}
-                </router-link>
-              </li>
-              <li class="nav-item" v-can="['byr_view']">
+              <li class="nav-item" v-can="['voucher_setting']">
                 <router-link to="/voucher_setting" class="nav-link">
                   <b-icon icon="tools" font-scale="1.2"></b-icon>
                   {{ myLang.jacos_voucher_setting }}
@@ -111,7 +111,7 @@
                   {{ myLang.buyer_management }}
                 </router-link>
               </li>
-              <li class="nav-item" v-can="['manage_user_menu']">
+              <li class="nav-item" v-can="['scenario_management']">
                 <router-link to="/scenario_management" class="nav-link">
                   <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
                   {{ myLang.scenario_management }}
@@ -125,35 +125,35 @@
                 </router-link>
               </li>
 
-              <li class="nav-item" v-can="['order_receive', 'byr_view']">
+              <li class="nav-item" v-can="['order_receive']">
                 <router-link to="/order_receive" class="nav-link">
                   <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
                   {{ myLang.order_receive }}
                 </router-link>
               </li>
 
-              <li class="nav-item" v-can="['order_corrected_receive', 'byr_view']">
+              <li class="nav-item" v-can="['order_corrected_receive']">
                 <router-link to="/order_corrected_receive" class="nav-link">
                   <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
                   {{ myLang.order_corrected_receive }}
                 </router-link>
               </li>
 
-              <li class="nav-item" v-can="['return_item_list', 'byr_view']">
+              <li class="nav-item" v-can="['return_item_list']">
                 <router-link to="/return_item_list" class="nav-link">
                   <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
                   {{ myLang.return_data }}
                 </router-link>
               </li>
 
-              <li class="nav-item" v-can="['payment_list', 'byr_view']">
+              <li class="nav-item" v-can="['payment_list']">
                 <router-link to="/payment_list" class="nav-link">
                   <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
                   {{ myLang.payment_list }}
                 </router-link>
               </li>
 
-              <li class="nav-item" v-can="['invoice_list', 'byr_view']">
+              <li class="nav-item" v-can="['invoice_list']">
                 <router-link to="/invoice_list" class="nav-link">
                   <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
                   {{ myLang.invoice_data }}
@@ -174,14 +174,14 @@
           >
           <div class="collapse" id="byr_itms_list" aria-expanded="false">
             <ul class="flex-column pl-2 nav">
-              <li class="nav-item" v-can="['byr_view']">
+              <li class="nav-item" v-can="['item_master']">
                 <router-link to="/item_master" class="nav-link">
                   <b-icon icon="receipt" font-scale="1.2"></b-icon>
                   {{ myLang.product_management }}
                 </router-link>
               </li>
 
-              <li class="nav-item" v-can="['byr_view']">
+              <li class="nav-item" v-can="['item_category']">
                 <router-link to="/item_category" class="nav-link">
                   <b-icon icon="receipt" font-scale="1.2"></b-icon>
                   {{ myLang.category_management }}
@@ -201,13 +201,13 @@
           >
           <div class="collapse" id="pdf_platform_setting" aria-expanded="false">
             <ul class="flex-column pl-2 nav">
-              <li class="nav-item" v-can="['byr_view']">
+              <li class="nav-item" v-can="['pdf_platform_setting']">
                 <router-link to="/pdf_platform_setting" class="nav-link">
                   <b-icon icon="receipt" font-scale="1.2"></b-icon>
                   {{ myLang.pdf_platform_setting }}
                 </router-link>
               </li>
-              <li class="nav-item" v-can="['byr_view']">
+              <li class="nav-item" v-can="['pdf_platform_view']">
                 <router-link to="/pdf_platform_view" class="nav-link">
                   <b-icon icon="receipt" font-scale="1.2"></b-icon>
                   {{ myLang.pdf_platform_show }}

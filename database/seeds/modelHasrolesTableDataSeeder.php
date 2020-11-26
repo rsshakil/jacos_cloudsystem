@@ -15,35 +15,35 @@ class modelHasrolesTableDataSeeder extends Seeder
     public function run()
     {
         
-        $user_super = User::findOrFail($this->user_search('Jacos Super Admin'));
-        $user_super->assignRole('Super Admin','Admin','User');
+        $super_admin = User::findOrFail($this->user_search('Jacos Super Admin'));
+        $super_admin->assignRole('Super Admin','Admin','User');
 
-        $user_admin = User::findOrFail($this->user_search('Jacos Admin'));
-        $user_admin->assignRole('Admin','User');
+        $admin = User::findOrFail($this->user_search('Jacos Admin'));
+        $admin->assignRole('Admin','User');
 
-        $user_user = User::findOrFail($this->user_search('Jacos User'));
-        $user_user->assignRole('User');
+        $user = User::findOrFail($this->user_search('Jacos User'));
+        $user->assignRole('User');
 
-        $user_user = User::findOrFail($this->user_search('Byr1 User'));
-        $user_user->assignRole('Byr');
+        $byr1 = User::findOrFail($this->user_search('Byr1 User'));
+        $byr1->assignRole('Byr');
 
-        $user_user = User::findOrFail($this->user_search('Byr2 User'));
-        $user_user->assignRole('Byr');
+        $byr2 = User::findOrFail($this->user_search('Byr2 User'));
+        $byr2->assignRole('Byr');
 
-        $user_user = User::findOrFail($this->user_search('Byr3 User'));
-        $user_user->assignRole('Byr');
+        $byr3 = User::findOrFail($this->user_search('Byr3 User'));
+        $byr3->assignRole('Byr');
 
-        $user_user = User::findOrFail($this->user_search('Slr1 User'));
-        $user_user->assignRole('Slr');
+        $slr1 = User::findOrFail($this->user_search('Slr1 User'));
+        $slr1->assignRole('Slr');
 
-        $user_user = User::findOrFail($this->user_search('Slr2 User'));
-        $user_user->assignRole('Slr');
+        $slr2 = User::findOrFail($this->user_search('Slr2 User'));
+        $slr2->assignRole('Slr');
 
-        $user_user = User::findOrFail($this->user_search('Slr3 User'));
-        $user_user->assignRole('Slr');
+        $slr3 = User::findOrFail($this->user_search('Slr3 User'));
+        $slr3->assignRole('Slr');
 
-        $user_user = User::findOrFail($this->user_search('Slr4 User'));
-        $user_user->assignRole('Slr');
+        $slr4 = User::findOrFail($this->user_search('Slr4 User'));
+        $slr4->assignRole('Slr');
 
 
 

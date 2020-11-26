@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call(rolesTableDataSeeder::class);
         $this->call(roleHasPermissionsTableDataSeeder::class);
         $this->call(modelHasrolesTableDataSeeder::class);
+        $this->call(ModelHasPermissionSeeder::class);
         // JCS Seeders  
         $this->call(cmn_companySeeder::class);
        // $this->call(Byr_shipment_detailSeeder::class);

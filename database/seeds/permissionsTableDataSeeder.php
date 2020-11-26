@@ -165,16 +165,6 @@ class permissionsTableDataSeeder extends Seeder
                 'is_system' => 0,
             ],
             [
-                'name' => 'slr_view',
-                'guard_name' => 'web',
-                'is_system' => 0,
-            ],
-            [
-                'name' => 'byr_view',
-                'guard_name' => 'web',
-                'is_system' => 0,
-            ],
-            [
                 'name' => 'company_create',
                 'guard_name' => 'web',
                 'is_system' => 0,
@@ -184,7 +174,17 @@ class permissionsTableDataSeeder extends Seeder
                 'guard_name' => 'web',
                 'is_system' => 0,
             ],
+            [
+                'name' => 'scenario_management',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
             // SLR Permission 
+            [
+                'name' => 'slr_view',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
             [
                 'name' => 'order_list',
                 'guard_name' => 'web',
@@ -222,6 +222,37 @@ class permissionsTableDataSeeder extends Seeder
             ],
             [
                 'name' => 'byr_management',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            // Buyer Permissions
+            [
+                'name' => 'byr_view',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'voucher_setting',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'item_master',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'item_category',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'pdf_platform_setting',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'pdf_platform_view',
                 'guard_name' => 'web',
                 'is_system' => 0,
             ],
