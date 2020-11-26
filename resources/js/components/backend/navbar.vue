@@ -373,7 +373,11 @@ export default {
      Fire.$on("byr_has_selected", () => {
       this.get_slected_byr_info();
     });
+    console.log('resue added');
   },
+  route: {
+    	canReuse: false,
+    },
 };
 </script>
 <style>

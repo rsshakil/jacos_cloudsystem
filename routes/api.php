@@ -124,6 +124,7 @@ Route::get('/get_all_blog_list', 'API\Cmn_blogController@index');
 Route::get('/get_all_published_blog_list', 'API\Cmn_blogController@get_all_published_blog_list');
 Route::get('/get_signle_top_blog', 'API\Cmn_blogController@get_signle_top_blog');
 Route::get('/get_user_top_blog', 'API\Cmn_blogController@get_user_top_blog');
+Route::get('/get_user_top_blog_by_byr_id/{byr_buyer_id}', 'API\Cmn_blogController@get_user_top_blog_by_byr_id');
 Route::post('/update_blog_infos', 'API\Cmn_blogController@update_blog_infos');
 Route::post('/ckeditor_file_up', 'API\Cmn_blogController@ckeditor_file_up');
 
