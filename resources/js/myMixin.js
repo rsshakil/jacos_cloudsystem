@@ -154,9 +154,9 @@ export default {
         },
         is_disabled(is_system = 0) {
             if (is_system == 0) {
-                return false;
-            } else {
                 return true;
+            } else {
+                return false;
             }
         },
         init() {
