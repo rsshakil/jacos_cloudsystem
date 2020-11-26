@@ -493,13 +493,33 @@ class AllUsedFunction extends Controller
         ->where('byr_buyers.byr_buyer_id',$byr_id_info->byr_buyer_id)->first();
         return $byrs_info;
     }
-    public function get_byr_info_by_byr_buyer_id($byr_buyer_id){
+    public function get_byr_info_by_byr_buyer_id($byr_buyer_id=null){
 
         $byrs_info = byr_buyer::select('byr_buyers.byr_buyer_id','cmn_companies_users.adm_user_id','cmn_companies.*')
         ->join('cmn_companies_users','cmn_companies_users.cmn_company_id','=','byr_buyers.cmn_company_id')
-        ->join('cmn_companies','cmn_companies.cmn_company_id','=','cmn_companies_users.cmn_company_id')
-        ->where('byr_buyers.byr_buyer_id',$byr_buyer_id)->first();
+        ->join('cmn_companies','cmn_companies.cmn_company_id','=','cmn_companies_users.cmn_company_id');
+        if($byr_buyer_id==null){
+            $adm_user_id= Auth::user()->id;
+            $byrs_info = $byrs_info->where('cmn_companies_users.adm_user_id',$adm_user_id)->first();
+        }else{  
+            $byrs_info = $byrs_info->where('byr_buyers.byr_buyer_id',$byr_buyer_id)->first();
+        }
+       
         return $byrs_info;
+    }
+    public function get_slr_info_by_slr_seller_id($slr_seller_id=null){
+       
+        $slrs_info = slr_seller::select('slr_sellers.slr_seller_id','cmn_companies_users.adm_user_id','cmn_companies.*')
+        ->join('cmn_companies_users','cmn_companies_users.cmn_company_id','=','slr_sellers.cmn_company_id')
+        ->join('cmn_companies','cmn_companies.cmn_company_id','=','cmn_companies_users.cmn_company_id');
+        if($slr_seller_id==null){
+            $adm_user_id= Auth::user()->id;
+            $slrs_info = $slrs_info->where('cmn_companies_users.adm_user_id',$adm_user_id)->first(); 
+        }else{
+            $slrs_info = $slrs_info->where('slr_sellers.slr_seller_id',$slr_seller_id)->first(); 
+        }
+        
+        return $slrs_info;
     }
     /**
      * Get buyer info by slr id

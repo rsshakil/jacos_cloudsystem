@@ -3,23 +3,30 @@
 namespace App\Http\Controllers\API\BYR;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\API\AllUsedFunction;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use App\Models\ADM\User;
 use App\Models\ADM\adm_user_details;
 use App\Models\BYR\byr_buyer;
 use App\Models\SLR\slr_seller;
 use App\Models\CMN\cmn_companies_user;
 use App\Models\CMN\cmn_company;
-// use Auth;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
-use Spatie\Permission\Models\Role;
 use DB;
+use Auth;
+use session;
 
 class ByrController extends Controller
 {
+    private $all_used_fun;
+
+    public function __construct(){
+        $this->all_used_fun = new AllUsedFunction();
+    }
     /**
      * Display a listing of the resource.
      *
@@ -36,18 +43,20 @@ class ByrController extends Controller
     }
     public function get_all_byr_company_list($adm_user_id)
     {
+        $adm_user_id=Auth::user()->id;
         $authUser=User::find($adm_user_id);
         if(!$authUser->hasRole('Super Admin')){
-            $cmn_company_info = cmn_companies_user::where('adm_user_id',$adm_user_id)->first();
-            $cmn_company_id = $cmn_company_info->cmn_company_id;
+            $slr_info = $this->all_used_fun->get_slr_info_by_slr_seller_id();
+           
         }
        
-        $result = DB::table('cmn_companies')
-        ->join('byr_buyers', 'byr_buyers.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
+        $result = DB::table('cmn_connects')
+        ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
+        ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
         ->select('byr_buyers.super_code','cmn_companies.*','byr_buyers.byr_buyer_id')
-        ->groupBy('cmn_companies.cmn_company_id');
+        ->groupBy('byr_buyers.byr_buyer_id');
         if(!$authUser->hasRole('Super Admin')){
-            $result = $result->where('cmn_companies.cmn_company_id',$cmn_company_id);
+            $result = $result->where('cmn_connects.slr_seller_id',$slr_info->slr_seller_id);
         }
         $result=$result->get();
         return response()->json(['company_list'=>$result]);

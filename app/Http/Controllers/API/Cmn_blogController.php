@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\API\AllUsedFunction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\CMN\cmn_tbl_col_setting;
