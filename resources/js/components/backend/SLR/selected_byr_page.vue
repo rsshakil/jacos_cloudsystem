@@ -6,7 +6,7 @@
             <div class="card-body p-3">
     
 
-
+                <!-- <router-view/> -->
                 <page_header_default></page_header_default>
                <!-- <byr_slr_list_with_order></byr_slr_list_with_order>-->
                 <blog_view_for_select_customer></blog_view_for_select_customer>
@@ -36,7 +36,13 @@
             }
         },
         methods:{
-           
+           buyer_route_change(byr_buyer_id){
+             console.log(byr_buyer_id);
+              this.$router.push({
+                name: 'selected_buyer',
+                params: { byr_buyer_id: byr_buyer_id }
+              })
+           },
         },
           created() {
              Fire.$emit('byr_has_selected');

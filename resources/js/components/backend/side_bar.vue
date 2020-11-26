@@ -105,8 +105,8 @@
                   {{ myLang.jacos_voucher_setting }}
                 </router-link>
               </li>
-              <li class="nav-item" v-can="['byr_view']">
-                <router-link to="/jacos_management" class="nav-link">
+              <li class="nav-item" v-can="['byr_management']">
+                <router-link to="/byr_management" class="nav-link">
                   <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
                   {{ myLang.buyer_management }}
                 </router-link>

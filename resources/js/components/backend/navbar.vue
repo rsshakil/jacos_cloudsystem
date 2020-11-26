@@ -11,12 +11,12 @@
             <div class="site_logo">
               <router-link to="/home">
                 <img
-                id="main-logo"
-                class="d-inline-block align-top mr-1"
-                style="max-width: 100%; height: 60px"
-                :src="BASE_URL + '/public/backend/images/logo/jacos_logo.png'"
-                alt="Jacos Dashboard"
-              />
+                  id="main-logo"
+                  class="d-inline-block align-top mr-1"
+                  style="max-width: 100%; height: 60px"
+                  :src="BASE_URL + '/public/backend/images/logo/jacos_logo.png'"
+                  alt="Jacos Dashboard"
+                />
               </router-link>
             </div>
           </div>
@@ -24,10 +24,18 @@
             <!--<div class="custom_bredcrubs">
               <Breadcrumbs></Breadcrumbs>
           </div>-->
-          <h4 class="selected_byr_by_sly">得意先名：<span v-if="selected_byr_info" class="selected_byr_customer">{{selected_byr_info.company_name}}</span><span v-else class="selected_byr_customer">{{selected_customer_list}}</span></h4>
+            <h4 class="selected_byr_by_sly">
+              得意先名：<span
+                v-if="selected_byr_info"
+                class="selected_byr_customer"
+                >{{ selected_byr_info.company_name }}</span
+              ><span v-else class="selected_byr_customer">{{
+                selected_customer_list
+              }}</span>
+            </h4>
           </div>
           <!-- @focusout="toggle = false" -->
-          
+
           <div class="col-1 p-0">
             <button
               v-if="company_name != ''"
@@ -36,9 +44,10 @@
             >
               得意先選択
             </button>
-           
+
             <div
-              class="top_byr_slr_list" style="display:none"
+              class="top_byr_slr_list"
+              style="display: none"
               v-if="company_name != ''"
               v-show="toggle"
             >
@@ -52,13 +61,30 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="buyer in buyer_info_for_saller" :key="buyer.byr_buyer_id">
-                    <td style="text-align:left">
-                      <router-link :to="{name: 'selected_buyer',params: {byr_buyer_id: buyer.byr_buyer_id,},}" class="btn" style="border:none; display:block; height:100%">
+                  <tr
+                    v-for="buyer in buyer_info_for_saller"
+                    :key="buyer.byr_buyer_id"
+                  >
+                    <td style="text-align: left">
+                      <!-- <router-link :to="{
+                    name: 'selected_buyer',
+                    params: {
+                      byr_buyer_id: buyer.byr_buyer_id,
+                    },
+                  }"
+                  class="btn btn-outline-primary">
+                  {{ buyer.buyer_name }} &nbsp &nbsp
+                 {{ buyer.total_order }}件
+                    </router-link> -->
+                      <b-button
+                        @click="buyer_route_change(buyer.byr_buyer_id)"
+                        >{{ buyer.buyer_name }}</b-button
+                      >
+                      <!-- <router-link :to="{name: 'selected_buyer',params: {byr_buyer_id: buyer.byr_buyer_id,},}" class="btn" style="border:none; display:block; height:100%">
                         {{buyer.buyer_name}}
-                      </router-link>
+                      </router-link> -->
                     </td>
-                    <td>{{buyer.total_order}}件</td>
+                    <td>{{ buyer.total_order }}件</td>
                   </tr>
                 </tbody>
               </table>
@@ -305,8 +331,8 @@ export default {
       company_name: null,
       user_byr_slr_list: [],
       toggle: false,
-      selected_customer_list:'未選択',
-      selected_byr_info:{},
+      selected_customer_list: "未選択",
+      selected_byr_info: {},
       // buyer_info_for_saller:[],
       fields: [
         {
@@ -341,43 +367,62 @@ export default {
     get_user_company_info() {
       axios
         .post(this.BASE_URL + "api/get_user_company_byr_slr_list")
-        .then(({data}) => {
+        .then(({ data }) => {
           this.company_name = data.user_company_info.company_name;
           this.user_byr_slr_list = data.byr_slr_list;
           // console.log(this.global_user_id)
           // this.buyer_info_for_saller=this.allBuyerInfoBySaller(this.global_user_id)
-          
+
           // console.log(this.buyer_info_for_saller);
           // console.log(this.user_data.user.id);
-          
         });
     },
-    get_slected_byr_info(){
-               axios
-                    .get(this.BASE_URL + "api/get_selected_byr_info/" + this.$route.params.byr_buyer_id)
-                    .then(({data}) => {
-                        console.log(data);
-                        this.selected_byr_info = data.byr_info;
-                         
-                         console.log(data.byr_info);
-                    });
-           }
+    get_slected_byr_info() {
+      axios
+        .get(
+          this.BASE_URL +
+            "api/get_selected_byr_info/" +
+            this.$route.params.byr_buyer_id
+        )
+        .then(({ data }) => {
+          console.log(data);
+          this.selected_byr_info = data.byr_info;
+
+          console.log(data.byr_info);
+        });
+    },
+    buyer_route_change(byr_buyer_id) {
+      // this.$router.push('/home/selected_buyer/'+byr_buyer_id);
+      window.location.href = this.BASE_URL+'home/selected_buyer/'+byr_buyer_id;
+      // const resolved = this.$router.resolve({
+      //   name: "selected_buyer",
+      //   params: { byr_buyer_id: byr_buyer_id },
+      // });
+      // resolved.href; // '/some-route-name/:id'
+      //  this.$parent.buyer_route_change(byr_buyer_id);
+      //  console.log(byr_buyer_id);
+      // // //  let projectId = record.id
+      //   this.$router.push({
+      //     name: 'selected_buyer',
+      //     params: { byr_buyer_id: byr_buyer_id }
+      //   })
+    },
   },
   created() {
     this.get_user_company_info();
     this.user_data = this.app._data;
     // console.log(this.global_user_id)
-    this.allBuyerInfoBySaller(this.global_user_id)
+    this.allBuyerInfoBySaller(this.global_user_id);
     // console.log(this.buyer_info_for_saller);
     // this.allBuyerInfoBySaller(this.user_data.user.id);
-     Fire.$on("byr_has_selected", () => {
+    Fire.$on("byr_has_selected", () => {
       this.get_slected_byr_info();
     });
-    console.log('resue added');
+    console.log("resue added");
   },
   route: {
-    	canReuse: false,
-    },
+    canReuse: false,
+  },
 };
 </script>
 <style>

@@ -220,6 +220,11 @@ class permissionsTableDataSeeder extends Seeder
                 'guard_name' => 'web',
                 'is_system' => 0,
             ],
+            [
+                'name' => 'byr_management',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
         );
         Permission::insert($permission_array);
     }

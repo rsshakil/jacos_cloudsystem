@@ -12,8 +12,8 @@ import default_parent from './components/backend/default_parent.vue'
 import byr_order_detail from './components/backend/BYR/byr_order_detail.vue'
 import order_details_canvas from './components/backend/order_details_canvas.vue'
 import voucher_setting from './components/backend/canvas.vue'
-import jacos_management from './components/backend/jacos_management.vue'
-import jacos_management_edit from './components/backend/jacos_management_edit.vue'
+import byr_management from './components/backend/SLR/byr_management.vue'
+import byr_management_edit from './components/backend/SLR/byr_management_edit.vue'
 import cmn_company_user_list from './components/backend/CMN/cmn_company_user_list.vue'
 import cmn_company_partner_list from './components/backend/CMN/cmn_company_partner_list.vue'
 import scenario_management from './components/backend/scenario_management.vue'
@@ -75,24 +75,24 @@ export const routes = [
     },
     { path: '/voucher_setting', name: 'voucher_setting', component: voucher_setting },
     {
-        path: '/jacos_management',
+        path: '/byr_management',
         component: default_parent,
         meta: { breadcrumb: '小売管理' },
         children: [{
                 path: '/',
-                component: jacos_management,
-                name: 'jacos_management'
+                component: byr_management,
+                name: 'byr_management'
             },
             {
-                path: '/jacos_management/jacos_management_edit/:cmn_company_id',
-                component: jacos_management_edit,
-                name: 'jacos_management_edit',
+                path: '/byr_management/byr_management_edit/:cmn_company_id',
+                component: byr_management_edit,
+                name: 'byr_management_edit',
                 meta: {
                     breadcrumb: '基本情報'
                 }
             },
             {
-                path: '/jacos_management/cmn_company_user_list/:cmn_company_id',
+                path: '/byr_management/cmn_company_user_list/:cmn_company_id',
                 component: cmn_company_user_list,
                 name: 'cmn_company_user_list',
                 meta: {
@@ -100,7 +100,7 @@ export const routes = [
                 }
             },
             {
-                path: '/jacos_management/cmn_company_partner_list/:cmn_company_id',
+                path: '/byr_management/cmn_company_partner_list/:cmn_company_id',
                 component: default_parent,
                 meta: {
                     breadcrumb: '取引先管理'
@@ -111,7 +111,7 @@ export const routes = [
                         name: 'cmn_company_partner_list'
                     },
                     {
-                        path: '/jacos_management/cmn_company_partner_list/:byr_buyer_id/slr_job_list/:slr_seller_id',
+                        path: '/byr_management/cmn_company_partner_list/:byr_buyer_id/slr_job_list/:slr_seller_id',
                         component: slr_job_list,
                         name: 'slr_job_list',
                         meta: {
@@ -256,22 +256,23 @@ export const routes = [
         path: '/home/selected_buyer/:byr_buyer_id',
         component: selected_buyer,
         name: 'selected_buyer',
-        
-            // meta: { breadcrumb: 'Selected Buyer' },
-            // children: [{
-            //         path: '/',
-            //         component: selected_buyer,
-            //         name: 'selected_buyer'
-            //     },
-            // {
-            //     path: '/slr_management/company_seller_user_list/:cmn_company_id',
-            //     component: company_seller_user_list,
-            //     name: 'company_seller_user_list',
-            //     meta: {
-            //         breadcrumb: 'seller user list'
-            //     }
-            // },
-            // ]
+        props: true,
+
+        // meta: { breadcrumb: 'Selected Buyer' },
+        // children: [{
+        //         path: '/',
+        //         component: selected_buyer,
+        //         name: 'selected_buyer'
+        //     },
+        // {
+        //     path: '/slr_management/company_seller_user_list/:cmn_company_id',
+        //     component: company_seller_user_list,
+        //     name: 'company_seller_user_list',
+        //     meta: {
+        //         breadcrumb: 'seller user list'
+        //     }
+        // },
+        // ]
 
     },
     // { path: '/login', name: 'login', component: login_body },
