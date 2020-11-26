@@ -183,7 +183,43 @@ class permissionsTableDataSeeder extends Seeder
                 'name' => 'add_company_users',
                 'guard_name' => 'web',
                 'is_system' => 0,
-            ]
+            ],
+            // SLR Permission 
+            [
+                'name' => 'order_list',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'slr_management',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'order_receive',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'order_corrected_receive',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'return_item_list',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'payment_list',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'invoice_list',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
         );
         Permission::insert($permission_array);
     }

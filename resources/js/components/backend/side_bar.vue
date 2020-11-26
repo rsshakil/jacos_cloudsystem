@@ -93,7 +93,7 @@
                   {{ myLang.order_list }}
                 </router-link>
               </li>
-              <li class="nav-item" v-can="['slr_view']">
+              <li class="nav-item" v-can="['slr_view','order_list']">
                 <router-link to="/order_list" class="nav-link">
                   <b-icon icon="receipt" font-scale="1.2"></b-icon>
                   {{ myLang.order_list }}
@@ -118,42 +118,42 @@
                 </router-link>
               </li>
 
-              <li class="nav-item" v-can="['slr_view']">
+              <li class="nav-item" v-can="['slr_management']">
                 <router-link to="/slr_management" class="nav-link">
                   <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
                   {{ myLang.wholesaler_management }}
                 </router-link>
               </li>
 
-              <li class="nav-item" v-can="['slr_view', 'byr_view']">
+              <li class="nav-item" v-can="['order_receive', 'byr_view']">
                 <router-link to="/order_receive" class="nav-link">
                   <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
                   {{ myLang.order_receive }}
                 </router-link>
               </li>
 
-              <li class="nav-item" v-can="['slr_view', 'byr_view']">
+              <li class="nav-item" v-can="['order_corrected_receive', 'byr_view']">
                 <router-link to="/order_corrected_receive" class="nav-link">
                   <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
                   {{ myLang.order_corrected_receive }}
                 </router-link>
               </li>
 
-              <li class="nav-item" v-can="['slr_view', 'byr_view']">
+              <li class="nav-item" v-can="['return_item_list', 'byr_view']">
                 <router-link to="/return_item_list" class="nav-link">
                   <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
                   {{ myLang.return_data }}
                 </router-link>
               </li>
 
-              <li class="nav-item" v-can="['slr_view', 'byr_view']">
+              <li class="nav-item" v-can="['payment_list', 'byr_view']">
                 <router-link to="/payment_list" class="nav-link">
                   <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
                   {{ myLang.payment_list }}
                 </router-link>
               </li>
 
-              <li class="nav-item" v-can="['slr_view', 'byr_view']">
+              <li class="nav-item" v-can="['invoice_list', 'byr_view']">
                 <router-link to="/invoice_list" class="nav-link">
                   <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
                   {{ myLang.invoice_data }}
