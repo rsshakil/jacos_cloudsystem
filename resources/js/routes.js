@@ -255,7 +255,8 @@ export const routes = [
     {
         path: '/home/selected_buyer/:byr_buyer_id',
         component: selected_buyer,
-        name: 'selected_buyer'
+        name: 'selected_buyer',
+        
             // meta: { breadcrumb: 'Selected Buyer' },
             // children: [{
             //         path: '/',

@@ -131,6 +131,14 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+
+        'blog_title'=>[
+            'required'=>'Blog title Required',
+            'min'=>'Please at least 5 chars',
+        ],
+        'blog_content'=>[
+            'required'=>'Blog content Required',
+        ],
     ],
 
     /*

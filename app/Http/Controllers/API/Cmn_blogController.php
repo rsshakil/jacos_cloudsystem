@@ -80,6 +80,30 @@ class Cmn_blogController extends Controller
                 return response()->json(['blog_list' => $result]);
     }
     }
+    public function get_user_top_blog_by_byr_id($byr_buyer_id)
+    {
+        $authUser = Auth::user();
+        if($authUser->hasRole('Slr')){
+            $byr_info = $this->all_used_fun->get_byr_info_by_byr_buyer_id($byr_buyer_id);
+        $result = cmn_blog::where('is_delete','0')->where('blog_status','published')->where('blog_by',$byr_info->adm_user_id)->where('is_top_blog','1')->orderBy('cmn_blog_id','DESC')->first();
+        if($result){
+            return response()->json(['blog_list' => $result]);
+        }else{
+
+            $result =cmn_blog::where('is_delete','0')->where('blog_status','published')->where('blog_by',$byr_info->adm_user_id)->orderBy('cmn_blog_id','DESC')->first();
+            if($result){
+                return response()->json(['blog_list' => $result]);
+            }else{
+                $result = array();
+                return response()->json(['blog_list' => $result]);
+            }
+            
+        }
+    }else{
+        $result = array();
+                return response()->json(['blog_list' => $result]);
+    }
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -100,12 +124,8 @@ class Cmn_blogController extends Controller
         // return $request->all();
         //
         $this->validate($request,[
-            'blog_title' => 'required|string|min:5',
+            'blog_title' => 'required|min:5',
             'blog_content'=>'required'
-        ],[
-            'blog_title.required' =>'ブログのタイトルを入力してください',
-            'blog_title.string|min:5' => 'ブログのタイトルは5文字以上にする必要があります',
-            'blog_content.required' => 'ブログの内容を入力してください',
         ]);
         $arr =array(
             'blog_title'=>$request->blog_title,

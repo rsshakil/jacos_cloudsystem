@@ -40,10 +40,14 @@
         },
           created() {
              Fire.$emit('byr_has_selected');
+             console.log('resue dede');
             },
         mounted() {
             this.init();
             console.log('Home Component mounted.')
-        }
+        },
+        route: {
+            canReuse: false,
+        },
     }
 </script>

@@ -73,7 +73,7 @@
                 });
             },
             get_user_top_blog(){
-                axios.get(this.BASE_URL +"api/get_user_top_blog").then((data) => {
+                axios.get(this.BASE_URL +"api/get_user_top_blog_by_byr_id/"+ this.$route.params.byr_buyer_id).then((data) => {
                     this.user_blog = data.data.blog_list;
                 });
             },
@@ -86,10 +86,16 @@
       Fire.$on("AfterCreateblog", () => {
         this.get_all_blogs();
     });
+    console.log('resue dsd');
   },
         mounted() {
             this.init();
-            console.log('Home blog Component mounted.')
-        }
+            console.log('userblog Component mounted.')
+            
+        },
+        route: {
+          canReuse: false,
+        },
+
     }
 </script>
