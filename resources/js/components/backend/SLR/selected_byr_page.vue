@@ -46,9 +46,12 @@
         },
           created() {
             //   router.app.$session.set('buyer_id', this.$route.params.byr_buyer_id);
+            this.$session.start()
+            this.$session.set('byr_buyer_id', this.$route.params.byr_buyer_id)
              Fire.$emit('byr_has_selected');
-             Fire.$emit('permission_check_for_buyer',this.$route.params.byr_buyer_id);
-             console.log('resue dede');
+             Fire.$emit('permission_check_for_buyer',this.$session.get('byr_buyer_id'));
+            //  console.log('resue dede');
+            //  console.log(this.$session.get('byr_buyer_id'))
             //  router.app.$session.get('user');
             //  console.log(router.app.$session.get('buyer_id'))
             },

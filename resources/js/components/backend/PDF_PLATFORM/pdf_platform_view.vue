@@ -662,6 +662,7 @@ export default {
     // }
   },
   created() {
+    Fire.$emit('permission_check_for_buyer',this.$session.get('byr_buyer_id'));
     // this.canvasOpen();
   },
   mounted() {

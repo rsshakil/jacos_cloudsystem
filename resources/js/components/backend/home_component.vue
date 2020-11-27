@@ -39,7 +39,7 @@
            
         },
           created() {
-                Fire.$emit('permissions_by_user');
+                Fire.$emit('buyer_session_destroy');
             },
         mounted() {
             this.init();

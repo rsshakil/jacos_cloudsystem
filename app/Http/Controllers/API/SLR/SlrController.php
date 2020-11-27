@@ -92,11 +92,16 @@ class SlrController extends Controller
     }
     public function getPermissionForBuyer(Request $request){
         $byr_id=$request->byr_id;
-        $byr_buyer_info=byr_buyer::select('adm_role_id')->where('byr_buyer_id',$byr_id)->first();
-        $role_id=$byr_buyer_info->adm_role_id;
+        $permission_array=array();
+        if ($byr_id!=null) {
+            $byr_buyer_info=byr_buyer::select('adm_role_id')->where('byr_buyer_id',$byr_id)->first();
+            $role_id=$byr_buyer_info->adm_role_id;
 
-        $role = Role::findById($role_id);
-        $permission_array=$role->getAllPermissions();
+            $role = Role::findById($role_id);
+            $permission_array=$role->getAllPermissions();
+        }
+        return response()->json(['permission_array'=>$permission_array]);
+        
 
 // return $permission_array;
 //         // $permission_array=array();
@@ -114,6 +119,6 @@ class SlrController extends Controller
                
 //            }
 //         }
-        return response()->json(['permission_array'=>$permission_array]);
+        
     }
 }

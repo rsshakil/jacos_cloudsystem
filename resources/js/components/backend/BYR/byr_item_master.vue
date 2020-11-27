@@ -145,6 +145,7 @@ export default {
   },
 
   created() {
+    Fire.$emit('permission_check_for_buyer',this.$session.get('byr_buyer_id'));
       this.get_all_master_item();
       Fire.$on("LoadByrmasterItem", () => {
       this.get_all_master_item();

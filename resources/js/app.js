@@ -28,7 +28,10 @@ import { Cropper } from 'vue-advanced-cropper'
 import Loading from 'vue-loading-overlay';
 // Import stylesheet
 import 'vue-loading-overlay/dist/vue-loading.css';
-//vue font awsam
+// Vue session 
+import VueSession from 'vue-session'
+Vue.use(VueSession)
+    //vue font awsam
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUserSecret } from '@fortawesome/free-solid-svg-icons'

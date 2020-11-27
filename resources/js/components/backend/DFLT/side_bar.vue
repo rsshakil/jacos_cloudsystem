@@ -218,7 +218,7 @@
       </ul>
       <br>
       <br>
-      <byr_side_bar_menu v-if="permissions_by_user.length>0" :permissions_by_user="permissions_by_user"></byr_side_bar_menu>
+      <byr_side_bar_menu v-if="permission_menu" :permissions_by_user="permissions_by_user"></byr_side_bar_menu>
     </div>
   </aside>
 </template>
@@ -237,6 +237,7 @@ byr_side_bar_menu,
         .querySelector('meta[name="csrf-token"]')
         .getAttribute("content"),
         permissions_by_user:[],
+        permission_menu:false,
     };
     
   },
@@ -256,6 +257,10 @@ byr_side_bar_menu,
     allPermissionCheck(byr_id=null){
       axios.post(this.BASE_URL+'api/get_permissions_for_buyer',{byr_id:byr_id}).then(({data})=>{
         this.permissions_by_user=data.permission_array;
+        if (this.permissions_by_user.length>0) {
+          this.permission_menu= true
+        }
+        
         // console.log(data);
       })
     }
@@ -266,8 +271,9 @@ byr_side_bar_menu,
     Fire.$on("permission_check_for_buyer", (byr_id) => {
         this.allPermissionCheck(byr_id);
     });
-    Fire.$on("permissions_by_user", () => {
-        this.permissions_by_user=[];
+    Fire.$on("buyer_session_destroy", () => {
+        this.$session.destroy()
+        this.permission_menu= false
     });
   }
 };
