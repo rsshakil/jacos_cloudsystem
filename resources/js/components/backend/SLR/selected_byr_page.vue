@@ -7,7 +7,7 @@
     
 
                 <!-- <router-view/> -->
-                <page_header_default></page_header_default>
+                <!--<page_header_default></page_header_default>-->
                <!-- <byr_slr_list_with_order></byr_slr_list_with_order>-->
                 <blog_view_for_select_customer></blog_view_for_select_customer>
 

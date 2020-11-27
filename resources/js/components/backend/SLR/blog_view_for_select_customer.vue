@@ -9,7 +9,7 @@
 <!--user blog-->       
   <b-row v-can="['slr_view']">
     <b-col v-if="user_blog.length!='0'">      
-  <h4 class="my-3 blog_titles"><i class="fas custom_blog_square fa-square-full"></i> {{user_blog.blog_title}}</h4>
+  <h4 class="my-3 blog_titles"><i class="fas custom_blog_square fa-square-full"></i> 得意先連絡事項</h4><!--{{user_blog.blog_title}}-->
     <div class="blogs_content" v-html="user_blog.blog_content">
     </div>
     </b-col>
@@ -19,7 +19,7 @@
   <b-row>
     <b-col v-if="single_blog.length!='0'">                    
 
-  <h4 class="my-3 blog_titles"><i class="fas custom_blog_square fa-square-full"></i>  {{single_blog.blog_title}}</h4>
+  <h4 class="my-3 blog_titles"><i class="fas custom_blog_square fa-square-full"></i> ジャコス連絡事項</h4><!--{{single_blog.blog_title}}-->
   <!--<p class="created_at">Created at @{{ single_blog.created_at | ja_date_time }}</p>-->
   <!--<b-img v-if="single_blog.feature_img!='null'" :src="BASE_URL+'storage/app/public/backend/images/blog_images/'+single_blog.feature_img" fluid-grow alt="Fluid-grow image"></b-img>-->
     <div class="blogs_content" v-html="single_blog.blog_content">
