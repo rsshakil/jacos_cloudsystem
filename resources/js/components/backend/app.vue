@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import navbar from './navbar'
-import sidebar from './side_bar'
+import navbar from './DFLT/navbar'
+import sidebar from './DFLT/side_bar'
 import projectfooter from './project_footer'
 export default {
 name:'app',
