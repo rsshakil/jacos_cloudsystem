@@ -39,7 +39,7 @@
            
         },
           created() {
-                
+                Fire.$emit('permissions_by_user');
             },
         mounted() {
             this.init();
