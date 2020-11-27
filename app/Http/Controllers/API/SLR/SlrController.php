@@ -21,6 +21,8 @@ use App\Models\ADM\User;
 use App\Models\CMN\cmn_companies_user;
 use DB;
 use Auth;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 class SlrController extends Controller
 {
     private $all_used_fun;
@@ -87,5 +89,31 @@ class SlrController extends Controller
         $byr_info = $this->all_used_fun->get_byr_info_by_byr_buyer_id($byr_buyer_id);
        
         return response()->json(['byr_info' => $byr_info]);
+    }
+    public function getPermissionForBuyer(Request $request){
+        $byr_id=$request->byr_id;
+        $byr_buyer_info=byr_buyer::select('adm_role_id')->where('byr_buyer_id',$byr_id)->first();
+        $role_id=$byr_buyer_info->adm_role_id;
+
+        $role = Role::findById($role_id);
+        $permission_array=$role->getAllPermissions();
+
+// return $permission_array;
+//         // $permission_array=array();
+//         $permission_for_role=array();
+//         // foreach ($role_id as $key => $value) {
+//         //     $role = Role::findById($value);
+//         //     $permission_array[]=$role->getAllPermissions();
+//         // }
+//         foreach ($permission_array as $key => $permissions) {
+//             // print_r($permissions);
+//            foreach ($permissions as $key1 => $permission) {
+//             print_r($permission);
+//                 // $tmp=$permission->name;
+//                 // $permission_for_role[]=$tmp;
+               
+//            }
+//         }
+        return response()->json(['permission_array'=>$permission_array]);
     }
 }

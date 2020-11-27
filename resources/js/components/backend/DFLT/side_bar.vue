@@ -218,10 +218,7 @@
       </ul>
       <br>
       <br>
-      <br>
-      <br>
-      <br>
-      <byr_side_bar_menu></byr_side_bar_menu>
+      <byr_side_bar_menu v-if="permissions_by_user.length>0" :permissions_by_user="permissions_by_user"></byr_side_bar_menu>
     </div>
   </aside>
 </template>
@@ -239,7 +236,7 @@ byr_side_bar_menu,
       csrf: document
         .querySelector('meta[name="csrf-token"]')
         .getAttribute("content"),
-        permission_by_user:[],
+        permissions_by_user:[],
     };
     
   },
@@ -256,18 +253,21 @@ byr_side_bar_menu,
         })
         .catch((error) => {});
     },
-    allPermissionCheck(id=null){
-      axios.get(this.BASE_URL+'api/get_permission_model/'+id).then(({data})=>{
-        this.permission_by_user=data.all_permissions_for_user_array;
-        console.log(data);
+    allPermissionCheck(byr_id=null){
+      axios.post(this.BASE_URL+'api/get_permissions_for_buyer',{byr_id:byr_id}).then(({data})=>{
+        this.permissions_by_user=data.permission_array;
+        // console.log(data);
       })
     }
 
   },
   created(){
     // this.allPermissionCheck();
-    Fire.$on("permission_check_by_user", (user_id) => {
-        this.allPermissionCheck(user_id);
+    Fire.$on("permission_check_for_buyer", (byr_id) => {
+        this.allPermissionCheck(byr_id);
+    });
+    Fire.$on("permissions_by_user", () => {
+        this.permissions_by_user=[];
     });
   }
 };
