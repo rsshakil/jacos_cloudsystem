@@ -273,7 +273,8 @@ byr_side_bar_menu,
     });
     Fire.$on("buyer_session_destroy", () => {
         this.$session.destroy()
-        this.permission_menu= false
+        this.permission_menu= false;
+        Fire.$emit('byr_has_selected');
     });
   }
 };

@@ -25,13 +25,7 @@
               <Breadcrumbs></Breadcrumbs>
           </div>-->
             <h4 class="selected_byr_by_sly">
-              得意先名：<span
-                v-if="selected_byr_info"
-                class="selected_byr_customer"
-                >{{ selected_byr_info.company_name }}</span
-              ><span v-else class="selected_byr_customer">{{
-                selected_customer_list
-              }}</span>
+              得意先名：<span class="selected_byr_customer">{{ selected_customer_list }}</span>
             </h4>
           </div>
           <!-- @focusout="toggle = false" -->
@@ -332,7 +326,6 @@ export default {
       user_byr_slr_list: [],
       toggle: false,
       selected_customer_list: "未選択",
-      selected_byr_info: {},
       // buyer_info_for_saller:[],
       fields: [
         {
@@ -385,10 +378,12 @@ export default {
             this.$route.params.byr_buyer_id
         )
         .then(({ data }) => {
-          console.log(data);
-          this.selected_byr_info = data.byr_info;
-
           console.log(data.byr_info);
+          if(data.byr_info!=null){
+             this.$session.set('byr_buyer_company',data.byr_info.company_name)
+             this.selected_customer_list = data.byr_info.company_name;
+          }
+         
         });
     },
     buyer_route_change(byr_buyer_id) {
@@ -417,11 +412,13 @@ export default {
     // this.allBuyerInfoBySaller(this.user_data.user.id);
     Fire.$on("byr_has_selected", () => {
       this.get_slected_byr_info();
+      if(this.$session.has('byr_buyer_company')){
+        this.selected_customer_list = this.$session.get('byr_buyer_company');
+      }else{
+        this.selected_customer_list = '未選択';
+      }
     });
-    console.log("resue added");
-  },
-  route: {
-    canReuse: false,
+    
   },
 };
 </script>
