@@ -46,6 +46,7 @@
         },
           created() {
              Fire.$emit('byr_has_selected');
+             Fire.$emit('permission_check_by_user',this.$route.params.byr_buyer_id);
              console.log('resue dede');
             },
         mounted() {

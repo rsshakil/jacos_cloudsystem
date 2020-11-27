@@ -138,7 +138,6 @@
                   {{ myLang.order_corrected_receive }}
                 </router-link>
               </li>
-
               <li class="nav-item" v-can="['return_item_list']">
                 <router-link to="/return_item_list" class="nav-link">
                   <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
@@ -243,7 +242,9 @@ export default {
       csrf: document
         .querySelector('meta[name="csrf-token"]')
         .getAttribute("content"),
+        permission_by_user:[],
     };
+    
   },
   methods: {
     logout: function () {
@@ -258,6 +259,19 @@ export default {
         })
         .catch((error) => {});
     },
+    allPermissionCheck(id=null){
+      axios.get(this.BASE_URL+'api/get_permission_model/'+id).then(({data})=>{
+        this.permission_by_user=data.all_permissions_for_user_array;
+        console.log(data);
+      })
+    }
+
   },
+  created(){
+    // this.allPermissionCheck();
+    Fire.$on("permission_check_by_user", (user_id) => {
+        this.allPermissionCheck(user_id);
+    });
+  }
 };
 </script>

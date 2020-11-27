@@ -9,6 +9,7 @@ use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use DB;
 use App\Models\ADM\User;
+use App\Models\BYR\byr_buyer;
 
 class AssignPermissionModel extends Controller
 {
@@ -34,7 +35,7 @@ class AssignPermissionModel extends Controller
      * @param  Request $request
      * @return Permissions list of desired user as JSON
      */
-    public function getPermissionModel($id){
+    public function getPermissionModel($id=null){
         $user_id = $id;
         // if ($user_id == 0) {
         //     return "Not selected";

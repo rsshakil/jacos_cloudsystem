@@ -56,7 +56,7 @@ Route::get('/get_roles/{id}', 'API\AssignRoleModel@getRoleById');
 Route::post('/assign_role_to_user', 'API\AssignRoleModel@assignModelRole');
 
 Route::get('/all_users_permissions', 'API\AssignPermissionModel@allUsersAndPermissions');
-Route::get('/get_permission_model/{id}', 'API\AssignPermissionModel@getPermissionModel');
+Route::get('/get_permission_model/{id?}', 'API\AssignPermissionModel@getPermissionModel');
 Route::post('/assign_permission_to_user', 'API\AssignPermissionModel@assignPermissionToModel');
 
 Route::post('/get_permission_for_roles', 'API\AssignPermissionModel@getPermissionsByRole');
