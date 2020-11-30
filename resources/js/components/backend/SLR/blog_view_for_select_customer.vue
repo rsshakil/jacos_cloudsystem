@@ -79,14 +79,20 @@ export default {
     },
     get_user_top_blog(byr_buyer_id = null) {
       if (byr_buyer_id == null) {
-        byr_buyer_id = this.$route.params.byr_buyer_id;
+        byr_buyer_id = this.$session.get('byr_buyer_id');
       }
-      // console.log(byr_buyer_id);
-      axios
-        .get(this.BASE_URL + "api/get_user_top_blog_by_byr_id/" + byr_buyer_id)
+      // console.log(this.$session.get('byr_buyer_id'));
+      if (byr_buyer_id) {
+        axios.get(this.BASE_URL + "api/get_user_top_blog_by_byr_id/" + byr_buyer_id)
         .then(({ data }) => {
           this.user_blog = data.blog_list;
+        }).catch((error)=>{
+          this.user_blog=[];
+          // console.log(error)
         });
+      } else {
+        this.user_blog=[];
+      }
     },
   },
   created() {

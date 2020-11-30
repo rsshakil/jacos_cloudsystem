@@ -216,8 +216,6 @@
           </div>
         </li>
       </ul>
-      <br>
-      <br>
       <byr_side_bar_menu v-if="permission_menu" :permissions_by_user="permissions_by_user"></byr_side_bar_menu>
     </div>
   </aside>

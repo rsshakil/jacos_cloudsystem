@@ -70,9 +70,7 @@
                   {{ buyer.buyer_name }} &nbsp &nbsp
                  {{ buyer.total_order }}件
                     </router-link> -->
-                      <b-button
-                        @click="buyer_route_change(buyer.byr_buyer_id)"
-                        >{{ buyer.buyer_name }}</b-button
+                      <b-button variant="outline-primary" @click="buyer_route_change(buyer.byr_buyer_id)">{{ buyer.buyer_name }}</b-button
                       >
                       <!-- <router-link :to="{name: 'selected_buyer',params: {byr_buyer_id: buyer.byr_buyer_id,},}" class="btn" style="border:none; display:block; height:100%">
                         {{buyer.buyer_name}}
@@ -370,12 +368,11 @@ export default {
           // console.log(this.user_data.user.id);
         });
     },
-    get_slected_byr_info() {
+    get_slected_byr_info(byr_buyer_id) {
       axios
         .get(
           this.BASE_URL +
-            "api/get_selected_byr_info/" +
-            this.$route.params.byr_buyer_id
+            "api/get_selected_byr_info/" +byr_buyer_id
         )
         .then(({ data }) => {
           console.log(data.byr_info);
@@ -386,18 +383,6 @@ export default {
          
         });
     },
-    buyer_route_change(byr_buyer_id) {
-    
-        this.$router.push({
-          name: 'selected_buyer',
-          params: { byr_buyer_id: byr_buyer_id }
-        }).catch(()=>{
-          // console.log("error")
-        })
-        Fire.$emit('selectedByuerBlog',byr_buyer_id);
-        Fire.$emit('byr_has_selected');
-      Fire.$emit('permission_check_for_buyer',byr_buyer_id);
-    },
   },
   created() {
     this.get_user_company_info();
@@ -406,8 +391,8 @@ export default {
     this.allBuyerInfoBySaller(this.global_user_id);
     // console.log(this.buyer_info_for_saller);
     // this.allBuyerInfoBySaller(this.user_data.user.id);
-    Fire.$on("byr_has_selected", () => {
-      this.get_slected_byr_info();
+    Fire.$on("byr_has_selected", (byr_buyer_id) => {
+      this.get_slected_byr_info(byr_buyer_id);
       if(this.$session.has('byr_buyer_company')){
         this.selected_customer_list = this.$session.get('byr_buyer_company');
       }else{

@@ -7,8 +7,8 @@
             v-for="order_item in slr_order_list"
             :key="order_item.byr_buyer_id"
           >
-          <b-button @click="buyer_route_change(order_item.byr_buyer_id)">
-            {{ order_item.buyer_name }} &nbsp &nbsp {{ order_item.total_order }}件
+          <b-button variant="outline-primary" @click="buyer_route_change(order_item.byr_buyer_id)">
+            {{ order_item.buyer_name }} {{ order_item.total_order }}件
           </b-button
                       >
           <!-- <router-link :to="{name: 'selected_buyer'}"

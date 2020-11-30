@@ -189,14 +189,20 @@ export default {
                 });
         },
         buyer_route_change(byr_buyer_id) {
-
-            this.$router.push({
-                name: 'selected_buyer',
-                params: { byr_buyer_id: byr_buyer_id }
-            }).catch(() => {
-                // console.log("error")
-            })
+            this.$session.start()
+            this.$session.set('byr_buyer_id', byr_buyer_id);
+            if (this.$route.path != '/home/selected_buyer') {
+                this.$router.push("/home/selected_buyer");
+            }
+            // this.$router.push({
+            //         name: 'selected_buyer',
+            //         // params: { byr_buyer_id: byr_buyer_id }
+            //     })
+            // .catch(() => {
+            //     console.log("error")
+            // })
             Fire.$emit('selectedByuerBlog', byr_buyer_id);
+            Fire.$emit('byr_has_selected', byr_buyer_id);
             Fire.$emit('permission_check_for_buyer', byr_buyer_id);
         },
     },
