@@ -21,12 +21,12 @@ class byr_buyerSeeder extends Seeder
             [
                 'cmn_company_id'=>6,
                 'super_code'=>"TOYOTA",
-                'adm_role_id'=>5,
+                'adm_role_id'=>6,
             ],
             [
                 'cmn_company_id'=>7,
                 'super_code'=>"SONY",
-                'adm_role_id'=>5,
+                'adm_role_id'=>7,
             ]
         );
         App\Models\BYR\byr_buyer::insert($byr_byr);
