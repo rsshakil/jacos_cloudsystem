@@ -26,7 +26,13 @@ class roleHasPermissionsTableDataSeeder extends Seeder
         $role_saler = Role::findByName('Slr');
         $role_saler->givePermissionTo('slr_view','add_company_users','order_list','slr_management','order_receive','order_corrected_receive','return_item_list','payment_list','invoice_list','byr_management');
 
-        $role_byr = Role::findByName('Byr');
+        $role_byr = Role::findByName('Byr1');
         $role_byr->givePermissionTo('voucher_setting','item_master','item_category','pdf_platform_setting','pdf_platform_view');
+
+        $role_byr = Role::findByName('Byr2');
+        $role_byr->givePermissionTo('item_category','pdf_platform_setting','pdf_platform_view');
+        
+        $role_byr = Role::findByName('Byr3');
+        $role_byr->givePermissionTo('item_master','pdf_platform_setting','pdf_platform_view');
     }
 }
