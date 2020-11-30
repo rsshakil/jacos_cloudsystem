@@ -253,7 +253,7 @@ export const routes = [
 
     },
     {
-        path: '/home/selected_buyer/:byr_buyer_id',
+        path: '/home/selected_buyer',
         component: selected_buyer,
         name: 'selected_buyer',
         props: true,

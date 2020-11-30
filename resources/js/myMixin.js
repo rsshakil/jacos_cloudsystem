@@ -187,7 +187,18 @@ export default {
                     this.buyer_info_for_saller = data.slr_order_info;
                     // return data.slr_order_info;
                 });
-        }
+        },
+        buyer_route_change(byr_buyer_id) {
+
+            this.$router.push({
+                name: 'selected_buyer',
+                params: { byr_buyer_id: byr_buyer_id }
+            }).catch(() => {
+                // console.log("error")
+            })
+            Fire.$emit('selectedByuerBlog', byr_buyer_id);
+            Fire.$emit('permission_check_for_buyer', byr_buyer_id);
+        },
     },
     filters: {
 
