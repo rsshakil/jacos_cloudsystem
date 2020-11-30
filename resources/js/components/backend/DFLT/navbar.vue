@@ -41,10 +41,10 @@
 
             <div
               class="top_byr_slr_list"
-              style="display: none"
-              v-if="company_name != ''"
-              v-show="toggle"
+              v-if="company_name != '' && toggle"
             >
+            <!-- style="display: none" -->
+            <!-- v-if="toggle" -->
               <table
                 class="table b-table custom_slr_byr_top_table table-bordered"
               >
@@ -392,7 +392,7 @@ export default {
           name: 'selected_buyer',
           params: { byr_buyer_id: byr_buyer_id }
         }).catch(()=>{
-          console.log("error")
+          // console.log("error")
         })
         Fire.$emit('selectedByuerBlog',byr_buyer_id);
       Fire.$emit('permission_check_for_buyer',byr_buyer_id);

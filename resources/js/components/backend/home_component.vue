@@ -22,7 +22,7 @@
 
 <script>
  import page_header_default from './page_header_default'
- import byr_slr_list_with_order from './byr_slr_list_with_order'
+ import byr_slr_list_with_order from './SLR/byr_slr_list_with_order'
  import blog_view from './blog_view'
     export default {
         components : {
