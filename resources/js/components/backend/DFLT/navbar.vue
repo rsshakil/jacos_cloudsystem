@@ -388,7 +388,7 @@ export default {
     },
     buyer_route_change(byr_buyer_id) {
       // this.$router.push('/home/selected_buyer/'+byr_buyer_id);
-      window.location.href = this.BASE_URL+'home/selected_buyer/'+byr_buyer_id;
+      // window.location.href = this.BASE_URL+'home/selected_buyer/'+byr_buyer_id;
       // const resolved = this.$router.resolve({
       //   name: "selected_buyer",
       //   params: { byr_buyer_id: byr_buyer_id },
@@ -397,10 +397,10 @@ export default {
       //  this.$parent.buyer_route_change(byr_buyer_id);
       //  console.log(byr_buyer_id);
       // // //  let projectId = record.id
-      //   this.$router.push({
-      //     name: 'selected_buyer',
-      //     params: { byr_buyer_id: byr_buyer_id }
-      //   })
+        this.$router.push({
+          name: 'selected_buyer',
+          params: { byr_buyer_id: byr_buyer_id }
+        })
     },
   },
   created() {
