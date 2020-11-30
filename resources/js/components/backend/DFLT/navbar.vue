@@ -395,6 +395,7 @@ export default {
           console.log("error")
         })
         Fire.$emit('selectedByuerBlog',byr_buyer_id);
+        Fire.$emit('byr_has_selected');
       Fire.$emit('permission_check_for_buyer',byr_buyer_id);
     },
   },
