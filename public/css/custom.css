@@ -111,3 +111,11 @@
     font-size: 14px;
     padding-top: 13px;
 }
+.custom_navbr_button{
+    text-align: center !important;
+    padding: 0!important;
+    padding-top: 0!important;
+}
+.custom_navbr_button:hover .btn{
+    color:#fff !important;
+}

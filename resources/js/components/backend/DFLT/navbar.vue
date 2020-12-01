@@ -33,7 +33,8 @@
           <div class="col-1 p-0">
             <button
               v-if="company_name != ''"
-              @click="toggle = !toggle"
+               @mouseover="hover = true"
+      
               class="btn btn-default byr_list_show"
             >
               得意先選択
@@ -41,7 +42,8 @@
 
             <div
               class="top_byr_slr_list"
-              v-if="company_name != '' && toggle"
+              v-if="company_name != '' && hover"
+              @mouseleave="hover = false"
             >
             <!-- style="display: none" -->
             <!-- v-if="toggle" -->
@@ -59,7 +61,7 @@
                     v-for="buyer in buyer_info_for_saller"
                     :key="buyer.byr_buyer_id"
                   >
-                    <td style="text-align: left">
+                    <td class="btn-outline-primary custom_navbr_button" style="text-align: center;">
                       <!-- <router-link :to="{
                     name: 'selected_buyer',
                     params: {
@@ -70,7 +72,7 @@
                   {{ buyer.buyer_name }} &nbsp &nbsp
                  {{ buyer.total_order }}件
                     </router-link> -->
-                      <b-button variant="outline-primary" @click="buyer_route_change(buyer.byr_buyer_id)">{{ buyer.buyer_name }}</b-button
+                      <button class="btn"  @click="buyer_route_change(buyer.byr_buyer_id);hover = false">{{ buyer.buyer_name }}</button
                       >
                       <!-- <router-link :to="{name: 'selected_buyer',params: {byr_buyer_id: buyer.byr_buyer_id,},}" class="btn" style="border:none; display:block; height:100%">
                         {{buyer.buyer_name}}
@@ -322,7 +324,7 @@ export default {
       user_data: null,
       company_name: null,
       user_byr_slr_list: [],
-      toggle: false,
+      hover: false,
       selected_customer_list: "未選択",
       // buyer_info_for_saller:[],
       fields: [
