@@ -3,22 +3,17 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\ADM\adm_user_details;
+use App\Models\ADM\User;
+use App\Models\BYR\byr_buyer;
+use App\Models\CMN\cmn_companies_user;
+use App\Models\CMN\cmn_company;
+use App\Models\SLR\slr_seller;
+use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
-use App\Models\CMN\cmn_tbl_col_setting;
-use App\Models\CMN\cmn_scenario;
-use App\Models\CMN\cmn_connect;
-use App\Models\CMN\cmn_company;
-use App\Models\ADM\User;
-use App\Models\CMN\cmn_companies_user;
-use App\Models\BYR\byr_receive;
-use App\Models\BYR\byr_corrected_receive;
-use App\Models\BYR\byr_buyer;
-use App\Models\SLR\slr_seller;
-use App\Models\BYR\byr_return;
-use DB;
-use Auth;
 
 class AllUsedFunction extends Controller
 {
@@ -27,8 +22,9 @@ class AllUsedFunction extends Controller
      *
      * @return All Users as an array.
      */
-    public function allUsers(){
-        $users = User::select('id as user_id','name as user_name')->get();
+    public function allUsers()
+    {
+        $users = User::select('id as user_id', 'name as user_name')->get();
         return $users;
     }
     /**
@@ -36,35 +32,53 @@ class AllUsedFunction extends Controller
      *
      * @return All Users as an array.
      */
-    public function allUsersAll(){
+    public function allUsersAll()
+    {
         $users = User::all();
         return $users;
     }
-    
+
     /**
      * Get all permission for a desired role
      *
      * @param  int $role_id
      * @return All permission as an array.
      */
-    public function get_role_permission_by_role_id($role_id = null,$status = null)
+    public function get_role_permission_by_role_id($role_id = null, $status = null)
     {
         if (!empty($role_id)) {
             // $permissions=$this->get_selected_permission_by_role_id($role_id);
-            $permissions=$this->get_permissions($role_id);
-                $permission_array=array();
-                foreach ($permissions as $key => $permission) {
-                    if($status==null){
-                        $permission_array[]='<button class="btn btn-info btn-sm" style="margin-top:5px;">'.$permission->name.'</button>';
-                    }else{
-                        $permission_array[]=$permission->name;
-                    }
-                    
+            $permissions = $this->get_permissions($role_id);
+            $permission_array = array();
+            foreach ($permissions as $key => $permission) {
+                if ($status == null) {
+                    $permission_array[] = '<button class="btn btn-info btn-sm" style="margin-top:5px;">' . $permission->name . '</button>';
+                } else {
+                    $permission_array[] = $permission->name;
                 }
-            return $permissions=implode(' ',$permission_array);
+
+            }
+            return $permissions = implode(' ', $permission_array);
         } else {
-            return $permissions = Permission::select('id','name')->get();
+            return $permissions = Permission::select('id', 'name')->get();
         }
+    }
+    /**
+     * Assign permissions to a role.
+     *
+     * @param  int $role_id
+     * @param  array $permissions
+     * @return revoke previous permission and set new permission
+     */
+    public function assignPermissionToRole($role_id, $permissions)
+    {
+
+        $role_id = $role_id;
+        $permission_id = $permissions;
+        $role = Role::find($role_id);
+        $permission = $this->get_permissions();
+        $role->revokePermissionTo($permission);
+        $role->givePermissionTo($permission_id);
     }
     /**
      * Get all permission for a desired role
@@ -79,12 +93,12 @@ class AllUsedFunction extends Controller
                 ->join('adm_role_has_permissions as rhp', 'adm_permissions.id', '=', 'rhp.permission_id')
                 ->where('rhp.role_id', $role_id)
                 ->get();
-        }else{
-            $permissions=Permission::all();
+        } else {
+            $permissions = Permission::all();
         }
-            
-     return $permissions;
-        
+
+        return $permissions;
+
     }
     /**
      * Get all permission for a desired user
@@ -92,11 +106,12 @@ class AllUsedFunction extends Controller
      * @param  array $user
      * @return All permissions as an array.
      */
-    public function allPermissionForUser($user){
-        $all_permissions_for_user= $user->getAllPermissions();
-        $all_permissions_for_user_array=array();
+    public function allPermissionForUser($user)
+    {
+        $all_permissions_for_user = $user->getAllPermissions();
+        $all_permissions_for_user_array = array();
         foreach ($all_permissions_for_user as $all_permission_for_user) {
-            $all_permissions_for_user_array[]=$all_permission_for_user->name;
+            $all_permissions_for_user_array[] = $all_permission_for_user->name;
         }
         return $all_permissions_for_user_array;
     }
@@ -105,23 +120,26 @@ class AllUsedFunction extends Controller
      *
      * @return All Permissions as an array.
      */
-    public function get_permission_custom_field(){
-        return $permissions = Permission::select('id as permission_id','name as permission_name')->get();
+    public function get_permission_custom_field()
+    {
+        return $permissions = Permission::select('id as permission_id', 'name as permission_name')->get();
     }
     /**
      * Get all Roles by customize id and name
      *
      * @return All Roles as an array.
      */
-    public function get_role_custom_field(){
-        return $roles = Role::select('id as role_id','name as role_name')->get();
+    public function get_role_custom_field()
+    {
+        return $roles = Role::select('id as role_id', 'name as role_name')->get();
     }
     /**
      * Get all Roles as default
      *
      * @return All Roles as an array.
      */
-    public function get_roles(){
+    public function get_roles()
+    {
         return $roles = Role::all();
     }
     /**
@@ -150,11 +168,11 @@ class AllUsedFunction extends Controller
         if (is_string($dat)) {
             // \Log::debug('----- SJIJ to UTF-8 conversion completed -----');
             // $dat=str_replace("\u{00a0}", ' ', $dat);
-            if(mb_detect_encoding($dat) != "UTF-8"){
+            if (mb_detect_encoding($dat) != "UTF-8") {
                 return mb_convert_encoding($dat, "UTF-8", "sjis-win");
-                // return utf8_encode($dat);   
-            }else{
-                return mb_convert_encoding($dat,"UTF-8","auto");
+                // return utf8_encode($dat);
+            } else {
+                return mb_convert_encoding($dat, "UTF-8", "auto");
                 // return $dat;
             }
         } elseif (is_array($dat)) {
@@ -209,23 +227,27 @@ class AllUsedFunction extends Controller
      * @return  utf-8 encoded string
      */
     public static function convert_from_latin1_to_utf8_recursively($dat)
-   {
-      if (is_string($dat)) {
-         return utf8_encode($dat);
-      } elseif (is_array($dat)) {
-         $ret = [];
-         foreach ($dat as $i => $d) $ret[ $i ] = self::convert_from_latin1_to_utf8_recursively($d);
+    {
+        if (is_string($dat)) {
+            return utf8_encode($dat);
+        } elseif (is_array($dat)) {
+            $ret = [];
+            foreach ($dat as $i => $d) {
+                $ret[$i] = self::convert_from_latin1_to_utf8_recursively($d);
+            }
 
-         return $ret;
-      } elseif (is_object($dat)) {
-         foreach ($dat as $i => $d) $dat->$i = self::convert_from_latin1_to_utf8_recursively($d);
+            return $ret;
+        } elseif (is_object($dat)) {
+            foreach ($dat as $i => $d) {
+                $dat->$i = self::convert_from_latin1_to_utf8_recursively($d);
+            }
 
-         return $dat;
-      } else {
-         return $dat;
-      }
-   }
-   /**
+            return $dat;
+        } else {
+            return $dat;
+        }
+    }
+    /**
      * Change a file name from a given file name
      * @param  String File name
      * @return String formated file name
@@ -243,12 +265,13 @@ class AllUsedFunction extends Controller
      * @param  int $cmn_company_id
      * @return Array Company information
      */
-    public function get_company_list($cmn_company_id=0){
-        if($cmn_company_id!=0){
-            return $results  = cmn_company::where('cmn_company_id',$cmn_company_id)->get();
-        }else{
+    public function get_company_list($cmn_company_id = 0)
+    {
+        if ($cmn_company_id != 0) {
+            return $results = cmn_company::where('cmn_company_id', $cmn_company_id)->get();
+        } else {
             return $byr_buyer = byr_buyer::select('cmn_companies.*')
-            ->join('cmn_companies','cmn_companies.cmn_company_id','=','byr_buyers.cmn_company_id')->get();
+                ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.cmn_company_id')->get();
         }
     }
     /**
@@ -256,15 +279,16 @@ class AllUsedFunction extends Controller
      * @param  int $adm_user_id
      * @return Array Formated Company information
      */
-    public function get_user_info($adm_user_id=0){
-        $arr=array('cmn_company_id'=>0,'byr_buyer_id'=>0,'cmn_connect_id'=>0);
+    public function get_user_info($adm_user_id = 0)
+    {
+        $arr = array('cmn_company_id' => 0, 'byr_buyer_id' => 0, 'cmn_connect_id' => 0);
         \Log::info($adm_user_id);
-        if($adm_user_id!=0){
+        if ($adm_user_id != 0) {
             // \Log::info($adm_user_id);
-            $cmn_company_info = cmn_companies_user::select('byr_buyers.cmn_company_id','byr_buyers.byr_buyer_id','cmn_connects.cmn_connect_id')
-            ->join('byr_buyers', 'byr_buyers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
-            ->join('cmn_connects', 'cmn_connects.byr_buyer_id', '=', 'byr_buyers.byr_buyer_id')
-            ->where('cmn_companies_users.adm_user_id',$adm_user_id)->first();
+            $cmn_company_info = cmn_companies_user::select('byr_buyers.cmn_company_id', 'byr_buyers.byr_buyer_id', 'cmn_connects.cmn_connect_id')
+                ->join('byr_buyers', 'byr_buyers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
+                ->join('cmn_connects', 'cmn_connects.byr_buyer_id', '=', 'byr_buyers.byr_buyer_id')
+                ->where('cmn_companies_users.adm_user_id', $adm_user_id)->first();
             // \Log::info($adm_user_id);
             // \Log::info($cmn_company_info);
             if (!empty($cmn_company_info)) {
@@ -272,9 +296,9 @@ class AllUsedFunction extends Controller
                 $byr_buyer_id = $cmn_company_info->byr_buyer_id;
                 $cmn_connect_id = $cmn_company_info->cmn_connect_id;
                 $arr = array(
-                    'cmn_company_id'=>$cmn_company_id,
-                    'byr_buyer_id'=>$byr_buyer_id,
-                    'cmn_connect_id'=>$cmn_connect_id
+                    'cmn_company_id' => $cmn_company_id,
+                    'byr_buyer_id' => $byr_buyer_id,
+                    'cmn_connect_id' => $cmn_connect_id,
                 );
             }
         }
@@ -346,7 +370,7 @@ class AllUsedFunction extends Controller
         );
         return $new_array;
     }
-     /**
+    /**
      * Save Base64 image in Directory
      * @param  Object $base64_image_string Base64 Image Object
      * @param  String $output_file_without_extension File name without extension which will be returned as file name
@@ -379,34 +403,36 @@ class AllUsedFunction extends Controller
      * @param  object $base64_obj Base64 Image Object
      * @return boolean If base64 return 1 else 0
      */
-    public function itsBase64($base64_obj){
-        if(substr($base64_obj, 0,11) === 'data:image/'){     
+    public function itsBase64($base64_obj)
+    {
+        if (substr($base64_obj, 0, 11) === 'data:image/') {
             return 1;
-        }else{
+        } else {
             return 0;
         }
-     }
-     /**
+    }
+    /**
      * Check string length and add space padding after the string until desired length
      * @param  string $input desired string
      * @param  int $pad_length desired string length
      * @return string formated string with space padding added
      */
-     public function mb_str_pad($input, $pad_length)
+    public function mb_str_pad($input, $pad_length)
     {
         $len = $pad_length - mb_strlen($input);
-        if ($len<0) {
+        if ($len < 0) {
             return mb_substr($input, 0, $pad_length);
         }
-        return $input.str_repeat(' ', $len);
+        return $input . str_repeat(' ', $len);
     }
     /**
      * Get file extension from a file name
      * @param  string $file_name desired file name
      * @return string File extension
      */
-    public function ext_check($file_name){
-        $ext=\explode('.',$file_name)[1];
+    public function ext_check($file_name)
+    {
+        $ext = \explode('.', $file_name)[1];
         return $ext;
     }
     /**
@@ -414,8 +440,9 @@ class AllUsedFunction extends Controller
      * @param  string $file_name desired file name
      * @return string date string from file name
      */
-    public function header_part($file_name){
-        $header=\substr($file_name,0,8);
+    public function header_part($file_name)
+    {
+        $header = \substr($file_name, 0, 8);
         return $header;
     }
     /**
@@ -476,50 +503,93 @@ class AllUsedFunction extends Controller
      * @param  int Saller id
      * @return array buyer info
      */
-    public function get_slrs_byr_id($slr_id=null){
+    public function get_slrs_byr_id($slr_id = null)
+    {
         $byrs_info = array();
-        if ($slr_id==null) {
-            $slr_id=Auth::user()->id;
+        if ($slr_id == null) {
+            $slr_id = Auth::user()->id;
         }
         $byr_id_info = cmn_companies_user::select('byr_buyers.byr_buyer_id')
-        ->join('slr_sellers','slr_sellers.cmn_company_id','=','cmn_companies_users.cmn_company_id')
-        ->join('cmn_connects','cmn_connects.slr_seller_id','=','slr_sellers.slr_seller_id')
-        ->join('byr_buyers','byr_buyers.byr_buyer_id','=','cmn_connects.byr_buyer_id')
-        ->where('cmn_companies_users.adm_user_id',$slr_id)->first();
+            ->join('slr_sellers', 'slr_sellers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
+            ->join('cmn_connects', 'cmn_connects.slr_seller_id', '=', 'slr_sellers.slr_seller_id')
+            ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
+            ->where('cmn_companies_users.adm_user_id', $slr_id)->first();
 
-        $byrs_info = byr_buyer::select('byr_buyers.byr_buyer_id','cmn_companies_users.adm_user_id','cmn_companies.*')
-        ->join('cmn_companies_users','cmn_companies_users.cmn_company_id','=','byr_buyers.cmn_company_id')
-        ->join('cmn_companies','cmn_companies.cmn_company_id','=','cmn_companies_users.cmn_company_id')
-        ->where('byr_buyers.byr_buyer_id',$byr_id_info->byr_buyer_id)->first();
+        $byrs_info = byr_buyer::select('byr_buyers.byr_buyer_id', 'cmn_companies_users.adm_user_id', 'cmn_companies.*')
+            ->join('cmn_companies_users', 'cmn_companies_users.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
+            ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
+            ->where('byr_buyers.byr_buyer_id', $byr_id_info->byr_buyer_id)->first();
         return $byrs_info;
     }
-    public function get_byr_info_by_byr_buyer_id($byr_buyer_id=null){
+    public function get_byr_info_by_byr_buyer_id($byr_buyer_id = null)
+    {
 
-        $byrs_info = byr_buyer::select('byr_buyers.byr_buyer_id','cmn_companies_users.adm_user_id','cmn_companies.*')
-        ->join('cmn_companies_users','cmn_companies_users.cmn_company_id','=','byr_buyers.cmn_company_id')
-        ->join('cmn_companies','cmn_companies.cmn_company_id','=','cmn_companies_users.cmn_company_id');
-        if($byr_buyer_id==null){
-            $adm_user_id= Auth::user()->id;
-            $byrs_info = $byrs_info->where('cmn_companies_users.adm_user_id',$adm_user_id)->first();
-        }else{  
-            $byrs_info = $byrs_info->where('byr_buyers.byr_buyer_id',$byr_buyer_id)->first();
+        $byrs_info = byr_buyer::select('byr_buyers.byr_buyer_id', 'cmn_companies_users.adm_user_id', 'cmn_companies.*')
+            ->join('cmn_companies_users', 'cmn_companies_users.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
+            ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id');
+        if ($byr_buyer_id == null) {
+            $adm_user_id = Auth::user()->id;
+            $byrs_info = $byrs_info->where('cmn_companies_users.adm_user_id', $adm_user_id)->first();
+        } else {
+            $byrs_info = $byrs_info->where('byr_buyers.byr_buyer_id', $byr_buyer_id)->first();
         }
-       
+
         return $byrs_info;
     }
-    public function get_slr_info_by_slr_seller_id($slr_seller_id=null){
-       
-        $slrs_info = slr_seller::select('slr_sellers.slr_seller_id','cmn_companies_users.adm_user_id','cmn_companies.*')
-        ->join('cmn_companies_users','cmn_companies_users.cmn_company_id','=','slr_sellers.cmn_company_id')
-        ->join('cmn_companies','cmn_companies.cmn_company_id','=','cmn_companies_users.cmn_company_id');
-        if($slr_seller_id==null){
-            $adm_user_id= Auth::user()->id;
-            $slrs_info = $slrs_info->where('cmn_companies_users.adm_user_id',$adm_user_id)->first(); 
-        }else{
-            $slrs_info = $slrs_info->where('slr_sellers.slr_seller_id',$slr_seller_id)->first(); 
+    public function get_slr_info_by_slr_seller_id($slr_seller_id = null)
+    {
+
+        $slrs_info = slr_seller::select('slr_sellers.slr_seller_id', 'cmn_companies_users.adm_user_id', 'cmn_companies.*')
+            ->join('cmn_companies_users', 'cmn_companies_users.cmn_company_id', '=', 'slr_sellers.cmn_company_id')
+            ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id');
+        if ($slr_seller_id == null) {
+            $adm_user_id = Auth::user()->id;
+            $slrs_info = $slrs_info->where('cmn_companies_users.adm_user_id', $adm_user_id)->first();
+        } else {
+            $slrs_info = $slrs_info->where('slr_sellers.slr_seller_id', $slr_seller_id)->first();
         }
-        
+
         return $slrs_info;
+    }
+
+    /**
+     * Get user id as buyer or saller id
+     * @param  array $request_array with contain name,email,password
+     * @return array user_id
+     */
+    public function buyer_or_saller_store($request_array, $cmn_company_id = null)
+    {
+        \Log::info($request_array);
+        $returnable_user_id=null;
+        $user_exist = User::where('email', $request_array['email'])->first();
+        if ($cmn_company_id != null) {
+            $exist_buyer_email_info=cmn_companies_user::select('adm_users.email','adm_users.id as user_id')
+            ->join('adm_users','cmn_companies_users.adm_user_id','adm_users.id')
+            ->where('cmn_companies_users.cmn_company_id',$cmn_company_id)->first();
+            $exist_buyer_email=$exist_buyer_email_info->email;
+            $exist_user_id=$exist_buyer_email_info->user_id;
+            if ($exist_buyer_email!=$request_array->email) {
+                if ($user_exist) {
+                    return array('title' => "Exists!", 'message' => "exists", 'class_name' => 'error');
+                }
+            }
+            $returnable_user_id=$exist_user_id;
+            User::where('id',$exist_user_id)->update($request_array);
+        }else{
+            if ($user_exist) {
+                return array('title' => "Exists!", 'message' => "exists", 'class_name' => 'error');
+                // return response()->json(['title' => "Exists!", 'message' => "exists", 'class_name' => 'error']);
+            } else {
+                $last_user_id =  User::insertGetId($request_array);
+                $user_details = new adm_user_details;
+                $user_details->user_id = $last_user_id;
+                $user_details->save();
+                $returnable_user_id=$last_user_id;
+            }
+        }
+        return array('title' => "Inserted!", 'message' => "User Inserted", 'class_name' => 'success','returnable_user_id'=>$returnable_user_id);
+        // return response()->json(['title' => "Inserted!", 'message' => "User Inserted", 'class_name' => 'success','retunable_user_id'=>$retunable_user_id]);
+        // return $retunable_user_id;
     }
     /**
      * Get buyer info by slr id

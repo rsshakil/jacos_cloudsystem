@@ -76,7 +76,7 @@ class RoleController extends Controller
                 $roles = json_decode($roles);
                 if (empty($roles)) {
                     $role_last_id = Role::insertGetId(['name' => $role_name, 'guard_name' => 'web', 'role_description' => $role_description, 'is_system' => 0]);
-                    $this->assignPermissionToRole($role_last_id, $permissions);
+                    $this->all_used_functions->assignPermissionToRole($role_last_id, $permissions);
                     return response()->json(['alert_text' => 'created', 'class_name' => 'success','title'=>'Created!']);
                 } else {
                     return response()->json(['alert_text' =>'duplicated', 'class_name' => 'error','title'=>'Not Created!']);
@@ -91,7 +91,7 @@ class RoleController extends Controller
                 Role::where('id', $role_update_id)->update([
                     'name' => $role_name,
                     'role_description' => $role_description]);
-                $this->assignPermissionToRole($role_update_id, $permissions);
+                $this->all_used_functions->assignPermissionToRole($role_update_id, $permissions);
                 return response()->json(['alert_text' => 'updated', 'class_name' => 'success','title'=>'Updated!']);
             }
     }
@@ -113,21 +113,21 @@ class RoleController extends Controller
         }
 
     }
-    /**
-     * Assign permissions to a role.
-     *
-     * @param  int $role_id
-     * @param  array $permissions
-     * @return revoke previous permission and set new permission
-     */
-    public function assignPermissionToRole($role_id, $permissions)
-    {
+    // /**
+    //  * Assign permissions to a role.
+    //  *
+    //  * @param  int $role_id
+    //  * @param  array $permissions
+    //  * @return revoke previous permission and set new permission
+    //  */
+    // public function assignPermissionToRole($role_id, $permissions)
+    // {
        
-        $role_id = $role_id;
-        $permission_id = $permissions;
-        $role = Role::find($role_id);
-        $permission = $this->all_used_functions->get_permissions();
-        $role->revokePermissionTo($permission);
-        $role->givePermissionTo($permission_id);    
-    }
+    //     $role_id = $role_id;
+    //     $permission_id = $permissions;
+    //     $role = Role::find($role_id);
+    //     $permission = $this->all_used_functions->get_permissions();
+    //     $role->revokePermissionTo($permission);
+    //     $role->givePermissionTo($permission_id);    
+    // }
 }

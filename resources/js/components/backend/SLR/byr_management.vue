@@ -29,7 +29,7 @@
                     </div>
                     <div class="col-6">
                       <button
-                        @click="add_new_company_cmn"
+                        @click="add_new_buyer"
                         class="btn custom_right btn-primary"
                       >
                         {{ myLang.add_new }}
@@ -109,26 +109,40 @@
       :title="myLang.add_new_buyer_title"
       :ok-title="myLang.add_new"
       :cancel-title="myLang.cancel"
-      @ok.prevent="save_new_company()"
+      @ok.prevent="save_new_buyer()"
       v-model="add_cmn_company_modal"
     >
       <!-- <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
       <div class="modal-body">-->
-      <div class="panel-body add_item_body" v-can="['company_create']">
+      <div class="panel-body add_item_body">
         <form>
           <input type="hidden" v-model="form.cmn_company_id" />
           <div class="form-group row">
-            <label for="staticEmail" class="col-sm-4 col-form-label">{{
-              myLang.company_name
-            }}</label>
+            <label for="buyer_name" class="col-sm-4 col-form-label">Buyer Name</label>
             <div class="col-sm-8">
-              <input
-                type="text"
-                class="form-control"
-                :class="{ 'is-invalid': form.errors.has('company_name') }"
-                v-model="form.company_name"
-              />
+              <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('buyer_name') }" v-model="form.buyer_name"/>
+              <has-error :form="form" field="buyer_name"></has-error>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="buyer_email" class="col-sm-4 col-form-label">Email</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('buyer_email') }" v-model="form.buyer_email"/>
+              <has-error :form="form" field="buyer_email"></has-error>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="buyer_password" class="col-sm-4 col-form-label">Password</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('buyer_password') }" v-model="form.buyer_password"/>
+              <has-error :form="form" field="buyer_password"></has-error>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="staticEmail" class="col-sm-4 col-form-label">{{myLang.company_name}}</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('company_name') }" v-model="form.company_name"/>
               <has-error :form="form" field="company_name"></has-error>
             </div>
           </div>
@@ -188,6 +202,14 @@
               <has-error :form="form" field="address"></has-error>
             </div>
           </div>
+          <div class="row form-group">
+              <label for="permission_for_user" class="col-md-4 col-form-label">Select permissions</label>
+              <b-form-group>
+                  <b-form-checkbox-group id="checkbox-group" v-model="form.selected_permissions">
+                  <b-form-checkbox v-for="(permission, index) in permissions" :value="permission.permission_id" :key="index" switch>{{permission.permission_name}}</b-form-checkbox>
+                  </b-form-checkbox-group>
+              </b-form-group> 
+          </div>
         </form>
       </div>
       <!-- </div>
@@ -203,21 +225,31 @@ export default {
       company_lists: {},
       add_cmn_company_modal: false,
       editmode: false,
+      permissions: [],
       form: new Form({
-        cmn_company_id: "",
+        cmn_company_id: null,
+        buyer_name: "",
+        buyer_email: "",
+        buyer_password: "",
         company_name: "",
         jcode: "",
         super_code: "",
         postal_code: "",
         address: "",
+        selected_permissions: [],
       }),
     };
   },
   methods: {
-    add_new_company_cmn() {
+    add_new_buyer() {
       this.add_cmn_company_modal = true;
       this.editmode = false;
       this.form.reset();
+      axios.post(this.BASE_URL + "api/get_permissions_for_buyer",{byr_id:null})
+      .then(({data})=>{
+        this.permissions=data.permission_array
+        console.log(data)
+      })
     },
     edit_byr_data(form_data) {
       this.add_cmn_company_modal = true;
@@ -225,34 +257,40 @@ export default {
       this.form.reset();
       this.form.fill(form_data);
     },
-    save_new_company() {
+    save_new_buyer() {
       console.log("add new");
       this.form
-        .post(this.BASE_URL + "api/byr_company_create")
-        .then((data) => {
-          this.add_cmn_company_modal = false;
+        .post(this.BASE_URL + "api/byr_create")
+        .then(({data}) => {
+          console.log(data)
           Fire.$emit("AfterCreateCompany");
           if (this.form.cmn_company_id != "") {
-            var tittles = "Company Update success";
-            var msg_text = "You have successfully updated company";
+            if (data.class_name=='error') {
+              this.alert_text = "Buyer email duplicated";
+            }else{
+              this.add_cmn_company_modal = false;
+              this.alert_text = "You have successfully updated buyer";
+            }
           } else {
-            var tittles = "Company added success";
-            var msg_text = "You have successfully added company";
+            if (data.class_name=='error') {
+              this.alert_text = "Buyer email duplicated";
+            }else{
+              this.add_cmn_company_modal = false;
+              this.alert_text = "You have successfully added buyer";
+            }
+            
           }
-          Swal.fire({
-            icon: "success",
-            title: tittles,
-            text: msg_text,
-          });
-          console.log(data);
+          this.alert_title=data.title
+          this.alert_icon=data.class_name
+          this.sweet_normal_alert();
+          // console.log(data);
         })
         .catch((error) => {
           console.log(error);
-          Swal.fire({
-            icon: "warning",
-            title: "Invalid company info",
-            text: "check company info!",
-          });
+          this.alert_title="Invalid buyer info"
+          this.alert_icon="warning"
+          this.alert_text = "check buyer info!";
+          this.sweet_advance_alert();
         });
     },
     get_all_buyer() {

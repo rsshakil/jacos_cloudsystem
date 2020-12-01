@@ -13,6 +13,7 @@ use App\Models\BYR\byr_buyer;
 use App\Models\SLR\slr_seller;
 use App\Models\CMN\cmn_companies_user;
 use App\Models\CMN\cmn_company;
+use App\Models\CMN\cmn_connect;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -215,20 +216,68 @@ class ByrController extends Controller
 
     }
 
-    public function byr_company_create(Request $request){
+    public function byr_create(Request $request){
+        // return $request->all();
         $this->validate($request,[
+            'buyer_name' => 'required|string|max:100',
+            'buyer_email' => 'required|string|max:191',
+            'buyer_password' => 'required|string|max:191',
             'company_name' => 'required|string|max:191',
             'super_code' => 'required|string|max:20',
             'jcode' => 'required|string|min:3',
             'postal_code' => 'required|string|min:3',
             'address' => 'required|string|min:3',
         ]);
-        if($request->cmn_company_id!=null){
-            cmn_company::where('cmn_company_id',$request->cmn_company_id)->update(['company_name'=>$request->company_name,'jcode'=>$request->jcode,'postal_code'=>$request->postal_code,'address'=>$request->address]);
-            byr_buyer::where('cmn_company_id',$request->cmn_company_id)->update(['super_code'=>$request->super_code]);
+        $cmn_company_id = $request->cmn_company_id;
+        $buyer_name = $request->buyer_name;
+        $buyer_email = $request->buyer_email;
+        $buyer_password = $request->buyer_password;
+        $company_name = $request->company_name;
+        $jcode = $request->jcode;
+        $super_code = $request->super_code;
+        $postal_code = $request->postal_code;
+        $address = $request->address;
+        $selected_permissions = $request->selected_permissions;
+        $buyer_company_array=array(
+            'company_name'=>$company_name,
+            'jcode'=>$jcode,
+            'postal_code'=>$postal_code,
+            'address'=>$address
+        );
+        $user_array=array(
+            'name'=>$buyer_name,
+            'email'=>$buyer_email,
+            'password'=>Hash::make($buyer_password),
+        );
+        if($cmn_company_id!=null){
+            $adm_user_info = $this->all_used_fun->buyer_or_saller_store($user_array,$cmn_company_id);
+            if ($adm_user_info['class_name']=='error') {
+                return response()->json($adm_user_info);
+            }else{
+                $adm_user_id=$adm_user_info['returnable_user_id'];
+                cmn_company::where('cmn_company_id',$cmn_company_id)->update($buyer_company_array);
+                $adm_role_info=byr_buyer::where('cmn_company_id',$cmn_company_id)->first();
+                $adm_role_id=$adm_role_info->adm_role_id;
+                $this->all_used_fun->assignPermissionToRole($adm_role_id, $selected_permissions);
+                byr_buyer::where('cmn_company_id',$cmn_company_id)->update(['super_code'=>$super_code]);
+            }
+            
         }else{
-            $cmn_company_id = cmn_company::insertGetId(['company_name'=>$request->company_name,'jcode'=>$request->jcode,'postal_code'=>$request->postal_code,'address'=>$request->address]);
-            byr_buyer::insert(['cmn_company_id'=>$cmn_company_id,'super_code'=>$request->super_code]);
+            $adm_user_info = $this->all_used_fun->buyer_or_saller_store($user_array);
+            \Log::info($adm_user_info);
+            \Log::info($adm_user_info['class_name']);
+            // if (json_encode($adm_user_info->class_name=='error')) {
+            if ($adm_user_info['class_name']=='error') {
+                return response()->json($adm_user_info);
+            }else{
+                $adm_user_id=$adm_user_info['returnable_user_id'];
+                $role_last_id = Role::insertGetId(['name' => 'byr'.$jcode, 'guard_name' => 'web', 'role_description' => 'byr'.$jcode, 'is_system' => 0]);
+                $this->all_used_fun->assignPermissionToRole($role_last_id, $selected_permissions);
+                $cmn_company_id = cmn_company::insertGetId($buyer_company_array);
+                $buyer_last_id=byr_buyer::insertGetId(['cmn_company_id'=>$cmn_company_id,'super_code'=>$super_code,'adm_role_id'=>$role_last_id]);
+                cmn_companies_user::insert(['cmn_company_id'=>$cmn_company_id,'adm_user_id'=>$adm_user_id]);
+                cmn_connect::insert(['byr_buyer_id'=>$buyer_last_id,'slr_seller_id'=>Auth::User()->id]);
+            }
         }
         return response()->json(['title'=>"Created!",'message' =>"created", 'class_name' => 'success']);
     }

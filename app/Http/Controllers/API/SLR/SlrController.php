@@ -99,6 +99,8 @@ class SlrController extends Controller
 
             $role = Role::findById($role_id);
             $permission_array=$role->getAllPermissions();
+        }else{
+            $permission_array=Permission::select('id as permission_id','name as permission_name')->where('name','like','byr_'.'%')->get();
         }
         return response()->json(['permission_array'=>$permission_array]);
         
