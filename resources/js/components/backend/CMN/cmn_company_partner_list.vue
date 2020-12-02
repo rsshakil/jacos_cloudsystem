@@ -50,7 +50,53 @@
                     </div>
                 </div>
             </div>
+            <b-modal
+      size="lg"
+      :hide-backdrop="true"
+      title="Create Partner"
+      :ok-title="myLang.save"
+      :cancel-title="myLang.cancel"
+      v-model="partner_create_modal"
+    >
+    <!-- @ok.prevent="create_new_user()" -->
+      <!-- <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+      <div class="modal-body">-->
+      <div class="panel-body add_item_body">
+        <form>
+          <div class="form-group row">
+    <label for="name" class="col-sm-2 col-form-label">{{myLang.name}}</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('name') }" v-model="form.name">
+      <has-error :form="form" field="name"></has-error>
+    </div>
   </div>
+   <!--<div class="form-group row">
+    <label for="name" class="col-sm-2 col-form-label">Super code</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('super_code') }" v-model="form.super_code">
+      <has-error :form="form" field="super_code"></has-error>
+    </div>
+  </div>-->
+  <div class="form-group row">
+    <label for="staticEmail" class="col-sm-2 col-form-label">{{myLang.email}}</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('email') }" v-model="form.email">
+      <has-error :form="form" field="email"></has-error>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="inputPassword" class="col-sm-2 col-form-label">{{myLang.password}}</label>
+    <div class="col-sm-10">
+      <input type="password" class="form-control" :class="{ 'is-invalid': form.errors.has('password') }" placeholder="Password" v-model="form.password">
+      <has-error :form="form" field="password"></has-error>
+    </div>
+  </div>
+        </form>
+      </div>
+    </b-modal>
+  </div>
+  
 </template>
 <script>
 import tabList from '../tabList'
@@ -62,6 +108,7 @@ tabList,
 },
   data() {
     return {
+      partner_create_modal:false,
         'company_partner_lists':{},
         'cmn_company_id':'',
     };
