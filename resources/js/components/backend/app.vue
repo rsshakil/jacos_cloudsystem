@@ -30,7 +30,7 @@
 <script>
 import navbar from './DFLT/navbar'
 import sidebar from './DFLT/side_bar'
-import projectfooter from './project_footer'
+import projectfooter from './DFLT/footer'
 export default {
 name:'app',
 components:{
