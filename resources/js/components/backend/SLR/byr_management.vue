@@ -118,7 +118,7 @@
       <div class="panel-body add_item_body">
         <form>
           <input type="hidden" v-model="form.cmn_company_id" />
-          <div class="form-group row">
+          <!-- <div class="form-group row">
             <label for="buyer_name" class="col-sm-4 col-form-label">Buyer Name</label>
             <div class="col-sm-8">
               <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('buyer_name') }" v-model="form.buyer_name"/>
@@ -138,7 +138,7 @@
               <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('buyer_password') }" v-model="form.buyer_password"/>
               <has-error :form="form" field="buyer_password"></has-error>
             </div>
-          </div>
+          </div> -->
           <div class="form-group row">
             <label for="staticEmail" class="col-sm-4 col-form-label">{{myLang.company_name}}</label>
             <div class="col-sm-8">
@@ -228,9 +228,9 @@ export default {
       permissions: [],
       form: new Form({
         cmn_company_id: null,
-        buyer_name: "",
-        buyer_email: "",
-        buyer_password: "",
+        // buyer_name: "",
+        // buyer_email: "",
+        // buyer_password: "",
         company_name: "",
         jcode: "",
         super_code: "",
@@ -245,13 +245,20 @@ export default {
       this.add_cmn_company_modal = true;
       this.editmode = false;
       this.form.reset();
-      axios.post(this.BASE_URL + "api/get_permissions_for_buyer",{byr_id:null})
+      axios.post(this.BASE_URL + "api/get_permissions_for_buyer",{cmn_company_id:null})
       .then(({data})=>{
         this.permissions=data.permission_array
-        console.log(data)
+        // console.log(data)
       })
     },
     edit_byr_data(form_data) {
+      // console.log(form_data);
+      var cmn_company_id=form_data.cmn_company_id
+      axios.post(this.BASE_URL + "api/get_permissions_for_buyer",{cmn_company_id:cmn_company_id})
+      .then(({data})=>{
+        // this.permissions=data.permission_array
+        console.log(data)
+      })
       this.add_cmn_company_modal = true;
       this.editmode = true;
       this.form.reset();
@@ -260,25 +267,16 @@ export default {
     save_new_buyer() {
       console.log("add new");
       this.form
-        .post(this.BASE_URL + "api/byr_create")
+        .post(this.BASE_URL + "api/create_buyer")
         .then(({data}) => {
           console.log(data)
           Fire.$emit("AfterCreateCompany");
           if (this.form.cmn_company_id != "") {
-            if (data.class_name=='error') {
-              this.alert_text = "Buyer email duplicated";
-            }else{
               this.add_cmn_company_modal = false;
               this.alert_text = "You have successfully updated buyer";
-            }
           } else {
-            if (data.class_name=='error') {
-              this.alert_text = "Buyer email duplicated";
-            }else{
               this.add_cmn_company_modal = false;
               this.alert_text = "You have successfully added buyer";
-            }
-            
           }
           this.alert_title=data.title
           this.alert_icon=data.class_name
@@ -286,30 +284,28 @@ export default {
           // console.log(data);
         })
         .catch((error) => {
-          console.log(error);
-          this.alert_title="Invalid buyer info"
+          // console.log(error);
+          this.alert_title="Invalid company info"
           this.alert_icon="warning"
-          this.alert_text = "check buyer info!";
+          this.alert_text = "check company info!";
           this.sweet_advance_alert();
         });
     },
-    get_all_buyer() {
+    get_all_company() {
       console.log(Globals.user_info_id);
-      axios
-        .get(
-          this.BASE_URL + "api/get_all_byr_company_list/" + Globals.user_info_id
-        )
-        .then(({data}) => {
-          this.company_lists = data.company_list;
-          console.log(this.company_lists);
+      axios.get(
+          this.BASE_URL + "api/get_all_company_list/" + Globals.user_info_id
+        ).then(({data}) => {
+          this.company_lists = data.companies;
+          // console.log(this.company_lists);
         });
     },
   },
 
   created() {
-    this.get_all_buyer();
+    this.get_all_company();
     Fire.$on("AfterCreateCompany", () => {
-      this.get_all_buyer();
+      this.get_all_company();
     });
     console.log("created jacos management log");
   },

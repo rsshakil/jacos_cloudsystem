@@ -557,37 +557,75 @@ class AllUsedFunction extends Controller
      * @param  array $request_array with contain name,email,password
      * @return array user_id
      */
-    public function buyer_or_saller_store($request_array, $cmn_company_id = null)
+    public function buyer_or_saller_user_store($request)
     {
-        \Log::info($request_array);
-        $returnable_user_id=null;
-        $user_exist = User::where('email', $request_array['email'])->first();
-        if ($cmn_company_id != null) {
-            $exist_buyer_email_info=cmn_companies_user::select('adm_users.email','adm_users.id as user_id')
-            ->join('adm_users','cmn_companies_users.adm_user_id','adm_users.id')
-            ->where('cmn_companies_users.cmn_company_id',$cmn_company_id)->first();
-            $exist_buyer_email=$exist_buyer_email_info->email;
-            $exist_user_id=$exist_buyer_email_info->user_id;
-            if ($exist_buyer_email!=$request_array->email) {
+        $name = $request->name;
+        $email = $request->email;
+        $password = $request->password;
+        $adm_user_id = $request->adm_user_id;
+
+        $user_array=array(
+            'name'=>$name,
+            'email'=>$email,
+            'password'=>Hash::make($password),
+        );
+
+        $user_exist = User::where('email', $email)->first();
+        if ($adm_user_id !=null) {
+            $exist_user_info = User::where('id', $adm_user_id)->first();
+            if ($exist_user_info->email != $email) {
                 if ($user_exist) {
-                    return array('title' => "Exists!", 'message' => "exists", 'class_name' => 'error');
+                    return array('title'=>"Exists!",'message' =>"exists", 'class_name' => 'error');
+                    // return response()->json(['title'=>"Exists!",'message' =>"exists", 'class_name' => 'error']);
                 }
             }
-            $returnable_user_id=$exist_user_id;
-            User::where('id',$exist_user_id)->update($request_array);
+            if ($password==null) {
+                $user_array['password']=$exist_user_info->password;
+            }
+            User::where('id',$adm_user_id)->update($user_array);
+            return array('title'=>"Updated!",'message' =>"updated", 'class_name' => 'success');
+            // return response()->json(['title'=>"Updated!",'message' =>"updated", 'class_name' => 'success']);
         }else{
             if ($user_exist) {
-                return array('title' => "Exists!", 'message' => "exists", 'class_name' => 'error');
-                // return response()->json(['title' => "Exists!", 'message' => "exists", 'class_name' => 'error']);
+                return array('title'=>"Exists!",'message' =>"exists", 'class_name' => 'error');
+                // return response()->json(['title'=>"Exists!",'message' =>"exists", 'class_name' => 'error']);
             } else {
-                $last_user_id =  User::insertGetId($request_array);
-                $user_details = new adm_user_details;
-                $user_details->user_id = $last_user_id;
-                $user_details->save();
-                $returnable_user_id=$last_user_id;
+                
+                $last_user_id=User::insertGetId($user_array);
+                adm_user_details::insert(['user_id'=>$last_user_id]);
             }
+            return array('title'=>"Created!",'message' =>"created", 'class_name' => 'success','last_user_id'=>$last_user_id);
+            // return response()->json(['title'=>"Created!",'message' =>"created", 'class_name' => 'success']);
         }
-        return array('title' => "Inserted!", 'message' => "User Inserted", 'class_name' => 'success','returnable_user_id'=>$returnable_user_id);
+        // \Log::info($request_array);
+        // $returnable_user_id=null;
+        // $user_exist = User::where('email', $request_array['email'])->first();
+        // if ($cmn_company_id != null) {
+        //     $exist_buyer_email_info=cmn_companies_user::select('adm_users.email','adm_users.id as user_id')
+        //     ->join('adm_users','cmn_companies_users.adm_user_id','adm_users.id')
+        //     ->where('cmn_companies_users.cmn_company_id',$cmn_company_id)->first();
+        //     $exist_buyer_email=$exist_buyer_email_info->email;
+        //     $exist_user_id=$exist_buyer_email_info->user_id;
+        //     if ($exist_buyer_email!=$request_array->email) {
+        //         if ($user_exist) {
+        //             return array('title' => "Exists!", 'message' => "exists", 'class_name' => 'error');
+        //         }
+        //     }
+        //     $returnable_user_id=$exist_user_id;
+        //     User::where('id',$exist_user_id)->update($request_array);
+        // }else{
+        //     if ($user_exist) {
+        //         return array('title' => "Exists!", 'message' => "exists", 'class_name' => 'error');
+        //         // return response()->json(['title' => "Exists!", 'message' => "exists", 'class_name' => 'error']);
+        //     } else {
+        //         $last_user_id =  User::insertGetId($request_array);
+        //         $user_details = new adm_user_details;
+        //         $user_details->user_id = $last_user_id;
+        //         $user_details->save();
+        //         $returnable_user_id=$last_user_id;
+        //     }
+        // }
+        // return array('title' => "Inserted!", 'message' => "User Inserted", 'class_name' => 'success','returnable_user_id'=>$returnable_user_id);
         // return response()->json(['title' => "Inserted!", 'message' => "User Inserted", 'class_name' => 'success','retunable_user_id'=>$retunable_user_id]);
         // return $retunable_user_id;
     }

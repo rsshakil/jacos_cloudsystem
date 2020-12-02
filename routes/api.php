@@ -75,17 +75,17 @@ Route::post('scenario_exec', 'API\Cmn_ScenarioController@exec');
 Route::post('job_exec', 'API\Cmn_jobController@exec');
 Route::get('/slr_job_list_by_seller_id/{slr_seller_id}', 'API\Cmn_jobController@slr_job_list_by_seller_id');
 
-Route::get('/company_user_list/{cmn_company_id}', 'API\BYR\ByrController@company_user_list');
+Route::get('/get_buyer_user_list/{cmn_company_id?}', 'API\BYR\ByrController@get_buyer_user_list');
 // Route::get('/company_seller_user_list/{cmn_company_id}', 'API\BYR\ByrController@company_seller_user_list');
 Route::get('/company_partner_list/{byr_buyer_id}', 'API\BYR\ByrController@company_partner_list');
 Route::get('/get_scenario_list', 'API\Cmn_ScenarioController@get_scenario_list');
 Route::get('/slr_management/{adm_user_id}', 'API\BYR\ByrController@slr_management');
 Route::get('/get_byr_order_list/{adm_user_id}', 'API\Byr_orderController@get_byr_order_list');
-Route::get('/get_all_byr_company_list/{adm_user_id}', 'API\BYR\ByrController@get_all_byr_company_list');
+Route::get('/get_all_company_list/{adm_user_id}', 'API\BYR\ByrController@get_all_company_list');
 Route::post('/update_shipment_detail', 'API\Byr_orderController@update_shipment_detail');
-Route::post('/byr_buyer_user_create', 'API\BYR\ByrController@byr_buyer_user_create');
+Route::post('/buyer_user_create', 'API\BYR\ByrController@buyer_user_create');
 Route::post('/slr_seller_user_create', 'API\BYR\ByrController@slr_seller_user_create');
-Route::post('/byr_create', 'API\BYR\ByrController@byr_create');
+Route::post('/create_buyer', 'API\BYR\ByrController@createBuyer');
 Route::post('/slr_company_create', 'API\BYR\ByrController@slr_company_create');
 Route::post('/get_byr_info_by_byr_order_id', 'API\Byr_orderController@get_byr_info_by_byr_order_id');
 Route::get('/dispaly_col_by_user/{url_slug}/{user_id}', 'API\Tbl_col_settingController@dispaly_col_by_user');
@@ -113,7 +113,7 @@ Route::post('/load_canvas_data', 'API\Byr_orderController@canvasAllData');
 Route::post('/delete_canvas', 'API\Byr_orderController@deleteCanvasData');
 Route::post('/shipment_csv_create', 'API\ShipmentConroller@shipmentCSVCreate');
 
-Route::post('/get_permissions_for_buyer', 'API\SLR\SlrController@getPermissionForBuyer');
+Route::post('/get_permissions_for_buyer', 'API\BYR\ByrController@getPermissionForBuyer');
 // Route::post('/order_create_fixed_length', 'API\BmsOrderController@orderCreateDeleteFixedLength');
 // Route::post('/delete_old_files', 'API\BmsOrderController@orderCreateDeleteFixedLength');
 
