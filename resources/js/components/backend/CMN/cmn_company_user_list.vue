@@ -7,11 +7,11 @@
         </h4>
       </div>
 
-      <div class="col-3"></div>
-      <div class="col-6">
+      <div class="col-2"></div>
+      <div class="col-8">
         <tabList></tabList>
       </div>
-      <div class="col-3"></div>
+      <div class="col-2"></div>
 
       <div class="col-12">
         <div class="">
@@ -139,7 +139,7 @@ export default {
   },
   data() {
     return {
-      save_button:"Save",
+      save_button:"",
       buyer_user_lists: {},
       cmn_company_id: "",
       // password_field: true,
@@ -165,7 +165,7 @@ export default {
       this.form.reset();
       this.form.cmn_company_id = this.cmn_company_id;
       this.user_create_modal = true;
-      this.save_button="Save";
+      this.save_button=this.myLang.add_new;
       // this.password_field = true;
     },
     create_new_user() {
@@ -200,7 +200,7 @@ export default {
       this.form.name = user.name;
       this.form.email = user.email;
       this.form.password = null;
-      this.save_button="Update";
+      this.save_button=this.myLang.update;
       // this.password_field = false;
       this.user_create_modal = true;
     },

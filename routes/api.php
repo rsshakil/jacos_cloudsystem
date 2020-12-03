@@ -114,6 +114,8 @@ Route::post('/delete_canvas', 'API\Byr_orderController@deleteCanvasData');
 Route::post('/shipment_csv_create', 'API\ShipmentConroller@shipmentCSVCreate');
 
 Route::post('/get_permissions_for_buyer', 'API\BYR\ByrController@getPermissionForBuyer');
+Route::post('/get_seller_list', 'API\BYR\ByrController@getSellerList');
+Route::post('/buyer_partner_create', 'API\BYR\ByrController@buyerPartnerCreate');
 // Route::post('/order_create_fixed_length', 'API\BmsOrderController@orderCreateDeleteFixedLength');
 // Route::post('/delete_old_files', 'API\BmsOrderController@orderCreateDeleteFixedLength');
 

@@ -106,8 +106,8 @@
     <b-modal
       size="md"
       :hide-backdrop="true"
-      :title="myLang.add_new_buyer_title"
-      :ok-title="myLang.add_new"
+      :title="user_create_title"
+      :ok-title="create_update_button"
       :cancel-title="myLang.cancel"
       @ok.prevent="save_new_buyer()"
       v-model="add_cmn_company_modal"
@@ -224,6 +224,8 @@ export default {
     return {
       company_lists: {},
       add_cmn_company_modal: false,
+      user_create_title:'',
+      create_update_button:'',
       editmode: false,
       permissions: [],
       form: new Form({
@@ -242,6 +244,8 @@ export default {
   },
   methods: {
     add_new_buyer() {
+      this.user_create_title=this.myLang.add_new_buyer_title,
+      this.create_update_button=this.myLang.add_new,
       this.add_cmn_company_modal = true;
       this.editmode = false;
       this.form.reset();
@@ -256,9 +260,15 @@ export default {
       var cmn_company_id=form_data.cmn_company_id
       axios.post(this.BASE_URL + "api/get_permissions_for_buyer",{cmn_company_id:cmn_company_id})
       .then(({data})=>{
-        // this.permissions=data.permission_array
-        console.log(data)
+        this.permissions=data.permission_array
+        var sp_array=[];
+        (data.selected_permission_array).forEach(element => {
+          sp_array.push(element.id)
+        });
+        this.form.selected_permissions=sp_array;
       })
+      this.user_create_title="Update Buyer",
+      this.create_update_button=this.myLang.update,
       this.add_cmn_company_modal = true;
       this.editmode = true;
       this.form.reset();
