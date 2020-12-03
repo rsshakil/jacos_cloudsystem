@@ -85,7 +85,7 @@ class ByrController extends Controller
         ->join('cmn_connects', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
         ->join('slr_sellers', 'slr_sellers.slr_seller_id', '=', 'cmn_connects.slr_seller_id')
         ->join('cmn_companies', 'slr_sellers.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
-        ->select('slr_sellers.slr_seller_id','cmn_connects.byr_buyer_id','byr_buyers.super_code', 'cmn_companies.company_name', 'cmn_companies.jcode','cmn_connects.partner_code','cmn_connects.is_active', 'slr_sellers.slr_seller_id')
+        ->select('slr_sellers.slr_seller_id','cmn_connects.byr_buyer_id','cmn_connects.cmn_connect_id','byr_buyers.super_code', 'cmn_companies.company_name', 'cmn_companies.jcode','cmn_connects.partner_code','cmn_connects.is_active', 'slr_sellers.slr_seller_id')
         ->where('byr_buyers.cmn_company_id',$cmn_company_id)
         ->get();
         return response()->json(['partner_list'=>$result]); 
@@ -191,19 +191,50 @@ class ByrController extends Controller
 
     public function getSellerList(Request $request){
         // return $request->all();
-        $cmn_company_id=$request->cmn_company_id;
+        $cmn_connect_id=$request->cmn_connect_id;
         $selected_sellers=array();
         $seller_query=cmn_company::select('slr_sellers.slr_seller_id','cmn_companies.cmn_company_id','cmn_companies.company_name as seller_name','cmn_companies.jcode')
         ->join('slr_sellers','slr_sellers.cmn_company_id','=','cmn_companies.cmn_company_id');
         $sellers=$seller_query->get();
-        if ($cmn_company_id!=null) {
-            $selected_sellers=$sellers=$seller_query->where('slr_sellers.cmn_company_id',$cmn_company_id)->get();
+        if ($cmn_connect_id!=null) {
+            $selected_sellers=$seller_query->join('cmn_connects','cmn_connects.slr_seller_id','=','slr_sellers.slr_seller_id')
+            ->where('cmn_connects.cmn_connect_id',$cmn_connect_id)->first();
+            // $sellers=$seller_query;
         }
         return response()->json(['sellers'=>$sellers,'selected_sellers'=>$selected_sellers]); 
     }
 
     public function buyerPartnerCreate(Request $request){
-        return $request->all();
+        
+        $this->validate($request,[
+            'cmn_company_id' => 'required|integer',
+            'partner_code' => 'required',
+            'selected_sellers' => 'required|array'
+        ]);
+        // return $request->all();
+        $cmn_company_id=$request->cmn_company_id;
+        $cmn_connect_id=$request->cmn_connect_id;
+        $partner_code=$request->partner_code;
+        $selected_sellers=$request->selected_sellers;
+        $slr_seller_id=$selected_sellers['slr_seller_id'];
+
+        $buyer_id_info=byr_buyer::select('byr_buyer_id')->where('cmn_company_id',$cmn_company_id)->first();
+        $byr_buyer_id=$buyer_id_info->byr_buyer_id;
+
+        $partner_array=array(
+            'byr_buyer_id'=>$byr_buyer_id,
+            'partner_code'=>$partner_code,
+            'slr_seller_id'=>$slr_seller_id,
+            'is_active'=>1,
+        );
+        if ($cmn_connect_id!=null) {
+            cmn_connect::where('cmn_connect_id',$cmn_connect_id)->update($partner_array);
+            return response()->json(['title'=>"Updated!",'message' =>"updated", 'class_name' => 'success']);
+        }else{
+            cmn_connect::insert($partner_array);
+            return response()->json(['title'=>"Created!",'message' =>"created", 'class_name' => 'success']);
+        }
+
     }
 
 

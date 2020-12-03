@@ -31,13 +31,14 @@
                 <th style="cursor: pointer">{{ myLang.wholesaler_code }}</th>
                 <th style="cursor: pointer">{{ myLang.customer_code }}</th>
                 <th style="cursor: pointer">{{ myLang.status }}</th>
+                <th style="cursor: pointer">Edit</th>
                 <th style="cursor: pointer">{{ myLang.details }}</th>
               </tr>
             </thead>
             <tbody>
               <tr
                 v-for="(value, index) in company_partner_lists"
-                :key="value.slr_seller_id"
+                :key="index"
               >
                 <td>{{ index + 1 }}</td>
                 <td>{{ value.company_name }}</td>
@@ -52,6 +53,12 @@
                     <option :value="1">{{ myLang.status_in_operation }}</option>
                     <option :value="0">{{ myLang.status_operation }}</option>
                   </select>
+                </td>
+                <td>
+                  <button class="btn pull-right text-right btn-warning" style="float: right"
+                  @click="new_partner_update_modal(value)">
+                    Edit
+                  </button>
                 </td>
                 <td>
                   <router-link
@@ -90,7 +97,7 @@
           <div class="form-group row">
             <label for="j_code" class="col-sm-3 col-form-label">J Code</label>
             <div class="col-sm-9">
-              <multiselect v-model="form.selected_sellers" id="j_code" placeholder="Jcode" label="jcode" track-by="slr_seller_id" :options="sellers" :multiple="false" :close-on-select="true" :clear-on-select="false" :preserve-search="true" open-direction="bottom"></multiselect>
+              <multiselect v-model="form.selected_sellers" id="j_code" placeholder="Jcode" label="jcode" track-by="slr_seller_id" :options="sellers" :multiple="false" :close-on-select="true" :clear-on-select="false" :preserve-search="true" open-direction="bottom" ></multiselect>
               <has-error :form="form" field="jan_code"></has-error>
             </div>
           </div>
@@ -129,18 +136,20 @@ export default {
       sellers:[],
       form: new Form({
         partner_code: "",
-        selected_sellers: "",
-        cmn_company_id: this.cmn_company_id,
+        selected_sellers: [],
+        cmn_company_id: null,
+        cmn_connect_id: null,
       }),
     };
   },
   methods: {
-    get_all_partner_users() {
+    company_partner_list() {
       axios
         .get(this.BASE_URL + "api/company_partner_list/" + this.cmn_company_id)
-        .then((data) => {
-          this.company_partner_lists = data.data.partner_list;
-          console.log(this.company_partner_lists);
+        .then(({data}) => {
+          // console.log(data)
+          this.company_partner_lists = data.partner_list;
+          // console.log(this.company_partner_lists);
         });
     },
     new_partner_create_modal() {
@@ -148,26 +157,56 @@ export default {
       this.form.cmn_company_id = this.cmn_company_id;
       this.partner_create_modal = true;
       this.save_button=this.myLang.add_new;
-      axios.post(this.BASE_URL + "api/get_seller_list",{cmn_company_id:null})
+      axios.post(this.BASE_URL + "api/get_seller_list",{cmn_connect_id:null})
       .then(({data})=>{
         this.sellers=data.sellers
-        console.log(data)
       })
-      // this.password_field = true;
     },
     create_new_partner(){
       this.form
         .post(this.BASE_URL + "api/buyer_partner_create")
         .then(({ data }) => {
-          console.log(data)
-        })
+          // console.log(data)
+          if (data.message == "created") {
+            this.partner_create_modal = false;
+            this.alert_text = "You have successfully added partner";
+            this.company_partner_list();
+          } else if (data.message == "updated") {
+            this.partner_create_modal = false;
+            this.alert_text = "You have successfully updated partner";
+            this.company_partner_list();
+          } else {
+            this.alert_text = "Some Error";
+          }
+          this.alert_title = data.title;
+          this.alert_icon = data.class_name;
+          this.sweet_normal_alert();
+        }).catch((error) => {
+          this.alert_text = error;
+          this.sweet_advance_alert();
+        });
       
-    }
+    },
+    new_partner_update_modal(value){
+      // console.log(value)
+      axios.post(this.BASE_URL + "api/get_seller_list",{cmn_connect_id:value.cmn_connect_id})
+      .then(({data})=>{
+        // console.log(data);
+        this.sellers=data.sellers
+        this.form.selected_sellers=data.selected_sellers;
+        this.form.partner_code=value.partner_code;
+        this.form.cmn_company_id=this.cmn_company_id;
+        this.form.cmn_connect_id=value.cmn_connect_id;
+        this.save_button=this.myLang.update;
+        this.partner_create_modal = true;
+      })
+      
+    },
   },
 
   created() {
     this.cmn_company_id = this.$route.params.cmn_company_id;
-    this.get_all_partner_users();
+    this.company_partner_list();
     console.log("created jacos management log");
   },
   mounted() {
