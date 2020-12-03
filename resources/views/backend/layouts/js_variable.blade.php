@@ -280,6 +280,12 @@ var Globals = <?php echo json_encode(array(
     'category_modal_title' => __('master_management.category_modal_title'),
     'select_parent_category' => __('master_management.select_parent_category'),
     'select_category' => __('master_management.select_category'),
+    //job management
+    'byr_company_name'=>__('job_management.byr_company_name'),
+    'slr_company_name'=>__('job_management.slr_company_name'),
+    'byr_super_code'=>__('job_management.byr_super_code'),
+    'slr_jcode'=>__('job_management.slr_jcode'),
+    'job_management_heading'=>__('job_management.job_management_heading'),
 
 )); ?>;
 </script>
