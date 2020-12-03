@@ -138,6 +138,7 @@ var Globals = <?php echo json_encode(array(
     'assign_permission_to_user' => __('menu.assign_permission_to_user'),
     'manage_users' => __('menu.manage_users'),
     'new_notice' => __('menu.new_notice'),
+    'job_management' => __('menu.job_management'),
     // Management
     'management' => __('menu.management'),
     'order_list' => __('menu.order_list'),

@@ -29,4 +29,5 @@ return [
     'pdf_platform' => 'PDFプラットフォーム',
     'pdf_platform_setting' => 'PDFプラットフォーム設定',
     'pdf_platform_show' => 'PDFプラットフォーム公演',
+    'job_management'=>'仕事の管理'
 ];

@@ -16,7 +16,8 @@ import byr_management from './components/backend/SLR/byr_management.vue'
 import byr_management_edit from './components/backend/SLR/byr_management_edit.vue'
 import cmn_company_user_list from './components/backend/CMN/cmn_company_user_list.vue'
 import cmn_company_partner_list from './components/backend/CMN/cmn_company_partner_list.vue'
-import scenario_management from './components/backend/scenario_management.vue'
+import scenario_management from './components/backend/JACOS_MANAGEMENT/scenario_management.vue'
+import job_management from './components/backend/JACOS_MANAGEMENT/job_management.vue'
 import slr_management from './components/backend/SLR/slr_management.vue'
 import slr_job_list from './components/backend/SLR/slr_job_list.vue'
 import company_seller_user_list from './components/backend/CMN/cmn_company_seller_user_list.vue'
@@ -131,6 +132,17 @@ export const routes = [
             path: '/',
             component: scenario_management,
             name: 'scenario_management'
+        }, ]
+
+    },
+    {
+        path: '/job_management',
+        component: default_parent,
+        meta: { breadcrumb: '仕事の管理' },
+        children: [{
+            path: '/',
+            component: job_management,
+            name: 'job_management'
         }, ]
 
     },
