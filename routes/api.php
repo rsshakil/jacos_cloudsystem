@@ -148,6 +148,7 @@ Route::post('schedule_time_data', 'API\Level3\Level3Controller@scheduleTimeData'
 Route::post('get_service_data', 'API\Level3\Level3Controller@getServiceData');
 Route::post('history_create', 'API\Level3\Level3Controller@historyCreate');
 Route::post('job_scenario', 'API\Level3\Level3Controller@jobScenario');
+Route::get('slr_job_list_all', 'API\Cmn_jobController@index');
 
 // Route::post('schedule_file_data', 'API\Level3\Level3Controller@setScheduleFileData');
 

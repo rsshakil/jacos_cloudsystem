@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\CMN\cmn_job;
+use App\Models\BYR\byr_buyer;
+use App\Models\SLR\slr_seller;
+use App\Models\CMN\cmn_company;
 use App\Models\ADM\User;
 use DB;
 use Auth;
@@ -20,7 +23,22 @@ class Cmn_jobController extends Controller
      */
     public function index()
     {
-        //
+        // $byr_company_list = byr_buyer::get()->byr_company;
+        $byr_company_list = byr_buyer::select('byr_buyers.super_code','cmn_companies.company_name','cmn_companies.cmn_company_id')
+        ->join('cmn_companies','cmn_companies.cmn_company_id','=','byr_buyers.cmn_company_id')->get();
+        $slr_company_list = slr_seller::select('cmn_companies.company_name','cmn_companies.jcode','cmn_companies.cmn_company_id')
+        ->join('cmn_companies','cmn_companies.cmn_company_id','=','slr_sellers.cmn_company_id')->get();
+
+        $job_list = cmn_job::select('cmn_jobs.*','cmn_scenarios.*','cmn_companies.company_name as byr_company','byr_buyers.super_code','slr_companies.company_name as slr_company','slr_companies.jcode')
+        ->join('cmn_scenarios', 'cmn_jobs.cmn_scenario_id', '=', 'cmn_scenarios.cmn_scenario_id')
+        ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'cmn_jobs.cmn_connect_id')
+        ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
+        ->join('slr_sellers', 'slr_sellers.slr_seller_id', '=', 'cmn_connects.slr_seller_id')
+        ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
+        ->join('cmn_companies as slr_companies', 'slr_companies.cmn_company_id', '=', 'slr_sellers.cmn_company_id')
+        
+        ->get();
+        return response()->json(['job_list'=>$job_list,'byr_company_list'=>$byr_company_list,'slr_company_list'=>$slr_company_list]);
     }
 
     /**
