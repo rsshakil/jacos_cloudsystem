@@ -31,6 +31,12 @@
                   {{ myLang.wholesaler_management }}
                 </router-link>
               </li>
+              <li class="nav-item" v-can="['scenario_management']">
+                <router-link to="/job_management" class="nav-link">
+                  <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
+                  {{ myLang.job_management }}
+                </router-link>
+              </li>
             <li class="nav-item" v-can="['scenario_management']">
                 <router-link to="/scenario_management" class="nav-link">
                   <b-icon icon="card-checklist" font-scale="1.2"></b-icon>

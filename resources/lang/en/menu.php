@@ -29,4 +29,5 @@ return [
     'pdf_platform' => 'PDF Platform',
     'pdf_platform_setting' => 'PDF Platform Settings',
     'pdf_platform_show' => 'PDF Platform Show',
+    'job_management'=>'Job management'
 ];
