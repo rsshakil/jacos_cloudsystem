@@ -15,6 +15,9 @@ export default {
             selected_columns: [],
             col_lists: [],
             buyer_info_for_saller: [],
+            filter_select_box: false,
+            buyers: [],
+            selected_buyer: [],
             // loader: "",
         };
     },
@@ -205,6 +208,21 @@ export default {
             Fire.$emit('byr_has_selected', byr_buyer_id);
             Fire.$emit('permission_check_for_buyer', byr_buyer_id);
         },
+        get_byr_slr_company(cmn_company_id) {
+            if (cmn_company_id == null) {
+                this.filter_select_box = true
+                    // var company_info=this.get_byr_slr_company(this.cmn_company_id);
+                axios
+                    .get(this.BASE_URL + "api/get_byr_slr_company/" + this.cmn_company_id)
+                    .then(({ data }) => {
+                        this.buyers = data.buyer_info;
+                        this.selected_buyer = this.buyers[0]
+                        Fire.$emit('company_partner_list_emit', this.buyers[0].cmn_company_id);
+                        Fire.$emit('get_all_company_users_emit', this.buyers[0].cmn_company_id);
+                        // console.log(data)
+                    });
+            }
+        }
     },
     filters: {
 

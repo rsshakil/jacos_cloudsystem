@@ -13,8 +13,12 @@
           >
           <div class="collapse" id="admmenu1" aria-expanded="false">
             <ul class="flex-column pl-2 nav">
-
-       
+              <li class="nav-item" v-can="['manage_user_menu']">
+                <router-link to="/users" class="nav-link">
+                  <b-icon icon="person-circle" font-scale="1.2"></b-icon>
+                  {{ myLang.manage_users }}
+                </router-link>
+              </li>
               <li class="nav-item" v-can="['role_menu']">
                 <router-link to="/role" class="nav-link">
                   <b-icon icon="person-check-fill" font-scale="1.2"></b-icon>

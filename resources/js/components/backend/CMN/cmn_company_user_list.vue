@@ -9,7 +9,7 @@
 
       <div class="col-2"></div>
       <div class="col-8">
-        <tabList></tabList>
+        <!-- <tabList></tabList> -->
       </div>
       <div class="col-2"></div>
 
@@ -26,6 +26,24 @@
                   >
                     {{ myLang.add_new }}
                   </button>
+                </th>
+              </tr>
+              <tr v-if="filter_select_box">
+                <th colspan="2">
+                  <multiselect
+                    v-model="selected_buyer"
+                    id="buyer_name"
+                    placeholder="Select Buyer"
+                    label="buyer_name"
+                    track-by="cmn_company_id"
+                    :options="buyers"
+                    :multiple="false"
+                    :close-on-select="true"
+                    :clear-on-select="false"
+                    :preserve-search="true"
+                    open-direction="bottom"
+                    @select="user_filter_by_buyer"
+                  ></multiselect>
                 </th>
               </tr>
               <tr>
@@ -131,17 +149,18 @@
   </div>
 </template>
 <script>
-import tabList from "../tabList";
+// import tabList from "../CMN/tabList";
 export default {
   name: "app",
   components: {
-    tabList,
+    // tabList,
   },
   data() {
     return {
       save_button:"",
       buyer_user_lists: {},
       cmn_company_id: "",
+      // selected_buyer:[],
       // password_field: true,
       user_create_modal: false,
       form: new Form({
@@ -160,6 +179,12 @@ export default {
         .then(({ data }) => {
           this.buyer_user_lists = data.user_list;
         });
+    },
+    user_filter_by_buyer(value){
+      // console.log(value);
+      this.cmn_company_id=value.cmn_company_id;
+      this.get_all_company_users();
+      // console.log(value)
     },
     new_user_create_modal() {
       this.form.reset();
@@ -211,6 +236,11 @@ export default {
     this.form.cmn_company_id = this.$route.params.cmn_company_id;
 
     this.get_all_company_users();
+    this.get_byr_slr_company(this.cmn_company_id)
+    Fire.$on("get_all_company_users_emit", (cmn_company_id) => {
+      this.cmn_company_id=cmn_company_id;
+        this.get_all_company_users();
+    });
     Fire.$on("AfterCreateUser", () => {
       this.get_all_company_users();
     });

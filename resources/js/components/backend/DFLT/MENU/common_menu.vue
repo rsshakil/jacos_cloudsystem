@@ -13,13 +13,17 @@
           >
           <div class="collapse" id="cmnmenu1" aria-expanded="false">
             <ul class="flex-column pl-2 nav">
-
-       
               <li class="nav-item" v-can="['manage_user_menu']">
-                <router-link to="/users" class="nav-link">
+                <router-link :to="{ name: 'partner_list_manage'}" class="nav-link">
                   <b-icon icon="person-circle" font-scale="1.2"></b-icon>
-                  {{ myLang.manage_users }}
-                </router-link>
+                  {{ myLang.partner_management }}
+                  </router-link>
+              </li>
+              <li class="nav-item" v-can="['manage_user_menu']">
+                <router-link :to="{ name: 'user_list_manage'}" class="nav-link">
+                  <b-icon icon="person-circle" font-scale="1.2"></b-icon>
+                  {{ myLang.user_management }}
+                  </router-link>
               </li>
               </ul>
               </div>

@@ -66,11 +66,14 @@ class ByrController extends Controller
         return response()->json(['companies'=>$companies]);
     }
 
-    public function get_buyer_user_list($cmn_company_id){
-        $buyer_users=cmn_companies_user::select('adm_users.*')
-        ->join('adm_users', 'adm_users.id', '=', 'cmn_companies_users.adm_user_id')
-        ->where('cmn_companies_users.cmn_company_id',$cmn_company_id)
-        ->get();
+    public function get_buyer_user_list($cmn_company_id=null){
+        $buyer_users=array();
+        if ($cmn_company_id!=null) {
+            $buyer_users=cmn_companies_user::select('adm_users.*')
+            ->join('adm_users', 'adm_users.id', '=', 'cmn_companies_users.adm_user_id')
+            ->where('cmn_companies_users.cmn_company_id',$cmn_company_id)
+            ->get();
+        }
         // $buyers = byr_buyer::select('adm_users.*')
         // ->join('cmn_companies_users', 'cmn_companies_users.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
         // ->join('adm_users', 'adm_users.id', '=', 'cmn_companies_users.adm_user_id')
@@ -81,7 +84,6 @@ class ByrController extends Controller
 
     public function company_partner_list($cmn_company_id){
       $result = DB::table('byr_buyers')
-       
         ->join('cmn_connects', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
         ->join('slr_sellers', 'slr_sellers.slr_seller_id', '=', 'cmn_connects.slr_seller_id')
         ->join('cmn_companies', 'slr_sellers.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
@@ -89,6 +91,12 @@ class ByrController extends Controller
         ->where('byr_buyers.cmn_company_id',$cmn_company_id)
         ->get();
         return response()->json(['partner_list'=>$result]); 
+    }
+    public function get_byr_slr_company($cmn_company_id=null){
+        $buyer_info=byr_buyer::select('byr_buyers.byr_buyer_id','cmn_companies.cmn_company_id','cmn_companies.company_name as buyer_name')
+        ->join('cmn_companies','cmn_companies.cmn_company_id','=','byr_buyers.cmn_company_id')
+        ->get();
+        return response()->json(['buyer_info'=>$buyer_info]);
     }
     /**
      * Store a newly created resource in storage.
@@ -171,12 +179,14 @@ class ByrController extends Controller
             $this->validate($request,[
                 'name' => 'required|string|max:191',
                 'email' => 'required|string|email|max:191|unique:adm_users',
-                'password' => 'required|string|min:6'
+                'password' => 'required|string|min:6',
+                'cmn_company_id' => 'required'
             ]);
         }else{
             $this->validate($request,[
                 'name' => 'required|string|max:191',
                 'email' => 'required|string|email|max:191',
+                'cmn_company_id' => 'required',
             ]);
         }
         

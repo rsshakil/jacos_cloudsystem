@@ -6,7 +6,7 @@
                 </div>
                 <div class="col-3"></div>
                 <div class="col-6">
-                    <tabList></tabList>
+                    <!-- <tabList></tabList> -->
                 </div>
                 <div class="col-3"></div>
 
@@ -56,11 +56,11 @@
   </div>
 </template>
 <script>
-import tabList from '../tabList'
+// import tabList from "../CMN/tabList";
 export default {
 name:'app',
 components:{
-tabList,
+// tabList,
 },
 
   data() {

@@ -103,11 +103,12 @@ export const routes = [
             {
                 path: '/byr_management/cmn_company_partner_list/:cmn_company_id',
                 component: default_parent,
+                // name: 'cmn_company_partner_list',
                 meta: {
                     breadcrumb: '取引先管理'
                 },
                 children: [{
-                        path: '/',
+                        path: '',
                         component: cmn_company_partner_list,
                         name: 'cmn_company_partner_list'
                     },
@@ -120,7 +121,17 @@ export const routes = [
                         }
                     },
                 ]
-            }
+            },
+            {
+                path: '/partner_list_manage',
+                component: cmn_company_partner_list,
+                name: 'partner_list_manage',
+            },
+            {
+                path: '/user_list_manage',
+                component: cmn_company_user_list,
+                name: 'user_list_manage',
+            },
         ]
 
     },

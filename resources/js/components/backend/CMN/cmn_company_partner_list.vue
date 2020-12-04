@@ -9,7 +9,9 @@
 
       <div class="col-2"></div>
       <div class="col-8">
-        <tabList></tabList>
+        <!-- <jacostabList v-if="filter_select_box"></jacostabList>
+        <tabList v-else></tabList> -->
+        
       </div>
       <div class="col-2"></div>
 
@@ -19,10 +21,31 @@
             <thead>
               <tr>
                 <th colspan="100%" style="border: none">
-                  <button class="btn pull-right text-right btn-primary" style="float: right"
-                  @click="new_partner_create_modal">
+                  <button
+                    class="btn pull-right text-right btn-primary"
+                    style="float: right"
+                    @click="new_partner_create_modal"
+                  >
                     {{ myLang.add_new }}
                   </button>
+                </th>
+              </tr>
+              <tr v-if="filter_select_box">
+                <th colspan="2">
+                  <multiselect
+                    v-model="selected_buyer"
+                    id="buyer_name"
+                    placeholder="Select Buyer"
+                    label="buyer_name"
+                    track-by="cmn_company_id"
+                    :options="buyers"
+                    :multiple="false"
+                    :close-on-select="true"
+                    :clear-on-select="false"
+                    :preserve-search="true"
+                    open-direction="bottom"
+                    @select="seller_filter_by_buyer"
+                  ></multiselect>
                 </th>
               </tr>
               <tr>
@@ -36,10 +59,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr
-                v-for="(value, index) in company_partner_lists"
-                :key="index"
-              >
+              <tr v-for="(value, index) in company_partner_lists" :key="index">
                 <td>{{ index + 1 }}</td>
                 <td>{{ value.company_name }}</td>
                 <td>{{ value.jcode }}</td>
@@ -55,8 +75,11 @@
                   </select>
                 </td>
                 <td>
-                  <button class="btn pull-right text-right btn-warning" style="float: right"
-                  @click="new_partner_update_modal(value)">
+                  <button
+                    class="btn pull-right text-right btn-warning"
+                    style="float: right"
+                    @click="partner_update_modal(value)"
+                  >
                     Edit
                   </button>
                 </td>
@@ -88,24 +111,53 @@
       <div class="panel-body add_item_body">
         <form>
           <div class="form-group row">
-            <label for="seller_name" class="col-sm-3 col-form-label">Wholesaller Name</label>
+            <label for="seller_name" class="col-sm-3 col-form-label"
+              >Wholesaller Name</label
+            >
             <div class="col-sm-9">
-              <multiselect v-model="form.selected_sellers" id="seller_name" placeholder="Select Seller" label="seller_name" track-by="slr_seller_id" :options="sellers" :multiple="false" :close-on-select="true" :clear-on-select="false" :preserve-search="true" open-direction="bottom"></multiselect>
+              <multiselect
+                v-model="form.selected_sellers"
+                id="seller_name"
+                placeholder="Select Seller"
+                label="seller_name"
+                track-by="slr_seller_id"
+                :options="sellers"
+                :multiple="false"
+                :close-on-select="true"
+                :clear-on-select="false"
+                :preserve-search="true"
+                open-direction="bottom"
+              ></multiselect>
               <has-error :form="form" field="seller_name"></has-error>
             </div>
           </div>
           <div class="form-group row">
             <label for="j_code" class="col-sm-3 col-form-label">J Code</label>
             <div class="col-sm-9">
-              <multiselect v-model="form.selected_sellers" id="j_code" placeholder="Jcode" label="jcode" track-by="slr_seller_id" :options="sellers" :multiple="false" :close-on-select="true" :clear-on-select="false" :preserve-search="true" open-direction="bottom" ></multiselect>
+              <multiselect
+                v-model="form.selected_sellers"
+                id="j_code"
+                placeholder="Jcode"
+                label="jcode"
+                track-by="slr_seller_id"
+                :options="sellers"
+                :multiple="false"
+                :close-on-select="true"
+                :clear-on-select="false"
+                :preserve-search="true"
+                open-direction="bottom"
+              ></multiselect>
               <has-error :form="form" field="jan_code"></has-error>
             </div>
           </div>
           <div class="form-group row">
-            <label for="partner_code" class="col-sm-3 col-form-label">Partner Code</label>
+            <label for="partner_code" class="col-sm-3 col-form-label"
+              >Partner Code</label
+            >
             <div class="col-sm-9">
               <input
-                type="text" id="partner_code"
+                type="text"
+                id="partner_code"
                 class="form-control"
                 :class="{ 'is-invalid': form.errors.has('partner_code') }"
                 placeholder="Partner Code"
@@ -120,20 +172,24 @@
   </div>
 </template>
 <script>
-import tabList from "../tabList";
+// import tabList from "../CMN/tabList";
+// import jacostabList from "../CMN/jacos_tab_List";
 
 export default {
   name: "app",
   components: {
-    tabList,
+    // tabList,jacostabList
   },
   data() {
     return {
+      // filter_select_box:false,
       partner_create_modal: false,
-      save_button:"",
+      save_button: "",
       company_partner_lists: {},
       cmn_company_id: "",
-      sellers:[],
+      sellers: [],
+      // buyers: [],
+      // selected_buyer: [],
       form: new Form({
         partner_code: "",
         selected_sellers: [],
@@ -146,23 +202,29 @@ export default {
     company_partner_list() {
       axios
         .get(this.BASE_URL + "api/company_partner_list/" + this.cmn_company_id)
-        .then(({data}) => {
+        .then(({ data }) => {
           // console.log(data)
           this.company_partner_lists = data.partner_list;
           // console.log(this.company_partner_lists);
         });
     },
+    seller_filter_by_buyer(value){
+      this.cmn_company_id=value.cmn_company_id;
+      this.company_partner_list();
+      // console.log(value)
+    },
     new_partner_create_modal() {
       this.form.reset();
       this.form.cmn_company_id = this.cmn_company_id;
       this.partner_create_modal = true;
-      this.save_button=this.myLang.add_new;
-      axios.post(this.BASE_URL + "api/get_seller_list",{cmn_connect_id:null})
-      .then(({data})=>{
-        this.sellers=data.sellers
-      })
+      this.save_button = this.myLang.add_new;
+      axios
+        .post(this.BASE_URL + "api/get_seller_list", { cmn_connect_id: null })
+        .then(({ data }) => {
+          this.sellers = data.sellers;
+        });
     },
-    create_new_partner(){
+    create_new_partner() {
       this.form
         .post(this.BASE_URL + "api/buyer_partner_create")
         .then(({ data }) => {
@@ -181,32 +243,49 @@ export default {
           this.alert_title = data.title;
           this.alert_icon = data.class_name;
           this.sweet_normal_alert();
-        }).catch((error) => {
+        })
+        .catch((error) => {
           this.alert_text = error;
           this.sweet_advance_alert();
         });
-      
     },
-    new_partner_update_modal(value){
+    partner_update_modal(value) {
       // console.log(value)
-      axios.post(this.BASE_URL + "api/get_seller_list",{cmn_connect_id:value.cmn_connect_id})
-      .then(({data})=>{
-        // console.log(data);
-        this.sellers=data.sellers
-        this.form.selected_sellers=data.selected_sellers;
-        this.form.partner_code=value.partner_code;
-        this.form.cmn_company_id=this.cmn_company_id;
-        this.form.cmn_connect_id=value.cmn_connect_id;
-        this.save_button=this.myLang.update;
-        this.partner_create_modal = true;
-      })
-      
+      axios
+        .post(this.BASE_URL + "api/get_seller_list", {
+          cmn_connect_id: value.cmn_connect_id,
+        })
+        .then(({ data }) => {
+          // console.log(data);
+          this.sellers = data.sellers;
+          this.form.selected_sellers = data.selected_sellers;
+          this.form.partner_code = value.partner_code;
+          this.form.cmn_company_id = this.cmn_company_id;
+          this.form.cmn_connect_id = value.cmn_connect_id;
+          this.save_button = this.myLang.update;
+          this.partner_create_modal = true;
+        });
     },
   },
 
   created() {
     this.cmn_company_id = this.$route.params.cmn_company_id;
     this.company_partner_list();
+    this.get_byr_slr_company(this.cmn_company_id)
+    Fire.$on("company_partner_list_emit", (cmn_company_id) => {
+      this.cmn_company_id=cmn_company_id;
+        this.company_partner_list();
+    });
+    // if (this.cmn_company_id==null) {
+    //   this.filter_select_box=true
+    // // var company_info=this.get_byr_slr_company(this.cmn_company_id);
+    // axios
+    //   .get(this.BASE_URL + "api/get_byr_slr_company/" + this.cmn_company_id)
+    //   .then(({ data }) => {
+    //     this.buyers=data.buyer_info;
+    //     // console.log(data)
+    //   });
+    // }
     console.log("created jacos management log");
   },
   mounted() {

@@ -44,12 +44,12 @@
   </div>
 </template>
 <script>
-import tabList from '../tabList'
+// import tabList from "../CMN/tabList";
 
 export default {
   name:'app',
 components:{
-tabList,
+// tabList,
 },
   data() {
     return {

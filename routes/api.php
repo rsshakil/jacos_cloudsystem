@@ -77,7 +77,9 @@ Route::get('/slr_job_list_by_seller_id/{slr_seller_id}', 'API\Cmn_jobController@
 
 Route::get('/get_buyer_user_list/{cmn_company_id?}', 'API\BYR\ByrController@get_buyer_user_list');
 // Route::get('/company_seller_user_list/{cmn_company_id}', 'API\BYR\ByrController@company_seller_user_list');
-Route::get('/company_partner_list/{byr_buyer_id}', 'API\BYR\ByrController@company_partner_list');
+Route::get('/company_partner_list/{cmn_company_id}', 'API\BYR\ByrController@company_partner_list');
+Route::get('/get_byr_slr_company/{cmn_company_id?}', 'API\BYR\ByrController@get_byr_slr_company');
+
 Route::get('/get_scenario_list', 'API\Cmn_ScenarioController@get_scenario_list');
 Route::get('/slr_management/{adm_user_id}', 'API\BYR\ByrController@slr_management');
 Route::get('/get_byr_order_list/{adm_user_id}', 'API\Byr_orderController@get_byr_order_list');
