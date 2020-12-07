@@ -62,7 +62,7 @@
                 <td>
                   <router-link
                     :to="{
-                      name: 'cmn_company_user_list',
+                      name: 'byr_company_user_list',
                       params: { cmn_company_id: company_list.cmn_company_id },
                     }"
                     class="btn btn-primary"
@@ -77,7 +77,7 @@
                 <td>
                   <router-link
                     :to="{
-                      name: 'cmn_company_partner_list',
+                      name: 'byr_company_partner_list',
                       params: { cmn_company_id: company_list.cmn_company_id },
                     }"
                     class="btn btn-danger"

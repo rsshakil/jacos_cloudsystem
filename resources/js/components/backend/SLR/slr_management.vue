@@ -45,9 +45,10 @@
                                     <td>{{slr_list.company_name}}</td>
                                     <td>{{slr_list.jcode}}</td>
                                     <td>{{myLang.status_in_operation}}</td>
-                                    <td><router-link :to="{name:'company_seller_user_list',params:{cmn_company_id:slr_list.cmn_company_id} }" class="btn btn-primary">{{myLang.user_management}}</router-link></td>
+                                    <td><router-link :to="{name:'slr_company_user_list',params:{cmn_company_id:slr_list.cmn_company_id} }" class="btn btn-primary">{{myLang.user_management}}</router-link></td>
                                     <td><button class="btn btn-info">{{myLang.shop_management}}</button></td>
-                                    <td><button class="btn btn-danger">{{myLang.partner_management}}</button></td>
+                                    <td><router-link :to="{name:'slr_company_partner_list',params:{cmn_company_id:slr_list.cmn_company_id} }" class="btn btn-danger">{{myLang.partner_management}}</router-link></td>
+                                    <!-- <td><button class="btn btn-danger">{{myLang.partner_management}}</button></td> -->
                                     <td><button class="btn btn-success">{{myLang.ordering_data}}</button></td>
                                     <td><button @click="edit_slr_data(slr_list)" class="btn btn-primary">{{myLang.details}}</button></td>
                                 </tr>

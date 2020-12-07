@@ -20,7 +20,7 @@ import scenario_management from './components/backend/JACOS_MANAGEMENT/scenario_
 import job_management from './components/backend/JACOS_MANAGEMENT/job_management.vue'
 import slr_management from './components/backend/SLR/slr_management.vue'
 import slr_job_list from './components/backend/SLR/slr_job_list.vue'
-import company_seller_user_list from './components/backend/CMN/cmn_company_seller_user_list.vue'
+// import company_seller_user_list from './components/backend/CMN/cmn_company_seller_user_list.vue'
 import item_master from './components/backend/BYR/byr_item_master.vue'
 import item_category from './components/backend/BYR/item_category.vue'
 import order_receive from './components/backend/order_receive.vue'
@@ -84,24 +84,30 @@ export const routes = [
                 component: byr_management,
                 name: 'byr_management'
             },
+            // {
+            //     path: '/byr_management/byr_management_edit/:cmn_company_id',
+            //     component: byr_management_edit,
+            //     name: 'byr_management_edit',
+            //     meta: {
+            //         breadcrumb: '基本情報'
+            //     }
+            // },
             {
-                path: '/byr_management/byr_management_edit/:cmn_company_id',
-                component: byr_management_edit,
-                name: 'byr_management_edit',
-                meta: {
-                    breadcrumb: '基本情報'
-                }
-            },
-            {
-                path: '/byr_management/cmn_company_user_list/:cmn_company_id',
-                component: cmn_company_user_list,
-                name: 'cmn_company_user_list',
+                path: '/byr_management/byr_company_user_list/:cmn_company_id',
+                component: default_parent,
+                // name: 'cmn_company_user_list',
                 meta: {
                     breadcrumb: 'ユーザー管理'
-                }
+                },
+                children: [{
+                    path: '',
+                    component: cmn_company_user_list,
+                    name: 'byr_company_user_list'
+                }, ]
+
             },
             {
-                path: '/byr_management/cmn_company_partner_list/:cmn_company_id',
+                path: '/byr_management/byr_company_partner_list/:cmn_company_id',
                 component: default_parent,
                 // name: 'cmn_company_partner_list',
                 meta: {
@@ -110,10 +116,10 @@ export const routes = [
                 children: [{
                         path: '',
                         component: cmn_company_partner_list,
-                        name: 'cmn_company_partner_list'
+                        name: 'byr_company_partner_list'
                     },
                     {
-                        path: '/byr_management/cmn_company_partner_list/:byr_buyer_id/slr_job_list/:slr_seller_id',
+                        path: '/byr_management/byr_company_partner_list/:byr_buyer_id/slr_job_list/:slr_seller_id',
                         component: slr_job_list,
                         name: 'slr_job_list',
                         meta: {
@@ -167,12 +173,28 @@ export const routes = [
                 name: 'slr_management'
             },
             {
-                path: '/slr_management/company_seller_user_list/:cmn_company_id',
-                component: company_seller_user_list,
-                name: 'company_seller_user_list',
+                path: '/slr_management/slr_company_user_list/:cmn_company_id',
+                component: default_parent,
                 meta: {
                     breadcrumb: 'seller user list'
-                }
+                },
+                children: [{
+                    path: '/',
+                    component: cmn_company_user_list,
+                    name: 'slr_company_user_list'
+                }, ]
+            },
+            {
+                path: '/slr_management/slr_company_partner_list/:cmn_company_id',
+                component: default_parent,
+                meta: {
+                    breadcrumb: 'seller partner list'
+                },
+                children: [{
+                    path: '/',
+                    component: cmn_company_partner_list,
+                    name: 'slr_company_partner_list'
+                }, ]
             },
         ]
 

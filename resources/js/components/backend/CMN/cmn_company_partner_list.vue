@@ -44,9 +44,25 @@
                     :clear-on-select="false"
                     :preserve-search="true"
                     open-direction="bottom"
-                    @select="seller_filter_by_buyer"
+                    @select="user_filter_by_buyer"
                   ></multiselect>
                 </th>
+                <!-- <th colspan="2">
+                  <multiselect
+                    v-model="selected_seller"
+                    id="seller_name"
+                    placeholder="Select Seller"
+                    label="seller_name"
+                    track-by="cmn_company_id"
+                    :options="sellers"
+                    :multiple="false"
+                    :close-on-select="true"
+                    :clear-on-select="false"
+                    :preserve-search="true"
+                    open-direction="bottom"
+                    @select="user_filter_by_seller"
+                  ></multiselect>
+                </th> -->
               </tr>
               <tr>
                 <th style="cursor: pointer">No</th>
@@ -208,10 +224,15 @@ export default {
           // console.log(this.company_partner_lists);
         });
     },
-    seller_filter_by_buyer(value){
+    user_filter_by_buyer(value){
+      this.selected_seller=[];
       this.cmn_company_id=value.cmn_company_id;
       this.company_partner_list();
-      // console.log(value)
+    },
+    user_filter_by_seller(value){
+      this.selected_buyer=[];
+      this.cmn_company_id=value.cmn_company_id;
+      this.company_partner_list();
     },
     new_partner_create_modal() {
       this.form.reset();

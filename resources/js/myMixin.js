@@ -18,6 +18,8 @@ export default {
             filter_select_box: false,
             buyers: [],
             selected_buyer: [],
+            sellers: [],
+            selected_seller: [],
             // loader: "",
         };
     },
@@ -216,9 +218,10 @@ export default {
                     .get(this.BASE_URL + "api/get_byr_slr_company/" + this.cmn_company_id)
                     .then(({ data }) => {
                         this.buyers = data.buyer_info;
+                        this.sellers = data.seller_info;
                         this.selected_buyer = this.buyers[0]
-                        Fire.$emit('company_partner_list_emit', this.buyers[0].cmn_company_id);
-                        Fire.$emit('get_all_company_users_emit', this.buyers[0].cmn_company_id);
+                        Fire.$emit('company_partner_list_emit', this.selected_buyer.cmn_company_id);
+                        Fire.$emit('get_all_company_users_emit', this.selected_buyer.cmn_company_id);
                         // console.log(data)
                     });
             }

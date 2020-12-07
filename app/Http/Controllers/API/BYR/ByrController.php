@@ -96,7 +96,10 @@ class ByrController extends Controller
         $buyer_info=byr_buyer::select('byr_buyers.byr_buyer_id','cmn_companies.cmn_company_id','cmn_companies.company_name as buyer_name')
         ->join('cmn_companies','cmn_companies.cmn_company_id','=','byr_buyers.cmn_company_id')
         ->get();
-        return response()->json(['buyer_info'=>$buyer_info]);
+        $seller_info=slr_seller::select('slr_sellers.slr_seller_id','cmn_companies.cmn_company_id','cmn_companies.company_name as seller_name')
+        ->join('cmn_companies','cmn_companies.cmn_company_id','=','slr_sellers.cmn_company_id')
+        ->get();
+        return response()->json(['buyer_info'=>$buyer_info,'seller_info'=>$seller_info]);
     }
     /**
      * Store a newly created resource in storage.
@@ -172,7 +175,7 @@ class ByrController extends Controller
         }
         return response()->json(['permission_array'=>$permission_array,'selected_permission_array'=>$selected_permission_array]); 
     }
-    public function buyer_user_create(Request $request){
+    public function cmn_user_create(Request $request){
         // return $request->all();
         $adm_user_id = $request->adm_user_id;
         if ($adm_user_id==null) {
@@ -248,45 +251,42 @@ class ByrController extends Controller
     }
 
 
-    public function slr_seller_user_create(Request $request){
-        $this->validate($request,[
-            'name' => 'required|string|max:191',
-            'email' => 'required|string|email|max:191|unique:adm_users',
-            'password' => 'required|string|min:6',
-        ]);
+    // public function slr_seller_user_create(Request $request){
+    //     $this->validate($request,[
+    //         'name' => 'required|string|max:191',
+    //         'email' => 'required|string|email|max:191|unique:adm_users',
+    //         'password' => 'required|string|min:6',
+    //     ]);
 
-        $name = $request->name;
-        $email = $request->email;
-        $password = $request->password;
-        $cmn_company_id = $request->cmn_company_id;
-        $hash_password = Hash::make($password);
-        $user_exist = User::where('email', $email)->first();
-        if ($user_exist) {
-            return response()->json(['title'=>"Exists!",'message' =>"exists", 'class_name' => 'error']);
-        } else {
-            $user = new User;
-            $user->name = $name;
-            $user->email = $email;
-            $user->password = $hash_password;
-            $user->save();
-            $last_user_id = $user->id;
-            $user_details = new adm_user_details;
-            $user_details->user_id = $last_user_id;
-            $user_details->save();
-            $users = User::findOrFail($last_user_id);
-            $users->assignRole('Slr');
-            // slr_seller::insert(['cmn_company_id'=>$cmn_company_id]);
-            cmn_companies_user::insert(['cmn_company_id'=>$cmn_company_id,'adm_user_id'=>$last_user_id]);
-            return response()->json(['title'=>"Created!",'message' =>"created", 'class_name' => 'success']);
-        }
+    //     $name = $request->name;
+    //     $email = $request->email;
+    //     $password = $request->password;
+    //     $cmn_company_id = $request->cmn_company_id;
+    //     $hash_password = Hash::make($password);
+    //     $user_exist = User::where('email', $email)->first();
+    //     if ($user_exist) {
+    //         return response()->json(['title'=>"Exists!",'message' =>"exists", 'class_name' => 'error']);
+    //     } else {
+    //         $user = new User;
+    //         $user->name = $name;
+    //         $user->email = $email;
+    //         $user->password = $hash_password;
+    //         $user->save();
+    //         $last_user_id = $user->id;
+    //         $user_details = new adm_user_details;
+    //         $user_details->user_id = $last_user_id;
+    //         $user_details->save();
+    //         $users = User::findOrFail($last_user_id);
+    //         $users->assignRole('Slr');
+    //         // slr_seller::insert(['cmn_company_id'=>$cmn_company_id]);
+    //         cmn_companies_user::insert(['cmn_company_id'=>$cmn_company_id,'adm_user_id'=>$last_user_id]);
+    //         return response()->json(['title'=>"Created!",'message' =>"created", 'class_name' => 'success']);
+    //     }
 
-    }
+    // }
 
     public function createBuyer(Request $request){
         $this->validate($request,[
-            // 'buyer_name' => 'required|string|max:100',
-            // 'buyer_email' => 'required|string|max:191',
-            // 'buyer_password' => 'required|string|max:191',
             'company_name' => 'required|string|max:191',
             'super_code' => 'required|string|max:20',
             'jcode' => 'required|string|min:3',
@@ -294,9 +294,6 @@ class ByrController extends Controller
             'address' => 'required|string|min:3',
         ]);
         $cmn_company_id = $request->cmn_company_id;
-        // $buyer_name = $request->buyer_name;
-        // $buyer_email = $request->buyer_email;
-        // $buyer_password = $request->buyer_password;
         $company_name = $request->company_name;
         $jcode = $request->jcode;
         $super_code = $request->super_code;
@@ -309,17 +306,7 @@ class ByrController extends Controller
             'postal_code'=>$postal_code,
             'address'=>$address
         );
-        // $user_array=array(
-        //     'name'=>$buyer_name,
-        //     'email'=>$buyer_email,
-        //     'password'=>Hash::make($buyer_password),
-        // );
         if($cmn_company_id!=null){
-            // $adm_user_info = $this->all_used_fun->buyer_or_saller_store($user_array,$cmn_company_id);
-            // if ($adm_user_info['class_name']=='error') {
-            //     return response()->json($adm_user_info);
-            // }else{
-                // $adm_user_id=$adm_user_info['returnable_user_id'];
                 cmn_company::where('cmn_company_id',$cmn_company_id)->update($buyer_company_array);
                 $adm_role_info=byr_buyer::where('cmn_company_id',$cmn_company_id)->first();
                 $adm_role_id=$adm_role_info->adm_role_id;
@@ -329,45 +316,32 @@ class ByrController extends Controller
             return response()->json(['title'=>"Updated!",'message' =>"updated", 'class_name' => 'success']);
             
         }else{
-            // $adm_user_info = $this->all_used_fun->buyer_or_saller_store($user_array);
-            // \Log::info($adm_user_info);
-            // \Log::info($adm_user_info['class_name']);
-            // // if (json_encode($adm_user_info->class_name=='error')) {
-            // if ($adm_user_info['class_name']=='error') {
-            //     return response()->json($adm_user_info);
-            // }else{
-                // $adm_user_id=$adm_user_info['returnable_user_id'];
                 $role_last_id = Role::insertGetId(['name' => 'byr'.$jcode, 'guard_name' => 'web', 'role_description' => 'byr'.$jcode, 'is_system' => 0]);
                 $this->all_used_fun->assignPermissionToRole($role_last_id, $selected_permissions);
                 $cmn_company_id = cmn_company::insertGetId($buyer_company_array);
                 byr_buyer::insert(['cmn_company_id'=>$cmn_company_id,'super_code'=>$super_code,'adm_role_id'=>$role_last_id]);
-                // $buyer_last_id=byr_buyer::insertGetId(['cmn_company_id'=>$cmn_company_id,'super_code'=>$super_code,'adm_role_id'=>$role_last_id]);
-                // cmn_companies_user::insert(['cmn_company_id'=>$cmn_company_id,'adm_user_id'=>$adm_user_id]);
-                // cmn_connect::insert(['byr_buyer_id'=>$buyer_last_id,'slr_seller_id'=>Auth::User()->id]);
-            // }
             return response()->json(['title'=>"Created!",'message' =>"created", 'class_name' => 'success']);
         }
-        // return response()->json(['title'=>"Created!",'message' =>"created", 'class_name' => 'success']);
     }
 
-    public function slr_company_create(Request $request){
-        $this->validate($request,[
-            'company_name' => 'required|string|max:191',
-            'phone' => 'required|string|max:20',
-            'fax' => 'required|string|max:20',
-            'jcode' => 'required|string|min:3',
-            'postal_code' => 'required|string|min:3',
-            'address' => 'required|string|min:3',
-        ]);
-        if($request->cmn_company_id!=null){
-            cmn_company::where('cmn_company_id',$request->cmn_company_id)->update(['company_name'=>$request->company_name,'jcode'=>$request->jcode,'postal_code'=>$request->postal_code,'address'=>$request->address,'phone'=>$request->phone,'fax'=>$request->fax]);
-        }else{
-            $cmn_company_id = cmn_company::insertGetId(['company_name'=>$request->company_name,'jcode'=>$request->jcode,'postal_code'=>$request->postal_code,'address'=>$request->address,'phone'=>$request->phone,'fax'=>$request->fax]);
-        slr_seller::insert(['cmn_company_id'=>$cmn_company_id]);
-        }
+    // public function slr_company_create(Request $request){
+    //     $this->validate($request,[
+    //         'company_name' => 'required|string|max:191',
+    //         'phone' => 'required|string|max:20',
+    //         'fax' => 'required|string|max:20',
+    //         'jcode' => 'required|string|min:3',
+    //         'postal_code' => 'required|string|min:3',
+    //         'address' => 'required|string|min:3',
+    //     ]);
+    //     if($request->cmn_company_id!=null){
+    //         cmn_company::where('cmn_company_id',$request->cmn_company_id)->update(['company_name'=>$request->company_name,'jcode'=>$request->jcode,'postal_code'=>$request->postal_code,'address'=>$request->address,'phone'=>$request->phone,'fax'=>$request->fax]);
+    //     }else{
+    //         $cmn_company_id = cmn_company::insertGetId(['company_name'=>$request->company_name,'jcode'=>$request->jcode,'postal_code'=>$request->postal_code,'address'=>$request->address,'phone'=>$request->phone,'fax'=>$request->fax]);
+    //     slr_seller::insert(['cmn_company_id'=>$cmn_company_id]);
+    //     }
         
-        return response()->json(['title'=>"Created!",'message' =>"created", 'class_name' => 'success']);
-    }
+    //     return response()->json(['title'=>"Created!",'message' =>"created", 'class_name' => 'success']);
+    // }
 
     public function slr_management_test(){
         echo '<pre>';

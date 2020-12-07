@@ -45,6 +45,22 @@
                     @select="user_filter_by_buyer"
                   ></multiselect>
                 </th>
+                <th colspan="2">
+                  <multiselect
+                    v-model="selected_seller"
+                    id="seller_name"
+                    placeholder="Select Seller"
+                    label="seller_name"
+                    track-by="cmn_company_id"
+                    :options="sellers"
+                    :multiple="false"
+                    :close-on-select="true"
+                    :clear-on-select="false"
+                    :preserve-search="true"
+                    open-direction="bottom"
+                    @select="user_filter_by_seller"
+                  ></multiselect>
+                </th>
               </tr>
               <tr>
                 <th style="cursor: pointer">No</th>
@@ -181,10 +197,14 @@ export default {
         });
     },
     user_filter_by_buyer(value){
-      // console.log(value);
+      this.selected_seller=[];
       this.cmn_company_id=value.cmn_company_id;
       this.get_all_company_users();
-      // console.log(value)
+    },
+    user_filter_by_seller(value){
+      this.selected_buyer=[];
+      this.cmn_company_id=value.cmn_company_id;
+      this.get_all_company_users();
     },
     new_user_create_modal() {
       this.form.reset();
@@ -194,10 +214,19 @@ export default {
       // this.password_field = true;
     },
     create_new_user() {
+      // console.log(this.selected_buyer);
+      // console.log(this.selected_seller);
+      // var selected_buyer_length=Object.keys(this.selected_buyer).length
+      // var selected_seller_length=Object.keys(this.selected_seller).length
+      // var cmn_user_create_url="";
+      // if (selected_buyer_length) {
+      //   var cmn_user_create_url="api/buyer_user_create";
+      // }else if (selected_seller_length) {
+      //   var cmn_user_create_url="api/seller_user_create";
+      // }
       this.form
-        .post(this.BASE_URL + "api/buyer_user_create")
+        .post(this.BASE_URL + "api/cmn_user_create")
         .then(({ data }) => {
-          // this.user_create_modal = false;
           Fire.$emit("AfterCreateUser");
           if (data.message == "created") {
             this.user_create_modal = false;
