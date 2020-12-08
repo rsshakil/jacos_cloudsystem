@@ -15,9 +15,8 @@ class CreateBmsOrdersTable extends Migration
     {
         Schema::create('bms_orders', function (Blueprint $table) {
             $table->increments('bms_order_id')->comment('発注データID');
-            // $table->string('file_name',100)->comment('発注ファイル名');
             $table->integer('byr_order_id')->comment('Buyer Order ID');
-            // $table->string('customer_id', 6)->comment('取引先ID');
+
             $table->string('sta_sen_identifier', 30)->comment('送信者ＩＤ');
             $table->string('sta_sen_ide_authority', 10)->comment('送信者ＩＤ発行元');
             $table->string('sta_rec_identifier',20)->comment('受信者ＩＤ');
@@ -49,6 +48,7 @@ class CreateBmsOrdersTable extends Migration
             $table->string('mes_lis_buy_gln', 13)->comment('発注者GLN');
             $table->string('mes_lis_buy_name', 20)->comment('発注者名称');
             $table->string('mes_lis_buy_name_sbcs', 20)->comment('発注者名称カナ');
+
             $table->string('mes_lis_ord_tra_trade_number', 10)->comment('取引番号（発注・返品）');
             $table->string('mes_lis_ord_tra_additional_trade_number', 10)->comment('取引付属番号');
             $table->string('mes_lis_ord_par_shi_code', 13)->comment('直接納品先コード');
@@ -119,6 +119,7 @@ class CreateBmsOrdersTable extends Migration
             $table->string('mes_lis_ord_tot_tot_item_total',6)->comment('数量合計');
             $table->string('mes_lis_ord_tot_tot_unit_total',6)->comment('発注単位数量合計');
             $table->string('mes_lis_ord_tot_fre_unit_weight_total',14)->comment('重量合計');
+
             $table->string('mes_lis_ord_lin_lin_line_number',4)->comment('取引明細番号（発注・返品）');
             $table->string('mes_lis_ord_lin_lin_additional_line_number',4)->comment('取引付属明細番号');
             $table->string('mes_lis_ord_lin_fre_trade_number',10)->comment('元取引番号');
@@ -176,6 +177,7 @@ class CreateBmsOrdersTable extends Migration
             $table->string('mes_lis_ord_lin_fre_unit_weight_code',2)->comment('単価登録単位');
             $table->string('mes_lis_ord_lin_fre_item_weight',13)->comment('商品重量');
             $table->string('mes_lis_ord_lin_fre_order_weight',15)->comment('発注重量');
+            
             $table->smallInteger('deleted')->comment('削除フラグ');
 			$table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
 			$table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
