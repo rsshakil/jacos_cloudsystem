@@ -75,7 +75,7 @@ Route::post('scenario_exec', 'API\Cmn_ScenarioController@exec');
 Route::post('job_exec', 'API\Cmn_jobController@exec');
 Route::get('/slr_job_list_by_seller_id/{slr_seller_id}', 'API\Cmn_jobController@slr_job_list_by_seller_id');
 
-Route::get('/get_buyer_user_list/{cmn_company_id?}', 'API\BYR\ByrController@get_buyer_user_list');
+Route::get('/cmn_company_user_list/{cmn_company_id?}', 'API\BYR\ByrController@cmn_company_user_list');
 // Route::get('/company_seller_user_list/{cmn_company_id}', 'API\BYR\ByrController@company_seller_user_list');
 Route::get('/company_partner_list/{cmn_company_id}', 'API\BYR\ByrController@company_partner_list');
 Route::get('/get_byr_slr_company/{cmn_company_id?}', 'API\BYR\ByrController@get_byr_slr_company');

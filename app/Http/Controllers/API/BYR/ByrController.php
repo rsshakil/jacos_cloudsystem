@@ -66,20 +66,28 @@ class ByrController extends Controller
         return response()->json(['companies'=>$companies]);
     }
 
-    public function get_buyer_user_list($cmn_company_id=null){
+    public function cmn_company_user_list($cmn_company_id=null){
+        
         $buyer_users=array();
+        $company_name=null;
         if ($cmn_company_id!=null) {
-            $buyer_users=cmn_companies_user::select('adm_users.*')
+            $buyer_users=cmn_companies_user::select('adm_users.*','byr_buyers.super_code','cmn_companies.jcode')
             ->join('adm_users', 'adm_users.id', '=', 'cmn_companies_users.adm_user_id')
+            ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
+            ->leftJoin('byr_buyers', 'byr_buyers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
             ->where('cmn_companies_users.cmn_company_id',$cmn_company_id)
             ->get();
+            if ($cmn_company_id!='undefined') {
+                $company_info=cmn_company::select('company_name')->where('cmn_company_id',$cmn_company_id)->first();
+                $company_name=$company_info->company_name;
+            }
         }
         // $buyers = byr_buyer::select('adm_users.*')
         // ->join('cmn_companies_users', 'cmn_companies_users.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
         // ->join('adm_users', 'adm_users.id', '=', 'cmn_companies_users.adm_user_id')
         // ->where('byr_buyers.cmn_company_id',$cmn_company_id)
         // ->get();
-        return response()->json(['user_list'=>$buyer_users]); 
+        return response()->json(['user_list'=>$buyer_users,'company_name'=>$company_name]); 
     }
 
     public function company_partner_list($cmn_company_id){
@@ -93,6 +101,7 @@ class ByrController extends Controller
         return response()->json(['partner_list'=>$result]); 
     }
     public function get_byr_slr_company($cmn_company_id=null){
+        $company_name=null;
         $buyer_info=byr_buyer::select('byr_buyers.byr_buyer_id','cmn_companies.cmn_company_id','cmn_companies.company_name as buyer_name')
         ->join('cmn_companies','cmn_companies.cmn_company_id','=','byr_buyers.cmn_company_id')
         ->get();

@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-12">
+      <div class="col-12" v-if="!filter_select_box">
         <h4 class="top_title text-center" style="margin-top: 10px">
-          {{ myLang.super_value_head }}
+          {{ company_name }}
         </h4>
       </div>
 
@@ -64,19 +64,23 @@
               </tr>
               <tr>
                 <th style="cursor: pointer">No</th>
-                <th style="cursor: pointer">{{ myLang.user_type }}</th>
+                <!-- <th style="cursor: pointer">{{ myLang.user_type }}</th> -->
                 <th style="cursor: pointer">{{ myLang.name }}</th>
                 <th style="cursor: pointer">{{ myLang.email }}</th>
-                <th style="cursor: pointer">{{ myLang.status }}</th>
+                <th style="cursor: pointer">Super Code</th>
+                <th style="cursor: pointer">J Code</th>
+                <!-- <th style="cursor: pointer">{{ myLang.status }}</th> -->
                 <th style="cursor: pointer">{{ myLang.details }}</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(value, index) in buyer_user_lists" :key="value.id">
+              <tr v-for="(value, index) in company_user_lists" :key="value.id">
                 <td>{{ index + 1 }}</td>
-                <td>一般</td>
+                <!-- <td>一般</td> -->
                 <td>{{ value.name }}</td>
                 <td>{{ value.email }}</td>
+                <td>{{ value.super_code }}</td>
+                <td>{{ value.jcode }}</td>
                 <td>
                   <select name="user_status" class="form-control">
                     <option value="稼働中" selected>
@@ -173,8 +177,9 @@ export default {
   },
   data() {
     return {
+      company_name:null,
       save_button:"",
-      buyer_user_lists: {},
+      company_user_lists: {},
       cmn_company_id: "",
       // selected_buyer:[],
       // password_field: true,
@@ -190,10 +195,13 @@ export default {
   },
   methods: {
     get_all_company_users() {
+      // console.log(this.cmn_company_id)
       axios
-        .get(this.BASE_URL + "api/get_buyer_user_list/" + this.cmn_company_id)
+        .get(this.BASE_URL + "api/cmn_company_user_list/" + this.cmn_company_id)
         .then(({ data }) => {
-          this.buyer_user_lists = data.user_list;
+          console.log(data)
+          this.company_user_lists = data.user_list;
+          this.company_name = data.company_name;
         });
     },
     user_filter_by_buyer(value){
