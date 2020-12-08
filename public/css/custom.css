@@ -119,3 +119,10 @@
 .custom_navbr_button:hover .btn{
     color:#fff !important;
 }
+.custm_brd_crumbs{
+    list-style: none;
+    padding-left: 0!important;
+}
+.custm_brd_crumbs li a:hover{
+    text-decoration: none;
+}

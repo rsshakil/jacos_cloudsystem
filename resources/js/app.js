@@ -46,10 +46,15 @@ Vue.config.productionTip = false
 window.Fire = new Vue();
 Vue.use(VueRouter);
 Vue.use(VueBreadcrumbs, {
-    template: '        <div v-if="$breadcrumbs.length" aria-label="breadcrumb" class="custm_brd_crumbs">\n' +
-        '             <router-link v-for="(crumb, key) in $breadcrumbs" v-if="crumb.meta.breadcrumb" :key="key" class="breadcrumb-item_custom btn btn-primary btn-arrow-right" :to="{ path: getPath(crumb) }">{{ getBreadcrumb(crumb.meta.breadcrumb) }}</router-link>' +
-        '        </div>'
+    template: '        <ul v-if="$breadcrumbs.length" aria-label="breadcrumb" class="custm_brd_crumbs">\n' +
+        '             <li v-for="(crumb, key) in $breadcrumbs" v-if="crumb.meta.breadcrumb" :key="key"><router-link class="breadcrumb-item_custom" :to="{ path: getPath(crumb) }">{{ getBreadcrumb(crumb.meta.breadcrumb) }} </router-link><span class="bread_titles"> > {{ getBreadcrumb(crumb.meta.breadcrumb_title) }}</span></li>' +
+        '        </ul>'
 });
+// Vue.use(VueBreadcrumbs, {
+//     template: '        <div v-if="$breadcrumbs.length" aria-label="breadcrumb" class="custm_brd_crumbs">\n' +
+//         '             <router-link v-for="(crumb, key) in $breadcrumbs" v-if="crumb.meta.breadcrumb" :key="key" class="breadcrumb-item_custom btn btn-primary btn-arrow-right" :to="{ path: getPath(crumb) }">{{ getBreadcrumb(crumb.meta.breadcrumb) }} > {{ getBreadcrumb(crumb.meta.breadcrumb_title) }}</router-link>' +
+//         '        </div>'
+// });
 // Install BootstrapVue
 Vue.use(BootstrapVue)
     //     // Optionally install the BootstrapVue icon components plugin

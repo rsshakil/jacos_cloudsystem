@@ -50,7 +50,15 @@ export const routes = [
     {
         path: '/order_list',
         component: default_parent,
-        meta: { breadcrumb: 'Order' },
+        meta: { 
+            breadcrumb: {
+                label: '受注・出荷',
+                parent: 'Params'
+              },
+              breadcrumb_title:{
+                label: '受注受信一覧'
+              }
+         },
         children: [{
                 path: '/',
                 component: default_order_list,
