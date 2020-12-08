@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-12">
+      <div class="col-12" v-if="!filter_select_box">
         <h4 class="top_title text-center" style="margin-top: 10px">
-          {{ myLang.super_value_head }}
+          {{ company_name }}
         </h4>
       </div>
 
@@ -198,7 +198,7 @@ export default {
   },
   data() {
     return {
-      // filter_select_box:false,
+      company_name:null,
       partner_create_modal: false,
       save_button: "",
       company_partner_lists: {},
@@ -221,6 +221,7 @@ export default {
         .then(({ data }) => {
           // console.log(data)
           this.company_partner_lists = data.partner_list;
+          this.company_name = data.company_name;
           // console.log(this.company_partner_lists);
         });
     },
