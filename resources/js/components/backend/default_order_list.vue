@@ -1,24 +1,5 @@
 <template>
-  <div class="stats-small stats-small--1 card card-small" style="margin-top:20px">
-    <div class="card-body p-3">
-  <div class="row" v-can="['byr_view','slr_view']">
-    <!--<div class="col-12">
-      <h4 class="top_title text-center" style="margin-top: 10px">
-        {{ myLang.order_data_heading }}
-      </h4>
-    </div>-->
-    <!-- <div class="col-12 text-center">
-                    
-      <label>
-        <input type="file" id="file" ref="file" v-on:change="onChangeFileUpload()"/>
-      </label>
-                </div> -->
-    <!-- <div class="col-12"> -->
-    <!-- <div class="row" style="background:#D5DADC; padding:10px"> -->
-    <div class="col-12">
-      <Breadcrumbs/>
-       <page_header_default></page_header_default>
-    </div>
+  <div class="row" v-can="['byr_view','slr_view']"> 
     <div class="col-12" style="background: #d5dadc; padding: 10px">
       <table class="table table-bordered" style="width: 100%">
         <tr>
@@ -196,15 +177,10 @@
       </div>
     </div>
   </div>
-  </div>
-  </div>
 </template>
 <script>
-import page_header_default from './page_header_default'
+
 export default {
-   components : {
-    'page_header_default': page_header_default,
-  },
   data() {
     return {
       today: new Date().toISOString().slice(0, 10),

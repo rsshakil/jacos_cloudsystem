@@ -38,7 +38,17 @@ import selected_buyer from './components/backend/SLR/selected_byr_page.vue'
 
 export const routes = [
 
-    { path: '/home', component: Home },
+    { path: '/home', component: Home,
+    meta: { 
+        breadcrumb: {
+            label: 'Home',
+            parent: 'Params'
+          },
+          breadcrumb_title:{
+            label: 'Home page'
+          }
+    },
+},
     { path: '/blog', component: blog },
     { path: '/role', component: Role },
     { path: '/permission', component: permission },
@@ -52,7 +62,7 @@ export const routes = [
         component: default_parent,
         meta: { 
             breadcrumb: {
-                label: '受注・出荷',
+                label: '発注データ',
                 parent: 'Params'
               },
               breadcrumb_title:{
@@ -86,7 +96,17 @@ export const routes = [
     {
         path: '/byr_management',
         component: default_parent,
-        meta: { breadcrumb: '小売管理' },
+        meta: { 
+    
+        breadcrumb: {
+            label: '小売管理',
+            parent: 'Params'
+          },
+          breadcrumb_title:{
+            label: '小売管理'
+          }
+    
+    },
         children: [{
                 path: '/',
                 component: byr_management,
@@ -152,7 +172,15 @@ export const routes = [
     {
         path: '/scenario_management',
         component: default_parent,
-        meta: { breadcrumb: 'シナリオ管理' },
+        meta: { 
+        breadcrumb: {
+            label: 'シナリオ管理',
+            parent: 'Params'
+          },
+          breadcrumb_title:{
+            label: 'シナリオ管理'
+          }
+    },
         children: [{
             path: '/',
             component: scenario_management,
@@ -163,7 +191,15 @@ export const routes = [
     {
         path: '/job_management',
         component: default_parent,
-        meta: { breadcrumb: '仕事の管理' },
+        meta: { 
+            breadcrumb: {
+                label: '仕事の管理',
+                parent: 'Params'
+              },
+              breadcrumb_title:{
+                label: '仕事の管理'
+              }
+        },
         children: [{
             path: '/',
             component: job_management,
@@ -174,7 +210,15 @@ export const routes = [
     {
         path: '/slr_management',
         component: default_parent,
-        meta: { breadcrumb: '問屋管理' },
+        meta: {
+        breadcrumb: {
+            label: '問屋管理',
+            parent: 'Params'
+          },
+          breadcrumb_title:{
+            label: '問屋管理'
+          }
+    },
         children: [{
                 path: '/',
                 component: slr_management,
@@ -210,7 +254,15 @@ export const routes = [
     {
         path: '/item_master',
         component: default_parent,
-        meta: { breadcrumb: '商品メンテ' },
+        meta: { 
+        breadcrumb: {
+            label: '商品メンテ',
+            parent: 'Params'
+          },
+          breadcrumb_title:{
+            label: '商品メンテ'
+          }
+    },
         children: [{
             path: '/',
             component: item_master,
@@ -229,7 +281,15 @@ export const routes = [
     {
         path: '/order_receive',
         component: default_parent,
-        meta: { breadcrumb: '受領データ' },
+        meta: {
+        breadcrumb: {
+            label: '受領データ',
+            parent: 'Params'
+          },
+          breadcrumb_title:{
+            label: '受領データ'
+          }
+    },
         children: [{
             path: '/',
             component: order_receive,
@@ -240,7 +300,15 @@ export const routes = [
     {
         path: '/order_corrected_receive',
         component: default_parent,
-        meta: { breadcrumb: '受領訂正データ' },
+        meta: { 
+        breadcrumb: {
+            label: '受領訂正データ',
+            parent: 'Params'
+          },
+          breadcrumb_title:{
+            label: '受領訂正データ'
+          }
+    },
         children: [{
             path: '/',
             component: order_corrected_receive,
@@ -251,7 +319,15 @@ export const routes = [
     {
         path: '/return_item_list',
         component: default_parent,
-        meta: { breadcrumb: '返品データ' },
+        meta: { 
+        breadcrumb: {
+            label: '返品データ',
+            parent: 'Params'
+          },
+          breadcrumb_title:{
+            label: '返品データ'
+          }
+    },
         children: [{
             path: '/',
             component: return_item_list,
@@ -262,7 +338,15 @@ export const routes = [
     {
         path: '/payment_list',
         component: default_parent,
-        meta: { breadcrumb: '支払データ' },
+        meta: { 
+        breadcrumb: {
+            label: '支払データ',
+            parent: 'Params'
+          },
+          breadcrumb_title:{
+            label: '支払データ'
+          }
+    },
         children: [{
             path: '/',
             component: payment_list,
@@ -273,7 +357,15 @@ export const routes = [
     {
         path: '/invoice_list',
         component: default_parent,
-        meta: { breadcrumb: '請求' },
+        meta: {
+        breadcrumb: {
+            label: '請求',
+            parent: 'Params'
+          },
+          breadcrumb_title:{
+            label: '請求'
+          }
+    },
         children: [{
             path: '/',
             component: invoice_list,
@@ -294,14 +386,29 @@ export const routes = [
     {
         path: '/pdf_platform_setting',
         component: pdf_platform_setting,
-        meta: { breadcrumb: 'pdf_platform_setting' },
+        meta: { breadcrumb: {
+            label: 'pdfプラットフォーム設定',
+            parent: 'Params'
+          },
+          breadcrumb_title:{
+            label: 'pdfプラットフォーム設定'
+          }
+    },
         children: []
 
     },
     {
         path: '/pdf_platform_view',
         component: pdf_platform_view,
-        meta: { breadcrumb: 'pdf_platform_view' },
+        meta: { 
+        breadcrumb: {
+            label: 'pdfプラットフォーム',
+            parent: 'Params'
+          },
+          breadcrumb_title:{
+            label: 'pdfプラットフォーム'
+          }
+    },
         children: []
 
     },

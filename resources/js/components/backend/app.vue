@@ -13,8 +13,17 @@
             <sidebar :app="this"></sidebar>
         </div>
         <div class="col-md-10">
-        
-            <router-view/>
+            <div class="stats-small stats-small--1 card card-small" style="margin-top:20px">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-12">
+                            <Breadcrumbs/>
+                            <page_header_default></page_header_default>
+                        </div>
+                    </div>
+                    <router-view/>
+                </div>
+            </div>
         </div>
         <!-- <spinner v-if="loading"></spinner>
         <div v-else-if="initiated"></div> -->
@@ -31,12 +40,14 @@
 import navbar from './DFLT/navbar'
 import sidebar from './DFLT/side_bar'
 import projectfooter from './DFLT/footer'
+import page_header_default from './page_header_default'
 export default {
 name:'app',
 components:{
 navbar,
 sidebar,
 projectfooter,
+page_header_default,
 },
 data(){
     return{
