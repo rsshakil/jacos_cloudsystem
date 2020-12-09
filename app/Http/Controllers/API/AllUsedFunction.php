@@ -146,12 +146,13 @@ class AllUsedFunction extends Controller
      * Read a csv file by path
      *
      * @param  string $baseUrl
+     * @param  boolean $take_header 1 for no header 0 for with header
      * @return All csv data as an array.
      */
-    public function csvReader($baseUrl)
+    public function csvReader($baseUrl,$take_header=1)
     {
         $data = array_map('str_getcsv', file($baseUrl));
-        $csv_data = array_slice($data, 1);
+        $csv_data = array_slice($data, $take_header);
         // return $csv_data;
         $rowData = $this->convert_from_sjis_to_utf8_recursively($csv_data);
         \Log::debug('----- CSV file read completed from this url: (' . $baseUrl . ')-----');

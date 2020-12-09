@@ -17,7 +17,8 @@ class CreateBmsShipmentsTable extends Migration
             $table->increments('bms_shipment_id')->comment('発注データID');
             // $table->string('file_name',100)->comment('発注ファイル名');
             // $table->string('customer_id', 6)->comment('取引先ID');
-            $table->integer('byr_shipment_id')->comment('byr_return_id');
+            $table->integer('byr_shipment_id')->comment('byr_shipment_id');
+            // data shipment 
             $table->string('sta_sen_identifier', 30)->comment('送信者ＩＤ');
             $table->string('sta_sen_ide_authority', 10)->comment('送信者ＩＤ発行元');
             $table->string('sta_rec_identifier',20)->comment('受信者ＩＤ');
@@ -49,6 +50,7 @@ class CreateBmsShipmentsTable extends Migration
             $table->string('mes_lis_buy_gln', 13)->comment('発注者GLN');
             $table->string('mes_lis_buy_name', 20)->comment('発注者名称');
             $table->string('mes_lis_buy_name_sbcs', 20)->comment('発注者名称カナ');
+            // data shipment voucher 
             $table->string('mes_lis_shi_tra_trade_number', 10)->comment('取引番号（発注・返品）');
             $table->string('mes_lis_shi_tra_additional_trade_number', 10)->comment('取引付属番号');
             $table->string('mes_lis_shi_fre_shipment_number', 10)->comment('出荷者管理番号');
@@ -79,7 +81,7 @@ class CreateBmsShipmentsTable extends Migration
             $table->string('mes_lis_shi_par_sel_ship_location_code', 4)->comment('出荷先コード');
             $table->string('mes_lis_shi_log_shi_gln', 13)->comment('出荷場所GLN');
             $table->string('mes_lis_shi_log_del_route_code', 2)->comment('納品経路');
-            $table->string('mes_lis_shi_log_del_delivery_serviceCode', 2)->comment('便No');
+            $table->string('mes_lis_shi_log_del_delivery_service_code', 2)->comment('便No');
             $table->string('mes_lis_shi_log_del_stock_transfer_code', 2)->comment('通過在庫区分');
             $table->string('mes_lis_shi_log_del_delivery_code', 2)->comment('納品区分');
             $table->string('mes_lis_shi_log_del_delivery_time', 10)->comment('指定納品時刻');
@@ -124,6 +126,7 @@ class CreateBmsShipmentsTable extends Migration
             $table->string('mes_lis_shi_tot_tot_item_total',6)->comment('数量合計');
             $table->string('mes_lis_shi_tot_tot_unit_total',6)->comment('発注単位数量合計');
             $table->string('mes_lis_shi_tot_fre_unit_weight_total',14)->comment('重量合計');
+            // data shipment item
             $table->string('mes_lis_shi_lin_lin_line_number',4)->comment('取引明細番号（発注・返品）');
             $table->string('mes_lis_shi_lin_lin_additional_line_number',4)->comment('取引付属明細番号');
             $table->string('mes_lis_shi_lin_fre_trade_number',10)->comment('元取引番号');
@@ -190,6 +193,7 @@ class CreateBmsShipmentsTable extends Migration
             $table->string('mes_lis_shi_lin_fre_item_weight',13)->comment('商品重量');
             $table->string('mes_lis_shi_lin_fre_order_weight',15)->comment('発注重量');
             $table->string('mes_lis_shi_lin_fre_shipment_weight',15)->comment('出荷重量');
+            // data shipment item details 
             $table->string('mes_lis_shi_lin_pac_itf_code',15)->comment('ITFコード(集合包装GTIN)');
             $table->string('mes_lis_shi_lin_pac_package_indicator',15)->comment('出荷荷姿コード');
             $table->string('mes_lis_shi_lin_pac_number_of_packages',15)->comment('出荷数量（出荷荷姿数）');

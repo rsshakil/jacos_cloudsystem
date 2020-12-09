@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDataOrdersTable extends Migration
+class CreateDataShipmentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,14 @@ class CreateDataOrdersTable extends Migration
      */
     public function up()
     {
-        Schema::create('data_orders', function (Blueprint $table) {
-            $table->increments('data_order_id')->comment('発注データID');
+        Schema::create('data_shipments', function (Blueprint $table) {
+            $table->increments('data_shipment_id')->comment('data_shipment_id');
+            $table->integer('data_order_id')->comment('data_order_id');
             $table->integer('cmn_connect_id')->comment('cmn_connect_id');
-            $table->enum('route', ['edi','manual','handy','other'])->default('edi')->comment('発注経路');
-            $table->dateTime('receive_datetime')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('receive_datetime');
-            $table->string('receive_file_path', 200)->nullable()->comment('receive_file_path');
+            $table->dateTime('upload_datetime')->nullable()->comment('アップロード日時');
+            $table->string('upload_file_path', 200)->nullable()->comment('upload_file_path');
+            $table->dateTime('send_datetime')->nullable()->comment('送信日時');
+            $table->string('send_file_path', 200)->nullable()->comment('送信ファイルパス');
             $table->string('sta_sen_identifier', 30)->comment('送信者ＩＤ');
             $table->string('sta_sen_ide_authority', 10)->comment('送信者ＩＤ発行元');
             $table->string('sta_rec_identifier',20)->comment('受信者ＩＤ');
@@ -29,8 +31,8 @@ class CreateDataOrdersTable extends Migration
             $table->string('sta_doc_type', 10)->comment('メッセージ種');
             $table->dateTime('sta_doc_creation_date_and_time')->comment('作成日時');
             $table->string('sta_bus_scope_type', 20)->comment('タイプ');
-            $table->string('sta_bus_scope_instance_identifier', 20)->comment('テスト区分ＩＤ');
-            $table->string('sta_bus_scope_identifier', 20)->comment('最終送信先ＩＤ');
+            $table->string('sta_bus_scope_instance_identifier', 20)->comment('テスト区分・最終送信先');
+            $table->string('sta_bus_scope_identifier', 20)->comment('テスト区分・最終送信先ＩＤ');
             $table->string('mes_ent_unique_creator_identification', 80)->comment('メッセージ識別ＩＤ');
             $table->string('mes_mes_sender_station_address', 8)->comment('送信者ステーションアドレス');
             $table->string('mes_mes_ultimate_receiver_station_address', 8)->comment('最終受信者ステーションアドレス');
@@ -51,8 +53,9 @@ class CreateDataOrdersTable extends Migration
             $table->string('mes_lis_buy_name', 20)->comment('発注者名称');
             $table->string('mes_lis_buy_name_sbcs', 20)->comment('発注者名称カナ');
             $table->smallInteger('deleted')->default(1)->comment('削除フラグ');
-            $table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
+			$table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
 			$table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
+            
         });
     }
 
@@ -63,6 +66,6 @@ class CreateDataOrdersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('data_orders');
+        Schema::dropIfExists('data_shipments');
     }
 }
