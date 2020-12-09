@@ -17,6 +17,8 @@ class CreateCmnPdfCanvasTable extends Migration
             $table->increments('cmn_pdf_canvas_id')->comment('Default ID');
             // $table->string('canvas_id',30)->comment('Canvas random ID');
             $table->integer('byr_buyer_id')->nullable()->comment('Buyer ID')->index();
+            $table->enum('class', ['order','shipment','receive','invoice','corrected_receive','return','payment','inventory','other'])
+            ->default('order')->comment('class');
             $table->string('canvas_name',100)->nullable()->comment('Canvas Name');
             $table->string('canvas_image',100)->nullable()->comment('Canvas live image');
             $table->string('canvas_bg_image',100)->nullable()->comment('Canvas Background Image');

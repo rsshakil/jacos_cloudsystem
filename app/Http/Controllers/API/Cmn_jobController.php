@@ -88,6 +88,7 @@ class Cmn_jobController extends Controller
 
     public function exec(Request $request)
     {
+        // return "OK";
         // return $request->all();
         \Log::debug('scenario exec start---------------');
         // user info check
@@ -99,7 +100,7 @@ class Cmn_jobController extends Controller
         if (!Hash::check($request->password, $user->password)) {
             return ['status'=>1, 'message' => 'Authentication faild!'];
         }
-
+        // return $request->all();
         // scenario info check
         // byr_buyers.spr_code
         // cmn_connects.partner_code
@@ -139,6 +140,7 @@ class Cmn_jobController extends Controller
             ->join('cmn_scenarios', 'cmn_jobs.cmn_scenario_id', '=', 'cmn_scenarios.cmn_scenario_id')
             ->where('cmn_jobs.cmn_job_id', $cmn_job_id)->where('cmn_jobs.is_active',1)->first();
         }
+        // return $sc;
         \Log::info($sc);
         // return response()->json($sc);
         // scenario call
@@ -172,7 +174,7 @@ class Cmn_jobController extends Controller
 
 
         \Log::debug('scenario exec end  ---------------');
-        return;
+        return $ret;
     }
 
    
