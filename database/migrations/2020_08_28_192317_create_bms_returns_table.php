@@ -16,8 +16,6 @@ class CreateBmsReturnsTable extends Migration
         Schema::create('bms_returns', function (Blueprint $table) {
             $table->increments('bms_return_id')->comment('返品データID');
             $table->integer('byr_return_id')->comment('byr_return_id');
-            // $table->string('file_name',100)->comment('発注ファイル名');
-            // $table->string('customer_id', 8)->comment('取引先ID');
             $table->string('sta_sen_identifier', 30)->comment('送信者ＩＤ');
             $table->string('sta_sen_ide_authority', 10)->comment('送信者ＩＤ発行元');
             $table->string('sta_rec_identifier',20)->comment('受信者ＩＤ');
@@ -49,6 +47,7 @@ class CreateBmsReturnsTable extends Migration
             $table->string('mes_lis_ret_gln', 13)->comment('発注者GLN');
             $table->string('mes_lis_ret_name', 20)->comment('発注者名称');
             $table->string('mes_lis_ret_name_sbcs', 20)->comment('発注者名称カナ');
+
             $table->string('mes_lis_ret_tra_trade_number', 10)->comment('取引番号（発注・返品）');
             $table->string('mes_lis_ret_tra_additional_trade_number', 10)->comment('取引付属番号');
             $table->string('mes_lis_ret_fre_shipment_number', 10)->comment('出荷者管理番号');
@@ -97,6 +96,7 @@ class CreateBmsReturnsTable extends Migration
             $table->integer('mes_lis_ret_tot_tot_tax_total')->comment('税額合計金額');
             $table->integer('mes_lis_ret_tot_tot_item_total')->comment('数量合計');
             $table->integer('mes_lis_ret_tot_fre_unit_weight_total')->comment('重量合計');
+            
             $table->string('mes_lis_ret_lin_lin_line_number',10)->comment('取引明細番号（発注・返品）');
             $table->string('mes_lis_ret_lin_lin_additional_line_number',10)->comment('取引付属明細番号');
             $table->string('mes_lis_ret_lin_fre_trade_number',10)->comment('元取引番号');

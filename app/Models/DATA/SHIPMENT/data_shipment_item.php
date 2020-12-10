@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\SHIPMENT;
+namespace App\Models\DATA\SHIPMENT;
 
 use Illuminate\Database\Eloquent\Model;
 

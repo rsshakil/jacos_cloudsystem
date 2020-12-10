@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\ORD;
+namespace App\Models\DATA\ORD;
 
 use Illuminate\Database\Eloquent\Model;
 

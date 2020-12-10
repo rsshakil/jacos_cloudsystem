@@ -14,13 +14,13 @@ use App\Models\CMN\cmn_maker;
 use App\Models\CMN\cmn_category;
 use App\Models\CMN\cmn_category_description;
 use App\Models\CMN\cmn_category_path;
-use App\Models\ORD\data_order;
-use App\Models\ORD\data_order_voucher;
-use App\Models\ORD\data_order_item;
-use App\Models\SHIPMENT\data_shipment;
-use App\Models\SHIPMENT\data_shipment_voucher;
-use App\Models\SHIPMENT\data_shipment_item;
-use App\Models\SHIPMENT\data_shipment_item_detail;
+use App\Models\DATA\ORD\data_order;
+use App\Models\DATA\ORD\data_order_voucher;
+use App\Models\DATA\ORD\data_order_item;
+use App\Models\DATA\SHIPMENT\data_shipment;
+use App\Models\DATA\SHIPMENT\data_shipment_voucher;
+use App\Models\DATA\SHIPMENT\data_shipment_item;
+use App\Models\DATA\SHIPMENT\data_shipment_item_detail;
 // use App\Models\BMS\bms_order;
 // use App\Models\BMS\bms_shipment;
 // use App\Models\BYR\byr_order_item;
@@ -123,9 +123,9 @@ class bms_csv_order extends Model
     //     $insert_array_bms_shipment=array();
     //     $voucher_array=array();
     //     $item_array=array();
-        $data_order_array=array();
-        $data_voucher_array=array();
-        $data_item_array=array();
+        // $data_order_array=array();
+        // $data_voucher_array=array();
+        // $data_item_array=array();
         foreach ($dataArr as $key => $value) {
 
             $data_order_array['sta_sen_identifier']=$value[0];
@@ -230,7 +230,7 @@ class bms_csv_order extends Model
             $data_voucher_array['mes_lis_ord_tot_tot_item_total']=$value[98];
             $data_voucher_array['mes_lis_ord_tot_tot_unit_total']=$value[99];
             $data_voucher_array['mes_lis_ord_tot_fre_unit_weight_total']=$value[100];
-
+            
             $data_shi_voucher_array['mes_lis_shi_tra_trade_number']=$value[31];
             $data_shi_voucher_array['mes_lis_shi_tra_additional_trade_number']=$value[32];
             $data_shi_voucher_array['mes_lis_shi_par_shi_code']=$value[33];
@@ -271,18 +271,22 @@ class bms_csv_order extends Model
             $data_shi_voucher_array['mes_lis_shi_log_log_receiver_abbr_name']=$value[68];
             $data_shi_voucher_array['mes_lis_shi_log_log_text']=$value[69];
             $data_shi_voucher_array['mes_lis_shi_log_log_text_sbcs']=$value[70];
+            $data_shi_voucher_array['mes_lis_shi_log_maker_code_for_receiving']='';
+            $data_shi_voucher_array['mes_lis_shi_log_delivery_slip_number']='';
             $data_shi_voucher_array['mes_lis_shi_tra_goo_major_category']=$value[71];
             $data_shi_voucher_array['mes_lis_shi_tra_goo_sub_major_category']=$value[72];
             $data_shi_voucher_array['mes_lis_shi_tra_dat_order_date']=$value[73];
             $data_shi_voucher_array['mes_lis_shi_tra_dat_delivery_date']=$value[74];
             $data_shi_voucher_array['mes_lis_shi_tra_dat_delivery_date_to_receiver']=$value[75];
+            $data_shi_voucher_array['mes_lis_shi_tra_dat_revised_delivery_date']='';
             $data_shi_voucher_array['mes_lis_shi_tra_dat_transfer_of_ownership_date']=$value[76];
             $data_shi_voucher_array['mes_lis_shi_tra_dat_campaign_start_date']=$value[77];
             $data_shi_voucher_array['mes_lis_shi_tra_dat_campaign_end_date']=$value[78];
-            $data_shi_voucher_array['mes_lis_shi_tra_dat_valid_until_date']=$value[79];
+            // $data_shi_voucher_array['mes_lis_shi_tra_dat_valid_until_date']=$value[79];
             $data_shi_voucher_array['mes_lis_shi_tra_ins_goods_classification_code']=$value[80];
             $data_shi_voucher_array['mes_lis_shi_tra_ins_order_classification_code']=$value[81];
             $data_shi_voucher_array['mes_lis_shi_tra_ins_ship_notification_request_code']=$value[82];
+            $data_shi_voucher_array['mes_lis_shi_tra_ins_eos_code']='';
             $data_shi_voucher_array['mes_lis_shi_tra_ins_private_brand_code']=$value[83];
             $data_shi_voucher_array['mes_lis_shi_tra_ins_temperature_code']=$value[84];
             $data_shi_voucher_array['mes_lis_shi_tra_ins_liquor_code']=$value[85];
@@ -301,7 +305,7 @@ class bms_csv_order extends Model
             $data_shi_voucher_array['mes_lis_shi_tot_tot_item_total']=$value[98];
             $data_shi_voucher_array['mes_lis_shi_tot_tot_unit_total']=$value[99];
             $data_shi_voucher_array['mes_lis_shi_tot_fre_unit_weight_total']=$value[100];
-
+            
             $data_item_array['mes_lis_ord_lin_lin_line_number']=$value[101];
             $data_item_array['mes_lis_ord_lin_lin_additional_line_number']=$value[102];
             $data_item_array['mes_lis_ord_lin_fre_trade_number']=$value[103];
@@ -359,8 +363,8 @@ class bms_csv_order extends Model
             $data_item_array['mes_lis_ord_lin_fre_unit_weight_code']=$value[155];
             $data_item_array['mes_lis_ord_lin_fre_item_weight']=$value[156];
             $data_item_array['mes_lis_ord_lin_fre_order_weight']=$value[157];
-
-            $data_shi_item_array['mes_lis_ord_lin_lin_line_number']=$value[101];
+            
+            $data_shi_item_array['mes_lis_shi_lin_lin_line_number']=$value[101];
             $data_shi_item_array['mes_lis_shi_lin_lin_additional_line_number']=$value[102];
             $data_shi_item_array['mes_lis_shi_lin_fre_trade_number']=$value[103];
             $data_shi_item_array['mes_lis_shi_lin_fre_line_number']=$value[104];
@@ -424,8 +428,8 @@ class bms_csv_order extends Model
             $data_shi_item_array['mes_lis_shi_lin_fre_unit_weight']=$value[154];
             $data_shi_item_array['mes_lis_shi_lin_fre_unit_weight_code']=$value[155];
             $data_shi_item_array['mes_lis_shi_lin_fre_item_weight']=$value[156];
-            $data_shi_item_array['mes_lis_shi_lin_fre_order_weight']='';
-            $data_shi_item_array['mes_lis_shi_lin_fre_shipment_weight']=$value[157];
+            $data_shi_item_array['mes_lis_shi_lin_fre_order_weight']=$value[157];
+            $data_shi_item_array['mes_lis_shi_lin_fre_shipment_weight']='';
             // 158 done 
             // Order 
             $data_order_array['cmn_connect_id']=$sc->cmn_connect_id;
@@ -450,12 +454,18 @@ class bms_csv_order extends Model
 
             $data_shipment_id = data_shipment::insertGetId($data_order_array);
 
-            // $data_shi_voucher_array["data_shipment_id"]=$data_shipment_id;
-            // $data_shipment_voucher_id = data_shipment_voucher::insertGetId($data_shi_voucher_array);
+            $data_shi_voucher_array["data_shipment_id"]=$data_shipment_id;
+            $data_shipment_voucher_id = data_shipment_voucher::insertGetId($data_shi_voucher_array);
             
-            // $data_shi_item_array["data_shipment_voucher_id"]=$data_shipment_voucher_id;
-            // $data_shipment_item_id = data_shipment_items::insertGetId($data_shi_item_array);
+            $data_shi_item_array["data_shipment_voucher_id"]=$data_shipment_voucher_id;
+            $data_shipment_item_id = data_shipment_item::insertGetId($data_shi_item_array);
+            data_shipment_item_detail::insert(['data_shipment_item_id'=>$data_shipment_item_id]);
 
+            $data_order_array=array();
+            $data_voucher_array=array();
+            $data_shi_voucher_array=array();
+            $data_item_array=array();
+            $data_shi_item_array=array();
             
         }
         return "Inserted";

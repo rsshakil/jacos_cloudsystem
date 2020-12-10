@@ -47,6 +47,7 @@ class CreateBmsCorrectedReceivesTable extends Migration
             $table->string('mes_lis_buy_gln', 13)->comment('発注者GLN');
             $table->string('mes_lis_buy_name', 20)->comment('発注者名称');
             $table->string('mes_lis_buy_name_sbcs', 20)->comment('発注者名称カナ');
+            
             $table->string('mes_lis_acc_tra_trade_number', 10)->comment('取引番号（発注・返品）');
             $table->string('mes_lis_acc_tra_additional_trade_number', 10)->comment('取引付属番号');
             $table->string('mes_lis_acc_fre_shipment_number', 11)->comment('出荷者管理番号');
@@ -98,6 +99,7 @@ class CreateBmsCorrectedReceivesTable extends Migration
             $table->integer('mes_lis_acc_tot_tot_item_total')->comment('数量合計');
             $table->integer('mes_lis_acc_tot_tot_unit_total')->comment('発注単位数量合計');
             $table->integer('mes_lis_acc_tot_fre_unit_weight_total')->comment('重量合計');
+            
             $table->string('mes_lis_acc_lin_lin_line_number',4)->comment('取引明細番号（発注・返品）');
             $table->string('mes_lis_acc_lin_lin_additional_line_number',4)->comment('取引付属明細番号');
             $table->string('mes_lis_acc_lin_fre_trade_number',10)->comment('元取引番号');
