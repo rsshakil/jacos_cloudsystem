@@ -20,6 +20,7 @@ class CreateByrBuyersTable extends Migration
             $table->foreign('cmn_company_id')->references('cmn_company_id')->on('cmn_companies');
             $table->string('super_code',4)->comment('Super Code');
             $table->integer('adm_role_id')->default(0)->unsigned()->comment('Admin role id');
+            $table->json('setting_information')->nullable()->comment('Setting Information Json');
             $table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('Time of creation');
             $table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('last updated time');
             $table->index(['cmn_company_id','adm_role_id', 'created_at']);
