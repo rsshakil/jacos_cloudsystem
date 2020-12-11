@@ -13,21 +13,18 @@
           >
           <div class="collapse" id="byrmenu" aria-expanded="false">
             <ul class="flex-column pl-2 nav">
-              <li class="nav-item"  v-for="permission in permissions_by_user" :key="permission.id">
-                <router-link :to="'/'+permission.name" class="nav-link">
+       
+              <li class="nav-item"  v-for="permission in permissions_by_user" :key="permission.permission_id">
+                <router-link :to="'/'+permission.permission_name" class="nav-link">
                   <b-icon icon="receipt" font-scale="1.2"></b-icon>
-                  {{permission.name}}
+                  {{permission.permission_name}}
                 </router-link>
               </li>
             </ul>
           </div>
         </li>
-
         
         
-        <!-- <li class="nav-item" v-for="permission in permissions_by_user" :key="permission.id">
-          {{permission.name}}
-        </li> -->
       </ul>
 </div>
 </template>
@@ -48,7 +45,7 @@ export default {
     
   },
   created(){
-
+    console.log(this.permissions_by_user);
   }
 };
 </script>
