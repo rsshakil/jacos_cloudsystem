@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Scenarios;
+
 use App\scenarios\Common;
 use Illuminate\Database\Eloquent\Model;
 // use App\Models\BYR\byr_order_detail;
@@ -29,6 +30,7 @@ use App\Models\DATA\SHIPMENT\data_shipment_item_detail;
 // use App\Models\BYR\byr_shipment_voucher;
 use App\Http\Controllers\API\AllUsedFunction;
 use DB;
+
 class bms_csv_order extends Model
 {
     private $all_functions;
@@ -100,14 +102,14 @@ class bms_csv_order extends Model
     ];
 
     //
-    public function exec($request,$sc)
+    public function exec($request, $sc)
     {
         // return "OK";
         // include(app_path() . '/scenarios/common.php');
         \Log::debug('ouk_order_toj exec start  ---------------');
         // ファイルアップロード
         // echo $request->file('up_file');exit;
-       $file_name = time().'_'.$request->file('up_file')->getClientOriginalName();
+        $file_name = time().'_'.$request->file('up_file')->getClientOriginalName();
         $path = $request->file('up_file')->storeAs(config('const.ORDER_DATA_PATH').date('Y-m'), $file_name);
         \Log::debug('save path:'.$path);
         // $custom_paths = storage_path().'/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name;
@@ -115,196 +117,235 @@ class bms_csv_order extends Model
         $received_path = storage_path().'/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name;
         // フォーマット変換
         // byr_orders,byr_order_details格納
-        $dataArr = $this->all_functions->csvReader($received_path,1);
+        $dataArr = $this->all_functions->csvReader($received_path, 1);
        
         $data_count=count($dataArr);
-    //    return $dataArr;
-    // $insert_array_bms_order=array();
-    //     $insert_array_bms_shipment=array();
-    //     $voucher_array=array();
-    //     $item_array=array();
+        //    return $dataArr;
+        // $insert_array_bms_order=array();
+        //     $insert_array_bms_shipment=array();
+        //     $voucher_array=array();
+        //     $item_array=array();
         // $data_order_array=array();
         // $data_voucher_array=array();
         // $data_item_array=array();
+
+
+        $order_flg = true;
+        $trade_number = '';
+
         foreach ($dataArr as $key => $value) {
+            if ($order_flg) {
+                $data_order_array['sta_sen_identifier']=$value[0];
+                $data_order_array['sta_sen_ide_authority']=$value[1];
+                $data_order_array['sta_rec_identifier']=$value[2];
+                $data_order_array['sta_rec_ide_authority']=$value[3];
+                $data_order_array['sta_doc_standard']=$value[4];
+                $data_order_array['sta_doc_type_version']=$value[5];
+                $data_order_array['sta_doc_instance_identifier']=$value[6];
+                $data_order_array['sta_doc_type']=$value[7];
+                $data_order_array['sta_doc_creation_date_and_time']=$value[8];
+                $data_order_array['sta_bus_scope_type']=$value[9];
+                $data_order_array['sta_bus_scope_instance_identifier']=$value[10];
+                $data_order_array['sta_bus_scope_identifier']=$value[11];
+                $data_order_array['mes_ent_unique_creator_identification']=$value[12];
+                $data_order_array['mes_mes_sender_station_address']=$value[13];
+                $data_order_array['mes_mes_ultimate_receiver_station_address']=$value[14];
+                $data_order_array['mes_mes_immediate_receiver_station_addres']=$value[15];
+                $data_order_array['mes_mes_number_of_trading_documents']=$value[16];
+                $data_order_array['mes_mes_sys_key']=$value[17];
+                $data_order_array['mes_mes_sys_value']=$value[18];
+                $data_order_array['mes_lis_con_version']=$value[19];
+                $data_order_array['mes_lis_doc_version']=$value[20];
+                $data_order_array['mes_lis_ext_namespace']=$value[21];
+                $data_order_array['mes_lis_ext_version']=$value[22];
+                $data_order_array['mes_lis_pay_code']=$value[23];
+                $data_order_array['mes_lis_pay_gln']=$value[24];
+                $data_order_array['mes_lis_pay_name']=$value[25];
+                $data_order_array['mes_lis_pay_name_sbcs']=$value[26];
+                $data_order_array['mes_lis_buy_code']=$value[27];
+                $data_order_array['mes_lis_buy_gln']=$value[28];
+                $data_order_array['mes_lis_buy_name']=$value[29];
+                $data_order_array['mes_lis_buy_name_sbcs']=$value[30];
 
-            $data_order_array['sta_sen_identifier']=$value[0];
-            $data_order_array['sta_sen_ide_authority']=$value[1];
-            $data_order_array['sta_rec_identifier']=$value[2];
-            $data_order_array['sta_rec_ide_authority']=$value[3];
-            $data_order_array['sta_doc_standard']=$value[4];
-            $data_order_array['sta_doc_type_version']=$value[5];
-            $data_order_array['sta_doc_instance_identifier']=$value[6];
-            $data_order_array['sta_doc_type']=$value[7];
-            $data_order_array['sta_doc_creation_date_and_time']=$value[8];
-            $data_order_array['sta_bus_scope_type']=$value[9];
-            $data_order_array['sta_bus_scope_instance_identifier']=$value[10];
-            $data_order_array['sta_bus_scope_identifier']=$value[11];
-            $data_order_array['mes_ent_unique_creator_identification']=$value[12];
-            $data_order_array['mes_mes_sender_station_address']=$value[13];
-            $data_order_array['mes_mes_ultimate_receiver_station_address']=$value[14];
-            $data_order_array['mes_mes_immediate_receiver_station_addres']=$value[15];
-            $data_order_array['mes_mes_number_of_trading_documents']=$value[16];
-            $data_order_array['mes_mes_sys_key']=$value[17];
-            $data_order_array['mes_mes_sys_value']=$value[18];
-            $data_order_array['mes_lis_con_version']=$value[19];
-            $data_order_array['mes_lis_doc_version']=$value[20];
-            $data_order_array['mes_lis_ext_namespace']=$value[21];
-            $data_order_array['mes_lis_ext_version']=$value[22];
-            $data_order_array['mes_lis_pay_code']=$value[23];
-            $data_order_array['mes_lis_pay_gln']=$value[24];
-            $data_order_array['mes_lis_pay_name']=$value[25];
-            $data_order_array['mes_lis_pay_name_sbcs']=$value[26];
-            $data_order_array['mes_lis_buy_code']=$value[27];
-            $data_order_array['mes_lis_buy_gln']=$value[28];
-            $data_order_array['mes_lis_buy_name']=$value[29];
-            $data_order_array['mes_lis_buy_name_sbcs']=$value[30];
+                // Order
+                $data_order_array['cmn_connect_id']=$sc->cmn_connect_id;
+                $data_order_array['route']='edi';
+                $data_order_array['receive_file_path']=$file_name;
 
-            $data_voucher_array['mes_lis_ord_tra_trade_number']=$value[31];
-            $data_voucher_array['mes_lis_ord_tra_additional_trade_number']=$value[32];
-            $data_voucher_array['mes_lis_ord_par_shi_code']=$value[33];
-            $data_voucher_array['mes_lis_ord_par_shi_gln']=$value[34];
-            $data_voucher_array['mes_lis_ord_par_shi_name']=$value[35];
-            $data_voucher_array['mes_lis_ord_par_shi_name_sbcs']=$value[36];
-            $data_voucher_array['mes_lis_ord_par_rec_code']=$value[37];
-            $data_voucher_array['mes_lis_ord_par_rec_gln']=$value[38];
-            $data_voucher_array['mes_lis_ord_par_rec_name']=$value[39];
-            $data_voucher_array['mes_lis_ord_par_rec_name_sbcs']=$value[40];
-            $data_voucher_array['mes_lis_ord_par_tra_code']=$value[41];
-            $data_voucher_array['mes_lis_ord_par_tra_gln']=$value[42];
-            $data_voucher_array['mes_lis_ord_par_tra_name']=$value[43];
-            $data_voucher_array['mes_lis_ord_par_tra_name_sbcs']=$value[44];
-            $data_voucher_array['mes_lis_ord_par_dis_code']=$value[45];
-            $data_voucher_array['mes_lis_ord_par_dis_name']=$value[46];
-            $data_voucher_array['mes_lis_ord_par_dis_name_sbcs']=$value[47];
-            $data_voucher_array['mes_lis_ord_par_pay_code']=$value[48];
-            $data_voucher_array['mes_lis_ord_par_pay_gln']=$value[49];
-            $data_voucher_array['mes_lis_ord_par_pay_name']=$value[50];
-            $data_voucher_array['mes_lis_ord_par_pay_name_sbcs']=$value[51];
-            $data_voucher_array['mes_lis_ord_par_sel_code']=$value[52];
-            $data_voucher_array['mes_lis_ord_par_sel_gln']=$value[53];
-            $data_voucher_array['mes_lis_ord_par_sel_name']=$value[54];
-            $data_voucher_array['mes_lis_ord_par_sel_name_sbcs']=$value[55];
-            $data_voucher_array['mes_lis_ord_par_sel_branch_number']=$value[56];
-            $data_voucher_array['mes_lis_ord_par_sel_ship_location_code']=$value[57];
-            $data_voucher_array['mes_lis_ord_log_shi_gln']=$value[58];
-            $data_voucher_array['mes_lis_ord_log_del_route_code']=$value[59];
-            $data_voucher_array['mes_lis_ord_log_del_delivery_service_code']=$value[60];
-            $data_voucher_array['mes_lis_ord_log_del_stock_transfer_code']=$value[61];
-            $data_voucher_array['mes_lis_ord_log_del_delivery_code']=$value[62];
-            $data_voucher_array['mes_lis_ord_log_del_delivery_time']=$value[63];
-            $data_voucher_array['mes_lis_ord_log_del_transportation_code']=$value[64];
-            $data_voucher_array['mes_lis_ord_log_log_barcode_print']=$value[65];
-            $data_voucher_array['mes_lis_ord_log_log_category_name_print1']=$value[66];
-            $data_voucher_array['mes_lis_ord_log_log_category_name_print2']=$value[67];
-            $data_voucher_array['mes_lis_ord_log_log_receiver_abbr_name']=$value[68];
-            $data_voucher_array['mes_lis_ord_log_log_text']=$value[69];
-            $data_voucher_array['mes_lis_ord_log_log_text_sbcs']=$value[70];
-            $data_voucher_array['mes_lis_ord_tra_goo_major_category']=$value[71];
-            $data_voucher_array['mes_lis_ord_tra_goo_sub_major_category']=$value[72];
-            $data_voucher_array['mes_lis_ord_tra_dat_order_date']=$value[73];
-            $data_voucher_array['mes_lis_ord_tra_dat_delivery_date']=$value[74];
-            $data_voucher_array['mes_lis_ord_tra_dat_delivery_date_to_receiver']=$value[75];
-            $data_voucher_array['mes_lis_ord_tra_dat_transfer_of_ownership_date']=$value[76];
-            $data_voucher_array['mes_lis_ord_tra_dat_campaign_start_date']=$value[77];
-            $data_voucher_array['mes_lis_ord_tra_dat_campaign_end_date']=$value[78];
-            $data_voucher_array['mes_lis_ord_tra_dat_valid_until_date']=$value[79];
-            $data_voucher_array['mes_lis_ord_tra_ins_goods_classification_code']=$value[80];
-            $data_voucher_array['mes_lis_ord_tra_ins_order_classification_code']=$value[81];
-            $data_voucher_array['mes_lis_ord_tra_ins_ship_notification_request_code']=$value[82];
-            $data_voucher_array['mes_lis_ord_tra_ins_private_brand_code']=$value[83];
-            $data_voucher_array['mes_lis_ord_tra_ins_temperature_code']=$value[84];
-            $data_voucher_array['mes_lis_ord_tra_ins_liquor_code']=$value[85];
-            $data_voucher_array['mes_lis_ord_tra_ins_trade_type_code']=$value[86];
-            $data_voucher_array['mes_lis_ord_tra_ins_paper_form_less_code']=$value[87];
-            $data_voucher_array['mes_lis_ord_tra_fre_trade_number_request_code']=$value[88];
-            $data_voucher_array['mes_lis_ord_tra_fre_package_code']=$value[89];
-            $data_voucher_array['mes_lis_ord_tra_fre_variable_measure_item_code']=$value[90];
-            $data_voucher_array['mes_lis_ord_tra_tax_tax_type_code']=$value[91];
-            $data_voucher_array['mes_lis_ord_tra_tax_tax_rate']=$value[92];
-            $data_voucher_array['mes_lis_ord_tra_not_text']=$value[93];
-            $data_voucher_array['mes_lis_ord_tra_not_text_sbcs']=$value[94];
-            $data_voucher_array['mes_lis_ord_tot_tot_net_price_total']=$value[95];
-            $data_voucher_array['mes_lis_ord_tot_tot_selling_price_total']=$value[96];
-            $data_voucher_array['mes_lis_ord_tot_tot_tax_total']=$value[97];
-            $data_voucher_array['mes_lis_ord_tot_tot_item_total']=$value[98];
-            $data_voucher_array['mes_lis_ord_tot_tot_unit_total']=$value[99];
-            $data_voucher_array['mes_lis_ord_tot_fre_unit_weight_total']=$value[100];
+                $data_order_id = data_order::insertGetId($data_order_array);
+
+                // Shipment
+                unset($data_order_array["route"]);
+                unset($data_order_array["receive_file_path"]);
+                $data_order_array['data_order_id']=$data_order_id;
+                $data_order_array['upload_datetime']='';
+                $data_order_array['upload_file_path']='';
+                $data_order_array['send_datetime']='';
+                $data_order_array['send_file_path']='';
+
+                $data_shipment_id = data_shipment::insertGetId($data_order_array);
+
+                $order_flg =false;
+            }
+
+            if ($trade_number !=$value[31].'-'.$value[32]) {
+                $data_voucher_array['mes_lis_ord_tra_trade_number']=$value[31];
+                $data_voucher_array['mes_lis_ord_tra_additional_trade_number']=$value[32];
+                $data_voucher_array['mes_lis_ord_par_shi_code']=$value[33];
+                $data_voucher_array['mes_lis_ord_par_shi_gln']=$value[34];
+                $data_voucher_array['mes_lis_ord_par_shi_name']=$value[35];
+                $data_voucher_array['mes_lis_ord_par_shi_name_sbcs']=$value[36];
+                $data_voucher_array['mes_lis_ord_par_rec_code']=$value[37];
+                $data_voucher_array['mes_lis_ord_par_rec_gln']=$value[38];
+                $data_voucher_array['mes_lis_ord_par_rec_name']=$value[39];
+                $data_voucher_array['mes_lis_ord_par_rec_name_sbcs']=$value[40];
+                $data_voucher_array['mes_lis_ord_par_tra_code']=$value[41];
+                $data_voucher_array['mes_lis_ord_par_tra_gln']=$value[42];
+                $data_voucher_array['mes_lis_ord_par_tra_name']=$value[43];
+                $data_voucher_array['mes_lis_ord_par_tra_name_sbcs']=$value[44];
+                $data_voucher_array['mes_lis_ord_par_dis_code']=$value[45];
+                $data_voucher_array['mes_lis_ord_par_dis_name']=$value[46];
+                $data_voucher_array['mes_lis_ord_par_dis_name_sbcs']=$value[47];
+                $data_voucher_array['mes_lis_ord_par_pay_code']=$value[48];
+                $data_voucher_array['mes_lis_ord_par_pay_gln']=$value[49];
+                $data_voucher_array['mes_lis_ord_par_pay_name']=$value[50];
+                $data_voucher_array['mes_lis_ord_par_pay_name_sbcs']=$value[51];
+                $data_voucher_array['mes_lis_ord_par_sel_code']=$value[52];
+                $data_voucher_array['mes_lis_ord_par_sel_gln']=$value[53];
+                $data_voucher_array['mes_lis_ord_par_sel_name']=$value[54];
+                $data_voucher_array['mes_lis_ord_par_sel_name_sbcs']=$value[55];
+                $data_voucher_array['mes_lis_ord_par_sel_branch_number']=$value[56];
+                $data_voucher_array['mes_lis_ord_par_sel_ship_location_code']=$value[57];
+                $data_voucher_array['mes_lis_ord_log_shi_gln']=$value[58];
+                $data_voucher_array['mes_lis_ord_log_del_route_code']=$value[59];
+                $data_voucher_array['mes_lis_ord_log_del_delivery_service_code']=$value[60];
+                $data_voucher_array['mes_lis_ord_log_del_stock_transfer_code']=$value[61];
+                $data_voucher_array['mes_lis_ord_log_del_delivery_code']=$value[62];
+                $data_voucher_array['mes_lis_ord_log_del_delivery_time']=$value[63];
+                $data_voucher_array['mes_lis_ord_log_del_transportation_code']=$value[64];
+                $data_voucher_array['mes_lis_ord_log_log_barcode_print']=$value[65];
+                $data_voucher_array['mes_lis_ord_log_log_category_name_print1']=$value[66];
+                $data_voucher_array['mes_lis_ord_log_log_category_name_print2']=$value[67];
+                $data_voucher_array['mes_lis_ord_log_log_receiver_abbr_name']=$value[68];
+                $data_voucher_array['mes_lis_ord_log_log_text']=$value[69];
+                $data_voucher_array['mes_lis_ord_log_log_text_sbcs']=$value[70];
+                $data_voucher_array['mes_lis_ord_tra_goo_major_category']=$value[71];
+                $data_voucher_array['mes_lis_ord_tra_goo_sub_major_category']=$value[72];
+                $data_voucher_array['mes_lis_ord_tra_dat_order_date']=$value[73];
+                $data_voucher_array['mes_lis_ord_tra_dat_delivery_date']=$value[74];
+                $data_voucher_array['mes_lis_ord_tra_dat_delivery_date_to_receiver']=$value[75];
+                $data_voucher_array['mes_lis_ord_tra_dat_transfer_of_ownership_date']=$value[76];
+                $data_voucher_array['mes_lis_ord_tra_dat_campaign_start_date']=$value[77];
+                $data_voucher_array['mes_lis_ord_tra_dat_campaign_end_date']=$value[78];
+                $data_voucher_array['mes_lis_ord_tra_dat_valid_until_date']=$value[79];
+                $data_voucher_array['mes_lis_ord_tra_ins_goods_classification_code']=$value[80];
+                $data_voucher_array['mes_lis_ord_tra_ins_order_classification_code']=$value[81];
+                $data_voucher_array['mes_lis_ord_tra_ins_ship_notification_request_code']=$value[82];
+                $data_voucher_array['mes_lis_ord_tra_ins_private_brand_code']=$value[83];
+                $data_voucher_array['mes_lis_ord_tra_ins_temperature_code']=$value[84];
+                $data_voucher_array['mes_lis_ord_tra_ins_liquor_code']=$value[85];
+                $data_voucher_array['mes_lis_ord_tra_ins_trade_type_code']=$value[86];
+                $data_voucher_array['mes_lis_ord_tra_ins_paper_form_less_code']=$value[87];
+                $data_voucher_array['mes_lis_ord_tra_fre_trade_number_request_code']=$value[88];
+                $data_voucher_array['mes_lis_ord_tra_fre_package_code']=$value[89];
+                $data_voucher_array['mes_lis_ord_tra_fre_variable_measure_item_code']=$value[90];
+                $data_voucher_array['mes_lis_ord_tra_tax_tax_type_code']=$value[91];
+                $data_voucher_array['mes_lis_ord_tra_tax_tax_rate']=$value[92];
+                $data_voucher_array['mes_lis_ord_tra_not_text']=$value[93];
+                $data_voucher_array['mes_lis_ord_tra_not_text_sbcs']=$value[94];
+                $data_voucher_array['mes_lis_ord_tot_tot_net_price_total']=$value[95];
+                $data_voucher_array['mes_lis_ord_tot_tot_selling_price_total']=$value[96];
+                $data_voucher_array['mes_lis_ord_tot_tot_tax_total']=$value[97];
+                $data_voucher_array['mes_lis_ord_tot_tot_item_total']=$value[98];
+                $data_voucher_array['mes_lis_ord_tot_tot_unit_total']=$value[99];
+                $data_voucher_array['mes_lis_ord_tot_fre_unit_weight_total']=$value[100];
+
+                $data_voucher_array['data_order_id']=$data_order_id;
+                $data_order_voucher_id = data_order_voucher::insertGetId($data_voucher_array);
+
+
+                $data_shi_voucher_array['mes_lis_shi_tra_trade_number']=$value[31];
+                $data_shi_voucher_array['mes_lis_shi_tra_additional_trade_number']=$value[32];
+                $data_shi_voucher_array['mes_lis_shi_par_shi_code']=$value[33];
+                $data_shi_voucher_array['mes_lis_shi_par_shi_gln']=$value[34];
+                $data_shi_voucher_array['mes_lis_shi_par_shi_name']=$value[35];
+                $data_shi_voucher_array['mes_lis_shi_par_shi_name_sbcs']=$value[36];
+                $data_shi_voucher_array['mes_lis_shi_par_rec_code']=$value[37];
+                $data_shi_voucher_array['mes_lis_shi_par_rec_gln']=$value[38];
+                $data_shi_voucher_array['mes_lis_shi_par_rec_name']=$value[39];
+                $data_shi_voucher_array['mes_lis_shi_par_rec_name_sbcs']=$value[40];
+                $data_shi_voucher_array['mes_lis_shi_par_tra_code']=$value[41];
+                $data_shi_voucher_array['mes_lis_shi_par_tra_gln']=$value[42];
+                $data_shi_voucher_array['mes_lis_shi_par_tra_name']=$value[43];
+                $data_shi_voucher_array['mes_lis_shi_par_tra_name_sbcs']=$value[44];
+                $data_shi_voucher_array['mes_lis_shi_par_dis_code']=$value[45];
+                $data_shi_voucher_array['mes_lis_shi_par_dis_name']=$value[46];
+                $data_shi_voucher_array['mes_lis_shi_par_dis_name_sbcs']=$value[47];
+                $data_shi_voucher_array['mes_lis_shi_par_pay_code']=$value[48];
+                $data_shi_voucher_array['mes_lis_shi_par_pay_gln']=$value[49];
+                $data_shi_voucher_array['mes_lis_shi_par_pay_name']=$value[50];
+                $data_shi_voucher_array['mes_lis_shi_par_pay_name_sbcs']=$value[51];
+                $data_shi_voucher_array['mes_lis_shi_par_sel_code']=$value[52];
+                $data_shi_voucher_array['mes_lis_shi_par_sel_gln']=$value[53];
+                $data_shi_voucher_array['mes_lis_shi_par_sel_name']=$value[54];
+                $data_shi_voucher_array['mes_lis_shi_par_sel_name_sbcs']=$value[55];
+                $data_shi_voucher_array['mes_lis_shi_par_sel_branch_number']=$value[56];
+                $data_shi_voucher_array['mes_lis_shi_par_sel_ship_location_code']=$value[57];
+                $data_shi_voucher_array['mes_lis_shi_log_shi_gln']=$value[58];
+                $data_shi_voucher_array['mes_lis_shi_log_del_route_code']=$value[59];
+                $data_shi_voucher_array['mes_lis_shi_log_del_delivery_service_code']=$value[60];
+                $data_shi_voucher_array['mes_lis_shi_log_del_stock_transfer_code']=$value[61];
+                $data_shi_voucher_array['mes_lis_shi_log_del_delivery_code']=$value[62];
+                $data_shi_voucher_array['mes_lis_shi_log_del_delivery_time']=$value[63];
+                $data_shi_voucher_array['mes_lis_shi_log_del_transportation_code']=$value[64];
+                $data_shi_voucher_array['mes_lis_shi_log_log_barcode_print']=$value[65];
+                $data_shi_voucher_array['mes_lis_shi_log_log_category_name_print1']=$value[66];
+                $data_shi_voucher_array['mes_lis_shi_log_log_category_name_print2']=$value[67];
+                $data_shi_voucher_array['mes_lis_shi_log_log_receiver_abbr_name']=$value[68];
+                $data_shi_voucher_array['mes_lis_shi_log_log_text']=$value[69];
+                $data_shi_voucher_array['mes_lis_shi_log_log_text_sbcs']=$value[70];
+                $data_shi_voucher_array['mes_lis_shi_log_maker_code_for_receiving']='';
+                $data_shi_voucher_array['mes_lis_shi_log_delivery_slip_number']='';
+                $data_shi_voucher_array['mes_lis_shi_tra_goo_major_category']=$value[71];
+                $data_shi_voucher_array['mes_lis_shi_tra_goo_sub_major_category']=$value[72];
+                $data_shi_voucher_array['mes_lis_shi_tra_dat_order_date']=$value[73];
+                $data_shi_voucher_array['mes_lis_shi_tra_dat_delivery_date']=$value[74];
+                $data_shi_voucher_array['mes_lis_shi_tra_dat_delivery_date_to_receiver']=$value[75];
+                $data_shi_voucher_array['mes_lis_shi_tra_dat_revised_delivery_date']='';
+                $data_shi_voucher_array['mes_lis_shi_tra_dat_transfer_of_ownership_date']=$value[76];
+                $data_shi_voucher_array['mes_lis_shi_tra_dat_campaign_start_date']=$value[77];
+                $data_shi_voucher_array['mes_lis_shi_tra_dat_campaign_end_date']=$value[78];
+                // $data_shi_voucher_array['mes_lis_shi_tra_dat_valid_until_date']=$value[79];
+                $data_shi_voucher_array['mes_lis_shi_tra_ins_goods_classification_code']=$value[80];
+                $data_shi_voucher_array['mes_lis_shi_tra_ins_order_classification_code']=$value[81];
+                $data_shi_voucher_array['mes_lis_shi_tra_ins_ship_notification_request_code']=$value[82];
+                $data_shi_voucher_array['mes_lis_shi_tra_ins_eos_code']='';
+                $data_shi_voucher_array['mes_lis_shi_tra_ins_private_brand_code']=$value[83];
+                $data_shi_voucher_array['mes_lis_shi_tra_ins_temperature_code']=$value[84];
+                $data_shi_voucher_array['mes_lis_shi_tra_ins_liquor_code']=$value[85];
+                $data_shi_voucher_array['mes_lis_shi_tra_ins_trade_type_code']=$value[86];
+                $data_shi_voucher_array['mes_lis_shi_tra_ins_paper_form_less_code']=$value[87];
+                $data_shi_voucher_array['mes_lis_shi_tra_fre_trade_number_request_code']=$value[88];
+                $data_shi_voucher_array['mes_lis_shi_tra_fre_package_code']=$value[89];
+                $data_shi_voucher_array['mes_lis_shi_tra_fre_variable_measure_item_code']=$value[90];
+                $data_shi_voucher_array['mes_lis_shi_tra_tax_tax_type_code']=$value[91];
+                $data_shi_voucher_array['mes_lis_shi_tra_tax_tax_rate']=$value[92];
+                $data_shi_voucher_array['mes_lis_shi_tra_not_text']=$value[93];
+                $data_shi_voucher_array['mes_lis_shi_tra_not_text_sbcs']=$value[94];
+                $data_shi_voucher_array['mes_lis_shi_tot_tot_net_price_total']=$value[95];
+                $data_shi_voucher_array['mes_lis_shi_tot_tot_selling_price_total']=$value[96];
+                $data_shi_voucher_array['mes_lis_shi_tot_tot_tax_total']=$value[97];
+                $data_shi_voucher_array['mes_lis_shi_tot_tot_item_total']=$value[98];
+                $data_shi_voucher_array['mes_lis_shi_tot_tot_unit_total']=$value[99];
+                $data_shi_voucher_array['mes_lis_shi_tot_fre_unit_weight_total']=$value[100];
+
+                $data_shi_voucher_array["data_shipment_id"]=$data_shipment_id;
+                $data_shipment_voucher_id = data_shipment_voucher::insertGetId($data_shi_voucher_array);
+    
+                $trade_number = $value[31].'-'.$value[32];
+            }
             
-            $data_shi_voucher_array['mes_lis_shi_tra_trade_number']=$value[31];
-            $data_shi_voucher_array['mes_lis_shi_tra_additional_trade_number']=$value[32];
-            $data_shi_voucher_array['mes_lis_shi_par_shi_code']=$value[33];
-            $data_shi_voucher_array['mes_lis_shi_par_shi_gln']=$value[34];
-            $data_shi_voucher_array['mes_lis_shi_par_shi_name']=$value[35];
-            $data_shi_voucher_array['mes_lis_shi_par_shi_name_sbcs']=$value[36];
-            $data_shi_voucher_array['mes_lis_shi_par_rec_code']=$value[37];
-            $data_shi_voucher_array['mes_lis_shi_par_rec_gln']=$value[38];
-            $data_shi_voucher_array['mes_lis_shi_par_rec_name']=$value[39];
-            $data_shi_voucher_array['mes_lis_shi_par_rec_name_sbcs']=$value[40];
-            $data_shi_voucher_array['mes_lis_shi_par_tra_code']=$value[41];
-            $data_shi_voucher_array['mes_lis_shi_par_tra_gln']=$value[42];
-            $data_shi_voucher_array['mes_lis_shi_par_tra_name']=$value[43];
-            $data_shi_voucher_array['mes_lis_shi_par_tra_name_sbcs']=$value[44];
-            $data_shi_voucher_array['mes_lis_shi_par_dis_code']=$value[45];
-            $data_shi_voucher_array['mes_lis_shi_par_dis_name']=$value[46];
-            $data_shi_voucher_array['mes_lis_shi_par_dis_name_sbcs']=$value[47];
-            $data_shi_voucher_array['mes_lis_shi_par_pay_code']=$value[48];
-            $data_shi_voucher_array['mes_lis_shi_par_pay_gln']=$value[49];
-            $data_shi_voucher_array['mes_lis_shi_par_pay_name']=$value[50];
-            $data_shi_voucher_array['mes_lis_shi_par_pay_name_sbcs']=$value[51];
-            $data_shi_voucher_array['mes_lis_shi_par_sel_code']=$value[52];
-            $data_shi_voucher_array['mes_lis_shi_par_sel_gln']=$value[53];
-            $data_shi_voucher_array['mes_lis_shi_par_sel_name']=$value[54];
-            $data_shi_voucher_array['mes_lis_shi_par_sel_name_sbcs']=$value[55];
-            $data_shi_voucher_array['mes_lis_shi_par_sel_branch_number']=$value[56];
-            $data_shi_voucher_array['mes_lis_shi_par_sel_ship_location_code']=$value[57];
-            $data_shi_voucher_array['mes_lis_shi_log_shi_gln']=$value[58];
-            $data_shi_voucher_array['mes_lis_shi_log_del_route_code']=$value[59];
-            $data_shi_voucher_array['mes_lis_shi_log_del_delivery_service_code']=$value[60];
-            $data_shi_voucher_array['mes_lis_shi_log_del_stock_transfer_code']=$value[61];
-            $data_shi_voucher_array['mes_lis_shi_log_del_delivery_code']=$value[62];
-            $data_shi_voucher_array['mes_lis_shi_log_del_delivery_time']=$value[63];
-            $data_shi_voucher_array['mes_lis_shi_log_del_transportation_code']=$value[64];
-            $data_shi_voucher_array['mes_lis_shi_log_log_barcode_print']=$value[65];
-            $data_shi_voucher_array['mes_lis_shi_log_log_category_name_print1']=$value[66];
-            $data_shi_voucher_array['mes_lis_shi_log_log_category_name_print2']=$value[67];
-            $data_shi_voucher_array['mes_lis_shi_log_log_receiver_abbr_name']=$value[68];
-            $data_shi_voucher_array['mes_lis_shi_log_log_text']=$value[69];
-            $data_shi_voucher_array['mes_lis_shi_log_log_text_sbcs']=$value[70];
-            $data_shi_voucher_array['mes_lis_shi_log_maker_code_for_receiving']='';
-            $data_shi_voucher_array['mes_lis_shi_log_delivery_slip_number']='';
-            $data_shi_voucher_array['mes_lis_shi_tra_goo_major_category']=$value[71];
-            $data_shi_voucher_array['mes_lis_shi_tra_goo_sub_major_category']=$value[72];
-            $data_shi_voucher_array['mes_lis_shi_tra_dat_order_date']=$value[73];
-            $data_shi_voucher_array['mes_lis_shi_tra_dat_delivery_date']=$value[74];
-            $data_shi_voucher_array['mes_lis_shi_tra_dat_delivery_date_to_receiver']=$value[75];
-            $data_shi_voucher_array['mes_lis_shi_tra_dat_revised_delivery_date']='';
-            $data_shi_voucher_array['mes_lis_shi_tra_dat_transfer_of_ownership_date']=$value[76];
-            $data_shi_voucher_array['mes_lis_shi_tra_dat_campaign_start_date']=$value[77];
-            $data_shi_voucher_array['mes_lis_shi_tra_dat_campaign_end_date']=$value[78];
-            // $data_shi_voucher_array['mes_lis_shi_tra_dat_valid_until_date']=$value[79];
-            $data_shi_voucher_array['mes_lis_shi_tra_ins_goods_classification_code']=$value[80];
-            $data_shi_voucher_array['mes_lis_shi_tra_ins_order_classification_code']=$value[81];
-            $data_shi_voucher_array['mes_lis_shi_tra_ins_ship_notification_request_code']=$value[82];
-            $data_shi_voucher_array['mes_lis_shi_tra_ins_eos_code']='';
-            $data_shi_voucher_array['mes_lis_shi_tra_ins_private_brand_code']=$value[83];
-            $data_shi_voucher_array['mes_lis_shi_tra_ins_temperature_code']=$value[84];
-            $data_shi_voucher_array['mes_lis_shi_tra_ins_liquor_code']=$value[85];
-            $data_shi_voucher_array['mes_lis_shi_tra_ins_trade_type_code']=$value[86];
-            $data_shi_voucher_array['mes_lis_shi_tra_ins_paper_form_less_code']=$value[87];
-            $data_shi_voucher_array['mes_lis_shi_tra_fre_trade_number_request_code']=$value[88];
-            $data_shi_voucher_array['mes_lis_shi_tra_fre_package_code']=$value[89];
-            $data_shi_voucher_array['mes_lis_shi_tra_fre_variable_measure_item_code']=$value[90];
-            $data_shi_voucher_array['mes_lis_shi_tra_tax_tax_type_code']=$value[91];
-            $data_shi_voucher_array['mes_lis_shi_tra_tax_tax_rate']=$value[92];
-            $data_shi_voucher_array['mes_lis_shi_tra_not_text']=$value[93];
-            $data_shi_voucher_array['mes_lis_shi_tra_not_text_sbcs']=$value[94];
-            $data_shi_voucher_array['mes_lis_shi_tot_tot_net_price_total']=$value[95];
-            $data_shi_voucher_array['mes_lis_shi_tot_tot_selling_price_total']=$value[96];
-            $data_shi_voucher_array['mes_lis_shi_tot_tot_tax_total']=$value[97];
-            $data_shi_voucher_array['mes_lis_shi_tot_tot_item_total']=$value[98];
-            $data_shi_voucher_array['mes_lis_shi_tot_tot_unit_total']=$value[99];
-            $data_shi_voucher_array['mes_lis_shi_tot_fre_unit_weight_total']=$value[100];
+
             
             $data_item_array['mes_lis_ord_lin_lin_line_number']=$value[101];
             $data_item_array['mes_lis_ord_lin_lin_additional_line_number']=$value[102];
@@ -430,49 +471,29 @@ class bms_csv_order extends Model
             $data_shi_item_array['mes_lis_shi_lin_fre_item_weight']=$value[156];
             $data_shi_item_array['mes_lis_shi_lin_fre_order_weight']=$value[157];
             $data_shi_item_array['mes_lis_shi_lin_fre_shipment_weight']='';
-            // 158 done 
-            // Order 
-            $data_order_array['cmn_connect_id']=$sc->cmn_connect_id;
-            $data_order_array['route']='edi';
-            $data_order_array['receive_file_path']=$file_name;
-
-            $data_order_id = data_order::insertGetId($data_order_array);
-            $data_voucher_array['data_order_id']=$data_order_id;
-            $data_order_voucher_id = data_order_voucher::insertGetId($data_voucher_array);
+            // 158 done
 
             $data_item_array['data_order_voucher_id']=$data_order_voucher_id;
             data_order_item::insert($data_item_array);
 
-            // Shipment 
-            unset($data_order_array["route"]); 
-            unset($data_order_array["receive_file_path"]); 
-            $data_order_array['data_order_id']=$data_order_id;
-            $data_order_array['upload_datetime']='';
-            $data_order_array['upload_file_path']=$file_name;
-            $data_order_array['send_datetime']='';
-            $data_order_array['send_file_path']=$file_name;
 
-            $data_shipment_id = data_shipment::insertGetId($data_order_array);
-
-            $data_shi_voucher_array["data_shipment_id"]=$data_shipment_id;
-            $data_shipment_voucher_id = data_shipment_voucher::insertGetId($data_shi_voucher_array);
             
             $data_shi_item_array["data_shipment_voucher_id"]=$data_shipment_voucher_id;
             $data_shipment_item_id = data_shipment_item::insertGetId($data_shi_item_array);
             data_shipment_item_detail::insert(['data_shipment_item_id'=>$data_shipment_item_id]);
 
+            // format
             $data_order_array=array();
             $data_voucher_array=array();
             $data_shi_voucher_array=array();
             $data_item_array=array();
             $data_shi_item_array=array();
-            
         }
         return "Inserted";
         // return $insert_array;
-        // foreach (array_chunk($insert_array_bms_order,300) as $t)  
+        // foreach (array_chunk($insert_array_bms_order,300) as $t)
         // {
-        //     bms_order::insert($t); 
+        //     bms_order::insert($t);
         // }
         // $received_path
         // $byr_order_id = byr_order::insertGetId(['receive_file_path'=>$file_name,'cmn_connect_id'=>$sc->cmn_connect_id,'data_count'=>$data_count]);
@@ -684,7 +705,7 @@ class bms_csv_order extends Model
         //     $temp_array['mes_lis_ord_lin_fre_unit_weight_code']=$value[155];
         //     $temp_array['mes_lis_ord_lin_fre_item_weight']=$value[156];
         //     $temp_array['mes_lis_ord_lin_fre_order_weight']=$value[157];
-        //     // 158 done 
+        //     // 158 done
         //     $byr_order_voucher_id = byr_order_voucher::insertGetId($voucher_array);
         //     $item_array['byr_order_voucher_id']=$byr_order_voucher_id;
         //     $byr_order_item_id = byr_order_item::insertGetId($item_array);
@@ -696,13 +717,13 @@ class bms_csv_order extends Model
         //     $insert_array_bms_shipment[]=$new_bms_shipment;
         // }
         // // return $insert_array;
-        // foreach (array_chunk($insert_array_bms_order,300) as $t)  
+        // foreach (array_chunk($insert_array_bms_order,300) as $t)
         // {
-        //     bms_order::insert($t); 
+        //     bms_order::insert($t);
         // }
-        // foreach (array_chunk($insert_array_bms_shipment,300) as $t)  
+        // foreach (array_chunk($insert_array_bms_shipment,300) as $t)
         // {
-        //     bms_shipment::insert($t); 
+        //     bms_shipment::insert($t);
         // }
 
         // echo '<pre>';
