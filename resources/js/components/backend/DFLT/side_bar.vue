@@ -21,7 +21,7 @@
     <div class="nav-wrapper">
 
       <ul class="nav jcs_left_side_bar_menu flex-column">
-        <li class="nav-item">
+        <!--<li class="nav-item">
           <a
             class="nav-link collapsed"
             href="#dashboardmenu1"
@@ -40,16 +40,22 @@
               
             </ul>
           </div>
+        </li>-->
+        <li class="nav-item">
+          <router-link to="/home" class="nav-link">
+            <b-icon icon="house-fill" font-scale="1.2"></b-icon> Home
+          </router-link>
         </li>
       </ul>
+      
       <adm_menu v-role="['Super Admin']"></adm_menu>
       <common_menu v-role="['Super Admin']"></common_menu>
       <jacos_menu v-role="['Super Admin']"></jacos_menu>
-      <slr_menu v-can="['slr_view']"></slr_menu>
+      <slr_menu v-if="permission_menu" :permissions_by_user="permissions_by_user" v-can="['slr_view']"></slr_menu>
       <byr_menu v-can="['byr_view']"></byr_menu>
       <user_menu v-role="['Super Admin']"></user_menu>
       <others_menu v-role="['Super Admin']"></others_menu>
-      <byr_side_bar_menu v-if="permission_menu" :permissions_by_user="permissions_by_user"></byr_side_bar_menu>
+      <byr_side_bar_menu v-role="['Super Admin']" v-if="permission_menu" :permissions_by_user="permissions_by_user"></byr_side_bar_menu>
     </div>
   </aside>
 </template>
