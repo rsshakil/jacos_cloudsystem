@@ -15,7 +15,10 @@ class CreateDataShipmentVouchersTable extends Migration
     {
         Schema::create('data_shipment_vouchers', function (Blueprint $table) {
             $table->increments('data_shipment_voucher_id')->comment('data_shipment_voucher_id');
-            $table->integer('data_shipment_id')->comment('data_shipment_id');
+            $table->integer('data_shipment_id')->unsigned()->comment('data_shipment_id');
+            $table->integer('data_order_voucher_id')->unsigned()->comment('data_order_voucher_id');
+            $table->dateTime('decision_datetime')->nullable()->default(null)->comment('確定日時');
+            $table->dateTime('print_datetime')->nullable()->default(null)->comment('印刷日時');
             $table->string('mes_lis_shi_tra_trade_number', 10)->comment('取引番号（発注・返品）');
             $table->string('mes_lis_shi_tra_additional_trade_number', 10)->comment('取引付属番号');
             $table->string('mes_lis_shi_fre_shipment_number', 10)->default('')->comment('出荷者管理番号');
@@ -68,31 +71,31 @@ class CreateDataShipmentVouchersTable extends Migration
             $table->date('mes_lis_shi_tra_dat_transfer_of_ownership_date')->comment('計上日');
             $table->date('mes_lis_shi_tra_dat_campaign_start_date')->comment('販促開始日');
             $table->date('mes_lis_shi_tra_dat_campaign_end_date')->comment('販促終了日');
-            $table->string('mes_lis_shi_tra_ins_goods_classification_code',2)->comment('商品区分');
-            $table->string('mes_lis_shi_tra_ins_order_classification_code',2)->comment('発注区分');
-            $table->string('mes_lis_shi_tra_ins_ship_notification_request_code',2)->comment('出荷データ有無区分');
-            $table->string('mes_lis_shi_tra_ins_eos_code',2)->default('')->comment('EOS区分');
-            $table->string('mes_lis_shi_tra_ins_private_brand_code',2)->comment('PB区分');
-            $table->string('mes_lis_shi_tra_ins_temperature_code',2)->comment('配送温度区分');
-            $table->string('mes_lis_shi_tra_ins_liquor_code',2)->comment('酒区分');
-            $table->string('mes_lis_shi_tra_ins_trade_type_code',2)->comment('処理種別');
-            $table->string('mes_lis_shi_tra_ins_paper_form_less_code',2)->comment('伝票レス区分');
-            $table->string('mes_lis_shi_tra_fre_trade_number_request_code',2)->comment('取引番号区分');
-            $table->string('mes_lis_shi_tra_fre_package_code',2)->comment('パック区分');
-            $table->string('mes_lis_shi_tra_fre_variable_measure_item_code',2)->comment('不定貫区分');
-            $table->string('mes_lis_shi_tra_tax_tax_type_code',2)->comment('税区分');
-            $table->string('mes_lis_shi_tra_tax_tax_rate',4)->comment('税率');
-            $table->string('mes_lis_shi_tra_not_text',60)->comment('自由使用欄');
-            $table->string('mes_lis_shi_tra_not_text_sbcs',60)->comment('自由使用欄半角カナ');
-            $table->string('mes_lis_shi_tot_tot_net_price_total',10)->comment('原価金額合計');
-            $table->string('mes_lis_shi_tot_tot_selling_price_total',10)->comment('売価金額合計');
-            $table->string('mes_lis_shi_tot_tot_tax_total',10)->comment('税額合計金額');
-            $table->string('mes_lis_shi_tot_tot_item_total',6)->comment('数量合計');
-            $table->string('mes_lis_shi_tot_tot_unit_total',6)->comment('発注単位数量合計');
-            $table->string('mes_lis_shi_tot_fre_unit_weight_total',14)->comment('重量合計');
+            $table->string('mes_lis_shi_tra_ins_goods_classification_code', 2)->comment('商品区分');
+            $table->string('mes_lis_shi_tra_ins_order_classification_code', 2)->comment('発注区分');
+            $table->string('mes_lis_shi_tra_ins_ship_notification_request_code', 2)->comment('出荷データ有無区分');
+            $table->string('mes_lis_shi_tra_ins_eos_code', 2)->default('')->comment('EOS区分');
+            $table->string('mes_lis_shi_tra_ins_private_brand_code', 2)->comment('PB区分');
+            $table->string('mes_lis_shi_tra_ins_temperature_code', 2)->comment('配送温度区分');
+            $table->string('mes_lis_shi_tra_ins_liquor_code', 2)->comment('酒区分');
+            $table->string('mes_lis_shi_tra_ins_trade_type_code', 2)->comment('処理種別');
+            $table->string('mes_lis_shi_tra_ins_paper_form_less_code', 2)->comment('伝票レス区分');
+            $table->string('mes_lis_shi_tra_fre_trade_number_request_code', 2)->comment('取引番号区分');
+            $table->string('mes_lis_shi_tra_fre_package_code', 2)->comment('パック区分');
+            $table->string('mes_lis_shi_tra_fre_variable_measure_item_code', 2)->comment('不定貫区分');
+            $table->string('mes_lis_shi_tra_tax_tax_type_code', 2)->comment('税区分');
+            $table->string('mes_lis_shi_tra_tax_tax_rate', 4)->comment('税率');
+            $table->string('mes_lis_shi_tra_not_text', 60)->comment('自由使用欄');
+            $table->string('mes_lis_shi_tra_not_text_sbcs', 60)->comment('自由使用欄半角カナ');
+            $table->string('mes_lis_shi_tot_tot_net_price_total', 10)->comment('原価金額合計');
+            $table->string('mes_lis_shi_tot_tot_selling_price_total', 10)->comment('売価金額合計');
+            $table->string('mes_lis_shi_tot_tot_tax_total', 10)->comment('税額合計金額');
+            $table->string('mes_lis_shi_tot_tot_item_total', 6)->comment('数量合計');
+            $table->string('mes_lis_shi_tot_tot_unit_total', 6)->comment('発注単位数量合計');
+            $table->string('mes_lis_shi_tot_fre_unit_weight_total', 14)->comment('重量合計');
             $table->smallInteger('deleted')->default(1)->comment('削除フラグ');
-			$table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
-			$table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
+            $table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
+            $table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
         });
     }
 
