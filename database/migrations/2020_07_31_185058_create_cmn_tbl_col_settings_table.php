@@ -14,7 +14,7 @@ class CreateCmnTblColSettingsTable extends Migration
     public function up()
     {
         Schema::create('cmn_tbl_col_settings', function (Blueprint $table) {
-            $table->increments('cmn_tbl_col_setting_id')->comment('users_details_id');
+            $table->increments('cmn_tbl_col_setting_id')->unsigned()->comment('users_details_id');
             $table->string('url_slug', 120)->comment('page_url_name')->nullable();
             $table->longText('content_setting')->comment('content_setting')->nullable();
             $table->integer('update_by')->unsigned()->default('0')->comment('update_by');

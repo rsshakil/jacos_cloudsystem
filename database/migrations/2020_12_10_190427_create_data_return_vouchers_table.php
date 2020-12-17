@@ -14,8 +14,8 @@ class CreateDataReturnVouchersTable extends Migration
     public function up()
     {
         Schema::create('data_return_vouchers', function (Blueprint $table) {
-            $table->increments('data_return_voucher_id')->comment('data_return_voucher_id');
-            $table->integer('data_return_id')->comment('data_return_id');
+            $table->increments('data_return_voucher_id')->unsigned()->comment('data_return_voucher_id');
+            $table->integer('data_return_id')->unsigned()->comment('data_return_id');
             $table->string('mes_lis_ret_tra_trade_number', 10)->comment('取引番号（発注・返品）');
             $table->string('mes_lis_ret_tra_additional_trade_number', 10)->comment('取引付属番号');
             $table->string('mes_lis_ret_fre_shipment_number', 10)->default('')->comment('出荷者管理番号');
@@ -64,7 +64,7 @@ class CreateDataReturnVouchersTable extends Migration
             $table->integer('mes_lis_ret_tot_tot_tax_total')->comment('税額合計金額');
             $table->integer('mes_lis_ret_tot_tot_item_total')->comment('数量合計');
             $table->integer('mes_lis_ret_tot_fre_unit_weight_total')->comment('重量合計');
-            $table->smallInteger('deleted')->comment('削除フラグ');
+            $table->smallInteger('deleted')->unsigned()->comment('削除フラグ');
 			$table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
 			$table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
         });

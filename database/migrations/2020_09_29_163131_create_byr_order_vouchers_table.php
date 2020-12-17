@@ -14,7 +14,7 @@ class CreateByrOrderVouchersTable extends Migration
     public function up()
     {
         Schema::create('byr_order_vouchers', function (Blueprint $table) {
-            $table->increments('byr_order_voucher_id')->comment('byr order voucher id');
+            $table->increments('byr_order_voucher_id')->unsigned()->comment('byr order voucher id');
             $table->integer('byr_order_id')->unsigned()->comment('byr order id');
             $table->string('route_code', 50)->comment('route code')->nullable();
             $table->string('ship_code', 50)->comment('shop_code')->nullable();

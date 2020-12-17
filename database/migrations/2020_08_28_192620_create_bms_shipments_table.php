@@ -14,10 +14,10 @@ class CreateBmsShipmentsTable extends Migration
     public function up()
     {
         Schema::create('bms_shipments', function (Blueprint $table) {
-            $table->increments('bms_shipment_id')->comment('発注データID');
+            $table->increments('bms_shipment_id')->unsigned()->comment('発注データID');
             // $table->string('file_name',100)->comment('発注ファイル名');
             // $table->string('customer_id', 6)->comment('取引先ID');
-            $table->integer('byr_shipment_id')->comment('byr_shipment_id');
+            $table->integer('byr_shipment_id')->unsigned()->comment('byr_shipment_id');
             // data shipment 
             $table->string('sta_sen_identifier', 30)->comment('送信者ＩＤ');
             $table->string('sta_sen_ide_authority', 10)->comment('送信者ＩＤ発行元');
@@ -200,7 +200,7 @@ class CreateBmsShipmentsTable extends Migration
             $table->string('mes_lis_shi_lin_pac_con_sell_by_date',15)->comment('賞味期限日');
             $table->string('mes_lis_shi_lin_pac_con_production_date',15)->comment('製造日');
             $table->string('mes_lis_shi_lin_pac_con_lot_number',15)->comment('製造番号');
-            $table->smallInteger('deleted')->comment('削除フラグ');
+            $table->smallInteger('deleted')->unsigned()->comment('削除フラグ');
 			$table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
 			$table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
         });

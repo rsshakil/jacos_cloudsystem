@@ -14,7 +14,7 @@ class CreateBmsInvoicesTable extends Migration
     public function up()
     {
         Schema::create('bms_invoices', function (Blueprint $table) {
-            $table->increments('bms_invoice_id')->comment('発注データID');
+            $table->increments('bms_invoice_id')->unsigned()->comment('発注データID');
             $table->string('file_name',100)->comment('発注ファイル名');
 			$table->string('customer_id', 6)->comment('取引先ID');
             $table->string('sta_sen_identifier', 10)->comment('送信者ＩＤ');
@@ -78,7 +78,7 @@ class CreateBmsInvoicesTable extends Migration
             $table->string('mes_lis_inv_lin_det_pay_code', 10)->comment('支払内容');
             $table->string('mes_lis_inv_lin_det_tax_tax_type_code', 10)->comment('税区分');
             $table->string('mes_lis_inv_lin_det_tax_tax_rate', 10)->comment('税率');
-            $table->smallInteger('deleted')->comment('削除フラグ');
+            $table->smallInteger('deleted')->unsigned()->comment('削除フラグ');
 			$table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
 			$table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
         });

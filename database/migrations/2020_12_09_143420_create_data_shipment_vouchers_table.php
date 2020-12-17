@@ -14,7 +14,7 @@ class CreateDataShipmentVouchersTable extends Migration
     public function up()
     {
         Schema::create('data_shipment_vouchers', function (Blueprint $table) {
-            $table->increments('data_shipment_voucher_id')->comment('data_shipment_voucher_id');
+            $table->increments('data_shipment_voucher_id')->unsigned()->comment('data_shipment_voucher_id');
             $table->integer('data_shipment_id')->unsigned()->comment('data_shipment_id');
             $table->integer('data_order_voucher_id')->unsigned()->comment('data_order_voucher_id');
             $table->dateTime('decision_datetime')->nullable()->comment('確定日時');
@@ -93,7 +93,7 @@ class CreateDataShipmentVouchersTable extends Migration
             $table->string('mes_lis_shi_tot_tot_item_total', 6)->comment('数量合計');
             $table->string('mes_lis_shi_tot_tot_unit_total', 6)->comment('発注単位数量合計');
             $table->string('mes_lis_shi_tot_fre_unit_weight_total', 14)->comment('重量合計');
-            $table->smallInteger('deleted')->default(1)->comment('削除フラグ');
+            $table->smallInteger('deleted')->unsigned()->default(1)->comment('削除フラグ');
             $table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
             $table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
         });

@@ -14,8 +14,8 @@ class CreateBmsPaymentsTable extends Migration
     public function up()
     {
         Schema::create('bms_payments', function (Blueprint $table) {
-            $table->increments('bms_payment_id')->comment('bms_payment_id');
-            $table->integer('byr_payment_id')->comment('byr_payment_id');
+            $table->increments('bms_payment_id')->unsigned()->comment('bms_payment_id');
+            $table->integer('byr_payment_id')->unsigned()->comment('byr_payment_id');
             // $table->string('file_name',100)->comment('発注ファイル名');
 			// $table->string('customer_id', 6)->comment('取引先ID');
             $table->string('sta_sen_identifier', 10)->comment('送信者ＩＤ');
@@ -90,7 +90,7 @@ class CreateBmsPaymentsTable extends Migration
             $table->string('mes_lis_pay_lin_det_payment_method_code', 10)->comment('mes_lis_pay_lin_det_payment_method_code');
             $table->string('mes_lis_pay_lin_det_tax_tax_type_code', 10)->comment('税区分');
             $table->string('mes_lis_pay_lin_det_tax_tax_rate', 10)->comment('税率');
-            $table->smallInteger('deleted')->comment('削除フラグ');
+            $table->smallInteger('deleted')->unsigned()->comment('削除フラグ');
 			$table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
 			$table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
         });

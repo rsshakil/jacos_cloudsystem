@@ -14,8 +14,8 @@ class CreateDataReceiveItemsTable extends Migration
     public function up()
     {
         Schema::create('data_receive_items', function (Blueprint $table) {
-            $table->increments('data_receive_item_id')->comment('data_receive_item_id');
-            $table->integer('data_receive_voucher_id')->comment('data_receive_voucher_id');
+            $table->increments('data_receive_item_id')->unsigned()->comment('data_receive_item_id');
+            $table->integer('data_receive_voucher_id')->unsigned()->comment('data_receive_voucher_id');
             $table->string('mes_lis_acc_lin_lin_line_number',4)->comment('取引明細番号（発注・返品）');
             $table->string('mes_lis_acc_lin_lin_additional_line_number',4)->comment('取引付属明細番号');
             $table->string('mes_lis_acc_lin_fre_trade_number',10)->comment('元取引番号');
@@ -82,7 +82,7 @@ class CreateDataReceiveItemsTable extends Migration
             $table->string('mes_lis_acc_lin_fre_order_weight',20)->comment('発注重量');
             $table->string('mes_lis_acc_lin_fre_shipment_weight',20)->default('')->comment('出荷重量');
             $table->string('mes_lis_acc_lin_fre_received_weight',20)->default('')->comment('受領重量');
-            $table->smallInteger('deleted')->comment('削除フラグ');
+            $table->smallInteger('deleted')->unsigned()->comment('削除フラグ');
 			$table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
 			$table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
         });

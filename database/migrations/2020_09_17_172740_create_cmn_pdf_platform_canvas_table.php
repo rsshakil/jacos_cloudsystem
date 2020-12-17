@@ -14,8 +14,8 @@ class CreateCmnPdfPlatformCanvasTable extends Migration
     public function up()
     {
         Schema::create('cmn_pdf_platform_canvas', function (Blueprint $table) {
-            $table->increments('cmn_pdf_platform_canvas_id')->comment('Default ID');
-            $table->integer('byr_buyer_id')->nullable()->comment('Buyer ID')->index();
+            $table->increments('cmn_pdf_platform_canvas_id')->unsigned()->comment('Default ID');
+            $table->integer('byr_buyer_id')->unsigned()->nullable()->comment('Buyer ID')->index();
             $table->string('canvas_name',100)->nullable()->comment('Canvas Name');
             $table->string('canvas_image',100)->nullable()->comment('Canvas live image');
             $table->string('canvas_bg_image',100)->nullable()->comment('Canvas Background Image');

@@ -14,8 +14,8 @@ class CreateDataOrdersTable extends Migration
     public function up()
     {
         Schema::create('data_orders', function (Blueprint $table) {
-            $table->increments('data_order_id')->comment('発注データID');
-            $table->integer('cmn_connect_id')->comment('cmn_connect_id');
+            $table->increments('data_order_id')->unsigned()->comment('発注データID');
+            $table->integer('cmn_connect_id')->unsigned()->comment('cmn_connect_id');
             $table->enum('route', ['edi','manual','handy','other'])->default('edi')->comment('発注経路');
             $table->dateTime('receive_datetime')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('receive_datetime');
             $table->string('receive_file_path', 200)->nullable()->comment('receive_file_path');
@@ -50,7 +50,7 @@ class CreateDataOrdersTable extends Migration
             $table->string('mes_lis_buy_gln', 13)->comment('発注者GLN');
             $table->string('mes_lis_buy_name', 20)->comment('発注者名称');
             $table->string('mes_lis_buy_name_sbcs', 20)->comment('発注者名称カナ');
-            $table->smallInteger('deleted')->default(1)->comment('削除フラグ');
+            $table->smallInteger('deleted')->unsigned()->default(1)->comment('削除フラグ');
             $table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
 			$table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
         });

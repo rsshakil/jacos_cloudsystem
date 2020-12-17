@@ -14,7 +14,7 @@ class CreateByrShipmentItemsTable extends Migration
     public function up()
     {
         Schema::create('byr_shipment_items', function (Blueprint $table) {
-            $table->increments('byr_shipment_item_id')->comment('byr shipment item id');
+            $table->increments('byr_shipment_item_id')->unsigned()->comment('byr shipment item id');
             $table->integer('byr_shipment_voucher_id')->unsigned()->comment('cmn shipment voucher id');
             $table->integer('byr_order_item_id')->unsigned()->comment('byr order detail item id');
             $table->decimal('order_quantity', 10, 1)->default('0.0')->comment('order quantity');

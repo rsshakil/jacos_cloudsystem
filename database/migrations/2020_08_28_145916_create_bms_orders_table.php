@@ -14,8 +14,8 @@ class CreateBmsOrdersTable extends Migration
     public function up()
     {
         Schema::create('bms_orders', function (Blueprint $table) {
-            $table->increments('bms_order_id')->comment('発注データID');
-            $table->integer('byr_order_id')->comment('Buyer Order ID');
+            $table->increments('bms_order_id')->unsigned()->comment('発注データID');
+            $table->integer('byr_order_id')->unsigned()->comment('Buyer Order ID');
 
             $table->string('sta_sen_identifier', 30)->comment('送信者ＩＤ');
             $table->string('sta_sen_ide_authority', 10)->comment('送信者ＩＤ発行元');
@@ -178,7 +178,7 @@ class CreateBmsOrdersTable extends Migration
             $table->string('mes_lis_ord_lin_fre_item_weight',13)->comment('商品重量');
             $table->string('mes_lis_ord_lin_fre_order_weight',15)->comment('発注重量');
             
-            $table->smallInteger('deleted')->comment('削除フラグ');
+            $table->smallInteger('deleted')->unsigned()->comment('削除フラグ');
 			$table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
 			$table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
         });

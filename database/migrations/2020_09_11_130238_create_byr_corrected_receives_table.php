@@ -14,7 +14,7 @@ class CreateByrCorrectedReceivesTable extends Migration
     public function up()
     {
         Schema::create('byr_corrected_receives', function (Blueprint $table) {
-            $table->increments('byr_corrected_receive_id')->comment('Buyer corrected receive id');
+            $table->increments('byr_corrected_receive_id')->unsigned()->comment('Buyer corrected receive id');
             $table->integer('cmn_connect_id')->unsigned()->comment('cmn connect id');
             $table->dateTime('receive_date')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('receive_date');
             $table->string('receive_file_path', 500)->comment('receive file path')->nullable();

@@ -14,8 +14,8 @@ class CreateBmsCorrectedReceivesTable extends Migration
     public function up()
     {
         Schema::create('bms_corrected_receives', function (Blueprint $table) {
-            $table->increments('bms_corrected_receive_id')->comment('bms_corrected_receive');
-            $table->integer('byr_corrected_receive_id')->comment('byr_corrected_receive_id');
+            $table->increments('bms_corrected_receive_id')->unsigned()->comment('bms_corrected_receive');
+            $table->integer('byr_corrected_receive_id')->unsigned()->comment('byr_corrected_receive_id');
             $table->string('sta_sen_identifier', 30)->comment('送信者ＩＤ');
             $table->string('sta_sen_ide_authority', 10)->comment('送信者ＩＤ発行元');
             $table->string('sta_rec_identifier',20)->comment('受信者ＩＤ');
@@ -152,7 +152,7 @@ class CreateBmsCorrectedReceivesTable extends Migration
             $table->string('mes_lis_acc_lin_fre_unit_weight_code',20)->comment('単価登録単位');
             $table->string('mes_lis_acc_lin_fre_item_weight',20)->comment('商品重量');
             $table->string('mes_lis_acc_lin_fre_received_weight',20)->comment('受領重量');
-            $table->smallInteger('deleted')->comment('削除フラグ');
+            $table->smallInteger('deleted')->unsigned()->comment('削除フラグ');
 			$table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
 			$table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
         });

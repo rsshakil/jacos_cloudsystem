@@ -14,8 +14,8 @@ class CreateBmsReturnsTable extends Migration
     public function up()
     {
         Schema::create('bms_returns', function (Blueprint $table) {
-            $table->increments('bms_return_id')->comment('返品データID');
-            $table->integer('byr_return_id')->comment('byr_return_id');
+            $table->increments('bms_return_id')->unsigned()->comment('返品データID');
+            $table->integer('byr_return_id')->unsigned()->comment('byr_return_id');
             $table->string('sta_sen_identifier', 30)->comment('送信者ＩＤ');
             $table->string('sta_sen_ide_authority', 10)->comment('送信者ＩＤ発行元');
             $table->string('sta_rec_identifier',20)->comment('受信者ＩＤ');

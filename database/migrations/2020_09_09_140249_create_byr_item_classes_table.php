@@ -14,7 +14,7 @@ class CreateByrItemClassesTable extends Migration
     public function up()
     {
         Schema::create('byr_item_classes', function (Blueprint $table) {
-            $table->increments('byr_item_class_id')->comment('byr Item class Id');
+            $table->increments('byr_item_class_id')->unsigned()->comment('byr Item class Id');
             $table->integer('byr_item_id')->unsigned()->comment('byr item Id');
             $table->enum('order_class', ['basic', 'sale','spot'])->default('basic')->comment('byr Class');
             $table->decimal('cost_price',9,2)->comment(' shop Price');

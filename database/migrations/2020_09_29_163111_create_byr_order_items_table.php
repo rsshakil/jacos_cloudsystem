@@ -14,7 +14,7 @@ class CreateByrOrderItemsTable extends Migration
     public function up()
     {
         Schema::create('byr_order_items', function (Blueprint $table) {
-            $table->increments('byr_order_item_id')->comment('byr order item id');
+            $table->increments('byr_order_item_id')->unsigned()->comment('byr order item id');
             $table->integer('byr_order_voucher_id')->unsigned()->comment('byr order id');
              $table->smallInteger('list_number')->unsigned()->default('0')->comment('list number');
             $table->enum('status', ['未確定', '確定済み', '未出荷', '出荷中', '出荷済み'])->default('未確定')->comment('order status');

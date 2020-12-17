@@ -14,7 +14,7 @@ class CreateDataOrderVouchersTable extends Migration
     public function up()
     {
         Schema::create('data_order_vouchers', function (Blueprint $table) {
-            $table->increments('data_order_voucher_id')->comment('data_order_voucher_id');
+            $table->increments('data_order_voucher_id')->unsigned()->comment('data_order_voucher_id');
             $table->integer('data_order_id')->unsigned()->comment('data_order_id');
             $table->dateTime('check_datetime')->nullable()->comment('確認日時');
             $table->string('mes_lis_ord_tra_trade_number', 10)->comment('取引番号（発注・返品）');
@@ -87,7 +87,7 @@ class CreateDataOrderVouchersTable extends Migration
             $table->string('mes_lis_ord_tot_tot_item_total', 6)->comment('数量合計');
             $table->string('mes_lis_ord_tot_tot_unit_total', 6)->comment('発注単位数量合計');
             $table->string('mes_lis_ord_tot_fre_unit_weight_total', 14)->comment('重量合計');
-            $table->smallInteger('deleted')->default(1)->comment('削除フラグ');
+            $table->smallInteger('deleted')->unsigned()->default(1)->comment('削除フラグ');
             $table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
             $table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
         });

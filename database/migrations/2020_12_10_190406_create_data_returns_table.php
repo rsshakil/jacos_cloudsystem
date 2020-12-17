@@ -14,9 +14,9 @@ class CreateDataReturnsTable extends Migration
     public function up()
     {
         Schema::create('data_returns', function (Blueprint $table) {
-            $table->increments('data_return_id')->comment('data_return_id');
-            $table->integer('data_order_id')->comment('data_order_id');
-            $table->integer('cmn_connect_id')->comment('cmn_connect_id');
+            $table->increments('data_return_id')->unsigned()->comment('data_return_id');
+            $table->integer('data_order_id')->unsigned()->comment('data_order_id');
+            $table->integer('cmn_connect_id')->unsigned()->comment('cmn_connect_id');
             $table->dateTime('upload_datetime')->nullable()->comment('アップロード日時');
             $table->string('upload_file_path', 200)->nullable()->comment('upload_file_path');
             $table->dateTime('send_datetime')->nullable()->comment('送信日時');
@@ -52,7 +52,7 @@ class CreateDataReturnsTable extends Migration
             $table->string('mes_lis_ret_gln', 13)->comment('発注者GLN');
             $table->string('mes_lis_ret_name', 20)->comment('発注者名称');
             $table->string('mes_lis_ret_name_sbcs', 20)->comment('発注者名称カナ');
-            $table->smallInteger('deleted')->comment('削除フラグ');
+            $table->smallInteger('deleted')->unsigned()->comment('削除フラグ');
 			$table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
 			$table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
         });

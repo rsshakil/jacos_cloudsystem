@@ -269,7 +269,7 @@ class AllUsedFunction extends Controller
     public function get_company_list($cmn_company_id = 0)
     {
         if ($cmn_company_id != 0) {
-            return $results = cmn_company::where('cmn_company_id', $cmn_company_id)->get();
+            return $results = cmn_company::where('cmn_company_id', $cmn_company_id)->first();
         } else {
             return $byr_buyer = byr_buyer::select('cmn_companies.*')
                 ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.cmn_company_id')->get();
@@ -293,13 +293,10 @@ class AllUsedFunction extends Controller
             // \Log::info($adm_user_id);
             // \Log::info($cmn_company_info);
             if (!empty($cmn_company_info)) {
-                $cmn_company_id = $cmn_company_info->cmn_company_id;
-                $byr_buyer_id = $cmn_company_info->byr_buyer_id;
-                $cmn_connect_id = $cmn_company_info->cmn_connect_id;
                 $arr = array(
-                    'cmn_company_id' => $cmn_company_id,
-                    'byr_buyer_id' => $byr_buyer_id,
-                    'cmn_connect_id' => $cmn_connect_id,
+                    'cmn_company_id' => $cmn_company_info->cmn_company_id,
+                    'byr_buyer_id' => $cmn_company_info->byr_buyer_id,
+                    'cmn_connect_id' => $cmn_company_info->cmn_connect_id,
                 );
             }
         }

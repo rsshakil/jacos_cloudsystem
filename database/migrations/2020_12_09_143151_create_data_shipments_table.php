@@ -14,9 +14,9 @@ class CreateDataShipmentsTable extends Migration
     public function up()
     {
         Schema::create('data_shipments', function (Blueprint $table) {
-            $table->increments('data_shipment_id')->comment('data_shipment_id');
-            $table->integer('data_order_id')->comment('data_order_id');
-            $table->integer('cmn_connect_id')->comment('cmn_connect_id');
+            $table->increments('data_shipment_id')->unsigned()->comment('data_shipment_id');
+            $table->integer('data_order_id')->unsigned()->comment('data_order_id');
+            $table->integer('cmn_connect_id')->unsigned()->comment('cmn_connect_id');
             $table->dateTime('upload_datetime')->nullable()->comment('アップロード日時');
             $table->string('upload_file_path', 200)->nullable()->comment('upload_file_path');
             $table->dateTime('send_datetime')->nullable()->comment('送信日時');

@@ -14,7 +14,7 @@ class CreateByrInvoicesTable extends Migration
     public function up()
     {
         Schema::create('byr_invoices', function (Blueprint $table) {
-            $table->increments('byr_invoice_id')->comment('Byr invoice id');
+            $table->increments('byr_invoice_id')->unsigned()->comment('Byr invoice id');
             $table->integer('cmn_connect_id')->unsigned()->comment('cmn connect id');
             $table->dateTime('send_date')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('send_date');
             $table->string('send_file_path', 500)->comment('send file path')->nullable();

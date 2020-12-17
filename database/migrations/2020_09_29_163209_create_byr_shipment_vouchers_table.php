@@ -14,7 +14,7 @@ class CreateByrShipmentVouchersTable extends Migration
     public function up()
     {
         Schema::create('byr_shipment_vouchers', function (Blueprint $table) {
-            $table->increments('byr_shipment_voucher_id')->comment('byr shipment voucher id');
+            $table->increments('byr_shipment_voucher_id')->unsigned()->comment('byr shipment voucher id');
             $table->integer('byr_shipment_id')->unsigned()->comment('cmn connect id');
             $table->integer('byr_order_voucher_id')->unsigned()->comment('byr order voucher id');
             $table->integer('revised_total_cost_price')->unsigned()->default('0')->comment('revised total cost price');            

@@ -14,8 +14,8 @@ class CreateDataOrderItemsTable extends Migration
     public function up()
     {
         Schema::create('data_order_items', function (Blueprint $table) {
-            $table->increments('data_order_item_id')->comment('data_order_item_id');
-            $table->integer('data_order_voucher_id')->comment('data_order_voucher_id');
+            $table->increments('data_order_item_id')->unsigned()->comment('data_order_item_id');
+            $table->integer('data_order_voucher_id')->unsigned()->comment('data_order_voucher_id');
             $table->string('mes_lis_ord_lin_lin_line_number',4)->comment('取引明細番号（発注・返品）');
             $table->string('mes_lis_ord_lin_lin_additional_line_number',4)->comment('取引付属明細番号');
             $table->string('mes_lis_ord_lin_fre_trade_number',10)->comment('元取引番号');
@@ -73,7 +73,7 @@ class CreateDataOrderItemsTable extends Migration
             $table->string('mes_lis_ord_lin_fre_unit_weight_code',2)->comment('単価登録単位');
             $table->string('mes_lis_ord_lin_fre_item_weight',13)->comment('商品重量');
             $table->string('mes_lis_ord_lin_fre_order_weight',15)->comment('発注重量');
-            $table->smallInteger('deleted')->default(1)->comment('削除フラグ');
+            $table->smallInteger('deleted')->unsigned()->default(1)->comment('削除フラグ');
 			$table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
 			$table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
         });

@@ -14,7 +14,7 @@ class CreateByrPaymentsTable extends Migration
     public function up()
     {
         Schema::create('byr_payments', function (Blueprint $table) {
-            $table->increments('byr_payment_id')->comment('Buyer payment id');
+            $table->increments('byr_payment_id')->unsigned()->comment('Buyer payment id');
             $table->integer('cmn_connect_id')->unsigned()->comment('cmn connect id');
             $table->dateTime('receive_date')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('receive_date');
             $table->string('receive_file_path', 500)->comment('receive file path')->nullable();

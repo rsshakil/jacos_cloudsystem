@@ -14,7 +14,7 @@ class CreateByrReturnsTable extends Migration
     public function up()
     {
         Schema::create('byr_returns', function (Blueprint $table) {
-            $table->increments('byr_return_id')->comment('Buyer return id');
+            $table->increments('byr_return_id')->unsigned()->comment('Buyer return id');
             $table->integer('cmn_connect_id')->unsigned()->comment('cmn connect id');
             $table->dateTime('receive_date')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('receive_date');
             $table->string('receive_file_path', 500)->comment('receive file path')->nullable();

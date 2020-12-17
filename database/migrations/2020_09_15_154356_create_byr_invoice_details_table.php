@@ -14,7 +14,7 @@ class CreateByrInvoiceDetailsTable extends Migration
     public function up()
     {
         Schema::create('byr_invoice_details', function (Blueprint $table) {
-            $table->increments('byr_invoice_detail_id')->comment('byr invoice detail Id');
+            $table->increments('byr_invoice_detail_id')->unsigned()->comment('byr invoice detail Id');
             $table->integer('byr_invoice_id')->unsigned()->comment('invoice Id');
             $table->integer('byr_shop_id')->unsigned()->comment('shop Id');
             $table->integer('byr_item_id')->unsigned()->comment('byr_item_id');

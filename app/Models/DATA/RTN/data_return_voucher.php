@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\DATA\RETURN;
+namespace App\Models\DATA\RTN;
 
 use Illuminate\Database\Eloquent\Model;
 

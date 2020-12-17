@@ -17,9 +17,10 @@
           </td>
           <td style="width: 10%">{{ myLang.customer_code }}</td>
           <td style="width: 17%">
-            <select class="form-control">
+            <input type="text" class="form-control">
+            <!-- <select class="form-control">
               <option :value="0">{{ myLang.customer_code }}</option>
-            </select>
+            </select> -->
           </td>
           <td style="width: 10%">
             <button class="btn btn-primary" type="button">
@@ -39,11 +40,13 @@
           <td>
             <input type="date" class="form-control" v-model="today" />
           </td>
-          <td>{{ myLang.shipment }}</td>
+          <!-- <td>{{ myLang.shipment }}</td> -->
+          <td>Delivery Service Code</td>
           <td>
-            <select class="form-control">
+            <input type="text" class="form-control">
+            <!-- <select class="form-control">
               <option :value="0">{{ myLang.shipment }}</option>
-            </select>
+            </select> -->
           </td>
           <td>{{ myLang.temperature }}</td>
           <td style="width: 15%">
@@ -59,23 +62,27 @@
               <option :value="0">{{ myLang.confirmation_status }}</option>
             </select>
           </td>
-          <td>{{ myLang.voucher_type }}</td>
+          <!-- <td>{{ myLang.voucher_type }}</td> -->
+          <td>Print CNT</td>
           <td>
             <select class="form-control">
-              <option :value="0">{{ myLang.voucher_type }}</option>
+              <option :value="0">Print CNT</option>
             </select>
           </td>
-          <td>{{ myLang.printing_status }}</td>
+          <!-- <td>{{ myLang.printing_status }}</td> -->
+          <td>Decission CNT</td>
           <td>
             <select class="form-control">
-              <option :value="0">{{ myLang.printing_status }}</option>
+              <option :value="0">Decission CNT</option>
             </select>
           </td>
-          <td>{{ myLang.confirmation_status }}</td>
+          <!-- <td>{{ myLang.confirmation_status }}</td> -->
+          <td>Check Datetime</td>
           <td>
-            <select class="form-control">
+            <input type="date" class="form-control" v-model="today" />
+            <!-- <select class="form-control">
               <option :value="0">{{ myLang.confirmation_status }}</option>
-            </select>
+            </select> -->
           </td>
         </tr>
         <!-- <tr>
@@ -129,7 +136,17 @@
                                 </tr> -->
             <tr>
               <th style="cursor: pointer">No</th>
-              <th style="cursor: pointer">{{ myLang.order_date_time }}</th>
+              <th>{{ myLang.receive_date }}</th>
+              <th>{{ myLang.customer_code }}</th>
+              <th>{{ myLang.delivery_date }}</th>
+              <th>Major Category</th>
+              <th>Delivery Service Code</th>
+              <th>Tempareture Code</th>
+              <th>CNT</th>
+              <th>Decission CNT</th>
+              <th>Print CNT</th>
+              <th>Check Datetime</th>
+              <!-- <th style="cursor: pointer">{{ myLang.order_date_time }}</th>
               <th style="cursor: pointer">{{ myLang.buyer_name }}</th>
               <th style="cursor: pointer">{{ myLang.delivery_date }}</th>
               <th style="cursor: pointer">{{ myLang.category_code }}</th>
@@ -138,7 +155,7 @@
               <th style="cursor: pointer">{{ myLang.total_voucher_number }}</th>
               <th style="cursor: pointer">{{ myLang.total_confirm_date }}</th>
               <th style="cursor: pointer">{{ myLang.total_print_out_date }}</th>
-              <th style="cursor: pointer">{{ myLang.checked_date }}</th>
+              <th style="cursor: pointer">{{ myLang.checked_date }}</th> -->
             </tr>
           </thead>
           <tbody>
@@ -154,15 +171,24 @@
                   :to="{
                     name: 'order_list_detail',
                     params: {
-                      byr_order_id: order_list.byr_order_id,
-                      order_receive_date: order_list.receive_date.valueOf(),
+                      byr_order_id: order_list.data_order_id,
+                      order_receive_date: order_list.receive_datetime.valueOf(),
                     },
                   }"
-                  class="btn btn-primary"
-                  >{{ order_list.receive_date }}</router-link
+                  class=""
+                  >{{ order_list.receive_datetime }}</router-link
                 >
               </td>
-              <td>{{ order_list.company_name }}</td>
+              <td>{{order_list.mes_lis_ord_par_sel_code}} {{order_list.mes_lis_ord_par_sel_name}}</td>
+              <td>{{order_list.mes_lis_ord_tra_dat_delivery_date}}</td>
+              <td>{{order_list.mes_lis_ord_tra_goo_major_category}}</td>
+              <td>{{order_list.mes_lis_ord_log_del_delivery_service_code}}</td>
+              <td>{{order_list.mes_lis_ord_tra_ins_temperature_code}}</td>
+              <td>{{order_list.cnt}}</td>
+              <td>{{order_list.decision_cnt}}</td>
+              <td>{{order_list.print_cnt}}</td>
+              <td>{{order_list.check_datetime}}</td>
+              <!-- <td>{{ order_list.company_name }}</td>
               <td>{{ order_list.expected_delivery_date }}</td>
               <td>{{ order_list.category_code }}</td>
               <td>{{ order_list.delivery_service_code }}</td>
@@ -170,7 +196,7 @@
               <td>{{ order_list.total_voucher_number }}</td>
               <td>{{ order_list.total_confirm_date }}</td>
               <td>{{ order_list.total_print_out_date }}</td>
-              <td>{{ order_list.checked_date }}</td>
+              <td>{{ order_list.checked_date }}</td> -->
             </tr>
           </tbody>
         </table>
@@ -197,7 +223,7 @@ export default {
       axios
         .get(this.BASE_URL + "api/get_byr_order_list/" + Globals.user_info_id)
         .then(({data}) => {
-            // console.log(data)
+            console.log(data)
           this.order_lists = data.order_list;
           this.byr_buyer_lists = data.byr_buyer_list;
           this.loader.hide();

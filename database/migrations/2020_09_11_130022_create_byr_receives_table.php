@@ -14,7 +14,7 @@ class CreateByrReceivesTable extends Migration
     public function up()
     {
         Schema::create('byr_receives', function (Blueprint $table) {
-            $table->increments('byr_receive_id')->comment('Buyer receive id');
+            $table->increments('byr_receive_id')->unsigned()->comment('Buyer receive id');
             $table->integer('cmn_connect_id')->unsigned()->comment('cmn connect id');
             $table->dateTime('receive_date')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('receive_date');
             $table->string('receive_file_path', 500)->comment('receive file path')->nullable();

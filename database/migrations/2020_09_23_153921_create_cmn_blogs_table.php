@@ -14,7 +14,7 @@ class CreateCmnBlogsTable extends Migration
     public function up()
     {
         Schema::create('cmn_blogs', function (Blueprint $table) {
-            $table->increments('cmn_blog_id')->comment('cmn blog Id');
+            $table->increments('cmn_blog_id')->unsigned()->comment('cmn blog Id');
             $table->integer('blog_by')->unsigned()->comment('author id');
             $table->string('blog_title', 500)->comment('voucher category')->nullable();
             $table->string('feature_img', 500)->comment('blog_img')->nullable();

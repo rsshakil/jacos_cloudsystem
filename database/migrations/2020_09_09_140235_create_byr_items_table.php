@@ -14,7 +14,7 @@ class CreateByrItemsTable extends Migration
     public function up()
     {
         Schema::create('byr_items', function (Blueprint $table) {
-            $table->increments('byr_item_id')->comment('byr Item Id');
+            $table->increments('byr_item_id')->unsigned()->comment('byr Item Id');
             $table->integer('byr_shop_id')->unsigned()->comment('shop Id');
             $table->integer('byr_buyer_id')->unsigned()->comment('byr Id');
             $table->integer('cmn_category_id')->unsigned()->comment('Category Id');

@@ -14,8 +14,8 @@ class CreateCmnItemsTable extends Migration
     public function up()
     {
         Schema::create('cmn_items', function (Blueprint $table) {
-            $table->increments('cmn_item_id')->comment('cmn_item_id');
-            $table->integer('cmn_connect_id')->comment('cmn_connect_id');
+            $table->increments('cmn_item_id')->unsigned()->comment('cmn_item_id');
+            $table->integer('cmn_connect_id')->unsigned()->comment('cmn_connect_id');
             $table->string('mes_lis_pay_code', 13)->comment('支払法人コード');
             $table->string('mes_lis_pay_gln', 13)->comment('支払法人GLN');
             $table->string('mes_lis_pay_name', 20)->comment('支払法人名称');
@@ -121,7 +121,7 @@ class CreateCmnItemsTable extends Migration
             $table->string('mes_lis_ord_lin_fre_unit_weight_code',2)->comment('単価登録単位');
             $table->string('mes_lis_ord_lin_fre_item_weight',13)->comment('商品重量');
             $table->string('mes_lis_ord_lin_fre_order_weight',15)->comment('発注重量');
-            $table->smallInteger('deleted')->default(1)->comment('削除フラグ');
+            $table->smallInteger('deleted')->unsigned()->default(1)->comment('削除フラグ');
 			$table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
 			$table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
         });
