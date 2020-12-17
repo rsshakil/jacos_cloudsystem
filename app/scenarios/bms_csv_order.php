@@ -263,7 +263,7 @@ class bms_csv_order extends Model
                 $data_voucher_array['data_order_id']=$data_order_id;
                 $data_order_voucher_id = data_order_voucher::insertGetId($data_voucher_array);
 
-
+                $data_shi_voucher_array['data_order_voucher_id']=$data_order_voucher_id;
                 $data_shi_voucher_array['mes_lis_shi_tra_trade_number']=$value[31];
                 $data_shi_voucher_array['mes_lis_shi_tra_additional_trade_number']=$value[32];
                 $data_shi_voucher_array['mes_lis_shi_par_shi_code']=$value[33];
