@@ -16,7 +16,7 @@ class CreateDataOrderVouchersTable extends Migration
         Schema::create('data_order_vouchers', function (Blueprint $table) {
             $table->increments('data_order_voucher_id')->comment('data_order_voucher_id');
             $table->integer('data_order_id')->unsigned()->comment('data_order_id');
-            $table->dateTime('check_datetime')->nullable()->default(null)->comment('確認日時');
+            $table->dateTime('check_datetime')->nullable()->comment('確認日時');
             $table->string('mes_lis_ord_tra_trade_number', 10)->comment('取引番号（発注・返品）');
             $table->string('mes_lis_ord_tra_additional_trade_number', 10)->comment('取引付属番号');
             $table->string('mes_lis_ord_par_shi_code', 13)->comment('直接納品先コード');

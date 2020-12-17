@@ -17,8 +17,8 @@ class CreateDataShipmentVouchersTable extends Migration
             $table->increments('data_shipment_voucher_id')->comment('data_shipment_voucher_id');
             $table->integer('data_shipment_id')->unsigned()->comment('data_shipment_id');
             $table->integer('data_order_voucher_id')->unsigned()->comment('data_order_voucher_id');
-            $table->dateTime('decision_datetime')->nullable()->default(null)->comment('確定日時');
-            $table->dateTime('print_datetime')->nullable()->default(null)->comment('印刷日時');
+            $table->dateTime('decision_datetime')->nullable()->comment('確定日時');
+            $table->dateTime('print_datetime')->nullable()->comment('印刷日時');
             $table->string('mes_lis_shi_tra_trade_number', 10)->comment('取引番号（発注・返品）');
             $table->string('mes_lis_shi_tra_additional_trade_number', 10)->comment('取引付属番号');
             $table->string('mes_lis_shi_fre_shipment_number', 10)->default('')->comment('出荷者管理番号');
