@@ -3,7 +3,6 @@
 namespace App\Scenarios;
 
 class Common
-{
     /** ////////////////////////////////////////////
      * ebcdic to shift jis
      * EBCDICをSJISに文字コード変換
