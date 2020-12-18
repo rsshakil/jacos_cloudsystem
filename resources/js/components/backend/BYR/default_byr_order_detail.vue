@@ -213,7 +213,7 @@
               <router-link
                 :to="{
                   name: 'order_details_canvas',
-                  params: { byr_order_id: byr_order_id },
+                  params: { data_order_id: param_data.data_order_id },
                 }"
                 class="btn btn-info"
               >
@@ -613,6 +613,7 @@
 </template>
 <script>
 export default {
+  props: ["param_data"],
   data() {
     return {
       today: new Date().toISOString().slice(0, 10),
@@ -625,7 +626,7 @@ export default {
       show_hide_col_list: [],
       expected_delivery_date: "",
       status: "",
-      byr_order_id: "",
+      // byr_order_id: "",
       edit_order_modal: false,
       selected: [],
       isCheckAll: false,
@@ -730,10 +731,12 @@ export default {
     },
     //get Table data
     get_all_byr_order_detail() {
-      axios
-        .get(this.BASE_URL + "api/byrorders/" + this.byr_order_id)
-        .then((data) => {
-          console.log(data.data.order_list_detail);
+      axios.post(this.BASE_URL + "api/order_details" , this.param_data)
+        .then(({data}) => {
+
+          console.log(data);
+          this.loader.hide();
+          return 0;
           this.order_detail_lists = data.data.order_list_detail;
           this.show_hide_col_list = data.data.slected_list;
           this.order_date = data.data.order_list_detail[0].order_date;
@@ -764,8 +767,9 @@ export default {
   },
 
   created() {
+    console.log(this.param_data);
     this.loader = Vue.$loading.show();
-    this.byr_order_id = this.$route.params.byr_order_id;
+    this.data_order_id = this.$route.params.data_order_id;
     this.get_all_byr_order_detail();
     Fire.$on("LoadByrorderDetail", () => {
       this.get_all_byr_order_detail();

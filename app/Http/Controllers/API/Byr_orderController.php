@@ -127,7 +127,66 @@ class Byr_orderController extends Controller
     {
         //
     }
+    public function orderDetails(Request $request){
+        $data_order_id=$request->data_order_id;
+        $delivery_date=$request->delivery_date;
+        $delivery_service_code=$request->delivery_service_code;
+        $major_category=$request->major_category;
+        $temperature_code=$request->temperature_code;
+        // return $request->all();
+        $result=DB::select("
+        SELECT
+        dsv.decision_datetime,
+        dsv.mes_lis_shi_par_shi_code,
+        dsv.mes_lis_shi_par_rec_code,
+        dsv.mes_lis_shi_par_rec_name,
+        dsv.mes_lis_shi_tra_trade_number,
+        dsv.mes_lis_shi_tra_ins_goods_classification_code,
+        dsv.mes_lis_shi_tot_tot_net_price_total,
+        
+        dsv.updated_at,
+        dsv.print_datetime,
+        dsv.send_datetime
+        FROM data_shipments AS ds
+        inner join data_shipment_vouchers AS dsv ON ds.data_shipment_id=dsv.data_shipment_id
+        INNER JOIN data_shipment_items AS dsi
+        WHERE
+        ds.data_order_id='1' AND
+        dsv.mes_lis_shi_tra_dat_delivery_date= '' AND
+        dsv.mes_lis_shi_tra_goo_major_category = '' and
+        dsv.mes_lis_shi_log_del_delivery_service_code = '' and
+        dsv.mes_lis_shi_tra_ins_temperature_code = ''
+        
+        AND dsv.mes_lis_shi_par_shi_code = ''
+        AND dsv.mes_lis_shi_par_rec_code = ''
+        AND dsv.mes_lis_shi_tra_trade_number = ''
+        AND dsi.mes_lis_shi_lin_ite_order_item_code = ''
+        AND dsv.mes_lis_shi_tra_ins_goods_classification_code = ''
+        AND dsv.decision_datetime = ''
+        AND dsv.print_datetime = ''
+        ");
+        return $result;
 
+        // $result = DB::table('byr_order_vouchers')
+        //     ->select('byr_order_vouchers.*','byr_order_items.*', 'byr_shipment_items.confirm_quantity', 'byr_shipment_items.lack_reason')
+        //     ->join('byr_order_items', 'byr_order_items.byr_order_voucher_id', '=', 'byr_order_vouchers.byr_order_voucher_id')
+        //     ->leftJoin('byr_shipment_vouchers', 'byr_shipment_vouchers.byr_order_voucher_id', '=', 'byr_order_vouchers.byr_order_voucher_id')
+        //     ->leftJoin('byr_shipment_items', 'byr_shipment_items.byr_shipment_voucher_id', '=', 'byr_shipment_vouchers.byr_shipment_voucher_id')
+        //     // ->leftJoin('byr_shops', 'byr_shops.byr_shop_id', '=', 'byr_order_details.byr_shop_id')
+        //     ->where('byr_order_vouchers.byr_order_id', $byr_order_id)
+        //     ->get();
+        /*coll setting*/
+        // $slected_list = array();
+        // $result_data = cmn_tbl_col_setting::where('url_slug', 'order_list_detail')->first();
+        //     $header_list = json_decode($result_data->content_setting);
+        //     foreach ($header_list as $header) {
+        //         if ($header->header_status == true) {
+        //             $slected_list[] = $header->header_field;
+        //         }
+        //     }
+        /*coll setting*/
+        // return response()->json(['order_list_detail' => $result,'slected_list'=>$slected_list]);
+    }
     /**
      * Display the specified resource.
      *
@@ -136,26 +195,7 @@ class Byr_orderController extends Controller
      */
     public function show($byr_order_id)
     {
-
-        $result = DB::table('byr_order_vouchers')
-            ->select('byr_order_vouchers.*','byr_order_items.*', 'byr_shipment_items.confirm_quantity', 'byr_shipment_items.lack_reason')
-            ->join('byr_order_items', 'byr_order_items.byr_order_voucher_id', '=', 'byr_order_vouchers.byr_order_voucher_id')
-            ->leftJoin('byr_shipment_vouchers', 'byr_shipment_vouchers.byr_order_voucher_id', '=', 'byr_order_vouchers.byr_order_voucher_id')
-            ->leftJoin('byr_shipment_items', 'byr_shipment_items.byr_shipment_voucher_id', '=', 'byr_shipment_vouchers.byr_shipment_voucher_id')
-            // ->leftJoin('byr_shops', 'byr_shops.byr_shop_id', '=', 'byr_order_details.byr_shop_id')
-            ->where('byr_order_vouchers.byr_order_id', $byr_order_id)
-            ->get();
-        /*coll setting*/
-        $slected_list = array();
-        $result_data = cmn_tbl_col_setting::where('url_slug', 'order_list_detail')->first();
-            $header_list = json_decode($result_data->content_setting);
-            foreach ($header_list as $header) {
-                if ($header->header_status == true) {
-                    $slected_list[] = $header->header_field;
-                }
-            }
-        /*coll setting*/
-        return response()->json(['order_list_detail' => $result,'slected_list'=>$slected_list]);
+        
     }
 
     public function get_bms_order_byr_order_id($byr_order_id)
@@ -397,7 +437,8 @@ class Byr_orderController extends Controller
     }
 
     public function get_byr_info_by_byr_order_id(Request $request){
-        $byr_order_id=$request->byr_order_id;
+        $data_order_id=$request->data_order_id;
+
         $result = DB::table('byr_orders')
             ->select('byr_buyers.*')
             ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'byr_orders.cmn_connect_id')

@@ -161,7 +161,7 @@
           <tbody>
             <tr
               v-for="(order_list, index) in order_lists"
-              :key="order_list.byr_order_id"
+              :key="index"
             >
               <td>{{ (index + 1) }}</td>
               <!-- <td>{{order_list.receive_date.valueOf() }}</td> -->
@@ -171,8 +171,11 @@
                   :to="{
                     name: 'order_list_detail',
                     params: {
-                      byr_order_id: order_list.data_order_id,
-                      order_receive_date: order_list.receive_datetime.valueOf(),
+                      data_order_id: order_list.data_order_id,
+                      delivery_date: order_list.mes_lis_ord_tra_dat_delivery_date.valueOf(),
+                      major_category: order_list.mes_lis_ord_tra_goo_major_category,
+                      delivery_service_code: order_list.mes_lis_ord_log_del_delivery_service_code,
+                      temperature_code: order_list.mes_lis_ord_tra_ins_temperature_code?order_list.mes_lis_ord_tra_ins_temperature_code:0,
                     },
                   }"
                   class=""
