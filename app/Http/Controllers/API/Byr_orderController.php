@@ -143,7 +143,7 @@ class Byr_orderController extends Controller
         dsv.mes_lis_shi_tra_trade_number,
         dsv.mes_lis_shi_tra_ins_goods_classification_code,
         dsv.mes_lis_shi_tot_tot_net_price_total,
-        
+        dsv.`status`,
         dsv.updated_at,
         dsv.print_datetime,
         dsv.send_datetime
@@ -151,11 +151,11 @@ class Byr_orderController extends Controller
         inner join data_shipment_vouchers AS dsv ON ds.data_shipment_id=dsv.data_shipment_id
         INNER JOIN data_shipment_items AS dsi
         WHERE
-        ds.data_order_id='1' AND
-        dsv.mes_lis_shi_tra_dat_delivery_date= '' AND
-        dsv.mes_lis_shi_tra_goo_major_category = '' and
-        dsv.mes_lis_shi_log_del_delivery_service_code = '' and
-        dsv.mes_lis_shi_tra_ins_temperature_code = ''
+        ds.data_order_id='$data_order_id' AND
+        dsv.mes_lis_shi_tra_dat_delivery_date= '$delivery_date' AND
+        dsv.mes_lis_shi_tra_goo_major_category = '$major_category' and
+        dsv.mes_lis_shi_log_del_delivery_service_code = '$delivery_service_code' and
+        dsv.mes_lis_shi_tra_ins_temperature_code = '$temperature_code'
         
         AND dsv.mes_lis_shi_par_shi_code = ''
         AND dsv.mes_lis_shi_par_rec_code = ''
