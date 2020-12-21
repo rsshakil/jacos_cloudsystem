@@ -272,11 +272,21 @@
               <a href="index.html" class="btn btn-primary">発注データ一覧へ戻る</a>
             </div>
           </div> -->
-          <table class="table table-striped table-bordered data_table">
+          <table class="table table-striped table-bordered table-responsive data_table" style="overflow-x: scroll;">
             <thead>
               <tr>
                 <th>No</th>
-                <th>{{ myLang.direct_delivery_code }}</th>
+                <th>decision_datetime</th>
+                <th>mes_lis_shi_par_shi_code</th>
+                <th>mes_lis_shi_par_rec_code and order_detail_list.mes_lis_shi_par_rec_name</th>
+                <th>mes_lis_shi_tra_trade_number</th>
+                <th>mes_lis_shi_tra_ins_goods_classification_code</th>
+                <th>mes_lis_shi_tot_tot_net_price_total</th>
+                <th>status</th>
+                <th>updated_at</th>
+                <th>print_datetime</th>
+                <th>send_datetime</th>
+                <!-- <th>{{ myLang.direct_delivery_code }}</th>
                 <th>{{ myLang.final_delivery_code }}</th>
                 <th>{{ myLang.total_voucher_number }}</th>
                 <th>{{ myLang.specific }}</th>
@@ -288,7 +298,7 @@
                   {{ myLang.delivery_statement }}
                   {{ myLang.printing_status }}
                 </th>
-                <th>{{ myLang.send }}</th>
+                <th>{{ myLang.send }}</th> -->
               </tr>
               <!-- <tr>
                 <th colspan="100%" style="border: none;">
@@ -358,6 +368,21 @@
               </tr> -->
             </thead>
             <tbody>
+              <tr v-for="(order_detail_list, index) in order_detail_lists" :key="index">
+                <td>{{index+1}}</td>
+                <td>{{order_detail_list.decision_datetime}}</td>
+                <td>{{order_detail_list.mes_lis_shi_par_shi_code}}</td>
+                <td>{{order_detail_list.mes_lis_shi_par_rec_code}} {{order_detail_list.mes_lis_shi_par_rec_name}}</td>
+                <td>{{order_detail_list.mes_lis_shi_tra_trade_number}}</td>
+                <td>{{order_detail_list.mes_lis_shi_tra_ins_goods_classification_code}}</td>
+                <td>{{order_detail_list.mes_lis_shi_tot_tot_net_price_total}}</td>
+                <td>{{order_detail_list.status}}</td>
+                <td>{{order_detail_list.updated_at}}</td>
+                <td>{{order_detail_list.print_datetime}}</td>
+                <td>{{order_detail_list.send_datetime}}</td>
+              </tr>
+            </tbody>
+            <!-- <tbody>
               <tr
                 v-for="(order_detail_list, index) in order_detail_lists"
                 :key="order_detail_list.byr_order_detail_id"
@@ -482,7 +507,7 @@
                   </button>
                 </td>
               </tr>
-            </tbody>
+            </tbody> -->
           </table>
         </div>
       </div>
@@ -496,9 +521,6 @@
       @ok.prevent="save_user()"
       v-model="edit_order_modal"
     >
-      <!-- <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-      <div class="modal-body">-->
       <div class="panel-body add_item_body">
         <form>
           <input
@@ -613,7 +635,7 @@
 </template>
 <script>
 export default {
-  props: ["param_data"],
+  // props: ["param_data"],
   data() {
     return {
       today: new Date().toISOString().slice(0, 10),
@@ -631,6 +653,7 @@ export default {
       selected: [],
       isCheckAll: false,
       form: new Form({}),
+      param_data:[],
     };
   },
   methods: {
@@ -735,15 +758,16 @@ export default {
         .then(({data}) => {
 
           console.log(data);
+          this.order_detail_lists = data.order_list_detail;
           this.loader.hide();
-          return 0;
-          this.order_detail_lists = data.data.order_list_detail;
-          this.show_hide_col_list = data.data.slected_list;
-          this.order_date = data.data.order_list_detail[0].order_date;
-          this.expected_delivery_date =
-            data.data.order_list_detail[0].expected_delivery_date;
-          this.status = data.data.order_list_detail[0].status;
-          this.loader.hide();
+          // return 0;
+          // // this.order_detail_lists = data.data.order_list_detail;
+          // this.show_hide_col_list = data.data.slected_list;
+          // this.order_date = data.data.order_list_detail[0].order_date;
+          // this.expected_delivery_date =
+          //   data.data.order_list_detail[0].expected_delivery_date;
+          // this.status = data.data.order_list_detail[0].status;
+          // this.loader.hide();
         });
     },
 
@@ -767,7 +791,11 @@ export default {
   },
 
   created() {
-    console.log(this.param_data);
+    Fire.$emit('byr_has_selected',this.$session.get('byr_buyer_id'));
+    Fire.$emit('permission_check_for_buyer',this.$session.get('byr_buyer_id'));
+    // console.log(this.$route.query);
+    this.param_data=this.$route.query
+    // console.log(this.param_data);
     this.loader = Vue.$loading.show();
     this.data_order_id = this.$route.params.data_order_id;
     this.get_all_byr_order_detail();
@@ -775,6 +803,7 @@ export default {
       this.get_all_byr_order_detail();
     });
     this.col_show_hide_setting(this.$route.name);
+    
   },
   mounted() {
     console.log("byr order detail page loaded");

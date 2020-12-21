@@ -7,13 +7,13 @@
             {{ myLang.receive_date }}
           </td>
           <td style="width: 15%">
-            <input type="date" class="form-control" v-model="today" />
+            <input type="date" class="form-control" v-model="form.receive_date_from" />
           </td>
           <td style="width: 9%; text-align: center">
             <b-icon icon="forward" aria-hidden="true" font-scale="1.5"></b-icon>
           </td>
           <td style="width: 15%">
-            <input type="date" class="form-control" v-model="today" />
+            <input type="date" class="form-control" v-model="form.receive_date_to" />
           </td>
           <td style="width: 10%">{{ myLang.customer_code }}</td>
           <td style="width: 17%">
@@ -32,54 +32,54 @@
         <tr>
           <td>{{ myLang.delivery_date }}</td>
           <td>
-            <input type="date" class="form-control" v-model="today" />
+            <input type="date" class="form-control" v-model="form.delivery_date_from" />
           </td>
           <td style="width: 9%; text-align: center">
             <b-icon icon="forward" aria-hidden="true" font-scale="1.5"></b-icon>
           </td>
           <td>
-            <input type="date" class="form-control" v-model="today" />
+            <input type="date" class="form-control" v-model="form.delivery_date_to" />
           </td>
           <!-- <td>{{ myLang.shipment }}</td> -->
           <td>Delivery Service Code</td>
           <td>
-            <input type="text" class="form-control">
+            <input type="text" class="form-control" v-model="form.delivery_service_code">
             <!-- <select class="form-control">
               <option :value="0">{{ myLang.shipment }}</option>
             </select> -->
           </td>
           <td>{{ myLang.temperature }}</td>
           <td style="width: 15%">
-            <select class="form-control">
-              <option :value="0">{{ myLang.temperature }}</option>
+            <select class="form-control" v-model="form.temperature">
+              <option v-for="(temp, i) in temperature" :key="i" :value="temp.id">{{ temp.name }}</option>
             </select>
           </td>
         </tr>
         <tr>
           <td>{{ myLang.confirmation_status }}</td>
           <td>
-            <select class="form-control">
-              <option :value="0">{{ myLang.confirmation_status }}</option>
+            <select class="form-control" v-model="form.confirmation_status">
+              <option v-for="(cs, j) in confirmation_status" :key="j" :value="cs.id">{{ cs.name }}</option>
             </select>
           </td>
           <!-- <td>{{ myLang.voucher_type }}</td> -->
           <td>Print CNT</td>
           <td>
-            <select class="form-control">
-              <option :value="0">Print CNT</option>
+            <select class="form-control" v-model="form.print_cnt">
+              <option v-for="(pc, j) in print_cnt" :key="j" :value="pc.name">{{ pc.name }}</option>
             </select>
           </td>
           <!-- <td>{{ myLang.printing_status }}</td> -->
           <td>Decission CNT</td>
           <td>
-            <select class="form-control">
-              <option :value="0">Decission CNT</option>
+            <select class="form-control" v-model="form.decission_cnt">
+              <option v-for="(pc, j) in decission_cnt" :key="j" :value="pc.name">{{ pc.name }}</option>
             </select>
           </td>
           <!-- <td>{{ myLang.confirmation_status }}</td> -->
           <td>Check Datetime</td>
           <td>
-            <input type="date" class="form-control" v-model="today" />
+            <input type="date" class="form-control" v-model="form.check_datetime" />
             <!-- <select class="form-control">
               <option :value="0">{{ myLang.confirmation_status }}</option>
             </select> -->
@@ -100,7 +100,7 @@
     <br />
     <!-- <div class="row"> -->
     <div class="col-12" style="text-align: center">
-      <button class="btn btn-primary" type="button">{{ myLang.search }}</button>
+      <button class="btn btn-primary" type="button" @click="searchOrder()">{{ myLang.search }}</button>
     </div>
     <!-- </div> -->
     <!-- </div> -->
@@ -170,13 +170,11 @@
                 <router-link
                   :to="{
                     name: 'order_list_detail',
-                    params: {
-                      data_order_id: order_list.data_order_id,
+                    query: { data_order_id: order_list.data_order_id,
                       delivery_date: order_list.mes_lis_ord_tra_dat_delivery_date.valueOf(),
                       major_category: order_list.mes_lis_ord_tra_goo_major_category,
                       delivery_service_code: order_list.mes_lis_ord_log_del_delivery_service_code,
-                      temperature_code: order_list.mes_lis_ord_tra_ins_temperature_code?order_list.mes_lis_ord_tra_ins_temperature_code:0,
-                    },
+                      temperature_code: order_list.mes_lis_ord_tra_ins_temperature_code },
                   }"
                   class=""
                   >{{ order_list.receive_datetime }}</router-link
@@ -213,24 +211,49 @@ export default {
   data() {
     return {
       today: new Date().toISOString().slice(0, 10),
+      // receive_date:null,
       // today:new Date().toLocaleDateString(),
       order_lists: {},
       byr_buyer_lists: {},
       file: "",
       selected_byr: "0",
+      temperature:[{id:1,name:"temperature1"},{id:2,name:"temperature2"},{id:3,name:"temperature3"}],
+      confirmation_status:[{id:1,name:"confirmation_status1"},{id:2,name:"confirmation_status2"},{id:3,name:"confirmation_status3"}],
+      print_cnt:[{id:1,name:"0"},{id:2,name:"1"}],
+      decission_cnt:[{id:1,name:"11"},{id:2,name:"260"}],
+      form: new Form({
+        adm_user_id:Globals.user_info_id,
+        receive_date_from:new Date().toISOString().slice(0, 10),
+        receive_date_to:new Date().toISOString().slice(0, 10),
+        delivery_date_from:new Date().toISOString().slice(0, 10),
+        delivery_date_to:new Date().toISOString().slice(0, 10),
+        check_datetime:new Date().toISOString().slice(0, 10),
+        delivery_service_code:null,
+        temperature:1,
+        confirmation_status:1,
+        print_cnt:0,
+        decission_cnt:11,
+        submit_type:"page_load"
+      }),
     };
   },
   methods: {
     //get Table data
     get_all_order() {
-      axios
-        .get(this.BASE_URL + "api/get_byr_order_list/" + Globals.user_info_id)
+      this.form
+        .post(this.BASE_URL + "api/get_byr_order_list",this.form)
         .then(({data}) => {
-            console.log(data)
+          console.log(data)
           this.order_lists = data.order_list;
           this.byr_buyer_lists = data.byr_buyer_list;
           this.loader.hide();
         });
+    },
+    searchOrder(){
+      console.log(this.form)
+      this.form.submit_type = "search"
+      console.log(this.form)
+      this.get_all_order();
     },
     check_byr_order_api() {
       let formData = new FormData();
@@ -269,11 +292,14 @@ export default {
   },
 
   created() {
+    // this.today= new Date().toISOString().slice(0, 10);
     this.loader = Vue.$loading.show();
     this.get_all_order();
       Fire.$on("LoadByrorder", () => {
       this.get_all_order();
     });
+    Fire.$emit('byr_has_selected',this.$session.get('byr_buyer_id'));
+    Fire.$emit('permission_check_for_buyer',this.$session.get('byr_buyer_id'));
     console.log("created byr order log");
   },
   mounted() {

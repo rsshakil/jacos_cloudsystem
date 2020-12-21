@@ -77,7 +77,7 @@ export const routes = [
                 name: 'order_list',
             },
             {
-                path: '/order_list/order_list_detail/:data_order_id/:delivery_date/:major_category/:delivery_service_code/:temperature_code',
+                path: '/order_list/order_list_detail',
                 component: byr_order_detail,
                 name: 'order_list_detail',
                 meta: {
