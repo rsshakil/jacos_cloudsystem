@@ -136,6 +136,7 @@ Route::post('/ckeditor_file_up', 'API\Cmn_blogController@ckeditor_file_up');
 
 Route::post('/get_byr_slr_data', 'API\Byr_orderController@getByrSlrData');
 Route::post('/order_details', 'API\Byr_orderController@orderDetails');
+Route::get('/order_item_details/{data_shipment_voucher_id}', 'API\Byr_orderController@orderItemDetails');
 
 // level3
 Route::post('get_user_login', 'API\Level3\Level3Controller@userLogin');

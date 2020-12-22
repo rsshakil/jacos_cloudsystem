@@ -256,6 +256,37 @@ class Byr_orderController extends Controller
         /*coll setting*/
         // return response()->json(['order_list_detail' => $result,'slected_list'=>$slected_list]);
     }
+
+    public function orderItemDetails($data_shipment_voucher_id){
+       //order $data_order_voucher_id=1;
+       $data_order_voucher_id=1;
+        $result=DB::select("
+        SELECT * FROM data_order_items 
+        inner join data_order_vouchers on data_order_vouchers.data_order_voucher_id=data_order_items.data_order_voucher_id
+        inner join data_orders on data_orders.data_order_id=data_order_vouchers.data_order_id
+        where data_order_items.data_order_voucher_id = '$data_order_voucher_id'
+        ");
+        //shipment
+        $result=DB::select("
+        SELECT * FROM data_shipment_items 
+        inner join data_shipment_vouchers on data_shipment_vouchers.data_shipment_voucher_id=data_shipment_items.data_shipment_voucher_id
+        inner join data_shipments on data_shipments.data_shipment_id=data_shipment_vouchers.data_shipment_id
+        where data_shipment_items.data_shipment_voucher_id = '$data_shipment_voucher_id'
+        ");
+// print_r($result);exit;
+        $slected_list = array();
+        $result_data = cmn_tbl_col_setting::where('url_slug', 'order_item_list_detail')->first();
+        if($result_data){    
+        $header_list = json_decode($result_data->content_setting);
+            foreach ($header_list as $header) {
+                if ($header->header_status == true) {
+                    $slected_list[] = $header->header_field;
+                }
+            }
+        }
+        /*coll setting*/
+        return response()->json(['order_item_list_detail' => $result,'slected_list'=>$slected_list]);
+    }
     /**
      * Display the specified resource.
      *

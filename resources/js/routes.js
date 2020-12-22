@@ -10,6 +10,7 @@ import password_reset from './components/backend/ADM/password_reset.vue'
 import default_order_list from './components/backend/default_order_list.vue'
 import default_parent from './components/backend/default_parent.vue'
 import byr_order_detail from './components/backend/BYR/byr_order_detail.vue'
+import order_item_list_detail from './components/backend/BYR/order_item_list_detail.vue'
 import order_details_canvas from './components/backend/order_details_canvas.vue'
 import voucher_setting from './components/backend/canvas.vue'
 import byr_management from './components/backend/SLR/byr_management.vue'
@@ -82,6 +83,13 @@ export const routes = [
                 name: 'order_list_detail',
                 meta: {
                     breadcrumb: 'Order detail'
+                }
+            },{
+                path: '/order_list/order_list_detail/order_item_list_detail/:data_order_list_voucher_id',
+                component: order_item_list_detail,
+                name: 'order_item_list_detail',
+                meta: {
+                    breadcrumb: 'Order item detail'
                 }
             },
             {

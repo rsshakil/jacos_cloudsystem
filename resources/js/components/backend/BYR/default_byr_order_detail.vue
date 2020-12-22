@@ -373,7 +373,13 @@
                 <td>{{order_detail_list.decision_datetime}}</td>
                 <td>{{order_detail_list.mes_lis_shi_par_shi_code}}</td>
                 <td>{{order_detail_list.mes_lis_shi_par_rec_code}} {{order_detail_list.mes_lis_shi_par_rec_name}}</td>
-                <td>{{order_detail_list.mes_lis_shi_tra_trade_number}}</td>
+                <td><router-link
+                  :to="{
+                    name: 'order_item_list_detail',
+                    params: { data_order_list_voucher_id: 1 }
+                  }"
+                  class=""
+                  >{{order_detail_list.mes_lis_shi_tra_trade_number}}</router-link></td>
                 <td>{{order_detail_list.mes_lis_shi_tra_ins_goods_classification_code}}</td>
                 <td>{{order_detail_list.mes_lis_shi_tot_tot_net_price_total}}</td>
                 <td>{{order_detail_list.status}}</td>
