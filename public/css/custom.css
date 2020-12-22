@@ -140,3 +140,8 @@
 .card{
     border-radius: 0!important;
 }
+.order_item_details_table thead tr th{
+    background: #538ED3;
+    color:#fff;
+    text-align: center;
+}

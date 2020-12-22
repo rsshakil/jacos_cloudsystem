@@ -187,11 +187,8 @@
           </tr>
         </table>
       </div>
-      <br />
       <div class="col-12" style="text-align: center">
-        <button class="btn btn-primary" type="button">
-          {{ myLang.search }}
-        </button>
+       
       </div>
       <div class="col-12">
         <br />
@@ -199,321 +196,83 @@
         <hr />
       </div>
       <div class="col-12">
-        <table class="table table-bordered">
-          <tr>
-            <td>
-              <button type="button">{{ myLang.registrad_by_product }}</button>
-            </td>
-            <td>
-              <select class="form-control">
-                <option :value="0">{{ myLang.product_list }}</option>
-              </select>
-            </td>
-            <td>
-              <router-link
-                :to="{
-                  name: 'order_details_canvas',
-                  params: { data_order_id: param_data.data_order_id },
-                }"
-                class="btn btn-info"
-              >
-                {{ myLang.printing }}
-              </router-link>
-              <!-- <button type="button">{{myLang.printing}}</button> -->
-            </td>
-            <td>
-              <button class="btn btn-outline-primary" type="button">
-                <b-icon
-                  icon="download"
-                  animation="fade"
-                  font-scale="1.2"
-                ></b-icon>
-                {{ myLang.download }}
-              </button>
-            </td>
-          </tr>
-        </table>
+        
       </div>
       <div class="col-12">
-        <table class="table table-bordered">
-          <tr>
-            <td>
-              <!-- <button type="button">File Upload</button> -->
-              <input type="file" class="form-control" />
-            </td>
-            <td>
-              <input type="checkbox" class="form-control" />
-            </td>
-            <td>
-              <button class="btn btn-outline-primary" type="button">
-                <b-icon
-                  icon="download"
-                  animation="fade"
-                  font-scale="1.2"
-                ></b-icon>
-                {{ myLang.download }}
-              </button>
-            </td>
-          </tr>
-        </table>
+      
       </div>
       <div class="col-12">
         <div class="">
-          <!-- <div class="row">
-            <div class="col-6">
-              <button class="btn btn-primary">ピッキング表 出力</button>
-              <button class="btn btn-danger" @click="update_checked_item_list">すべて確定</button>
-              <router-link :to="{name:'order_details_canvas',params:{byr_order_id:byr_order_id} }" class="btn btn-success">伝票出力</router-link>
-              <button class="btn btn-info">確定送信</button>
-            </div>
-            <div class="col-6 text-right">
-              <button class="btn btn-warning">受注データ 出力</button>
-              <button class="btn btn-dark">確定データ 取込</button>
-              <a href="index.html" class="btn btn-primary">発注データ一覧へ戻る</a>
-            </div>
-          </div> -->
-          <table class="table table-striped table-bordered table-responsive data_table" style="overflow-x: scroll;">
+          
+          <table class="table table-striped table-bordered table-responsive order_item_details_table data_table" style="overflow-x: scroll;">
             <thead>
               <tr>
                 <th>No</th>
-                <th>decision_datetime</th>
-                <th>mes_lis_shi_par_shi_code</th>
-                <th>mes_lis_shi_par_rec_code and order_detail_list.mes_lis_shi_par_rec_name</th>
-                <th>mes_lis_shi_tra_trade_number</th>
-                <th>mes_lis_shi_tra_ins_goods_classification_code</th>
-                <th>mes_lis_shi_tot_tot_net_price_total</th>
-                <th>status</th>
-                <th>updated_at</th>
-                <th>print_datetime</th>
-                <th>send_datetime</th>
-                <!-- <th>{{ myLang.direct_delivery_code }}</th>
-                <th>{{ myLang.final_delivery_code }}</th>
-                <th>{{ myLang.total_voucher_number }}</th>
-                <th>{{ myLang.specific }}</th>
-                <th>{{ myLang.total_cost_amount }}</th>
-                <th>{{ myLang.shipping_status }}</th>
-                <th>{{ myLang.last_modified_date }}</th>
-                <th>{{ myLang.confirmation_status }}</th>
-                <th>
-                  {{ myLang.delivery_statement }}
-                  {{ myLang.printing_status }}
-                </th>
-                <th>{{ myLang.send }}</th> -->
-              </tr>
-              <!-- <tr>
-                <th colspan="100%" style="border: none;">
-          
-                </th>
-              </tr> -->
-              <!-- <tr>
-                <th style="cursor: pointer"> No </th>
-                <th>
-                  <input type="checkbox" @click="checkAll()" v-model="isCheckAll" class="form-control check_all" />
-                </th>
-                
-                <th style="cursor: pointer" v-if="show_hide_col_list.includes('order_type')">注文タイプ</th>
-                <th style="cursor: pointer;min-width:100px;" @click="sortByja_valu('shop_name_kana')" v-if="show_hide_col_list.includes('shop_name_kana')">
-                  店舗名(ｶﾅ)</th>
-                <th @click="sortBynumeric_valu('category_code')" v-if="show_hide_col_list.includes('category_code')">
-                  分類コード</th>
-                <th style="cursor: pointer" @click="sortBynumeric_valu('voucher_category')" v-if="show_hide_col_list.includes('voucher_category')">
-                  伝票区分</th>
-                <th style="cursor: pointer" @click="sortBynumeric_valu('voucher_number')" v-if="show_hide_col_list.includes('voucher_number')">
-                  伝票番号</th>
-                <th style="cursor: pointer" v-if="show_hide_col_list.includes('list_number')">
-                  明細番号</th>
-                <th style="cursor: pointer" v-if="show_hide_col_list.includes('delivery_service_code')">
-                  便番号</th>
-                <th style="cursor: pointer" @click="sortBynumeric_valu('jan')" v-if="show_hide_col_list.includes('jan')">
-                  JAN</th>
-                <th style="cursor: pointer;min-width:220px" v-if="show_hide_col_list.includes('item_name')">
-                  商品名 </th>
-                <th style="cursor: pointer;min-width:220px" v-if="show_hide_col_list.includes('item_name_kana')">
-                  商品名かな</th>
-                <th style="cursor: pointer" v-if="show_hide_col_list.includes('spec')">
-                  規格</th>
-                <th style="cursor: pointer" v-if="show_hide_col_list.includes('spec_kana')">
-                  規格かな</th>
-                <th style="cursor: pointer" v-if="show_hide_col_list.includes('inputs')">
-                  入数</th>
-                <th style="cursor: pointer" v-if="show_hide_col_list.includes('size')">
-                  サイズ</th>
-                <th style="cursor: pointer;min-width:80px;" v-if="show_hide_col_list.includes('color')">
-                  カラー</th>
-                <th style="cursor: pointer;min-width:80px" v-if="show_hide_col_list.includes('order_lot_inputs')">
-                  発注単位</th>
-                <th style="cursor: pointer;;min-width:100px;" v-if="show_hide_col_list.includes('order_date')">
-                  発注日時</th>
-                <th style="cursor: pointer;min-width:100px;" v-if="show_hide_col_list.includes('expected_delivery_date')">
-                  納品予定日</th>
-                <th style="cursor: pointer" v-if="show_hide_col_list.includes('sale_category')">
-                  特売区分</th>
-                <th style="cursor: pointer" @click="sortBynumeric_valu('cost_unit_price')" v-if="show_hide_col_list.includes('cost_unit_price')">
-                  原単価</th>
-                <th style="cursor: pointer" @click="sortBynumeric_valu('cost_price')" v-if="show_hide_col_list.includes('cost_price')">
-                  原価金額</th>
-                <th style="cursor: pointer" v-if="show_hide_col_list.includes('selling_unit_price')">
-                  売単価 </th>
-                <th style="cursor: pointer" v-if="show_hide_col_list.includes('selling_price')">
-                  売価金額</th>
-                <th style="cursor: pointer">
-                  発注数量 </th>
-                <th style="cursor: pointer">
-                  納品数量</th>
-                <th style="cursor: pointer;min-width:80px;">
-                  ステータス</th>
+                <th>商品</th>
+                <th>入数</th>
+                <th>ケース数</th>
+                <th>単位</th>
+                <th>バラ数</th>
+                <th>重量</th>
+                <th>原単価</th>
+                <th>原価全額</th>
+                <th>売単価</th>
+                <th>売価全額</th>
                 <th>欠品理由</th>
-                <th style="min-width:100px">数量確定</th>
-                <th style="min-width:100px">発注データ修正</th>
-              </tr> -->
+              </tr>
+              
             </thead>
             <tbody>
-              <tr v-for="(order_detail_list, index) in order_detail_lists" :key="index">
+              <tr v-for="(order_item_detail_list, index) in order_item_detail_lists" :key="index">
                 <td>{{index+1}}</td>
-                <td>{{order_detail_list.decision_datetime}}</td>
-                <td>{{order_detail_list.mes_lis_shi_par_shi_code}}</td>
-                <td>{{order_detail_list.mes_lis_shi_par_rec_code}} {{order_detail_list.mes_lis_shi_par_rec_name}}</td>
-                <td><router-link
-                  :to="{
-                    name: 'order_item_list_detail',
-                    params: { data_order_list_voucher_id: 1 }
-                  }"
-                  class=""
-                  >{{order_detail_list.mes_lis_shi_tra_trade_number}}</router-link></td>
-                <td>{{order_detail_list.mes_lis_shi_tra_ins_goods_classification_code}}</td>
-                <td>{{order_detail_list.mes_lis_shi_tot_tot_net_price_total}}</td>
-                <td>{{order_detail_list.status}}</td>
-                <td>{{order_detail_list.updated_at}}</td>
-                <td>{{order_detail_list.print_datetime}}</td>
-                <td>{{order_detail_list.send_datetime}}</td>
+                <td style="text-align:left;">
+                商品コード：{{order_item_detail_list.mes_lis_shi_lin_ite_order_item_code}}<br>
+                 JANコード： {{order_item_detail_list.mes_lis_shi_lin_ite_gtin}}<br>
+                 商品名：{{order_item_detail_list.mes_lis_shi_lin_ite_name}}<br>
+                 規格：{{order_item_detail_list.mes_lis_shi_lin_ite_ite_spec}}<br>
+                 産地：{{order_item_detail_list.mes_lis_shi_lin_fre_field_name}}<br>
+                 
+                </td>
+                <td>{{order_item_detail_list.mes_lis_shi_lin_fre_packing_quantity}}</td>
+                <td>
+                <input type="text" class="form-control" v-model="order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units">
+                {{order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units}}</td>
+                <td>
+                {{order_item_detail_list.mes_lis_shi_lin_qua_unit_of_measure}}
+                </td>
+                <td>
+                 <input type="text" class="form-control" v-model="order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity">
+                {{order_item_detail_list.mes_lis_shi_lin_qua_ord_quantity}}</td>
+
+                <td>{{order_item_detail_list.mes_lis_shi_lin_fre_order_weight}}</td>
+                <td>
+                 <input type="text" class="form-control" v-model="order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price">
+                {{order_item_detail_list.mes_lis_ord_lin_amo_item_net_price_unit_price}}</td>
+                <td>{{order_item_detail_list.mes_lis_shi_lin_amo_item_net_price}}</td>
+                <td>
+                 <input type="text" class="form-control" v-model="order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price">
+                {{order_item_detail_list.mes_lis_ord_lin_amo_item_selling_price_unit_price}}</td>
+                <td>{{order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price}}</td>
+                <td>{{order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code}}</td>
               </tr>
             </tbody>
-            <!-- <tbody>
-              <tr
-                v-for="(order_detail_list, index) in order_detail_lists"
-                :key="order_detail_list.byr_order_detail_id"
-              >
-                <td>{{ index + 1 }}</td>
-                <td>
-                  <input
-                    type="checkbox"
-                    v-model="selected"
-                    :value="order_detail_list.byr_order_detail_id"
-                    @change="updateCheckall()"
-                    class="form-control check_item"
-                  />
-                </td>
-
-                <td v-if="show_hide_col_list.includes('order_type')">
-                  {{ order_detail_list.order_type }}
-                </td>
-                <td v-if="show_hide_col_list.includes('shop_name_kana')">
-                  {{ order_detail_list.shop_name_kana }}
-                </td>
-                <td v-if="show_hide_col_list.includes('category_code')">
-                  {{ order_detail_list.category_code }}
-                </td>
-                <td v-if="show_hide_col_list.includes('voucher_category')">
-                  {{ order_detail_list.voucher_category }}
-                </td>
-                <td v-if="show_hide_col_list.includes('voucher_number')">
-                  {{ order_detail_list.voucher_number }}
-                </td>
-                <td v-if="show_hide_col_list.includes('list_number')">
-                  {{ order_detail_list.list_number }}
-                </td>
-                <td v-if="show_hide_col_list.includes('delivery_service_code')">
-                  {{ order_detail_list.delivery_service_code }}
-                </td>
-                <td v-if="show_hide_col_list.includes('jan')">
-                  {{ order_detail_list.jan }}
-                </td>
-                <td v-if="show_hide_col_list.includes('item_name')">
-                  {{ order_detail_list.item_name }}
-                </td>
-                <td v-if="show_hide_col_list.includes('item_name_kana')">
-                  {{ order_detail_list.item_name_kana }}
-                </td>
-                <td v-if="show_hide_col_list.includes('spec')">
-                  {{ order_detail_list.spec }}
-                </td>
-                <td v-if="show_hide_col_list.includes('spec_kana')">
-                  {{ order_detail_list.spec_kana }}
-                </td>
-                <td v-if="show_hide_col_list.includes('inputs')">
-                  {{ order_detail_list.inputs }}
-                </td>
-                <td v-if="show_hide_col_list.includes('size')">
-                  {{ order_detail_list.size }}
-                </td>
-                <td v-if="show_hide_col_list.includes('color')">
-                  {{ order_detail_list.color }}
-                </td>
-                <td v-if="show_hide_col_list.includes('order_lot_inputs')">
-                  {{ order_detail_list.order_lot_inputs }}
-                </td>
-                <td v-if="show_hide_col_list.includes('order_date')">
-                  {{ order_detail_list.order_date }}
-                </td>
-                <td
-                  v-if="show_hide_col_list.includes('expected_delivery_date')"
-                >
-                  {{ order_detail_list.expected_delivery_date }}
-                </td>
-                <td v-if="show_hide_col_list.includes('sale_category')">
-                  {{ order_detail_list.sale_category }}
-                </td>
-                <td v-if="show_hide_col_list.includes('cost_unit_price')">
-                  {{ order_detail_list.cost_unit_price }}
-                </td>
-                <td v-if="show_hide_col_list.includes('cost_price')">
-                  {{ order_detail_list.cost_price }}
-                </td>
-                <td v-if="show_hide_col_list.includes('selling_unit_price')">
-                  {{ order_detail_list.selling_unit_price }}
-                </td>
-                <td v-if="show_hide_col_list.includes('selling_price')">
-                  {{ order_detail_list.selling_price }}
-                </td>
-                <td>{{ order_detail_list.order_unit_quantity }}</td>
-                <td>
-                  <input
-                    type="text"
-                    class="form_input"
-                    v-on:keyup="exec_confirm_qty(order_detail_list, $event)"
-                    v-model="order_detail_list.confirm_quantity"
-                  />
-                </td>
-
-                <td>{{ order_detail_list.status }}</td>
-                <td>
-                  <input
-                    type="text"
-                    class="form-control lack_reasons"
-                    style="width: 200px"
-                    name="lack_r"
-                    v-model="order_detail_list.lack_reason"
-                  />
-                </td>
-                <td>
-                  <button
-                    @click="update_shipment_detail(order_detail_list)"
-                    class="btn btn-primary"
-                  >
-                    確定
-                  </button>
-                </td>
-
-                <td>
-                  <button
-                    @click="edit_order_detail(order_detail_list)"
-                    class="btn btn-success"
-                  >
-                    修正
-                  </button>
-                </td>
+            <tfoot>
+            <tr>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th style="background:#538ED3;color:#fff;text-align:center;">原価全額<br>合計</th>
+              <th style="text-align:center;">16,166</th>
+              <th style="background:#538ED3;color:#fff;text-align:center;">売価全額<br>合計</th>
+              <th style="text-align:center;">10,640</th>
+              <th></th>
               </tr>
-            </tbody> -->
+            </tfoot>
+
           </table>
         </div>
       </div>
@@ -649,10 +408,12 @@ export default {
       reverse: true,
       order_by: "asc",
       order_detail_lists: {},
+      order_item_detail_lists: {},
       order_date: "",
       order_detail_list: [],
       show_hide_col_list: [],
       expected_delivery_date: "",
+      data_order_voucher_id:'',
       status: "",
       // byr_order_id: "",
       edit_order_modal: false,
@@ -759,21 +520,14 @@ export default {
         });
     },
     //get Table data
-    get_all_byr_order_detail() {
-      axios.post(this.BASE_URL + "api/order_details" , this.param_data)
+    get_all_byr_order_item_detail() {
+      axios.get(this.BASE_URL + "api/order_item_details/"+this.data_order_voucher_id)
         .then(({data}) => {
 
-          console.log(data);
-          this.order_detail_lists = data.order_list_detail;
+          console.log(data.order_item_list_detail);
+          console.log('datalll');
+          this.order_item_detail_lists = data.order_item_list_detail;
           this.loader.hide();
-          // return 0;
-          // // this.order_detail_lists = data.data.order_list_detail;
-          // this.show_hide_col_list = data.data.slected_list;
-          // this.order_date = data.data.order_list_detail[0].order_date;
-          // this.expected_delivery_date =
-          //   data.data.order_list_detail[0].expected_delivery_date;
-          // this.status = data.data.order_list_detail[0].status;
-          // this.loader.hide();
         });
     },
 
@@ -799,14 +553,18 @@ export default {
   created() {
     Fire.$emit('byr_has_selected',this.$session.get('byr_buyer_id'));
     Fire.$emit('permission_check_for_buyer',this.$session.get('byr_buyer_id'));
+
+
+
     // console.log(this.$route.query);
     this.param_data=this.$route.query
     // console.log(this.param_data);
     this.loader = Vue.$loading.show();
-    this.data_order_id = this.$route.params.data_order_id;
-    this.get_all_byr_order_detail();
-    Fire.$on("LoadByrorderDetail", () => {
-      this.get_all_byr_order_detail();
+    this.data_order_voucher_id = this.$route.params.data_order_list_voucher_id;
+    console.log(this.$route.params.data_order_list_voucher_id)
+    this.get_all_byr_order_item_detail();
+    Fire.$on("LoadByrorderItemDetail", () => {
+      this.get_all_byr_order_item_detail();
     });
     this.col_show_hide_setting(this.$route.name);
     
