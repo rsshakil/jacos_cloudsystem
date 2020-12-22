@@ -43,7 +43,10 @@
           <!-- <td>{{ myLang.shipment }}</td> -->
           <td>Delivery Service Code</td>
           <td>
-            <input type="text" class="form-control" v-model="form.delivery_service_code">
+            <select class="form-control" v-model="form.delivery_service_code">
+              <option v-for="(dsc, i) in json_delivery_service_code" :key="i" :value="Object.keys(dsc)[0]">{{Object.values(dsc)[0]}}</option>
+            </select>
+            <!-- <input type="text" class="form-control" v-model="form.delivery_service_code"> -->
             <!-- <select class="form-control">
               <option :value="0">{{ myLang.shipment }}</option>
             </select> -->
@@ -51,29 +54,32 @@
           <td>{{ myLang.temperature }}</td>
           <td style="width: 15%">
             <select class="form-control" v-model="form.temperature">
-              <option v-for="(temp, i) in temperature" :key="i" :value="temp.id">{{ temp.name }}</option>
+              <option v-for="(temp, i) in json_temperature_code" :key="i" :value="Object.keys(temp)[0]">{{Object.values(temp)[0]}}</option>
             </select>
           </td>
         </tr>
         <tr>
-          <td>{{ myLang.confirmation_status }}</td>
+          <!-- <td>{{ myLang.confirmation_status }}</td>
           <td>
             <select class="form-control" v-model="form.confirmation_status">
               <option v-for="(cs, j) in confirmation_status" :key="j" :value="cs.id">{{ cs.name }}</option>
             </select>
-          </td>
+          </td> -->
           <!-- <td>{{ myLang.voucher_type }}</td> -->
           <td>Print CNT</td>
           <td>
             <select class="form-control" v-model="form.print_cnt">
-              <option v-for="(pc, j) in print_cnt" :key="j" :value="pc.name">{{ pc.name }}</option>
+              <option v-for="(pcnt, i) in print_cnt" :key="i" :value="Object.keys(pcnt)[0]">{{Object.values(pcnt)[0]}}</option>
+              <!-- <option v-for="(pc, j) in print_cnt" :key="j" :value="pc.name">{{ pc.name }}</option> -->
             </select>
           </td>
+          <td colspan="2"></td>
           <!-- <td>{{ myLang.printing_status }}</td> -->
           <td>Decission CNT</td>
           <td>
             <select class="form-control" v-model="form.decission_cnt">
-              <option v-for="(pc, j) in decission_cnt" :key="j" :value="pc.name">{{ pc.name }}</option>
+              <option v-for="(dcnt, i) in decission_cnt" :key="i" :value="Object.keys(dcnt)[0]">{{Object.values(dcnt)[0]}}</option>
+              <!-- <option v-for="(pc, j) in decission_cnt" :key="j" :value="pc.name">{{ pc.name }}</option> -->
             </select>
           </td>
           <!-- <td>{{ myLang.confirmation_status }}</td> -->
@@ -217,22 +223,31 @@ export default {
       byr_buyer_lists: {},
       file: "",
       selected_byr: "0",
-      temperature:[{id:1,name:"temperature1"},{id:2,name:"temperature2"},{id:3,name:"temperature3"}],
-      confirmation_status:[{id:1,name:"confirmation_status1"},{id:2,name:"confirmation_status2"},{id:3,name:"confirmation_status3"}],
-      print_cnt:[{id:1,name:"0"},{id:2,name:"1"}],
-      decission_cnt:[{id:1,name:"11"},{id:2,name:"260"}],
+      // temperature:[{id:1,name:"temperature1"},{id:2,name:"temperature2"},{id:3,name:"temperature3"}],
+      // confirmation_status:[{id:1,name:"confirmation_status1"},{id:2,name:"confirmation_status2"},{id:3,name:"confirmation_status3"}],
+      print_cnt:[{"*":"全て"},{"!0":"未印刷あり"},{"0":"印刷済"}],
+      decission_cnt:[{"*":"全て"},{"!0":"未印刷あり"},{"0":"確定済"}],
+      buyer_settings:null,
+      json_temperature_code:null,
+      json_delivery_service_code:null,
       form: new Form({
         adm_user_id:Globals.user_info_id,
-        receive_date_from:new Date().toISOString().slice(0, 10),
-        receive_date_to:new Date().toISOString().slice(0, 10),
-        delivery_date_from:new Date().toISOString().slice(0, 10),
-        delivery_date_to:new Date().toISOString().slice(0, 10),
-        check_datetime:new Date().toISOString().slice(0, 10),
-        delivery_service_code:null,
-        temperature:1,
-        confirmation_status:1,
-        print_cnt:0,
-        decission_cnt:11,
+        byr_buyer_id:null,
+        receive_date_from:null,
+        receive_date_to:null,
+        // receive_date_from:new Date().toISOString().slice(0, 10),
+        // receive_date_to:new Date().toISOString().slice(0, 10),
+        // delivery_date_from:new Date().toISOString().slice(0, 10),
+        // delivery_date_to:new Date().toISOString().slice(0, 10),
+        delivery_date_from:null,
+        delivery_date_to:null,
+        check_datetime:null,
+        // check_datetime:new Date().toISOString().slice(0, 10),
+        delivery_service_code:'01',
+        temperature:'01',
+        // confirmation_status:1,
+        print_cnt:"*",
+        decission_cnt:"*",
         submit_type:"page_load"
       }),
     };
@@ -243,16 +258,20 @@ export default {
       this.form
         .post(this.BASE_URL + "api/get_byr_order_list",this.form)
         .then(({data}) => {
-          console.log(data)
+          // console.log(data)
           this.order_lists = data.order_list;
           this.byr_buyer_lists = data.byr_buyer_list;
+          this.buyer_settings =JSON.parse(data.buyer_settings);
+          this.json_temperature_code=this.buyer_settings.orders.mes_lis_ord_tra_ins_temperature_code
+          this.json_delivery_service_code=this.buyer_settings.orders.mes_lis_ord_log_del_delivery_service_code
+          // console.log(this.buyer_settings.orders.mes_lis_ord_tra_ins_temperature_code);
           this.loader.hide();
         });
     },
     searchOrder(){
-      console.log(this.form)
+      // console.log(this.form)
       this.form.submit_type = "search"
-      console.log(this.form)
+      // console.log(this.form)
       this.get_all_order();
     },
     check_byr_order_api() {
@@ -292,6 +311,7 @@ export default {
   },
 
   created() {
+    this.form.byr_buyer_id=this.$session.get('byr_buyer_id');
     // this.today= new Date().toISOString().slice(0, 10);
     this.loader = Vue.$loading.show();
     this.get_all_order();

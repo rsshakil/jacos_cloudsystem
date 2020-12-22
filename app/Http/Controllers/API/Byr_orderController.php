@@ -47,6 +47,8 @@ class Byr_orderController extends Controller
         // return $request->all();
         // $authUser=\Auth::User()->id;
         $adm_user_id=$request->adm_user_id;
+        $byr_buyer_id=$request->byr_buyer_id;
+        // $byr_buyer_id=$request->byr_buyer_id;
         $check_datetime=$request->check_datetime;
         $confirmation_status=$request->confirmation_status;
         $decission_cnt=$request->decission_cnt;
@@ -60,19 +62,36 @@ class Byr_orderController extends Controller
         // $receive_date_to=date('y-m-d h:i:s',strtotime($request->receive_date_to));
         $submit_type=$request->submit_type;
         $temperature=$request->temperature;
+        // return $byr_buyer_id;
+
+        // $print_cnt=$print_cnt=="*"?null:$print_cnt;
         $search_where='';
         $having_var='';
         if ($submit_type=="search") {
             $search_where="AND dor.receive_datetime BETWEEN '".$receive_date_from."' AND '".$receive_date_to."' ";
             $search_where.="OR dov.mes_lis_ord_tra_dat_delivery_date BETWEEN '".$delivery_date_from."' AND '".$delivery_date_from."' ";
-            $search_where.="AND dov.mes_lis_ord_log_del_delivery_service_code='".$delivery_service_code."'";
-            $search_where.="OR dov.check_datetime='".$check_datetime."'";
-            $search_where.="AND dov.mes_lis_ord_tra_ins_temperature_code='".$temperature."'";
+            $search_where.="AND dov.mes_lis_ord_log_del_delivery_service_code='".$delivery_service_code."' ";
+            $search_where.="OR dov.check_datetime='".$check_datetime."' ";
+            $search_where.="AND dov.mes_lis_ord_tra_ins_temperature_code='".$temperature."' ";
 
-            $having_var="HAVING print_cnt='".$print_cnt."'";
-            $having_var.="AND decision_cnt='".$decission_cnt."'";
+            if ($print_cnt=="*") {
+                $having_var="HAVING print_cnt = '' ";
+            }elseif($print_cnt=="!0"){
+                $having_var="HAVING print_cnt!=0 ";
+            }else{
+                $having_var="HAVING print_cnt='".$print_cnt."' ";
+            }
+            if ($decission_cnt=="*") {
+                $having_var.="OR decision_cnt = ''";
+            }elseif($decission_cnt=="!0"){
+                $having_var.="OR decision_cnt!=0";
+            }else{
+                $having_var.="OR decision_cnt='".$decission_cnt."'";
+            }
+
+            // $having_var.="AND decision_cnt='".$decission_cnt."'";
         }
-        
+        // return $byr_buyer_id;
         $authUser=User::find($adm_user_id);
         $cmn_company_id = '';
         $cmn_connect_id = '';
@@ -82,7 +101,7 @@ class Byr_orderController extends Controller
                 ->join('cmn_connects', 'cmn_connects.slr_seller_id', '=', 'slr_sellers.slr_seller_id')
                 ->where('cmn_companies_users.adm_user_id', $adm_user_id)->first();
                 $cmn_company_id = $cmn_company_info->cmn_company_id;
-                $byr_buyer_id = $cmn_company_info->byr_buyer_id;
+                // $byr_buyer_id = $cmn_company_info->byr_buyer_id;
                 $cmn_connect_id = $cmn_company_info->cmn_connect_id;
 
             // $cmn_company_info = $this->all_used_fun->get_user_info($adm_user_id);
@@ -91,7 +110,7 @@ class Byr_orderController extends Controller
             // $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
 
-        // return $cmn_company_id;
+        // return $byr_buyer_id;
         // return $cmn_connect_id;
         $result=DB::select("SELECT
         dor.data_order_id,
@@ -141,9 +160,11 @@ class Byr_orderController extends Controller
         // echo $result->toSql();exit;
         // $result = $result->get();
         // return $result;
+        // return $byr_buyer_id;
+        $buyer_settings=byr_buyer::select('setting_information')->where('byr_buyer_id',$byr_buyer_id)->first();
         $byr_buyer =$this->all_used_fun->get_company_list($cmn_company_id);
         
-        return response()->json(['order_list' => $result,'byr_buyer_list'=>$byr_buyer]);
+        return response()->json(['order_list' => $result,'byr_buyer_list'=>$byr_buyer,'buyer_settings'=>$buyer_settings->setting_information]);
     }
 
     /**
@@ -165,8 +186,14 @@ class Byr_orderController extends Controller
         $temperature_code=$request->temperature_code;
 
         // return $request->all();
+        // $result=DB::select("
+        // ");
         $result=DB::select("
         SELECT
+        dsv.mes_lis_shi_tra_dat_delivery_date,
+        dsv.mes_lis_shi_tra_goo_major_category,
+        dsv.mes_lis_shi_log_del_delivery_service_code,
+        dsv.mes_lis_shi_tra_ins_temperature_code,
         dsv.decision_datetime,
         dsv.mes_lis_shi_par_shi_code,
         dsv.mes_lis_shi_par_rec_code,
@@ -180,12 +207,12 @@ class Byr_orderController extends Controller
         dsv.send_datetime
         FROM data_shipments AS ds
         inner join data_shipment_vouchers AS dsv ON ds.data_shipment_id=dsv.data_shipment_id
-        INNER JOIN data_shipment_items AS dsi
+        INNER JOIN data_shipment_items AS dsi ON dsi.data_shipment_voucher_id = dsv.data_shipment_voucher_id
         WHERE
         ds.data_order_id='$data_order_id' AND
         dsv.mes_lis_shi_tra_dat_delivery_date= '$delivery_date' AND
-        dsv.mes_lis_shi_tra_goo_major_category = '$major_category' and
-        dsv.mes_lis_shi_log_del_delivery_service_code = '$delivery_service_code' and
+        dsv.mes_lis_shi_tra_goo_major_category = '$major_category' AND
+        dsv.mes_lis_shi_log_del_delivery_service_code = '$delivery_service_code' AND
         dsv.mes_lis_shi_tra_ins_temperature_code = '$temperature_code'
         
         ");

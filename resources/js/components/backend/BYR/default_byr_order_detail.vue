@@ -654,6 +654,7 @@ export default {
       isCheckAll: false,
       form: new Form({}),
       param_data:[],
+      // buyer_settings:null,
     };
   },
   methods: {
@@ -756,8 +757,7 @@ export default {
     get_all_byr_order_detail() {
       axios.post(this.BASE_URL + "api/order_details" , this.param_data)
         .then(({data}) => {
-
-          console.log(data);
+          // console.log(data);
           this.order_detail_lists = data.order_list_detail;
           this.loader.hide();
           // return 0;
@@ -791,6 +791,7 @@ export default {
   },
 
   created() {
+    
     Fire.$emit('byr_has_selected',this.$session.get('byr_buyer_id'));
     Fire.$emit('permission_check_for_buyer',this.$session.get('byr_buyer_id'));
     // console.log(this.$route.query);
