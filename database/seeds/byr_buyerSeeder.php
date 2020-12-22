@@ -12,21 +12,27 @@ class byr_buyerSeeder extends Seeder
     public function run()
     {
         //
+        $json_path=public_path('json_files/OUK/buyer_setting_information.json');
+        $buyer_setting_data = file_get_contents($json_path);
+
         $byr_byr = array(
             [
                 'cmn_company_id'=>1,
                 'super_code'=>"OUK",
                 'adm_role_id'=>5,
+                'setting_information'=>$buyer_setting_data,
             ],
             [
                 'cmn_company_id'=>6,
                 'super_code'=>"TOYOTA",
                 'adm_role_id'=>6,
+                'setting_information'=>null
             ],
             [
                 'cmn_company_id'=>7,
                 'super_code'=>"SONY",
                 'adm_role_id'=>7,
+                'setting_information'=>null
             ]
         );
         App\Models\BYR\byr_buyer::insert($byr_byr);
