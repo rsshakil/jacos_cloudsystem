@@ -226,6 +226,12 @@ class Byr_orderController extends Controller
         GROUP BY dsv.mes_lis_shi_tra_trade_number
         ");
         
+        $orderItem=collect(\DB::select("
+        SELECT * FROM data_order_items 
+        inner join data_order_vouchers on data_order_vouchers.data_order_voucher_id=data_order_items.data_order_voucher_id
+        inner join data_orders on data_orders.data_order_id=data_order_vouchers.data_order_id
+        where data_orders.data_order_id = '$data_order_id'
+        "))->first();
         // AND dsv.mes_lis_shi_par_shi_code = ''
         // AND dsv.mes_lis_shi_par_rec_code = ''
         // AND dsv.mes_lis_shi_tra_trade_number = ''
@@ -244,7 +250,7 @@ class Byr_orderController extends Controller
             }
         }
         /*coll setting*/
-        return response()->json(['order_list_detail' => $result,'slected_list'=>$slected_list]);
+        return response()->json(['order_list_detail' => $result,'orderItem'=>$orderItem,'slected_list'=>$slected_list]);
         // $result = DB::table('byr_order_vouchers')
         //     ->select('byr_order_vouchers.*','byr_order_items.*', 'byr_shipment_items.confirm_quantity', 'byr_shipment_items.lack_reason')
         //     ->join('byr_order_items', 'byr_order_items.byr_order_voucher_id', '=', 'byr_order_vouchers.byr_order_voucher_id')

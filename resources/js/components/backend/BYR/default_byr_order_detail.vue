@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-12">
+      <!--<div class="col-12">
         <h2 class="top_title text-center">{{ myLang.quantity_confirmed }}</h2>
-      </div>
+      </div>-->
       <!-- <div class="col-12 text-center">
         <div class="row">
           <div class="col"></div>
@@ -72,12 +72,32 @@
           <div class="col"></div>
         </div>
       </div> -->
+      <div class="col-12" style="padding: 10px">
+        <table class="table table-bordered" style="width: 100%">
+          <tr>
+            <td class="cl_custom_color">受信日時</td>
+            <td>{{order_item_lists.receive_datetime}}</td>
+            <td class="cl_custom_color">取引先</td>
+            <td colspan="5">{{order_item_lists.mes_lis_ord_par_sel_code}} {{order_item_lists.mes_lis_ord_par_sel_name}}</td>
+          </tr>
+          <tr>
+            <td class="cl_custom_color">納品日</td>
+            <td>{{order_item_lists.mes_lis_ord_tra_dat_delivery_date}}</td>
+            <td class="cl_custom_color">部門</td>
+            <td></td>
+            <td class="cl_custom_color">便</td>
+            <td>{{order_item_lists.mes_lis_ord_tra_goo_major_category}}</td>
+            <td class="cl_custom_color">配送温度区分</td>
+            <td>{{order_item_lists.mes_lis_ord_tra_ins_temperature_code}}</td>
+          </tr>
+        </table>
+      </div>
       <div class="col-12">
         {{ myLang.voucher_list }}
         <hr />
       </div>
       <div class="col-12" style="background: #d5dadc; padding: 10px">
-        <table class="table table-bordered" style="width: 100%">
+        <table class="table orderDetailTable table-bordered" style="width: 100%">
           <tr>
             <td>{{ myLang.receive_date }}</td>
             <td>
@@ -649,6 +669,7 @@ export default {
       reverse: true,
       order_by: "asc",
       order_detail_lists: {},
+      order_item_lists:{},
       order_date: "",
       order_detail_list: [],
       show_hide_col_list: [],
@@ -765,6 +786,7 @@ export default {
         .then(({data}) => {
           // console.log(data);
           this.order_detail_lists = data.order_list_detail;
+          this.order_item_lists = data.orderItem;
           this.loader.hide();
           // return 0;
           // // this.order_detail_lists = data.data.order_list_detail;
