@@ -6,19 +6,19 @@
         <table class="table table-bordered" style="width: 100%">
           <tr>
             <td class="cl_custom_color">受信日時</td>
-            <td>2020/11/30 04:41</td>
+            <td>{{order_item_lists.receive_datetime}}</td>
             <td class="cl_custom_color">取引先</td>
-            <td colspan="5">57800000 丸井スズキＴＣ</td>
+            <td colspan="5">{{order_item_lists.mes_lis_ord_par_sel_code}} {{order_item_lists.mes_lis_ord_par_sel_name}}</td>
           </tr>
           <tr>
             <td class="cl_custom_color">納品日</td>
-            <td>2020/11/30</td>
+            <td>{{order_item_lists.mes_lis_ord_tra_dat_delivery_date}}</td>
             <td class="cl_custom_color">部門</td>
-            <td>57800000 丸井スズキＴＣ</td>
+            <td></td>
             <td class="cl_custom_color">便</td>
-            <td>便11:プロパー便</td>
+            <td>{{order_item_lists.mes_lis_ord_tra_goo_major_category}}</td>
             <td class="cl_custom_color">配送温度区分</td>
-            <td>01:常温</td>
+            <td>{{order_item_lists.mes_lis_ord_tra_ins_temperature_code}}</td>
           </tr>
         </table>
       </div>
@@ -29,37 +29,37 @@
         <table class="table table-bordered" style="width: 100%">
           <tr>
             <td class="cl_custom_color">直接納品先コード</td>
-            <td>00007231</td>
+            <td>{{order_item_shipment_data_headTable.mes_lis_shi_par_shi_code}}</td>
             <td class="cl_custom_color">最終納品先</td>
-            <td>000601 銀座店</td>
+            <td>{{order_item_shipment_data_headTable.mes_lis_shi_par_rec_code}} {{order_item_shipment_data_headTable.mes_lis_shi_par_rec_name}}</td>
             <td class="cl_custom_color">伝票番号</td>
-            <td>0120648700</td>
+            <td>{{order_item_shipment_data_headTable.mes_lis_shi_tra_trade_number}}</td>
           </tr>
           <tr>
             <td class="cl_custom_color">定／特</td>
-            <td>001 定番</td>
+            <td>{{order_item_shipment_data_headTable.mes_lis_shi_tra_ins_goods_classification_code}}</td>
             <td class="cl_custom_color">不定貴区分</td>
-            <td>00 定貴</td>
+            <td>{{order_item_shipment_data_headTable.mes_lis_shi_tra_fre_variable_measure_item_code}}</td>
             <td class="cl_custom_color">発注者</td>
-            <td>花正</td>
+            <td>{{order_item_shipment_data_headTable.mes_lis_buy_name}}</td>
           </tr>
           <tr>
             <td class="cl_custom_color">発注日</td>
-            <td>2020/11/30</td>
+            <td>{{order_item_shipment_data_headTable.mes_lis_shi_tra_dat_order_date}}</td>
             <td class="cl_custom_color">伝票区分</td>
-            <td>001 発注仕入れ</td>
+            <td>{{order_item_shipment_data_headTable.mes_lis_shi_tra_ins_trade_type_code}}</td>
             <td class="cl_custom_color">出荷状況</td>
-            <td>完納</td>
+            <td>{{order_item_shipment_data_headTable.status}}</td>
           </tr>
           <tr>
             <td class="cl_custom_color">備考</td>
-            <td colspan="5">○○○○○</td>
+            <td colspan="5">{{order_item_shipment_data_headTable.mes_lis_shi_tra_not_text}}</td>
           </tr>
           <tr>
             <td class="cl_custom_color">税区分・税率</td>
-            <td>05 原価外税売価外税 8.0%</td>
+            <td>{{order_item_shipment_data_headTable.mes_lis_shi_tra_tax_tax_type_code}} {{order_item_shipment_data_headTable.mes_lis_shi_tra_tax_tax_rate}}</td>
             <td class="cl_custom_color_extra">実納品日</td>
-            <td colspan="3"><input class="form-control" type="date" value="2020/11/30"></td>
+            <td colspan="3"><input class="form-control" type="date" v-model="order_item_shipment_data_headTable.mes_lis_shi_tra_dat_revised_delivery_date"></td>
           </tr>
           
         </table>
@@ -282,6 +282,8 @@ export default {
       order_by: "asc",
       order_detail_lists: {},
       order_item_detail_lists: {},
+      order_item_lists: {},
+      order_item_shipment_data_headTable: {},
       order_date: "",
       order_detail_list: [],
       show_hide_col_list: [],
@@ -401,8 +403,10 @@ export default {
 
           console.log(data.order_item_list_detail);
           this.order_item_detail_lists = data.order_item_list_detail;
-          this.mes_lis_shi_tot_tot_net_price_total = data.order_item_list_detail[0].mes_lis_shi_tot_tot_net_price_total
-          this.mes_lis_shi_tot_tot_selling_price_total = data.order_item_list_detail[0].mes_lis_shi_tot_tot_selling_price_total
+          this.mes_lis_shi_tot_tot_net_price_total = data.order_item_list_detail[0].mes_lis_shi_tot_tot_net_price_total;
+          this.mes_lis_shi_tot_tot_selling_price_total = data.order_item_list_detail[0].mes_lis_shi_tot_tot_selling_price_total;
+          this.order_item_lists = data.orderItem;
+          this.order_item_shipment_data_headTable = data.order_item_list_detail[0];
           this.loader.hide();
         });
     },
