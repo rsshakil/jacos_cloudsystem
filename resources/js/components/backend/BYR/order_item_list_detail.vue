@@ -1,200 +1,73 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-12">
-        <h2 class="top_title text-center">{{ myLang.quantity_confirmed }}</h2>
-      </div>
-      <!-- <div class="col-12 text-center">
-        <div class="row">
-          <div class="col"></div>
-          <div class="col-3">
-            <div class="card mb-4 box-shadow">
-              <div class="card-header">
-                <h4 class="my-0 font-weight-normal">発注日</h4>
-              </div>
-              <div class="card-body p-0 d-flex flex-column justify-content-between">
-                <div>
-                  <div class="form-group mb-0">
-                    <input
-                      type="text"
-                      v-model="order_date"
-                      name="order_date"
-                      value
-                      class="form-control text-center"
-                      id="order_date"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-3">
-            <div class="card mb-4 box-shadow">
-              <div class="card-header">
-                <h4 class="my-0 font-weight-normal">納品日</h4>
-              </div>
-              <div class="card-body p-0 d-flex flex-column justify-content-between">
-                <div>
-                  <div class="form-group mb-0">
-                    <input
-                      type="text"
-                      v-model="expected_delivery_date"
-                      name="delivery_date"
-                      value
-                      class="form-control text-center"
-                      id="delivery_date"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-3">
-            <div class="card mb-4 box-shadow">
-              <div class="card-header">
-                <h4 class="my-0 font-weight-normal">ステータス</h4>
-              </div>
-              <div class="card-body p-0 d-flex flex-column justify-content-between">
-                <div>
-                  <div class="form-group mb-0">
-                    <input
-                      type="text"
-                      v-model="status"
-                      name="delivery_date"
-                      value
-                      class="form-control text-center"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col"></div>
-        </div>
-      </div> -->
-      <div class="col-12">
-        {{ myLang.voucher_list }}
-        <hr />
-      </div>
-      <div class="col-12" style="background: #d5dadc; padding: 10px">
+      
+      <div class="col-12" style="padding: 10px">
         <table class="table table-bordered" style="width: 100%">
           <tr>
-            <td>{{ myLang.receive_date }}</td>
-            <td>
-              <input type="date" class="form-control" v-model="today" />
-            </td>
-            <td>{{ myLang.customer_name }}</td>
-            <td>
-              <input type="text" class="form-control" />
-            </td>
-            <td colspan="4"></td>
+            <td class="cl_custom_color">受信日時</td>
+            <td>2020/11/30 04:41</td>
+            <td class="cl_custom_color">取引先</td>
+            <td colspan="5">57800000 丸井スズキＴＣ</td>
           </tr>
           <tr>
-            <td>{{ myLang.delivery_date }}</td>
-            <td>
-              <input type="date" class="form-control" v-model="today" />
-            </td>
-            <td>{{ myLang.category_code }}</td>
-            <td>
-              <input type="text" class="form-control" />
-            </td>
-            <td>{{ myLang.shipment }}</td>
-            <td>
-              <input type="text" class="form-control" />
-            </td>
-            <td>{{ myLang.temperature }}</td>
-            <td>
-              <input type="text" class="form-control" />
-            </td>
-          </tr>
-          <tr>
-            <td>{{ myLang.confirmation_status }}</td>
-            <td>
-              <select class="form-control">
-                <option :value="0">{{ myLang.confirmation_status }}</option>
-              </select>
-            </td>
-            <td colspan="6"></td>
+            <td class="cl_custom_color">納品日</td>
+            <td>2020/11/30</td>
+            <td class="cl_custom_color">部門</td>
+            <td>57800000 丸井スズキＴＣ</td>
+            <td class="cl_custom_color">便</td>
+            <td>便11:プロパー便</td>
+            <td class="cl_custom_color">配送温度区分</td>
+            <td>01:常温</td>
           </tr>
         </table>
       </div>
       <div
         class="col-12"
-        style="background: #d5dadc; padding: 10px; margin-top: 20px"
+        style="padding: 10px; margin-top: 20px"
       >
         <table class="table table-bordered" style="width: 100%">
           <tr>
-            <td>{{ myLang.direct_delivery_code }}</td>
-            <td>
-              <input type="search" class="form-control" />
-            </td>
-            <td>
-              <button class="btn btn-primary" type="button">
-                {{ myLang.search }}
-              </button>
-            </td>
-            <td>
-              {{ myLang.final_delivery_code }}
-            </td>
-            <td>
-              <input type="search" class="form-control" v-model="today" />
-            </td>
-            <td>
-              <button class="btn btn-primary" type="button">
-                {{ myLang.search }}
-              </button>
-            </td>
-            <td>
-              {{ myLang.total_voucher_number }}
-              <!--伝票番号-->
-            </td>
-            <td>
-              <input type="search" class="form-control" v-model="today" />
-            </td>
+            <td class="cl_custom_color">直接納品先コード</td>
+            <td>00007231</td>
+            <td class="cl_custom_color">最終納品先</td>
+            <td>000601 銀座店</td>
+            <td class="cl_custom_color">伝票番号</td>
+            <td>0120648700</td>
           </tr>
           <tr>
-            <td>{{ myLang.product_code }}</td>
-            <td>
-              <input type="search" class="form-control" v-model="today" />
-            </td>
-            <td>
-              <button class="btn btn-primary" type="button">
-                {{ myLang.search }}
-              </button>
-            </td>
-            <td>{{ myLang.specific }}</td>
-            <td colspan="2">
-              <select class="form-control">
-                <option :value="0">{{ myLang.specific }}</option>
-              </select>
-            </td>
-            <td>{{ myLang.confirmation_status }}</td>
-            <td>
-              <select class="form-control">
-                <option :value="0">{{ myLang.confirmation_status }}</option>
-              </select>
-            </td>
+            <td class="cl_custom_color">定／特</td>
+            <td>001 定番</td>
+            <td class="cl_custom_color">不定貴区分</td>
+            <td>00 定貴</td>
+            <td class="cl_custom_color">発注者</td>
+            <td>花正</td>
           </tr>
-
           <tr>
-            <td>{{ myLang.printing_status }}</td>
-            <td>
-              <select class="form-control">
-                <option :value="0">{{ myLang.printing_status }}</option>
-              </select>
-            </td>
-            <td colspan="6"></td>
+            <td class="cl_custom_color">発注日</td>
+            <td>2020/11/30</td>
+            <td class="cl_custom_color">伝票区分</td>
+            <td>001 発注仕入れ</td>
+            <td class="cl_custom_color">出荷状況</td>
+            <td>完納</td>
           </tr>
+          <tr>
+            <td class="cl_custom_color">備考</td>
+            <td colspan="5">○○○○○</td>
+          </tr>
+          <tr>
+            <td class="cl_custom_color">税区分・税率</td>
+            <td>05 原価外税売価外税 8.0%</td>
+            <td class="cl_custom_color_extra">実納品日</td>
+            <td colspan="3"><input class="form-control" type="date" value="2020/11/30"></td>
+          </tr>
+          
         </table>
       </div>
       <div class="col-12" style="text-align: center">
        
       </div>
-      <div class="col-12">
-        <br />
-        {{ myLang.search_result }}
-        <hr />
-      </div>
+     
       <div class="col-12">
         
       </div>
@@ -266,9 +139,9 @@
               <th></th>
               <th></th>
               <th style="background:#538ED3;color:#fff;text-align:center;">原価全額<br>合計</th>
-              <th style="text-align:center;">16,166</th>
+              <th style="text-align:center;">{{mes_lis_shi_tot_tot_net_price_total}}</th>
               <th style="background:#538ED3;color:#fff;text-align:center;">売価全額<br>合計</th>
-              <th style="text-align:center;">10,640</th>
+              <th style="text-align:center;">{{mes_lis_shi_tot_tot_selling_price_total}}</th>
               <th></th>
               </tr>
             </tfoot>
@@ -414,6 +287,8 @@ export default {
       show_hide_col_list: [],
       expected_delivery_date: "",
       data_order_voucher_id:'',
+      mes_lis_shi_tot_tot_net_price_total:0,
+      mes_lis_shi_tot_tot_selling_price_total:0,
       status: "",
       // byr_order_id: "",
       edit_order_modal: false,
@@ -525,8 +400,9 @@ export default {
         .then(({data}) => {
 
           console.log(data.order_item_list_detail);
-          console.log('datalll');
           this.order_item_detail_lists = data.order_item_list_detail;
+          this.mes_lis_shi_tot_tot_net_price_total = data.order_item_list_detail[0].mes_lis_shi_tot_tot_net_price_total
+          this.mes_lis_shi_tot_tot_selling_price_total = data.order_item_list_detail[0].mes_lis_shi_tot_tot_selling_price_total
           this.loader.hide();
         });
     },
@@ -568,6 +444,42 @@ export default {
     });
     this.col_show_hide_setting(this.$route.name);
     
+  },
+  computed: {
+    total_selling_price: function() {
+      // this.order_item_detail_lists.forEach(function (order_item_detail_list) {
+      //     this.mes_lis_shi_tot_tot_selling_price_total +=order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price
+      //   });
+      // return this.order_item_detail_lists.reduce(function(a, c){return a + Number((c.mes_lis_shi_lin_amo_item_selling_price) || 0)}, 0)
+        // return this.mes_lis_shi_tot_tot_selling_price_total;
+    return 0;
+    },
+    total_net_price: function() {
+      // this.order_item_detail_lists.forEach(function (order_item_detail_list) {
+      //     this.mes_lis_shi_tot_tot_net_price_total +=order_item_detail_list.mes_lis_shi_lin_amo_item_net_price
+      //   });
+      //   return this.mes_lis_shi_tot_tot_net_price_total;
+      // return this.order_item_detail_lists.reduce(function(a, c){return a + Number((c.mes_lis_shi_lin_amo_item_net_price) || 0)}, 0)
+    return 0;
+    },
+    total_selling_prices: function() {
+      var totoal = 0
+      // this.order_item_detail_lists.forEach(function (order_item_detail_list) {
+      //     totoal +=order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price
+      //   });
+        return totoal;
+      // return this.order_item_detail_lists.reduce(function(a, c){return a + Number((c.mes_lis_shi_lin_amo_item_selling_price) || 0)}, 0)
+        // return this.mes_lis_shi_tot_tot_selling_price_total;
+    },
+    total_net_prices: function() {
+      var totoal = 0;
+      // this.order_item_detail_lists.forEach(function (order_item_detail_list) {
+      //     totoal +=order_item_detail_list.mes_lis_shi_lin_amo_item_net_price
+      //   });
+        return totoal;
+      //   return this.mes_lis_shi_tot_tot_net_price_total;
+      // return this.order_item_detail_lists.reduce(function(a, c){return a + Number((c.mes_lis_shi_lin_amo_item_net_price) || 0)}, 0)
+    },
   },
   mounted() {
     console.log("byr order detail page loaded");

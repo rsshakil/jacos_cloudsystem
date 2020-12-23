@@ -131,6 +131,9 @@
 .custm_brd_crumbs li a:hover{
     text-decoration: none;
 }
+.custm_brd_crumbs li{
+    float: left;
+}
 .main-sidebar .nav-wrapper{
     padding:15px;
 }
@@ -144,4 +147,17 @@
     background: #538ED3;
     color:#fff;
     text-align: center;
+}
+.cl_custom_color{
+    text-align: center;
+    background: #D8E3F0;
+    border: 1px solid #999!important;
+    vertical-align: middle !important;
+}
+.cl_custom_color_extra{
+    text-align: center;
+    background: #538ED3;
+    color:#fff;
+    border: 1px solid #999!important;
+    vertical-align: middle !important;
 }
