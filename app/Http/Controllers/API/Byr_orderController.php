@@ -52,54 +52,65 @@ class Byr_orderController extends Controller
 
     public function get_byr_order_list(Request $request)
     {
-        // return $request->all();
-        // $authUser=\Auth::User()->id;
         $adm_user_id=$request->adm_user_id;
         $byr_buyer_id=$request->byr_buyer_id;
-        // $byr_buyer_id=$request->byr_buyer_id;
-        $check_datetime=$request->check_datetime;
-        $confirmation_status=$request->confirmation_status;
-        $decission_cnt=$request->decission_cnt;
-        $delivery_date_from=$request->delivery_date_from;
-        $delivery_date_to=$request->delivery_date_to;
-        $delivery_service_code=$request->delivery_service_code;
-        $print_cnt=$request->print_cnt;
-        $receive_date_from=$request->receive_date_from;
-        $receive_date_to=$request->receive_date_to;
-        // $receive_date_from=date('y-m-d h:i:s',strtotime($request->receive_date_from));
-        // $receive_date_to=date('y-m-d h:i:s',strtotime($request->receive_date_to));
         $submit_type=$request->submit_type;
-        $temperature=$request->temperature;
-        // return $byr_buyer_id;
-
-        // $print_cnt=$print_cnt=="*"?null:$print_cnt;
         $search_where='';
         $having_var='';
-        if ($submit_type=="search") {
-            $search_where="AND dor.receive_datetime BETWEEN '".$receive_date_from."' AND '".$receive_date_to."' ";
-            $search_where.="OR dov.mes_lis_ord_tra_dat_delivery_date BETWEEN '".$delivery_date_from."' AND '".$delivery_date_from."' ";
-            $search_where.="AND dov.mes_lis_ord_log_del_delivery_service_code='".$delivery_service_code."' ";
-            $search_where.="OR dov.check_datetime='".$check_datetime."' ";
-            $search_where.="AND dov.mes_lis_ord_tra_ins_temperature_code='".$temperature."' ";
 
-            if ($print_cnt=="*") {
-                $having_var="HAVING print_cnt = '' ";
-            } elseif ($print_cnt=="!0") {
+        if ($submit_type=="search") {
+            // 条件指定検索
+            $receive_date_from=$request->receive_date_from;         // 受信日時開始
+            $receive_date_to=$request->receive_date_to;             // 受信日時終了
+            $delivery_date_from=$request->delivery_date_from;       // 納品日開始
+            $delivery_date_to=$request->delivery_date_to;           // 納品日終了
+            $delivery_service_code=$request->delivery_service_code; // 便
+            $temperature=$request->temperature;                     // 配送温度区分
+
+            // $check_datetime=$request->check_datetime;
+            $confirmation_status=$request->confirmation_status;     // 参照
+            $decission_cnt=$request->decission_cnt;                 // 確定
+            $print_cnt=$request->print_cnt;                         // 印刷
+
+            if ($receive_date_from) {
+                $search_where.="AND dor.receive_datetime >= '".$receive_date_from."' ";
+            }
+            if ($receive_date_to) {
+                $search_where.="AND dor.receive_datetime <= '".$receive_date_to."' ";
+            }
+            if ($delivery_date_from) {
+                $search_where.="AND dov.mes_lis_ord_tra_dat_delivery_date >= '".$delivery_date_from."' ";
+            }
+            if ($delivery_date_to) {
+                $search_where.="AND dov.mes_lis_ord_tra_dat_delivery_date <= '".$delivery_date_to."' ";
+            }
+            if ($delivery_service_code) {
+                $search_where.="AND dov.mes_lis_ord_log_del_delivery_service_code='".$delivery_service_code."' ";
+            }
+            // $search_where.="OR dov.check_datetime='".$check_datetime."' ";
+            if ($temperature) {
+                $search_where.="AND dov.mes_lis_ord_tra_ins_temperature_code='".$temperature."' ";
+            }
+
+            if ($print_cnt=="!0") {
                 $having_var="HAVING print_cnt!=0 ";
-            } else {
+            } elseif ($print_cnt!="*") {
                 $having_var="HAVING print_cnt='".$print_cnt."' ";
             }
-            if ($decission_cnt=="*") {
-                $having_var.="OR decision_cnt = ''";
-            } elseif ($decission_cnt=="!0") {
-                $having_var.="OR decision_cnt!=0";
-            } else {
-                $having_var.="OR decision_cnt='".$decission_cnt."'";
+            if ($decission_cnt=="!0") {
+                if ($having_var) {
+                    $having_var.="OR decision_cnt!=0";
+                } else {
+                    $having_var.="HAVING decision_cnt!=0";
+                }
+            } elseif ($decission_cnt!="*") {
+                if ($having_var) {
+                    $having_var.="OR decision_cnt='".$decission_cnt."'";
+                } else {
+                    $having_var.="HAVING decision_cnt='".$decission_cnt."'";
+                }
             }
-
-            // $having_var.="AND decision_cnt='".$decission_cnt."'";
         }
-        // return $byr_buyer_id;
         $authUser=User::find($adm_user_id);
         $cmn_company_id = '';
         $cmn_connect_id = '';
@@ -109,17 +120,10 @@ class Byr_orderController extends Controller
                 ->join('cmn_connects', 'cmn_connects.slr_seller_id', '=', 'slr_sellers.slr_seller_id')
                 ->where('cmn_companies_users.adm_user_id', $adm_user_id)->first();
             $cmn_company_id = $cmn_company_info->cmn_company_id;
-            // $byr_buyer_id = $cmn_company_info->byr_buyer_id;
             $cmn_connect_id = $cmn_company_info->cmn_connect_id;
-
-            // $cmn_company_info = $this->all_used_fun->get_user_info($adm_user_id);
-            // $cmn_company_id = $cmn_company_info['cmn_company_id'];
-            // $byr_buyer_id = $cmn_company_info['byr_buyer_id'];
-            // $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
 
-        // return $byr_buyer_id;
-        // return $cmn_connect_id;
+        // 検索
         $result=DB::select("SELECT
         dor.data_order_id,
         dor.receive_datetime,
@@ -131,7 +135,7 @@ class Byr_orderController extends Controller
         dov.mes_lis_ord_tra_ins_temperature_code
         ,COUNT(distinct dov.data_order_voucher_id) AS cnt
         ,COUNT( isnull( dsv.decision_datetime) OR NULL) AS decision_cnt
-        ,COUNT( !isnull( dsv.print_datetime)  OR NULL) AS print_cnt
+        ,COUNT( isnull( dsv.print_datetime)  OR NULL) AS print_cnt
         ,dov.check_datetime
         
         FROM data_orders AS dor
@@ -150,25 +154,6 @@ class Byr_orderController extends Controller
         $having_var
         
         ");
-        // return $result ;
-        // $result = byr_order::select('byr_orders.*','cmn_companies.company_name','byr_order_vouchers.*',
-        // DB::raw('(select count(voucher_number) from byr_order_vouchers where byr_order_vouchers.byr_order_id  =   byr_orders.byr_order_id group by byr_order_vouchers.expected_delivery_date,byr_order_vouchers.temperature,byr_order_vouchers.category_code,byr_order_vouchers.expected_delivery_date limit 1) as total_voucher_number'),
-        // DB::raw('(select count(confirm_date) from byr_shipment_vouchers where byr_shipment_vouchers.byr_order_voucher_id  =   byr_order_vouchers.byr_order_voucher_id limit 1) as total_confirm_date'),
-        // DB::raw('(select count(print_out_date) from byr_shipment_vouchers where byr_shipment_vouchers.byr_order_voucher_id  =   byr_order_vouchers.byr_order_voucher_id limit 1) as total_print_out_date')
-        //  )
-        // ->join('byr_order_vouchers','byr_order_vouchers.byr_order_id','=','byr_orders.byr_order_id')
-        // ->leftJoin('byr_shipment_vouchers','byr_shipment_vouchers.byr_order_voucher_id','=','byr_order_vouchers.byr_order_voucher_id')
-        // ->join('cmn_connects','cmn_connects.cmn_connect_id','=','byr_orders.cmn_connect_id')
-        // ->join('byr_buyers','byr_buyers.byr_buyer_id','=','cmn_connects.byr_buyer_id')
-        // ->join('cmn_companies','cmn_companies.cmn_company_id','=','byr_buyers.cmn_company_id')
-        // ->groupBy('byr_order_vouchers.expected_delivery_date','byr_order_vouchers.category_code','byr_order_vouchers.temperature');
-        // if(!$authUser->hasRole('Super Admin')){
-        //     $result = $result->where('byr_orders.cmn_connect_id',$cmn_connect_id);
-        // }
-        // echo $result->toSql();exit;
-        // $result = $result->get();
-        // return $result;
-        // return $byr_buyer_id;
         $buyer_settings=byr_buyer::select('setting_information')->where('byr_buyer_id', $byr_buyer_id)->first();
         $byr_buyer =$this->all_used_fun->get_company_list($cmn_company_id);
         

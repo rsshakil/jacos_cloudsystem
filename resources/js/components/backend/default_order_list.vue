@@ -226,7 +226,7 @@ export default {
       // temperature:[{id:1,name:"temperature1"},{id:2,name:"temperature2"},{id:3,name:"temperature3"}],
       // confirmation_status:[{id:1,name:"confirmation_status1"},{id:2,name:"confirmation_status2"},{id:3,name:"confirmation_status3"}],
       print_cnt:[{"*":"全て"},{"!0":"未印刷あり"},{"0":"印刷済"}],
-      decission_cnt:[{"*":"全て"},{"!0":"未印刷あり"},{"0":"確定済"}],
+      decission_cnt:[{"*":"全て"},{"!0":"未確定あり"},{"0":"確定済"}],
       buyer_settings:null,
       json_temperature_code:null,
       json_delivery_service_code:null,
