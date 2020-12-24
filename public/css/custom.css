@@ -151,13 +151,59 @@
 .cl_custom_color{
     text-align: center;
     background: #D8E3F0;
-    border: 1px solid #999!important;
+    /* border: 1px solid #999!important; */
     vertical-align: middle !important;
 }
 .cl_custom_color_extra{
     text-align: center;
     background: #538ED3;
     color:#fff;
-    border: 1px solid #999!important;
+    /* border: 1px solid #999!important; */
     vertical-align: middle !important;
+}
+.orderDetailTable{
+    background: #fff;
+}
+.orderDetailTable tr td{
+    border: 1px solid #999999;
+}
+.orderTopDetailTable tr td{
+    border: 1px solid #999999;
+}
+.topHeaderInputFieldBtn{
+    width: 130px;
+    float: left;
+    margin-right: 10px;
+}
+.srchBtn {
+    padding-left: 50px;
+    padding-right: 50px;
+    margin-top: 30px;
+}
+.uploadBtn{
+    float: left;
+    width: 250px;
+    margin-right: 0;
+    border: none;
+}
+.tableRowsInfo{
+    float: left;
+    margin-right: 15px;
+    vertical-align: middle;
+    padding-top: 5px;
+}
+.pagi,
+.selectPagi
+{
+    float: left;
+}
+.selectPage{
+    padding: 0;
+    margin: 0;
+    line-height: 0;
+    height: 25px !important;
+}
+.pagi .pagination-sm .page-link{
+    padding-left: 3px;
+    padding-right: 3px;
 }

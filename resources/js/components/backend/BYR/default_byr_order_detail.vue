@@ -73,7 +73,7 @@
         </div>
       </div> -->
       <div class="col-12" style="padding: 10px">
-        <table class="table table-bordered" style="width: 100%">
+        <table class="table orderTopDetailTable table-bordered" style="width: 100%">
           <tr>
             <td class="cl_custom_color">受信日時</td>
             <td>{{order_item_lists.receive_datetime}}</td>
@@ -92,53 +92,59 @@
           </tr>
         </table>
       </div>
-      <div class="col-12">
+     <!-- <div class="col-12">
         {{ myLang.voucher_list }}
         <hr />
-      </div>
-      <div class="col-12" style="background: #d5dadc; padding: 10px">
+      </div>-->
+      <div class="col-12" style="background: #D8E3F0; padding: 10px">
         <table class="table orderDetailTable table-bordered" style="width: 100%">
           <tr>
-            <td>{{ myLang.receive_date }}</td>
+            <td class="cl_custom_color">直接納品先コード</td>
             <td>
-              <input type="date" class="form-control" v-model="today" />
+              <input type="text" class="form-control topHeaderInputFieldBtn" v-model="today" />
+              <button class="btn btn-primary active">参照</button>
             </td>
-            <td>{{ myLang.customer_name }}</td>
+            <td class="cl_custom_color">最終納品先コード</td>
             <td>
-              <input type="text" class="form-control" />
+              <input type="text" class="form-control topHeaderInputFieldBtn" />
+              <button class="btn btn-primary active">参照</button>
             </td>
-            <td colspan="4"></td>
-          </tr>
-          <tr>
-            <td>{{ myLang.delivery_date }}</td>
-            <td>
-              <input type="date" class="form-control" v-model="today" />
-            </td>
-            <td>{{ myLang.category_code }}</td>
-            <td>
-              <input type="text" class="form-control" />
-            </td>
-            <td>{{ myLang.shipment }}</td>
-            <td>
-              <input type="text" class="form-control" />
-            </td>
-            <td>{{ myLang.temperature }}</td>
+            <td class="cl_custom_color">伝票番号</td>
             <td>
               <input type="text" class="form-control" />
             </td>
           </tr>
           <tr>
-            <td>{{ myLang.confirmation_status }}</td>
+            <td class="cl_custom_color">商品コード</td>
             <td>
-              <select class="form-control">
+              <input type="text" class="form-control topHeaderInputFieldBtn" v-model="today" />
+              <button class="btn btn-primary active">参照</button>
+            </td>
+            <td class="cl_custom_color">定／特</td>
+            <td>
+              <input type="text" class="form-control" />
+            </td>
+            <td class="cl_custom_color">確定状況</td>
+            <td>
+              <input type="text" class="form-control" />
+            </td>
+            <!--<td class="cl_custom_color">{{ myLang.temperature }}</td>
+            <td>
+              <input type="text" class="form-control" />
+            </td>-->
+          </tr>
+          <tr>
+            <td class="cl_custom_color">印刷状況</td>
+            <td colspan="7">
+              <select class="form-control" style="width:220px;">
                 <option :value="0">{{ myLang.confirmation_status }}</option>
               </select>
             </td>
-            <td colspan="6"></td>
+            
           </tr>
         </table>
       </div>
-      <div
+      <!--<div
         class="col-12"
         style="background: #d5dadc; padding: 10px; margin-top: 20px"
       >
@@ -165,8 +171,7 @@
               </button>
             </td>
             <td>
-              {{ myLang.total_voucher_number }}
-              <!--伝票番号-->
+              
             </td>
             <td>
               <input type="search" class="form-control" v-model="today" />
@@ -207,18 +212,18 @@
           </tr>
         </table>
       </div>
-      <br />
+      <br />-->
       <div class="col-12" style="text-align: center">
-        <button class="btn btn-primary" type="button">
+        <button class="btn btn-primary active srchBtn" type="button">
           {{ myLang.search }}
         </button>
       </div>
       <div class="col-12">
         <br />
-        {{ myLang.search_result }}
-        <hr />
+        <h4 class="page_custom_title">{{ myLang.search_result }}</h4>
+        <!--<hr class="" />-->
       </div>
-      <div class="col-12">
+      <!--<div class="col-12">
         <table class="table table-bordered">
           <tr>
             <td>
@@ -239,7 +244,7 @@
               >
                 {{ myLang.printing }}
               </router-link>
-              <!-- <button type="button">{{myLang.printing}}</button> -->
+              <button type="button">{{myLang.printing}}</button> 
             </td>
             <td>
               <button class="btn btn-outline-primary" type="button">
@@ -258,7 +263,6 @@
         <table class="table table-bordered">
           <tr>
             <td>
-              <!-- <button type="button">File Upload</button> -->
               <input type="file" class="form-control" />
             </td>
             <td>
@@ -276,6 +280,50 @@
             </td>
           </tr>
         </table>
+      </div>-->
+      <div class="col-12">
+      <div class="row">
+        <div class="col-5">
+        <p><span class="tableRowsInfo">1〜5 件表示中／全：100件</span>
+         <span class="pagi"><b-pagination v-model="currentPage" :total-rows="rows" size="sm"></b-pagination></span>
+         <span class="selectPagi">
+         <select class="form-control selectPage">
+          <option>表示行数</option>
+         </select>
+         </span>
+         </p>
+        </div>
+        <div class="col-7">
+          <div class="row">
+        <div class="col-4" style="padding-left:0!important">
+        <p class="mb-0">検索結果のダウンロードはこちら</p>
+    <b-button class="active" variant="primary">
+     <b-icon
+                  icon="download"
+                  animation="fade"
+                  font-scale="1.2"
+                ></b-icon>
+    ダウンロード</b-button>
+        </div>
+        <div class="col-3">
+        
+        <p class="mb-0">商品別の更新はこちら</p>
+    <b-button class="active" variant="primary">
+    商品別登録</b-button>
+        </div>
+        <div class="col-5">
+         <b-form inline>
+    <label class="sr-only" for="inline-form-input-name">各種帳票の印刷はこちら</label>
+    <select class="mb-2 mr-sm-2 mb-sm-0 form-control"
+    >
+    <option>選択してください</option>
+    </select>
+    <b-button class="active" variant="primary">印刷</b-button>
+  </b-form>
+        </div>
+        </div>
+        </div>
+      </div>
       </div>
       <div class="col-12">
         <div class="">
@@ -292,20 +340,20 @@
               <a href="index.html" class="btn btn-primary">発注データ一覧へ戻る</a>
             </div>
           </div> -->
-          <table class="table table-striped table-bordered table-responsive data_table" style="overflow-x: scroll;">
+          <table class="table table-striped table-bordered order_item_details_table" style="overflow-x: scroll;">
             <thead>
               <tr>
                 <th>No</th>
-                <th>decision_datetime</th>
-                <th>mes_lis_shi_par_shi_code</th>
-                <th>mes_lis_shi_par_rec_code and order_detail_list.mes_lis_shi_par_rec_name</th>
-                <th>mes_lis_shi_tra_trade_number</th>
-                <th>mes_lis_shi_tra_ins_goods_classification_code</th>
-                <th>mes_lis_shi_tot_tot_net_price_total</th>
-                <th>status</th>
-                <th>updated_at</th>
-                <th>print_datetime</th>
-                <th>send_datetime</th>
+                <th>確定</th>
+                <th>直接納品先 コード</th>
+                <th>最終納品先</th>
+                <th>伝票番号</th>
+                <th>定／特</th>
+                <th>原価金額 合計</th>
+                <th>出荷状況</th>
+                <th>最終更新日時</th>
+                <th>納品明細書 印刷状況</th>
+                <th>送信日時</th>
                 <!-- <th>{{ myLang.direct_delivery_code }}</th>
                 <th>{{ myLang.final_delivery_code }}</th>
                 <th>{{ myLang.total_voucher_number }}</th>
@@ -536,6 +584,31 @@
             </tbody> -->
           </table>
         </div>
+
+      </div>
+      <div class="col-12">
+      <div class="row">
+        <div class="col-6">
+        <div class="pcontent">
+        <p>ファイルを選択し「アップロード」ボタンをクリックすると、確定済みデータとしてアップロードされます。</p>
+        </div>
+        <div class="pcontentBtom">
+        <input type="file" class="form-control uploadBtn">
+          <button class="btn btn-primary  active" type="button">
+                <b-icon
+                  icon="upload"
+                  animation="fade"
+                  font-scale="1.2"
+                ></b-icon>
+                アップロード
+              </button>
+        </div>
+        </div>
+        <div class="col-6 text-right">
+        <button class="btn btn-lg btn-primary active">選択行を伝票確定</button>
+        <button class="btn btn-lg btn-danger active">確定データ送信</button>
+        </div>
+      </div>
       </div>
     </div>
     <b-modal
@@ -664,6 +737,8 @@ export default {
   // props: ["param_data"],
   data() {
     return {
+      rows: 100,
+        currentPage: 1,
       today: new Date().toISOString().slice(0, 10),
       sortKey: "",
       reverse: true,

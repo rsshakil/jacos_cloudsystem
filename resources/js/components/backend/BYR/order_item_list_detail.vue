@@ -3,7 +3,7 @@
     <div class="row">
       
       <div class="col-12" style="padding: 10px">
-        <table class="table table-bordered" style="width: 100%">
+        <table class="table orderTopDetailTable table-bordered" style="width: 100%">
           <tr>
             <td class="cl_custom_color">受信日時</td>
             <td>{{order_item_lists.receive_datetime}}</td>
@@ -26,7 +26,7 @@
         class="col-12"
         style="padding: 10px; margin-top: 20px"
       >
-        <table class="table table-bordered" style="width: 100%">
+        <table class="table orderTopDetailTable table-bordered" style="width: 100%">
           <tr>
             <td class="cl_custom_color">直接納品先コード</td>
             <td>{{order_item_shipment_data_headTable.mes_lis_shi_par_shi_code}}</td>
