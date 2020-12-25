@@ -1,18 +1,18 @@
 <template>
   <div>
     <!-- <default_byr_order_detail :param_data="param_data"></default_byr_order_detail> -->
-    <default_byr_order_detail></default_byr_order_detail>
+    <default_order_vouchers></default_order_vouchers>
     <!-- <component v-bind:is="component" /> -->
   </div>
 </template>
 <script>
 // './bms_byr_order_detail.vue'
 
-import default_byr_order_detail from './default_byr_order_detail.vue'
+import default_order_vouchers from './default_order_vouchers.vue'
 // import bms_byr_order_detail from '../BMS/bms_byr_order_detail'
 export default {
   components: {
-    default_byr_order_detail,
+    default_order_vouchers,
     //  bms_byr_order_detail
   },
   data() {
