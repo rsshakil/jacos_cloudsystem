@@ -1,44 +1,83 @@
 <template>
-    <div class="row" v-can="['byr_view']">
-                <div class="col-12">
-                    <h4 class="top_title text-center" style="margin-top:10px;">{{myLang.payment_data}}</h4>
+    <div class="row">
+                <div class="col-12" style="background: #D8E3F0; padding: 10px">
+                    <!--<h4 class="top_title text-center" style="margin-top:10px;">{{myLang.payment_data}}</h4>-->
+                <table class="table orderDetailTable table-bordered" style="width: 100%">
+        <tr>
+          <td class="cl_custom_color" style="width: 12%">
+            請求取引先コード
+          </td>
+          <td>
+            <input type="text" class="form-control" v-model="form.delivery_date_from" />
+          </td>
+          
+          <td class="cl_custom_color" style="width: 10%">受信日</td>
+          <td style="width: 10%">
+            <input type="date" class="form-control" v-model="form.receive_date_from" />
+          </td>
+          <td style="width: 9%; text-align: center">
+            <b-icon icon="forward" aria-hidden="true" font-scale="1.5"></b-icon>
+          </td>
+          <td style="width: 10%" colspan="3">
+            <input type="date" class="form-control" v-model="form.receive_date_to" />
+          </td>
+        </tr>
+        <tr>
+          <td class="cl_custom_color" style="width: 9%">
+            発注者
+          </td>
+          <td>
+            <input type="text" class="form-control" v-model="form.delivery_date_from" />
+          </td>
+          
+          <td class="cl_custom_color" style="width: 10%">受信日</td>
+          <td style="width: 10%">
+            <input type="date" class="form-control" v-model="form.receive_date_from" />
+          </td>
+          <td style="width: 9%; text-align: center">
+            <b-icon icon="forward" aria-hidden="true" font-scale="1.5"></b-icon>
+          </td>
+          <td style="width: 10%">
+            <input type="date" class="form-control" v-model="form.receive_date_to" />
+          </td>
+          <td class="cl_custom_color" style="width: 9%">
+            参照状況
+          </td>
+          <td>
+            <select class="form-control" style="width:150px;">
+                                            <option :value="0">全て</option>
+                                        </select>
+          </td>
+        </tr>
+        
+        
+      </table>
                 </div>
-                <div class="col-12 text-center">
-                    
-      <label>
-        <!--<input type="file" id="file" ref="file" v-on:change="onChangeFileUpload()"/>-->
-      </label>
-                </div>
+                 <div class="col-12" style="text-align: center">
+      <button class="btn btn-primary" type="button" @click="searchOrder()">{{ myLang.search }}</button>
+    </div>
+
+    <div class="col-12 text-center page_c_title_bar text-sm-left mb-0">
+            <h4 class="page_custom_title"> 検索結果：一覧</h4>
+       <button class="btn btn-outline-primary" type="button">
+        <b-icon icon="download" animation="fade" font-scale="1.2"></b-icon>
+        {{ myLang.download }}
+      </button>
+        </div>
                 <div class="col-12">
                     <div class="">
-                        <table class="table table-striped table-bordered data_table">
+                        <table class="table table-striped order_item_details_table table-bordered data_table">
                             <thead>
-                                <tr>
-                                    <th colspan="100%" style="border: none;">
-                                        <div class="input-group mb-1" style="margin-left: 10px;max-width: 250px; float: left;">
-                                            <div class="input-group-prepend">
-                                                <button class="btn btn-outline-primary" type="button">{{myLang.buyer_selection}}</button>
-                                            </div>
-                                            <select class="form-control" v-model="selected_byr">
-                                             <option :value="0">{{myLang.select_buyer}}</option>
-                                              <option v-for="(option, index) in byr_buyer_lists" 
-                    :key="index" :value="option.cmn_company_id"
-                    :selected="selectedOption(option)">
-                    {{ option.company_name }}
-            </option>
-                                            </select>
-                                        </div>
-                                        <!--<div class="active-pink-3 active-pink-4 mb-1" style="margin-left: 10px;max-width: 100%; float: left;">
-                                            <input class="form-control" type="text" placeholder="Search" aria-label="Search">
-                                        </div>-->
-                                    </th>
-                                </tr>
+                                
                                 <tr>
                                     <th style="cursor: pointer">No</th>
-                                    <th style="cursor: pointer">{{myLang.buyer_name}}</th>
-                                    <th style="cursor: pointer">{{myLang.receive_date}}</th>
-                                    <th style="cursor: pointer">{{myLang.download_date}}</th>
-                                    <th style="cursor: pointer">{{myLang.payment_data}}</th>
+                                    <th style="cursor: pointer">受注日時</th>
+                                    <th style="cursor: pointer">請求取引先コード</th>
+                                    <th style="cursor: pointer">発注者</th>
+                                    <th style="cursor: pointer">締日</th>
+                                    <th style="cursor: pointer">支払日</th>
+                                    <th style="cursor: pointer">支払金額</th>
+                                    <th style="cursor: pointer">参照状況</th>
                                 </tr>
                                 
                             </thead>
@@ -48,7 +87,10 @@
                                     <td>{{value.company_name}}</td>
                                     <td>{{value.receive_date}}</td>
                                     <td>{{value.download_date}}</td>
-                                    <td><button class="btn btn-primary">{{myLang.payment_data}}</button></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                    
                                 </tr>
                                 
@@ -66,6 +108,26 @@ export default {
         'byr_buyer_lists':{},
         'file':'',
         'selected_byr':'0',
+        form: new Form({
+        adm_user_id:Globals.user_info_id,
+        byr_buyer_id:null,
+        receive_date_from:null,
+        receive_date_to:null,
+        // receive_date_from:new Date().toISOString().slice(0, 10),
+        // receive_date_to:new Date().toISOString().slice(0, 10),
+        // delivery_date_from:new Date().toISOString().slice(0, 10),
+        // delivery_date_to:new Date().toISOString().slice(0, 10),
+        delivery_date_from:null,
+        delivery_date_to:null,
+        check_datetime:null,
+        // check_datetime:new Date().toISOString().slice(0, 10),
+        delivery_service_code:'01',
+        temperature:'01',
+        // confirmation_status:1,
+        print_cnt:"*",
+        decission_cnt:"*",
+        submit_type:"page_load"
+      }),
     };
   },
   methods: {

@@ -304,11 +304,11 @@ export const routes = [
         component: default_parent,
         meta: {
             breadcrumb: {
-                label: '受領データ',
+                label: '受領受信一覧',
                 parent: 'Params'
             },
             breadcrumb_title: {
-                label: '受領データ'
+                label: '受領受信一覧'
             }
         },
         children: [{
@@ -361,11 +361,11 @@ export const routes = [
         component: default_parent,
         meta: {
             breadcrumb: {
-                label: '支払データ',
+                label: '支払受信一覧',
                 parent: 'Params'
             },
             breadcrumb_title: {
-                label: '支払データ'
+                label: '支払受信一覧'
             }
         },
         children: [{
