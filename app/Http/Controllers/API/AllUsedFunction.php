@@ -457,7 +457,7 @@ class AllUsedFunction extends Controller
      * @param  int $binary_number desired binary number Like: 11011
      * @return int Formated binary number as 7 days like: 0011011
      */
-    private function binary_format($binary_number)
+    public function binary_format($binary_number)
     {
         $binary_length = strlen($binary_number);
 
@@ -475,8 +475,9 @@ class AllUsedFunction extends Controller
      * @param  int $binary desired binary number Like: 0000011
      * @return int decimal number as like: 3
      */
-    private function binary_to_decimal($binary)
+    public function binary_to_decimal($binary)
     {
+        \Log::info($binary);
         return bindec($binary);
     }
     /**
@@ -484,7 +485,7 @@ class AllUsedFunction extends Controller
      * @param  int $decimal desired decimal number Like: 3
      * @return int binary number as like: 11
      */
-    private function decimal_to_binary($decimal)
+    public function decimal_to_binary($decimal)
     {
         $bos = null;
         while ($decimal >= 1) {$bin = $decimal % 2;
