@@ -19,7 +19,7 @@
             }
         },
         methods:{
-           
+          
         },
           created() {
       if(this.$route.name=='order_list'){
@@ -29,6 +29,9 @@
       }else if(this.$route.name=='payment_list'){
           this.page_heading = '支払受信一覧';
       }
+        Fire.$on("loadPageTitle", (PageTitle) => {
+            this.page_heading = PageTitle;
+        });
   },
         mounted() {
             this.init();

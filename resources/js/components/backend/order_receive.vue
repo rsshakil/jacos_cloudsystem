@@ -232,6 +232,9 @@ export default {
       Fire.$on("LoadByrorder", () => {
       this.get_all_order();
     });
+    Fire.$emit('byr_has_selected',this.$session.get('byr_buyer_id'));
+    Fire.$emit('permission_check_for_buyer',this.$session.get('byr_buyer_id'));
+    Fire.$emit('loadPageTitle', '受領受信一覧');
       console.log('created byr order log');
   },
   mounted() {
