@@ -164,7 +164,13 @@ var router = new VueRouter({
     mode: "history",
     base: "/jcs"
 });
+router.onReady(() => {
+    if(router.currentRoute.path!="/home"){
+        router.push("home")
+    }
+  });
 import App from "./components/backend/app.vue";
+import { nextTick } from "q";
 
 new Vue({
     router: router,

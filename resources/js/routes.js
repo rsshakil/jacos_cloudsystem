@@ -46,6 +46,7 @@ import pdf_platform_setting from './components/backend/PDF_PLATFORM/pdf_platform
 import pdf_platform_view from './components/backend/PDF_PLATFORM/pdf_platform_view.vue'
 import blog from './components/backend/CMN/cmn_blog_list.vue'
 import selected_buyer from './components/backend/SLR/selected_byr_page.vue'
+import { homedir } from 'os'
 // import login_body from './components/login/login_body.vue'
 
 export const routes = [
