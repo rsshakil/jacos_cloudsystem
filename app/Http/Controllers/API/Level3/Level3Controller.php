@@ -363,7 +363,7 @@ class Level3Controller extends Controller
     public function getServiceData(Request $request)
     {
         $service_id = $request->service_id;
-        $service_traking_number = $request->service_traking_number;
+        // $service_traking_number = $request->service_traking_number;
         // $service=null;
         $service = lv3_job::select('lv3_trigger_file_paths.*', 'lv3_jobs.*')
             ->leftJoin('lv3_trigger_file_paths', 'lv3_trigger_file_paths.lv3_service_id', '=', 'lv3_jobs.lv3_service_id')
@@ -612,7 +612,7 @@ class Level3Controller extends Controller
     public function deleteService(Request $request)
     {
         $service_id = $request->service_id;
-        service::where('service_id', $service_id)->delete();
+        lv3_service::where('lv3_service_id', $service_id)->delete();
         $this->message = '削除が完了しました。';
         $this->status_code = 200;
         $this->class_name = 'alert-success';

@@ -142,6 +142,7 @@ Route::get('/order_item_details/{data_shipment_voucher_id}', 'API\Byr_orderContr
 Route::post('get_user_login', 'API\Level3\Level3Controller@userLogin');
 Route::post('history_url', 'API\Level3\Level3Controller@historyData');
 Route::post('get_customer', 'API\Level3\Level3Controller@getCustomer');
+// Route::post('delete_customer', 'API\Level3\Level3Controller@deleteCustomer');
 Route::post('show_service_url', 'API\Level3\Level3Controller@showServiceData');
 Route::post('add_service', 'API\Level3\Level3Controller@addService');
 Route::post('get_schedule_data', 'API\Level3\Level3Controller@scheduleData');
@@ -165,7 +166,7 @@ Route::get('slr_job_list_all', 'API\Cmn_jobController@index');
 
 // Route::post('add_customer', 'API\Level3\Level3Controller@addCustomer');
 
-// Route::post('delete_customer_url', 'API\Level3\Level3Controller@deleteCustomer');
+
 
 Route::post('delete_service', 'API\Level3\Level3Controller@deleteService');
 Route::post('/job_list', 'API\Level3\Level3Controller@job_list');
