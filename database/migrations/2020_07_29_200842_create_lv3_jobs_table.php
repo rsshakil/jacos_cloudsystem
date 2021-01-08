@@ -20,6 +20,7 @@ class CreateLv3JobsTable extends Migration
             $table->enum('execution',['scenario','batch'])->default('scenario')->comment('Which path execute. Ex: API/Batch');
             $table->integer('cmn_scenario_id')->unsigned()->nullable()->comment('Scenario ID');
             $table->string('batch_file_path',300)->nullable()->comment('batch_file_path');
+            $table->integer('next_service_id')->unsigned()->comment('Next Service ID');
             $table->string('append',1000)->nullable()->comment('Append data(json)');
             $table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('Time of creation');
 			$table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('last updated time');

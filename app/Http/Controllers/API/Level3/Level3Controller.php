@@ -2,21 +2,19 @@
 
 namespace App\Http\Controllers\API\Level3;
 
+use App\Http\Controllers\API\AllUsedFunction;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\ADM\User;
-use App\Models\Lv3\lv3_history;
-use App\Models\Lv3\lv3_service;
-use App\Models\Lv3\lv3_trigger_schedule;
-use App\Models\Lv3\lv3_trigger_file_path;
-use App\Models\Lv3\lv3_job;
-use App\Models\CMN\cmn_job;
 use App\Models\CMN\cmn_companies_user;
 use App\Models\CMN\cmn_scenario;
-use Illuminate\Support\Facades\Hash;
-use App\Http\Controllers\API\AllUsedFunction;
-use GuzzleHttp\Client;
+use App\Models\Lv3\lv3_history;
+use App\Models\Lv3\lv3_job;
+use App\Models\Lv3\lv3_service;
+use App\Models\Lv3\lv3_trigger_file_path;
+use App\Models\Lv3\lv3_trigger_schedule;
 use DB;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class Level3Controller extends Controller
 {
@@ -27,7 +25,7 @@ class Level3Controller extends Controller
     private $lst_service_id;
     private $flag;
     private $all_functions;
-    public function __ApiController()
+    public function __construct()
     {
         $this->message = '';
         $this->status_code = '';
@@ -62,28 +60,28 @@ class Level3Controller extends Controller
 
     public function historyData(Request $request)
     {
-        $user_id=$request->user_id;
-        $all_history = lv3_history::select('lv3_histories.*', 'lv3_services.lv3_service_id','lv3_services.service_name', 'cmn_companies.company_name', 'cmn_connects.partner_code')
+        $user_id = $request->user_id;
+        $all_history = lv3_history::select('lv3_histories.*', 'lv3_services.lv3_service_id', 'lv3_services.service_name', 'cmn_companies.company_name', 'cmn_connects.partner_code')
             ->join('lv3_services', 'lv3_histories.lv3_service_id', '=', 'lv3_services.lv3_service_id')
-            ->join('cmn_connects','lv3_services.cmn_connect_id','=','cmn_connects.cmn_connect_id')
-            ->join('byr_buyers','byr_buyers.byr_buyer_id','=','cmn_connects.byr_buyer_id')
-            ->join('cmn_companies','cmn_companies.cmn_company_id','=','byr_buyers.cmn_company_id')
+            ->join('cmn_connects', 'lv3_services.cmn_connect_id', '=', 'cmn_connects.cmn_connect_id')
+            ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
+            ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
             ->where('lv3_services.adm_user_id', $user_id)
-            ->orderBy('lv3_histories.lv3_history_id','DESC')
+            ->orderBy('lv3_histories.lv3_history_id', 'DESC')
             ->take(100)->get();
-            \Log::info($all_history);
+        \Log::info($all_history);
         return \response()->json(['histories' => $all_history]);
     }
 
     public function getCustomer(Request $request)
     {
         $user_id = $request->user_id;
-        $customers_data = cmn_companies_user::select('cmn_companies_users.adm_user_id','cmn_connects.cmn_connect_id','cmn_connects.partner_code','cmn_companies.company_name')
-        ->join('slr_sellers','slr_sellers.cmn_company_id','=','cmn_companies_users.cmn_company_id')
-        ->join('cmn_connects','cmn_connects.slr_seller_id','=','slr_sellers.slr_seller_id')
-        ->join('byr_buyers','byr_buyers.byr_buyer_id','=','cmn_connects.byr_buyer_id')
-        ->join('cmn_companies','cmn_companies.cmn_company_id','=','byr_buyers.cmn_company_id')
-        ->where('cmn_companies_users.adm_user_id', $user_id)->get();
+        $customers_data = cmn_companies_user::select('cmn_companies_users.adm_user_id', 'cmn_connects.cmn_connect_id', 'cmn_connects.partner_code', 'cmn_companies.company_name')
+            ->join('slr_sellers', 'slr_sellers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
+            ->join('cmn_connects', 'cmn_connects.slr_seller_id', '=', 'slr_sellers.slr_seller_id')
+            ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
+            ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
+            ->where('cmn_companies_users.adm_user_id', $user_id)->get();
         \Log::info($customers_data);
         return response()->json(['customers_data' => $customers_data]);
     }
@@ -92,7 +90,7 @@ class Level3Controller extends Controller
     {
         $cmn_connect_id = $request->cmn_connect_id;
         $adm_user_id = $request->adm_user_id;
-        $all_service_data = lv3_service::where(['cmn_connect_id'=> $cmn_connect_id,'adm_user_id'=>$adm_user_id])->get();
+        $all_service_data = lv3_service::where(['cmn_connect_id' => $cmn_connect_id, 'adm_user_id' => $adm_user_id])->get();
         return \response()->json(['all_service_data' => $all_service_data]);
     }
 
@@ -117,7 +115,7 @@ class Level3Controller extends Controller
         if ($service_id != null) {
             $service_info = lv3_service::where('lv3_service_id', $service_id)->first();
             if ($service_info['service_name'] != $service_name) {
-                if (lv3_service::where(['cmn_connect_id'=>$cmn_connect_id,'adm_user_id'=>$user_id,'service_name'=> $service_name])->exists()) {
+                if (lv3_service::where(['cmn_connect_id' => $cmn_connect_id, 'adm_user_id' => $user_id, 'service_name' => $service_name])->exists()) {
                     // $this->message='Partner code alrady exists';
                     $this->message = 'このサービス名はすでに使われています。';
                     $this->status_code = 403;
@@ -133,7 +131,7 @@ class Level3Controller extends Controller
             $this->lst_service_id = $service_id;
             lv3_service::where('lv3_service_id', $service_id)->update($service_array);
         } else {
-            if (lv3_service::where(['cmn_connect_id'=>$cmn_connect_id,'adm_user_id'=>$user_id,'service_name'=> $service_name])->exists()) {
+            if (lv3_service::where(['cmn_connect_id' => $cmn_connect_id, 'adm_user_id' => $user_id, 'service_name' => $service_name])->exists()) {
                 // $this->message='Partner code alrady exists';
                 $this->message = 'Service name already exists';
                 $this->status_code = 403;
@@ -155,6 +153,7 @@ class Level3Controller extends Controller
     public function scheduleData(Request $request)
     {
         // return $request->all();
+        // \Log::info($request->all());
         $user_id = $request->user_id;
         $service_id = $request->service_id;
         $schedule_data = lv3_trigger_schedule::where('lv3_service_id', $service_id)->get();
@@ -177,27 +176,32 @@ class Level3Controller extends Controller
             }
         }
         $file_path_info = $this->getFilePath($user_id, $service_id);
-        $job_info=lv3_job::select('lv3_job_id','lv3_service_id','job_execution_flag',
-        'execution','batch_file_path','append')
-        ->where('lv3_service_id',$service_id)->first();
+        $job_info = lv3_job::select('lv3_job_id', 'lv3_service_id', 'job_execution_flag',
+            'execution', 'batch_file_path', 'next_service_id', 'append')
+            ->where('lv3_service_id', $service_id)->first();
 
-        $job_api_scenario_list=DB::select('SELECT cs.cmn_scenario_id,cs.name,cs.description FROM cmn_scenarios AS cs
+        $job_api_scenario_list = DB::select('SELECT cs.cmn_scenario_id,cs.name,cs.description FROM cmn_scenarios AS cs
         INNER JOIN adm_model_has_roles AS amhr ON cs.adm_role_id = amhr.role_id
-        WHERE amhr.model_id ='.$user_id.' AND cs.byr_buyer_id =
+        WHERE amhr.model_id =' . $user_id . ' AND cs.byr_buyer_id =
         (
             SELECT byr_buyer_id FROM cmn_companies_users AS ccu
             INNER JOIN byr_buyers AS bb ON bb.cmn_company_id=ccu.cmn_company_id
-            WHERE ccu.adm_user_id='.$user_id.'
+            WHERE ccu.adm_user_id=' . $user_id . '
         )');
         // $job_info['job_api_scenario_list']=$job_api_scenario_list;
         // $job_info=lv3_job::select('lv3_jobs.*','cmn_scenarios.name')
         // ->join('cmn_scenarios','cmn_scenarios.cmn_scenario_id','lv3_jobs.cmn_scenario_id')
         // ->where('lv3_jobs.lv3_service_id',$service_id)->first();
-        $final_arr=array(
+        $all_service_data = lv3_service::select('lv3_service_id', 'service_name', 'cmn_connect_id')
+            ->where('adm_user_id', $user_id)->get();
+        // $next_service_info=lv3_job::select('next_service_id')
+
+        $final_arr = array(
             'schedule_array' => $schedule_array,
             'file_path_info' => $file_path_info,
-            'job_info'=>$job_info,
-            'job_api_scenario_list'=>$job_api_scenario_list
+            'job_info' => $job_info,
+            'job_api_scenario_list' => $job_api_scenario_list,
+            'all_service_data' => $all_service_data,
         );
         return response()->json($final_arr);
 
@@ -211,6 +215,7 @@ class Level3Controller extends Controller
     public function setScheduleData(Request $request)
     {
         // return $request->all();
+        
         $user_id = $request->user_id;
         $customer_id = $request->cmn_connect_id;
         $service_id = $request->service_id;
@@ -223,12 +228,14 @@ class Level3Controller extends Controller
         $insert_first_array = array();
         $insert_second_array = array();
 
+        \Log::info($data_array[0]);
         for ($i = 0; $i < count($data_array); $i++) {
             $test_first['lv3_service_id'] = $service_id;
             // $test_first['user_id'] = $user_id;
             // $test_first['customer_id'] = $customer_id;
             // $test_first['name'] = "No Name";
             $test_first['weekday'] = $this->all_functions->binary_to_decimal($data_array[$i]);
+            // $test_first['weekday'] = 210;
             $test_first['time'] = $time_array[$i];
             $test_first['disabled'] = 0;
             $insert_first_array[] = $test_first;
@@ -252,7 +259,11 @@ class Level3Controller extends Controller
         return response()->json(['message' => '更新完了', 'class_name' => 'alert-success']);
 
     }
-
+    // public function binary_to_decimal($binary)
+    // {
+    //     \Log::info($binary);
+    //     return bindec($binary);
+    // }
     public function setFilePath(Request $request)
     {
         // return $request->all();
@@ -270,8 +281,8 @@ class Level3Controller extends Controller
             'lv3_service_id' => $service_id,
             'check_folder_path' => $file_source_path,
             'moved_folder_path' => $file_move_path,
-            'api_url'=>$api_url,
-            'api_folder_path'=>$api_folder_path,
+            'api_url' => $api_url,
+            'api_folder_path' => $api_folder_path,
             'path_execution_flag' => $path_execution_flag,
         );
         if (lv3_trigger_file_path::where('lv3_service_id', $service_id)->exists()) {
@@ -292,12 +303,14 @@ class Level3Controller extends Controller
         $batch_file_path = $request->batch_file_path;
         $job_execution_flag = $request->job_execution_flag;
         $execution = $request->execution;
+        $next_service_id = $request->next_service_id;
         $job_array = array(
             'lv3_service_id' => $service_id,
             'cmn_scenario_id' => $cmn_scenario_id,
             'batch_file_path' => $batch_file_path,
             'job_execution_flag' => $job_execution_flag,
             'execution' => $execution,
+            'next_service_id' => $next_service_id,
         );
 
         if ($job_id != null) {
@@ -311,25 +324,26 @@ class Level3Controller extends Controller
             $this->status_code = 200;
             $this->class_name = 'alert-success';
         }
-        return response()->json(['message' => $this->message,'status_code'=>$this->status_code,'class_name'=>$this->class_name]);
+        return response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'class_name' => $this->class_name]);
     }
 
-    public function scheduleTimeData(Request $request){
+    public function scheduleTimeData(Request $request)
+    {
         $service_id = $request->service_id;
-        $schedule_time_data = lv3_trigger_schedule::select('lv3_trigger_schedule_id','weekday','time')->where('lv3_service_id', $service_id)
-        ->where('weekday','!=', 0)->get();
+        $schedule_time_data = lv3_trigger_schedule::select('lv3_trigger_schedule_id', 'weekday', 'time')->where('lv3_service_id', $service_id)
+            ->where('weekday', '!=', 0)->get();
 
         $schedule_array = array();
         $active_weekday_array = array();
 
         if (!empty($schedule_time_data)) {
             foreach ($schedule_time_data as $key => $value) {
-                $weekday=str_split($this->all_functions->binary_format($this->all_functions->decimal_to_binary($value->weekday)));
+                $weekday = str_split($this->all_functions->binary_format($this->all_functions->decimal_to_binary($value->weekday)));
                 $key_day = array_search('1', $weekday);
 
                 foreach ($weekday as $key1 => $value1) {
-                    if ($value1==1) {
-                        $active_weekday_array[]=$key1;
+                    if ($value1 == 1) {
+                        $active_weekday_array[] = $key1;
                     }
                 }
 
@@ -340,77 +354,68 @@ class Level3Controller extends Controller
                 // $test['disabled'] = $value->disabled;
                 $test['original_weekday'] = $value->weekday;
                 $schedule_array[] = $test;
-                $active_weekday_array=[];
+                $active_weekday_array = [];
             }
         }
         return response()->json(['schedule_time_data' => $schedule_array]);
     }
 
-    public function getServiceData(Request $request){
-        // return $request->all();
+    public function getServiceData(Request $request)
+    {
         $service_id = $request->service_id;
-        $service = $request->service;
-        if($service==1){
-            $service1=lv3_job::select('lv3_service_id','batch_file_path','execution','job_execution_flag')->where('lv3_service_id',$service_id)->first();
-            return response()->json(['service1'=>$service1]);
-        }
-        if($service==2){
-            $service2=lv3_trigger_file_path::select('lv3_trigger_file_paths.lv3_service_id','lv3_trigger_file_paths.check_folder_path','lv3_trigger_file_paths.path_execution_flag',
-            'lv3_jobs.batch_file_path')
-            ->join('lv3_jobs','lv3_jobs.lv3_service_id','=','lv3_trigger_file_paths.lv3_service_id')
-            ->where('lv3_trigger_file_paths.lv3_service_id',$service_id)->first();
-            return response()->json(['service2'=>$service2]);
-        }
-        if($service==3){
-            \Log::info($service_id);
-            $service3=lv3_job::select('lv3_service_id','job_execution_flag','execution','cmn_scenario_id','batch_file_path','append')
-            ->where('lv3_jobs.lv3_service_id',$service_id)->first();
-            // $service3=lv3_trigger_file_path::select('lv3_trigger_file_paths.lv3_service_id','lv3_trigger_file_paths.check_folder_path','lv3_trigger_file_paths.moved_folder_path',
-            // 'lv3_trigger_file_paths.path_execution_flag','lv3_jobs.api_path','lv3_jobs.execution')
-            // ->join('lv3_jobs','lv3_jobs.lv3_service_id','=','lv3_trigger_file_paths.lv3_service_id')
-            // ->where('lv3_trigger_file_paths.lv3_service_id',$service_id)->first();
-            return response()->json(['service3'=>$service3]);
-        }
-        if($service==4){
-            $service4=lv3_trigger_file_path::select('lv3_service_id','api_folder_path','api_url','path_execution_flag')->where('lv3_service_id',$service_id)->first();
-            return response()->json(['service4'=>$service4]);
-        }
-        if($service==5){
-            $service5=lv3_trigger_file_path::select('lv3_trigger_file_paths.lv3_service_id','lv3_trigger_file_paths.check_folder_path',
-            'lv3_jobs.job_execution_flag','lv3_jobs.batch_file_path','lv3_jobs.execution')
-            ->join('lv3_jobs','lv3_jobs.lv3_service_id','=','lv3_trigger_file_paths.lv3_service_id')
-            ->where('lv3_trigger_file_paths.lv3_service_id',$service_id)->first();
-            return response()->json(['service5'=>$service5]);
-        }
-        if($service==6){
-            // $service6=job::select('service_id','batch_file_path','execution','job_execution_flag')->where('service_id',$service_id)->first();
-
-            $service6=lv3_trigger_file_path::select('lv3_trigger_file_paths.lv3_service_id','lv3_trigger_file_paths.check_folder_path',
-            'lv3_jobs.job_execution_flag','lv3_jobs.batch_file_path','lv3_jobs.execution')
-            ->join('lv3_jobs','lv3_jobs.lv3_service_id','=','lv3_trigger_file_paths.lv3_service_id')
-            ->where('lv3_trigger_file_paths.lv3_service_id',$service_id)->first();
-            return response()->json(['service6'=>$service6]);
-        }
+        // $service_traking_number = $request->service_traking_number;
+        // $service=null;
+        $service = lv3_job::select('lv3_trigger_file_paths.*', 'lv3_jobs.*')
+            ->leftJoin('lv3_trigger_file_paths', 'lv3_trigger_file_paths.lv3_service_id', '=', 'lv3_jobs.lv3_service_id')
+            ->where('lv3_jobs.lv3_service_id', $service_id)->first();
+        return response()->json(['service' => $service]);
+        // if($service_traking_number==1){
+        //     $service=lv3_job::select('lv3_service_id','batch_file_path','execution','job_execution_flag')->where('lv3_service_id',$service_id)->first();
+        // }
+        // if($service_traking_number==2){
+        //     $service=lv3_trigger_file_path::select('lv3_trigger_file_paths.lv3_service_id','lv3_trigger_file_paths.check_folder_path','lv3_trigger_file_paths.path_execution_flag',
+        //     'lv3_jobs.batch_file_path')
+        //     ->join('lv3_jobs','lv3_jobs.lv3_service_id','=','lv3_trigger_file_paths.lv3_service_id')
+        //     ->where('lv3_trigger_file_paths.lv3_service_id',$service_id)->first();
+        // }
+        // if($service_traking_number==3){
+        //     \Log::info($service_id);
+        //     $service=lv3_job::select('lv3_service_id','job_execution_flag','execution','cmn_scenario_id','batch_file_path','append')
+        //     ->where('lv3_jobs.lv3_service_id',$service_id)->first();
+        // }
+        // if($service_traking_number==4){
+        //     $service=lv3_trigger_file_path::select('lv3_service_id','api_folder_path','api_url','path_execution_flag')->where('lv3_service_id',$service_id)->first();
+        // }
+        // if($service_traking_number==5){
+        //     $service=lv3_trigger_file_path::select('lv3_trigger_file_paths.lv3_service_id','lv3_trigger_file_paths.check_folder_path',
+        //     'lv3_jobs.job_execution_flag','lv3_jobs.batch_file_path','lv3_jobs.execution')
+        //     ->join('lv3_jobs','lv3_jobs.lv3_service_id','=','lv3_trigger_file_paths.lv3_service_id')
+        //     ->where('lv3_trigger_file_paths.lv3_service_id',$service_id)->first();
+        // }
+        // if($service_traking_number==6){
+        //     $service=lv3_trigger_file_path::select('lv3_trigger_file_paths.lv3_service_id','lv3_trigger_file_paths.check_folder_path',
+        //     'lv3_jobs.job_execution_flag','lv3_jobs.batch_file_path','lv3_jobs.execution')
+        //     ->join('lv3_jobs','lv3_jobs.lv3_service_id','=','lv3_trigger_file_paths.lv3_service_id')
+        //     ->where('lv3_trigger_file_paths.lv3_service_id',$service_id)->first();
+        // }
+        // return response()->json(['service'=>$service]);
     }
 
     public function historyCreate(Request $request)
     {
-        // return $request->all();
-        // $user_id=$request->user_id;
-        $service_id=$request->service_id;
-        // $execute_name=$request->execute_name;
-        $status=$request->status;
-        $history_message=$request->history_message;
+        $service_id = $request->service_id;
+        $status = $request->status;
+        $history_message = $request->history_message;
 
         $execute_type = $request->process_type;
-        if ($execute_type=="Auto") {
-            $execute_type="自動";
-        }elseif($execute_type=="Manual") {
-            $execute_type="手動";
-        }else{
-            $execute_type="自動";
+        if ($execute_type == "Auto") {
+            $execute_type = "自動";
+        } elseif ($execute_type == "Manual") {
+            $execute_type = "手動";
+        } else {
+            $execute_type = "自動";
         }
-        
+
         lv3_history::insert([
             // 'user_id' => $user_id,
             'lv3_service_id' => $service_id,
@@ -422,32 +427,33 @@ class Level3Controller extends Controller
         return \response()->json(['message' => 'success', 'status_code' => 200, 'class_name' => 'alert-success']);
     }
 
-    public function jobScenario(Request $request){
+    public function jobScenario(Request $request)
+    {
         // return $request->all();
-        $cmn_scenario_id=$request->cmn_scenario_id;
-        $sc=cmn_scenario::where('cmn_scenario_id',$cmn_scenario_id)->first();
+        $cmn_scenario_id = $request->cmn_scenario_id;
+        $sc = cmn_scenario::where('cmn_scenario_id', $cmn_scenario_id)->first();
         // return app_path().'/'.$sc->file_path.'.php';
         // scenario call
-        if (!file_exists(app_path().'/'.$sc->file_path.'.php')) {
-            \Log::error('Scenario file is not exist!:'.$sc->file_path);
-            return ['status'=>'1','message'=>'Scenario file is not exist!'.$sc->file_path];
+        if (!file_exists(app_path() . '/' . $sc->file_path . '.php')) {
+            \Log::error('Scenario file is not exist!:' . $sc->file_path);
+            return ['status' => '1', 'message' => 'Scenario file is not exist!' . $sc->file_path];
         }
         // ファイル読み込み
-        
+
         // $sc_obj = new ouk_order_toj();//$sc->file_path;
         $customClassPath = "\\App\\";
-        $nw_f_pth = explode('/',$sc->file_path);
-        foreach($nw_f_pth as $p){
-            $customClassPath .= $p.'\\';
+        $nw_f_pth = explode('/', $sc->file_path);
+        foreach ($nw_f_pth as $p) {
+            $customClassPath .= $p . '\\';
         }
-        $customClassPath = rtrim($customClassPath,"\\");
+        $customClassPath = rtrim($customClassPath, "\\");
         $sc_obj = new $customClassPath;
         if (!method_exists($sc_obj, 'exec')) {
             \Log::error('scenario exec error');
-            return ['status'=>'1','message'=>'Scenario exec function is not exist!'];
+            return ['status' => '1', 'message' => 'Scenario exec function is not exist!'];
         }
-        $request['byr_order_id']=1;
-        $ret = $sc_obj->exec($request,$sc);
+        $request['byr_order_id'] = 1;
+        $ret = $sc_obj->exec($request, $sc);
         return response()->json($ret);
     }
     public function setScheduleFileData(Request $request)
@@ -476,9 +482,9 @@ class Level3Controller extends Controller
             // save image file to storage
             $file = $request->file('upfile');
             $file_name = $file->getClientOriginalName();
-            
-             $file->storeAs(config('const.TEST_FILE_UPLOAD'), $file_name);
-             return response()->json(['fileName' => $file_name]);
+
+            $file->storeAs(config('const.TEST_FILE_UPLOAD'), $file_name);
+            return response()->json(['fileName' => $file_name]);
             \Log::info('New Image Name' . $file_name);
 
         }
@@ -564,7 +570,7 @@ class Level3Controller extends Controller
             $this->lst_customer_id = $customer_id;
             customer::where('customer_id', $customer_id)->update($customer_array);
         } else {
-            if (customer::where('user_id',$user_id)->where('partner_code', $partner_code)->exists()) {
+            if (customer::where('user_id', $user_id)->where('partner_code', $partner_code)->exists()) {
                 // $this->message='Partner code alrady exists';
                 $this->message = '登録済みの取引先コードです。';
                 $this->status_code = 403;
@@ -582,21 +588,21 @@ class Level3Controller extends Controller
 
         return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'class_name' => $this->class_name, 'flag' => $this->flag, 'lst_customer_id' => $this->lst_customer_id]);
     }
-    
+
     public function deleteCustomer(Request $request)
     {
         $customer_id = $request->customer_id;
         customer::where('customer_id', $customer_id)->delete();
-        $customer_services=service::select('service_id')->where('customer_id',$customer_id)->get();
+        $customer_services = service::select('service_id')->where('customer_id', $customer_id)->get();
         foreach ($customer_services as $key => $customer_service) {
-            service::where('customer_id',$customer_id)->delete();
-            schedule::where('service_id',$customer_service->service_id)->delete();
-            if(file_path::where('service_id',$customer_service->service_id)->exists()){
-                $file_path=file_path::where('service_id',$customer_service->service_id)->first();
-                history::where('file_path_id',$file_path['file_path_id'])->delete();
+            service::where('customer_id', $customer_id)->delete();
+            schedule::where('service_id', $customer_service->service_id)->delete();
+            if (file_path::where('service_id', $customer_service->service_id)->exists()) {
+                $file_path = file_path::where('service_id', $customer_service->service_id)->first();
+                history::where('file_path_id', $file_path['file_path_id'])->delete();
             }
-            file_path::where('service_id',$customer_service->service_id)->delete();
-            job::where('service_id',$customer_service->service_id)->delete();
+            file_path::where('service_id', $customer_service->service_id)->delete();
+            job::where('service_id', $customer_service->service_id)->delete();
         }
         $this->message = '削除が完了しました。';
         $this->status_code = 200;
@@ -606,14 +612,15 @@ class Level3Controller extends Controller
     public function deleteService(Request $request)
     {
         $service_id = $request->service_id;
-        service::where('service_id', $service_id)->delete();
+        lv3_service::where('lv3_service_id', $service_id)->delete();
         $this->message = '削除が完了しました。';
         $this->status_code = 200;
         $this->class_name = 'alert-success';
         return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'class_name' => $this->class_name]);
     }
-    
-    public function job_list(Request $request){
+
+    public function job_list(Request $request)
+    {
         return $request->all();
     }
 }
