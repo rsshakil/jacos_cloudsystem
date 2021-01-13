@@ -326,17 +326,31 @@ class Level3Controller extends Controller
         }
         return response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'class_name' => $this->class_name]);
     }
+    public function lv3ScheduleData(Request $request){
+        $type = $request->type;
+        $schedule_array=array();
+        if ($type==1) {
+            $schedule_array=$this->scheduleTimeData($request);
+        }elseif($type==2){
+            $schedule_array=$this->scheduleDateData($request);
+        }
+        return response()->json(['schedule_date_time_data' => $schedule_array]);
+    }
 
-    public function scheduleTimeData(Request $request)
+    
+    public function scheduleTimeData($request)
     {
+        // return date('w');
         $service_id = $request->service_id;
+        $trigger_execution_time = ($request->trigger_execution_time)/1000;
+        $ret_arr=array();
         $schedule_time_data = lv3_trigger_schedule::select('lv3_trigger_schedule_id', 'weekday', 'time')->where('lv3_service_id', $service_id)
             ->where('weekday', '!=', 0)->get();
 
         $schedule_array = array();
         $active_weekday_array = array();
 
-        if (!empty($schedule_time_data)) {
+        // if (!empty($schedule_time_data)) {
             foreach ($schedule_time_data as $key => $value) {
                 $weekday = str_split($this->all_functions->binary_format($this->all_functions->decimal_to_binary($value->weekday)));
                 $key_day = array_search('1', $weekday);
@@ -356,10 +370,82 @@ class Level3Controller extends Controller
                 $schedule_array[] = $test;
                 $active_weekday_array = [];
             }
+        // }
+        // return $schedule_array;
+        $today=date('w');
+        foreach ($schedule_array as $key => $data) {
+            if (in_array($today,$data['weekday'])) {
+                array_push($ret_arr,$this->dateProcess($data,$trigger_execution_time));
+            }
         }
-        return response()->json(['schedule_time_data' => $schedule_array]);
+        return $ret_arr;
+    }
+    public function scheduleDateData($request){
+        $service_id = $request->service_id;
+        $trigger_execution_time = ($request->trigger_execution_time)/1000;
+        $schedule_date_data = lv3_trigger_schedule::select('lv3_trigger_schedule_id', 'day', 'time','last_day')->where('lv3_service_id', $service_id)
+            ->where('weekday', '=', 0)->get();
+            $ret_arr=array();
+            foreach ($schedule_date_data as $key => $data) {
+                if ($data->last_day==1) {
+                    array_push($ret_arr,$this->dateProcess($data,$trigger_execution_time));
+                }elseif($data->day!= null){
+                    $full_day=strtotime(date('y-m-'.$data->day));
+                    if (strtotime(date('y-m-d'))==$full_day) {
+                        array_push($ret_arr,$this->dateProcess($data,$trigger_execution_time));
+                    }
+                }
+            }
+            // \Log::info($ret_arr);
+            return $ret_arr;
+    }
+    public function dateProcess($data,$trigger_execution_time){
+        $cur_date_time= date('2013-11-13 H:i:s');
+        // $cur_date_time= strtotime($cur_date_time);
+        $advance_time= date("Y-m-d H:i:s", (strtotime($cur_date_time) - $trigger_execution_time));
+        // $advance_date= strtotime($advance_time);
+        $arr_time=date('2013-11-13 H:i:s',strtotime($data['time']));
+        // $arr_time=strtotime();
+        if (strtotime($arr_time)>strtotime($advance_time) && strtotime($arr_time)<=strtotime($cur_date_time)) {
+            return true;
+        }else{
+            return false;
+        }
+
+        // $arr_time=date('y-m-d H:i:s',strtotime($data['time']));
+        // $cur_date_time= date('y-m-d H:i:s');
+
+        // $trigger_execution_sec=$trigger_execution_time%60;
+        // $trigger_execution_min=floor($trigger_execution_time/60);
+        // $trigger_execution_hour=floor($trigger_execution_min/60);
+        // $trigger_execution_day=floor($trigger_execution_hour/12);
+        
+        // $date_diff= $this->dateDiff($arr_time,$cur_date_time);
+        // if ($date_diff['sec']>=$trigger_execution_sec && $date_diff['minutes']<=$trigger_execution_min && $date_diff['hours']<=$trigger_execution_hour && $date_diff['day']<=$trigger_execution_day) { 
+        //     return true;
+        // }else{
+        //     return false;
+        // }
     }
 
+    public function dateDiff($date1,$date2){
+        $t1 = strtotime($date1);
+        $t2 = strtotime($date2);
+
+        $delta_T = ($t2 - $t1);
+
+        $day = round(($delta_T % 604800) / 86400); 
+        $hours = round((($delta_T % 604800) % 86400) / 3600); 
+        $minutes = round(((($delta_T % 604800) % 86400) % 3600) / 60); 
+        $sec = round((((($delta_T % 604800) % 86400) % 3600) % 60));
+
+        return array(
+            'day'=>$day,
+            'hours'=>$hours,
+            'minutes'=>$minutes,
+            'sec'=>$sec,
+        );
+    }
     public function getServiceData(Request $request)
     {
         $service_id = $request->service_id;
