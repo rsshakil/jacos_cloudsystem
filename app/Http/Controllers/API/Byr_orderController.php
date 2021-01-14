@@ -92,11 +92,18 @@ class Byr_orderController extends Controller
                 $search_where.="AND dov.mes_lis_ord_tra_ins_temperature_code='".$temperature."' ";
             }
 
+            // 参照
+            if ($confirmation_status) {
+                // TODO 参照条件作成
+            }
+            // 印刷
             if ($print_cnt=="!0") {
                 $having_var="HAVING print_cnt!=0 ";
             } elseif ($print_cnt!="*") {
                 $having_var="HAVING print_cnt='".$print_cnt."' ";
             }
+
+            // 確定
             if ($decission_cnt=="!0") {
                 if ($having_var) {
                     $having_var.="OR decision_cnt!=0";

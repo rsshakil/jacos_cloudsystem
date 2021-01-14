@@ -29,6 +29,23 @@ trait Csv
      * @param $filepath
      * @param $records
      */
+    public static function writeAll($filePath, $dataArray)
+    {
+        $result = fopen($filePath, 'a');
+
+        // ファイルに書き出し
+        foreach ($dataArray as $values) {
+            fputcsv($result, $values);
+        }
+
+        fclose($result);
+    }
+
+    /**
+     * CSVファイルに書き出す
+     * @param $filepath
+     * @param $records
+     */
     public static function write($filePath, $records)
     {
         $result = fopen($filePath, 'a');

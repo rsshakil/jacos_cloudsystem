@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
@@ -24,41 +25,38 @@ class Cmn_ScenarioController extends Controller
     public function exec(Request $request)
     {
         \Log::debug('scenario exec start---------------');
-        $cmn_scenario_id=$request->scenario_id;
-        \Log::debug('scenario_id:'.$cmn_scenario_id);
-        $this->sc_history_array['cmn_scenario_id']=$request->scenario_id;
-        if (array_key_exists('order_id', $request->all())) {
-            $this->sc_history_array['byr_order_id']=$request->order_id;
-            // $this->byr_order_id = $request->order_id;
-        }
-        if (array_key_exists('job_id', $request->all())) {
-            // $this->cmn_job_id = $request->job_id;
-            $this->sc_history_array['cmn_job_id']=$request->job_id;
+
+        // user authentication
+        // Auth::logout();
+        if (!Auth::user()) {
+            $this->validate($request, ['email' => 'required|email', 'password' => 'required']);
+            $user = ['email' => $request->get('email'),'password'=>$request->get('password')];
+            if (!Auth::attempt($user)) {
+                // ログインエラー
+                self::history_create('error', "User Name Error");
+                return ['status'=>1, 'message' => 'Authentication faild!'];
+            }
+            // ログイン成功
+            \Log::debug(Auth::user());
         }
 
-        $user = DB::table('adm_users')->where('email', $request->email)->first();
-        if (!$user) {
-            self::history_create('error', "User Name Error");
-            return ['status'=>1, 'message' => 'Authentication faild!'];
-        }
-        if (!\Hash::check($request->password, $user->password)) {
-            self::history_create('error', "Password Error");
-            return ['status'=>1, 'message' => 'Authentication faild!'];
-        }
-        $this->sc_history_array['adm_user_id']=$user->id;
+        // シナリオ
+        $cmn_scenario_id=$request->scenario_id;
+        \Log::debug('scenario_id:'.$cmn_scenario_id);
+
+        $this->sc_history_array['adm_user_id']=Auth::id();
         // scenario info check
         $sc = cmn_scenario::where('cmn_scenario_id', $cmn_scenario_id)->first();
         \Log::info($sc);
         if (!empty($sc)) {
-            // scenario call
+            // シナリオファイル存在チェック
             if (!file_exists(app_path().'/'.$sc->file_path.'.php')) {
                 \Log::error('Scenario file is not exist!:'.$sc->file_path);
                 self::history_create('error', 'Scenario file is not exist!'.$sc->file_path);
                 return ['status'=>'1','message'=>'Scenario file is not exist!'.$sc->file_path];
             }
+
             // ファイル読み込み
-        
-            // $sc_obj = new ouk_order_toj();//$sc->file_path;
             $customClassPath = "\\App\\";
             $nw_f_pth = explode('/', $sc->file_path);
             foreach ($nw_f_pth as $p) {
@@ -66,12 +64,16 @@ class Cmn_ScenarioController extends Controller
             }
             $customClassPath = rtrim($customClassPath, "\\");
             $sc_obj = new $customClassPath;
-            // シナリオ実行
+
+            // シナリオ実行function存在チェック
             if (!method_exists($sc_obj, 'exec')) {
+                // exec functionが存在しない場合
                 \Log::error('scenario exec error');
                 self::history_create('error', "Scenario exec function is not exist!");
                 return ['status'=>'1','message'=>'Scenario exec function is not exist!'];
             }
+
+            // シナリオ実行
             $ret = $sc_obj->exec($request, $sc);
             // if ($ret !== 0) {
             //     // error
