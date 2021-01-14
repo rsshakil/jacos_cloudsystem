@@ -343,6 +343,7 @@ class Level3Controller extends Controller
         // return date('w');
         $service_id = $request->service_id;
         $trigger_execution_time = ($request->trigger_execution_time)/1000;
+        $today=date('w');
         $ret_arr=array();
         $schedule_time_data = lv3_trigger_schedule::select('lv3_trigger_schedule_id', 'weekday', 'time')->where('lv3_service_id', $service_id)
             ->where('weekday', '!=', 0)->get();
@@ -368,16 +369,19 @@ class Level3Controller extends Controller
                 // $test['disabled'] = $value->disabled;
                 $test['original_weekday'] = $value->weekday;
                 $schedule_array[] = $test;
+                if (in_array($today,$test['weekday'])) {
+                    array_push($ret_arr,$this->dateProcess($value,$trigger_execution_time));
+                }
                 $active_weekday_array = [];
             }
         // }
         // return $schedule_array;
-        $today=date('w');
-        foreach ($schedule_array as $key => $data) {
-            if (in_array($today,$data['weekday'])) {
-                array_push($ret_arr,$this->dateProcess($data,$trigger_execution_time));
-            }
-        }
+        
+        // foreach ($schedule_array as $key => $data) {
+        //     if (in_array($today,$data['weekday'])) {
+        //         array_push($ret_arr,$this->dateProcess($data,$trigger_execution_time));
+        //     }
+        // }
         return $ret_arr;
     }
     public function scheduleDateData($request){
