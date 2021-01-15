@@ -124,6 +124,16 @@ class cmn_scenarioSeeder extends Seeder
                 'description' => 'order data for download',
                 'file_path' => 'Scenarios/order/Order_download',
             ],
+            [
+                'byr_buyer_id' => 1,
+                'slr_seller_id' => 0,
+                'adm_role_id' => 5,
+                'class' => 'order',
+                'vector' => 'to_jacos',
+                'name' => 'LEVEL3_TEST_SCENARIO',
+                'description' => 'LEVEL3_TEST_SCENARIO',
+                'file_path' => 'Scenarios/LV3/level3_test_scenario',
+            ],
         );
         cmn_scenario::insert($scenarios);
     }

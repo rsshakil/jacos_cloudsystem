@@ -15,6 +15,7 @@ use App\Models\Lv3\lv3_trigger_schedule;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\API\Cmn_ScenarioController;
 
 class Level3Controller extends Controller
 {
@@ -176,7 +177,7 @@ class Level3Controller extends Controller
             }
         }
         $file_path_info = $this->getFilePath($user_id, $service_id);
-        $job_info = lv3_job::select('lv3_job_id', 'lv3_service_id', 'job_execution_flag',
+        $job_info = lv3_job::select('lv3_job_id', 'lv3_service_id', 'job_execution_flag','cmn_scenario_id',
             'execution', 'batch_file_path', 'next_service_id', 'append')
             ->where('lv3_service_id', $service_id)->first();
 
@@ -519,32 +520,16 @@ class Level3Controller extends Controller
 
     public function jobScenario(Request $request)
     {
-        // return $request->all();
-        $cmn_scenario_id = $request->cmn_scenario_id;
-        $sc = cmn_scenario::where('cmn_scenario_id', $cmn_scenario_id)->first();
-        // return app_path().'/'.$sc->file_path.'.php';
-        // scenario call
-        if (!file_exists(app_path() . '/' . $sc->file_path . '.php')) {
-            \Log::error('Scenario file is not exist!:' . $sc->file_path);
-            return ['status' => '1', 'message' => 'Scenario file is not exist!' . $sc->file_path];
-        }
-        // ファイル読み込み
-
-        // $sc_obj = new ouk_order_toj();//$sc->file_path;
-        $customClassPath = "\\App\\";
-        $nw_f_pth = explode('/', $sc->file_path);
-        foreach ($nw_f_pth as $p) {
-            $customClassPath .= $p . '\\';
-        }
-        $customClassPath = rtrim($customClassPath, "\\");
-        $sc_obj = new $customClassPath;
-        if (!method_exists($sc_obj, 'exec')) {
-            \Log::error('scenario exec error');
-            return ['status' => '1', 'message' => 'Scenario exec function is not exist!'];
-        }
-        $request['byr_order_id'] = 1;
-        $ret = $sc_obj->exec($request, $sc);
-        return response()->json($ret);
+        $cs = new Cmn_ScenarioController();
+            $ret = $cs->exec($request);
+            \Log::debug($ret->getContent());
+            $ret = json_decode($ret->getContent(), true);
+            if (1 === $ret['status']) {
+                // sceanario exec error
+                \Log::error($ret['message']);
+                return $ret;
+            }
+            return response()->json($ret);
     }
     public function setScheduleFileData(Request $request)
     {
