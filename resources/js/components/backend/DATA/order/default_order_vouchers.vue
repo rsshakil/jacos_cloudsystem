@@ -96,17 +96,21 @@
         <div class="row">
           <div class="col-5">
             <p>
-              <span class="tableRowsInfo">1〜5 件表示中／全：100件</span>
+              <span class="tableRowsInfo">1〜{{order_detail_lists.per_page}} 件表示中／全：{{order_detail_lists.total}}件</span>
               <span class="pagi"
-                ><b-pagination
-                  v-model="currentPage"
-                  :total-rows="rows"
-                  size="sm"
-                ></b-pagination
-              ></span>
+                >
+              <advanced-laravel-vue-paginate :data="order_detail_lists" 
+              :onEachSide="2"
+              previousText="<"
+              nextText=">"
+              alignment="center"
+                @paginateTo="get_all_byr_order_detail"/>
+              </span>
               <span class="selectPagi">
                 <select class="form-control selectPage">
                   <option>表示行数</option>
+                  <option v-for="n in order_detail_lists.last_page" :key="n"
+                :value="n">{{n}}</option>
                 </select>
               </span>
             </p>
@@ -175,11 +179,11 @@
             </thead>
             <tbody>
               <tr
-                v-for="(order_detail_list, index) in order_detail_lists"
+                v-for="(order_detail_list, index) in order_detail_lists.data"
                 :key="index"
               >
                 <td>{{ index + 1 }}</td>
-                <td>{{ order_detail_list.decision_datetime }}</td>
+                <td><span v-if="order_detail_list.decision_datetime!=null">済</span><span v-else><input  type="checkbox" v-model="order_detail_list.byr_order_detail_id"></span></td>
                 <td>{{ order_detail_list.mes_lis_shi_par_shi_code }}</td>
                 <td>
                   {{ order_detail_list.mes_lis_shi_par_rec_code }}
@@ -362,7 +366,13 @@
   </div>
 </template>
 <script>
+import AdvancedLaravelVuePaginate from 'advanced-laravel-vue-paginate';
+import 'advanced-laravel-vue-paginate/dist/advanced-laravel-vue-paginate.css'
+
 export default {
+  components: {
+        AdvancedLaravelVuePaginate
+    },
   // props: ["param_data"],
   data() {
     return {
@@ -485,14 +495,16 @@ export default {
         });
     },
     //get Table data
-    get_all_byr_order_detail() {
+    get_all_byr_order_detail(page = 1) {
+      this.param_data['page']=page;
       axios
         .post(this.BASE_URL + "api/order_details", this.param_data)
         .then(({ data }) => {
-          // console.log(data);
+        console.log(data);
           this.order_detail_lists = data.order_list_detail;
           this.order_item_lists = data.orderItem;
           this.loader.hide();
+          console.log(this.order_detail_lists);
           // return 0;
           // // this.order_detail_lists = data.data.order_list_detail;
           // this.show_hide_col_list = data.data.slected_list;

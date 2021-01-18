@@ -184,40 +184,73 @@ class Byr_orderController extends Controller
         $delivery_date=$request->delivery_date;
         $delivery_service_code=$request->delivery_service_code;
         $major_category=$request->major_category;
-        $temperature_code=$request->temperature_code;
+         $temperature_code=$request->temperature_code;
+         $temperature_code = $temperature_code==null?'':$temperature_code;
 
         // return $request->all();
+        
         // $result=DB::select("
         // ");
-        $result=DB::select("
-        SELECT
-        dsv.mes_lis_shi_tra_dat_delivery_date,
-        dsv.mes_lis_shi_tra_goo_major_category,
-        dsv.mes_lis_shi_log_del_delivery_service_code,
-        dsv.mes_lis_shi_tra_ins_temperature_code,
-        dsv.decision_datetime,
-        dsv.mes_lis_shi_par_shi_code,
-        dsv.mes_lis_shi_par_rec_code,
-        dsv.mes_lis_shi_par_rec_name,
-        dsv.mes_lis_shi_tra_trade_number,
-        dsv.mes_lis_shi_tra_ins_goods_classification_code,
-        dsv.mes_lis_shi_tot_tot_net_price_total,
-        dsv.`status`,
-        dsv.updated_at,
-        dsv.print_datetime,
-        dsv.send_datetime
-        FROM data_shipments AS ds
-        inner join data_shipment_vouchers AS dsv ON ds.data_shipment_id=dsv.data_shipment_id
-        INNER JOIN data_shipment_items AS dsi ON dsi.data_shipment_voucher_id = dsv.data_shipment_voucher_id
-        WHERE
-        ds.data_order_id='$data_order_id' AND
-        dsv.mes_lis_shi_tra_dat_delivery_date= '$delivery_date' AND
-        dsv.mes_lis_shi_tra_goo_major_category = '$major_category' AND
-        dsv.mes_lis_shi_log_del_delivery_service_code = '$delivery_service_code' AND
-        dsv.mes_lis_shi_tra_ins_temperature_code = '$temperature_code'
-        GROUP BY dsv.mes_lis_shi_tra_trade_number
-        ");
-        
+        // $result=DB::select("
+        // SELECT
+        // dsv.mes_lis_shi_tra_dat_delivery_date,
+        // dsv.mes_lis_shi_tra_goo_major_category,
+        // dsv.mes_lis_shi_log_del_delivery_service_code,
+        // dsv.mes_lis_shi_tra_ins_temperature_code,
+        // dsv.decision_datetime,
+        // dsv.mes_lis_shi_par_shi_code,
+        // dsv.mes_lis_shi_par_rec_code,
+        // dsv.mes_lis_shi_par_rec_name,
+        // dsv.mes_lis_shi_tra_trade_number,
+        // dsv.mes_lis_shi_tra_ins_goods_classification_code,
+        // dsv.mes_lis_shi_tot_tot_net_price_total,
+        // dsv.`status`,
+        // dsv.updated_at,
+        // dsv.print_datetime,
+        // dsv.send_datetime
+        // FROM data_shipments AS ds
+        // inner join data_shipment_vouchers AS dsv ON ds.data_shipment_id=dsv.data_shipment_id
+        // INNER JOIN data_shipment_items AS dsi ON dsi.data_shipment_voucher_id = dsv.data_shipment_voucher_id
+        // WHERE
+        // ds.data_order_id='$data_order_id' AND
+        // dsv.mes_lis_shi_tra_dat_delivery_date= '$delivery_date' AND
+        // dsv.mes_lis_shi_tra_goo_major_category = '$major_category' AND
+        // dsv.mes_lis_shi_log_del_delivery_service_code = '$delivery_service_code' AND
+        // dsv.mes_lis_shi_tra_ins_temperature_code = '$temperature_code'
+        // GROUP BY dsv.mes_lis_shi_tra_trade_number
+        // ");
+        // echo '<pre>';
+        // print_r($result);exit;
+
+        $result = DB::table('data_shipments as ds')
+        ->select(
+        'dsv.mes_lis_shi_tra_dat_delivery_date',
+        'dsv.mes_lis_shi_tra_goo_major_category',
+        'dsv.mes_lis_shi_log_del_delivery_service_code',
+        'dsv.mes_lis_shi_tra_ins_temperature_code',
+        'dsv.decision_datetime',
+        'dsv.mes_lis_shi_par_shi_code',
+        'dsv.mes_lis_shi_par_rec_code',
+        'dsv.mes_lis_shi_par_rec_name',
+        'dsv.mes_lis_shi_tra_trade_number',
+        'dsv.mes_lis_shi_tra_ins_goods_classification_code',
+        'dsv.mes_lis_shi_tot_tot_net_price_total',
+        'dsv.status',
+        'dsv.updated_at',
+        'dsv.print_datetime',
+        'dsv.send_datetime'
+        )
+        ->join('data_shipment_vouchers as dsv', 'dsv.data_shipment_id', '=', 'ds.data_shipment_id')
+        ->join('data_shipment_items as dsi', 'dsi.data_shipment_voucher_id', '=', 'dsv.data_shipment_voucher_id')
+        ->where('ds.data_order_id', $data_order_id)
+        ->where('dsv.mes_lis_shi_tra_dat_delivery_date', $delivery_date)
+        ->where('dsv.mes_lis_shi_tra_goo_major_category', $major_category)
+        ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $delivery_service_code)
+        ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $temperature_code)
+        ->groupBy('dsv.mes_lis_shi_tra_trade_number')
+        ->paginate(10);
+        // echo '<pre>';
+        // print_r($result);exit;
         $orderItem=collect(\DB::select("
         SELECT * FROM data_order_items 
         inner join data_order_vouchers on data_order_vouchers.data_order_voucher_id=data_order_items.data_order_voucher_id

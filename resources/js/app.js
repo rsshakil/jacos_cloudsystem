@@ -155,6 +155,9 @@ Vue.component('v-popover', VPopover)
 import CKEditor from '@ckeditor/ckeditor5-vue';
 Vue.use(CKEditor);
 
+import 'advanced-laravel-vue-paginate/dist/advanced-laravel-vue-paginate.css'
+Vue.use(require('advanced-laravel-vue-paginate'));
+
 
 
 var router = new VueRouter({
