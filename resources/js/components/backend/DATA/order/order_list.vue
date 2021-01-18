@@ -343,7 +343,7 @@ export default {
     orderDownload() {
       console.log("download start");
       let formData = new FormData();
-      formData.append("cmn_scenario_id", 11);
+      formData.append("scenario_id", 11);
       formData.append("byr_buyer_id", this.$session.get("byr_buyer_id"));
       axios({
         method: "POST",

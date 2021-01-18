@@ -71,14 +71,14 @@ class Order_download extends Model
             \Log::debug('download format scenario:'.$cmn_scenario_id);
 
             // 実行中シナリオチェック(無限ループ回避)
-            if ($cmn_scenario_id === $request->cmn_scenario_id) {
+            if ($cmn_scenario_id === $request->scenario_id) {
                 \Log::error('Can not use same scenario:'.$cmn_scenario_id);
                 return ['status'=>1, 'message' => 'Can not use same scenario:'.$cmn_scenario_id];
             }
 
             $req2 = $request;
             $req2->merge([
-                'cmn_scenario_id' => $cmn_scenario_id,
+                'scenario_id' => $cmn_scenario_id,
             ]);
 
             // シナリオ実行
