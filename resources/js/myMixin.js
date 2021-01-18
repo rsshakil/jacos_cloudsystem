@@ -20,7 +20,7 @@ export default {
             selected_buyer: [],
             sellers: [],
             selected_seller: [],
-            // loader: "",
+            loader: "",
         };
     },
     methods: {
@@ -59,10 +59,14 @@ export default {
             return this.global_image_path;
         },
         logout() {
+            this.loader =Vue.$loading.show()
             this.app.req.post(this.BASE_URL + "logout").then(() => {
                 // this.app.user=null;
                 // this.$router.push('/login');
+                
                 window.location.reload();
+                this.$router.push("home");
+                his.loader.hide();
             });
         },
         display_table_col_setting() {

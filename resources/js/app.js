@@ -165,10 +165,11 @@ var router = new VueRouter({
     base: "/jcs"
 });
 router.onReady(() => {
-    if(router.currentRoute.path!="/home"){
+    if(Globals.user_info_id=='' && router.currentRoute.path!="/home"){
         router.push("home")
     }
   });
+  
 import App from "./components/backend/app.vue";
 import { nextTick } from "q";
 
