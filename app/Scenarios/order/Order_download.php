@@ -33,7 +33,7 @@ class Order_download extends Model
         // job_id指定の場合はjob_id実行
         // ダウンロードデータ取得
 
-        \Log::debug($request->session()->has('byr_buyer_id'));
+        \Log::debug($request->all());
         // セッション確認
         if ($request->session()->has('byr_buyer_id')) {
             // セッションよりbyr_buyer_id
@@ -67,24 +67,25 @@ class Order_download extends Model
             // ダウンロード形式指定
             \Log::debug(json_decode($cc->optional, true));
             // シナリオID取得
-            $scenario_id = json_decode($cc->optional, false)->order->download;
-            \Log::debug('download format scenario:'.$scenario_id);
+            $cmn_scenario_id = json_decode($cc->optional, false)->order->download;
+            \Log::debug('download format scenario:'.$cmn_scenario_id);
 
             // 実行中シナリオチェック(無限ループ回避)
-            if ($scenario_id === $request->scenario_id) {
-                \Log::error('Can not use same scenario:'.$scenario_id);
-                return ['status'=>1, 'message' => 'Can not use same scenario:'.$scenario_id];
+            if ($cmn_scenario_id === $request->cmn_scenario_id) {
+                \Log::error('Can not use same scenario:'.$cmn_scenario_id);
+                return ['status'=>1, 'message' => 'Can not use same scenario:'.$cmn_scenario_id];
             }
 
             $req2 = $request;
             $req2->merge([
-                'scenario_id' => $scenario_id,
+                'cmn_scenario_id' => $cmn_scenario_id,
             ]);
 
             // シナリオ実行
             $cs = new Cmn_ScenarioController();
             $ret = $cs->exec($req2);
             \Log::debug($ret->getContent());
+            // \Log::debug($ret->getContent());
             $ret = json_decode($ret->getContent(), true);
             if (1 === $ret['status']) {
                 // sceanario exec error
@@ -94,9 +95,11 @@ class Order_download extends Model
             $fileName = $ret['file_name'];
             $filePath = $ret['file_path'];
             $headers = [
-                'Content-Type' => 'text',
+                'Content-Type' => 'text/plain;charset=Shift_JIS',
                 'Content-Disposition' => 'attachment; filename="'.$fileName .'"'
             ];
+
+            return ['file_link'=>$ret['url']];
         } else {
             // デフォルトCSV形式
             $od = Data_Controller::get_order_data($request);
@@ -110,9 +113,9 @@ class Order_download extends Model
             ];
         }
 
-        \Log::debug(get_class().' exec end    ---------------');
         \Log::debug($filePath);
-        \Log::debug(file_get_contents($filePath));
+        // \Log::debug(file_get_contents($filePath));
+        \Log::debug(get_class().' exec end    ---------------');
         // return response()->streamDownload(function () {
         //     file_get_contents('C:\\mylog.log');
         // }, 200, $headers);

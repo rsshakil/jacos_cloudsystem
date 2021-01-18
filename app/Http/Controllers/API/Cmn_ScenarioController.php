@@ -41,8 +41,8 @@ class Cmn_ScenarioController extends Controller
         }
 
         // シナリオ
-        $cmn_scenario_id=$request->scenario_id;
-        \Log::debug('scenario_id:'.$cmn_scenario_id);
+        $cmn_scenario_id=$request->cmn_scenario_id;
+        \Log::debug('cmn_scenario_id:'.$cmn_scenario_id);
 
         $this->sc_history_array['adm_user_id']=Auth::id();
         // scenario info check

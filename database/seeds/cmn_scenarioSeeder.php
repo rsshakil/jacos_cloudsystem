@@ -82,7 +82,7 @@ class cmn_scenarioSeeder extends Seeder
                 'vector' => 'to_jacos',
                 'name' => 'ORDER FIXED LENGT GENERATE',
                 'description' => 'BMS ORDER FIXED LENGT GENERATE',
-                'file_path' => 'Scenarios/fixed_length_generate',
+                'file_path' => 'Scenarios/byr/OUK/fixed_length_generate',
             ],
             [
                 'byr_buyer_id' => 1,

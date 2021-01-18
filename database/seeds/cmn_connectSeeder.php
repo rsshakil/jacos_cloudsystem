@@ -20,7 +20,7 @@ class cmn_connectSeeder extends Seeder
                 'slr_ware_house_id'=>0,
                 'partner_code'=>'010690',
                 'is_active'=>1,
-                'optional'=>'{"order":{"download":"11"}}',
+                'optional'=>'{"order":{"download":"7"}}',
             ],[
                 'byr_buyer_id'=>1,
                 'byr_shop_id'=>0,
@@ -28,7 +28,7 @@ class cmn_connectSeeder extends Seeder
                 'slr_ware_house_id'=>0,
                 'partner_code'=>'010540',
                 'is_active'=>1,
-                'optional'=>'{"order":{"download":"11"}}',
+                'optional'=>'{"order":{"download":"7"}}',
             ],[
                 'byr_buyer_id'=>1,
                 'byr_shop_id'=>0,
@@ -36,7 +36,7 @@ class cmn_connectSeeder extends Seeder
                 'slr_ware_house_id'=>0,
                 'partner_code'=>'011980',
                 'is_active'=>1,
-                'optional'=>'{"order":{"download":"11"}}',
+                'optional'=>'{"order":{"download":"7"}}',
             ],[
                 'byr_buyer_id'=>1,
                 'byr_shop_id'=>0,
@@ -44,7 +44,7 @@ class cmn_connectSeeder extends Seeder
                 'slr_ware_house_id'=>0,
                 'partner_code'=>'012060',
                 'is_active'=>1,
-                'optional'=>'{"order":{"download":"11"}}',
+                'optional'=>'{"order":{"download":"7"}}',
             ],
             [
                 'byr_buyer_id'=>2,
@@ -53,7 +53,7 @@ class cmn_connectSeeder extends Seeder
                 'slr_ware_house_id'=>0,
                 'partner_code'=>'012060',
                 'is_active'=>1,
-                'optional'=>'{"order":{"download":"11"}}',
+                'optional'=>'{"order":{"download":"7"}}',
             ],
             [
                 'byr_buyer_id'=>2,
@@ -71,7 +71,7 @@ class cmn_connectSeeder extends Seeder
                 'slr_ware_house_id'=>0,
                 'partner_code'=>'012060',
                 'is_active'=>1,
-                'optional'=>'{"order":{"download":"11"}}',
+                'optional'=>'{"order":{"download":"7"}}',
             ],
             [
                 'byr_buyer_id'=>2,
@@ -89,7 +89,7 @@ class cmn_connectSeeder extends Seeder
                 'slr_ware_house_id'=>0,
                 'partner_code'=>'012060',
                 'is_active'=>1,
-                'optional'=>'{"order":{"download":"11"}}',
+                'optional'=>'{"order":{"download":"7"}}',
             ],
             [
                 'byr_buyer_id'=>3,
@@ -98,7 +98,7 @@ class cmn_connectSeeder extends Seeder
                 'slr_ware_house_id'=>0,
                 'partner_code'=>'012060',
                 'is_active'=>1,
-                'optional'=>'{"order":{"download":"11"}}',
+                'optional'=>'{"order":{"download":"7"}}',
             ],
             [
                 'byr_buyer_id'=>3,
@@ -107,7 +107,7 @@ class cmn_connectSeeder extends Seeder
                 'slr_ware_house_id'=>0,
                 'partner_code'=>'012060',
                 'is_active'=>1,
-                'optional'=>'{"order":{"download":"11"}}',
+                'optional'=>'{"order":{"download":"7"}}',
             ],
             [
                 'byr_buyer_id'=>3,
@@ -116,7 +116,7 @@ class cmn_connectSeeder extends Seeder
                 'slr_ware_house_id'=>0,
                 'partner_code'=>'012060',
                 'is_active'=>1,
-                'optional'=>'{"order":{"download":"11"}}',
+                'optional'=>'{"order":{"download":"7"}}',
             ]
         );
         App\Models\CMN\cmn_connect::insert($cmn_connect);

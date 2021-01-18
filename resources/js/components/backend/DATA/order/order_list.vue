@@ -343,19 +343,36 @@ export default {
     orderDownload() {
       console.log("download start");
       let formData = new FormData();
-      formData.append("up_file", this.file);
-      formData.append("email", "user@jacos.co.jp");
-      formData.append("password", "Qe75ymSr");
-      formData.append("cmn_job_id", 1);
+      formData.append("cmn_scenario_id", 11);
+      formData.append("byr_buyer_id", this.$session.get("byr_buyer_id"));
       axios({
         method: "POST",
-        url: this.BASE_URL + "api/job_exec",
+        url: this.BASE_URL + "api/scenario_exec",
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
       })
         .then(function (response) {
           //handle success
           console.log(response);
+          // const url = window.URL.createObjectURL(new Blob([response.data]));
+          const url = response.data.file_link;
+          console.log(url);
+          const link = document.createElement("a");
+          link.href = url;
+
+          //レスポンスヘッダからファイル名を取得します
+          // const contentDisposition = response.headers["content-disposition"];
+          // let fileName = contentDisposition.substring(
+          //   contentDisposition.indexOf("filename=") + 9,
+          //   contentDisposition.length
+          // );
+          // //デコードするとスペースが"+"になるのでスペースへ置換します
+          // fileName = decodeURI(fileName).replace(/\+/g, " ");
+          let fileName = url.match(".+/(.+?)([?#;].*)?$")[1];
+          console.log(fileName);
+          link.setAttribute("download", fileName);
+          document.body.appendChild(link);
+          link.click();
           Fire.$emit("LoadByrorder");
         })
         .catch(function (response) {

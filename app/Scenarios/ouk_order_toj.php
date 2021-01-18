@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Scenarios;
+
 use App\Scenarios\Common;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\BYR\byr_order_detail;
@@ -85,13 +86,13 @@ class ouk_order_toj extends Model
     ];
 
     //
-    public function exec($request,$sc)
+    public function exec($request, $sc)
     {
         // include(app_path() . '/scenarios/common.php');
         \Log::debug('ouk_order_toj exec start  ---------------');
         // ファイルアップロード
         // echo $request->file('up_file');exit;
-       $file_name = $request->file('up_file')->getClientOriginalName();
+        $file_name = $request->file('up_file')->getClientOriginalName();
         $path = $request->file('up_file')->storeAs(config('const.ORDER_DATA_PATH').date('Y-m'), $file_name);
         \Log::debug('save path:'.$path);
         // $custom_paths = storage_path().'/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name;
@@ -100,7 +101,7 @@ class ouk_order_toj extends Model
         // フォーマット変換
         // byr_orders,byr_order_details格納
         // $get_string = $this->common_class_obj->ebcdic_2_sjis($received_path,0);
-        $get_string = $this->common_class_obj->ebcdic_2_sjis($received_path,null);
+        $get_string = $this->common_class_obj->ebcdic_2_sjis($received_path, null);
         // $get_string = mb_convert_encoding($get_string, "UTF-8", "SJIS");
         $get_string = $this->all_functions->convert_from_sjis_to_utf8_recursively($get_string);
         // echo $get_string;exit;
@@ -132,21 +133,21 @@ class ouk_order_toj extends Model
         $byr_order_id = byr_order::insertGetId(['receive_file_path'=>$received_path,'cmn_connect_id'=>$sc->cmn_connect_id]);
         $byr_shipment_id = byr_shipment::insertGetId(['send_file_path'=>$received_path,'cmn_connect_id'=>$sc->cmn_connect_id]);
         $cnt = 0;
-        if($insert_array_b){
+        if ($insert_array_b) {
             $voucher_list = array();
             $insert_detail = array();
             $total = 0;
-            foreach($insert_array_b as $value){
-                    $voucher_list['byr_order_id']=$byr_order_id;
-                    $voucher_list['voucher_number']=$value['voucher_number'];
-                    $voucher_list['category_code']=$value['category_code'];
-                    $voucher_list['voucher_category']=$value['voucher_category'];
-                    $voucher_list['other_info']=$value['other_info'];
-                    $voucher_list['expected_delivery_date']=$value['expected_delivery_date'];
-                    $voucher_list['order_date']=$value['order_date'];
-                    $voucher_list['delivery_service_code']=$value['delivery_service_code'];
-                    $byr_order_voucher_id = byr_order_voucher::insertGetId($voucher_list);
-                foreach($value['item_data'] as $item){
+            foreach ($insert_array_b as $value) {
+                $voucher_list['byr_order_id']=$byr_order_id;
+                $voucher_list['voucher_number']=$value['voucher_number'];
+                $voucher_list['category_code']=$value['category_code'];
+                $voucher_list['voucher_category']=$value['voucher_category'];
+                $voucher_list['other_info']=$value['other_info'];
+                $voucher_list['expected_delivery_date']=$value['expected_delivery_date'];
+                $voucher_list['order_date']=$value['order_date'];
+                $voucher_list['delivery_service_code']=$value['delivery_service_code'];
+                $byr_order_voucher_id = byr_order_voucher::insertGetId($voucher_list);
+                foreach ($value['item_data'] as $item) {
                     $order_quantity = $item['order_quantity'];
                     $insert_detail['byr_order_voucher_id']=$byr_order_voucher_id;
                     $insert_detail['list_number']=$item['list_number'];
@@ -163,15 +164,15 @@ class ouk_order_toj extends Model
                     
                     $total++;
                 }
-                
             }
-            byr_order::where('byr_order_id',$byr_order_id)->update(['data_count'=>$total]);
+            byr_order::where('byr_order_id', $byr_order_id)->update(['data_count'=>$total]);
         }
         echo '<pre>';
         print_r($temp);
         // print_r($insert_array_d);
         exit;
-        echo 'save path:'.$path;exit;
+        echo 'save path:'.$path;
+        exit;
 
 
 
@@ -270,14 +271,14 @@ class ouk_order_toj extends Model
     {
         $d='';
         $list_number='';
-       $jan='';
+        $jan='';
         $inputs='';
-         $order_inputs='';
+        $order_inputs='';
         $order_quantity='';
         $item_name_kana='';
-         $cost_price='';
+        $cost_price='';
         $selling_price='';
-         $cost_unit_price='';
+        $cost_unit_price='';
         $selling_unit_price='';
         for ($j = 0; $j < count($all_array); $j++) {
             if ($j == 0) {
@@ -305,18 +306,18 @@ class ouk_order_toj extends Model
             }
         }
         $str = str_split($cost_unit_price, strlen($cost_unit_price) - 2);
-$new_cost_unit_price = $str[0].'.'.$str[1];
+        $new_cost_unit_price = $str[0].'.'.$str[1];
         $insert_array_d = array(
             'list_number' => $list_number,
             'jan' => $jan,
-            'inputs' => ltrim($inputs,'0'),
+            'inputs' => ltrim($inputs, '0'),
             'order_inputs' => 'バラ',
-            'order_quantity' => ltrim($order_quantity,'0'),
+            'order_quantity' => ltrim($order_quantity, '0'),
             'item_name_kana' => $item_name_kana,
-            'cost_price' => ltrim($cost_price,'0'),
-            'selling_price' => ltrim($selling_price,'0'),
-            'cost_unit_price' => ltrim($new_cost_unit_price,'0'),
-            'selling_unit_price' => ltrim($selling_unit_price,'0'),
+            'cost_price' => ltrim($cost_price, '0'),
+            'selling_price' => ltrim($selling_price, '0'),
+            'cost_unit_price' => ltrim($new_cost_unit_price, '0'),
+            'selling_unit_price' => ltrim($selling_unit_price, '0'),
         );
         return $insert_array_d;
     }
