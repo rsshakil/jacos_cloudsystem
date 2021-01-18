@@ -69,6 +69,7 @@
           <td class="cl_custom_color">便</td>
           <td style="width: 10%; text-align: center">
             <select class="form-control" v-model="form.delivery_service_code">
+            
               <option
                 v-for="(dsc, i) in json_delivery_service_code"
                 :key="i"
@@ -85,6 +86,7 @@
           <td class="cl_custom_color">{{ myLang.temperature }}</td>
           <td style="width: 15%">
             <select class="form-control" v-model="form.temperature">
+            <option value="00">無指定</option>
               <option
                 v-for="(temp, i) in json_temperature_code"
                 :key="i"
@@ -309,8 +311,8 @@ export default {
         delivery_date_to: null,
         check_datetime: null,
         // check_datetime:new Date().toISOString().slice(0, 10),
-        delivery_service_code: "01",
-        temperature: "01",
+        delivery_service_code: "00",
+        temperature: "00",
         // confirmation_status:1,
         print_cnt: "*",
         decission_cnt: "*",
@@ -330,6 +332,7 @@ export default {
           this.buyer_settings = JSON.parse(data.buyer_settings);
           this.json_temperature_code = this.buyer_settings.orders.mes_lis_ord_tra_ins_temperature_code;
           this.json_delivery_service_code = this.buyer_settings.orders.mes_lis_ord_log_del_delivery_service_code;
+          console.log(this.json_delivery_service_code );
           // console.log(this.buyer_settings.orders.mes_lis_ord_tra_ins_temperature_code);
           this.loader.hide();
         });
