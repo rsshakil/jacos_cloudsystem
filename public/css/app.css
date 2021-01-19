@@ -11193,6 +11193,12 @@ input:checked + .slider:before {
   border: 1px solid #ddd;
 }
 
+.first_heading_th th {
+  background: none !important;
+  border: none !important;
+  color: #000 !important;
+}
+
 .blog_titles {
   color: #000;
 }

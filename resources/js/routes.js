@@ -93,9 +93,16 @@ export const routes = [
                 path: '/order_list/order_list_detail',
                 component: order_vouchers,
                 name: 'order_list_detail',
-                meta: {
-                    breadcrumb: 'Order detail'
-                }
+                // meta: {
+                //     // breadcrumb: 'Order detail'
+                //     breadcrumb: {
+                //         label: '発注データ',
+                //         parent: 'Params'
+                //     },
+                //     breadcrumb_title: {
+                //         label: '受注受信一覧'
+                //     }
+                // }
             },{
                 path: '/order_list/order_list_detail/order_item_list_detail/:data_order_list_voucher_id',
                 component: order_items,

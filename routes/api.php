@@ -85,6 +85,7 @@ Route::get('/slr_management/{adm_user_id}', 'API\BYR\ByrController@slr_managemen
 Route::post('/get_byr_order_list', 'API\Byr_orderController@get_byr_order_list');
 Route::get('/get_all_company_list/{adm_user_id}', 'API\BYR\ByrController@get_all_company_list');
 Route::post('/update_shipment_detail', 'API\Byr_orderController@update_shipment_detail');
+Route::post('/update_shipment_detail_bycurrentdatetime', 'API\Byr_orderController@update_shipment_detail_bycurrentdatetime');
 Route::post('/cmn_user_create', 'API\BYR\ByrController@cmn_user_create');
 Route::post('/slr_seller_user_create', 'API\BYR\ByrController@slr_seller_user_create');
 Route::post('/create_buyer', 'API\BYR\ByrController@createBuyer');

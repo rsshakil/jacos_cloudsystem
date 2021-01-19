@@ -147,6 +147,9 @@
             </tfoot>
 
           </table>
+          <button style="float:right" class="btn btn-lg btn-primary pull-right text-right active">
+              更新
+            </button>
         </div>
       </div>
     </div>

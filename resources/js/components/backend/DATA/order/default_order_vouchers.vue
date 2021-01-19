@@ -38,7 +38,7 @@
               <input
                 type="text"
                 class="form-control topHeaderInputFieldBtn"
-                v-model="today"
+                
               />
               <button class="btn btn-primary active">参照</button>
             </td>
@@ -58,7 +58,7 @@
               <input
                 type="text"
                 class="form-control topHeaderInputFieldBtn"
-                v-model="today"
+                
               />
               <button class="btn btn-primary active">参照</button>
             </td>
@@ -96,7 +96,7 @@
         <div class="row">
           <div class="col-5">
             <p>
-              <span class="tableRowsInfo">1〜{{order_detail_lists.per_page}} 件表示中／全：{{order_detail_lists.total}}件</span>
+              <span class="tableRowsInfo">{{order_detail_lists.from}}〜{{order_detail_lists.to}} 件表示中／全：{{order_detail_lists.total}}件</span>
               <span class="pagi"
                 >
               <advanced-laravel-vue-paginate :data="order_detail_lists" 
@@ -107,8 +107,8 @@
                 @paginateTo="get_all_byr_order_detail"/>
               </span>
               <span class="selectPagi">
-                <select class="form-control selectPage">
-                  <option>表示行数</option>
+                <select @change="selectNumPage" v-model="select_field_page_num" class="form-control selectPage">
+                  <option value="0">表示行数</option>
                   <option v-for="n in order_detail_lists.last_page" :key="n"
                 :value="n">{{n}}</option>
                 </select>
@@ -163,6 +163,11 @@
             style="overflow-x: scroll"
           >
             <thead>
+            <tr class="first_heading_th">
+              <th></th>
+              <th><input @click="checkAll" v-model='isCheckAll' type="checkbox">全選択</th>
+              <th colspan="9"></th>
+            </tr>
               <tr>
                 <th>No</th>
                 <th>確定</th>
@@ -183,7 +188,7 @@
                 :key="index"
               >
                 <td>{{ index + 1 }}</td>
-                <td><span v-if="order_detail_list.decision_datetime!=null">済</span><span v-else><input  type="checkbox" v-model="order_detail_list.byr_order_detail_id"></span></td>
+                <td><span v-if="order_detail_list.decision_datetime!=null">済</span><span v-else><input  type="checkbox" v-bind:value='order_detail_list.data_shipment_voucher_id' v-model='selected' @change='updateCheckall()'></span></td>
                 <td>{{ order_detail_list.mes_lis_shi_par_shi_code }}</td>
                 <td>
                   {{ order_detail_list.mes_lis_shi_par_rec_code }}
@@ -239,7 +244,7 @@
             </div>
           </div>
           <div class="col-6 text-right">
-            <button class="btn btn-lg btn-primary active">
+            <button @click="updateDatetimeDecessionfield" class="btn btn-lg btn-primary active">
               選択行を伝票確定
             </button>
             <button class="btn btn-lg btn-danger active">確定データ送信</button>
@@ -392,6 +397,7 @@ export default {
       // byr_order_id: "",
       edit_order_modal: false,
       selected: [],
+      select_field_page_num:0,
       isCheckAll: false,
       form: new Form({}),
       param_data: [],
@@ -399,19 +405,32 @@ export default {
     };
   },
   methods: {
+    selectNumPage(){
+      if(this.select_field_page_num!=0){
+
+        this.get_all_byr_order_detail(this.select_field_page_num);
+      }
+      
+    },
     checkAll() {
       this.isCheckAll = !this.isCheckAll;
       this.selected = [];
       var temp_seleted = [];
       if (this.isCheckAll) {
-        this.order_detail_lists.forEach(function (order_detail_list) {
-          temp_seleted.push(order_detail_list.byr_order_detail_id);
-        });
-        this.selected = temp_seleted;
+        for (var key in this.order_detail_lists.data) {
+          // console.log(this.order_detail_lists.data[key].data_shipment_voucher_id);
+			                  this.selected.push(this.order_detail_lists.data[key].data_shipment_voucher_id);
+			                }
+        // this.order_detail_lists.data.forEach(function (order_detail_list) {
+        //   // temp_seleted.push(order_detail_list.byr_order_detail_id);
+        //   console.log(order_detail_list);
+        //   this.selected.push(order_detail_list.byr_order_detail_id);
+        // });
+        // this.selected = temp_seleted;
       }
     },
     updateCheckall() {
-      if (this.selected.length == this.order_detail_lists.length) {
+      if (this.selected.length == this.order_detail_lists.data.length) {
         this.isCheckAll = true;
       } else {
         this.isCheckAll = false;
@@ -454,23 +473,23 @@ export default {
       // this.order_detail_lists.sort((a, b) => a[sortKey] < b[sortKey] ? 1 : -1);
       if (this.order_by == "asc") {
         this.order_by = "desc";
-        this.order_detail_lists.sort((a, b) => a[sortKey] - b[sortKey]);
+        this.order_detail_lists.data.sort((a, b) => a[sortKey] - b[sortKey]);
       } else {
         this.order_by = "asc";
-        this.order_detail_lists.sort((a, b) => b[sortKey] - a[sortKey]);
+        this.order_detail_lists.data.sort((a, b) => b[sortKey] - a[sortKey]);
       }
     },
     sortByja_valu(sortKey) {
       if (this.order_by == "asc") {
         this.order_by = "desc";
-        this.order_detail_lists.sort((a, b) =>
+        this.order_detail_lists.data.sort((a, b) =>
           a[sortKey].localeCompare(b[sortKey], "ja", {
             ignorePunctuation: true,
           })
         );
       } else {
         this.order_by = "asc";
-        this.order_detail_lists.sort((a, b) =>
+        this.order_detail_lists.data.sort((a, b) =>
           b[sortKey].localeCompare(a[sortKey], "ja", {
             ignorePunctuation: true,
           })
@@ -494,9 +513,27 @@ export default {
           console.log(response);
         });
     },
+    updateDatetimeDecessionfield() {
+      
+      axios({
+        method: "POST",
+        url: this.BASE_URL + "api/update_shipment_detail_bycurrentdatetime",
+        data: {update_id:this.selected},
+      })
+        .then(function (response) {
+          //handle success
+          console.log(response);
+          Fire.$emit("LoadByrorderDetail");
+        })
+        .catch(function (response) {
+          //handle error
+          console.log(response);
+        });
+    },
     //get Table data
     get_all_byr_order_detail(page = 1) {
       this.param_data['page']=page;
+      this.select_field_page_num = page;
       axios
         .post(this.BASE_URL + "api/order_details", this.param_data)
         .then(({ data }) => {

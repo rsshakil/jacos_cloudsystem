@@ -20,7 +20,7 @@ export default {
             selected_buyer: [],
             sellers: [],
             selected_seller: [],
-            loader: "",
+            // loader: "",
         };
     },
     methods: {

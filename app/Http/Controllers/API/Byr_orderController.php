@@ -18,6 +18,7 @@ use App\Models\CMN\cmn_connect;
 use App\Models\CMN\cmn_company;
 use App\Models\ADM\User;
 use App\Models\CMN\cmn_companies_user;
+use App\Models\DATA\SHIPMENT\data_shipment_voucher;
 use DB;
 use Auth;
 
@@ -224,6 +225,7 @@ class Byr_orderController extends Controller
 
         $result = DB::table('data_shipments as ds')
         ->select(
+            'dsv.data_shipment_voucher_id',
         'dsv.mes_lis_shi_tra_dat_delivery_date',
         'dsv.mes_lis_shi_tra_goo_major_category',
         'dsv.mes_lis_shi_log_del_delivery_service_code',
@@ -372,6 +374,20 @@ class Byr_orderController extends Controller
     {
         byr_order_item::where('byr_order_item_id', $request->byr_order_item_id)->update(['status'=>'確定済み']);
         byr_shipment_item::where('byr_order_item_id', $request->byr_order_item_id)->update(['confirm_quantity'=>$request->confirm_quantity,'lack_reason'=>$request->lack_reason]);
+        return response()->json(['success' => '1']);
+    }
+
+    public function update_shipment_detail_bycurrentdatetime(Request $request)
+    {
+        $dateTime = date('Y-m-d H:i:s');
+        $data_shipment_voucher_ids = $request->update_id;
+        if($data_shipment_voucher_ids){
+            foreach($data_shipment_voucher_ids as $id){
+                data_shipment_voucher::where('data_shipment_voucher_id', $id)->update(['decision_datetime'=>$dateTime]);
+            }
+        }
+        // byr_order_item::where('byr_order_item_id', $request->byr_order_item_id)->update(['status'=>'確定済み']);
+        // byr_shipment_item::where('byr_order_item_id', $request->byr_order_item_id)->update(['confirm_quantity'=>$request->confirm_quantity,'lack_reason'=>$request->lack_reason]);
         return response()->json(['success' => '1']);
     }
 
