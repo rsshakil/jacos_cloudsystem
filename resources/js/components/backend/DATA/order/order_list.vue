@@ -86,7 +86,7 @@
           <td class="cl_custom_color">{{ myLang.temperature }}</td>
           <td style="width: 15%">
             <select class="form-control" v-model="form.temperature">
-            <option value="00">無指定</option>
+            <!--<option value="00">無指定</option>-->
               <option
                 v-for="(temp, i) in json_temperature_code"
                 :key="i"
@@ -312,7 +312,7 @@ export default {
         check_datetime: null,
         // check_datetime:new Date().toISOString().slice(0, 10),
         delivery_service_code: "00",
-        temperature: "00",
+        temperature: "",
         // confirmation_status:1,
         print_cnt: "*",
         decission_cnt: "*",

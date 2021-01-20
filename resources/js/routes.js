@@ -77,11 +77,11 @@ export const routes = [
         component: default_parent,
         meta: {
             breadcrumb: {
-                label: '発注データ',
+                label: '受注受信一覧',
                 parent: 'Params'
             },
             breadcrumb_title: {
-                label: '受注受信一覧'
+                label: '受注・出荷'
             }
         },
         children: [{
@@ -93,22 +93,47 @@ export const routes = [
                 path: '/order_list/order_list_detail',
                 component: order_vouchers,
                 name: 'order_list_detail',
-                // meta: {
-                //     // breadcrumb: 'Order detail'
-                //     breadcrumb: {
-                //         label: '発注データ',
-                //         parent: 'Params'
-                //     },
-                //     breadcrumb_title: {
-                //         label: '受注受信一覧'
-                //     }
-                // }
-            },{
+                meta: {
+                    // breadcrumb: 'Order detail'
+                    breadcrumb: {
+                        label: '受注伝票一覧',
+                        parent: 'Params'
+                    },
+                    breadcrumb_title: {
+                        label: '受注伝票一覧'
+                    }
+                },
+                /*children:[{
+                    path: '/',
+                    component: order_vouchers,
+                    name: 'order_list_detail',
+                },{
+                    path: '/order_list/order_list_detail/order_item_list_detail/:data_order_list_voucher_id',
+                    component: order_items,
+                    name: 'order_item_list_detail',
+                    meta: {
+                        breadcrumb: {
+                            label: '受注伝票明細',
+                            parent: 'Params'
+                        },
+                        breadcrumb_title: {
+                            label: '受注伝票明細'
+                        }
+                    }
+                }]*/
+            },
+           {
                 path: '/order_list/order_list_detail/order_item_list_detail/:data_order_list_voucher_id',
                 component: order_items,
                 name: 'order_item_list_detail',
                 meta: {
-                    breadcrumb: 'Order item detail'
+                    breadcrumb: {
+                        label: '受注伝票明細',
+                        parent: 'Params'
+                    },
+                    breadcrumb_title: {
+                        label: '受注伝票明細'
+                    }
                 }
             },
             {

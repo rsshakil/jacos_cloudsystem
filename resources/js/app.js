@@ -47,7 +47,7 @@ window.Fire = new Vue();
 Vue.use(VueRouter);
 Vue.use(VueBreadcrumbs, {
     template: '        <ul v-if="$breadcrumbs.length" aria-label="breadcrumb" class="custm_brd_crumbs">\n' +
-        '             <li v-for="(crumb, key) in $breadcrumbs" v-if="crumb.meta.breadcrumb" :key="key"><router-link class="breadcrumb-item_custom" :to="{ path: getPath(crumb) }">{{ getBreadcrumb(crumb.meta.breadcrumb) }} </router-link><span class="bread_titles"> > {{ getBreadcrumb(crumb.meta.breadcrumb_title) }}</span></li>' +
+        '             <li v-for="(crumb, key) in $breadcrumbs" v-if="crumb.meta.breadcrumb" :key="key"><span v-if="key == 0 && getBreadcrumb(crumb.meta.breadcrumb_title)" > {{getBreadcrumb(crumb.meta.breadcrumb_title)}} > </span><router-link class="breadcrumb-item_custom" :to="{ path: getPath(crumb) }"> {{ getBreadcrumb(crumb.meta.breadcrumb) }} </router-link> <span v-if="key+1 != Object.keys($breadcrumbs).length - 1"> > </span> </li>' +
         '        </ul>'
 });
 // Vue.use(VueBreadcrumbs, {
