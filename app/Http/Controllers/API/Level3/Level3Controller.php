@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\API\Level3;
 
 use App\Http\Controllers\API\AllUsedFunction;
+use App\Http\Controllers\API\Cmn_ScenarioController;
 use App\Http\Controllers\Controller;
 use App\Models\ADM\User;
 use App\Models\CMN\cmn_companies_user;
-use App\Models\CMN\cmn_scenario;
 use App\Models\Lv3\lv3_history;
 use App\Models\Lv3\lv3_job;
 use App\Models\Lv3\lv3_service;
@@ -15,7 +15,6 @@ use App\Models\Lv3\lv3_trigger_schedule;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Controllers\API\Cmn_ScenarioController;
 
 class Level3Controller extends Controller
 {
@@ -177,7 +176,7 @@ class Level3Controller extends Controller
             }
         }
         $file_path_info = $this->getFilePath($user_id, $service_id);
-        $job_info = lv3_job::select('lv3_job_id', 'lv3_service_id', 'job_execution_flag','cmn_scenario_id',
+        $job_info = lv3_job::select('lv3_job_id', 'lv3_service_id', 'job_execution_flag', 'cmn_scenario_id',
             'execution', 'batch_file_path', 'next_service_id', 'append')
             ->where('lv3_service_id', $service_id)->first();
 
@@ -216,7 +215,7 @@ class Level3Controller extends Controller
     public function setScheduleData(Request $request)
     {
         // return $request->all();
-        
+
         $user_id = $request->user_id;
         $customer_id = $request->cmn_connect_id;
         $service_id = $request->service_id;
@@ -327,25 +326,25 @@ class Level3Controller extends Controller
         }
         return response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'class_name' => $this->class_name]);
     }
-    public function lv3ScheduleData(Request $request){
+    public function lv3ScheduleData(Request $request)
+    {
         $type = $request->type;
-        $schedule_array=array();
-        if ($type==1) {
-            $schedule_array=$this->scheduleTimeData($request);
-        }elseif($type==2){
-            $schedule_array=$this->scheduleDateData($request);
+        $schedule_array = array();
+        if ($type == 1) {
+            $schedule_array = $this->scheduleTimeData($request);
+        } elseif ($type == 2) {
+            $schedule_array = $this->scheduleDateData($request);
         }
         return response()->json(['schedule_date_time_data' => $schedule_array]);
     }
 
-    
     public function scheduleTimeData($request)
     {
         // return date('w');
         $service_id = $request->service_id;
-        $trigger_execution_time = ($request->trigger_execution_time)/1000;
-        $today=date('w');
-        $ret_arr=array();
+        $trigger_execution_time = ($request->trigger_execution_time) / 1000;
+        $today = date('w');
+        $ret_arr = array();
         $schedule_time_data = lv3_trigger_schedule::select('lv3_trigger_schedule_id', 'weekday', 'time')->where('lv3_service_id', $service_id)
             ->where('weekday', '!=', 0)->get();
 
@@ -353,31 +352,31 @@ class Level3Controller extends Controller
         $active_weekday_array = array();
 
         // if (!empty($schedule_time_data)) {
-            foreach ($schedule_time_data as $key => $value) {
-                $weekday = str_split($this->all_functions->binary_format($this->all_functions->decimal_to_binary($value->weekday)));
-                $key_day = array_search('1', $weekday);
+        foreach ($schedule_time_data as $key => $value) {
+            $weekday = str_split($this->all_functions->binary_format($this->all_functions->decimal_to_binary($value->weekday)));
+            $key_day = array_search('1', $weekday);
 
-                foreach ($weekday as $key1 => $value1) {
-                    if ($value1 == 1) {
-                        $active_weekday_array[] = $key1;
-                    }
+            foreach ($weekday as $key1 => $value1) {
+                if ($value1 == 1) {
+                    $active_weekday_array[] = $key1;
                 }
-
-                $test['lv3_trigger_schedule_id'] = $value->lv3_trigger_schedule_id;
-                // $test['weekday'] = str_split($this->binary_format($this->decimal_to_binary($value->weekday)));
-                $test['weekday'] = $active_weekday_array;
-                $test['time'] = $value->time;
-                // $test['disabled'] = $value->disabled;
-                $test['original_weekday'] = $value->weekday;
-                $schedule_array[] = $test;
-                if (in_array($today,$test['weekday'])) {
-                    array_push($ret_arr,$this->dateProcess($value,$trigger_execution_time));
-                }
-                $active_weekday_array = [];
             }
+
+            $test['lv3_trigger_schedule_id'] = $value->lv3_trigger_schedule_id;
+            // $test['weekday'] = str_split($this->binary_format($this->decimal_to_binary($value->weekday)));
+            $test['weekday'] = $active_weekday_array;
+            $test['time'] = $value->time;
+            // $test['disabled'] = $value->disabled;
+            $test['original_weekday'] = $value->weekday;
+            $schedule_array[] = $test;
+            if (in_array($today, $test['weekday'])) {
+                array_push($ret_arr, $this->dateProcess($value, $trigger_execution_time));
+            }
+            $active_weekday_array = [];
+        }
         // }
         // return $schedule_array;
-        
+
         // foreach ($schedule_array as $key => $data) {
         //     if (in_array($today,$data['weekday'])) {
         //         array_push($ret_arr,$this->dateProcess($data,$trigger_execution_time));
@@ -385,35 +384,37 @@ class Level3Controller extends Controller
         // }
         return $ret_arr;
     }
-    public function scheduleDateData($request){
+    public function scheduleDateData($request)
+    {
         $service_id = $request->service_id;
-        $trigger_execution_time = ($request->trigger_execution_time)/1000;
-        $schedule_date_data = lv3_trigger_schedule::select('lv3_trigger_schedule_id', 'day', 'time','last_day')->where('lv3_service_id', $service_id)
+        $trigger_execution_time = ($request->trigger_execution_time) / 1000;
+        $schedule_date_data = lv3_trigger_schedule::select('lv3_trigger_schedule_id', 'day', 'time', 'last_day')->where('lv3_service_id', $service_id)
             ->where('weekday', '=', 0)->get();
-            $ret_arr=array();
-            foreach ($schedule_date_data as $key => $data) {
-                if ($data->last_day==1) {
-                    array_push($ret_arr,$this->dateProcess($data,$trigger_execution_time));
-                }elseif($data->day!= null){
-                    $full_day=strtotime(date('y-m-'.$data->day));
-                    if (strtotime(date('y-m-d'))==$full_day) {
-                        array_push($ret_arr,$this->dateProcess($data,$trigger_execution_time));
-                    }
+        $ret_arr = array();
+        foreach ($schedule_date_data as $key => $data) {
+            if ($data->last_day == 1) {
+                array_push($ret_arr, $this->dateProcess($data, $trigger_execution_time));
+            } elseif ($data->day != null) {
+                $full_day = strtotime(date('y-m-' . $data->day));
+                if (strtotime(date('y-m-d')) == $full_day) {
+                    array_push($ret_arr, $this->dateProcess($data, $trigger_execution_time));
                 }
             }
-            // \Log::info($ret_arr);
-            return $ret_arr;
+        }
+        // \Log::info($ret_arr);
+        return $ret_arr;
     }
-    public function dateProcess($data,$trigger_execution_time){
-        $cur_date_time= date('2013-11-13 H:i:s');
+    public function dateProcess($data, $trigger_execution_time)
+    {
+        $cur_date_time = date('2013-11-13 H:i:s');
         // $cur_date_time= strtotime($cur_date_time);
-        $advance_time= date("Y-m-d H:i:s", (strtotime($cur_date_time) - $trigger_execution_time));
+        $advance_time = date("Y-m-d H:i:s", (strtotime($cur_date_time) - $trigger_execution_time));
         // $advance_date= strtotime($advance_time);
-        $arr_time=date('2013-11-13 H:i:s',strtotime($data['time']));
+        $arr_time = date('2013-11-13 H:i:s', strtotime($data['time']));
         // $arr_time=strtotime();
-        if (strtotime($arr_time)>strtotime($advance_time) && strtotime($arr_time)<=strtotime($cur_date_time)) {
+        if (strtotime($arr_time) > strtotime($advance_time) && strtotime($arr_time) <= strtotime($cur_date_time)) {
             return true;
-        }else{
+        } else {
             return false;
         }
 
@@ -424,31 +425,32 @@ class Level3Controller extends Controller
         // $trigger_execution_min=floor($trigger_execution_time/60);
         // $trigger_execution_hour=floor($trigger_execution_min/60);
         // $trigger_execution_day=floor($trigger_execution_hour/12);
-        
+
         // $date_diff= $this->dateDiff($arr_time,$cur_date_time);
-        // if ($date_diff['sec']>=$trigger_execution_sec && $date_diff['minutes']<=$trigger_execution_min && $date_diff['hours']<=$trigger_execution_hour && $date_diff['day']<=$trigger_execution_day) { 
+        // if ($date_diff['sec']>=$trigger_execution_sec && $date_diff['minutes']<=$trigger_execution_min && $date_diff['hours']<=$trigger_execution_hour && $date_diff['day']<=$trigger_execution_day) {
         //     return true;
         // }else{
         //     return false;
         // }
     }
 
-    public function dateDiff($date1,$date2){
+    public function dateDiff($date1, $date2)
+    {
         $t1 = strtotime($date1);
         $t2 = strtotime($date2);
 
         $delta_T = ($t2 - $t1);
 
-        $day = round(($delta_T % 604800) / 86400); 
-        $hours = round((($delta_T % 604800) % 86400) / 3600); 
-        $minutes = round(((($delta_T % 604800) % 86400) % 3600) / 60); 
+        $day = round(($delta_T % 604800) / 86400);
+        $hours = round((($delta_T % 604800) % 86400) / 3600);
+        $minutes = round(((($delta_T % 604800) % 86400) % 3600) / 60);
         $sec = round((((($delta_T % 604800) % 86400) % 3600) % 60));
 
         return array(
-            'day'=>$day,
-            'hours'=>$hours,
-            'minutes'=>$minutes,
-            'sec'=>$sec,
+            'day' => $day,
+            'hours' => $hours,
+            'minutes' => $minutes,
+            'sec' => $sec,
         );
     }
     public function getServiceData(Request $request)
@@ -522,15 +524,69 @@ class Level3Controller extends Controller
     {
         // return $request->all();
         $cs = new Cmn_ScenarioController();
-            $ret = $cs->exec($request);
-            \Log::debug($ret->getContent());
-            $ret = json_decode($ret->getContent(), true);
-            if (1 === $ret['status']) {
-                // sceanario exec error
-                \Log::error($ret['message']);
-                return $ret;
+        $ret = $cs->exec($request);
+        \Log::debug($ret->getContent());
+        $ret = json_decode($ret->getContent(), true);
+        if (1 === $ret['status']) {
+            // sceanario exec error
+            \Log::error($ret['message']);
+            return $ret;
+        }
+        return response()->json($ret);
+    }
+    public function getShipmentFile(Request $request)
+    {
+        // return $request->all();
+        // $file_path_id = $request->file_path_id;
+        $url_path = \Config::get('app.url') . 'storage/app/public/Shipment_CSV/moved/';
+        $path = \storage_path('/app/public/Shipment_CSV/');
+        $files = array_values(array_diff(scandir($path), array('.', '..')));
+        // $files = array_values($files);
+        // $files = scandir($path);
+        $files_array = array();
+        if (!empty($files)) {
+            for ($i = 0; $i < count($files); $i++) {
+                if (is_file($path . $files[$i])) {
+                    $tmp_array['file_name'] = $files[$i];
+                    $tmp_array['file_path'] = $url_path . $files[$i];
+
+                    rename($path . $files[$i], $path . 'Moved/' . $files[$i]);
+                    // $myfile = file_get_contents($path . $files[$i], FILE_USE_INCLUDE_PATH);
+                    // $myfile = readfile($path . $files[$i]);
+                    // $tmp_array['file_data'] = $myfile;
+
+                    $files_array[] = $tmp_array;
+                }
+
             }
-            return response()->json($ret);
+        } else {
+            $this->message = "フォルダが空です";
+            $this->status_code = 400;
+            // return \response()->json(['message'=>'Directory empty','status_code'=>400]);
+            return \response()->json(['message' => $this->message, 'status_code' => $this->status_code]);
+        }
+        // return $files_array;
+
+        if (!empty($files_array)) {
+
+            // history::insert([
+            //     'file_path_id' => $file_path_id,
+            //     'execute_name' => '確定データ',
+            //     'status' => "Success",
+            // ]);
+            $this->message = "ファイルが見つかりました。";
+            $this->status_code = 200;
+            // return \response()->json(['message'=>'File found','status_code'=>200,'files_array'=>$files_array]);
+            // return \response()->json(['message'=>$this->message,'status_code'=>$this->status_code,'files_array'=>$files_array]);
+        } else {
+            $this->message = "ファイルが見つかりませんでした。";
+            $this->status_code = 401;
+            // return \response()->json(['message'=>$this->message,'status_code'=>$this->status_code]);
+        }
+        return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'files_array' => $files_array]);
+        // $files_array = array_values($files_array);
+
+        // return $files_array;
     }
     public function setScheduleFileData(Request $request)
     {
@@ -566,54 +622,6 @@ class Level3Controller extends Controller
         }
     }
 
-    public function getShipmentFile(Request $request)
-    {
-        // return $request->all();
-        $file_path_id = $request->file_path_id;
-        $url_path = \Config::get('app.url') . 'public/backend/test_csv/moved/';
-        $path = \public_path() . '/backend/test_csv/';
-        $files = array_values(array_diff(scandir($path), array('.', '..')));
-        // $files = array_values($files);
-        // $files = scandir($path);
-        $files_array = array();
-        if (!empty($files)) {
-            for ($i = 0; $i < count($files); $i++) {
-                if (is_file($path . $files[$i])) {
-                    $tmp_array['file_name'] = $files[$i];
-                    $tmp_array['file_path'] = $url_path . $files[$i];
-                    $files_array[] = $tmp_array;
-                    rename($path . $files[$i], $path . 'Moved/' . $files[$i]);
-                }
-
-            }
-        } else {
-            $this->message = "フォルダが空です";
-            $this->status_code = 400;
-            // return \response()->json(['message'=>'Directory empty','status_code'=>400]);
-            return \response()->json(['message' => $this->message, 'status_code' => $this->status_code]);
-        }
-
-        if (!empty($files_array)) {
-
-            history::insert([
-                'file_path_id' => $file_path_id,
-                'execute_name' => '確定データ',
-                'status' => "Success",
-            ]);
-            $this->message = "ファイルが見つかりました。";
-            $this->status_code = 200;
-            // return \response()->json(['message'=>'File found','status_code'=>200,'files_array'=>$files_array]);
-            // return \response()->json(['message'=>$this->message,'status_code'=>$this->status_code,'files_array'=>$files_array]);
-        } else {
-            $this->message = "ファイルが見つかりませんでした。";
-            $this->status_code = 401;
-            // return \response()->json(['message'=>$this->message,'status_code'=>$this->status_code]);
-        }
-        return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'files_array' => $files_array]);
-        // $files_array = array_values($files_array);
-
-        // return $files_array;
-    }
     public function addCustomer(Request $request)
     {
         // return $request->all();
