@@ -595,8 +595,11 @@ export default {
   created() {
     Fire.$emit("byr_has_selected", this.$session.get("byr_buyer_id"));
     Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
+    Fire.$emit("voucher_page_query_param", 'myData');
+    this.$session.set('voucher_page_query_param',this.$route.query);
     // console.log(this.$route.query);
     this.param_data = this.$route.query;
+
     // console.log(this.param_data);
     this.loader = Vue.$loading.show();
     this.data_order_id = this.$route.params.data_order_id;

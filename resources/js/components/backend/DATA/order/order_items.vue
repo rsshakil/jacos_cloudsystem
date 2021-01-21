@@ -277,8 +277,21 @@
 <script>
 export default {
   // props: ["param_data"],
+  breadcrumb(){
+    return {
+    label: this.breadcumbtitle,
+    parent: this.parent
+  }
+
+  
+},
   data() {
     return {
+      breadcumbtitle:'受注伝票明細',
+      parent: {
+        name: 'order_list_detail',
+        query: {},
+},
       today: new Date().toISOString().slice(0, 10),
       sortKey: "",
       reverse: true,
@@ -301,6 +314,7 @@ export default {
       isCheckAll: false,
       form: new Form({}),
       param_data:[],
+      queryData:'',
     };
   },
   methods: {
@@ -441,14 +455,19 @@ export default {
 
     // console.log(this.$route.query);
     this.param_data=this.$route.query
+    console.log(this.$session.get('voucher_page_query_param'));
+    this.parent.query = this.$session.get('voucher_page_query_param');
     // console.log(this.param_data);
     this.loader = Vue.$loading.show();
     this.data_order_voucher_id = this.$route.params.data_order_list_voucher_id;
     console.log(this.$route.params.data_order_list_voucher_id)
     this.get_all_byr_order_item_detail();
     Fire.$on("LoadByrorderItemDetail", () => {
+      
       this.get_all_byr_order_item_detail();
     });
+    
+    // Fire.$emit("voucher_page_query_param");
     this.col_show_hide_setting(this.$route.name);
     
   },
@@ -490,6 +509,10 @@ export default {
   },
   mounted() {
     console.log("byr order detail page loaded");
+    Fire.$on("voucher_page_query_param", (query_param) => {
+      console.log('getparams');
+     console.log(query_param);
+    });
   },
 };
 </script>

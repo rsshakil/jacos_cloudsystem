@@ -10953,6 +10953,22 @@ a.text-dark:focus {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
+.custombredcumbs .breadcrumbs-container h6 {
+  float: left;
+  margin-right: 10px;
+}
+
+.custombredcumbs .breadcrumbs-container h6 a {
+  padding-right: 10px;
+  text-decoration: underline;
+}
+
+.custombredcumbs .breadcrumbs-container li {
+  list-style: none;
+  padding: 3px;
+  display: block;
+}
+
 .active-pink-3 input[type=text] {
   border: 1px solid #f48fb1;
   box-shadow: 0 0 0 1px #f48fb1;

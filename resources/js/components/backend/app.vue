@@ -16,8 +16,27 @@
             <div class="stats-small stats-small--1 card card-small" style="margin-top:20px">
                 <div class="card-body p-3">
                     <div class="row">
-                        <div class="col-12">
-                            <Breadcrumbs/>
+                        <div class="col-12 custombredcumbs">
+                            <!--<Breadcrumbs/>-->
+                            <!--<app-breadcrumbs></app-breadcrumbs>-->
+                            <app-breadcrumbs container="nav">
+                                <h6 slot-scope="{to, label, utils}">
+                                    <router-link
+                                    :to="to"
+                                    class="your-custom-class"
+                                    exact
+                                    :itemprop="utils && utils.itemprop"
+                                    >{{label}}</router-link>
+                                    <i class="fas fa-angle-right"></i>
+                                </h6>
+
+                                <span
+                                    slot="current"
+                                    slot-scope="{label}"
+                                    class="custom-current-class"
+                                >{{label}}</span>
+                                </app-breadcrumbs>
+                                <div class="clear-both" style="clear:fix"></div>
                             <page_header_default></page_header_default>
                         </div>
                     </div>

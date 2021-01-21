@@ -1,5 +1,5 @@
 <template>
-<div>
+<div style="clear:both">
 <div class="row">
            <div class="col-12 text-center page_c_title_bar text-sm-left mb-0">
             <h4 class="page_custom_title"> <span v-html="page_heading"></span></h4>

@@ -54,13 +54,10 @@ export const routes = [
     {
         path: '/home',
         component: Home,
+        name:'home',
         meta: {
             breadcrumb: {
-                label: 'Home',
-                parent: 'Params'
-            },
-            breadcrumb_title: {
-                label: 'Home page'
+                label: 'HOME'
             }
         },
     },
@@ -74,68 +71,16 @@ export const routes = [
     { path: '/password_reset/:id/:auth_id', name: 'password_reset', component: password_reset },
     {
         path: '/order_list',
-        component: default_parent,
+        component: order_list,
+        name:'order_list',
         meta: {
             breadcrumb: {
                 label: '受注受信一覧',
-                parent: 'Params'
+                parent:'home'
             },
-            breadcrumb_title: {
-                label: '受注・出荷'
-            }
         },
-        children: [{
-                path: '/',
-                component: order_list,
-                name: 'order_list',
-            },
-            {
-                path: '/order_list/order_list_detail',
-                component: order_vouchers,
-                name: 'order_list_detail',
-                meta: {
-                    // breadcrumb: 'Order detail'
-                    breadcrumb: {
-                        label: '受注伝票一覧',
-                        parent: 'Params'
-                    },
-                    breadcrumb_title: {
-                        label: '受注伝票一覧'
-                    }
-                },
-                /*children:[{
-                    path: '/',
-                    component: order_vouchers,
-                    name: 'order_list_detail',
-                },{
-                    path: '/order_list/order_list_detail/order_item_list_detail/:data_order_list_voucher_id',
-                    component: order_items,
-                    name: 'order_item_list_detail',
-                    meta: {
-                        breadcrumb: {
-                            label: '受注伝票明細',
-                            parent: 'Params'
-                        },
-                        breadcrumb_title: {
-                            label: '受注伝票明細'
-                        }
-                    }
-                }]*/
-            },
-           {
-                path: '/order_list/order_list_detail/order_item_list_detail/:data_order_list_voucher_id',
-                component: order_items,
-                name: 'order_item_list_detail',
-                meta: {
-                    breadcrumb: {
-                        label: '受注伝票明細',
-                        parent: 'Params'
-                    },
-                    breadcrumb_title: {
-                        label: '受注伝票明細'
-                    }
-                }
-            },
+        children: [
+            
             {
                 path: '/order_list/order_details_canvas/:byr_order_id',
                 component: order_details_canvas,
@@ -146,6 +91,34 @@ export const routes = [
             }
         ]
     },
+
+
+    {
+        path: '/order_list/order_list_detail',
+        component: order_vouchers,
+        name: 'order_list_detail',
+        meta: {
+            // breadcrumb: 'Order detail'
+            breadcrumb: {
+                label: '受注伝票一覧',
+                parent: 'order_list'
+            },
+        },
+        
+    },
+   {
+        path: '/order_list/order_list_detail/order_item_list_detail/:data_order_list_voucher_id',
+        component: order_items,
+        name: 'order_item_list_detail',
+        meta: {
+            breadcrumb: {
+                label: '受注伝票明細',
+                parent: 'order_list_detail'
+            }
+        }
+    },
+
+
     { path: '/voucher_setting', name: 'voucher_setting', component: voucher_setting },
     {
         path: '/byr_management',
@@ -155,9 +128,6 @@ export const routes = [
             breadcrumb: {
                 label: '小売管理',
                 parent: 'Params'
-            },
-            breadcrumb_title: {
-                label: '小売管理'
             }
 
         },
@@ -230,9 +200,6 @@ export const routes = [
             breadcrumb: {
                 label: 'シナリオ管理',
                 parent: 'Params'
-            },
-            breadcrumb_title: {
-                label: 'シナリオ管理'
             }
         },
         children: [{
@@ -249,9 +216,6 @@ export const routes = [
             breadcrumb: {
                 label: '仕事の管理',
                 parent: 'Params'
-            },
-            breadcrumb_title: {
-                label: '仕事の管理'
             }
         },
         children: [{
@@ -268,9 +232,6 @@ export const routes = [
             breadcrumb: {
                 label: '問屋管理',
                 parent: 'Params'
-            },
-            breadcrumb_title: {
-                label: '問屋管理'
             }
         },
         children: [{
@@ -310,10 +271,6 @@ export const routes = [
         component: default_parent,
         meta: {
             breadcrumb: {
-                label: '商品メンテ',
-                parent: 'Params'
-            },
-            breadcrumb_title: {
                 label: '商品メンテ'
             }
         },
@@ -337,10 +294,6 @@ export const routes = [
         component: default_parent,
         meta: {
             breadcrumb: {
-                label: '受領受信一覧',
-                parent: 'Params'
-            },
-            breadcrumb_title: {
                 label: '受領受信一覧'
             }
         },
@@ -356,10 +309,6 @@ export const routes = [
         component: default_parent,
         meta: {
             breadcrumb: {
-                label: '受領訂正データ',
-                parent: 'Params'
-            },
-            breadcrumb_title: {
                 label: '受領訂正データ'
             }
         },
@@ -375,10 +324,6 @@ export const routes = [
         component: default_parent,
         meta: {
             breadcrumb: {
-                label: '返品データ',
-                parent: 'Params'
-            },
-            breadcrumb_title: {
                 label: '返品データ'
             }
         },
@@ -394,10 +339,6 @@ export const routes = [
         component: default_parent,
         meta: {
             breadcrumb: {
-                label: '支払受信一覧',
-                parent: 'Params'
-            },
-            breadcrumb_title: {
                 label: '支払受信一覧'
             }
         },
@@ -413,10 +354,6 @@ export const routes = [
         component: default_parent,
         meta: {
             breadcrumb: {
-                label: '請求',
-                parent: 'Params'
-            },
-            breadcrumb_title: {
                 label: '請求'
             }
         },
@@ -442,10 +379,6 @@ export const routes = [
         component: pdf_platform_setting,
         meta: {
             breadcrumb: {
-                label: 'pdfプラットフォーム設定',
-                parent: 'Params'
-            },
-            breadcrumb_title: {
                 label: 'pdfプラットフォーム設定'
             }
         },
@@ -457,10 +390,6 @@ export const routes = [
         component: pdf_platform_view,
         meta: {
             breadcrumb: {
-                label: 'pdfプラットフォーム',
-                parent: 'Params'
-            },
-            breadcrumb_title: {
                 label: 'pdfプラットフォーム'
             }
         },
@@ -473,7 +402,7 @@ export const routes = [
         name: 'selected_buyer',
         props: true,
 
-        // meta: { breadcrumb: 'Selected Buyer' },
+        meta: { breadcrumb:{label:'ブログ',parent:'home'} },
         // children: [{
         //         path: '/',
         //         component: selected_buyer,
