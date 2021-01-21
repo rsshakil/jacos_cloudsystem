@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -11,7 +9,7 @@ use Illuminate\Http\Request;
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
 |
-*/
+ */
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
@@ -22,34 +20,34 @@ Route::apiResources(
     [
         'role' => 'API\RoleController',
         'permission' => 'API\PermissionController',
-        'users' => 'API\UsersController'
+        'users' => 'API\UsersController',
     ]
 );
 
 Route::apiResources(
     [
         // 'byrorders' => 'API\Byr_orderController',
-        'byrshipments' => 'API\Byr_shipmentController'
+        'byrshipments' => 'API\Byr_shipmentController',
     ]
 );
 Route::apiResources(
 
-	[
-		'tblecolsetting' => 'API\Tbl_col_settingController'
-	]
+    [
+        'tblecolsetting' => 'API\Tbl_col_settingController',
+    ]
 );
 
 Route::apiResources(
 
-	[
-		'get_all_buyer' => 'API\BYR\ByrController'
-	]
+    [
+        'get_all_buyer' => 'API\BYR\ByrController',
+    ]
 );
 Route::apiResources(
 
-	[
-		'master_item' => 'API\Byr_itemController'
-	]
+    [
+        'master_item' => 'API\Byr_itemController',
+    ]
 );
 Route::get('/all_users_roles', 'API\AssignRoleModel@allUsersAndRoles');
 Route::get('/get_roles/{id}', 'API\AssignRoleModel@getRoleById');
@@ -68,9 +66,8 @@ Route::post('/users_update', 'API\UsersController@update');
 
 Route::get('/home_lang_data', 'API\LanguageController@homeLangData');
 
+// Route::post('/permission_check', 'API\PermissionController@check');
 
-		// Route::post('/permission_check', 'API\PermissionController@check');
-        
 Route::post('scenario_exec', 'API\Cmn_ScenarioController@exec');
 Route::post('job_exec', 'API\Cmn_jobController@exec');
 Route::get('/slr_job_list_by_seller_id/{slr_seller_id}', 'API\Cmn_jobController@slr_job_list_by_seller_id');
@@ -155,19 +152,15 @@ Route::post('get_service_data', 'API\Level3\Level3Controller@getServiceData');
 Route::post('history_create', 'API\Level3\Level3Controller@historyCreate');
 Route::post('job_scenario', 'API\Level3\Level3Controller@jobScenario');
 Route::get('slr_job_list_all', 'API\Cmn_jobController@index');
+Route::post('get_shipment_file', 'API\Level3\Level3Controller@getShipmentFile');
 
 // Route::post('schedule_file_data', 'API\Level3\Level3Controller@setScheduleFileData');
 
-
 // Route::post('get_file_path', 'ApiController@getFilePath');
 
-
 // Route::post('file_send_url', 'API\Level3\Level3Controller@fileSave');
-// Route::post('get_shipment_file', 'API\Level3\Level3Controller@getShipmentFile');
 
 // Route::post('add_customer', 'API\Level3\Level3Controller@addCustomer');
-
-
 
 Route::post('delete_service', 'API\Level3\Level3Controller@deleteService');
 Route::post('/job_list', 'API\Level3\Level3Controller@job_list');
