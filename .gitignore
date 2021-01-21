@@ -3,6 +3,7 @@
 /public/hot
 /public/storage
 
+storage/app/public/Shipment_CSV/*
 storage/app/public/backend/images/canvas/Background/*
 !storage/app/public/backend/images/canvas/Background/canvas_bg_image_seeder.png
 !storage/app/public/backend/images/canvas/Background/bg_image.jpg
