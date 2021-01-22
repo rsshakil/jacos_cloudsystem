@@ -64,18 +64,25 @@
             </td>
             <td class="cl_custom_color">定／特</td>
             <td>
-              <input type="text" class="form-control" />
+              <select class="form-control" v-model="form.fixedSpecial" style="width: 220px">
+                <option value="">全て</option>
+                <option :value="item" v-for="item in fixedSpecialOptionList">{{ item }}</option>
+              </select>
             </td>
             <td class="cl_custom_color">確定状況</td>
             <td>
-              <input type="text" class="form-control" />
+              <select class="form-control" v-model="form.situation" style="width: 220px">
+              <option value="">全て</option>
+                <option :value="item" v-for="item in situationOptionList">{{ item }}</option>
+              </select>
             </td>
           </tr>
           <tr>
             <td class="cl_custom_color">印刷状況</td>
             <td colspan="7">
-              <select class="form-control" style="width: 220px">
-                <option :value="0">{{ myLang.confirmation_status }}</option>
+              <select class="form-control" v-model="form.printingStatus" style="width: 220px">
+              <option value="">全て</option>
+                <option :value="item" v-for="item in printingStatusOptionList">{{ item }}</option>
               </select>
             </td>
           </tr>
@@ -107,10 +114,14 @@
                 @paginateTo="get_all_byr_order_detail"/>
               </span>
               <span class="selectPagi">
-                <select @change="selectNumPage" v-model="select_field_page_num" class="form-control selectPage">
-                  <option value="0">表示行数</option>
+                <select @change="selectNumPerPage" v-model="select_field_per_page_num" class="form-control selectPage">
+                  <!--<option value="0">表示行数</option>
                   <option v-for="n in order_detail_lists.last_page" :key="n"
-                :value="n">{{n}}</option>
+                :value="n">{{n}}</option>-->
+                <option value="10">10行</option>
+                <option value="20">20行</option>
+                <option value="50">50行</option>
+                <option value="100">100行</option>
                 </select>
               </span>
             </p>
@@ -398,8 +409,16 @@ export default {
       edit_order_modal: false,
       selected: [],
       select_field_page_num:0,
+      select_field_per_page_num:10,
       isCheckAll: false,
-      form: new Form({}),
+      printingStatusOptionList:['01 定番','02 準特価','03 特売'],
+      situationOptionList:['未確定あり','確定済'],
+      fixedSpecialOptionList:['未印刷あり','未印刷あり'],
+      form: new Form({
+        printingStatus:'',
+        situation:'',
+        fixedSpecial:'',
+      }),
       param_data: [],
       // buyer_settings:null,
     };
@@ -409,6 +428,13 @@ export default {
       if(this.select_field_page_num!=0){
 
         this.get_all_byr_order_detail(this.select_field_page_num);
+      }
+      
+    },
+    selectNumPerPage(){
+      if(this.select_field_per_page_num!=0){
+        Fire.$emit("LoadByrorderDetail");
+        // this.get_all_byr_order_detail(this.select_field_page_num);
       }
       
     },
@@ -533,6 +559,7 @@ export default {
     //get Table data
     get_all_byr_order_detail(page = 1) {
       this.param_data['page']=page;
+      this.param_data['per_page']=this.select_field_per_page_num;
       this.select_field_page_num = page;
       axios
         .post(this.BASE_URL + "api/order_details", this.param_data)

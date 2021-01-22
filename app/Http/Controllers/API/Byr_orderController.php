@@ -186,6 +186,7 @@ class Byr_orderController extends Controller
         $delivery_service_code=$request->delivery_service_code;
         $major_category=$request->major_category;
          $temperature_code=$request->temperature_code;
+         $per_page=$request->per_page==null?10:$request->per_page;
          $temperature_code = $temperature_code==null?'':$temperature_code;
 
         // return $request->all();
@@ -250,7 +251,7 @@ class Byr_orderController extends Controller
         ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $delivery_service_code)
         ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $temperature_code)
         ->groupBy('dsv.mes_lis_shi_tra_trade_number')
-        ->paginate(10);
+        ->paginate($per_page);
         // echo '<pre>';
         // print_r($result);exit;
         $orderItem=collect(\DB::select("

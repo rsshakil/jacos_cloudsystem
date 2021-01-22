@@ -10963,6 +10963,11 @@ a.text-dark:focus {
   text-decoration: underline;
 }
 
+.pagi .default-style li a {
+  line-height: 0.6 !important;
+  padding: 8px 8px !important;
+}
+
 .custombredcumbs .breadcrumbs-container li {
   list-style: none;
   padding: 3px;
