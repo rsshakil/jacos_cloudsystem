@@ -40,12 +40,12 @@
                 class="form-control topHeaderInputFieldBtn"
                 
               />
-              <button class="btn btn-primary active">参照</button>
+              <button @click="deliverySearchForm1" class="btn btn-primary active">参照</button>
             </td>
             <td class="cl_custom_color">最終納品先コード</td>
             <td>
               <input type="text" class="form-control topHeaderInputFieldBtn" />
-              <button class="btn btn-primary active">参照</button>
+              <button @click="deliverySearchForm2" class="btn btn-primary active">参照</button>
             </td>
             <td class="cl_custom_color">伝票番号</td>
             <td>
@@ -60,7 +60,7 @@
                 class="form-control topHeaderInputFieldBtn"
                 
               />
-              <button class="btn btn-primary active">参照</button>
+              <button @click="deliverySearchForm3" class="btn btn-primary active">参照</button>
             </td>
             <td class="cl_custom_color">定／特</td>
             <td>
@@ -379,6 +379,143 @@
         </form>
       </div>
     </b-modal>
+    <b-modal
+      size="lg"
+      :hide-backdrop="true"
+      title="納品先検索"
+      ok-title="検　索"
+      cancel-title="閉じる"
+      @ok.prevent="update_order_voucher_detail()"
+      v-model="order_search_modal1"
+    >
+      <div class="panel-body">
+        <table
+          class="table orderTopDetailTable table-bordered"
+          style="width: 100%"
+        >
+          <tr>
+            <td class="cl_custom_color">納品先コード</td>
+            <td><input type="text" class="form-control" v-model="form.deliveryCode"/></td>
+            <td class="cl_custom_color">納品先名</td>
+            <td>
+              <input type="text" class="form-control" v-model="form.deliveryName"/>
+            </td>
+          </tr>
+          <tr>
+            <td class="cl_custom_color">納品先形態区分</td>
+            <td>
+            <select class="form-control" v-model="form.deliveryDestnation" style="width: 220px">
+              <option value="">全て</option>
+                <option :value="item" v-for="item in deliveryDestnationOptionList">{{ item }}</option>
+              </select>
+            </td>
+            <td class="cl_custom_color">納品可能日</td>
+            <td>
+              <input type="date" class="form-control" v-model="form.deliveryDate">
+            </td>
+            
+          </tr>
+        </table>
+      </div>
+    </b-modal>
+    <b-modal
+      size="lg"
+      :hide-backdrop="true"
+      title="納品先検索"
+      ok-title="検　索"
+      cancel-title="閉じる"
+      @ok.prevent="update_order_voucher_detail()"
+      v-model="order_search_modal2"
+    >
+      <div class="panel-body">
+        <table
+          class="table orderTopDetailTable table-bordered"
+          style="width: 100%"
+        >
+          <tr>
+            <td class="cl_custom_color">納品先コード</td>
+            <td><input type="text" class="form-control" v-model="form.deliveryCode"/></td>
+            <td class="cl_custom_color">納品先名</td>
+            <td>
+              <input type="text" class="form-control" v-model="form.deliveryName"/>
+            </td>
+          </tr>
+          <tr>
+            <td class="cl_custom_color">納品先形態区分</td>
+            <td>
+            <select class="form-control" v-model="form.deliveryDestnation" style="width: 220px">
+              <option value="">全て</option>
+                <option :value="item" v-for="item in deliveryDestnationOptionList">{{ item }}</option>
+              </select>
+            </td>
+            <td class="cl_custom_color">納品可能日</td>
+            <td>
+              <input type="date" class="form-control" v-model="form.deliveryDate">
+            </td>
+            
+          </tr>
+        </table>
+      </div>
+    </b-modal>
+    <b-modal
+      size="lg"
+      :hide-backdrop="true"
+      title="商品コード"
+      ok-title="検　索"
+      cancel-title="閉じる"
+      @ok.prevent="update_order_voucher_detail()"
+      v-model="order_search_modal3"
+    >
+      <div class="panel-body">
+        <table
+          class="table orderTopDetailTable table-bordered"
+          style="width: 100%"
+        >
+          <tr>
+            <td class="cl_custom_color">商品コード（発注用）</td>
+            <td><input type="text" class="form-control" v-model="form.deliveryCode"/></td>
+            <td class="cl_custom_color">JANコード</td>
+            <td>
+              <input type="text" class="form-control" v-model="form.deliveryName"/>
+            </td>
+          </tr>
+          
+          <tr>
+            <td class="cl_custom_color">商品名</td>
+            <td colspan="3"><input type="" class="form-control"/></td>
+          </tr>
+          <tr>
+            <td class="cl_custom_color">規格</td>
+            <td colspan="3"><input type="" class="form-control"/></td>
+          </tr>
+          <tr>
+            <td class="cl_custom_color">取引先コード</td>
+            <td><input type="text" class="form-control" v-model="form.deliveryCode"/></td>
+            <td class="cl_custom_color">納品先コード</td>
+            <td>
+              <input type="text" class="form-control" v-model="form.deliveryName"/>
+            </td>
+          </tr>
+          <tr>
+            <td class="cl_custom_color">部門</td>
+            <td>
+            <select class="form-control" v-model="form.deliveryDestnation" style="width: 220px">
+              <option value="">全て</option>
+                <option :value="item" v-for="item in deliveryDestnationOptionList">{{ item }}</option>
+              </select>
+            </td>
+            <td class="cl_custom_color">不定貴区分</td>
+            <td>
+              <select class="form-control" v-model="form.deliveryDestnation" style="width: 220px">
+              <option value="">全て</option>
+                <option :value="item" v-for="item in deliveryDestnationOptionList">{{ item }}</option>
+              </select>
+            </td>
+            
+          </tr>
+        </table>
+      </div>
+    </b-modal>
   </div>
 </template>
 <script>
@@ -407,6 +544,9 @@ export default {
       status: "",
       // byr_order_id: "",
       edit_order_modal: false,
+      order_search_modal1: false,
+      order_search_modal2: false,
+      order_search_modal3: false,
       selected: [],
       select_field_page_num:0,
       select_field_per_page_num:10,
@@ -414,16 +554,30 @@ export default {
       printingStatusOptionList:['01 定番','02 準特価','03 特売'],
       situationOptionList:['未確定あり','確定済'],
       fixedSpecialOptionList:['未印刷あり','未印刷あり'],
+      deliveryDestnationOptionList:['店舗','物流センター'],
       form: new Form({
         printingStatus:'',
         situation:'',
         fixedSpecial:'',
+        deliveryDestnation:'',
+        deliveryCode:'',
+        deliveryDate:'',
+        deliveryName:'',
       }),
       param_data: [],
       // buyer_settings:null,
     };
   },
   methods: {
+    deliverySearchForm1(){
+      this.order_search_modal1 = true;
+    },
+    deliverySearchForm2(){
+      this.order_search_modal2 = true;
+    },
+    deliverySearchForm3(){
+      this.order_search_modal3 = true;
+    },
     selectNumPage(){
       if(this.select_field_page_num!=0){
 
