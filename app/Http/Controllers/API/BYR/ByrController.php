@@ -51,9 +51,9 @@ class ByrController extends Controller
         // $authUser=User::find($adm_user_id);
         // if(!$authUser->hasRole('Super Admin')){
         //     $slr_info = $this->all_used_fun->get_slr_info_by_slr_seller_id();
-           
+
         // }
-       
+
         // $result = DB::table('cmn_connects')
         // ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
         // ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
@@ -67,7 +67,7 @@ class ByrController extends Controller
     }
 
     public function cmn_company_user_list($cmn_company_id=null){
-        
+
         $buyer_users=array();
         $company_name=null;
         if ($cmn_company_id!=null) {
@@ -87,7 +87,7 @@ class ByrController extends Controller
         // ->join('adm_users', 'adm_users.id', '=', 'cmn_companies_users.adm_user_id')
         // ->where('byr_buyers.cmn_company_id',$cmn_company_id)
         // ->get();
-        return response()->json(['user_list'=>$buyer_users,'company_name'=>$company_name]); 
+        return response()->json(['user_list'=>$buyer_users,'company_name'=>$company_name]);
     }
 
     public function company_partner_list($cmn_company_id){
@@ -103,7 +103,7 @@ class ByrController extends Controller
             $company_info=cmn_company::select('company_name')->where('cmn_company_id',$cmn_company_id)->first();
             $company_name=$company_info->company_name;
         }
-        return response()->json(['partner_list'=>$result,'company_name'=>$company_name]); 
+        return response()->json(['partner_list'=>$result,'company_name'=>$company_name]);
     }
     public function get_byr_slr_company($cmn_company_id=null){
         $company_name=null;
@@ -159,23 +159,6 @@ class ByrController extends Controller
     {
         //
     }
-
-    public function slr_management($adm_user_id){
-        $authUser=User::find($adm_user_id);
-        if(!$authUser->hasRole('Super Admin')){
-            $cmn_company_info = cmn_companies_user::where('adm_user_id',$adm_user_id)->first();
-            $cmn_company_id = $cmn_company_info->cmn_company_id;
-        }
-        
-        $result = DB::table('cmn_companies')
-        ->join('slr_sellers', 'slr_sellers.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
-        ->groupBy('cmn_companies.cmn_company_id');
-        if(!$authUser->hasRole('Super Admin')){
-            $result = $result->where('cmn_companies.cmn_company_id',$cmn_company_id);
-        }
-        $result= $result->get();
-        return response()->json(['slr_list'=>$result]);
-    }
     public function getPermissionForBuyer(Request $request){
         $cmn_company_id=$request->cmn_company_id;
         $selected_permission_array=array();
@@ -187,7 +170,7 @@ class ByrController extends Controller
             $role = Role::findById($role_id);
             $selected_permission_array=$role->getAllPermissions();
         }
-        return response()->json(['permission_array'=>$permission_array,'selected_permission_array'=>$selected_permission_array]); 
+        return response()->json(['permission_array'=>$permission_array,'selected_permission_array'=>$selected_permission_array]);
     }
     public function cmn_user_create(Request $request){
         // return $request->all();
@@ -206,7 +189,7 @@ class ByrController extends Controller
                 'cmn_company_id' => 'required',
             ]);
         }
-        
+
         $cmn_company_id = $request->cmn_company_id;
 
         $user_info=$this->all_used_fun->buyer_or_saller_user_store($request);
@@ -228,11 +211,11 @@ class ByrController extends Controller
             ->where('cmn_connects.cmn_connect_id',$cmn_connect_id)->first();
             // $sellers=$seller_query;
         }
-        return response()->json(['sellers'=>$sellers,'selected_sellers'=>$selected_sellers]); 
+        return response()->json(['sellers'=>$sellers,'selected_sellers'=>$selected_sellers]);
     }
 
     public function buyerPartnerCreate(Request $request){
-        
+
         $this->validate($request,[
             'cmn_company_id' => 'required|integer',
             'partner_code' => 'required',
@@ -328,7 +311,7 @@ class ByrController extends Controller
                 byr_buyer::where('cmn_company_id',$cmn_company_id)->update(['super_code'=>$super_code]);
             // }
             return response()->json(['title'=>"Updated!",'message' =>"updated", 'class_name' => 'success']);
-            
+
         }else{
                 $role_last_id = Role::insertGetId(['name' => 'byr'.$jcode, 'guard_name' => 'web', 'role_description' => 'byr'.$jcode, 'is_system' => 0]);
                 $this->all_used_fun->assignPermissionToRole($role_last_id, $selected_permissions);
@@ -353,7 +336,7 @@ class ByrController extends Controller
     //         $cmn_company_id = cmn_company::insertGetId(['company_name'=>$request->company_name,'jcode'=>$request->jcode,'postal_code'=>$request->postal_code,'address'=>$request->address,'phone'=>$request->phone,'fax'=>$request->fax]);
     //     slr_seller::insert(['cmn_company_id'=>$cmn_company_id]);
     //     }
-        
+
     //     return response()->json(['title'=>"Created!",'message' =>"created", 'class_name' => 'success']);
     // }
 

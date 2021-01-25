@@ -87,7 +87,7 @@ class Byr_itemController extends Controller
             $cmn_connect_id = $cmn_company_info->cmn_connect_id;
         }
 
-        if(!$authUser->hasRole('Super Admin')){
+        if(!$authUser->hasRole(config('const.adm_role_name'))){
             $result = byr_item::select('byr_items.*','byr_item_classes.*','cmn_category_descriptions.category_name','cmn_category_descriptions.category_code','cmn_makers.maker_name_kana','cmn_makers.maker_name')
             ->join('byr_item_classes', 'byr_item_classes.byr_item_id', '=', 'byr_items.byr_item_id')
             ->join('cmn_makers', 'cmn_makers.cmn_maker_id', '=', 'byr_items.cmn_maker_id')

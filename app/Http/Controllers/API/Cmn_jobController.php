@@ -36,7 +36,7 @@ class Cmn_jobController extends Controller
         ->join('slr_sellers', 'slr_sellers.slr_seller_id', '=', 'cmn_connects.slr_seller_id')
         ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
         ->join('cmn_companies as slr_companies', 'slr_companies.cmn_company_id', '=', 'slr_sellers.cmn_company_id')
-        
+
         ->get();
         return response()->json(['job_list'=>$job_list,'byr_company_list'=>$byr_company_list,'slr_company_list'=>$slr_company_list]);
     }
@@ -148,7 +148,7 @@ class Cmn_jobController extends Controller
             return ['status'=>'1','message'=>'Scenario file is not exist!'.$sc->file_path];
         }
         // ファイル読み込み
-        
+
         // $sc_obj = new ouk_order_toj();//$sc->file_path;
         $customClassPath = "\\App\\";
         $nw_f_pth = explode('/', $sc->file_path);
@@ -176,7 +176,7 @@ class Cmn_jobController extends Controller
         return $ret;
     }
 
-   
+
     public function slr_job_list_by_seller_id($slr_seller_id)
     {
         $sc = cmn_job::select('cmn_jobs.*', 'cmn_scenarios.*')

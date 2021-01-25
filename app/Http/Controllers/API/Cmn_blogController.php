@@ -55,7 +55,7 @@ class Cmn_blogController extends Controller
                 return response()->json(['blog_list' => $result]);
             }
         }
-        
+
     }
     public function get_user_top_blog()
     {
@@ -74,7 +74,7 @@ class Cmn_blogController extends Controller
                 $result = array();
                 return response()->json(['blog_list' => $result]);
             }
-            
+
         }
     }else{
         $result = array();
@@ -98,7 +98,7 @@ class Cmn_blogController extends Controller
                 $result = array();
                 return response()->json(['blog_list' => $result]);
             }
-            
+
         }
     }else{
         $result = array();
@@ -204,5 +204,5 @@ class Cmn_blogController extends Controller
     {
         //
     }
-  
+
 }
