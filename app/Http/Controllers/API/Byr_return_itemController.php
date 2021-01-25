@@ -37,7 +37,7 @@ class Byr_return_itemController extends Controller
     public function get_byr_return_list($adm_user_id){
         $authUser=User::find($adm_user_id);
         $cmn_company_id = 0;
-        if(!$authUser->hasRole('Super Admin')){
+        if(!$authUser->hasRole(config('const.adm_role_name'))){
             $cmn_company_info = $this->all_used_fun->get_user_info($adm_user_id);
             $cmn_company_id = $cmn_company_info['cmn_company_id'];
             $byr_buyer_id = $cmn_company_info['byr_buyer_id'];
@@ -55,8 +55,8 @@ class Byr_return_itemController extends Controller
         }
 
         $byr_buyer =$this->all_used_fun->get_company_list($cmn_company_id);
-   
-        
+
+
         return response()->json(['return_list' => $result,'byr_buyer_list'=>$byr_buyer]);
     }
     /**

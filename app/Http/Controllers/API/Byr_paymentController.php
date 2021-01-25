@@ -35,7 +35,7 @@ class Byr_paymentController extends Controller
     public function get_byr_payment_list($adm_user_id){
         $authUser=User::find($adm_user_id);
         $cmn_company_id = 0;
-        if(!$authUser->hasRole('Super Admin')){
+        if(!$authUser->hasRole(config('const.adm_role_name'))){
             $cmn_company_info = $this->all_used_fun->get_user_info($adm_user_id);
             $cmn_company_id = $cmn_company_info['cmn_company_id'];
             $byr_buyer_id = $cmn_company_info['byr_buyer_id'];
@@ -45,7 +45,7 @@ class Byr_paymentController extends Controller
             ->join('byr_buyers','byr_buyers.byr_buyer_id','=','cmn_connects.byr_buyer_id')
             ->join('cmn_companies','cmn_companies.cmn_company_id','=','byr_buyers.cmn_company_id')
             ->where('byr_payments.cmn_connect_id',$cmn_connect_id)->get();
-           
+
         }else{
             $result = byr_payment::select('byr_payments.*','cmn_companies.company_name')
             ->join('cmn_connects','cmn_connects.cmn_connect_id','=','byr_payments.cmn_connect_id')
@@ -54,7 +54,7 @@ class Byr_paymentController extends Controller
         }
 
         $byr_buyer =$this->all_used_fun->get_company_list($cmn_company_id);
-        
+
         return response()->json(['payment_list' => $result,'byr_buyer_list'=>$byr_buyer]);
     }
     /**

@@ -11,8 +11,9 @@ class cmn_companySeeder extends Seeder
      */
     public function run()
     {
-        $cmn_company_array=array(
+        $cmn_company_array = array(
             [
+                'company_type' => "buyer",
                 'company_name' => "株式会社スーパーバリュー",
                 'company_name_kana' => "ｶﾌﾞｼｷｶﾞｲｼｬ ｽｰﾊﾟｰﾊﾞﾘｭｰ",
                 'jcode' => 1000010,
@@ -22,6 +23,7 @@ class cmn_companySeeder extends Seeder
                 'address' => "埼玉県上尾市愛宕3-1-40",
             ],
             [
+                'company_type' => "seller",
                 'company_name' => "ミタニコーポレーション㈱",
                 'company_name_kana' => "",
                 'jcode' => 16240,
@@ -31,6 +33,7 @@ class cmn_companySeeder extends Seeder
                 'address' => "埼玉県上尾市愛宕3-1-40",
             ],
             [
+                'company_type' => "seller",
                 'company_name' => "株式会社サノテック",
                 'company_name_kana' => "ｻﾉﾃｯｸ",
                 'jcode' => 16373,
@@ -40,6 +43,7 @@ class cmn_companySeeder extends Seeder
                 'address' => "",
             ],
             [
+                'company_type' => "seller",
                 'company_name' => "伊藤正株式会社",
                 'company_name_kana' => "ｲﾄｳｼｮｳ",
                 'jcode' => 21980,
@@ -49,6 +53,7 @@ class cmn_companySeeder extends Seeder
                 'address' => "",
             ],
             [
+                'company_type' => "seller",
                 'company_name' => "株式会社カンパーニュ",
                 'company_name_kana' => "ｶﾝﾊﾟｰﾆｭ",
                 'jcode' => 24802,
@@ -58,6 +63,7 @@ class cmn_companySeeder extends Seeder
                 'address' => "",
             ],
             [
+                'company_type' => "buyer",
                 'company_name' => "トヨタ",
                 'company_name_kana' => "トヨタ",
                 'jcode' => 24802,
@@ -67,6 +73,7 @@ class cmn_companySeeder extends Seeder
                 'address' => "",
             ],
             [
+                'company_type' => "buyer",
                 'company_name' => "ソニー",
                 'company_name_kana' => "ソニー",
                 'jcode' => 24802,
@@ -74,7 +81,7 @@ class cmn_companySeeder extends Seeder
                 'fax' => "",
                 'postal_code' => "",
                 'address' => "",
-            ]
+            ],
         );
         App\Models\CMN\cmn_company::insert($cmn_company_array);
     }

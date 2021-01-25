@@ -33,7 +33,7 @@ class Cmn_categoryController extends Controller
 
     public function get_all_cat_list($adm_user_id){
         $authUser=User::find($adm_user_id);
-        if(!$authUser->hasRole('Super Admin')){
+        if(!$authUser->hasRole(config('const.adm_role_name'))){
             $cmn_company_info = cmn_companies_user::select('byr_buyers.cmn_company_id','byr_buyers.byr_buyer_id','cmn_connects.cmn_connect_id')
             ->join('byr_buyers', 'byr_buyers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
             ->join('cmn_connects', 'cmn_connects.byr_buyer_id', '=', 'byr_buyers.byr_buyer_id')
@@ -68,7 +68,7 @@ class Cmn_categoryController extends Controller
         ]);
         $adm_user_id = $request->adm_user_id;
         $authUser=User::find($adm_user_id);
-        if(!$authUser->hasRole('Super Admin')){
+        if(!$authUser->hasRole(config('const.adm_role_name'))){
             $cmn_company_info = cmn_companies_user::select('byr_buyers.cmn_company_id','byr_buyers.byr_buyer_id','cmn_connects.cmn_connect_id')
             ->join('byr_buyers', 'byr_buyers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
             ->join('cmn_connects', 'cmn_connects.byr_buyer_id', '=', 'byr_buyers.byr_buyer_id')
