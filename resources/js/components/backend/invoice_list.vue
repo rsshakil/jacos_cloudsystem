@@ -1,63 +1,106 @@
 <template>
-  <div class="row" v-can="['byr_view']">
+  <div class="row">
     <div class="col-12">
-      <h4 class="top_title text-center" style="margin-top: 10px">
-        {{ myLang.invoice_list }}
-      </h4>
+     <table
+          class="table orderTopDetailTable table-bordered"
+          style="width: 100%"
+        >
+          <tr>
+            <td class="cl_custom_color">請求取引先コード</td>
+            <td><input type="text" class="form-control"></td>
+            <td class="cl_custom_color">請求日時</td>
+            <td>
+            <div class="input-group mb-3">
+      
+      <input type="date" class="form-control">
+      <div class="input-group-prepend">
+        <span class="input-group-text">~</span>
+      </div>
+      <input type="date" class="form-control">
+    </div> 
+            </td>
+            <td class="cl_custom_color">発注者</td>
+            <td>
+            <select class="form-control" style="width: 220px">
+                <option value="">全て</option>
+                
+              </select>
+            </td>
+            
+          </tr>
+          <tr>
+            <td class="cl_custom_color">締日</td>
+            <td colspan="2"><div class="input-group mb-3">
+      
+      <input type="date" class="form-control">
+      <div class="input-group-prepend">
+        <span class="input-group-text">~</span>
+      </div>
+      <input type="date" class="form-control">
+    </div> </td>
+            <td class="cl_custom_color">請求状況</td>
+            <td colspan="2">
+            <select class="form-control" style="width: 220px">
+                <option value="">全て</option>
+                <option value="未請求">未請求</option>
+                <option value="請求済">請求済</option>
+                <option value="再請求あり">再請求あり</option>
+              </select>
+            </td>
+            
+          </tr>
+        </table>
     </div>
     <div class="col-12 text-center">
-      <label>
-        <!--<input type="file" id="file" ref="file" v-on:change="onChangeFileUpload()"/>-->
-      </label>
+      <button class="btn btn-primary active srchBtn" type="button">
+          {{ myLang.search }}
+        </button>
     </div>
     <div class="col-12">
-      <div class="">
-        <table class="table table-striped table-bordered data_table">
-          <thead>
-            <tr>
-              <th colspan="100%" style="border: none">
-                <div
-                  class="input-group mb-1"
-                  style="margin-left: 10px; max-width: 250px; float: left"
+        <br />
+        <h4 class="page_custom_title">{{ myLang.search_result }}</h4>
+      </div>
+    <div class="col-12">
+     <p>
+              <span class="tableRowsInfo">1〜10 件表示中／全：10件</span>
+              <span class="pagi"
                 >
-                  <div class="input-group-prepend">
-                    <button class="btn btn-outline-primary" type="button">
-                      {{ myLang.buyer_selection }}
-                    </button>
-                  </div>
-                  <select class="form-control" v-model="selected_byr">
-                    <option :value="0">{{ myLang.select_buyer }}</option>
-                    <option
-                      v-for="(option, index) in byr_buyer_lists"
-                      :key="index"
-                      :value="option.cmn_company_id"
-                      :selected="selectedOption(option)"
-                    >
-                      {{ option.company_name }}
-                    </option>
-                  </select>
-                </div>
-                <!--<div class="active-pink-3 active-pink-4 mb-1" style="margin-left: 10px;max-width: 100%; float: left;">
-                                            <input class="form-control" type="text" placeholder="Search" aria-label="Search">
-                                        </div>-->
-                <button style="float: right" class="btn btn-primary">
-                  {{ myLang.Invoice_data_upload }}
-                </button>
-                <button style="float: right" class="btn btn-success">
-                  {{ myLang.list_of_slip }}
-                </button>
-              </th>
-            </tr>
+              <advanced-laravel-vue-paginate :data="invoice_lists" 
+              :onEachSide="2"
+              previousText="<"
+              nextText=">"
+              alignment="center"
+                @paginateTo="get_all_invoice_list"/>
+              </span>
+              <span class="selectPagi">
+                <select class="form-control selectPage">
+                  <!--<option value="0">表示行数</option>
+                  <option v-for="n in order_detail_lists.last_page" :key="n"
+                :value="n">{{n}}</option>-->
+                <option value="10">10行</option>
+                <option value="20">20行</option>
+                <option value="50">50行</option>
+                <option value="100">100行</option>
+                </select>
+              </span>
+            </p>
+            <button @click="viewInvoicePopup" class="btn btn-primary " style="float:right;">新規請求</button>
+      <div class="">
+        <table
+            class="table table-striped table-bordered order_item_details_table"
+            style="overflow-x: scroll"
+          >
+          <thead>
+           
             <tr>
               <th style="cursor: pointer">No</th>
-              <th style="cursor: pointer">{{ myLang.buyer_name }}</th>
-              <th style="cursor: pointer">{{ myLang.invoice_date }}</th>
-              <th style="cursor: pointer">{{ myLang.biling_period }}</th>
-              <th style="cursor: pointer">{{ myLang.biling_amount }}</th>
-              <th style="cursor: pointer">{{ myLang.status }}</th>
-              <th style="cursor: pointer">{{ myLang.details }}</th>
-              <th style="cursor: pointer">{{ myLang.billing_data }}</th>
-              <th style="cursor: pointer">{{ myLang.invoice }}</th>
+              <th style="cursor: pointer">請求日時</th>
+              <th style="cursor: pointer">請求取引先コード</th>
+              
+              <th style="cursor: pointer">発注者</th>
+              <th style="cursor: pointer">締日</th>
+              <th style="cursor: pointer">請求状況</th>
+              <th style="cursor: pointer">請求金額</th>
             </tr>
           </thead>
           <tbody>
@@ -81,17 +124,49 @@
                   >{{ myLang.details }}</router-link
                 >
               </td>
-              <td>
-                <button class="btn btn-success">{{ myLang.download }}</button>
-              </td>
-              <td>
-                <button class="btn btn-primary">{{ myLang.download }}</button>
-              </td>
+              
             </tr>
           </tbody>
         </table>
       </div>
     </div>
+
+
+<b-modal
+      size="lg"
+      :hide-backdrop="true"
+      title="新規請求作成"
+      ok-title="検　索"
+      cancel-title="閉じる"
+      @ok.prevent="insertInvoice()"
+      v-model="invoiceCreateModal"
+    >
+      <div class="panel-body">
+        <table
+          class="table orderTopDetailTable table-bordered"
+          style="width: 100%"
+        >
+          <tr>
+            <td class="cl_custom_color">請求取引先コード</td>
+            <td><input type="text" class="form-control" /></td>
+            <td class="cl_custom_color">締日</td>
+            <td>
+              <div class="input-group mb-3">
+      
+      <input type="date" class="form-control">
+      <div class="input-group-prepend">
+        <span class="input-group-text">~</span>
+      </div>
+      <input type="date" class="form-control">
+    </div> 
+            </td>
+          </tr>
+          
+        </table>
+      </div>
+    </b-modal>
+
+
   </div>
 </template>
 <script>
@@ -100,11 +175,15 @@ export default {
     return {
       invoice_lists: {},
       byr_buyer_lists: {},
+      invoiceCreateModal:false,
       file: "",
       selected_byr: "0",
     };
   },
   methods: {
+    viewInvoicePopup(){
+      this.invoiceCreateModal = true;
+    },
     //get Table data
     get_all_invoice_list() {
       axios
@@ -150,6 +229,8 @@ export default {
   },
 
   created() {
+    Fire.$emit("byr_has_selected", this.$session.get("byr_buyer_id"));
+    Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
     this.get_all_invoice_list();
     Fire.$on("LoadByrinvoice", () => {
       this.get_all_invoice_list();
