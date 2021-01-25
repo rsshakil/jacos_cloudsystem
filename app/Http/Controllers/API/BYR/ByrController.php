@@ -47,22 +47,6 @@ class ByrController extends Controller
         $companies=cmn_company::select('byr_buyers.byr_buyer_id','byr_buyers.super_code','cmn_companies.*')
         ->join('byr_buyers','byr_buyers.cmn_company_id','=','cmn_companies.cmn_company_id')
         ->get();
-        // $adm_user_id=Auth::user()->id;
-        // $authUser=User::find($adm_user_id);
-        // if(!$authUser->hasRole('Super Admin')){
-        //     $slr_info = $this->all_used_fun->get_slr_info_by_slr_seller_id();
-
-        // }
-
-        // $result = DB::table('cmn_connects')
-        // ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
-        // ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
-        // ->select('byr_buyers.super_code','cmn_companies.*','byr_buyers.byr_buyer_id')
-        // ->groupBy('byr_buyers.byr_buyer_id');
-        // if(!$authUser->hasRole('Super Admin')){
-        //     $result = $result->where('cmn_connects.slr_seller_id',$slr_info->slr_seller_id);
-        // }
-        // return $result=$result->get();
         return response()->json(['companies'=>$companies]);
     }
 
@@ -82,11 +66,6 @@ class ByrController extends Controller
                 $company_name=$company_info->company_name;
             }
         }
-        // $buyers = byr_buyer::select('adm_users.*')
-        // ->join('cmn_companies_users', 'cmn_companies_users.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
-        // ->join('adm_users', 'adm_users.id', '=', 'cmn_companies_users.adm_user_id')
-        // ->where('byr_buyers.cmn_company_id',$cmn_company_id)
-        // ->get();
         return response()->json(['user_list'=>$buyer_users,'company_name'=>$company_name]);
     }
 
@@ -247,41 +226,6 @@ class ByrController extends Controller
 
     }
 
-
-    // public function slr_seller_user_create(Request $request){
-    //     $this->validate($request,[
-    //         'name' => 'required|string|max:191',
-    //         'email' => 'required|string|email|max:191|unique:adm_users',
-    //         'password' => 'required|string|min:6',
-    //     ]);
-
-    //     $name = $request->name;
-    //     $email = $request->email;
-    //     $password = $request->password;
-    //     $cmn_company_id = $request->cmn_company_id;
-    //     $hash_password = Hash::make($password);
-    //     $user_exist = User::where('email', $email)->first();
-    //     if ($user_exist) {
-    //         return response()->json(['title'=>"Exists!",'message' =>"exists", 'class_name' => 'error']);
-    //     } else {
-    //         $user = new User;
-    //         $user->name = $name;
-    //         $user->email = $email;
-    //         $user->password = $hash_password;
-    //         $user->save();
-    //         $last_user_id = $user->id;
-    //         $user_details = new adm_user_details;
-    //         $user_details->user_id = $last_user_id;
-    //         $user_details->save();
-    //         $users = User::findOrFail($last_user_id);
-    //         $users->assignRole('Slr');
-    //         // slr_seller::insert(['cmn_company_id'=>$cmn_company_id]);
-    //         cmn_companies_user::insert(['cmn_company_id'=>$cmn_company_id,'adm_user_id'=>$last_user_id]);
-    //         return response()->json(['title'=>"Created!",'message' =>"created", 'class_name' => 'success']);
-    //     }
-
-    // }
-
     public function createBuyer(Request $request){
         $this->validate($request,[
             'company_name' => 'required|string|max:191',
@@ -321,27 +265,14 @@ class ByrController extends Controller
         }
     }
 
-    // public function slr_company_create(Request $request){
-    //     $this->validate($request,[
-    //         'company_name' => 'required|string|max:191',
-    //         'phone' => 'required|string|max:20',
-    //         'fax' => 'required|string|max:20',
-    //         'jcode' => 'required|string|min:3',
-    //         'postal_code' => 'required|string|min:3',
-    //         'address' => 'required|string|min:3',
-    //     ]);
-    //     if($request->cmn_company_id!=null){
-    //         cmn_company::where('cmn_company_id',$request->cmn_company_id)->update(['company_name'=>$request->company_name,'jcode'=>$request->jcode,'postal_code'=>$request->postal_code,'address'=>$request->address,'phone'=>$request->phone,'fax'=>$request->fax]);
-    //     }else{
-    //         $cmn_company_id = cmn_company::insertGetId(['company_name'=>$request->company_name,'jcode'=>$request->jcode,'postal_code'=>$request->postal_code,'address'=>$request->address,'phone'=>$request->phone,'fax'=>$request->fax]);
-    //     slr_seller::insert(['cmn_company_id'=>$cmn_company_id]);
-    //     }
-
-    //     return response()->json(['title'=>"Created!",'message' =>"created", 'class_name' => 'success']);
-    // }
-
     public function slr_management_test(){
         echo '<pre>';
         print_r(Auth::user());
+    }
+    public function get_selected_byr_info($byr_buyer_id)
+    {
+        $byr_info = $this->all_used_fun->get_byr_info_by_byr_buyer_id($byr_buyer_id);
+
+        return response()->json(['byr_info' => $byr_info]);
     }
 }

@@ -70,13 +70,6 @@ class SlrController extends Controller
     {
         //
     }
-    public function get_selected_byr_info($byr_buyer_id)
-    {
-
-        $byr_info = $this->all_used_fun->get_byr_info_by_byr_buyer_id($byr_buyer_id);
-
-        return response()->json(['byr_info' => $byr_info]);
-    }
     public function slr_management($adm_user_id){
         $authUser=User::find($adm_user_id);
         if(!$authUser->hasRole(config('const.adm_role_name'))){
