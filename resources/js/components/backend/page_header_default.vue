@@ -28,6 +28,10 @@
           this.page_heading = '受領受信一覧';
       }else if(this.$route.name=='payment_list'){
           this.page_heading = '支払受信一覧';
+      }else if(this.$route.name=='invoice_list'){
+          this.page_heading = '請求一覧';
+      }else if(this.$route.name=='invoice_detail'){
+          this.page_heading = '請求伝票一覧';
       }
         Fire.$on("loadPageTitle", (PageTitle) => {
             this.page_heading = PageTitle;

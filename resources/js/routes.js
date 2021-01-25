@@ -351,28 +351,31 @@ export const routes = [
     },
     {
         path: '/invoice_list',
-        component: default_parent,
+        component: invoice_list,
+        name: 'invoice_list',
         meta: {
             breadcrumb: {
-                label: '請求'
+                label: '請求一覧'
             }
         },
-        children: [{
-            path: '/',
-            component: invoice_list,
-            name: 'invoice_list'
-        }, {
-            path: '/invoice_list/invoice_detail/:byr_invoice_id',
-            component: invoice_detail,
-            name: 'invoice_detail',
-            meta: { breadcrumb: '伝票一覧・新規請求' }
-        }, {
-            path: '/invoice_list/voucher_detail/:voucher_number',
-            component: voucher_detail,
-            name: 'voucher_detail',
-            meta: { breadcrumb: '伝票一覧・新規請求' }
-        }]
+        
 
+    },
+    {
+        path: '/invoice_list/invoice_detail/:byr_invoice_id',
+        component: invoice_detail,
+        name: 'invoice_detail',
+        meta: { 
+            breadcrumb:{ label:'請求伝票一覧',
+                    parent:'invoice_list'
+                }
+    }
+    },
+    {
+        path: '/invoice_list/voucher_detail/:voucher_number',
+        component: voucher_detail,
+        name: 'voucher_detail',
+        meta: { breadcrumb: '伝票一覧・新規請求' }
     },
     {
         path: '/pdf_platform_setting',
