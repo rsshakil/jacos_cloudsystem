@@ -145,7 +145,7 @@ class Byr_orderController extends Controller
         ,COUNT( isnull( dsv.decision_datetime) OR NULL) AS decision_cnt
         ,COUNT( isnull( dsv.print_datetime)  OR NULL) AS print_cnt
         ,dov.check_datetime
-        
+
         FROM data_orders AS dor
         INNER JOIN data_order_vouchers AS dov ON dor.data_order_id=dov.data_order_id
         INNER JOIN data_shipment_vouchers AS dsv ON dsv.data_order_voucher_id = dov.data_order_voucher_id
@@ -160,11 +160,11 @@ class Byr_orderController extends Controller
         ,dov.mes_lis_ord_log_del_delivery_service_code
         ,dov.mes_lis_ord_tra_ins_temperature_code
         $having_var
-        
+
         ");
         $buyer_settings=byr_buyer::select('setting_information')->where('byr_buyer_id', $byr_buyer_id)->first();
         $byr_buyer =$this->all_used_fun->get_company_list($cmn_company_id);
-        
+
         return response()->json(['order_list' => $result,'byr_buyer_list'=>$byr_buyer,'buyer_settings'=>$buyer_settings->setting_information]);
     }
 
@@ -190,7 +190,7 @@ class Byr_orderController extends Controller
          $temperature_code = $temperature_code==null?'':$temperature_code;
 
         // return $request->all();
-        
+
         // $result=DB::select("
         // ");
         // $result=DB::select("
@@ -255,7 +255,7 @@ class Byr_orderController extends Controller
         // echo '<pre>';
         // print_r($result);exit;
         $orderItem=collect(\DB::select("
-        SELECT * FROM data_order_items 
+        SELECT * FROM data_order_items
         inner join data_order_vouchers on data_order_vouchers.data_order_voucher_id=data_order_items.data_order_voucher_id
         inner join data_orders on data_orders.data_order_id=data_order_vouchers.data_order_id
         where data_orders.data_order_id = '$data_order_id'
@@ -305,14 +305,14 @@ class Byr_orderController extends Controller
         //order $data_order_voucher_id=1;
         $data_order_voucher_id=1;
         $orderItem=collect(\DB::select("
-        SELECT * FROM data_order_items 
+        SELECT * FROM data_order_items
         inner join data_order_vouchers on data_order_vouchers.data_order_voucher_id=data_order_items.data_order_voucher_id
         inner join data_orders on data_orders.data_order_id=data_order_vouchers.data_order_id
         where data_order_items.data_order_voucher_id = '$data_shipment_voucher_id'
         "))->first();
         //shipment
         $result=DB::select("
-        SELECT * FROM data_shipment_items 
+        SELECT * FROM data_shipment_items
         inner join data_shipment_vouchers on data_shipment_vouchers.data_shipment_voucher_id=data_shipment_items.data_shipment_voucher_id
         inner join data_shipments on data_shipments.data_shipment_id=data_shipment_vouchers.data_shipment_id
         where data_shipment_items.data_shipment_voucher_id = '$data_shipment_voucher_id'
@@ -424,7 +424,7 @@ class Byr_orderController extends Controller
             return ['status'=>'1','message'=>'Scenario file is not exist!'.$sc->file_path];
         }
         // ファイル読み込み
-        
+
         // $sc_obj = new ouk_order_toj();//$sc->file_path;
         $customClassPath = "\\App\\";
         $nw_f_pth = explode('/', $sc->file_path);
@@ -510,12 +510,12 @@ class Byr_orderController extends Controller
         $canvasRawBgImg = $canData['backgroundImage']['src'];
 
         // if (!empty($update_image_info)) {
-            
+
         // } else {
-            
+
         // }
         // return $canvasBgImg;
-        
+
         // Serialize the above data
         // $canData_string = serialize($canData);
         $canvas_array = array(
@@ -542,7 +542,7 @@ class Byr_orderController extends Controller
                 }
             }
             $canvas_image = $this->all_used_fun->save_base64_image($base64_canvas_image, 'canvas_image_'. time().'_'.$byr_id, $path_with_end_slash = "storage/app/public/backend/images/canvas/Canvas_screenshoot/");
-            
+
             if (!empty($update_image_info)) {
                 if ($canvas_image_info['canvas_bg_image']!="bg_image.jpg" ||$canvas_image_info['canvas_bg_image']!="canvas_bg_image_seeder.png") {
                     if (file_exists($file_path.'Background/' . $canvas_image_info['canvas_bg_image'])) {
@@ -606,7 +606,7 @@ class Byr_orderController extends Controller
             ->select('byr_buyers.*')
             ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'byr_orders.cmn_connect_id')
             ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
-            ->where('byr_orders.byr_order_id', $byr_order_id)
+            ->where('byr_orders.byr_order_id', $data_order_id)
             ->first();
         return response()->json(['byr_info'=>$result]);
     }
@@ -618,7 +618,7 @@ class Byr_orderController extends Controller
         ->join('slr_sellers', 'slr_sellers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
         ->where('cmn_companies_users.adm_user_id', $user_id)->first();
         $slr_id=$slr_info->slr_seller_id;
-        
+
         $slr_order_info=cmn_connect::select(DB::raw('count(data_orders.data_order_id) as total_order'), 'byr_buyers.byr_buyer_id', 'cmn_companies.company_name as buyer_name')
         ->leftJoin('data_orders', 'data_orders.cmn_connect_id', '=', 'cmn_connects.cmn_connect_id')
         ->leftJoin('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')

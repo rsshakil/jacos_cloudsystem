@@ -77,7 +77,7 @@ class Byr_itemController extends Controller
     }
     public function get_all_master_item($adm_user_id){
         $authUser=User::find($adm_user_id);
-        if(!$authUser->hasRole('Super Admin')){
+        if(!$authUser->hasRole(config('const.adm_role_name'))){
             $cmn_company_info = cmn_companies_user::select('byr_buyers.cmn_company_id','byr_buyers.byr_buyer_id','cmn_connects.cmn_connect_id')
             ->join('byr_buyers', 'byr_buyers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
             ->join('cmn_connects', 'cmn_connects.byr_buyer_id', '=', 'byr_buyers.byr_buyer_id')
@@ -94,7 +94,7 @@ class Byr_itemController extends Controller
             ->join('cmn_category_descriptions', 'cmn_category_descriptions.cmn_category_id', '=', 'byr_items.cmn_category_id')
             ->where('byr_items.byr_buyer_id',$byr_buyer_id)
             ->get();
-            
+
             $byr_buyer = byr_buyer::where('byr_buyer_id',$byr_buyer_id)->get();
         }else{
             $result = byr_item::select('byr_items.*','byr_item_classes.*','cmn_category_descriptions.category_name','cmn_category_descriptions.category_code','cmn_makers.maker_name_kana','cmn_makers.maker_name')
@@ -105,8 +105,8 @@ class Byr_itemController extends Controller
             $byr_buyer = byr_buyer::all();
         }
 
-    
-        
+
+
         return response()->json(['item_list' => $result,'byr_buyer_list'=>$byr_buyer]);
     }
 }

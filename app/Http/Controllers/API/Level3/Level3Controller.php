@@ -563,7 +563,7 @@ class Level3Controller extends Controller
             $this->message = "フォルダが空です";
             $this->status_code = 400;
             // return \response()->json(['message'=>'Directory empty','status_code'=>400]);
-            return \response()->json(['message' => $this->message, 'status_code' => $this->status_code]);
+            return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'files_array' => $files_array]);
         }
         // return $files_array;
 
