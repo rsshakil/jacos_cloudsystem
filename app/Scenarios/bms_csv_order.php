@@ -104,36 +104,30 @@ class bms_csv_order extends Model
     //
     public function exec($request, $sc)
     {
-        // return "OK";
-        // include(app_path() . '/scenarios/common.php');
-        \Log::debug('ouk_order_toj exec start  ---------------');
+        \Log::debug(get_class().' exec start  ---------------');
+
         // ファイルアップロード
         // echo $request->file('up_file');exit;
         $file_name = time().'_'.$request->file('up_file')->getClientOriginalName();
         $path = $request->file('up_file')->storeAs(config('const.ORDER_DATA_PATH').date('Y-m'), $file_name);
         \Log::debug('save path:'.$path);
-        // $custom_paths = storage_path().'/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name;
-        // $file_url = fopen(storage_path().'/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name, 'r');
+
         $received_path = storage_path().'/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name;
         // フォーマット変換
         // byr_orders,byr_order_details格納
-        $dataArr = $this->all_functions->csvReader($received_path, 1);
+        $dataArr = $this->all_functions->csvReader_con($received_path, 1);
        
         $data_count=count($dataArr);
-        //    return $dataArr;
-        // $insert_array_bms_order=array();
-        //     $insert_array_bms_shipment=array();
-        //     $voucher_array=array();
-        //     $item_array=array();
-        // $data_order_array=array();
-        // $data_voucher_array=array();
-        // $data_item_array=array();
-
 
         $order_flg = true;
         $trade_number = '';
 
         foreach ($dataArr as $key => $value) {
+            if (count($value) === 1) {
+                // 空であればcontinue
+                continue;
+            }
+
             if ($order_flg) {
                 $data_order_array['sta_sen_identifier']=$value[0];
                 $data_order_array['sta_sen_ide_authority']=$value[1];

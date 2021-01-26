@@ -38,14 +38,14 @@
               <input
                 type="text"
                 class="form-control topHeaderInputFieldBtn"
-                v-model="today"
+                
               />
-              <button class="btn btn-primary active">参照</button>
+              <button @click="deliverySearchForm1" class="btn btn-primary active">参照</button>
             </td>
             <td class="cl_custom_color">最終納品先コード</td>
             <td>
               <input type="text" class="form-control topHeaderInputFieldBtn" />
-              <button class="btn btn-primary active">参照</button>
+              <button @click="deliverySearchForm2" class="btn btn-primary active">参照</button>
             </td>
             <td class="cl_custom_color">伝票番号</td>
             <td>
@@ -58,24 +58,31 @@
               <input
                 type="text"
                 class="form-control topHeaderInputFieldBtn"
-                v-model="today"
+                
               />
-              <button class="btn btn-primary active">参照</button>
+              <button @click="deliverySearchForm3" class="btn btn-primary active">参照</button>
             </td>
             <td class="cl_custom_color">定／特</td>
             <td>
-              <input type="text" class="form-control" />
+              <select class="form-control" v-model="form.fixedSpecial" style="width: 220px">
+                <option value="">全て</option>
+                <option :value="item" v-for="item in fixedSpecialOptionList">{{ item }}</option>
+              </select>
             </td>
             <td class="cl_custom_color">確定状況</td>
             <td>
-              <input type="text" class="form-control" />
+              <select class="form-control" v-model="form.situation" style="width: 220px">
+              <option value="">全て</option>
+                <option :value="item" v-for="item in situationOptionList">{{ item }}</option>
+              </select>
             </td>
           </tr>
           <tr>
             <td class="cl_custom_color">印刷状況</td>
             <td colspan="7">
-              <select class="form-control" style="width: 220px">
-                <option :value="0">{{ myLang.confirmation_status }}</option>
+              <select class="form-control" v-model="form.printingStatus" style="width: 220px">
+              <option value="">全て</option>
+                <option :value="item" v-for="item in printingStatusOptionList">{{ item }}</option>
               </select>
             </td>
           </tr>
@@ -96,17 +103,25 @@
         <div class="row">
           <div class="col-5">
             <p>
-              <span class="tableRowsInfo">1〜5 件表示中／全：100件</span>
+              <span class="tableRowsInfo">{{order_detail_lists.from}}〜{{order_detail_lists.to}} 件表示中／全：{{order_detail_lists.total}}件</span>
               <span class="pagi"
-                ><b-pagination
-                  v-model="currentPage"
-                  :total-rows="rows"
-                  size="sm"
-                ></b-pagination
-              ></span>
+                >
+              <advanced-laravel-vue-paginate :data="order_detail_lists" 
+              :onEachSide="2"
+              previousText="<"
+              nextText=">"
+              alignment="center"
+                @paginateTo="get_all_byr_order_detail"/>
+              </span>
               <span class="selectPagi">
-                <select class="form-control selectPage">
-                  <option>表示行数</option>
+                <select @change="selectNumPerPage" v-model="select_field_per_page_num" class="form-control selectPage">
+                  <!--<option value="0">表示行数</option>
+                  <option v-for="n in order_detail_lists.last_page" :key="n"
+                :value="n">{{n}}</option>-->
+                <option value="10">10行</option>
+                <option value="20">20行</option>
+                <option value="50">50行</option>
+                <option value="100">100行</option>
                 </select>
               </span>
             </p>
@@ -159,6 +174,11 @@
             style="overflow-x: scroll"
           >
             <thead>
+            <tr class="first_heading_th">
+              <th></th>
+              <th><input @click="checkAll" v-model='isCheckAll' type="checkbox">全選択</th>
+              <th colspan="9"></th>
+            </tr>
               <tr>
                 <th>No</th>
                 <th>確定</th>
@@ -175,11 +195,11 @@
             </thead>
             <tbody>
               <tr
-                v-for="(order_detail_list, index) in order_detail_lists"
+                v-for="(order_detail_list, index) in order_detail_lists.data"
                 :key="index"
               >
                 <td>{{ index + 1 }}</td>
-                <td>{{ order_detail_list.decision_datetime }}</td>
+                <td><span v-if="order_detail_list.decision_datetime!=null">済</span><span v-else><input  type="checkbox" v-bind:value='order_detail_list.data_shipment_voucher_id' v-model='selected' @change='updateCheckall()'></span></td>
                 <td>{{ order_detail_list.mes_lis_shi_par_shi_code }}</td>
                 <td>
                   {{ order_detail_list.mes_lis_shi_par_rec_code }}
@@ -189,7 +209,7 @@
                   <router-link
                     :to="{
                       name: 'order_item_list_detail',
-                      params: { data_order_list_voucher_id: order_detail_list.mes_lis_shi_tra_trade_number },
+                      params: { data_order_list_voucher_id: order_detail_list.data_shipment_voucher_id },
                     }"
                     class=""
                     >{{
@@ -235,7 +255,7 @@
             </div>
           </div>
           <div class="col-6 text-right">
-            <button class="btn btn-lg btn-primary active">
+            <button @click="updateDatetimeDecessionfield" class="btn btn-lg btn-primary active">
               選択行を伝票確定
             </button>
             <button class="btn btn-lg btn-danger active">確定データ送信</button>
@@ -359,10 +379,153 @@
         </form>
       </div>
     </b-modal>
+    <b-modal
+      size="lg"
+      :hide-backdrop="true"
+      title="納品先検索"
+      ok-title="検　索"
+      cancel-title="閉じる"
+      @ok.prevent="update_order_voucher_detail()"
+      v-model="order_search_modal1"
+    >
+      <div class="panel-body">
+        <table
+          class="table orderTopDetailTable table-bordered"
+          style="width: 100%"
+        >
+          <tr>
+            <td class="cl_custom_color">納品先コード</td>
+            <td><input type="text" class="form-control" v-model="form.deliveryCode"/></td>
+            <td class="cl_custom_color">納品先名</td>
+            <td>
+              <input type="text" class="form-control" v-model="form.deliveryName"/>
+            </td>
+          </tr>
+          <tr>
+            <td class="cl_custom_color">納品先形態区分</td>
+            <td>
+            <select class="form-control" v-model="form.deliveryDestnation" style="width: 220px">
+              <option value="">全て</option>
+                <option :value="item" v-for="item in deliveryDestnationOptionList">{{ item }}</option>
+              </select>
+            </td>
+            <td class="cl_custom_color">納品可能日</td>
+            <td>
+              <input type="date" class="form-control" v-model="form.deliveryDate">
+            </td>
+            
+          </tr>
+        </table>
+      </div>
+    </b-modal>
+    <b-modal
+      size="lg"
+      :hide-backdrop="true"
+      title="納品先検索"
+      ok-title="検　索"
+      cancel-title="閉じる"
+      @ok.prevent="update_order_voucher_detail()"
+      v-model="order_search_modal2"
+    >
+      <div class="panel-body">
+        <table
+          class="table orderTopDetailTable table-bordered"
+          style="width: 100%"
+        >
+          <tr>
+            <td class="cl_custom_color">納品先コード</td>
+            <td><input type="text" class="form-control" v-model="form.deliveryCode"/></td>
+            <td class="cl_custom_color">納品先名</td>
+            <td>
+              <input type="text" class="form-control" v-model="form.deliveryName"/>
+            </td>
+          </tr>
+          <tr>
+            <td class="cl_custom_color">納品先形態区分</td>
+            <td>
+            <select class="form-control" v-model="form.deliveryDestnation" style="width: 220px">
+              <option value="">全て</option>
+                <option :value="item" v-for="item in deliveryDestnationOptionList">{{ item }}</option>
+              </select>
+            </td>
+            <td class="cl_custom_color">納品可能日</td>
+            <td>
+              <input type="date" class="form-control" v-model="form.deliveryDate">
+            </td>
+            
+          </tr>
+        </table>
+      </div>
+    </b-modal>
+    <b-modal
+      size="lg"
+      :hide-backdrop="true"
+      title="商品コード"
+      ok-title="検　索"
+      cancel-title="閉じる"
+      @ok.prevent="update_order_voucher_detail()"
+      v-model="order_search_modal3"
+    >
+      <div class="panel-body">
+        <table
+          class="table orderTopDetailTable table-bordered"
+          style="width: 100%"
+        >
+          <tr>
+            <td class="cl_custom_color">商品コード（発注用）</td>
+            <td><input type="text" class="form-control" v-model="form.deliveryCode"/></td>
+            <td class="cl_custom_color">JANコード</td>
+            <td>
+              <input type="text" class="form-control" v-model="form.deliveryName"/>
+            </td>
+          </tr>
+          
+          <tr>
+            <td class="cl_custom_color">商品名</td>
+            <td colspan="3"><input type="" class="form-control"/></td>
+          </tr>
+          <tr>
+            <td class="cl_custom_color">規格</td>
+            <td colspan="3"><input type="" class="form-control"/></td>
+          </tr>
+          <tr>
+            <td class="cl_custom_color">取引先コード</td>
+            <td><input type="text" class="form-control" v-model="form.deliveryCode"/></td>
+            <td class="cl_custom_color">納品先コード</td>
+            <td>
+              <input type="text" class="form-control" v-model="form.deliveryName"/>
+            </td>
+          </tr>
+          <tr>
+            <td class="cl_custom_color">部門</td>
+            <td>
+            <select class="form-control" v-model="form.deliveryDestnation" style="width: 220px">
+              <option value="">全て</option>
+                <option :value="item" v-for="item in deliveryDestnationOptionList">{{ item }}</option>
+              </select>
+            </td>
+            <td class="cl_custom_color">不定貴区分</td>
+            <td>
+              <select class="form-control" v-model="form.deliveryDestnation" style="width: 220px">
+              <option value="">全て</option>
+                <option :value="item" v-for="item in deliveryDestnationOptionList">{{ item }}</option>
+              </select>
+            </td>
+            
+          </tr>
+        </table>
+      </div>
+    </b-modal>
   </div>
 </template>
 <script>
+import AdvancedLaravelVuePaginate from 'advanced-laravel-vue-paginate';
+import 'advanced-laravel-vue-paginate/dist/advanced-laravel-vue-paginate.css'
+
 export default {
+  components: {
+        AdvancedLaravelVuePaginate
+    },
   // props: ["param_data"],
   data() {
     return {
@@ -381,27 +544,73 @@ export default {
       status: "",
       // byr_order_id: "",
       edit_order_modal: false,
+      order_search_modal1: false,
+      order_search_modal2: false,
+      order_search_modal3: false,
       selected: [],
+      select_field_page_num:0,
+      select_field_per_page_num:10,
       isCheckAll: false,
-      form: new Form({}),
+      printingStatusOptionList:['01 定番','02 準特価','03 特売'],
+      situationOptionList:['未確定あり','確定済'],
+      fixedSpecialOptionList:['未印刷あり','未印刷あり'],
+      deliveryDestnationOptionList:['店舗','物流センター'],
+      form: new Form({
+        printingStatus:'',
+        situation:'',
+        fixedSpecial:'',
+        deliveryDestnation:'',
+        deliveryCode:'',
+        deliveryDate:'',
+        deliveryName:'',
+      }),
       param_data: [],
       // buyer_settings:null,
     };
   },
   methods: {
+    deliverySearchForm1(){
+      this.order_search_modal1 = true;
+    },
+    deliverySearchForm2(){
+      this.order_search_modal2 = true;
+    },
+    deliverySearchForm3(){
+      this.order_search_modal3 = true;
+    },
+    selectNumPage(){
+      if(this.select_field_page_num!=0){
+
+        this.get_all_byr_order_detail(this.select_field_page_num);
+      }
+      
+    },
+    selectNumPerPage(){
+      if(this.select_field_per_page_num!=0){
+        Fire.$emit("LoadByrorderDetail");
+        // this.get_all_byr_order_detail(this.select_field_page_num);
+      }
+      
+    },
     checkAll() {
       this.isCheckAll = !this.isCheckAll;
       this.selected = [];
       var temp_seleted = [];
       if (this.isCheckAll) {
-        this.order_detail_lists.forEach(function (order_detail_list) {
-          temp_seleted.push(order_detail_list.byr_order_detail_id);
-        });
-        this.selected = temp_seleted;
+        for (var key in this.order_detail_lists.data) {
+          // console.log(this.order_detail_lists.data[key].data_shipment_voucher_id);
+			                  this.selected.push(this.order_detail_lists.data[key].data_shipment_voucher_id);
+			                }
+        // this.order_detail_lists.data.forEach(function (order_detail_list) {
+        //   // temp_seleted.push(order_detail_list.byr_order_detail_id);
+        //   console.log(order_detail_list);
+        //   this.selected.push(order_detail_list.byr_order_detail_id);
+        // });
+        // this.selected = temp_seleted;
       }
     },
     updateCheckall() {
-      if (this.selected.length == this.order_detail_lists.length) {
+      if (this.selected.length == this.order_detail_lists.data.length) {
         this.isCheckAll = true;
       } else {
         this.isCheckAll = false;
@@ -444,23 +653,23 @@ export default {
       // this.order_detail_lists.sort((a, b) => a[sortKey] < b[sortKey] ? 1 : -1);
       if (this.order_by == "asc") {
         this.order_by = "desc";
-        this.order_detail_lists.sort((a, b) => a[sortKey] - b[sortKey]);
+        this.order_detail_lists.data.sort((a, b) => a[sortKey] - b[sortKey]);
       } else {
         this.order_by = "asc";
-        this.order_detail_lists.sort((a, b) => b[sortKey] - a[sortKey]);
+        this.order_detail_lists.data.sort((a, b) => b[sortKey] - a[sortKey]);
       }
     },
     sortByja_valu(sortKey) {
       if (this.order_by == "asc") {
         this.order_by = "desc";
-        this.order_detail_lists.sort((a, b) =>
+        this.order_detail_lists.data.sort((a, b) =>
           a[sortKey].localeCompare(b[sortKey], "ja", {
             ignorePunctuation: true,
           })
         );
       } else {
         this.order_by = "asc";
-        this.order_detail_lists.sort((a, b) =>
+        this.order_detail_lists.data.sort((a, b) =>
           b[sortKey].localeCompare(a[sortKey], "ja", {
             ignorePunctuation: true,
           })
@@ -484,15 +693,36 @@ export default {
           console.log(response);
         });
     },
+    updateDatetimeDecessionfield() {
+      
+      axios({
+        method: "POST",
+        url: this.BASE_URL + "api/update_shipment_detail_bycurrentdatetime",
+        data: {update_id:this.selected},
+      })
+        .then(function (response) {
+          //handle success
+          console.log(response);
+          Fire.$emit("LoadByrorderDetail");
+        })
+        .catch(function (response) {
+          //handle error
+          console.log(response);
+        });
+    },
     //get Table data
-    get_all_byr_order_detail() {
+    get_all_byr_order_detail(page = 1) {
+      this.param_data['page']=page;
+      this.param_data['per_page']=this.select_field_per_page_num;
+      this.select_field_page_num = page;
       axios
         .post(this.BASE_URL + "api/order_details", this.param_data)
         .then(({ data }) => {
-          // console.log(data);
+        console.log(data);
           this.order_detail_lists = data.order_list_detail;
           this.order_item_lists = data.orderItem;
           this.loader.hide();
+          console.log(this.order_detail_lists);
           // return 0;
           // // this.order_detail_lists = data.data.order_list_detail;
           // this.show_hide_col_list = data.data.slected_list;
@@ -546,8 +776,11 @@ export default {
   created() {
     Fire.$emit("byr_has_selected", this.$session.get("byr_buyer_id"));
     Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
+    Fire.$emit("voucher_page_query_param", 'myData');
+    this.$session.set('voucher_page_query_param',this.$route.query);
     // console.log(this.$route.query);
     this.param_data = this.$route.query;
+
     // console.log(this.param_data);
     this.loader = Vue.$loading.show();
     this.data_order_id = this.$route.params.data_order_id;

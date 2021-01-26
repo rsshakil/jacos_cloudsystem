@@ -56,7 +56,6 @@ class AllUsedFunction extends Controller
                 } else {
                     $permission_array[] = $permission->name;
                 }
-
             }
             return $permissions = implode(' ', $permission_array);
         } else {
@@ -72,7 +71,6 @@ class AllUsedFunction extends Controller
      */
     public function assignPermissionToRole($role_id, $permissions)
     {
-
         $role_id = $role_id;
         $permission_id = $permissions;
         $role = Role::find($role_id);
@@ -98,7 +96,6 @@ class AllUsedFunction extends Controller
         }
 
         return $permissions;
-
     }
     /**
      * Get all permission for a desired user
@@ -142,6 +139,28 @@ class AllUsedFunction extends Controller
     {
         return $roles = Role::all();
     }
+
+    /**
+     * Read a csv file and convert by path
+     *
+     * @param  string $baseUrl
+     * @param  boolean $take_header 1 for no header 0 for with header
+     * @return All csv data as an array.
+     */
+    public function csvReader_con($baseUrl, $take_header=1)
+    {
+        $temp_data = file_get_contents($baseUrl);
+        if (mb_detect_encoding($temp_data, ['UTF-8', 'SJIS-win', 'SJIS', 'eucJP-win', 'ASCII', 'EUC-JP', 'JIS']) != "UTF-8") {
+            $temp_data = mb_convert_encoding($temp_data, "UTF-8", 'SJIS-win, SJIS, eucJP-win, ASCII, EUC-JP, JIS');
+            $data = array_map('str_getcsv', explode("\r\n", $temp_data));
+        } else {
+            $data = array_map('str_getcsv', file($baseUrl));
+        }
+        $csv_data = array_slice($data, $take_header);
+        \Log::debug('----- CSV file read completed from this url: (' . $baseUrl . ')-----');
+        return $csv_data;
+    }
+
     /**
      * Read a csv file by path
      *
@@ -149,7 +168,7 @@ class AllUsedFunction extends Controller
      * @param  boolean $take_header 1 for no header 0 for with header
      * @return All csv data as an array.
      */
-    public function csvReader($baseUrl,$take_header=1)
+    public function csvReader($baseUrl, $take_header=1)
     {
         $data = array_map('str_getcsv', file($baseUrl));
         $csv_data = array_slice($data, $take_header);
@@ -171,7 +190,7 @@ class AllUsedFunction extends Controller
             // $dat=str_replace("\u{00a0}", ' ', $dat);
             if (mb_detect_encoding($dat) != "UTF-8") {
                 return mb_convert_encoding($dat, "UTF-8", "sjis-win");
-                // return utf8_encode($dat);
+            // return utf8_encode($dat);
             } else {
                 return mb_convert_encoding($dat, "UTF-8", "auto");
                 // return $dat;
@@ -204,7 +223,7 @@ class AllUsedFunction extends Controller
             // \Log::debug('----- UTF-8 to SJIJ conversion completed -----');
             // Original
             return mb_convert_encoding($dat, "sjis-win", "UTF-8");
-            // return mb_convert_encoding($dat, "SJIS", "UTF-8");
+        // return mb_convert_encoding($dat, "SJIS", "UTF-8");
         } elseif (is_array($dat)) {
             $ret = [];
             foreach ($dat as $i => $d) {
@@ -488,13 +507,16 @@ class AllUsedFunction extends Controller
     public function decimal_to_binary($decimal)
     {
         $bos = null;
-        while ($decimal >= 1) {$bin = $decimal % 2;
-            $decimal = round($decimal / 2, 0,
-                PHP_ROUND_HALF_DOWN);
+        while ($decimal >= 1) {
+            $bin = $decimal % 2;
+            $decimal = round(
+                $decimal / 2,
+                0,
+                PHP_ROUND_HALF_DOWN
+            );
             $bos .= $bin;
         }
         return strrev($bos);
-
     }
 
     /**
@@ -522,7 +544,6 @@ class AllUsedFunction extends Controller
     }
     public function get_byr_info_by_byr_buyer_id($byr_buyer_id = null)
     {
-
         $byrs_info = byr_buyer::select('byr_buyers.byr_buyer_id', 'cmn_companies_users.adm_user_id', 'cmn_companies.*')
             ->join('cmn_companies_users', 'cmn_companies_users.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
             ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id');
@@ -537,7 +558,6 @@ class AllUsedFunction extends Controller
     }
     public function get_slr_info_by_slr_seller_id($slr_seller_id = null)
     {
-
         $slrs_info = slr_seller::select('slr_sellers.slr_seller_id', 'cmn_companies_users.adm_user_id', 'cmn_companies.*')
             ->join('cmn_companies_users', 'cmn_companies_users.cmn_company_id', '=', 'slr_sellers.cmn_company_id')
             ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id');
@@ -581,15 +601,14 @@ class AllUsedFunction extends Controller
             if ($password==null) {
                 $user_array['password']=$exist_user_info->password;
             }
-            User::where('id',$adm_user_id)->update($user_array);
+            User::where('id', $adm_user_id)->update($user_array);
             return array('title'=>"Updated!",'message' =>"updated", 'class_name' => 'success');
-            // return response()->json(['title'=>"Updated!",'message' =>"updated", 'class_name' => 'success']);
-        }else{
+        // return response()->json(['title'=>"Updated!",'message' =>"updated", 'class_name' => 'success']);
+        } else {
             if ($user_exist) {
                 return array('title'=>"Exists!",'message' =>"exists", 'class_name' => 'error');
-                // return response()->json(['title'=>"Exists!",'message' =>"exists", 'class_name' => 'error']);
+            // return response()->json(['title'=>"Exists!",'message' =>"exists", 'class_name' => 'error']);
             } else {
-                
                 $last_user_id=User::insertGetId($user_array);
                 adm_user_details::insert(['user_id'=>$last_user_id]);
             }
