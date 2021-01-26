@@ -32,6 +32,10 @@
           this.page_heading = '請求一覧';
       }else if(this.$route.name=='invoice_detail'){
           this.page_heading = '請求伝票一覧';
+      }else if(this.$route.name=='item_search'){
+          this.page_heading = '受注商品別一覧';
+      }else if(this.$route.name=='item_search_detail'){
+          this.page_heading = '受注商品別明細';
       }
         Fire.$on("loadPageTitle", (PageTitle) => {
             this.page_heading = PageTitle;

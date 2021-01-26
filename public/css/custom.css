@@ -154,7 +154,7 @@
     /* border: 1px solid #999!important; */
     vertical-align: middle !important;
 }
-.cl_custom_color_extra{
+.cl_custom_color_extra,.cl_custom_color_active{
     text-align: center;
     background: #538ED3;
     color:#fff;
