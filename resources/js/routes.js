@@ -12,7 +12,9 @@ import password_reset from './components/backend/ADM/password_reset.vue'
 // data/order
 import order_list from './components/backend/DATA/order/order_list.vue'
 import order_vouchers from './components/backend/DATA/order/order_vouchers.vue'
+import item_search from './components/backend/DATA/order/item_search.vue'
 import order_items from './components/backend/DATA/order/order_items.vue'
+import item_search_detail from './components/backend/DATA/order/item_search_detail.vue'
 
 // data/shipment
 // data/receive
@@ -102,6 +104,34 @@ export const routes = [
             breadcrumb: {
                 label: '受注伝票一覧',
                 parent: 'order_list'
+            },
+        },
+        
+    },
+
+    {
+        path: '/order_list/order_list_detail/item_search',
+        component: item_search,
+        name: 'item_search',
+        meta: {
+           
+            breadcrumb: {
+                label: '受注商品別一覧',
+                parent: 'order_list_detail'
+            },
+        },
+        
+    },
+
+    {
+        path: '/order_list/order_list_detail/item_search/:item_id',
+        component: item_search_detail,
+        name: 'item_search_detail',
+        meta: {
+           
+            breadcrumb: {
+                label: '受注商品別明細',
+                parent: 'item_search'
             },
         },
         

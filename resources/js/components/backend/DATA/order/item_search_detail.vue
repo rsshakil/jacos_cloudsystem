@@ -1,0 +1,492 @@
+<template>
+  <div>
+    <div class="row">
+      
+      <div class="col-12" style="padding: 10px">
+        <table class="table orderTopDetailTable table-bordered" style="width: 100%">
+          <tr>
+            <td class="cl_custom_color">受信日時</td>
+            <td>{{order_item_lists.receive_datetime}}</td>
+            <td class="cl_custom_color">取引先</td>
+            <td colspan="5">{{order_item_lists.mes_lis_ord_par_sel_code}} {{order_item_lists.mes_lis_ord_par_sel_name}}</td>
+          </tr>
+          <tr>
+            <td class="cl_custom_color">納品日</td>
+            <td>{{order_item_lists.mes_lis_ord_tra_dat_delivery_date}}</td>
+            <td class="cl_custom_color">部門</td>
+            <td></td>
+            <td class="cl_custom_color">便</td>
+            <td>{{order_item_lists.mes_lis_ord_tra_goo_major_category}}</td>
+            <td class="cl_custom_color">配送温度区分</td>
+            <td>{{order_item_lists.mes_lis_ord_tra_ins_temperature_code}}</td>
+          </tr>
+          <tr>
+            <td class="cl_custom_color">受信日時</td>
+            <td>2020/11/30 04:41</td>
+            <td class="cl_custom_color">取引先</td>
+            <td colspan="5">
+              57800000 丸井スズキＴＣ
+            </td>
+          </tr>
+          <tr>
+            <td class="cl_custom_color">商品名</td>
+            <td colspan="7">健康ミネラル麦茶</td>
+            
+          </tr>
+          <tr>
+            <td class="cl_custom_color">規格名</td>
+            <td>５００ｍｌ</td>
+            <td class="cl_custom_color">産地</td>
+            <td colspan="5">
+              北海道産
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div
+        class="col-12"
+        style="padding: 10px; margin-bottom: 20px;margin-top: 20px;background:#DEE6F0"
+      >
+      <p><router-link to="">【一括入力】</router-link>対象行のチェックボックス を選択後、『選択行に一括反映』をクリックすると、入力値を選択行に一括反映します。</p>
+        <table class="table orderTopDetailTable table-bordered" style="width: 100%">
+          <tr>
+            <td class="cl_custom_color_active">ケース数</td>
+            <td><input type="text" class="form-control"/></td>
+            <td class="cl_custom_color_active">バラ数</td>
+            <td><input type="text" class="form-control"/></td>
+            <td class="cl_custom_color_active">重量</td>
+            <td><input type="text" class="form-control"/></td>
+            <td class="cl_custom_color_active">原単価</td>
+            <td><input type="text" class="form-control"/></td>
+          </tr>
+          <tr>
+            <td class="cl_custom_color_active">売単価</td>
+            <td><input type="text" class="form-control"/></td>
+            <td class="cl_custom_color_active">欠品理由</td>
+            <td colspan="5">
+              <select class="form-control">
+                <option value="">00 欠品なし</option>
+              </select>
+            </td>
+            
+          </tr>
+          
+          
+        </table>
+        <button class="btn btn-primary" style="float:right;">選択行に一括反映 -></button>
+      </div>
+      <div class="col-12" style="text-align: center">
+       
+      </div>
+     
+      <div class="col-12">
+        
+      </div>
+      <div class="col-12">
+      
+      </div>
+      <div class="col-12">
+        <div class="">
+          
+          <table class="table table-striped table-bordered table-responsive order_item_details_table data_table" style="overflow-x: scroll;">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>伝票番号</th>
+                <th>直接 納品先 コード</th>
+                <th>最終 納品先 コード</th>
+                <th>行</th>
+                <th>入数</th>
+                <th>ケース数</th>
+                <th>単位</th>
+                <th>バラ数</th>
+                <th>重量</th>
+                <th>原単価</th>
+                <th>原価全額</th>
+                <th>売単価</th>
+                <th>売価全額</th>
+                <th>欠品理由</th>
+                <th>選択</th>
+              </tr>
+              
+            </thead>
+            <tbody>
+              <tr v-for="(order_item_detail_list, index) in order_item_detail_lists" :key="index">
+                <td>{{index+1}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+            
+
+          </table>
+          <button style="float:right" class="btn btn-primary pull-right text-right active">
+              更新
+            </button>
+        </div>
+      </div>
+    </div>
+    <b-modal
+      size="lg"
+      :hide-backdrop="true"
+      title="発注データ修正"
+      ok-title="修正"
+      cancel-title="キャンセル"
+      @ok.prevent="save_user()"
+      v-model="edit_order_modal"
+    >
+      <div class="panel-body add_item_body">
+        <form>
+          <input
+            type="hidden"
+            name="vendor_item_id"
+            id="vendor_item_id"
+            value
+          />
+          <div class="row">
+            <div class="col-6">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon3"
+                    >伝票番号</span
+                  >
+                </div>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="basic-url"
+                  aria-describedby="basic-addon3"
+                />
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon3">発注日</span>
+                </div>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="basic-url"
+                  aria-describedby="basic-addon3"
+                />
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon3">商品名</span>
+                </div>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="basic-url"
+                  aria-describedby="basic-addon3"
+                />
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon3">原価</span>
+                </div>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="basic-url"
+                  aria-describedby="basic-addon3"
+                />
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon3">JAN</span>
+                </div>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="basic-url"
+                  aria-describedby="basic-addon3"
+                />
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon3">納品日</span>
+                </div>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="basic-url"
+                  aria-describedby="basic-addon3"
+                />
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon3">規格</span>
+                </div>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="basic-url"
+                  aria-describedby="basic-addon3"
+                />
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon3">売価</span>
+                </div>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="basic-url"
+                  aria-describedby="basic-addon3"
+                />
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!-- </div>
+        </div>
+      </div>-->
+    </b-modal>
+  </div>
+</template>
+<script>
+export default {
+ 
+  data() {
+    return {
+      
+      today: new Date().toISOString().slice(0, 10),
+      sortKey: "",
+      reverse: true,
+      order_by: "asc",
+      order_detail_lists: {},
+      order_item_detail_lists: {},
+      order_item_lists: {},
+      order_item_shipment_data_headTable: {},
+      order_date: "",
+      order_detail_list: [],
+      show_hide_col_list: [],
+      expected_delivery_date: "",
+      data_order_voucher_id:'',
+      mes_lis_shi_tot_tot_net_price_total:0,
+      mes_lis_shi_tot_tot_selling_price_total:0,
+      status: "",
+      // byr_order_id: "",
+      edit_order_modal: false,
+      selected: [],
+      isCheckAll: false,
+      form: new Form({}),
+      param_data:[],
+      queryData:'',
+    };
+  },
+  methods: {
+    checkAll() {
+      this.isCheckAll = !this.isCheckAll;
+      this.selected = [];
+      var temp_seleted = [];
+      if (this.isCheckAll) {
+        this.order_detail_lists.forEach(function (order_detail_list) {
+          temp_seleted.push(order_detail_list.byr_order_detail_id);
+        });
+        this.selected = temp_seleted;
+      }
+    },
+    updateCheckall() {
+      if (this.selected.length == this.order_detail_lists.length) {
+        this.isCheckAll = true;
+      } else {
+        this.isCheckAll = false;
+      }
+    },
+
+    update_checked_item_list() {
+      var post_data = {
+        selected_item: this.selected,
+        user_id: Globals.user_info_id,
+      };
+      axios
+        .post(this.BASE_URL + "api/update_byr_order_detail_status", post_data)
+        .then((data) => {
+          console.log(data);
+          Fire.$emit("LoadByrorderDetail");
+        });
+    },
+
+    exec_confirm_qty(order_detail, event) {
+      if (
+        parseFloat(order_detail.confirm_quantity) >
+        parseFloat(order_detail.order_quantity)
+      ) {
+        Swal.fire({
+          icon: "warning",
+          title: "Invalid Confirm Quantity!",
+          text: "You can not confrim order more then your order quantity!",
+        });
+        order_detail.confirm_quantity = order_detail.order_quantity;
+      }
+      if (event.key == "Enter") {
+        event.preventDefault();
+        console.log(event.key);
+        // event.target.nextElementSibling.focus()
+        // console.log(event.target.parent.closest('.lack_reasons'));
+      }
+    },
+    sortBynumeric_valu(sortKey) {
+      // this.order_detail_lists.sort((a, b) => a[sortKey] < b[sortKey] ? 1 : -1);
+      if (this.order_by == "asc") {
+        this.order_by = "desc";
+        this.order_detail_lists.sort((a, b) => a[sortKey] - b[sortKey]);
+      } else {
+        this.order_by = "asc";
+        this.order_detail_lists.sort((a, b) => b[sortKey] - a[sortKey]);
+      }
+    },
+    sortByja_valu(sortKey) {
+      if (this.order_by == "asc") {
+        this.order_by = "desc";
+        this.order_detail_lists.sort((a, b) =>
+          a[sortKey].localeCompare(b[sortKey], "ja", {
+            ignorePunctuation: true,
+          })
+        );
+      } else {
+        this.order_by = "asc";
+        this.order_detail_lists.sort((a, b) =>
+          b[sortKey].localeCompare(a[sortKey], "ja", {
+            ignorePunctuation: true,
+          })
+        );
+      }
+    },
+    update_shipment_detail(order_detail) {
+      console.log(order_detail);
+      axios({
+        method: "POST",
+        url: this.BASE_URL + "api/update_shipment_detail",
+        data: order_detail,
+      })
+        .then(function (response) {
+          //handle success
+          console.log(response);
+          Fire.$emit("LoadByrorderDetail");
+        })
+        .catch(function (response) {
+          //handle error
+          console.log(response);
+        });
+    },
+    //get Table data
+    get_all_byr_order_item_detail() {
+      axios.get(this.BASE_URL + "api/order_item_details/"+this.data_order_voucher_id)
+        .then(({data}) => {
+
+          console.log(data.order_item_list_detail);
+          this.order_item_detail_lists = data.order_item_list_detail;
+          this.mes_lis_shi_tot_tot_net_price_total = data.order_item_list_detail[0].mes_lis_shi_tot_tot_net_price_total;
+          this.mes_lis_shi_tot_tot_selling_price_total = data.order_item_list_detail[0].mes_lis_shi_tot_tot_selling_price_total;
+          this.order_item_lists = data.orderItem;
+          this.order_item_shipment_data_headTable = data.order_item_list_detail[0];
+          this.loader.hide();
+        });
+    },
+
+    col_show_hide_setting(url_slug) {
+      console.log(this.show_hide_col_list.length + "col lenght");
+      if (this.show_hide_col_list.length == 0) {
+        var post_data = {
+          url_slug: url_slug,
+          user_id: Globals.user_info_id,
+        };
+        axios
+          .post(this.BASE_URL + "api/tblecolsetting", post_data)
+          .then((data) => {
+            console.log(data);
+          });
+      }
+    },
+    edit_order_detail(order_detail_list) {
+      this.edit_order_modal = true;
+    },
+  },
+
+  created() {
+    Fire.$emit('byr_has_selected',this.$session.get('byr_buyer_id'));
+    Fire.$emit('permission_check_for_buyer',this.$session.get('byr_buyer_id'));
+
+
+
+    // console.log(this.$route.query);
+    this.param_data=this.$route.query
+    console.log(this.$session.get('voucher_page_query_param'));
+    this.parent.query = this.$session.get('voucher_page_query_param');
+    // console.log(this.param_data);
+    //this.loader = Vue.$loading.show();
+    this.data_order_voucher_id = this.$route.params.data_order_list_voucher_id;
+    console.log(this.$route.params.data_order_list_voucher_id)
+    //this.get_all_byr_order_item_detail();
+    Fire.$on("LoadByrorderItemDetail", () => {
+      
+      this.get_all_byr_order_item_detail();
+    });
+    
+    // Fire.$emit("voucher_page_query_param");
+    this.col_show_hide_setting(this.$route.name);
+    
+  },
+  computed: {
+    total_selling_price: function() {
+      // this.order_item_detail_lists.forEach(function (order_item_detail_list) {
+      //     this.mes_lis_shi_tot_tot_selling_price_total +=order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price
+      //   });
+      // return this.order_item_detail_lists.reduce(function(a, c){return a + Number((c.mes_lis_shi_lin_amo_item_selling_price) || 0)}, 0)
+        // return this.mes_lis_shi_tot_tot_selling_price_total;
+    return 0;
+    },
+    total_net_price: function() {
+      // this.order_item_detail_lists.forEach(function (order_item_detail_list) {
+      //     this.mes_lis_shi_tot_tot_net_price_total +=order_item_detail_list.mes_lis_shi_lin_amo_item_net_price
+      //   });
+      //   return this.mes_lis_shi_tot_tot_net_price_total;
+      // return this.order_item_detail_lists.reduce(function(a, c){return a + Number((c.mes_lis_shi_lin_amo_item_net_price) || 0)}, 0)
+    return 0;
+    },
+    total_selling_prices: function() {
+      var totoal = 0
+      // this.order_item_detail_lists.forEach(function (order_item_detail_list) {
+      //     totoal +=order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price
+      //   });
+        return totoal;
+      // return this.order_item_detail_lists.reduce(function(a, c){return a + Number((c.mes_lis_shi_lin_amo_item_selling_price) || 0)}, 0)
+        // return this.mes_lis_shi_tot_tot_selling_price_total;
+    },
+    total_net_prices: function() {
+      var totoal = 0;
+      // this.order_item_detail_lists.forEach(function (order_item_detail_list) {
+      //     totoal +=order_item_detail_list.mes_lis_shi_lin_amo_item_net_price
+      //   });
+        return totoal;
+      //   return this.mes_lis_shi_tot_tot_net_price_total;
+      // return this.order_item_detail_lists.reduce(function(a, c){return a + Number((c.mes_lis_shi_lin_amo_item_net_price) || 0)}, 0)
+    },
+  },
+  mounted() {
+    console.log("byr order detail page loaded");
+    Fire.$on("voucher_page_query_param", (query_param) => {
+      console.log('getparams');
+     console.log(query_param);
+    });
+  },
+};
+</script>

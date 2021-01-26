@@ -145,9 +145,8 @@
               </div>
               <div class="col-3">
                 <p class="mb-0">商品別の更新はこちら</p>
-                <b-button class="active" variant="primary">
-                  商品別登録</b-button
-                >
+                <router-link to="/order_list/order_list_detail/item_search" class="active btn btn-primary">
+                  商品別登録</router-link>
               </div>
               <div class="col-5">
                 <b-form inline>
