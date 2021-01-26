@@ -583,6 +583,7 @@ class Level3Controller extends Controller
             $this->status_code = 401;
             // return \response()->json(['message'=>$this->message,'status_code'=>$this->status_code]);
         }
+        // return \response()->json(['message' => $this->message, 'status_code' => $this->status_code]);
         return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'files_array' => $files_array]);
         // $files_array = array_values($files_array);
 
