@@ -8,22 +8,22 @@
         >
           <tr>
             <td class="cl_custom_color">受信日時</td>
-            <td>{{ order_item_lists.receive_datetime }}</td>
+            <td>{{ order_info.receive_datetime }}</td>
             <td class="cl_custom_color">取引先</td>
             <td colspan="5">
-              {{ order_item_lists.mes_lis_ord_par_sel_code }}
-              {{ order_item_lists.mes_lis_ord_par_sel_name }}
+              {{ order_info.mes_lis_shi_par_sel_code }}
+              {{ order_info.mes_lis_shi_par_sel_name }}
             </td>
           </tr>
           <tr>
             <td class="cl_custom_color">納品日</td>
-            <td>{{ order_item_lists.mes_lis_ord_tra_dat_delivery_date }}</td>
+            <td>{{ order_info.mes_lis_shi_tra_dat_delivery_date }}</td>
             <td class="cl_custom_color">部門</td>
-            <td></td>
+            <td>{{ order_info.mes_lis_shi_tra_goo_major_category }}</td>
             <td class="cl_custom_color">便</td>
-            <td>{{ order_item_lists.mes_lis_ord_tra_goo_major_category }}</td>
+            <td>{{ order_info.mes_lis_shi_log_del_delivery_service_code }}</td>
             <td class="cl_custom_color">配送温度区分</td>
-            <td>{{ order_item_lists.mes_lis_ord_tra_ins_temperature_code }}</td>
+            <td>{{ order_info.mes_lis_shi_tra_ins_temperature_code }}</td>
           </tr>
         </table>
       </div>
@@ -535,7 +535,7 @@ export default {
       reverse: true,
       order_by: "asc",
       order_detail_lists: {},
-      order_item_lists: {},
+      order_info: {},
       order_date: "",
       order_detail_list: [],
       show_hide_col_list: [],
@@ -719,7 +719,7 @@ export default {
         .then(({ data }) => {
         console.log(data);
           this.order_detail_lists = data.order_list_detail;
-          this.order_item_lists = data.orderItem;
+          this.order_info = data.order_info;
           this.loader.hide();
           console.log(this.order_detail_lists);
           // return 0;

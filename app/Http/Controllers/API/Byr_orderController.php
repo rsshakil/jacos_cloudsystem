@@ -185,6 +185,9 @@ class Byr_orderController extends Controller
         $temperature_code = $temperature_code == null ? '' : $temperature_code;
         $result = DB::table('data_shipments as ds')
             ->select(
+                'dor.receive_datetime',
+                'dsv.mes_lis_shi_par_sel_code',
+                'dsv.mes_lis_shi_par_sel_name',
                 'dsv.data_shipment_voucher_id',
                 'dsv.mes_lis_shi_tra_dat_delivery_date',
                 'dsv.mes_lis_shi_tra_goo_major_category',
@@ -204,6 +207,7 @@ class Byr_orderController extends Controller
             )
             ->join('data_shipment_vouchers as dsv', 'dsv.data_shipment_id', '=', 'ds.data_shipment_id')
             ->join('data_shipment_items as dsi', 'dsi.data_shipment_voucher_id', '=', 'dsv.data_shipment_voucher_id')
+            ->join('data_orders as dor', 'dor.data_order_id', '=', 'ds.data_order_id')
             ->where('ds.data_order_id', $data_order_id)
             ->where('dsv.mes_lis_shi_tra_dat_delivery_date', $delivery_date)
             ->where('dsv.mes_lis_shi_tra_goo_major_category', $major_category)
@@ -211,12 +215,25 @@ class Byr_orderController extends Controller
             ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $temperature_code)
             ->groupBy('dsv.mes_lis_shi_tra_trade_number')
             ->paginate($per_page);
-        $orderItem = collect(\DB::select("
-        SELECT * FROM data_order_items
-        inner join data_order_vouchers on data_order_vouchers.data_order_voucher_id=data_order_items.data_order_voucher_id
-        inner join data_orders on data_orders.data_order_id=data_order_vouchers.data_order_id
-        where data_orders.data_order_id = '$data_order_id'
-        "))->first();
+            
+        // $orderItem = collect(\DB::select("
+        // SELECT * FROM data_order_items
+        // inner join data_order_vouchers on data_order_vouchers.data_order_voucher_id=data_order_items.data_order_voucher_id
+        // inner join data_orders on data_orders.data_order_id=data_order_vouchers.data_order_id
+        // where data_orders.data_order_id = '$data_order_id'
+        // "))->first();
+        $order_info=[
+            'receive_datetime' => $result->first()->receive_datetime,
+            'mes_lis_shi_par_sel_code' => $result->first()->mes_lis_shi_par_sel_code,
+            'mes_lis_shi_par_sel_name' => $result->first()->mes_lis_shi_par_sel_name,
+            'mes_lis_shi_tra_dat_delivery_date' => $result->first()->mes_lis_shi_tra_dat_delivery_date,
+            'mes_lis_shi_tra_goo_major_category' => $result->first()->mes_lis_shi_tra_goo_major_category,
+            'mes_lis_shi_log_del_delivery_service_code' => $result->first()->mes_lis_shi_log_del_delivery_service_code,
+            'mes_lis_shi_tra_ins_temperature_code' => $result->first()->mes_lis_shi_tra_ins_temperature_code,
+        ];
+
+        // \Log::debug($order_info);
+
         /*coll setting*/
         $slected_list = array();
         $result_data = cmn_tbl_col_setting::where('url_slug', 'order_list_detail')->first();
@@ -227,7 +244,7 @@ class Byr_orderController extends Controller
             }
         }
         /*coll setting*/
-        return response()->json(['order_list_detail' => $result, 'orderItem' => $orderItem, 'slected_list' => $slected_list]);
+        return response()->json(['order_list_detail' => $result, 'order_info' => $order_info, 'slected_list' => $slected_list]);
     }
 
     public function orderItemDetails($data_shipment_voucher_id)
