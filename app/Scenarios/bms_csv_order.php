@@ -116,7 +116,7 @@ class bms_csv_order extends Model
         // フォーマット変換
         // byr_orders,byr_order_details格納
         $dataArr = $this->all_functions->csvReader_con($received_path, 1);
-       
+
         $data_count=count($dataArr);
 
         $order_flg = true;
@@ -335,12 +335,12 @@ class bms_csv_order extends Model
 
                 $data_shi_voucher_array["data_shipment_id"]=$data_shipment_id;
                 $data_shipment_voucher_id = data_shipment_voucher::insertGetId($data_shi_voucher_array);
-    
+
                 $trade_number = $value[31].'-'.$value[32];
             }
-            
 
-            
+
+
             $data_item_array['mes_lis_ord_lin_lin_line_number']=$value[101];
             $data_item_array['mes_lis_ord_lin_lin_additional_line_number']=$value[102];
             $data_item_array['mes_lis_ord_lin_fre_trade_number']=$value[103];
@@ -398,7 +398,7 @@ class bms_csv_order extends Model
             $data_item_array['mes_lis_ord_lin_fre_unit_weight_code']=$value[155];
             $data_item_array['mes_lis_ord_lin_fre_item_weight']=$value[156];
             $data_item_array['mes_lis_ord_lin_fre_order_weight']=$value[157];
-            
+
             $data_shi_item_array['mes_lis_shi_lin_lin_line_number']=$value[101];
             $data_shi_item_array['mes_lis_shi_lin_lin_additional_line_number']=$value[102];
             $data_shi_item_array['mes_lis_shi_lin_fre_trade_number']=$value[103];
@@ -471,7 +471,7 @@ class bms_csv_order extends Model
             data_order_item::insert($data_item_array);
 
 
-            
+
             $data_shi_item_array["data_shipment_voucher_id"]=$data_shipment_voucher_id;
             $data_shipment_item_id = data_shipment_item::insertGetId($data_shi_item_array);
             data_shipment_item_detail::insert(['data_shipment_item_id'=>$data_shipment_item_id]);
@@ -741,7 +741,7 @@ class bms_csv_order extends Model
     //     }
     // }
 
-    
+
     // public function process_array($charlist)
     // {
     //     $total = count($charlist);

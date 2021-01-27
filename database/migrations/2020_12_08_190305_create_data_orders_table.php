@@ -15,7 +15,7 @@ class CreateDataOrdersTable extends Migration
     {
         Schema::create('data_orders', function (Blueprint $table) {
             $table->increments('data_order_id')->unsigned()->comment('発注データID');
-            $table->integer('cmn_connect_id')->unsigned()->comment('cmn_connect_id');
+            $table->integer('cmn_connect_id')->unsigned()->nullable()->comment('cmn_connect_id');
             $table->enum('route', ['edi','manual','handy','other'])->default('edi')->comment('発注経路');
             $table->dateTime('receive_datetime')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('receive_datetime');
             $table->string('receive_file_path', 200)->nullable()->comment('receive_file_path');
