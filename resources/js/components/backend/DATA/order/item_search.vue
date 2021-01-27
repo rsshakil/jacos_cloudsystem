@@ -8,21 +8,22 @@
         >
           <tr>
             <td class="cl_custom_color">受信日時</td>
-            <td>2020/11/30 04:41</td>
+            <td>{{ order_info.receive_datetime }}</td>
             <td class="cl_custom_color">取引先</td>
             <td colspan="5">
-              57800000 丸井スズキＴＣ
+             {{ order_info.mes_lis_shi_par_sel_code }}
+              {{ order_info.mes_lis_shi_par_sel_name }}
             </td>
           </tr>
           <tr>
             <td class="cl_custom_color">納品日</td>
-            <td>2020/11/30</td>
+            <td>{{ order_info.mes_lis_shi_tra_dat_delivery_date }}</td>
             <td class="cl_custom_color">部門</td>
-            <td>111111野菜</td>
+            <td>{{ order_info.mes_lis_shi_tra_goo_major_category }}</td>
             <td class="cl_custom_color">便</td>
-            <td>11:プロパー便</td>
+            <td>{{ order_info.mes_lis_shi_log_del_delivery_service_code }}</td>
             <td class="cl_custom_color">配送温度区分</td>
-            <td>01:常温</td>
+            <td>{{ order_info.mes_lis_shi_tra_ins_temperature_code }}</td>
           </tr>
         </table>
       </div>
@@ -36,7 +37,7 @@
             <td>
               <input
                 type="text" class="form-control topHeaderInputFieldBtn"/>
-              <button class="btn btn-primary active">参照</button>
+              <button @click="deliverySearchForm3" class="btn btn-primary active">参照</button>
             </td>
             <td class="cl_custom_color">JANコード</td>
             <td>
@@ -387,9 +388,22 @@ export default {
   components: {
         AdvancedLaravelVuePaginate
     },
+    breadcrumb(){
+    return {
+    label: this.breadcumbtitle,
+    parent: this.parent
+  }
+
+  
+},
   // props: ["param_data"],
   data() {
     return {
+       breadcumbtitle:'受注商品別一覧',
+      parent: {
+        name: 'order_list_detail',
+        query: {},
+},
       rows: 100,
       currentPage: 1,
       today: new Date().toISOString().slice(0, 10),
@@ -398,6 +412,7 @@ export default {
       order_by: "asc",
       order_detail_lists: {},
       order_item_lists: {},
+      order_info: {},
       order_date: "",
       order_detail_list: [],
       show_hide_col_list: [],
@@ -581,17 +596,10 @@ export default {
         .then(({ data }) => {
         console.log(data);
           this.order_detail_lists = data.order_list_detail;
+          this.order_info = data.order_info;
           this.order_item_lists = data.orderItem;
           this.loader.hide();
           console.log(this.order_detail_lists);
-          // return 0;
-          // // this.order_detail_lists = data.data.order_list_detail;
-          // this.show_hide_col_list = data.data.slected_list;
-          // this.order_date = data.data.order_list_detail[0].order_date;
-          // this.expected_delivery_date =
-          //   data.data.order_list_detail[0].expected_delivery_date;
-          // this.status = data.data.order_list_detail[0].status;
-          // this.loader.hide();
         });
     },
 
@@ -638,10 +646,11 @@ export default {
     Fire.$emit("byr_has_selected", this.$session.get("byr_buyer_id"));
     Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
     Fire.$emit("voucher_page_query_param", 'myData');
-    this.parent.query = this.$session.get('voucher_page_query_param');
+    this.param_data = this.$session.get('voucher_page_query_param');
     // console.log(this.$route.query);
-    this.param_data = this.$route.query;
-
+    // this.param_data = this.$route.query;
+    this.parent.query = this.$session.get('voucher_page_query_param');
+    console.log(this.param_data);
     // console.log(this.param_data);
     this.loader = Vue.$loading.show();
     this.data_order_id = this.$route.params.data_order_id;

@@ -6,26 +6,28 @@
         <table class="table orderTopDetailTable table-bordered" style="width: 100%">
           <tr>
             <td class="cl_custom_color">受信日時</td>
-            <td>{{order_item_lists.receive_datetime}}</td>
+            <td>{{ order_info.receive_datetime }}</td>
             <td class="cl_custom_color">取引先</td>
-            <td colspan="5">{{order_item_lists.mes_lis_ord_par_sel_code}} {{order_item_lists.mes_lis_ord_par_sel_name}}</td>
+            <td colspan="5">{{ order_info.mes_lis_shi_par_sel_code }}
+              {{ order_info.mes_lis_shi_par_sel_name }}</td>
           </tr>
           <tr>
             <td class="cl_custom_color">納品日</td>
-            <td>{{order_item_lists.mes_lis_ord_tra_dat_delivery_date}}</td>
+            <td>{{ order_info.mes_lis_shi_tra_dat_delivery_date }}</td>
             <td class="cl_custom_color">部門</td>
-            <td></td>
+            <td>{{ order_info.mes_lis_shi_tra_goo_major_category }}</td>
             <td class="cl_custom_color">便</td>
-            <td>{{order_item_lists.mes_lis_ord_tra_goo_major_category}}</td>
+            <td>{{ order_info.mes_lis_shi_log_del_delivery_service_code }}</td>
             <td class="cl_custom_color">配送温度区分</td>
-            <td>{{order_item_lists.mes_lis_ord_tra_ins_temperature_code}}</td>
+            <td>{{ order_info.mes_lis_shi_tra_ins_temperature_code }}</td>
           </tr>
           <tr>
             <td class="cl_custom_color">受信日時</td>
-            <td>2020/11/30 04:41</td>
+            <td>{{ order_info.receive_datetime }}</td>
             <td class="cl_custom_color">取引先</td>
             <td colspan="5">
-              57800000 丸井スズキＴＣ
+              {{ order_info.mes_lis_shi_par_sel_code }}
+              {{ order_info.mes_lis_shi_par_sel_name }}
             </td>
           </tr>
           <tr>
@@ -262,15 +264,48 @@
 </template>
 <script>
 export default {
- 
+ breadcrumb () {
+  return {
+    label: '受注商品別明細',
+    parentsList: [
+      {
+        to: {
+          name: 'item_search',
+        },
+        label: '受注商品別一覧',
+      },
+      {
+        to: {
+          name: 'order_list_detail',
+          query: this.orderListdetailQ,
+        },
+        label: '受注伝票一覧'
+      },
+      {
+        to: {
+          name: 'order_list',
+        },
+        label: '受注受信一覧'
+      },
+      {
+        to: {
+          name: 'home',
+        },
+        label: 'HOME'
+      }
+    ]
+  }
+},
   data() {
     return {
       
       today: new Date().toISOString().slice(0, 10),
+      orderListdetailQ:{},
       sortKey: "",
       reverse: true,
       order_by: "asc",
       order_detail_lists: {},
+      order_info: {},
       order_item_detail_lists: {},
       order_item_lists: {},
       order_item_shipment_data_headTable: {},
@@ -402,6 +437,31 @@ export default {
         });
     },
 
+//get Table data
+    get_all_byr_order_detail(page = 1) {
+      this.param_data['page']=page;
+      this.param_data['per_page']=this.select_field_per_page_num;
+      this.select_field_page_num = page;
+      axios
+        .post(this.BASE_URL + "api/order_details", this.param_data)
+        .then(({ data }) => {
+        console.log(data);
+          this.order_detail_lists = data.order_list_detail;
+          this.order_info = data.order_info;
+          this.order_item_lists = data.orderItem;
+          this.loader.hide();
+          console.log(this.order_detail_lists);
+          // return 0;
+          // // this.order_detail_lists = data.data.order_list_detail;
+          // this.show_hide_col_list = data.data.slected_list;
+          // this.order_date = data.data.order_list_detail[0].order_date;
+          // this.expected_delivery_date =
+          //   data.data.order_list_detail[0].expected_delivery_date;
+          // this.status = data.data.order_list_detail[0].status;
+          // this.loader.hide();
+        });
+    },
+
     col_show_hide_setting(url_slug) {
       console.log(this.show_hide_col_list.length + "col lenght");
       if (this.show_hide_col_list.length == 0) {
@@ -428,9 +488,11 @@ export default {
 
 
     // console.log(this.$route.query);
-    this.param_data=this.$route.query
+    // this.param_data=this.$route.query
     console.log(this.$session.get('voucher_page_query_param'));
-    this.parent.query = this.$session.get('voucher_page_query_param');
+    this.param_data = this.$session.get('voucher_page_query_param');
+    this.orderListdetailQ = this.$session.get('voucher_page_query_param');
+    // this.param_data = this.parent.query;
     // console.log(this.param_data);
     //this.loader = Vue.$loading.show();
     this.data_order_voucher_id = this.$route.params.data_order_list_voucher_id;
@@ -440,7 +502,7 @@ export default {
       
       this.get_all_byr_order_item_detail();
     });
-    
+    this.get_all_byr_order_detail();
     // Fire.$emit("voucher_page_query_param");
     this.col_show_hide_setting(this.$route.name);
     
