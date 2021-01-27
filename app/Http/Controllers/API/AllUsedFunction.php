@@ -665,4 +665,21 @@ class AllUsedFunction extends Controller
     //     // return $byr_info;
     //     // return $request->all();
     // }
+    public function get_connect_id_from_file_name($file_name){
+        $name_array=explode('-',$file_name);
+        $super_code=$name_array[1];
+        $partner_code=$name_array[2];
+
+        $cmn_connect_id='';
+        $connect_info=byr_buyer::select('cmn_connects.cmn_connect_id')
+        ->join('cmn_connects','cmn_connects.byr_buyer_id','=','byr_buyers.byr_buyer_id')
+        ->where(['cmn_connects.partner_code'=>$partner_code,'byr_buyers.super_code'=>$super_code])
+        ->first();
+        if (!empty($connect_info)) {
+            $cmn_connect_id=$connect_info->cmn_connect_id;
+        }
+
+        return $cmn_connect_id;
+    }
+
 }

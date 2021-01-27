@@ -38,24 +38,19 @@ class Level3Controller extends Controller
     }
     public function userLogin(Request $request)
     {
-        // return $request->all();
         $email = $request->user_name;
         $password = $request->password;
-        // return response()->json(['UserName'=>$email, 'Password' => $password]);
         if (User::where('email', '=', $email)->exists()) {
             $user = User::where('email', '=', $email)->first();
             if (Hash::check($password, $user->password)) {
                 return response()->json(['message' => 'success', 'class_name' => 'alert-success', 'user_id' => $user->id, 'user_name' => $user->name]);
             } else {
-                // return response()->json(['message' => "Please enter a valid password in propery.txt file", 'class_name' => 'alert-danger']);
                 return response()->json(['message' => "passwordがありません。properties.fileを確認してください。", 'class_name' => 'alert-danger']);
             }
 
         } else {
-            // return response()->json(['message' => "Please enter a valid email in propery.txt file", 'class_name' => 'alert-danger']);
             return response()->json(['message' => "emailがありません。properties.fileを確認してください。", 'class_name' => 'alert-danger']);
         }
-        // return "Hi";
 
     }
 
@@ -108,34 +103,25 @@ class Level3Controller extends Controller
 
     public function addService(Request $request)
     {
-        // return $request->all();
         $user_id = $request->user_id;
         $service_id = $request->service_id;
         $cmn_connect_id = $request->cmn_connect_id;
         $service_name = $request->service_name;
-        // $service_count=service::where('customer_id', $customer_id)->count();
-        // if($service_count>=3){
-        //     return \response()->json(['message' => "Service full in database", 'status_code' => 403, 'class_name' => 'alert-danger']);
-        // }
-
         $service_array = array(
             'cmn_connect_id' => $cmn_connect_id,
             'adm_user_id' => $user_id,
             'service_name' => $service_name,
         );
-        // return $service_array;
         if ($service_id != null) {
             $service_info = lv3_service::where('lv3_service_id', $service_id)->first();
             if ($service_info['service_name'] != $service_name) {
                 if (lv3_service::where(['cmn_connect_id' => $cmn_connect_id, 'adm_user_id' => $user_id, 'service_name' => $service_name])->exists()) {
-                    // $this->message='Partner code alrady exists';
                     $this->message = 'このサービス名はすでに使われています。';
                     $this->status_code = 403;
                     $this->class_name = 'alert-danger';
                     return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'class_name' => $this->class_name, 'lst_service_id' => $this->lst_service_id]);
                 }
             }
-            // $this->message='Update Success';
             $this->message = '更新完了';
             $this->status_code = 200;
             $this->class_name = 'alert-success';
@@ -144,14 +130,11 @@ class Level3Controller extends Controller
             lv3_service::where('lv3_service_id', $service_id)->update($service_array);
         } else {
             if (lv3_service::where(['cmn_connect_id' => $cmn_connect_id, 'adm_user_id' => $user_id, 'service_name' => $service_name])->exists()) {
-                // $this->message='Partner code alrady exists';
                 $this->message = 'Service name already exists';
                 $this->status_code = 403;
                 $this->class_name = 'alert-danger';
-                // return \response()->json(['message'=>$this->message,'status_code'=>$this->status_code,'class_name'=>$this->class_name]);
             } else {
                 $this->lst_service_id = lv3_service::insertGetId($service_array);
-                // $this->message='Insert Success';
                 $this->message = '登録完了';
                 $this->status_code = 200;
                 $this->class_name = 'alert-success';
@@ -164,8 +147,6 @@ class Level3Controller extends Controller
 
     public function scheduleData(Request $request)
     {
-        // return $request->all();
-        // \Log::info($request->all());
         $user_id = $request->user_id;
         $service_id = $request->service_id;
         $schedule_data = lv3_trigger_schedule::where('lv3_service_id', $service_id)->get();
@@ -175,9 +156,6 @@ class Level3Controller extends Controller
             foreach ($schedule_data as $key => $value) {
                 $test['schedule_id'] = $value->lv3_trigger_schedule_id;
                 $test['service_id'] = $value->lv3_service_id;
-                // $test['user_id'] = $value->user_id;
-                // $test['customer_id'] = $value->customer_id;
-                // $test['schedule_name'] = $value->name;
                 $test['day'] = $value->day;
                 $test['weekday'] = str_split($this->all_functions->binary_format($this->all_functions->decimal_to_binary($value->weekday)));
                 $test['time'] = $value->time;
@@ -206,7 +184,6 @@ class Level3Controller extends Controller
         )');
         }
 
-
         $all_service_data = lv3_service::select('lv3_service_id', 'service_name', 'cmn_connect_id')
             ->where('adm_user_id', $user_id)->get();
 
@@ -228,8 +205,6 @@ class Level3Controller extends Controller
 
     public function setScheduleData(Request $request)
     {
-        // return $request->all();
-
         $user_id = $request->user_id;
         $customer_id = $request->cmn_connect_id;
         $service_id = $request->service_id;
@@ -245,53 +220,35 @@ class Level3Controller extends Controller
         \Log::info($data_array[0]);
         for ($i = 0; $i < count($data_array); $i++) {
             $test_first['lv3_service_id'] = $service_id;
-            // $test_first['user_id'] = $user_id;
-            // $test_first['customer_id'] = $customer_id;
-            // $test_first['name'] = "No Name";
             $test_first['weekday'] = $this->all_functions->binary_to_decimal($data_array[$i]);
-            // $test_first['weekday'] = 210;
             $test_first['time'] = $time_array[$i];
             $test_first['disabled'] = 0;
             $insert_first_array[] = $test_first;
         }
         for ($j = 0; $j < count($last_day_array); $j++) {
             $test_second['lv3_service_id'] = $service_id;
-            // $test_second['user_id'] = $user_id;
-            // $test_second['customer_id'] = $customer_id;
-            // $test_second['name'] = "No Name";
             $test_second['day'] = $day_array[$j];
             $test_second['time'] = $time_sp_array[$j];
             $test_second['last_day'] = $last_day_array[$j];
             $test_second['disabled'] = 0;
             $insert_second_array[] = $test_second;
         }
-        // return $insert_array;
         lv3_trigger_schedule::where('lv3_service_id', $service_id)->delete();
         lv3_trigger_schedule::insert($insert_first_array);
         lv3_trigger_schedule::insert($insert_second_array);
-        // return response()->json(['message' => 'Schedule updated', 'class_name' => 'alert-success']);
         return response()->json(['message' => '更新完了', 'class_name' => 'alert-success']);
 
     }
-    // public function binary_to_decimal($binary)
-    // {
-    //     \Log::info($binary);
-    //     return bindec($binary);
-    // }
     public function setFilePath(Request $request)
     {
-        // return $request->all();
         $user_id = $request->user_id;
-        // $customer_id=$request->cmn_connect_id;
         $service_id = $request->service_id;
         $path_execution_flag = $request->path_execution_flag;
-        // $shipment_path_execute=$request->shipment_path_execute;
         $file_source_path = $request->file_source_path;
         $file_move_path = $request->file_move_path;
         $api_url = $request->api_url;
         $api_folder_path = $request->api_folder_path;
         $file_path_array = array(
-            // 'customer_id'=>$customer_id,
             'lv3_service_id' => $service_id,
             'check_folder_path' => $file_source_path,
             'moved_folder_path' => $file_move_path,
@@ -304,13 +261,11 @@ class Level3Controller extends Controller
         } else {
             lv3_trigger_file_path::insert($file_path_array);
         }
-        // return \response()->json(['message'=>'File path saved','class_name'=>'alert-success']);
         return \response()->json(['message' => 'ファイルパスを保存しました。', 'class_name' => 'alert-success']);
     }
 
     public function setJobData(Request $request)
     {
-        // return $request->all();
         $job_id = $request->job_update_id;
         $service_id = $request->service_id;
         $cmn_scenario_id = $request->cmn_scenario_id;
@@ -354,7 +309,6 @@ class Level3Controller extends Controller
 
     public function scheduleTimeData($request)
     {
-        // return date('w');
         $service_id = $request->service_id;
         $trigger_execution_time = ($request->trigger_execution_time) / 1000;
         $today = date('w');
@@ -364,8 +318,6 @@ class Level3Controller extends Controller
 
         $schedule_array = array();
         $active_weekday_array = array();
-
-        // if (!empty($schedule_time_data)) {
         foreach ($schedule_time_data as $key => $value) {
             $weekday = str_split($this->all_functions->binary_format($this->all_functions->decimal_to_binary($value->weekday)));
             $key_day = array_search('1', $weekday);
@@ -377,10 +329,8 @@ class Level3Controller extends Controller
             }
 
             $test['lv3_trigger_schedule_id'] = $value->lv3_trigger_schedule_id;
-            // $test['weekday'] = str_split($this->binary_format($this->decimal_to_binary($value->weekday)));
             $test['weekday'] = $active_weekday_array;
             $test['time'] = $value->time;
-            // $test['disabled'] = $value->disabled;
             $test['original_weekday'] = $value->weekday;
             $schedule_array[] = $test;
             if (in_array($today, $test['weekday'])) {
@@ -388,14 +338,6 @@ class Level3Controller extends Controller
             }
             $active_weekday_array = [];
         }
-        // }
-        // return $schedule_array;
-
-        // foreach ($schedule_array as $key => $data) {
-        //     if (in_array($today,$data['weekday'])) {
-        //         array_push($ret_arr,$this->dateProcess($data,$trigger_execution_time));
-        //     }
-        // }
         return $ret_arr;
     }
     public function scheduleDateData($request)
@@ -415,37 +357,18 @@ class Level3Controller extends Controller
                 }
             }
         }
-        // \Log::info($ret_arr);
         return $ret_arr;
     }
     public function dateProcess($data, $trigger_execution_time)
     {
         $cur_date_time = date('2013-11-13 H:i:s');
-        // $cur_date_time= strtotime($cur_date_time);
         $advance_time = date("Y-m-d H:i:s", (strtotime($cur_date_time) - $trigger_execution_time));
-        // $advance_date= strtotime($advance_time);
         $arr_time = date('2013-11-13 H:i:s', strtotime($data['time']));
-        // $arr_time=strtotime();
         if (strtotime($arr_time) > strtotime($advance_time) && strtotime($arr_time) <= strtotime($cur_date_time)) {
             return true;
         } else {
             return false;
         }
-
-        // $arr_time=date('y-m-d H:i:s',strtotime($data['time']));
-        // $cur_date_time= date('y-m-d H:i:s');
-
-        // $trigger_execution_sec=$trigger_execution_time%60;
-        // $trigger_execution_min=floor($trigger_execution_time/60);
-        // $trigger_execution_hour=floor($trigger_execution_min/60);
-        // $trigger_execution_day=floor($trigger_execution_hour/12);
-
-        // $date_diff= $this->dateDiff($arr_time,$cur_date_time);
-        // if ($date_diff['sec']>=$trigger_execution_sec && $date_diff['minutes']<=$trigger_execution_min && $date_diff['hours']<=$trigger_execution_hour && $date_diff['day']<=$trigger_execution_day) {
-        //     return true;
-        // }else{
-        //     return false;
-        // }
     }
 
     public function dateDiff($date1, $date2)
@@ -470,42 +393,10 @@ class Level3Controller extends Controller
     public function getServiceData(Request $request)
     {
         $service_id = $request->service_id;
-        // $service_traking_number = $request->service_traking_number;
-        // $service=null;
         $service = lv3_job::select('lv3_trigger_file_paths.*', 'lv3_jobs.*')
             ->leftJoin('lv3_trigger_file_paths', 'lv3_trigger_file_paths.lv3_service_id', '=', 'lv3_jobs.lv3_service_id')
             ->where('lv3_jobs.lv3_service_id', $service_id)->first();
         return response()->json(['service' => $service]);
-        // if($service_traking_number==1){
-        //     $service=lv3_job::select('lv3_service_id','batch_file_path','execution','job_execution_flag')->where('lv3_service_id',$service_id)->first();
-        // }
-        // if($service_traking_number==2){
-        //     $service=lv3_trigger_file_path::select('lv3_trigger_file_paths.lv3_service_id','lv3_trigger_file_paths.check_folder_path','lv3_trigger_file_paths.path_execution_flag',
-        //     'lv3_jobs.batch_file_path')
-        //     ->join('lv3_jobs','lv3_jobs.lv3_service_id','=','lv3_trigger_file_paths.lv3_service_id')
-        //     ->where('lv3_trigger_file_paths.lv3_service_id',$service_id)->first();
-        // }
-        // if($service_traking_number==3){
-        //     \Log::info($service_id);
-        //     $service=lv3_job::select('lv3_service_id','job_execution_flag','execution','cmn_scenario_id','batch_file_path','append')
-        //     ->where('lv3_jobs.lv3_service_id',$service_id)->first();
-        // }
-        // if($service_traking_number==4){
-        //     $service=lv3_trigger_file_path::select('lv3_service_id','api_folder_path','api_url','path_execution_flag')->where('lv3_service_id',$service_id)->first();
-        // }
-        // if($service_traking_number==5){
-        //     $service=lv3_trigger_file_path::select('lv3_trigger_file_paths.lv3_service_id','lv3_trigger_file_paths.check_folder_path',
-        //     'lv3_jobs.job_execution_flag','lv3_jobs.batch_file_path','lv3_jobs.execution')
-        //     ->join('lv3_jobs','lv3_jobs.lv3_service_id','=','lv3_trigger_file_paths.lv3_service_id')
-        //     ->where('lv3_trigger_file_paths.lv3_service_id',$service_id)->first();
-        // }
-        // if($service_traking_number==6){
-        //     $service=lv3_trigger_file_path::select('lv3_trigger_file_paths.lv3_service_id','lv3_trigger_file_paths.check_folder_path',
-        //     'lv3_jobs.job_execution_flag','lv3_jobs.batch_file_path','lv3_jobs.execution')
-        //     ->join('lv3_jobs','lv3_jobs.lv3_service_id','=','lv3_trigger_file_paths.lv3_service_id')
-        //     ->where('lv3_trigger_file_paths.lv3_service_id',$service_id)->first();
-        // }
-        // return response()->json(['service'=>$service]);
     }
 
     public function historyCreate(Request $request)
@@ -524,9 +415,7 @@ class Level3Controller extends Controller
         }
 
         lv3_history::insert([
-            // 'user_id' => $user_id,
             'lv3_service_id' => $service_id,
-            // 'execute_name' => $execute_name,
             'execute_type' => $execute_type,
             'status' => $status,
             'message' => $history_message,
@@ -536,8 +425,6 @@ class Level3Controller extends Controller
 
     public function jobScenario(Request $request)
     {
-        // \Log::info($request->up_file);
-        // return $request->all();
         $cs = new Cmn_ScenarioController();
         $ret = $cs->exec($request);
         \Log::debug($ret->getContent());
@@ -562,10 +449,6 @@ class Level3Controller extends Controller
                     $tmp_array['file_path'] = $url_path . $files[$i];
 
                     rename($path . $files[$i], $path . 'Moved/' . $files[$i]);
-                    // $myfile = file_get_contents($path . $files[$i], FILE_USE_INCLUDE_PATH);
-                    // $myfile = readfile($path . $files[$i]);
-                    // $tmp_array['file_data'] = $myfile;
-
                     $files_array[] = $tmp_array;
                 }
 
@@ -573,10 +456,8 @@ class Level3Controller extends Controller
         } else {
             $this->message = "フォルダが空です";
             $this->status_code = 400;
-            // return \response()->json(['message'=>'Directory empty','status_code'=>400]);
             return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'files_array' => $files_array]);
         }
-        // return $files_array;
 
         if (!empty($files_array)) {
 
@@ -587,18 +468,11 @@ class Level3Controller extends Controller
             // ]);
             $this->message = "ファイルが見つかりました。";
             $this->status_code = 200;
-            // return \response()->json(['message'=>'File found','status_code'=>200,'files_array'=>$files_array]);
-            // return \response()->json(['message'=>$this->message,'status_code'=>$this->status_code,'files_array'=>$files_array]);
         } else {
             $this->message = "ファイルが見つかりませんでした。";
             $this->status_code = 401;
-            // return \response()->json(['message'=>$this->message,'status_code'=>$this->status_code]);
         }
-        // return \response()->json(['message' => $this->message, 'status_code' => $this->status_code]);
         return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'files_array' => $files_array]);
-        // $files_array = array_values($files_array);
-
-        // return $files_array;
     }
     public function setScheduleFileData(Request $request)
     {
@@ -612,15 +486,8 @@ class Level3Controller extends Controller
 
     public function fileSave(Request $request)
     {
-        //    return $request->all();
-
         $file_path_id = $request->file_path_id;
-        // history::insert([
-        //     'file_path_id' => $file_path_id,
-        //     'execute_name' => '発注データ',
-        //     'status' => "Success",
-        // ]);
-        // return $request->all();
+
         if ($request->hasFile('upfile')) {
 
             // save image file to storage
@@ -636,7 +503,6 @@ class Level3Controller extends Controller
 
     public function addCustomer(Request $request)
     {
-        // return $request->all();
         $user_id = $request->user_id;
         $customer_id = $request->customer_id;
         $customer_name = $request->customer_name;
@@ -651,14 +517,12 @@ class Level3Controller extends Controller
             $customer_info = customer::where('customer_id', $customer_id)->first();
             if ($customer_info['partner_code'] != $partner_code) {
                 if (customer::where('user_id', $user_id)->where('partner_code', $partner_code)->exists()) {
-                    // $this->message='Partner code alrady exists';
                     $this->message = '登録済みの取引先コードです。';
                     $this->status_code = 403;
                     $this->class_name = 'alert-danger';
                     return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'class_name' => $this->class_name, 'lst_customer_id' => $this->lst_customer_id]);
                 }
             }
-            // $this->message='Update Success';
             $this->message = '更新完了';
             $this->status_code = 200;
             $this->class_name = 'alert-success';
@@ -667,14 +531,11 @@ class Level3Controller extends Controller
             customer::where('customer_id', $customer_id)->update($customer_array);
         } else {
             if (customer::where('user_id', $user_id)->where('partner_code', $partner_code)->exists()) {
-                // $this->message='Partner code alrady exists';
                 $this->message = '登録済みの取引先コードです。';
                 $this->status_code = 403;
                 $this->class_name = 'alert-danger';
-                // return \response()->json(['message'=>$this->message,'status_code'=>$this->status_code,'class_name'=>$this->class_name]);
             } else {
                 $this->lst_customer_id = customer::insertGetId($customer_array);
-                // $this->message='Insert Success';
                 $this->message = '登録完了';
                 $this->status_code = 200;
                 $this->class_name = 'alert-success';
