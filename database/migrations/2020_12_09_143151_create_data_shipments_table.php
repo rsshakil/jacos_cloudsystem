@@ -16,7 +16,7 @@ class CreateDataShipmentsTable extends Migration
         Schema::create('data_shipments', function (Blueprint $table) {
             $table->increments('data_shipment_id')->unsigned()->comment('data_shipment_id');
             $table->integer('data_order_id')->unsigned()->comment('data_order_id');
-            $table->integer('cmn_connect_id')->unsigned()->comment('cmn_connect_id');
+            $table->integer('cmn_connect_id')->unsigned()->nullable()->comment('cmn_connect_id');
             $table->dateTime('upload_datetime')->nullable()->comment('アップロード日時');
             $table->string('upload_file_path', 200)->nullable()->comment('upload_file_path');
             $table->dateTime('send_datetime')->nullable()->comment('送信日時');
@@ -55,7 +55,7 @@ class CreateDataShipmentsTable extends Migration
             $table->smallInteger('deleted')->default(1)->comment('削除フラグ');
 			$table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
 			$table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
-            
+
         });
     }
 

@@ -6,7 +6,8 @@ use App\Http\Controllers\API\AllUsedFunction;
 use App\Http\Controllers\API\Cmn_ScenarioController;
 use App\Http\Controllers\Controller;
 use App\Models\ADM\User;
-use App\Models\CMN\cmn_companies_user;
+use App\Models\BYR\byr_buyer;
+use App\Models\CMN\cmn_scenario;
 use App\Models\LV3\lv3_history;
 use App\Models\LV3\lv3_job;
 use App\Models\LV3\lv3_service;
@@ -76,14 +77,25 @@ class Level3Controller extends Controller
     public function getCustomer(Request $request)
     {
         $user_id = $request->user_id;
-        $customers_data = cmn_companies_user::select('cmn_companies_users.adm_user_id', 'cmn_connects.cmn_connect_id', 'cmn_connects.partner_code', 'cmn_companies.company_name')
-            ->join('slr_sellers', 'slr_sellers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
-            ->join('cmn_connects', 'cmn_connects.slr_seller_id', '=', 'slr_sellers.slr_seller_id')
-            ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
-            ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
-            ->where('cmn_companies_users.adm_user_id', $user_id)->get();
-        \Log::info($customers_data);
+        $customers_data = array();
+        $authUser = User::find($user_id);
+        if ($authUser->hasRole(config('const.adm_role_name'))) {
+            $customers_data = byr_buyer::select('cmn_connects.cmn_connect_id', 'cmn_connects.partner_code', 'cmn_companies.company_name')
+                ->join('cmn_companies', 'byr_buyers.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
+                ->join('cmn_connects', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
+            // ->groupBy('cmn_connects.partner_code')
+                ->get();
+        }
         return response()->json(['customers_data' => $customers_data]);
+        //Buyer work
+        // $customers_data = cmn_companies_user::select('cmn_companies_users.adm_user_id', 'cmn_connects.cmn_connect_id', 'cmn_connects.partner_code', 'cmn_companies.company_name')
+        //     ->join('slr_sellers', 'slr_sellers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
+        //     ->join('cmn_connects', 'cmn_connects.slr_seller_id', '=', 'slr_sellers.slr_seller_id')
+        //     ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
+        //     ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
+        //     ->where('cmn_companies_users.adm_user_id', $user_id)->get();
+        // \Log::info($customers_data);
+        // return response()->json(['customers_data' => $customers_data]);
     }
 
     public function showServiceData(Request $request)
@@ -180,7 +192,11 @@ class Level3Controller extends Controller
             'execution', 'batch_file_path', 'next_service_id', 'append')
             ->where('lv3_service_id', $service_id)->first();
 
-        $job_api_scenario_list = DB::select('SELECT cs.cmn_scenario_id,cs.name,cs.description FROM cmn_scenarios AS cs
+        $authUser = User::find($user_id);
+        if ($authUser->hasRole(config('const.adm_role_name'))) {
+            $job_api_scenario_list = cmn_scenario::select('cmn_scenario_id', 'name', 'description')->get();
+        } else {
+            $job_api_scenario_list = DB::select('SELECT cs.cmn_scenario_id,cs.name,cs.description FROM cmn_scenarios AS cs
         INNER JOIN adm_model_has_roles AS amhr ON cs.adm_role_id = amhr.role_id
         WHERE amhr.model_id =' . $user_id . ' AND cs.byr_buyer_id =
         (
@@ -188,13 +204,11 @@ class Level3Controller extends Controller
             INNER JOIN byr_buyers AS bb ON bb.cmn_company_id=ccu.cmn_company_id
             WHERE ccu.adm_user_id=' . $user_id . '
         )');
-        // $job_info['job_api_scenario_list']=$job_api_scenario_list;
-        // $job_info=lv3_job::select('lv3_jobs.*','cmn_scenarios.name')
-        // ->join('cmn_scenarios','cmn_scenarios.cmn_scenario_id','lv3_jobs.cmn_scenario_id')
-        // ->where('lv3_jobs.lv3_service_id',$service_id)->first();
+        }
+
+
         $all_service_data = lv3_service::select('lv3_service_id', 'service_name', 'cmn_connect_id')
             ->where('adm_user_id', $user_id)->get();
-        // $next_service_info=lv3_job::select('next_service_id')
 
         $final_arr = array(
             'schedule_array' => $schedule_array,
@@ -522,6 +536,7 @@ class Level3Controller extends Controller
 
     public function jobScenario(Request $request)
     {
+        // \Log::info($request->up_file);
         // return $request->all();
         $cs = new Cmn_ScenarioController();
         $ret = $cs->exec($request);
@@ -536,13 +551,9 @@ class Level3Controller extends Controller
     }
     public function getShipmentFile(Request $request)
     {
-        // return $request->all();
-        // $file_path_id = $request->file_path_id;
         $url_path = \Config::get('app.url') . 'storage/app/public/Shipment_CSV/moved/';
         $path = \storage_path('/app/public/Shipment_CSV/');
         $files = array_values(array_diff(scandir($path), array('.', '..')));
-        // $files = array_values($files);
-        // $files = scandir($path);
         $files_array = array();
         if (!empty($files)) {
             for ($i = 0; $i < count($files); $i++) {
