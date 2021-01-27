@@ -451,14 +451,7 @@ export default {
           this.order_item_lists = data.orderItem;
           this.loader.hide();
           console.log(this.order_detail_lists);
-          // return 0;
-          // // this.order_detail_lists = data.data.order_list_detail;
-          // this.show_hide_col_list = data.data.slected_list;
-          // this.order_date = data.data.order_list_detail[0].order_date;
-          // this.expected_delivery_date =
-          //   data.data.order_list_detail[0].expected_delivery_date;
-          // this.status = data.data.order_list_detail[0].status;
-          // this.loader.hide();
+          
         });
     },
 
@@ -484,67 +477,21 @@ export default {
   created() {
     Fire.$emit('byr_has_selected',this.$session.get('byr_buyer_id'));
     Fire.$emit('permission_check_for_buyer',this.$session.get('byr_buyer_id'));
-
-
-
-    // console.log(this.$route.query);
-    // this.param_data=this.$route.query
-    console.log(this.$session.get('voucher_page_query_param'));
     this.param_data = this.$session.get('voucher_page_query_param');
     this.orderListdetailQ = this.$session.get('voucher_page_query_param');
-    // this.param_data = this.parent.query;
-    // console.log(this.param_data);
-    //this.loader = Vue.$loading.show();
     this.data_order_voucher_id = this.$route.params.data_order_list_voucher_id;
-    console.log(this.$route.params.data_order_list_voucher_id)
-    //this.get_all_byr_order_item_detail();
     Fire.$on("LoadByrorderItemDetail", () => {
-      
       this.get_all_byr_order_item_detail();
     });
     this.get_all_byr_order_detail();
-    // Fire.$emit("voucher_page_query_param");
     this.col_show_hide_setting(this.$route.name);
     
   },
   computed: {
-    total_selling_price: function() {
-      // this.order_item_detail_lists.forEach(function (order_item_detail_list) {
-      //     this.mes_lis_shi_tot_tot_selling_price_total +=order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price
-      //   });
-      // return this.order_item_detail_lists.reduce(function(a, c){return a + Number((c.mes_lis_shi_lin_amo_item_selling_price) || 0)}, 0)
-        // return this.mes_lis_shi_tot_tot_selling_price_total;
-    return 0;
-    },
-    total_net_price: function() {
-      // this.order_item_detail_lists.forEach(function (order_item_detail_list) {
-      //     this.mes_lis_shi_tot_tot_net_price_total +=order_item_detail_list.mes_lis_shi_lin_amo_item_net_price
-      //   });
-      //   return this.mes_lis_shi_tot_tot_net_price_total;
-      // return this.order_item_detail_lists.reduce(function(a, c){return a + Number((c.mes_lis_shi_lin_amo_item_net_price) || 0)}, 0)
-    return 0;
-    },
-    total_selling_prices: function() {
-      var totoal = 0
-      // this.order_item_detail_lists.forEach(function (order_item_detail_list) {
-      //     totoal +=order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price
-      //   });
-        return totoal;
-      // return this.order_item_detail_lists.reduce(function(a, c){return a + Number((c.mes_lis_shi_lin_amo_item_selling_price) || 0)}, 0)
-        // return this.mes_lis_shi_tot_tot_selling_price_total;
-    },
-    total_net_prices: function() {
-      var totoal = 0;
-      // this.order_item_detail_lists.forEach(function (order_item_detail_list) {
-      //     totoal +=order_item_detail_list.mes_lis_shi_lin_amo_item_net_price
-      //   });
-        return totoal;
-      //   return this.mes_lis_shi_tot_tot_net_price_total;
-      // return this.order_item_detail_lists.reduce(function(a, c){return a + Number((c.mes_lis_shi_lin_amo_item_net_price) || 0)}, 0)
-    },
+    
   },
   mounted() {
-    console.log("byr order detail page loaded");
+    console.log("byr order search detail");
     Fire.$on("voucher_page_query_param", (query_param) => {
       console.log('getparams');
      console.log(query_param);
