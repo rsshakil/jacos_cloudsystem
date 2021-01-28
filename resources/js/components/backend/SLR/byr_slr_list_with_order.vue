@@ -37,7 +37,7 @@ export default {
   methods: {
     loadData() {
       axios
-        .post(this.myLang.base_url + "api/get_byr_slr_data", {
+        .post(this.myLang.base_url + "api/get_byr_order_data_by_slr", {
           user_id: this.myLang.user_info_id,
         })
         .then(({ data }) => {

@@ -15,7 +15,6 @@ class file_delete_scenario
     public function exec($request,$sc)
     {
         $directory=$request->directory;
-        // return $files = Storage::allFiles($directory);
         $files=Storage::files($directory);
         $files_name_date=array();
         $files_names=array();
@@ -23,7 +22,6 @@ class file_delete_scenario
             $files_name_date[]=date('y-m-d',strtotime($this->all_functions->header_part(\explode('/',$filename)[1])));
             $files_names[]=\explode('/',$filename)[1];
         }
-        // return $files_names;
         $req_start_date=$request->start_date;
         if ($req_start_date==null) {
             $start_date=(!empty($files_name_date)?min($files_name_date): date('y-m-d'));
@@ -42,12 +40,10 @@ class file_delete_scenario
                 }
             }
         }
-        // return $deletable_files;
         Storage::delete($deletable_files);
-        // return \response()->json(['message'=>"Files Deleted"]);
         return response()->json(['message'=>"File has been deleted"]);
     }
-    
 
-    
+
+
 }

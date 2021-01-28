@@ -38,7 +38,7 @@
               <input
                 type="text"
                 class="form-control topHeaderInputFieldBtn"
-                
+
               />
               <button @click="deliverySearchForm1" class="btn btn-primary active">参照</button>
             </td>
@@ -58,7 +58,7 @@
               <input
                 type="text"
                 class="form-control topHeaderInputFieldBtn"
-                
+
               />
               <button @click="deliverySearchForm3" class="btn btn-primary active">参照</button>
             </td>
@@ -106,7 +106,7 @@
               <span class="tableRowsInfo">{{order_detail_lists.from}}〜{{order_detail_lists.to}} 件表示中／全：{{order_detail_lists.total}}件</span>
               <span class="pagi"
                 >
-              <advanced-laravel-vue-paginate :data="order_detail_lists" 
+              <advanced-laravel-vue-paginate :data="order_detail_lists"
               :onEachSide="2"
               previousText="<"
               nextText=">"
@@ -257,7 +257,7 @@
             <button @click="updateDatetimeDecessionfield" class="btn btn-lg btn-primary active">
               選択行を伝票確定
             </button>
-            <button class="btn btn-lg btn-danger active">確定データ送信</button>
+            <button class="btn btn-lg btn-danger active" @click="shipmentConfirm">確定データ送信</button>
           </div>
         </div>
       </div>
@@ -412,7 +412,7 @@
             <td>
               <input type="date" class="form-control" v-model="form.deliveryDate">
             </td>
-            
+
           </tr>
         </table>
       </div>
@@ -451,7 +451,7 @@
             <td>
               <input type="date" class="form-control" v-model="form.deliveryDate">
             </td>
-            
+
           </tr>
         </table>
       </div>
@@ -478,7 +478,7 @@
               <input type="text" class="form-control" v-model="form.deliveryName"/>
             </td>
           </tr>
-          
+
           <tr>
             <td class="cl_custom_color">商品名</td>
             <td colspan="3"><input type="" class="form-control"/></td>
@@ -510,7 +510,7 @@
                 <option :value="item" v-for="item in deliveryDestnationOptionList">{{ item }}</option>
               </select>
             </td>
-            
+
           </tr>
         </table>
       </div>
@@ -582,14 +582,14 @@ export default {
 
         this.get_all_byr_order_detail(this.select_field_page_num);
       }
-      
+
     },
     selectNumPerPage(){
       if(this.select_field_per_page_num!=0){
         Fire.$emit("LoadByrorderDetail");
         // this.get_all_byr_order_detail(this.select_field_page_num);
       }
-      
+
     },
     checkAll() {
       this.isCheckAll = !this.isCheckAll;
@@ -693,7 +693,7 @@ export default {
         });
     },
     updateDatetimeDecessionfield() {
-      
+
       axios({
         method: "POST",
         url: this.BASE_URL + "api/update_shipment_detail_bycurrentdatetime",
@@ -708,6 +708,9 @@ export default {
           //handle error
           console.log(response);
         });
+    },
+    shipmentConfirm(){
+        axios.post(this.BASE_URL + "api/shipment_confirm")
     },
     //get Table data
     get_all_byr_order_detail(page = 1) {

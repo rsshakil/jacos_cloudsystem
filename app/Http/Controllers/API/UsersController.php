@@ -9,7 +9,6 @@ use App\Models\ADM\User;
 use App\Models\ADM\adm_user_details;
 use App\Models\BYR\byr_order_item;
 use App\Models\BYR\byr_order;
-// use Auth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -32,7 +31,6 @@ class UsersController extends Controller
      */
     public function index()
     {
-        // $title = __('messages.manage_users');
         $active = 'users';
         $users = $this->all_used_functions->allUsersAll();
         $roles = $this->all_used_functions->get_role_custom_field();
@@ -79,30 +77,13 @@ class UsersController extends Controller
             $user_details->user_id = $last_user_id;
             $user_details->save();
             $users = User::findOrFail($last_user_id);
-
-            // $roles = $request->roles;
             $role = Role::find($roles);
             $user_role = User::findOrFail($last_user_id);
             $user_role->syncRoles();
             $user_role->assignRole($roles);
-            //$users->assignRole('User');
-            // $permission_id = $request->permissions;
-            // $permission = Permission::all();
-            // $users->revokePermissionTo($permission);
             $users->syncPermissions($permission_id);
             return response()->json(['title'=>"Created!",'message' =>"created", 'class_name' => 'success']);
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
@@ -114,7 +95,6 @@ class UsersController extends Controller
      */
     public function update(Request $request)
     {
-        // return $request->all();
         $user_id=$request->user_id;
         $auth_id=$request->auth_id;
         if (!(Validator::make($request->all(), ['f_name' => 'max:20'])->passes())) {
@@ -135,9 +115,6 @@ class UsersController extends Controller
         if (!(Validator::make($request->all(), ['dob' => 'date'])->passes())) {
             return response()->json(['title'=>"Error!",'message' =>'dob_required', 'class_name' => 'error']);
         }
-        // if (!(Validator::make($request->all(), ['image_url' => 'image|mimes:jpeg,png,jpg,gif,svg|max:1024'])->passes())) {
-        //     return response()->json(['title'=>"Error!",'message' =>__('messages.select_image'), 'class_name' => 'error']);
-        // }
         if (!(Validator::make($request->all(), ['zip' => 'max:20'])->passes())) {
             return response()->json(['title'=>"Error!",'message' =>'postal_required', 'class_name' => 'error']);
         }
@@ -246,7 +223,6 @@ class UsersController extends Controller
  */
 public function changePassword(Request $request)
 {
-    // return $request->all();
     $auth_id = $request->auth_id;
     $user_id = $request->user_id;
     $password = $request->password;
@@ -256,7 +232,6 @@ public function changePassword(Request $request)
     if ($validation->passes()) {
         if ($user_id != $auth_id) {
             $authUser=User::find($auth_id);
-            // if (!($authUser->can('change_password'))) {
             if (!($authUser->hasPermissionTo('change_password'))) {
                 return response()->json(['title'=>"No permission!",'message' =>'no_permission', 'class_name' => 'error']);
             }

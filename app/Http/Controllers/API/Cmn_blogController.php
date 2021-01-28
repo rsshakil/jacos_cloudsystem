@@ -116,14 +116,11 @@ class Cmn_blogController extends Controller
     {
         $file_name = $request->file('upload')->getClientOriginalName();
         $path = $request->file('upload')->storeAs(config('const.ORDER_DATA_PATH').date('Y-m'), $file_name);
-        // $received_path = base_path().'/storage/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name;
         $received_path = url('/storage/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name);
         return response()->json(['url' => $received_path]);
     }
     public function store(Request $request)
     {
-        // return $request->all();
-        //
         $this->validate($request,[
             'blog_title' => 'required|min:5',
             'blog_content'=>'required'
@@ -148,9 +145,6 @@ class Cmn_blogController extends Controller
         if($request->cmn_blog_id!=''){
             cmn_blog::where('cmn_blog_id',$request->cmn_blog_id)->update($arr);
         }else{
-            // $this->validate($request,[
-            //     'feature_img' => 'required'
-            // ]);
             cmn_blog::insert($arr);
         }
         return response()->json(['success' => 1]);
@@ -171,38 +165,4 @@ class Cmn_blogController extends Controller
         }
         return response()->json(['success' => 1]);
     }
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
 }

@@ -84,7 +84,7 @@ class Byr_orderController extends Controller
             if ($delivery_service_code) {
                 $search_where .= "AND dov.mes_lis_ord_log_del_delivery_service_code='" . $delivery_service_code . "' ";
             }
-            // $search_where.="OR dov.check_datetime='".$check_datetime."' ";
+
             if ($temperature) {
                 $search_where .= "AND dov.mes_lis_ord_tra_ins_temperature_code='" . $temperature . "' ";
             }
@@ -164,16 +164,6 @@ class Byr_orderController extends Controller
         return response()->json(['order_list' => $result, 'byr_buyer_list' => $byr_buyer, 'buyer_settings' => $buyer_settings->setting_information]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
     public function orderDetails(Request $request)
     {
         $data_order_id = $request->data_order_id;
@@ -215,13 +205,6 @@ class Byr_orderController extends Controller
             ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $temperature_code)
             ->groupBy('dsv.mes_lis_shi_tra_trade_number')
             ->paginate($per_page);
-            
-        // $orderItem = collect(\DB::select("
-        // SELECT * FROM data_order_items
-        // inner join data_order_vouchers on data_order_vouchers.data_order_voucher_id=data_order_items.data_order_voucher_id
-        // inner join data_orders on data_orders.data_order_id=data_order_vouchers.data_order_id
-        // where data_orders.data_order_id = '$data_order_id'
-        // "))->first();
         $order_info=[
             'receive_datetime' => $result->first()->receive_datetime,
             'mes_lis_shi_par_sel_code' => $result->first()->mes_lis_shi_par_sel_code,
@@ -231,9 +214,6 @@ class Byr_orderController extends Controller
             'mes_lis_shi_log_del_delivery_service_code' => $result->first()->mes_lis_shi_log_del_delivery_service_code,
             'mes_lis_shi_tra_ins_temperature_code' => $result->first()->mes_lis_shi_tra_ins_temperature_code,
         ];
-
-        // \Log::debug($order_info);
-
         /*coll setting*/
         $slected_list = array();
         $result_data = cmn_tbl_col_setting::where('url_slug', 'order_list_detail')->first();
@@ -249,7 +229,6 @@ class Byr_orderController extends Controller
 
     public function orderItemDetails($data_shipment_voucher_id)
     {
-        $data_order_voucher_id = 1;
         $orderItem = collect(\DB::select("
         SELECT * FROM data_order_items
         inner join data_order_vouchers on data_order_vouchers.data_order_voucher_id=data_order_items.data_order_voucher_id
@@ -276,17 +255,8 @@ class Byr_orderController extends Controller
         /*coll setting*/
         return response()->json(['order_item_list_detail' => $result, 'orderItem' => $orderItem, 'slected_list' => $slected_list]);
     }
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($byr_order_id)
-    {
-    }
 
-    public function get_bms_order_byr_order_id($byr_order_id)
+    public function get_data_order_byr_order_id($byr_order_id)
     {
         $result = DB::table('bms_orders')->where('bms_orders.byr_order_id', $byr_order_id)
             ->get();
@@ -301,18 +271,6 @@ class Byr_orderController extends Controller
         }
         /*coll setting*/
         return response()->json(['order_list_detail' => $result, 'slected_list' => $slected_list]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
     }
 
     public function update_shipment_detail(Request $request)
@@ -332,6 +290,18 @@ class Byr_orderController extends Controller
             }
         }
         return response()->json(['success' => '1']);
+    }
+    public function shipmentConfirm(Request $request)
+    {
+        $dateTime = date('Y-m-d H:i:s');
+        return $csv_data=data_shipment_voucher::where('decision_datetime','!=',null)->get();
+        // $data_shipment_voucher_ids = $request->update_id;
+        // if ($data_shipment_voucher_ids) {
+        //     foreach ($data_shipment_voucher_ids as $id) {
+        //         data_shipment_voucher::where('data_shipment_voucher_id', $id)->update(['decision_datetime' => $dateTime]);
+        //     }
+        // }
+        // return response()->json(['success' => '1']);
     }
 
     public function update_byr_order_detail_status(Request $request)
@@ -431,8 +401,6 @@ class Byr_orderController extends Controller
         $canvas_array = array(
             'byr_buyer_id' => $byr_id,
             'canvas_name' => $canvas_name,
-            // 'canvas_image' => $canvas_image,
-            // 'canvas_bg_image' => $canvasBgImg,
             'canvas_objects' => json_encode($canData),
         );
         if (!empty($canvas_id)) {
@@ -508,7 +476,7 @@ class Byr_orderController extends Controller
         }
     }
 
-    public function get_byr_info_by_byr_order_id(Request $request)
+    public function get_byr_info_by_data_order_id(Request $request)
     {
         $data_order_id = $request->data_order_id;
 
@@ -520,9 +488,8 @@ class Byr_orderController extends Controller
             ->first();
         return response()->json(['byr_info' => $result]);
     }
-    public function getByrSlrData(Request $request)
+    public function getByrOrderDataBySlr(Request $request)
     {
-        // return "OK";
         $user_id = $request->user_id;
         $slr_info = cmn_companies_user::select('slr_sellers.slr_seller_id')
             ->join('slr_sellers', 'slr_sellers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')

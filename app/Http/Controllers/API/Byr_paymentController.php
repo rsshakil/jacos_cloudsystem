@@ -22,15 +22,7 @@ class Byr_paymentController extends Controller
     public function __construct(){
         $this->all_used_fun = new AllUsedFunction();
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
+    
 
     public function get_byr_payment_list($adm_user_id){
         $authUser=User::find($adm_user_id);
@@ -56,49 +48,5 @@ class Byr_paymentController extends Controller
         $byr_buyer =$this->all_used_fun->get_company_list($cmn_company_id);
 
         return response()->json(['payment_list' => $result,'byr_buyer_list'=>$byr_buyer]);
-    }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

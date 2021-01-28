@@ -50,9 +50,9 @@ class cmn_scenarioSeeder extends Seeder
                 'adm_role_id' => 5,
                 'class' => 'order',
                 'vector' => 'to_jacos',
-                'name' => 'BMS_ORDER_CSV_INSERTION',
-                'description' => 'BMS_ORDER_CSV_INSERTION',
-                'file_path' => 'Scenarios/bms_csv_order',
+                'name' => 'DATA_ORDER_CSV_INSERTION',
+                'description' => 'DATA_ORDER_CSV_INSERTION',
+                'file_path' => 'Scenarios/data_csv_order',
             ],
             [
                 'byr_buyer_id' => 1,

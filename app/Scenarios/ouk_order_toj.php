@@ -88,31 +88,16 @@ class ouk_order_toj extends Model
     //
     public function exec($request, $sc)
     {
-        // include(app_path() . '/scenarios/common.php');
         \Log::debug('ouk_order_toj exec start  ---------------');
         // ファイルアップロード
-        // echo $request->file('up_file');exit;
         $file_name = $request->file('up_file')->getClientOriginalName();
         $path = $request->file('up_file')->storeAs(config('const.ORDER_DATA_PATH').date('Y-m'), $file_name);
         \Log::debug('save path:'.$path);
-        // $custom_paths = storage_path().'/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name;
-        // $file_url = fopen(storage_path().'/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name, 'r');
         $received_path = storage_path().'/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name;
         // フォーマット変換
-        // byr_orders,byr_order_details格納
-        // $get_string = $this->common_class_obj->ebcdic_2_sjis($received_path,0);
         $get_string = $this->common_class_obj->ebcdic_2_sjis($received_path, null);
-        // $get_string = mb_convert_encoding($get_string, "UTF-8", "SJIS");
         $get_string = $this->all_functions->convert_from_sjis_to_utf8_recursively($get_string);
-        // echo $get_string;exit;
-        // $charlist = fread($file_url,filesize(storage_path().'/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name));
-        // $charlist = $this->convert_from_sjis_to_utf8_recursively($charlist);
-        // $charlist = $this->all_functions->convert_from_utf8_to_sjis__recursively($charlist);
-        // $str_arr = $this->all_functions->mb_str_split($charlist);
         $str_arr = $this->all_functions->mb_str_split($get_string);
-        // echo '<pre>';
-        // print_r($str_arr);exit;
-        // $str_arr = str_split($charlist);
         $all_array_data = $this->process_array($str_arr);
         $insert_array_b = array();
         $insert_array_d = array();
@@ -127,9 +112,6 @@ class ouk_order_toj extends Model
                 $insert_array_b[$k]['item_data'][] = $this->d_array_process($all_array);
             }
         }
-        // echo '<pre>';
-        // print_r($insert_array_b);
-        // exit;
         $byr_order_id = byr_order::insertGetId(['receive_file_path'=>$received_path,'cmn_connect_id'=>$sc->cmn_connect_id]);
         $byr_shipment_id = byr_shipment::insertGetId(['send_file_path'=>$received_path,'cmn_connect_id'=>$sc->cmn_connect_id]);
         $cnt = 0;
@@ -161,34 +143,15 @@ class ouk_order_toj extends Model
                     $insert_detail['selling_price']=$item['selling_price'];
                     $insert_detail['selling_unit_price']=$item['selling_unit_price'];
                     byr_order_item::insert($insert_detail);
-                    
+
                     $total++;
                 }
             }
             byr_order::where('byr_order_id', $byr_order_id)->update(['data_count'=>$total]);
         }
-        echo '<pre>';
-        print_r($temp);
-        // print_r($insert_array_d);
-        exit;
-        echo 'save path:'.$path;
-        exit;
-
-
-
         \Log::debug('ouk_order_toj exec end  ---------------');
         return 0;
     }
-
-    // public function get_shop_id_by_shop_code($shop_code,$shop_name_kana,$sc){
-    //     if(byr_shop::where('shop_code',$shop_code)->exists()){
-    //          $row = byr_shop::where('shop_code',$shop_code)->first();
-    //          return $row->byr_shop_id;
-    //     }else{
-    //         $id = byr_shop::insertGetId(['shop_code'=>$shop_code,'shop_name_kana'=>$shop_name_kana,'byr_buyer_id'=>$sc->byr_buyer_id,'slr_seller_id'=>$sc->slr_seller_id]);
-    //         return $id;
-    //     }
-    // }
     public function process_array($charlist)
     {
         $total = count($charlist);
@@ -321,95 +284,4 @@ class ouk_order_toj extends Model
         );
         return $insert_array_d;
     }
-
-    /*jacos string analyze*/
-    /**
-     * 発注データ連想配列化
-     *
-     * @param  txtファイルパス
-     * @param  Array フォーマット(連想配列)
-     * @return boolean
-     */
-    // public function analyze($filePath, $format)
-    // {
-    //     $data = null;
-
-    //     $head = [];		// ヘッダー
-    //     $cdata = [];	// データ
-    //     $foot = [];		// フッター
-
-    //     // header行
-    //     foreach ($format as $f) {
-    //         if ($f['type']==='header') {
-    //             foreach ($f['fmt'] as $fdata) {
-    //                 $head[$fdata['name']] = $fdata['name_jp'];
-    //             }
-    //         } elseif ($f['type']==='data') {
-    //             foreach ($f['fmt'] as $fdata) {
-    //                 $cdata[$fdata['name']] = $fdata['name_jp'];
-    //             }
-    //         } elseif ($f['type']==='footer') {
-    //             foreach ($f['fmt'] as $fdata) {
-    //                 $foot[$fdata['name']] = $fdata['name_jp'];
-    //             }
-    //         }
-    //     }
-    //     $cnt = 0;
-    //     //		$data[$cnt] = array_merge($head,$cdata,$foot);
-    //     $data[$cnt] = array_merge($cdata, $head, $foot);
-    //     mb_convert_variables('SJIS-win', 'UTF-8', $data[$cnt]);
-    //     $cnt++;
-
-    //     $head = [];		// ヘッダー
-    //     $cdata = [];	// データ
-    //     $foot = [];		// フッター
-    //     $ccnt = 0;
-
-    //     // 読み込み
-    //     $lines = file($filePath);
-    //     foreach ($lines as $key => $line) {
-    //         foreach ($format as $f) {
-
-    //             // key値と指定文字列との比較
-    //             if ($f['key']['value'] == substr($line, $f['key']['start']-1, $f['key']['length'])) {
-
-    //                 // type判定
-    //                 if ($f['type']==='header') {
-    //                     // ヘッダー行
-    //                     foreach ($f['fmt'] as $fdata) {
-    //                         //							$head[$fdata['name']] = trim(mb_convert_encoding(mb_strcut ($line,$fdata['start']-1,$fdata['length'],'SJIS-win'),'UTF-8', 'SJIS-win'));
-    //                         $head[$fdata['name']] = trim(mb_strcut($line, $fdata['start']-1, $fdata['length'], 'SJIS-win'));
-    //                         //							log_message('info',$fdata['name'].':'.$head[$fdata['name']]);
-    //                     }
-
-    //                     // クリア
-    //                     $ccnt = 0;
-    //                     $cdata = [];
-    //                 } elseif ($f['type']==='data') {
-    //                     // データ行
-    //                     foreach ($f['fmt'] as $fdata) {
-    //                         //							$cdata[$ccnt][$fdata['name']] = trim(mb_convert_encoding(mb_strcut ($line,$fdata['start']-1,$fdata['length'],'SJIS-win'),'UTF-8', 'SJIS-win'));
-    //                         $cdata[$ccnt][$fdata['name']] = trim(mb_strcut($line, $fdata['start']-1, $fdata['length'], 'SJIS-win'));
-    //                     }
-    //                     // データ行
-    //                     $ccnt++;
-    //                 } elseif ($f['type']==='footer') {
-    //                     // フッター行
-    //                     foreach ($f['fmt'] as $fdata) {
-    //                         //							$foot[$fdata['name']] = trim(mb_convert_encoding(mb_strcut ($line,$fdata['start']-1,$fdata['length'],'SJIS-win'),'UTF-8', 'SJIS-win'));
-    //                         $foot[$fdata['name']] = trim(mb_strcut($line, $fdata['start']-1, $fdata['length'], 'SJIS-win'));
-    //                     }
-
-    //                     // データ結合
-    //                     foreach ($cdata as $cval) {
-    //                         //							$data[$cnt] = array_merge($head,$cval,$foot);
-    //                         $data[$cnt] = array_merge($cval, $head, $foot);
-    //                         $cnt++;
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    //     return $data;
-    // }
 }

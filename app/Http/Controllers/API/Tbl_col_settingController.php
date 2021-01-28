@@ -10,16 +10,6 @@ use Auth;
 class Tbl_col_settingController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -27,9 +17,6 @@ class Tbl_col_settingController extends Controller
      */
     public function store(Request $request)
     {
-        //
-
-
         if ($request->url_slug == 'order_list_detail') {
             $col_settinge = array(
                 array(
@@ -67,12 +54,6 @@ class Tbl_col_settingController extends Controller
                     'header_field' => 'delivery_service_code',
                     'header_status' => true
                 ),
-                /*
-                array(
-                    'header_text' => 'ステータス',
-                    'header_field' => 'status',
-                    'header_status' => true
-                ),*/
                 array(
                     'header_text' => 'JAN',
                     'header_field' => 'jan',
@@ -197,8 +178,6 @@ class Tbl_col_settingController extends Controller
                     <input @change="handleChange()" name="' . $header->header_field . '" data_header_text="' . $header->header_text . '" type="checkbox" ' . $checked . '>
                     <span class="slider round"></span>
                   </label></td>';
-                // $html .= '<td><div><b-form-checkbox @change="handleChange($event)"  v-model="' . $header->header_field . '" name="check-button" switch></b-form-checkbox></div></td>';
-                // $html .= '<td><b-form-checkbox  @change="handleChange()" :value="' . $header->header_field . '" switch><p class="btn btn-info" style="padding:5px;margin:3px;">' . $header->header_text . '</p></b-form-checkbox></td>';
                 $html .= '</tr>';
             }
         } else {
@@ -226,8 +205,6 @@ class Tbl_col_settingController extends Controller
                     <input @change="handleChange()" name="' . $header->header_field . '" data_header_text="' . $header->header_text . '" type="checkbox" ' . $checked . '>
                     <span class="slider round"></span>
                   </label></td>';
-                // $html .= '<td><div><b-form-checkbox @change="handleChange($event)"  v-model="' . $header->header_field . '" name="check-button" switch></b-form-checkbox></div></td>';
-                // $html .= '<td><b-form-checkbox  @change="handleChange()" :value="' . $header->header_field . '" switch><p class="btn btn-info" style="padding:5px;margin:3px;">' . $header->header_text . '</p></b-form-checkbox></td>';
                 $html .= '</tr>';
             }
         } else {
@@ -249,16 +226,6 @@ class Tbl_col_settingController extends Controller
         //
         $slected_list = array();
         if (cmn_tbl_col_setting::where('url_slug', $id)->where('update_by',$request->user_id)->exists()) {
-            // $result = cmn_tbl_col_setting::where('url_slug', $id)->first();
-            // $header_list = json_decode($result->content_setting);
-            // foreach ($header_list as $lst) {
-            //     $lst->header_status = false;
-            // }
-            // $selected_lists = $request->content_setting;
-            // foreach ($selected_lists as $selected_list) {
-            //     $key = array_search($selected_list, array_column($header_list, 'header_field'));
-            //     $header_list[$key]->header_status = true;
-            // }
             $jsn = json_encode($request->setting_list);
             cmn_tbl_col_setting::where('url_slug', $id)->where('update_by',$request->user_id)->update(['content_setting' => $jsn]);
             $result = cmn_tbl_col_setting::where('url_slug', $id)->first();
@@ -271,16 +238,5 @@ class Tbl_col_settingController extends Controller
             
         }
         return $result = response()->json(['result' => $slected_list, 'url' => $id]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

@@ -78,19 +78,20 @@ class Level3Controller extends Controller
             $customers_data = byr_buyer::select('cmn_connects.cmn_connect_id', 'cmn_connects.partner_code', 'cmn_companies.company_name')
                 ->join('cmn_companies', 'byr_buyers.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
                 ->join('cmn_connects', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
-            // ->groupBy('cmn_connects.partner_code')
+                ->groupBy(['cmn_companies.company_name', 'cmn_connects.partner_code'])
+                ->orderBy('cmn_companies.cmn_company_id')
                 ->get();
-        }
-        return response()->json(['customers_data' => $customers_data]);
-        //Buyer work
-        // $customers_data = cmn_companies_user::select('cmn_companies_users.adm_user_id', 'cmn_connects.cmn_connect_id', 'cmn_connects.partner_code', 'cmn_companies.company_name')
+        }else{
+            //Buyer work
+            // $customers_data = cmn_companies_user::select('cmn_companies_users.adm_user_id', 'cmn_connects.cmn_connect_id', 'cmn_connects.partner_code', 'cmn_companies.company_name')
         //     ->join('slr_sellers', 'slr_sellers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
         //     ->join('cmn_connects', 'cmn_connects.slr_seller_id', '=', 'slr_sellers.slr_seller_id')
         //     ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
         //     ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
         //     ->where('cmn_companies_users.adm_user_id', $user_id)->get();
         // \Log::info($customers_data);
-        // return response()->json(['customers_data' => $customers_data]);
+        }
+        return response()->json(['customers_data' => $customers_data]);
     }
 
     public function showServiceData(Request $request)
@@ -170,6 +171,7 @@ class Level3Controller extends Controller
             'execution', 'batch_file_path', 'next_service_id', 'append')
             ->where('lv3_service_id', $service_id)->first();
 
+        // ===Scenario===
         $authUser = User::find($user_id);
         if ($authUser->hasRole(config('const.adm_role_name'))) {
             $job_api_scenario_list = cmn_scenario::select('cmn_scenario_id', 'name', 'description')->get();
@@ -183,6 +185,7 @@ class Level3Controller extends Controller
             WHERE ccu.adm_user_id=' . $user_id . '
         )');
         }
+        // ===Scenario===
 
         $all_service_data = lv3_service::select('lv3_service_id', 'service_name', 'cmn_connect_id')
             ->where('adm_user_id', $user_id)->get();
@@ -370,26 +373,6 @@ class Level3Controller extends Controller
             return false;
         }
     }
-
-    public function dateDiff($date1, $date2)
-    {
-        $t1 = strtotime($date1);
-        $t2 = strtotime($date2);
-
-        $delta_T = ($t2 - $t1);
-
-        $day = round(($delta_T % 604800) / 86400);
-        $hours = round((($delta_T % 604800) % 86400) / 3600);
-        $minutes = round(((($delta_T % 604800) % 86400) % 3600) / 60);
-        $sec = round((((($delta_T % 604800) % 86400) % 3600) % 60));
-
-        return array(
-            'day' => $day,
-            'hours' => $hours,
-            'minutes' => $minutes,
-            'sec' => $sec,
-        );
-    }
     public function getServiceData(Request $request)
     {
         $service_id = $request->service_id;
@@ -460,12 +443,6 @@ class Level3Controller extends Controller
         }
 
         if (!empty($files_array)) {
-
-            // history::insert([
-            //     'file_path_id' => $file_path_id,
-            //     'execute_name' => '確定データ',
-            //     'status' => "Success",
-            // ]);
             $this->message = "ファイルが見つかりました。";
             $this->status_code = 200;
         } else {
@@ -473,98 +450,6 @@ class Level3Controller extends Controller
             $this->status_code = 401;
         }
         return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'files_array' => $files_array]);
-    }
-    public function setScheduleFileData(Request $request)
-    {
-        $user_id = $request->user_id;
-        $schedule_id = $request->schedule_id;
-        $time = $request->time;
-        $status = $request->status;
-        schedule::where('schedule_id', $schedule_id)->update(['disabled' => 1]);
-        return $request->all();
-    }
-
-    public function fileSave(Request $request)
-    {
-        $file_path_id = $request->file_path_id;
-
-        if ($request->hasFile('upfile')) {
-
-            // save image file to storage
-            $file = $request->file('upfile');
-            $file_name = $file->getClientOriginalName();
-
-            $file->storeAs(config('const.TEST_FILE_UPLOAD'), $file_name);
-            return response()->json(['fileName' => $file_name]);
-            \Log::info('New Image Name' . $file_name);
-
-        }
-    }
-
-    public function addCustomer(Request $request)
-    {
-        $user_id = $request->user_id;
-        $customer_id = $request->customer_id;
-        $customer_name = $request->customer_name;
-        $partner_code = $request->partner_code;
-
-        $customer_array = array(
-            'user_id' => $user_id,
-            'customer_name' => $customer_name,
-            'partner_code' => $partner_code,
-        );
-        if ($customer_id != null) {
-            $customer_info = customer::where('customer_id', $customer_id)->first();
-            if ($customer_info['partner_code'] != $partner_code) {
-                if (customer::where('user_id', $user_id)->where('partner_code', $partner_code)->exists()) {
-                    $this->message = '登録済みの取引先コードです。';
-                    $this->status_code = 403;
-                    $this->class_name = 'alert-danger';
-                    return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'class_name' => $this->class_name, 'lst_customer_id' => $this->lst_customer_id]);
-                }
-            }
-            $this->message = '更新完了';
-            $this->status_code = 200;
-            $this->class_name = 'alert-success';
-            $this->flag = 1;
-            $this->lst_customer_id = $customer_id;
-            customer::where('customer_id', $customer_id)->update($customer_array);
-        } else {
-            if (customer::where('user_id', $user_id)->where('partner_code', $partner_code)->exists()) {
-                $this->message = '登録済みの取引先コードです。';
-                $this->status_code = 403;
-                $this->class_name = 'alert-danger';
-            } else {
-                $this->lst_customer_id = customer::insertGetId($customer_array);
-                $this->message = '登録完了';
-                $this->status_code = 200;
-                $this->class_name = 'alert-success';
-                $this->flag = 0;
-            }
-        }
-
-        return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'class_name' => $this->class_name, 'flag' => $this->flag, 'lst_customer_id' => $this->lst_customer_id]);
-    }
-
-    public function deleteCustomer(Request $request)
-    {
-        $customer_id = $request->customer_id;
-        customer::where('customer_id', $customer_id)->delete();
-        $customer_services = service::select('service_id')->where('customer_id', $customer_id)->get();
-        foreach ($customer_services as $key => $customer_service) {
-            service::where('customer_id', $customer_id)->delete();
-            schedule::where('service_id', $customer_service->service_id)->delete();
-            if (file_path::where('service_id', $customer_service->service_id)->exists()) {
-                $file_path = file_path::where('service_id', $customer_service->service_id)->first();
-                history::where('file_path_id', $file_path['file_path_id'])->delete();
-            }
-            file_path::where('service_id', $customer_service->service_id)->delete();
-            job::where('service_id', $customer_service->service_id)->delete();
-        }
-        $this->message = '削除が完了しました。';
-        $this->status_code = 200;
-        $this->class_name = 'alert-success';
-        return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'class_name' => $this->class_name]);
     }
     public function deleteService(Request $request)
     {

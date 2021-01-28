@@ -11,17 +11,14 @@ use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\API\AllUsedFunction;
 use Auth;
-// use App\Http\Controllers\API\LanguageController;
 
 class RoleController extends Controller
 {
     private $all_used_functions;
-    // private $all_lang;
     
     public function __construct()
     {
         $this->all_used_functions = new AllUsedFunction();
-        // $this->all_lang = new LanguageController();
     }
     /**
      * Show the page to manage Role.
@@ -58,10 +55,6 @@ class RoleController extends Controller
     {
         if (!(Validator::make($request->all(), ['role_name' => 'required | max:50',])->passes())) {
             return response()->json(['alert_text' => 'required', 'class_name' => 'error','title'=>'Required!']);
-            // return response()->json(['alert_text' => 'required', 'class_name' => 'error','title'=>'Required!','message'=>Auth::User()]);
-            // return response()->json(['alert_text' => 'required', 'class_name' => 'error','title'=>'Required!','message'=>\Lang::get('blog.title',array(),\App::getLocale())]);
-            // return response()->json(['alert_text' => 'required', 'class_name' => 'error','title'=>'Required!','message'=>trans('blog.title')]);
-            // return response()->json(['alert_text' => 'required', 'class_name' => 'error','title'=>'Required!','message'=>__('blog.title')]);
         }
         $role_update_id = $request->role_update_id;
         $permission_full = $request->permissions;
@@ -113,21 +106,4 @@ class RoleController extends Controller
         }
 
     }
-    // /**
-    //  * Assign permissions to a role.
-    //  *
-    //  * @param  int $role_id
-    //  * @param  array $permissions
-    //  * @return revoke previous permission and set new permission
-    //  */
-    // public function assignPermissionToRole($role_id, $permissions)
-    // {
-       
-    //     $role_id = $role_id;
-    //     $permission_id = $permissions;
-    //     $role = Role::find($role_id);
-    //     $permission = $this->all_used_functions->get_permissions();
-    //     $role->revokePermissionTo($permission);
-    //     $role->givePermissionTo($permission_id);    
-    // }
 }

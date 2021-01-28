@@ -13,7 +13,6 @@ use App\Models\CMN\cmn_scenario;
 class ShipmentConroller extends Controller
 {
     public function shipmentCSVCreate(Request $request){
-        // return $request->all();
         if(isset($request->email) && isset($request->password)){
             $user = User::where('email', '=', $request->email)->first();
             if (!$user) {
@@ -27,16 +26,12 @@ class ShipmentConroller extends Controller
         }
         $cmn_scenario_id=$request->scenario_id;
         $sc=cmn_scenario::where('cmn_scenario_id',$cmn_scenario_id)->first();
-        // return $sc;
-        // return app_path().'/'.$sc->file_path.'.php';
         // scenario call
         if (!file_exists(app_path().'/'.$sc->file_path.'.php')) {
             \Log::error('Scenario file is not exist!:'.$sc->file_path);
             return ['status'=>'1','message'=>'Scenario file is not exist!'.$sc->file_path];
         }
         // ファイル読み込み
-        
-        // $sc_obj = new ouk_order_toj();//$sc->file_path;
         $customClassPath = "\\App\\";
         $nw_f_pth = explode('/',$sc->file_path);
         foreach($nw_f_pth as $p){
