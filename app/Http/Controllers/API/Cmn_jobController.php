@@ -40,52 +40,6 @@ class Cmn_jobController extends Controller
         ->get();
         return response()->json(['job_list'=>$job_list,'byr_company_list'=>$byr_company_list,'slr_company_list'=>$slr_company_list]);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
     public function exec(Request $request)
     {
         // return "OK";
@@ -100,24 +54,7 @@ class Cmn_jobController extends Controller
         if (!Hash::check($request->password, $user->password)) {
             return ['status'=>1, 'message' => 'Authentication faild!'];
         }
-        // return $request->all();
-        // scenario info check
-        // byr_buyers.spr_code
-        // cmn_connects.partner_code
-        // cmn_jobs.class
-        // cmn_job_id
-        // $sc=null;
-        // return $request->all();
-        // if (isset($request['spr_code'])) {
-        // return $request->all();
-        // }
-        // return $array = json_decode(json_encode($request->all()), true);
-        // // return array_keys((array) $request);
-        // if (array_key_exists('cmn_job_id',$request)) {
-        //     return $request->all();
-        // }else{
-        //     return "Not Found";
-        // }
+        
         $request_all=$request->all();
         if (array_key_exists("super_code", $request_all) && array_key_exists("partner_code", $request_all) && array_key_exists("class", $request_all)) {
             $super_code=$request->super_code;
@@ -139,17 +76,12 @@ class Cmn_jobController extends Controller
             ->join('cmn_scenarios', 'cmn_jobs.cmn_scenario_id', '=', 'cmn_scenarios.cmn_scenario_id')
             ->where('cmn_jobs.cmn_job_id', $cmn_job_id)->where('cmn_jobs.is_active', 1)->first();
         }
-        // return $sc;
-        \Log::info($sc);
-        // return response()->json($sc);
         // scenario call
         if (!file_exists(app_path().'/'.$sc->file_path.'.php')) {
             \Log::error('Scenario file is not exist!:'.$sc->file_path);
             return ['status'=>'1','message'=>'Scenario file is not exist!'.$sc->file_path];
         }
         // ファイル読み込み
-
-        // $sc_obj = new ouk_order_toj();//$sc->file_path;
         $customClassPath = "\\App\\";
         $nw_f_pth = explode('/', $sc->file_path);
         foreach ($nw_f_pth as $p) {

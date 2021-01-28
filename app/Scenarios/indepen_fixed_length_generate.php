@@ -17,14 +17,10 @@ class indepen_fixed_length_generate
 
     public function exec($request,$sc)
     {
-        // return $request->all();
         $byr_order_id=$request->order_id;
         $all_indepen_data=byr_order::select(
             'byr_orders.byr_name',
             'byr_orders.byr_name_kana',
-            // 'byr_orders.slr_name',
-            // 'byr_orders.slr_name_kana',
-            // 'byr_orders.partner_code',
             'byr_order_vouchers.voucher_number',
             'byr_order_vouchers.ship_code',
             'byr_order_vouchers.category_code',
@@ -33,7 +29,6 @@ class indepen_fixed_length_generate
             'byr_order_vouchers.order_date',
             'byr_order_vouchers.expected_delivery_date',
             'byr_order_vouchers.receiver_name_kana',
-            // 'byr_order_vouchers.receiver_name',
             'byr_order_vouchers.sale_category',
             'byr_order_vouchers.delivery_service_code',
             'byr_order_vouchers.total_cost_price',
@@ -56,14 +51,11 @@ class indepen_fixed_length_generate
         ->join('byr_order_vouchers','byr_order_vouchers.byr_order_id','=','byr_orders.byr_order_id')
         ->join('byr_order_items','byr_order_items.byr_order_voucher_id','=','byr_order_vouchers.byr_order_voucher_id')
         ->where('byr_orders.byr_order_id', $byr_order_id)->get();
-        // return $all_indepen_data;
 
         $data=[];
         foreach ($all_indepen_data as $key => $val) {
             \Log::debug($key.':'.$val);
             // file head
-            // $do = date('ymd', strtotime($val['mes_lis_ord_tra_dat_order_date'])); //datetime to date string wich length is 6
-
             $file_head = 'H'; //default value wich length is 1
             $file_head .= str_repeat("0",6); //0 added for 6 times which length is 6
             $file_head.= $val['voucher_number']; // length is 7
@@ -81,8 +73,6 @@ class indepen_fixed_length_generate
             $file_head .= str_pad($val['delivery_service_code'], 3, '0', STR_PAD_LEFT); //0 added before string until length is 3
             $file_head .= str_repeat(" ",4); //Seventeen space added which length is 4
             // Total 128 Character
-            // echo($file_head.PHP_EOL);
-
             // vouchers
             $order_inputs=$val['order_inputs']=='ケース'?'CS':($val['order_inputs']=='ボール'?'BL':str_repeat(" ",2));
             $voucher_head = 'D'; //default value wich length is 1
@@ -104,7 +94,7 @@ class indepen_fixed_length_generate
             $voucher_head .= str_pad($val['selling_unit_price'], 6, '0', STR_PAD_LEFT); //0 added before string until length is 6
             $voucher_head .= str_repeat(" ",3); //Seventeen space added which length is 3
             // Total 128 Character
-            
+
             $data[$file_head][] = $voucher_head;
         }
         // return $data;
@@ -115,7 +105,7 @@ class indepen_fixed_length_generate
 
             $step0_data_array=$data[$step0];
             $step0_data_count=count($step0_data_array);
-            
+
             for ($j=0; $j < $step0_data_count; $j++) {
                 $step1=array_keys($step0_data_array)[$j];
                 $string_data.=$step0_data_array[$step1]; //If New line need please add .'\n' after this line
@@ -124,18 +114,15 @@ class indepen_fixed_length_generate
         $txt_file_name=date('y-m-d').'_Text_File_'.time().".txt";
         $string_data=$this->all_functions->convert_from_utf8_to_sjis__recursively($string_data);
         $string_data=$this->common_class_obj->sjis_2_ebcdic(null,$string_data);
-        
-        if ($string_data!=null) {
-            // $string_data = $this->common_class_obj->ebcdic_2_sjis(null,$string_data);
-            // $string_data = mb_convert_encoding($string_data, "UTF-8", "SJIS");
 
+        if ($string_data!=null) {
             \File::put(storage_path(config('const.INDEPEN_FILE_PATH').$txt_file_name), $string_data);
             return response()->json(['message'=>"File has been created",'url'=>\Config('app.url').'storage/'.config('const.INDEPEN_FILE_PATH').$txt_file_name]);
         }else{
             return response()->json(['message'=>"No file data found"]);
         }
     }
-    
 
-    
+
+
 }

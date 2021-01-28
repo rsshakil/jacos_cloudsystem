@@ -56,10 +56,8 @@ class PermissionController extends Controller
                         'permission_description' => $permission_description, 
                         'is_system' => 0]);
                         return response()->json(['message' => "created", 'class_name' => 'success','title'=>'Created!']);
-                        // return response()->json(['message' => __('messages.permission_setup_completed'), 'class_name' => 'success','title'=>'Created!']);
                 } else {
                     return response()->json(['message' =>'duplicated', 'class_name' => 'warning','title'=>'Exists!']);
-                    // return redirect()->back()->with(['message' => __('messages.permission_name_duplicate'), 'class_name' => 'alert-danger']);
                 }
             } else {
                 $permission_check = Permission::where('id', $permission_update_id)->first();
@@ -72,35 +70,10 @@ class PermissionController extends Controller
                     'name' => $permission_name,
                     'permission_description' => $permission_description]);
                     return response()->json(['message' => 'updated', 'class_name' => 'success','title'=>'Updated!']);
-                // return redirect()->back()->with(['message' => __('messages.permission_updated'), 'class_name' => 'alert-success']);
             }
         } else {
             return response()->json(['message' => 'required', 'class_name' => 'error','title'=>'Warning!']);
-            // return redirect()->back()->with(['message' => __('messages.permission_name_blank'), 'class_name' => 'alert-danger']);
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
     }
     /**
      * To delete a permission
@@ -115,21 +88,8 @@ class PermissionController extends Controller
         $is_delete = Permission::where([['id', '=', $permission_id], ['is_system', '=', 0]])->delete();
         if ($is_delete) {
             return response()->json(['message' =>'deleted', 'class_name' => 'success','title'=>'Deleted!']);
-            // return response()->json(['message' => __('messages.permission_deleted').":".$permission_name, 'class_name' => 'success','title'=>'Deleted!']);
         } else {
             return response()->json(['message' =>'faild', 'class_name' => 'error','title'=>'Not Deleted!']);
-            // return response()->json(['message' =>__('messages.permission_not_deleted').":".$permission_name, 'class_name' => 'error','title'=>'Not Deleted!']);
         }   
     }
-    // function check(Request $request) {
-    //     $permissionName=$request->get('permission_name');
-    //     $user_id=$request->get('user');
-    //     // return $user['id'];
-    //     $user=User::find($user_id);
-    //     //  return $request->all();
-    //     if (! $user->hasPermissionTo($permissionName)) {
-    //          abort(403);
-    //     }
-    //     return response('', 204);
-    //  }
 }

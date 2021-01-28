@@ -75,7 +75,7 @@ Route::get('/slr_job_list_by_seller_id/{slr_seller_id}', 'API\Cmn_jobController@
 Route::get('/cmn_company_user_list/{cmn_company_id?}', 'API\BYR\ByrController@cmn_company_user_list');
 // Route::get('/company_seller_user_list/{cmn_company_id}', 'API\BYR\ByrController@company_seller_user_list');
 Route::get('/company_partner_list/{cmn_company_id}', 'API\BYR\ByrController@company_partner_list');
-Route::get('/get_byr_slr_company/{cmn_company_id?}', 'API\BYR\ByrController@get_byr_slr_company');
+Route::get('/get_byr_slr_company/{cmn_company_id?}', 'API\CMN\CommonController@get_byr_slr_company');
 
 Route::get('/get_scenario_list', 'API\Cmn_ScenarioController@get_scenario_list');
 Route::get('/slr_management/{adm_user_id}', 'API\SLR\SlrController@slr_management');
@@ -83,15 +83,16 @@ Route::post('/get_byr_order_list', 'API\Byr_orderController@get_byr_order_list')
 Route::get('/get_all_company_list/{adm_user_id}', 'API\BYR\ByrController@get_all_company_list');
 Route::post('/update_shipment_detail', 'API\Byr_orderController@update_shipment_detail');
 Route::post('/update_shipment_detail_bycurrentdatetime', 'API\Byr_orderController@update_shipment_detail_bycurrentdatetime');
-Route::post('/cmn_user_create', 'API\BYR\ByrController@cmn_user_create');
+Route::post('/shipment_confirm', 'API\Byr_orderController@shipmentConfirm');
+Route::post('/cmn_user_create', 'API\CMN\CommonController@cmn_user_create');
 Route::post('/slr_seller_user_create', 'API\BYR\ByrController@slr_seller_user_create');
 Route::post('/create_buyer', 'API\BYR\ByrController@createBuyer');
 Route::post('/slr_company_create', 'API\BYR\ByrController@slr_company_create');
-Route::post('/get_byr_info_by_byr_order_id', 'API\Byr_orderController@get_byr_info_by_byr_order_id');
+Route::post('/get_byr_info_by_data_order_id', 'API\Byr_orderController@get_byr_info_by_data_order_id');
 Route::get('/dispaly_col_by_user/{url_slug}/{user_id}', 'API\Tbl_col_settingController@dispaly_col_by_user');
 
 Route::post('/bms_order_save/{job_id}', 'API\BmsOrderController@store');
-Route::get('/get_bms_order_byr_order_id/{byr_order_id}', 'API\Byr_orderController@get_bms_order_byr_order_id');
+Route::get('/get_data_order_byr_order_id/{byr_order_id}', 'API\Byr_orderController@get_data_order_byr_order_id');
 Route::post('/update_byr_order_detail_status', 'API\Byr_orderController@update_byr_order_detail_status');
 Route::post('item_master_exec', 'API\Cmn_jobController@exec');
 // Route::post('bms_csv_exec', 'API\Cmn_jobController@exec');
@@ -114,7 +115,7 @@ Route::post('/delete_canvas', 'API\Byr_orderController@deleteCanvasData');
 Route::post('/shipment_csv_create', 'API\ShipmentConroller@shipmentCSVCreate');
 
 Route::post('/get_permissions_for_buyer', 'API\BYR\ByrController@getPermissionForBuyer');
-Route::post('/get_seller_list', 'API\BYR\ByrController@getSellerList');
+Route::post('/get_seller_list', 'API\SLR\SlrController@getSellerList');
 Route::post('/buyer_partner_create', 'API\BYR\ByrController@buyerPartnerCreate');
 // Route::post('/order_create_fixed_length', 'API\BmsOrderController@orderCreateDeleteFixedLength');
 // Route::post('/delete_old_files', 'API\BmsOrderController@orderCreateDeleteFixedLength');
@@ -132,7 +133,7 @@ Route::get('/get_user_top_blog_by_byr_id/{byr_buyer_id}', 'API\Cmn_blogControlle
 Route::post('/update_blog_infos', 'API\Cmn_blogController@update_blog_infos');
 Route::post('/ckeditor_file_up', 'API\Cmn_blogController@ckeditor_file_up');
 
-Route::post('/get_byr_slr_data', 'API\Byr_orderController@getByrSlrData');
+Route::post('/get_byr_order_data_by_slr', 'API\Byr_orderController@getByrOrderDataBySlr');
 Route::post('/order_details', 'API\Byr_orderController@orderDetails');
 Route::get('/order_item_details/{data_shipment_voucher_id}', 'API\Byr_orderController@orderItemDetails');
 
@@ -153,14 +154,6 @@ Route::post('history_create', 'API\Level3\Level3Controller@historyCreate');
 Route::post('job_scenario', 'API\Level3\Level3Controller@jobScenario');
 Route::get('slr_job_list_all', 'API\Cmn_jobController@index');
 Route::post('get_shipment_file', 'API\Level3\Level3Controller@getShipmentFile');
-
-// Route::post('schedule_file_data', 'API\Level3\Level3Controller@setScheduleFileData');
-
-// Route::post('get_file_path', 'ApiController@getFilePath');
-
-// Route::post('file_send_url', 'API\Level3\Level3Controller@fileSave');
-
-// Route::post('add_customer', 'API\Level3\Level3Controller@addCustomer');
 
 Route::post('delete_service', 'API\Level3\Level3Controller@deleteService');
 Route::post('/job_list', 'API\Level3\Level3Controller@job_list');

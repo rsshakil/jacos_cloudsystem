@@ -190,7 +190,7 @@ export default {
         allBuyerInfoBySaller(user_id) {
             // console.log(user_id);
             // return 0;
-            axios.post(this.BASE_URL + "api/get_byr_slr_data", { user_id: user_id })
+            axios.post(this.BASE_URL + "api/get_byr_order_data_by_slr", { user_id: user_id })
                 .then(({ data }) => {
                     // console.log(data);
                     this.buyer_info_for_saller = data.slr_order_info;

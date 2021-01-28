@@ -91,7 +91,7 @@
             <thead>
               <tr>
                 <th colspan="100%" style="border: none;">
-          
+
                 </th>
               </tr>
               <tr>
@@ -100,7 +100,7 @@
                   data-sorting_type="asc"
                   data-column_name="id"
                   style="cursor: pointer"
-                  
+
                 >
                   No
                   <span id="id_icon"></span>
@@ -108,7 +108,7 @@
                 <th>
                   <input type="checkbox" class="form-control check_all" />
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -117,7 +117,7 @@
                   送信者ＩＤ
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -126,7 +126,7 @@
                   	送信者ＩＤ発行元
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -135,7 +135,7 @@
                   	受信者ＩＤ
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -144,7 +144,7 @@
                   	受信者ＩＤ発行元
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -153,16 +153,16 @@
                   	標準名称
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer;min-width:100px;">
-                  	バージョン	
+                  	バージョン
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -171,7 +171,7 @@
                   	インスタンスＩＤ
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -180,7 +180,7 @@
                   		メッセージ種
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -189,7 +189,7 @@
                   	作成日時
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -198,7 +198,7 @@
                   	タイプ
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -207,7 +207,7 @@
                   	テスト区分ＩＤ
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -216,7 +216,7 @@
                   	最終送信先ＩＤ
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -225,7 +225,7 @@
                   	メッセージ識別ＩＤ
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -234,7 +234,7 @@
                   	送信者ステーションアドレス
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -243,16 +243,16 @@
                   		最終受信者ステーションアドレス
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer;min-width:100px;">
-                  	直接受信者ステーションアドレス	
+                  	直接受信者ステーションアドレス
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -261,7 +261,7 @@
                   		取引数
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -270,7 +270,7 @@
                   	システム情報キー
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -279,16 +279,7 @@
                   	システム情報値
                   <span id="name_icon"></span>
                 </th>
-                
-                <th
-                  class="sorting"
-                  data-sorting_type="asc"
-                  data-column_name="name"
-                  style="cursor: pointer;min-width:100px;">
-                  	バージョン番号	
-                  <span id="name_icon"></span>
-                </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -297,7 +288,16 @@
                   	バージョン番号
                   <span id="name_icon"></span>
                 </th>
-                
+
+                <th
+                  class="sorting"
+                  data-sorting_type="asc"
+                  data-column_name="name"
+                  style="cursor: pointer;min-width:100px;">
+                  	バージョン番号
+                  <span id="name_icon"></span>
+                </th>
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -306,7 +306,7 @@
                   		名前空間
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -315,7 +315,7 @@
                   		バージョン
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -324,7 +324,7 @@
                   	支払法人コード
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -333,7 +333,7 @@
                   		支払法人GLN
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -342,7 +342,7 @@
                   	支払法人名称
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -351,7 +351,7 @@
                   	支払法人名称カナ
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -360,25 +360,25 @@
                   	発注者コード
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer;min-width:100px;">
-                  	発注者GLN	
+                  	発注者GLN
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer;min-width:100px;">
-                  		発注者名称	
+                  		発注者名称
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -387,7 +387,7 @@
                   	発注者名称カナ
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -396,7 +396,7 @@
                   	取引番号（発注・返品）
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -405,7 +405,7 @@
                   		取引付属番号
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -414,7 +414,7 @@
                   		直接納品先
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -423,7 +423,7 @@
                   		コード
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -432,7 +432,7 @@
                   			直接納品先GLN
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -441,7 +441,7 @@
                   		直接納品先名称
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -450,7 +450,7 @@
                   		直接納品先名称カナ
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -459,7 +459,7 @@
                   		最終納品先コード
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -468,7 +468,7 @@
                   		最終納品先GLN
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -477,7 +477,7 @@
                   		最終納品先名称
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -486,7 +486,7 @@
                   		最終納品先名称カナ
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -495,7 +495,7 @@
                   		計上部署コード
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -504,7 +504,7 @@
                   		計上部署GLN
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -513,7 +513,7 @@
                   			計上部署名称
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -522,7 +522,7 @@
                   		計上部署名称（カナ）
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -531,7 +531,7 @@
                   		陳列場所コード
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -540,7 +540,7 @@
                   			陳列場所名称
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -549,7 +549,7 @@
                   			陳列場所名称カナ
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -558,7 +558,7 @@
                   		請求取引先コード
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -567,7 +567,7 @@
                   		請求取引先GLN
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -576,7 +576,7 @@
                   		請求取引先名
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -585,7 +585,7 @@
                   		請求取引先名カナ
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -594,25 +594,25 @@
                   		取引先コード
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer;min-width:100px;">
-                  		取引先GLN	
+                  		取引先GLN
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer;min-width:100px;">
-                  			取引先名称	
+                  			取引先名称
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -621,7 +621,7 @@
                   			取引先名称カナ
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -630,7 +630,7 @@
                   		枝番
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -639,7 +639,7 @@
                   			出荷先コード
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -648,7 +648,7 @@
                   		出荷場所GLN
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -657,16 +657,16 @@
                   			納品経路
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer;min-width:100px;">
-                  	便No	
+                  	便No
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -675,7 +675,7 @@
                   		通過在庫区分
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -684,7 +684,7 @@
                   			納品区分
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -693,7 +693,7 @@
                   		指定納品時刻
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -702,7 +702,7 @@
                   			輸送手段
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -711,7 +711,7 @@
                   			バーコード情報
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -720,7 +720,7 @@
                   			カテゴリー名称1（印字用）
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -729,7 +729,7 @@
                   			カテゴリー名称2（印字用）
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -738,7 +738,7 @@
                   			最終納品先略称（印字用）
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -747,7 +747,7 @@
                   			ラベル自由使用欄（印字用）
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -756,7 +756,7 @@
                   			ラベル自由使用欄半角カナ（印字用）
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -765,7 +765,7 @@
                   			商品分類（大）
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -774,7 +774,7 @@
                   		商品分類（中）
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -783,7 +783,7 @@
                   			発注日
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -792,7 +792,7 @@
                   			直接納品先納品日
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -801,7 +801,7 @@
                   			最終納品先納品日
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -810,25 +810,25 @@
                   		計上日
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer;min-width:100px;">
-                  		販促開始日	
+                  		販促開始日
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer;min-width:100px;">
-                  			販促終了日	
+                  			販促終了日
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -837,7 +837,7 @@
                   		取引（発注・返品）データ有効日
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -846,7 +846,7 @@
                   			商品区分
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -855,7 +855,7 @@
                   		発注区分
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -864,7 +864,7 @@
                   		出荷データ有無区分
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -873,7 +873,7 @@
                   		PB区分
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -882,7 +882,7 @@
                   		配送温度区分
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -891,25 +891,25 @@
                   			酒区分
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer;min-width:100px;">
-                  			処理種別	
+                  			処理種別
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer;min-width:100px;">
-                  			伝票レス区分	
+                  			伝票レス区分
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -918,7 +918,7 @@
                   		取引番号区分
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -927,16 +927,16 @@
                   		パック区分
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer;min-width:100px;">
-                  			不定貫区分	
+                  			不定貫区分
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -945,7 +945,7 @@
                   			税区分
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -954,7 +954,7 @@
                   			税率
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -963,7 +963,7 @@
                   		自由使用欄
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -972,7 +972,7 @@
                   		自由使用欄半角カナ
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -981,7 +981,7 @@
                   		原価金額合計
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -990,7 +990,7 @@
                   			売価金額合計
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -999,7 +999,7 @@
                   			税額合計金額
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1008,7 +1008,7 @@
                   			数量合計
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1017,7 +1017,7 @@
                   		発注単位数量合計
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1026,7 +1026,7 @@
                   			重量合計
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1035,7 +1035,7 @@
                   		取引明細番号（発注・返品）
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1044,16 +1044,16 @@
                   		取引付属明細番号
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer;min-width:100px;">
-                  		元取引番号	
+                  		元取引番号
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1062,7 +1062,7 @@
                   			元取引明細番号
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1071,7 +1071,7 @@
                   			商品分類（小）
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1080,16 +1080,16 @@
                   		商品分類（細）
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer;min-width:100px;">
-                  			配達予定日	
+                  			配達予定日
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1098,16 +1098,16 @@
                   		納品期限
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer;min-width:100px;">
-                  			センター納品詳細指示	
+                  			センター納品詳細指示
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1116,7 +1116,7 @@
                   		メーカーコード
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1125,7 +1125,7 @@
                   			商品コード（ＧTIN）
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1134,7 +1134,7 @@
                   		商品コード（発注用）
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1143,7 +1143,7 @@
                   			商品コード区分
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1152,7 +1152,7 @@
                   			商品コード（取引先）
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1161,7 +1161,7 @@
                   			商品名
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1170,7 +1170,7 @@
                   		商品名カナ
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1179,16 +1179,16 @@
                   		規格
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer;min-width:100px;">
-                  		規格カナ	
+                  		規格カナ
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1197,16 +1197,16 @@
                   		カラーコード
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer;min-width:100px;">
-                  			カラー名称	
+                  			カラー名称
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1215,7 +1215,7 @@
                   		カラー名称カナ
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1224,16 +1224,16 @@
                   		サイズコード
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer;min-width:100px;">
-                  		サイズ名称	
+                  		サイズ名称
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1242,7 +1242,7 @@
                   			サイズ名称カナ
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1251,7 +1251,7 @@
                   			入数
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1260,7 +1260,7 @@
                   		都道府県コード
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1269,7 +1269,7 @@
                   			国コード
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1278,7 +1278,7 @@
                   			産地名
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1287,7 +1287,7 @@
                   		水域コード
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1296,16 +1296,16 @@
                   			水域名
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer;min-width:100px;">
-                  			原産エリア	
+                  			原産エリア
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1314,7 +1314,7 @@
                   			等級
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1323,7 +1323,7 @@
                   			階級
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1332,7 +1332,7 @@
                   			銘柄
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1341,16 +1341,16 @@
                   		商品ＰＲ
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer;min-width:100px;">
-                  		バイオ区分	
+                  		バイオ区分
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1359,7 +1359,7 @@
                   		品種コード
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1368,7 +1368,7 @@
                   		養殖区分
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1377,7 +1377,7 @@
                   		解凍区分
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1386,16 +1386,16 @@
                   		商品状態区分
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer;min-width:100px;">
-                  			形状・部位	
+                  			形状・部位
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1404,16 +1404,16 @@
                   			用途
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer;min-width:100px;">
-                  			法定管理義務商材区分	
+                  			法定管理義務商材区分
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1422,16 +1422,16 @@
                   			原価金額
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer;min-width:100px;">
-                  			原単価	
+                  			原単価
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1440,7 +1440,7 @@
                   			売価金額
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1449,7 +1449,7 @@
                   			売単価
                   <span id="name_icon"></span>
                 </th>
-                
+
                 <th
                   class="sorting"
                   data-sorting_type="asc"
@@ -1463,7 +1463,7 @@
                   data-sorting_type="asc"
                   data-column_name="email"
                   style="cursor: pointer;min-width:100px;">
-                 	発注単位	
+                 	発注単位
                   <span id="total_icon"></span>
                 </th>
                 <th
@@ -1519,7 +1519,7 @@
                   data-sorting_type="asc"
                   data-column_name="email"
                   style="cursor: pointer;min-width:100px;">
-                 			商品重量	
+                 			商品重量
                   <span id="total_icon"></span>
                 </th>
                 <th
@@ -1527,7 +1527,7 @@
                   data-sorting_type="asc"
                   data-column_name="email"
                   style="cursor: pointer;min-width:100px;">
-                 		発注重量	
+                 		発注重量
                   <span id="total_icon"></span>
                 </th>
                  <th style="min-width:100px">数量確定</th>
@@ -1543,7 +1543,7 @@
                 <td>
                   <input type="checkbox" class="form-control check_item" />
                 </td>
-                
+
                 <td>{{order_detail_list.sta_sen_identifier}}</td>
                 <td>{{order_detail_list.sta_sen_ide_authority}}</td>
                 <td>{{order_detail_list.sta_rec_identifier}}</td>
@@ -1705,7 +1705,7 @@
                 <td>
                   <button @click="update_shipment_detail(order_detail_list)" class="btn btn-primary">確定</button>
                 </td>
-                
+
                 <td>
                   <button
                     @click="edit_order_detail(order_detail_list)"
@@ -1872,7 +1872,7 @@ export default {
       }
     },
     sortBynumeric_valu(sortKey){
-      
+
       // this.order_detail_lists.sort((a, b) => a[sortKey] < b[sortKey] ? 1 : -1);
       if(this.order_by=='asc'){
         this.order_by='desc';
@@ -1881,7 +1881,7 @@ export default {
          this.order_by='asc';
         this.order_detail_lists.sort((a, b) => b[sortKey]-a[sortKey]);
       }
-      
+
     },
     sortByja_valu(sortKey){
       if(this.order_by=='asc'){
@@ -1912,7 +1912,7 @@ export default {
     //get Table data
     get_all_byr_order_detail() {
       axios
-        .get(this.BASE_URL + "api/get_bms_order_byr_order_id/" + this.byr_order_id)
+        .get(this.BASE_URL + "api/get_data_order_byr_order_id/" + this.byr_order_id)
         .then(data => {
           console.log(data.data.order_list_detail);
           this.order_detail_lists = data.data.order_list_detail;

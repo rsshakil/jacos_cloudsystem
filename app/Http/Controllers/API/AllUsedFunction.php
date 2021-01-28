@@ -3,15 +3,12 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\ADM\adm_user_details;
 use App\Models\ADM\User;
 use App\Models\BYR\byr_buyer;
 use App\Models\CMN\cmn_companies_user;
 use App\Models\CMN\cmn_company;
 use App\Models\SLR\slr_seller;
 use Auth;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -47,7 +44,6 @@ class AllUsedFunction extends Controller
     public function get_role_permission_by_role_id($role_id = null, $status = null)
     {
         if (!empty($role_id)) {
-            // $permissions=$this->get_selected_permission_by_role_id($role_id);
             $permissions = $this->get_permissions($role_id);
             $permission_array = array();
             foreach ($permissions as $key => $permission) {
@@ -71,7 +67,6 @@ class AllUsedFunction extends Controller
      */
     public function assignPermissionToRole($role_id, $permissions)
     {
-        $role_id = $role_id;
         $permission_id = $permissions;
         $role = Role::find($role_id);
         $permission = $this->get_permissions();
@@ -147,7 +142,7 @@ class AllUsedFunction extends Controller
      * @param  boolean $take_header 1 for no header 0 for with header
      * @return All csv data as an array.
      */
-    public function csvReader_con($baseUrl, $take_header=1)
+    public function csvReader($baseUrl, $take_header = 1)
     {
         $temp_data = file_get_contents($baseUrl);
         if (mb_detect_encoding($temp_data, ['UTF-8', 'SJIS-win', 'SJIS', 'eucJP-win', 'ASCII', 'EUC-JP', 'JIS']) != "UTF-8") {
@@ -162,23 +157,6 @@ class AllUsedFunction extends Controller
     }
 
     /**
-     * Read a csv file by path
-     *
-     * @param  string $baseUrl
-     * @param  boolean $take_header 1 for no header 0 for with header
-     * @return All csv data as an array.
-     */
-    public function csvReader($baseUrl, $take_header=1)
-    {
-        $data = array_map('str_getcsv', file($baseUrl));
-        $csv_data = array_slice($data, $take_header);
-        // return $csv_data;
-        $rowData = $this->convert_from_sjis_to_utf8_recursively($csv_data);
-        \Log::debug('----- CSV file read completed from this url: (' . $baseUrl . ')-----');
-        return $rowData;
-    }
-
-    /**
      * File encoding from SJIJ to utf8
      * @param  SJIJ String or array
      * @return utf-8 encoded string
@@ -186,14 +164,10 @@ class AllUsedFunction extends Controller
     public static function convert_from_sjis_to_utf8_recursively($dat)
     {
         if (is_string($dat)) {
-            // \Log::debug('----- SJIJ to UTF-8 conversion completed -----');
-            // $dat=str_replace("\u{00a0}", ' ', $dat);
             if (mb_detect_encoding($dat) != "UTF-8") {
                 return mb_convert_encoding($dat, "UTF-8", "sjis-win");
-            // return utf8_encode($dat);
             } else {
                 return mb_convert_encoding($dat, "UTF-8", "auto");
-                // return $dat;
             }
         } elseif (is_array($dat)) {
             $ret = [];
@@ -220,10 +194,8 @@ class AllUsedFunction extends Controller
     public static function convert_from_utf8_to_sjis__recursively($dat)
     {
         if (is_string($dat)) {
-            // \Log::debug('----- UTF-8 to SJIJ conversion completed -----');
             // Original
             return mb_convert_encoding($dat, "sjis-win", "UTF-8");
-        // return mb_convert_encoding($dat, "SJIS", "UTF-8");
         } elseif (is_array($dat)) {
             $ret = [];
             foreach ($dat as $i => $d) {
@@ -290,7 +262,7 @@ class AllUsedFunction extends Controller
         if ($cmn_company_id != 0) {
             return $results = cmn_company::where('cmn_company_id', $cmn_company_id)->first();
         } else {
-            return $byr_buyer = byr_buyer::select('cmn_companies.*')
+            return $results = byr_buyer::select('cmn_companies.*')
                 ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.cmn_company_id')->get();
         }
     }
@@ -304,13 +276,10 @@ class AllUsedFunction extends Controller
         $arr = array('cmn_company_id' => 0, 'byr_buyer_id' => 0, 'cmn_connect_id' => 0);
         \Log::info($adm_user_id);
         if ($adm_user_id != 0) {
-            // \Log::info($adm_user_id);
             $cmn_company_info = cmn_companies_user::select('byr_buyers.cmn_company_id', 'byr_buyers.byr_buyer_id', 'cmn_connects.cmn_connect_id')
                 ->join('byr_buyers', 'byr_buyers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
                 ->join('cmn_connects', 'cmn_connects.byr_buyer_id', '=', 'byr_buyers.byr_buyer_id')
                 ->where('cmn_companies_users.adm_user_id', $adm_user_id)->first();
-            // \Log::info($adm_user_id);
-            // \Log::info($cmn_company_info);
             if (!empty($cmn_company_info)) {
                 $arr = array(
                     'cmn_company_id' => $cmn_company_info->cmn_company_id,
@@ -320,72 +289,6 @@ class AllUsedFunction extends Controller
             }
         }
         return $arr;
-    }
-    /**
-     * Unserialize Canvas object from serialized Canvas Object
-     * @param  Object $canvas_objects Serialized Canvas Object
-     * @return Array Formated Object Array
-     */
-    private function UnserializedCanvasData($canvas_objects)
-    {
-        $canvas_data = unserialize($canvas_objects);
-        $canvas_array = array();
-        foreach ($canvas_data['objects'] as $key => $value) {
-            $temp_array['type'] = $value['type'];
-            $temp_array['version'] = $value['version'];
-            $temp_array['originX'] = $value['originX'];
-            $temp_array['originY'] = $value['originY'];
-            $temp_array['left'] = (float) $value['left'];
-            $temp_array['top'] = (float) $value['top'];
-            $temp_array['width'] = (float) $value['width'];
-            $temp_array['height'] = (float) $value['height'];
-            $temp_array['fill'] = $value['fill'];
-            $temp_array['stroke'] = $value['stroke'];
-            $temp_array['strokeWidth'] = (float) $value['strokeWidth'];
-            $temp_array['strokeDashArray'] = $value['strokeDashArray'];
-            $temp_array['strokeLineCap'] = $value['strokeLineCap'];
-            $temp_array['strokeDashOffset'] = (float) $value['strokeDashOffset'];
-            $temp_array['strokeLineJoin'] = $value['strokeLineJoin'];
-            $temp_array['strokeMiterLimit'] = (float) $value['strokeMiterLimit'];
-            $temp_array['scaleX'] = (float) $value['scaleX'];
-            $temp_array['scaleY'] = (float) $value['scaleY'];
-            $temp_array['angle'] = (float) $value['angle'];
-            $temp_array['flipX'] = (float) $value['flipX'];
-            $temp_array['flipY'] = (float) $value['flipY'];
-            $temp_array['opacity'] = (float) $value['opacity'];
-            $temp_array['shadow'] = $value['shadow'];
-            $temp_array['visible'] = (float) $value['visible'];
-            $temp_array['clipTo'] = $value['clipTo'];
-            $temp_array['backgroundColor'] = $value['backgroundColor'];
-            $temp_array['fillRule'] = $value['fillRule'];
-            $temp_array['paintFirst'] = $value['paintFirst'];
-            $temp_array['globalCompositeOperation'] = $value['globalCompositeOperation'];
-            $temp_array['transformMatrix'] = $value['transformMatrix'];
-            $temp_array['skewX'] = (float) $value['skewX'];
-            $temp_array['skewY'] = (float) $value['skewY'];
-            $temp_array['text'] = $value['text'];
-            $temp_array['fontSize'] = (float) $value['fontSize'];
-            $temp_array['fontWeight'] = $value['fontWeight'];
-            $temp_array['fontFamily'] = $value['fontFamily'];
-            $temp_array['fontStyle'] = $value['fontStyle'];
-            $temp_array['lineHeight'] = (float) $value['lineHeight'];
-            $temp_array['underline'] = (float) $value['underline'];
-            $temp_array['overline'] = (float) $value['overline'];
-            $temp_array['linethrough'] = (float) $value['linethrough'];
-            $temp_array['textAlign'] = $value['textAlign'];
-            $temp_array['textBackgroundColor'] = $value['textBackgroundColor'];
-            $temp_array['charSpacing'] = (float) $value['charSpacing'];
-            $temp_array['minWidth'] = (float) $value['minWidth'];
-            $temp_array['splitByGrapheme'] = (float) $value['splitByGrapheme'];
-            $canvas_array[] = $temp_array;
-        }
-        // return $canvas_array;
-
-        $new_array = array(
-            'version' => $canvas_data['version'],
-            'objects' => $canvas_array,
-        );
-        return $new_array;
     }
     /**
      * Save Base64 image in Directory
@@ -407,12 +310,9 @@ class AllUsedFunction extends Controller
             if ($extension == 'jpeg') {
                 $extension = 'jpg';
             }
-            //if($extension=='javascript')$extension='js';
-            //if($extension=='text')$extension='txt';
             $output_file_with_extension = $output_file_without_extension . '.' . $extension;
         }
         file_put_contents($path_with_end_slash . $output_file_with_extension, base64_decode($data));
-        // move_uploaded_file(base64_decode($data),$path_with_end_slash . $output_file_with_extension);
         return $output_file_with_extension;
     }
     /**
@@ -496,7 +396,6 @@ class AllUsedFunction extends Controller
      */
     public function binary_to_decimal($binary)
     {
-        \Log::info($binary);
         return bindec($binary);
     }
     /**
@@ -571,115 +470,42 @@ class AllUsedFunction extends Controller
         return $slrs_info;
     }
 
-    /**
-     * Get user id as buyer or saller id
-     * @param  array $request_array with contain name,email,password
-     * @return array user_id
-     */
-    public function buyer_or_saller_user_store($request)
+    public function get_connect_id_from_file_name($file_name)
     {
-        $name = $request->name;
-        $email = $request->email;
-        $password = $request->password;
-        $adm_user_id = $request->adm_user_id;
+        $name_array = explode('-', $file_name);
+        $super_code = $name_array[1];
+        $partner_code = $name_array[2];
 
-        $user_array=array(
-            'name'=>$name,
-            'email'=>$email,
-            'password'=>Hash::make($password),
-        );
-
-        $user_exist = User::where('email', $email)->first();
-        if ($adm_user_id !=null) {
-            $exist_user_info = User::where('id', $adm_user_id)->first();
-            if ($exist_user_info->email != $email) {
-                if ($user_exist) {
-                    return array('title'=>"Exists!",'message' =>"exists", 'class_name' => 'error');
-                    // return response()->json(['title'=>"Exists!",'message' =>"exists", 'class_name' => 'error']);
-                }
-            }
-            if ($password==null) {
-                $user_array['password']=$exist_user_info->password;
-            }
-            User::where('id', $adm_user_id)->update($user_array);
-            return array('title'=>"Updated!",'message' =>"updated", 'class_name' => 'success');
-        // return response()->json(['title'=>"Updated!",'message' =>"updated", 'class_name' => 'success']);
-        } else {
-            if ($user_exist) {
-                return array('title'=>"Exists!",'message' =>"exists", 'class_name' => 'error');
-            // return response()->json(['title'=>"Exists!",'message' =>"exists", 'class_name' => 'error']);
-            } else {
-                $last_user_id=User::insertGetId($user_array);
-                adm_user_details::insert(['user_id'=>$last_user_id]);
-            }
-            return array('title'=>"Created!",'message' =>"created", 'class_name' => 'success','last_user_id'=>$last_user_id);
-            // return response()->json(['title'=>"Created!",'message' =>"created", 'class_name' => 'success']);
-        }
-        // \Log::info($request_array);
-        // $returnable_user_id=null;
-        // $user_exist = User::where('email', $request_array['email'])->first();
-        // if ($cmn_company_id != null) {
-        //     $exist_buyer_email_info=cmn_companies_user::select('adm_users.email','adm_users.id as user_id')
-        //     ->join('adm_users','cmn_companies_users.adm_user_id','adm_users.id')
-        //     ->where('cmn_companies_users.cmn_company_id',$cmn_company_id)->first();
-        //     $exist_buyer_email=$exist_buyer_email_info->email;
-        //     $exist_user_id=$exist_buyer_email_info->user_id;
-        //     if ($exist_buyer_email!=$request_array->email) {
-        //         if ($user_exist) {
-        //             return array('title' => "Exists!", 'message' => "exists", 'class_name' => 'error');
-        //         }
-        //     }
-        //     $returnable_user_id=$exist_user_id;
-        //     User::where('id',$exist_user_id)->update($request_array);
-        // }else{
-        //     if ($user_exist) {
-        //         return array('title' => "Exists!", 'message' => "exists", 'class_name' => 'error');
-        //         // return response()->json(['title' => "Exists!", 'message' => "exists", 'class_name' => 'error']);
-        //     } else {
-        //         $last_user_id =  User::insertGetId($request_array);
-        //         $user_details = new adm_user_details;
-        //         $user_details->user_id = $last_user_id;
-        //         $user_details->save();
-        //         $returnable_user_id=$last_user_id;
-        //     }
-        // }
-        // return array('title' => "Inserted!", 'message' => "User Inserted", 'class_name' => 'success','returnable_user_id'=>$returnable_user_id);
-        // return response()->json(['title' => "Inserted!", 'message' => "User Inserted", 'class_name' => 'success','retunable_user_id'=>$retunable_user_id]);
-        // return $retunable_user_id;
-    }
-    /**
-     * Get buyer info by slr id
-     * @param  int Saller id
-     * @return array buyer info
-     */
-    // public function getByrSlrData(Request $request){
-    //     $slr_id=$request->user_id;
-    //     // count(byr_orders.byr_order_id) as total_order
-    //     $slr_order_info=byr_order::select(DB::raw('count(byr_orders.byr_order_id) as total_order'),'byr_buyers.byr_buyer_id','cmn_companies.company_name as buyer_name')
-    //     ->join('cmn_connects','cmn_connects.cmn_connect_id','=','byr_orders.cmn_connect_id')
-    //     ->join('byr_buyers','byr_buyers.byr_buyer_id','=','cmn_connects.byr_buyer_id')
-    //     ->join('cmn_companies','cmn_companies.cmn_company_id','=','byr_buyers.cmn_company_id')
-    //     ->where('cmn_connects.slr_seller_id',$slr_id)
-    //     ->get();
-    //     return response()->json(['slr_order_info'=>$slr_order_info]);
-    //     // return $byr_info;
-    //     // return $request->all();
-    // }
-    public function get_connect_id_from_file_name($file_name){
-        $name_array=explode('-',$file_name);
-        $super_code=$name_array[1];
-        $partner_code=$name_array[2];
-
-        $cmn_connect_id='';
-        $connect_info=byr_buyer::select('cmn_connects.cmn_connect_id')
-        ->join('cmn_connects','cmn_connects.byr_buyer_id','=','byr_buyers.byr_buyer_id')
-        ->where(['cmn_connects.partner_code'=>$partner_code,'byr_buyers.super_code'=>$super_code])
-        ->first();
+        $cmn_connect_id = '';
+        $connect_info = byr_buyer::select('cmn_connects.cmn_connect_id')
+            ->join('cmn_connects', 'cmn_connects.byr_buyer_id', '=', 'byr_buyers.byr_buyer_id')
+            ->where(['cmn_connects.partner_code' => $partner_code, 'byr_buyers.super_code' => $super_code])
+            ->first();
         if (!empty($connect_info)) {
-            $cmn_connect_id=$connect_info->cmn_connect_id;
+            $cmn_connect_id = $connect_info->cmn_connect_id;
         }
 
         return $cmn_connect_id;
+    }
+
+    public function dateDiff($date1, $date2)
+    {
+        $t1 = strtotime($date1);
+        $t2 = strtotime($date2);
+
+        $delta_T = ($t2 - $t1);
+
+        $day = round(($delta_T % 604800) / 86400);
+        $hours = round((($delta_T % 604800) % 86400) / 3600);
+        $minutes = round(((($delta_T % 604800) % 86400) % 3600) / 60);
+        $sec = round((((($delta_T % 604800) % 86400) % 3600) % 60));
+
+        return array(
+            'day' => $day,
+            'hours' => $hours,
+            'minutes' => $minutes,
+            'sec' => $sec,
+        );
     }
 
 }

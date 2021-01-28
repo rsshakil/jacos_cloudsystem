@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\API\DATA;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\DATA\ORD\data_order;
 
 class Data_Controller extends Controller
@@ -175,10 +174,10 @@ class Data_Controller extends Controller
             'mes_lis_ord_lin_fre_item_weight',
             'mes_lis_ord_lin_fre_order_weight',
         )
-        ->join('data_order_vouchers', 'data_order_vouchers.data_order_id', '=', 'data_orders.data_order_id')
-        ->join('data_order_items', 'data_order_items.data_order_voucher_id', '=', 'data_order_vouchers.data_order_voucher_id')
-        ->join('data_shipment_vouchers', 'data_shipment_vouchers.data_order_voucher_id', '=', 'data_order_vouchers.data_order_voucher_id');
-    
+            ->join('data_order_vouchers', 'data_order_vouchers.data_order_id', '=', 'data_orders.data_order_id')
+            ->join('data_order_items', 'data_order_items.data_order_voucher_id', '=', 'data_order_vouchers.data_order_voucher_id')
+            ->join('data_shipment_vouchers', 'data_shipment_vouchers.data_order_voucher_id', '=', 'data_order_vouchers.data_order_voucher_id');
+
         // 受信日(開始)
         $receive_date_from = $request->get('receive_date_from');
         if ($receive_date_from) {
@@ -219,17 +218,17 @@ class Data_Controller extends Controller
             $do->whereNotNull('data_order_vouchers.check_datetime');
         }
         // 確定状況
-        $decision_status=$request->get('decision_status');
+        $decision_status = $request->get('decision_status');
         if ($decision_status) {
             $do->whereNotNull('data_shipment_vouchers.decision_datetime');
         }
         // 印刷状況
-        $print_status=$request->get('print_status');
+        $print_status = $request->get('print_status');
         if ($print_status) {
             $do->whereNotNull('data_shipment_vouchers.print_datetime');
         }
         // 送信状況
-        $send_status=$request->get('send_status');
+        $send_status = $request->get('send_status');
         if ($send_status) {
             $do->whereNotNull('data_shipment_vouchers.print_datetime');
         }

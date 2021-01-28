@@ -36,7 +36,7 @@ export default {
     // this.param_data.delivery_service_code = this.$route.params.delivery_service_code;
     // this.param_data.temperature_code = this.$route.params.temperature_code;
     // console.log(this.$route.query);
-    //  axios.post(this.BASE_URL + "api/get_byr_info_by_byr_order_id",{data_order_id:this.data_order_id,delivery_date:this.delivery_date})
+    //  axios.post(this.BASE_URL + "api/get_byr_info_by_data_order_id",{data_order_id:this.data_order_id,delivery_date:this.delivery_date})
     //     .then(({data}) => {
     //       console.log(data);
     //       if(this.data_order_id=='1'){
@@ -51,3 +51,4 @@ export default {
   }
 };
 </script>
+

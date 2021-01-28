@@ -25,9 +25,6 @@ class Cmn_ScenarioController extends Controller
     public function exec(Request $request)
     {
         \Log::debug('scenario exec start---------------');
-
-        // user authentication
-        // Auth::logout();
         if (!Auth::user()) {
             $this->validate($request, ['email' => 'required|email', 'password' => 'required']);
             $user = ['email' => $request->get('email'),'password'=>$request->get('password')];

@@ -3,11 +3,6 @@
 namespace App\Scenarios;
 use App\Scenarios\Common;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\BYR\byr_order_detail;
-use App\Models\BYR\byr_order;
-use App\Models\BYR\byr_shipment_detail;
-use App\Models\BYR\byr_shipment;
-use App\Models\BYR\byr_shop;
 use App\Models\BYR\byr_item;
 use App\Models\BYR\byr_item_class;
 use App\Models\CMN\cmn_maker;
@@ -97,8 +92,6 @@ class item_master extends Model
        $file_name = $request->file('up_file')->getClientOriginalName();
         $path = $request->file('up_file')->storeAs(config('const.ORDER_DATA_PATH').date('Y-m'), $file_name);
         \Log::debug('save path:'.$path);
-        // $custom_paths = storage_path().'/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name;
-        // $file_url = fopen(storage_path().'/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name, 'r');
         $received_path = storage_path().'/app//'.config('const.ORDER_DATA_PATH').date('Y-m').'/'.$file_name;
         // フォーマット変換
         // byr_orders,byr_order_details格納
@@ -152,7 +145,7 @@ class item_master extends Model
                             $cat_code=$code_split[0].$code_split[1].'00';
                             $parent_id = cmn_category_description::where('category_code', $cat_code)->where('byr_buyer_id', $byr_buyer_id)->first()->category_id;
                         }
-                    
+
                         if (cmn_category_description::where('category_code', $new_code)->where('byr_buyer_id', $byr_buyer_id)->exists()) {
                             $parent_id=cmn_category_description::where('category_code', $new_code)->where('byr_buyer_id', $byr_buyer_id)->first()->category_id;
                         }else{
@@ -190,8 +183,7 @@ class item_master extends Model
             $byr_items_data['size']=$vl[9];
             $byr_items_data['tax']=$vl[10];
             $customer_order_array[]=$byr_items_data;
-            //$v_i_id = vendor_item::insertGetId($customer_order_demo);
-            
+
             $cost_price = intval($vl[13]);
             $shop_price = intval($vl[14]);
             $vendor_item_class['cost_price']=$cost_price;
@@ -212,250 +204,13 @@ class item_master extends Model
                 $vendor_item_class['byr_item_id']=$byr_item_id;
                 byr_item_class::insert($vendor_item_class);
             }
-        
+
         }
         echo '<pre>';
         print_r($customer_order_array);
         exit;
         echo 'save path:'.$path;exit;
-
-
-
         \Log::debug('ouk_order_toj exec end  ---------------');
         return 0;
     }
-
-    // public function get_shop_id_by_shop_code($shop_code,$shop_name_kana,$sc){
-    //     if(byr_shop::where('shop_code',$shop_code)->exists()){
-    //          $row = byr_shop::where('shop_code',$shop_code)->first();
-    //          return $row->byr_shop_id;
-    //     }else{
-    //         $id = byr_shop::insertGetId(['shop_code'=>$shop_code,'shop_name_kana'=>$shop_name_kana,'byr_buyer_id'=>$sc->byr_buyer_id,'slr_seller_id'=>$sc->slr_seller_id]);
-    //         return $id;
-    //     }
-    // }
-
-    // public function process_array($charlist)
-    // {
-    //     $total = count($charlist);
-    //     $k = 0;
-    //     $num__index = 0;
-    //     $arr1 = array();
-    //     for ($i = 0; $i < $total; $i++) {
-    //         if ($k <= 128) {
-    //             $arr1[$num__index][] = $charlist[$i];
-    //             $k++;
-    //         }
-    //         if ($k == 128) {
-    //             $num__index++;
-    //             $k = 0;
-    //         }
-    //     }
-    //     return $arr1;
-    // }
-
-    // public function b_array_process($all_array)
-    // {
-    //     $b = '';
-    //     $voucher_number = '';
-    //     $shop_code = '';
-    //     $category_code = '';
-    //     $voucher_category = '';
-    //     $order_date = '';
-    //     $expected_delivery_date = '';
-    //     $partner_code = '';
-    //     $delivery_service_code = '';
-    //     $shop_name_kana = '';
-    //     $center_flg = '';
-    //     $center_code = '';
-    //     $center_name = '';
-    //     for ($i = 0; $i < count($all_array); $i++) {
-    //         if ($i == 0) {
-    //             $b .= $all_array[$i];
-    //         } elseif ($i >= 4 && $i < 12) {
-    //             $voucher_number .= $all_array[$i];
-    //         } elseif ($i >= 15 && $i < 21) {
-    //             $shop_code .= $all_array[$i];
-    //         } elseif ($i >= 21 && $i < 25) {
-    //             $category_code .= $all_array[$i];
-    //         } elseif ($i >= 25 && $i < 27) {
-    //             $voucher_category .= $all_array[$i];
-    //         } elseif ($i >= 27 && $i < 33) {
-    //             $order_date .= $all_array[$i];
-    //         } elseif ($i >= 33 && $i < 39) {
-    //             $expected_delivery_date .= $all_array[$i];
-    //         } elseif ($i >= 39 && $i < 45) {
-    //             $partner_code .= $all_array[$i];
-    //         } elseif ($i >= 47 && $i < 48) {
-    //             $delivery_service_code .= $all_array[$i];
-    //         } elseif ($i >= 48 && $i < 54) {
-    //             $shop_name_kana .= $all_array[$i];
-    //         } elseif ($i >= 83 && $i < 84) {
-    //             $center_flg .= $all_array[$i];
-    //         } elseif ($i >= 84 && $i < 90) {
-    //             $center_code .= $all_array[$i];
-    //         } elseif ($i >= 90 && $i < 112) {
-    //             $center_name .= $all_array[$i];
-    //         }
-    //     }
-    //     $other_infos = json_encode(array('center_flg'=>$center_flg,'center_code'=>$center_code,'center_name'=>$center_name));
-    //     $insert_array_b = array(
-    //         'voucher_number'=>$voucher_number,
-    //         'shop_code'=>$shop_code,
-    //         'category_code'=>$category_code,
-    //         'voucher_category'=>$voucher_category,
-    //         'expected_delivery_date'=>$expected_delivery_date,
-    //         'order_date'=>$order_date,
-    //         'shop_name_kana'=>$shop_name_kana,
-    //         'partner_code'=>$partner_code,
-    //         'delivery_service_code'=>$delivery_service_code,
-    //         'other_info'=>$other_infos,
-    //     );
-    //     return $insert_array_b;
-    // }
-//     public function d_array_process($all_array)
-//     {
-//         $d='';
-//         $list_number='';
-//        $jan='';
-//         $inputs='';
-//          $order_inputs='';
-//         $order_quantity='';
-//         $item_name_kana='';
-//          $cost_price='';
-//         $selling_price='';
-//          $cost_unit_price='';
-//         $selling_unit_price='';
-//         for ($j = 0; $j < count($all_array); $j++) {
-//             if ($j == 0) {
-//                 $d .= $all_array[$j];
-//             } elseif ($j >= 3 && $j < 5) {
-//                 $list_number .= $all_array[$j];
-//             } elseif ($j >= 5 && $j < 18) {
-//                 $jan .= $all_array[$j];
-//             } elseif ($j >= 18 && $j < 22) {
-//                 $inputs .= $all_array[$j];
-//             } elseif ($j >= 22 && $j < 26) {
-//                 $order_inputs .= $all_array[$j];
-//             } elseif ($j >= 29 && $j < 35) {
-//                 $order_quantity .= $all_array[$j];
-//             } elseif ($j >= 36 && $j < 44) {
-//                 $cost_unit_price .= $all_array[$j];
-//             } elseif ($j >= 45 && $j < 51) {
-//                 $selling_unit_price .= $all_array[$j];
-//             } elseif ($j >= 52 && $j < 61) {
-//                 $cost_price .= $all_array[$j];
-//             } elseif ($j >= 62 && $j < 71) {
-//                 $selling_price .= $all_array[$j];
-//             } elseif ($j >= 80 && $j < 105) {
-//                 $item_name_kana .= $all_array[$j];
-//             }
-//         }
-//         $str = str_split($cost_unit_price, strlen($cost_unit_price) - 2);
-// $new_cost_unit_price = $str[0].'.'.$str[1];
-//         $insert_array_d = array(
-//             'list_number' => $list_number,
-//             'jan' => $jan,
-//             'inputs' => ltrim($inputs,'0'),
-//             'order_inputs' => 'バラ',
-//             'order_quantity' => ltrim($order_quantity,'0'),
-//             'item_name_kana' => $item_name_kana,
-//             'cost_price' => ltrim($cost_price,'0'),
-//             'selling_price' => ltrim($selling_price,'0'),
-//             'cost_unit_price' => ltrim($new_cost_unit_price,'0'),
-//             'selling_unit_price' => ltrim($selling_unit_price,'0'),
-//         );
-//         return $insert_array_d;
-//     }
-
-    /*jacos string analyze*/
-    /**
-     * 発注データ連想配列化
-     *
-     * @param  txtファイルパス
-     * @param  Array フォーマット(連想配列)
-     * @return boolean
-     */
-    // public function analyze($filePath, $format)
-    // {
-    //     $data = null;
-
-    //     $head = [];		// ヘッダー
-    //     $cdata = [];	// データ
-    //     $foot = [];		// フッター
-
-    //     // header行
-    //     foreach ($format as $f) {
-    //         if ($f['type']==='header') {
-    //             foreach ($f['fmt'] as $fdata) {
-    //                 $head[$fdata['name']] = $fdata['name_jp'];
-    //             }
-    //         } elseif ($f['type']==='data') {
-    //             foreach ($f['fmt'] as $fdata) {
-    //                 $cdata[$fdata['name']] = $fdata['name_jp'];
-    //             }
-    //         } elseif ($f['type']==='footer') {
-    //             foreach ($f['fmt'] as $fdata) {
-    //                 $foot[$fdata['name']] = $fdata['name_jp'];
-    //             }
-    //         }
-    //     }
-    //     $cnt = 0;
-    //     //		$data[$cnt] = array_merge($head,$cdata,$foot);
-    //     $data[$cnt] = array_merge($cdata, $head, $foot);
-    //     mb_convert_variables('SJIS-win', 'UTF-8', $data[$cnt]);
-    //     $cnt++;
-
-    //     $head = [];		// ヘッダー
-    //     $cdata = [];	// データ
-    //     $foot = [];		// フッター
-    //     $ccnt = 0;
-
-    //     // 読み込み
-    //     $lines = file($filePath);
-    //     foreach ($lines as $key => $line) {
-    //         foreach ($format as $f) {
-
-    //             // key値と指定文字列との比較
-    //             if ($f['key']['value'] == substr($line, $f['key']['start']-1, $f['key']['length'])) {
-
-    //                 // type判定
-    //                 if ($f['type']==='header') {
-    //                     // ヘッダー行
-    //                     foreach ($f['fmt'] as $fdata) {
-    //                         //							$head[$fdata['name']] = trim(mb_convert_encoding(mb_strcut ($line,$fdata['start']-1,$fdata['length'],'SJIS-win'),'UTF-8', 'SJIS-win'));
-    //                         $head[$fdata['name']] = trim(mb_strcut($line, $fdata['start']-1, $fdata['length'], 'SJIS-win'));
-    //                         //							log_message('info',$fdata['name'].':'.$head[$fdata['name']]);
-    //                     }
-
-    //                     // クリア
-    //                     $ccnt = 0;
-    //                     $cdata = [];
-    //                 } elseif ($f['type']==='data') {
-    //                     // データ行
-    //                     foreach ($f['fmt'] as $fdata) {
-    //                         //							$cdata[$ccnt][$fdata['name']] = trim(mb_convert_encoding(mb_strcut ($line,$fdata['start']-1,$fdata['length'],'SJIS-win'),'UTF-8', 'SJIS-win'));
-    //                         $cdata[$ccnt][$fdata['name']] = trim(mb_strcut($line, $fdata['start']-1, $fdata['length'], 'SJIS-win'));
-    //                     }
-    //                     // データ行
-    //                     $ccnt++;
-    //                 } elseif ($f['type']==='footer') {
-    //                     // フッター行
-    //                     foreach ($f['fmt'] as $fdata) {
-    //                         //							$foot[$fdata['name']] = trim(mb_convert_encoding(mb_strcut ($line,$fdata['start']-1,$fdata['length'],'SJIS-win'),'UTF-8', 'SJIS-win'));
-    //                         $foot[$fdata['name']] = trim(mb_strcut($line, $fdata['start']-1, $fdata['length'], 'SJIS-win'));
-    //                     }
-
-    //                     // データ結合
-    //                     foreach ($cdata as $cval) {
-    //                         //							$data[$cnt] = array_merge($head,$cval,$foot);
-    //                         $data[$cnt] = array_merge($cval, $head, $foot);
-    //                         $cnt++;
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    //     return $data;
-    // }
 }

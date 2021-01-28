@@ -8,7 +8,6 @@ class taskctrl_test
     public function exec($request,$sc)
     {
 	    \Log::debug('taskctrl_test exec start  ---------------');
-//	    $taskctrl = "tools/taskctrl/taskctrlWrapper.sh";
 	    $taskctrl = config('const.TASKCTRL');
 	    $opt = "-frw";
 	    $workflow_name = "bms_jx_shipment_send";
@@ -29,5 +28,5 @@ class taskctrl_test
             return;
     }
 
-    
+
 }

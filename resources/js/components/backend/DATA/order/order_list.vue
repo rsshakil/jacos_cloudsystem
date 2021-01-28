@@ -69,7 +69,7 @@
           <td class="cl_custom_color">便</td>
           <td style="width: 10%; text-align: center">
             <select class="form-control" v-model="form.delivery_service_code">
-            
+
               <option
                 v-for="(dsc, i) in json_delivery_service_code"
                 :key="i"
@@ -193,7 +193,7 @@
                                             </div>
                                             <select class="form-control" v-model="selected_byr">
                                             <option :value="0">{{myLang.select_buyer}}</option>
-                                            <option v-for="(option, index) in byr_buyer_lists" 
+                                            <option v-for="(option, index) in byr_buyer_lists"
                                                 :key="index" :value="option.cmn_company_id"
                                                 :selected="selectedOption(option)">
                                                 {{ option.company_name }}
@@ -264,15 +264,6 @@
               <td>{{ order_list.decision_cnt }}</td>
               <td>{{ order_list.print_cnt }}</td>
               <td>{{ order_list.check_datetime }}</td>
-              <!-- <td>{{ order_list.company_name }}</td>
-              <td>{{ order_list.expected_delivery_date }}</td>
-              <td>{{ order_list.category_code }}</td>
-              <td>{{ order_list.delivery_service_code }}</td>
-              <td>{{ order_list.temperature }}</td>
-              <td>{{ order_list.total_voucher_number }}</td>
-              <td>{{ order_list.total_confirm_date }}</td>
-              <td>{{ order_list.total_print_out_date }}</td>
-              <td>{{ order_list.checked_date }}</td> -->
             </tr>
           </tbody>
         </table>
