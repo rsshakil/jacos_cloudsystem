@@ -197,7 +197,7 @@
                 v-for="(order_detail_list, index) in order_detail_lists.data"
                 :key="index"
               >
-                <td>{{ index + 1 }}</td>
+                <td>{{(order_detail_lists.current_page*select_field_per_page_num)-select_field_per_page_num + index+1}}</td>
                 <td><span v-if="order_detail_list.decision_datetime!=null">済</span><span v-else><input  type="checkbox" v-bind:value='order_detail_list.data_shipment_voucher_id' v-model='selected' @change='updateCheckall()'></span></td>
                 <td>{{ order_detail_list.mes_lis_shi_par_shi_code }}</td>
                 <td>

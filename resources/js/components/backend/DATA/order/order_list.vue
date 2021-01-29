@@ -32,7 +32,7 @@
               class="form-control"
               style="float: left; width: 150px; margin-right: 15px"
             />
-            <button class="btn btn-primary" type="button">
+            <button @click="showAllCustomerCode" class="btn btn-primary" type="button">
               {{ myLang.refer }}
             </button>
             <!-- <select class="form-control">
@@ -69,10 +69,11 @@
           <td class="cl_custom_color">便</td>
           <td style="width: 10%; text-align: center">
             <select class="form-control" v-model="form.delivery_service_code">
-
+                <option value="00">全て</option>
               <option
                 v-for="(dsc, i) in json_delivery_service_code"
-                :key="i"
+                :key="i" 
+                v-if="Object.keys(dsc)[0]!='00'"
                 :value="Object.keys(dsc)[0]"
               >
                 {{ Object.values(dsc)[0] }}
@@ -86,10 +87,11 @@
           <td class="cl_custom_color">{{ myLang.temperature }}</td>
           <td style="width: 15%">
             <select class="form-control" v-model="form.temperature">
-            <!--<option value="00">無指定</option>-->
+            <option value="00">全て</option>
               <option
                 v-for="(temp, i) in json_temperature_code"
                 :key="i"
+                v-if="Object.keys(temp)[0]!='00'"
                 :value="Object.keys(temp)[0]"
               >
                 {{ Object.values(temp)[0] }}
@@ -136,21 +138,26 @@
           <!-- <td>{{ myLang.confirmation_status }}</td> -->
           <td class="cl_custom_color">確定状況</td>
           <td>
-            <input
-              type="date"
-              class="form-control"
-              v-model="form.check_datetime"
-            />
-            <!-- <select class="form-control">
-              <option :value="0">{{ myLang.confirmation_status }}</option>
-            </select> -->
+           
+            <select class="form-control" v-model="form.confirmation_status_data">
+             <option
+                v-for="(dcnt, i) in confirmation_status_list"
+                :key="i"
+                :value="Object.keys(dcnt)[0]"
+              >
+                {{ Object.values(dcnt)[0] }}
+              </option>
+            </select> 
           </td>
         </tr>
         <tr>
           <td class="cl_custom_color">参照状況</td>
           <td colspan="7">
             <select class="form-control" style="width: 300px">
-              <option :value="0">{{ myLang.voucher_type }}</option>
+              <!--<option :value="0">{{ myLang.voucher_type }}</option>-->
+              <option value="00">全て</option>
+              <option value="01">未参照</option>
+              <option value="02">参照済</option>
             </select>
           </td>
         </tr>
@@ -269,6 +276,42 @@
         </table>
       </div>
     </div>
+
+<b-modal
+      size="lg"
+      :hide-backdrop="true"
+      title="取引先コード一覧"
+      cancel-title="閉じる"
+      v-model="showAllCustomerCodeListModal"
+      :hide-footer="true"
+    >
+      <div class="panel-body add_item_body">
+       
+          <div class="row">
+  <table class="table table-striped order_item_details_table table-bordered data_table">
+          <thead>  
+            <tr>
+              <th style="cursor: pointer">No</th>
+              <th>取引先コード</th>
+              <th>取引先名</th>
+              <th>請求先コード</th>
+              <th>請求取引先名</th>
+              <th>取引先形態区分</th>
+              
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+          </table>
+
+
+
+
+
+          </div>
+      </div>
+    </b-modal>
+
   </div>
 </template>
 <script>
@@ -282,13 +325,15 @@ export default {
       byr_buyer_lists: {},
       file: "",
       selected_byr: "0",
+      showAllCustomerCodeListModal:false,
       // temperature:[{id:1,name:"temperature1"},{id:2,name:"temperature2"},{id:3,name:"temperature3"}],
       // confirmation_status:[{id:1,name:"confirmation_status1"},{id:2,name:"confirmation_status2"},{id:3,name:"confirmation_status3"}],
       print_cnt: [{ "*": "全て" }, { "!0": "未印刷あり" }, { 0: "印刷済" }],
       decission_cnt: [{ "*": "全て" }, { "!0": "未確定あり" }, { 0: "確定済" }],
+      confirmation_status_list: [{ "*": "全て" }, { "!0": "未確定あり" }, { 0: "確定済" }],
       buyer_settings: null,
-      json_temperature_code: null,
-      json_delivery_service_code: null,
+      json_temperature_code: [],
+      json_delivery_service_code: [],
       form: new Form({
         adm_user_id: Globals.user_info_id,
         byr_buyer_id: null,
@@ -303,16 +348,20 @@ export default {
         check_datetime: null,
         // check_datetime:new Date().toISOString().slice(0, 10),
         delivery_service_code: "00",
-        temperature: "",
+        temperature: "00",
         // confirmation_status:1,
         print_cnt: "*",
         decission_cnt: "*",
+        confirmation_status_data: "*",
         submit_type: "page_load",
       }),
     };
   },
   methods: {
     //get Table data
+    showAllCustomerCode(){
+      this.showAllCustomerCodeListModal = true;
+    },
     get_all_order() {
       this.form
         .post(this.BASE_URL + "api/get_byr_order_list", this.form)
@@ -321,9 +370,14 @@ export default {
           this.order_lists = data.order_list;
           this.byr_buyer_lists = data.byr_buyer_list;
           this.buyer_settings = JSON.parse(data.buyer_settings);
+          
           this.json_temperature_code = this.buyer_settings.orders.mes_lis_ord_tra_ins_temperature_code;
           this.json_delivery_service_code = this.buyer_settings.orders.mes_lis_ord_log_del_delivery_service_code;
+          // this.json_delivery_service_code.push({"00":'全て'});
+          // this.json_temperature_code.push({'00':'全て'});
+          
           console.log(this.json_delivery_service_code );
+          console.log(this.json_temperature_code );
           // console.log(this.buyer_settings.orders.mes_lis_ord_tra_ins_temperature_code);
           this.loader.hide();
         });
