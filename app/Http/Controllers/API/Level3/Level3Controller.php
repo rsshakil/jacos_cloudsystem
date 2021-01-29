@@ -408,10 +408,11 @@ class Level3Controller extends Controller
 
     public function jobScenario(Request $request)
     {
+        // return $request->all();
         $cs = new Cmn_ScenarioController();
         $ret = $cs->exec($request);
         \Log::debug($ret->getContent());
-        $ret = json_decode($ret->getContent(), true);
+        return $ret = json_decode($ret->getContent(), true);
         if (1 === $ret['status']) {
             // sceanario exec error
             \Log::error($ret['message']);

@@ -91,6 +91,7 @@ class data_csv_order extends Model
 
         // ファイルアップロード
         $file_name = time().'-'.$request->file('up_file')->getClientOriginalName();
+        return response()->json(['file_name'=>$file_name]);
         $path = $request->file('up_file')->storeAs(config('const.ORDER_DATA_PATH').date('Y-m'), $file_name);
         \Log::debug('save path:'.$path);
 
