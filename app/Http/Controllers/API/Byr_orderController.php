@@ -15,6 +15,7 @@ use App\Models\CMN\cmn_pdf_canvas;
 use App\Models\CMN\cmn_scenario;
 use App\Models\CMN\cmn_tbl_col_setting;
 use App\Models\DATA\SHIPMENT\data_shipment_voucher;
+use App\Models\DATA\ORD\data_order_voucher;
 use DB;
 use Illuminate\Http\Request;
 
@@ -173,6 +174,7 @@ class Byr_orderController extends Controller
         $temperature_code = $request->temperature_code;
         $per_page = $request->per_page == null ? 10 : $request->per_page;
         $temperature_code = $temperature_code == null ? '' : $temperature_code;
+        data_order_voucher::where('data_order_id',$data_order_id)->whereNull('check_datetime')->update(['check_datetime'=>date('Y-m-d H:i:s')]);
         $result = DB::table('data_shipments as ds')
             ->select(
                 'dor.receive_datetime',

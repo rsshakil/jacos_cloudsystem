@@ -161,6 +161,9 @@
     /* border: 1px solid #999!important; */
     vertical-align: middle !important;
 }
+.modal-header{
+    border-bottom: 4px solid #538ED3;
+}
 .orderDetailTable{
     background: #fff;
 }
