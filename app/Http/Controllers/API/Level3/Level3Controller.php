@@ -412,7 +412,7 @@ class Level3Controller extends Controller
         $cs = new Cmn_ScenarioController();
         $ret = $cs->exec($request);
         \Log::debug($ret->getContent());
-        return $ret = json_decode($ret->getContent(), true);
+        $ret = json_decode($ret->getContent(), true);
         if (1 === $ret['status']) {
             // sceanario exec error
             \Log::error($ret['message']);

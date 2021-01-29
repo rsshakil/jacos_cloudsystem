@@ -124,7 +124,7 @@ class Cmn_ScenarioController extends Controller
 
         $this->sc_history_array['status']=$status;
         $this->sc_history_array['information']=$information;
-        cmn_scenario_history::insert($this->sc_history_array);
+        // cmn_scenario_history::insert($this->sc_history_array);
 
         return response()->json(['status'=>$status, 'message' => $information]);
     }

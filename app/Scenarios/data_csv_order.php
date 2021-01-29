@@ -88,10 +88,10 @@ class data_csv_order extends Model
     public function exec($request, $sc)
     {
         \Log::debug(get_class().' exec start  ---------------');
-        $file_name = "test";
+        // $file_name = "test";
         // ファイルアップロード
-        // $file_name = time().'-'.$request->file('up_file')->getClientOriginalName();
-        return response()->json(['file_name'=>$file_name,'status'=>0]);
+        $file_name = time().'-'.$request->file('up_file')->getClientOriginalName();
+        // return response()->json(['file_name'=>$file_name,'status'=>0]);
         $path = $request->file('up_file')->storeAs(config('const.ORDER_DATA_PATH').date('Y-m'), $file_name);
         \Log::debug('save path:'.$path);
 
