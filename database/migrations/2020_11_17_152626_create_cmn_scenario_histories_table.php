@@ -19,7 +19,7 @@ class CreateCmnScenarioHistoriesTable extends Migration
             $table->integer('adm_user_id')->unsigned()->nullable()->comment('adm_user_id');
             $table->integer('byr_order_id')->unsigned()->nullable()->comment('byr_order_id');
             $table->integer('cmn_job_id')->unsigned()->nullable()->comment('cmn_job_id');
-            $table->enum('status',['success','error'])->default('success')->comment('status');
+            $table->enum('status',['success','error'])->default('success')->nullable()->comment('status');
             $table->string('information',200)->comment('information');
             $table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('Time of creation');
 			$table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('last updated time');
