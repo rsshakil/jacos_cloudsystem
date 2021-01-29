@@ -464,6 +464,6 @@ class data_csv_order extends Model
             $data_item_array=array();
             $data_shi_item_array=array();
         }
-        return \response()->json(['message' => "success", 'status' => 0]);
+        return ['message' => "success", 'status' => '1'];
     }
 }

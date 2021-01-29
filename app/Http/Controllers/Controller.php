@@ -10,4 +10,13 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    public $success;
+    public $error;
+
+    public function __construct()
+    {
+        $this->success = config('const.SUCCESS');
+        $this->error = config('const.ERROR');
+    }
 }
