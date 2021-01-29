@@ -88,7 +88,7 @@ class data_csv_order extends Model
     public function exec($request, $sc)
     {
         \Log::debug(get_class().' exec start  ---------------');
-        $file_name = $request->file('up_file');
+        $file_name = "test";
         // ファイルアップロード
         // $file_name = time().'-'.$request->file('up_file')->getClientOriginalName();
         return response()->json(['file_name'=>$file_name]);
