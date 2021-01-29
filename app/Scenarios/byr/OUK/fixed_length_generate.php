@@ -28,11 +28,15 @@ class fixed_length_generate
             // file head
             $do = date('ymd', strtotime($val['mes_lis_ord_tra_dat_order_date'])); //datetime to date string wich length is 6
 
+            // 取引先コード取得
+            // 桁あふれ桁少ないのを対応
+            $tori_code = substr(str_pad($val['mes_lis_ord_par_sel_code'], 6, '0', STR_PAD_LEFT), -6);
+            
             $file_head = 'A00'; //default value wich length is 3
             $file_head.= date('ymdHis', strtotime($val['sta_doc_creation_date_and_time'])); //datetime to date time string wich length is 6+6
             $file_head.= $do;  //length is 6
             $file_head.= '82105578'; //default value wich length is 8
-            $file_head.= $val['mes_lis_ord_par_sel_code']."HI"; //add HI with sel code wich length is 8
+            $file_head.= $tori_code."HI"; //add HI with sel code wich length is 8
             $file_head.= '82105578'; //default value wich length is 8
             $file_head.= '128'; //default value wich length is 3
             $file_head .= str_repeat("0", 6); //0 added for 6 times which length is 6
@@ -51,7 +55,7 @@ class fixed_length_generate
             $voucher_head .='50'; //default value wich length is 2
             $voucher_head .= $do; //length is 6
             $voucher_head .= date('ymd', strtotime($val['mes_lis_ord_tra_dat_delivery_date'])); //datetime to date string wich length is 6
-            $voucher_head .= str_pad($val['mes_lis_ord_par_sel_code'], 6, '0', STR_PAD_LEFT); //0 added before string until length is 6
+            $voucher_head .= $tori_code; //0 added before string until length is 6
             $voucher_head .= '00'; //default value wich length is 2
             $voucher_head .= substr($val['mes_lis_ord_log_del_delivery_service_code'], -1); //substring from service_code (right) which length is 1
             $voucher_head .= $this->all_functions->mb_str_pad($val['mes_lis_ord_par_rec_name_sbcs'], 6); //space padding added after string until length is 6
