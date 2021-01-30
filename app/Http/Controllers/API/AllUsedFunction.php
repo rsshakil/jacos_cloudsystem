@@ -484,7 +484,8 @@ class AllUsedFunction extends Controller
         if (!empty($connect_info)) {
             $cmn_connect_id = $connect_info->cmn_connect_id;
         }
-
+        \log::info($super_code);
+        \log::info($partner_code);
         return $cmn_connect_id;
     }
 

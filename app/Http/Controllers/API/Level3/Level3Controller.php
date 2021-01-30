@@ -408,7 +408,6 @@ class Level3Controller extends Controller
 
     public function jobScenario(Request $request)
     {
-        // dd($request->all());
         // return $request->all();
         $cs = new Cmn_ScenarioController();
         $ret = $cs->exec($request);

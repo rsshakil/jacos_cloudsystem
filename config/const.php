@@ -18,5 +18,7 @@ return [
     'INDEPEN_FILE_PATH' => 'app/indepen_files/',
     'INDEPEN_CSV_PATH' => 'indepen_csv_files/',
     'adm_role_name' =>'Super Admin',
+    'SUCCESS' =>1,
+    'ERROR' =>0,
 
 ];

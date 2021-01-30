@@ -25,7 +25,10 @@ class Cmn_ScenarioController extends Controller
      */
     public function exec(Request $request)
     {
+        // return $request->all();
+        // return response()->json(['status'=>$request->all()]);
         \Log::debug(get_class().':'.__FUNCTION__.' start  ---------------');
+        \Log::Info(Auth::user());
         
         if (!Auth::user()) {
             $this->validate($request, ['email' => 'required|email', 'password' => 'required']);
@@ -36,8 +39,10 @@ class Cmn_ScenarioController extends Controller
             }
             // ログイン成功
             \Log::debug(Auth::user());
+        }else{
+            \Log::Info(Auth::user());
         }
-
+// return response()->json(['status'=>$this->error]);
         // 実行ユーザー
         $this->sc_history_array['adm_user_id']=Auth::id();
 
@@ -124,7 +129,7 @@ class Cmn_ScenarioController extends Controller
 
         $this->sc_history_array['status']=$status;
         $this->sc_history_array['information']=$information;
-        // cmn_scenario_history::insert($this->sc_history_array);
+        cmn_scenario_history::insert($this->sc_history_array);
 
         return response()->json(['status'=>$status, 'message' => $information]);
     }
