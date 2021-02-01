@@ -417,7 +417,19 @@ class Data_Controller extends Controller
         ->join('data_shipment_item_details','data_shipment_items.data_shipment_item_id','=','data_shipment_item_details.data_shipment_item_id')
         ->where('data_shipment_vouchers.decision_datetime','!=',null)
         ->where('data_shipments.data_order_id',$data_order_id)
+        // filtering
+        ->where('data_shipment_vouchers.mes_lis_shi_log_del_delivery_service_code', $order_info['mes_lis_shi_log_del_delivery_service_code'])
+        ->where('data_shipment_vouchers.mes_lis_shi_par_sel_code', $order_info['mes_lis_shi_par_sel_code'])
+        ->where('data_shipment_vouchers.mes_lis_shi_par_sel_name', $order_info['mes_lis_shi_par_sel_name'])
+        ->where('data_shipment_vouchers.mes_lis_shi_tra_dat_delivery_date', $order_info['mes_lis_shi_tra_dat_delivery_date'])
+        ->where('data_shipment_vouchers.mes_lis_shi_tra_goo_major_category', $order_info['mes_lis_shi_tra_goo_major_category'])
+        ->where('data_shipment_vouchers.mes_lis_shi_tra_ins_temperature_code', $order_info['mes_lis_shi_tra_ins_temperature_code'])
+        // receive_datetime not found in shipment tables
+        // filtering
         ->orderBy("data_shipments.data_shipment_id");
+        // if ($order_info->mes_lis_shi_log_del_delivery_service_code) {
+        //     $csv_data->where('data_shipment_vouchers.mes_lis_shi_log_del_delivery_service_code', $order_info->mes_lis_shi_log_del_delivery_service_code);
+        // }
         // ->get();
 
         // 検索
