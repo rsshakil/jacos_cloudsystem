@@ -710,7 +710,12 @@ export default {
         });
     },
     shipmentConfirm(){
-        axios.post(this.BASE_URL + "api/shipment_confirm")
+      console.log(this.data_order_id);
+      // console.log("Hi");
+      return 0;
+        axios.post(this.BASE_URL + "api/shipment_confirm").then(({data})=>{
+          console.log(data);
+        })
     },
     //get Table data
     get_all_byr_order_detail(page = 1) {

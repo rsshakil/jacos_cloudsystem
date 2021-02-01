@@ -16,8 +16,11 @@ use App\Models\CMN\cmn_scenario;
 use App\Models\CMN\cmn_tbl_col_setting;
 use App\Models\DATA\SHIPMENT\data_shipment_voucher;
 use App\Models\DATA\ORD\data_order_voucher;
+use App\Models\DATA\SHIPMENT\data_shipment;
 use DB;
 use Illuminate\Http\Request;
+use App\Traits\Csv;
+use App\Http\Controllers\API\DATA\Data_Controller;
 
 class Byr_orderController extends Controller
 {
@@ -299,15 +302,20 @@ class Byr_orderController extends Controller
     }
     public function shipmentConfirm(Request $request)
     {
-        $dateTime = date('Y-m-d H:i:s');
-        return $csv_data=data_shipment_voucher::where('decision_datetime','!=',null)->get();
-        // $data_shipment_voucher_ids = $request->update_id;
-        // if ($data_shipment_voucher_ids) {
-        //     foreach ($data_shipment_voucher_ids as $id) {
-        //         data_shipment_voucher::where('data_shipment_voucher_id', $id)->update(['decision_datetime' => $dateTime]);
-        //     }
-        // }
-        // return response()->json(['success' => '1']);
+        // return "Hi";
+        $csv_data = Data_Controller::get_shipment_data($request);
+        $fileName = 'partner_code_'.date('YmdHis').'.csv';
+
+        $filePath = 'app/public/Shipment_CSV/'.$fileName;
+        $filePath = Csv::createCsv($filePath);
+        Csv::writeAll($filePath, $csv_data);
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="'.$fileName .'"'
+        ];
+        // return response()->download($filePath, $fileName, $headers);
+        return $csv_data;
+        // data_shipment, data_shipment_voucher, data_shipment_item, shipment_item_details
     }
 
     public function update_byr_order_detail_status(Request $request)
