@@ -432,7 +432,7 @@ class Level3Controller extends Controller
                     $tmp_array['file_name'] = $files[$i];
                     $tmp_array['file_path'] = $url_path . $files[$i];
 
-                    rename($path . $files[$i], $path . 'Moved/' . $files[$i]);
+                    rename($path . $files[$i], $path . 'moved/' . $files[$i]);
                     $files_array[] = $tmp_array;
                 }
 
