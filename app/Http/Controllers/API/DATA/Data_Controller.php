@@ -173,7 +173,7 @@ class Data_Controller extends Controller
             'mes_lis_ord_lin_fre_unit_weight',
             'mes_lis_ord_lin_fre_unit_weight_code',
             'mes_lis_ord_lin_fre_item_weight',
-            'mes_lis_ord_lin_fre_order_weight',
+            'mes_lis_ord_lin_fre_order_weight'
         )
             ->join('data_order_vouchers', 'data_order_vouchers.data_order_id', '=', 'data_orders.data_order_id')
             ->join('data_order_items', 'data_order_items.data_order_voucher_id', '=', 'data_order_vouchers.data_order_voucher_id')
@@ -410,7 +410,7 @@ class Data_Controller extends Controller
             'data_shipment_item_details.mes_lis_shi_lin_pac_number_of_packages',
             'data_shipment_item_details.mes_lis_shi_lin_pac_con_sell_by_date',
             'data_shipment_item_details.mes_lis_shi_lin_pac_con_production_date',
-            'data_shipment_item_details.mes_lis_shi_lin_pac_con_lot_number',
+            'data_shipment_item_details.mes_lis_shi_lin_pac_con_lot_number'
             )
         ->join('data_shipment_vouchers','data_shipment_vouchers.data_shipment_id','=','data_shipments.data_shipment_id')
         ->join('data_shipment_items','data_shipment_vouchers.data_shipment_voucher_id','=','data_shipment_items.data_shipment_voucher_id')

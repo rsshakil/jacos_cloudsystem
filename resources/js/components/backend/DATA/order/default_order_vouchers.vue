@@ -787,22 +787,34 @@ export default {
     // order data download
     order_download() {
       console.log("order_download");
-      axios
-        .post(this.BASE_URL + "api/scenario_exec", {
-          scenario_id: "11",
-          email: "user@jacos.co.jp",
-          password: "Qe75ymSr",
-        })
-        .then(({ data }) => {
-          console.log(data);
-          const url = URL.createObjectURL(new Blob([data]));
-          const link = document.createElement("a");
-          link.href = url;
-          link.setAttribute("download", "file.csv"); //ここらへんは適当に設定する
-          document.body.appendChild(link);
-          link.click();
-          link.revokeObjectURL();
-        });
+      // axios
+      //   .post(this.BASE_URL + "api/scenario_exec", {
+      //     scenario_id: "11",
+      //     email: "user@jacos.co.jp",
+      //     password: "Qe75ymSr",
+      //   })
+      //   .then(({ data }) => {
+      //     console.log(data);
+      //     const url = URL.createObjectURL(new Blob([data]));
+      //     const link = document.createElement("a");
+      //     link.href = url;
+      //     link.setAttribute("download", "file.csv"); //ここらへんは適当に設定する
+      //     document.body.appendChild(link);
+      //     link.click();
+      //     link.revokeObjectURL();
+      //   });
+//downloadcsvshipment_confirm
+
+          axios.post(this.BASE_URL + "api/downloadcsvshipment_confirm",{data_order_id:(this.param_data.data_order_id),order_info:this.order_info}).then(({data})=>{
+                console.log(data);
+                const link = document.createElement("a");
+                link.href = data.url;
+                link.setAttribute("download", "shipmentcsvfile.csv"); //ここらへんは適当に設定する
+                document.body.appendChild(link);
+                link.click();
+                link.revokeObjectURL();
+                })
+
     },
   },
 
