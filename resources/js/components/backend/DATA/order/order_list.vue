@@ -69,11 +69,11 @@
           <td class="cl_custom_color">便</td>
           <td style="width: 10%; text-align: center">
             <select class="form-control" v-model="form.delivery_service_code">
-                <option value="00">全て</option>
+                <option value="*">全て</option>
               <option
                 v-for="(dsc, i) in json_delivery_service_code"
                 :key="i" 
-                v-if="Object.keys(dsc)[0]!='00'"
+               
                 :value="Object.keys(dsc)[0]"
               >
                 {{ Object.values(dsc)[0] }}
@@ -87,11 +87,11 @@
           <td class="cl_custom_color">{{ myLang.temperature }}</td>
           <td style="width: 15%">
             <select class="form-control" v-model="form.temperature">
-            <option value="00">全て</option>
+            <option value="*">全て</option>
               <option
                 v-for="(temp, i) in json_temperature_code"
                 :key="i"
-                v-if="Object.keys(temp)[0]!='00'"
+                
                 :value="Object.keys(temp)[0]"
               >
                 {{ Object.values(temp)[0] }}
@@ -155,7 +155,7 @@
           <td colspan="7">
             <select class="form-control" style="width: 300px">
               <!--<option :value="0">{{ myLang.voucher_type }}</option>-->
-              <option value="00">全て</option>
+              <option value="*">全て</option>
               <option value="01">未参照</option>
               <option value="02">参照済</option>
             </select>
@@ -347,8 +347,8 @@ export default {
         delivery_date_to: null,
         check_datetime: null,
         // check_datetime:new Date().toISOString().slice(0, 10),
-        delivery_service_code: "00",
-        temperature: "00",
+        delivery_service_code: "*",
+        temperature: "*",
         // confirmation_status:1,
         print_cnt: "*",
         decission_cnt: "*",

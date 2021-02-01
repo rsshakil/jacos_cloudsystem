@@ -90,11 +90,11 @@ class Byr_orderController extends Controller
             if ($delivery_date_to) {
                 $search_where .= "AND dov.mes_lis_ord_tra_dat_delivery_date <= '" . $delivery_date_to . "' ";
             }
-            if ($delivery_service_code) {
+            if ($delivery_service_code!='*') {
                 $search_where .= "AND dov.mes_lis_ord_log_del_delivery_service_code='" . $delivery_service_code . "' ";
             }
 
-            if ($temperature) {
+            if ($temperature!='*') {
                 $search_where .= "AND dov.mes_lis_ord_tra_ins_temperature_code='" . $temperature . "' ";
             }
 
@@ -182,7 +182,7 @@ class Byr_orderController extends Controller
         $temperature_code = $request->temperature_code;
         $per_page = $request->per_page == null ? 10 : $request->per_page;
         $temperature_code = $temperature_code == null ? '' : $temperature_code;
-        data_order_voucher::where('data_order_id',$data_order_id)->whereNull('check_datetime')->update(['check_datetime'=>date('Y-m-d H:i:s')]);
+        data_order_voucher::where('data_order_id',$data_order_id)->where('mes_lis_ord_tra_goo_major_category',$major_category)->where('mes_lis_ord_log_del_delivery_service_code',$delivery_service_code)->where('mes_lis_ord_tra_dat_delivery_date',$delivery_date)->whereNull('check_datetime')->update(['check_datetime'=>date('Y-m-d H:i:s')]);
         $result = DB::table('data_shipments as ds')
             ->select(
                 'dor.receive_datetime',

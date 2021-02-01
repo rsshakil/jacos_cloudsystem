@@ -547,6 +547,7 @@ export default {
       order_search_modal2: false,
       order_search_modal3: false,
       selected: [],
+      selectedNum:0,
       select_field_page_num:0,
       select_field_per_page_num:10,
       isCheckAll: false,
@@ -693,10 +694,11 @@ export default {
         });
     },
     updateDatetimeDecessionfield() {
+      this.selectedNum = this.selected.length;
       var _this=this;
       this.alert_icon = "warning";
       this.alert_title = "";
-      this.alert_text = "7件の伝票を確定しますがよろしいでしょうか。";
+      this.alert_text = this.selectedNum+"件の伝票を確定しますがよろしいでしょうか。";
       this.yes_btn = "はい";
       this.cancel_btn = "キャンセル";
       this.confirm_sweet().then((result) => {     
@@ -710,7 +712,7 @@ export default {
                     //handle success
                     _this.alert_icon='success';
                     _this.alert_title="";
-                    _this.alert_text="7件の伝票を確定しました。";
+                    _this.alert_text=_this.selectedNum+"件の伝票を確定しました。";
                     _this.sweet_normal_alert();
                     Fire.$emit("LoadByrorderDetail");
                     
