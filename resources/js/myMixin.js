@@ -20,6 +20,8 @@ export default {
             selected_buyer: [],
             sellers: [],
             selected_seller: [],
+            yes_btn:'Yes, delete it!',
+            cancel_btn:"Cancel"
             // loader: "",
         };
     },
@@ -158,6 +160,19 @@ export default {
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Yes, delete it!"
+            });
+            return status;
+        },
+        confirm_sweet() {
+            var status = Swal.fire({
+                icon: this.alert_icon,
+                title: this.alert_title,
+                text: this.alert_text,
+                showCancelButton: true,
+                cancelButtonText: this.cancel_btn,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: this.yes_btn
             });
             return status;
         },

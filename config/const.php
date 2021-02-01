@@ -12,7 +12,7 @@ return [
     // Tools
     'TASKCTRL' => 'tools/taskctrl/taskctrlWrapper.sh',
 
-    'SHIPMENT_CSV_PATH' => '/shipment_csv',
+    'SHIPMENT_CSV_PATH' => '/Shipment_CSV',
     // Fixed length file save path
     'FIXED_LENGTH_FILE_PATH' => 'app/fixed_length_files/',
     'INDEPEN_FILE_PATH' => 'app/indepen_files/',

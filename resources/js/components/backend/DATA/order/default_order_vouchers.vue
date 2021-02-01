@@ -693,29 +693,53 @@ export default {
         });
     },
     updateDatetimeDecessionfield() {
-
-      axios({
-        method: "POST",
-        url: this.BASE_URL + "api/update_shipment_detail_bycurrentdatetime",
-        data: {update_id:this.selected},
+      var _this=this;
+      this.alert_icon = "warning";
+      this.alert_title = "";
+      this.alert_text = "7件の伝票を確定しますがよろしいでしょうか。";
+      this.yes_btn = "はい";
+      this.cancel_btn = "キャンセル";
+      this.confirm_sweet().then((result) => {     
+              if (result.value) {
+                axios({
+                  method: "POST",
+                  url: this.BASE_URL + "api/update_shipment_detail_bycurrentdatetime",
+                  data: {update_id:this.selected},
+                })
+                  .then(function (response) {
+                    //handle success
+                    _this.alert_icon='success';
+                    _this.alert_title="";
+                    _this.alert_text="7件の伝票を確定しました。";
+                    _this.sweet_normal_alert();
+                    Fire.$emit("LoadByrorderDetail");
+                    
+                  })
+                  .catch(function (response) {
+                    //handle error
+                    console.log(response);
+                  });
+              }
       })
-        .then(function (response) {
-          //handle success
-          console.log(response);
-          Fire.$emit("LoadByrorderDetail");
-        })
-        .catch(function (response) {
-          //handle error
-          console.log(response);
-        });
     },
     shipmentConfirm(){
-      console.log(this.data_order_id);
-      // console.log("Hi");
-      return 0;
-        axios.post(this.BASE_URL + "api/shipment_confirm").then(({data})=>{
-          console.log(data);
-        })
+      var _this=this;
+      this.alert_icon = "warning";
+      this.alert_title = "";
+      this.alert_text = "7件の伝票を送信しますがよろしいでしょうか。";
+      this.yes_btn = "はい";
+      this.cancel_btn = "キャンセル";
+      this.confirm_sweet().then((result) => {     
+              if (result.value) {
+                axios.post(this.BASE_URL + "api/shipment_confirm",{data_order_id:(this.param_data.data_order_id)}).then(({data})=>{
+                  console.log(data);
+                  _this.alert_icon='success';
+                    _this.alert_title="";
+                    _this.alert_text="7件の確定伝票を送信しました。";
+                    _this.sweet_normal_alert();
+                })
+               }
+      })
     },
     //get Table data
     get_all_byr_order_detail(page = 1) {

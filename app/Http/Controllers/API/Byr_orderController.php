@@ -21,6 +21,7 @@ use DB;
 use Illuminate\Http\Request;
 use App\Traits\Csv;
 use App\Http\Controllers\API\DATA\Data_Controller;
+use App\Exports\ShipmentCSVExport;
 
 class Byr_orderController extends Controller
 {
@@ -303,18 +304,23 @@ class Byr_orderController extends Controller
     public function shipmentConfirm(Request $request)
     {
         // return "Hi";
-        $csv_data = Data_Controller::get_shipment_data($request);
-        $fileName = 'partner_code_'.date('YmdHis').'.csv';
+        $new_file_name = "Shipment_csv_".date('Y-m-d')."_".time().".csv";
+        $download_file_url = \Config::get('app.url')."storage/app".config('const.SHIPMENT_CSV_PATH')."/". $new_file_name;
+        // $csv_data = Data_Controller::get_shipment_data($request);
+        (new ShipmentCSVExport($request))->store(config('const.SHIPMENT_CSV_PATH').'/'.$new_file_name);
+        return response()->json(['message' => 'Success','status'=>1, 'url' => $download_file_url]);
 
-        $filePath = 'app/public/Shipment_CSV/'.$fileName;
-        $filePath = Csv::createCsv($filePath);
-        Csv::writeAll($filePath, $csv_data);
-        $headers = [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="'.$fileName .'"'
-        ];
-        // return response()->download($filePath, $fileName, $headers);
-        return $csv_data;
+        // $fileName = 'partner_code_'.date('YmdHis').'.csv';
+
+        // $filePath = 'app/public/Shipment_CSV/'.$fileName;
+        // $filePath = Csv::createCsv($filePath);
+        // Csv::writeAll($filePath, $csv_data);
+        // $headers = [
+        //     'Content-Type' => 'text/csv',
+        //     'Content-Disposition' => 'attachment; filename="'.$fileName .'"'
+        // ];
+        // // return response()->download($filePath, $fileName, $headers);
+        // return $csv_data;
         // data_shipment, data_shipment_voucher, data_shipment_item, shipment_item_details
     }
 
