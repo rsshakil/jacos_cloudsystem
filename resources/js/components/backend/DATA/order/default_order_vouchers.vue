@@ -701,7 +701,7 @@ export default {
       this.alert_text = this.selectedNum+"件の伝票を確定しますがよろしいでしょうか。";
       this.yes_btn = "はい";
       this.cancel_btn = "キャンセル";
-      this.confirm_sweet().then((result) => {     
+      this.confirm_sweet().then((result) => {
               if (result.value) {
                 axios({
                   method: "POST",
@@ -715,7 +715,7 @@ export default {
                     _this.alert_text=_this.selectedNum+"件の伝票を確定しました。";
                     _this.sweet_normal_alert();
                     Fire.$emit("LoadByrorderDetail");
-                    
+
                   })
                   .catch(function (response) {
                     //handle error
@@ -728,16 +728,16 @@ export default {
       var _this=this;
       this.alert_icon = "warning";
       this.alert_title = "";
-      this.alert_text = "7件の伝票を送信しますがよろしいでしょうか。";
+      this.alert_text = _this.selectedNum+"件の伝票を送信しますがよろしいでしょうか。";
       this.yes_btn = "はい";
       this.cancel_btn = "キャンセル";
-      this.confirm_sweet().then((result) => {     
+      this.confirm_sweet().then((result) => {
               if (result.value) {
-                axios.post(this.BASE_URL + "api/shipment_confirm",{data_order_id:(this.param_data.data_order_id)}).then(({data})=>{
-                  console.log(data);
+                axios.post(this.BASE_URL + "api/shipment_confirm",{data_order_id:(this.param_data.data_order_id),order_info:this.order_info}).then(({data})=>{
+                //   console.log(data);
                   _this.alert_icon='success';
                     _this.alert_title="";
-                    _this.alert_text="7件の確定伝票を送信しました。";
+                    _this.alert_text=data.csv_data_count+"件の確定伝票を送信しました。";
                     _this.sweet_normal_alert();
                 })
                }

@@ -242,6 +242,7 @@ class Data_Controller extends Controller
     {
         // 対象データ取得
         $data_order_id=$request->data_order_id;
+        $order_info=$request->order_info;
         $csv_data=data_shipment::select(
             // data_shipments
             'data_shipments.sta_sen_identifier',

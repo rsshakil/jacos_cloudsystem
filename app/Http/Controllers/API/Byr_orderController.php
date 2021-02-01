@@ -303,25 +303,13 @@ class Byr_orderController extends Controller
     }
     public function shipmentConfirm(Request $request)
     {
+        // return $request->all();
         // return "Hi";
         $new_file_name = "Shipment_csv_".date('Y-m-d')."_".time().".csv";
         $download_file_url = \Config::get('app.url')."storage/app".config('const.SHIPMENT_CSV_PATH')."/". $new_file_name;
-        // $csv_data = Data_Controller::get_shipment_data($request);
+        $csv_data_count = Data_Controller::get_shipment_data($request)->count();
         (new ShipmentCSVExport($request))->store(config('const.SHIPMENT_CSV_PATH').'/'.$new_file_name);
-        return response()->json(['message' => 'Success','status'=>1, 'url' => $download_file_url]);
-
-        // $fileName = 'partner_code_'.date('YmdHis').'.csv';
-
-        // $filePath = 'app/public/Shipment_CSV/'.$fileName;
-        // $filePath = Csv::createCsv($filePath);
-        // Csv::writeAll($filePath, $csv_data);
-        // $headers = [
-        //     'Content-Type' => 'text/csv',
-        //     'Content-Disposition' => 'attachment; filename="'.$fileName .'"'
-        // ];
-        // // return response()->download($filePath, $fileName, $headers);
-        // return $csv_data;
-        // data_shipment, data_shipment_voucher, data_shipment_item, shipment_item_details
+        return response()->json(['message' => 'Success','status'=>1, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
     }
 
     public function update_byr_order_detail_status(Request $request)
