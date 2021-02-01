@@ -18,7 +18,7 @@
             <td class="cl_custom_color">便</td>
             <td>{{order_item_lists.mes_lis_ord_tra_goo_major_category}}</td>
             <td class="cl_custom_color">配送温度区分</td>
-            <td>{{order_item_lists.mes_lis_ord_tra_ins_temperature_code}}</td>
+            <td>{{order_item_lists.mes_lis_ord_tra_ins_temperature_code}} {{get_jsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code','01')}}</td>
           </tr>
         </table>
       </div>
@@ -301,6 +301,7 @@ export default {
       order_item_lists: {},
       order_item_shipment_data_headTable: {},
       order_date: "",
+      buyer_settings: {},
       order_detail_list: [],
       show_hide_col_list: [],
       expected_delivery_date: "",
@@ -315,9 +316,19 @@ export default {
       form: new Form({}),
       param_data:[],
       queryData:'',
+      byr_buyer_id: null,
     };
   },
   methods: {
+    get_jsonValueBykeyName(arrName,arrKey){
+      // if(this.buyer_settings.orders[arrName].lenght>0){
+        // console.log(this.buyer_settings[arrName]);
+        var values = this.buyer_settings[arrName].map(function(o) { return o[arrKey]; });
+        return values[0];
+        // return this.buyer_settings[arrName][arrKey];
+      // }
+      
+    },
     checkAll() {
       this.isCheckAll = !this.isCheckAll;
       this.selected = [];
@@ -427,7 +438,14 @@ export default {
           this.loader.hide();
         });
     },
-
+    getbuyerJsonSetting(){
+        axios.get(this.BASE_URL + "api/buyerJsonSetting/"+this.byr_buyer_id)
+        .then(({data}) => {
+          this.buyer_settings = JSON.parse(data.buyer_settings);
+         this.buyer_settings= this.buyer_settings.orders;
+          console.log(this.buyer_settings);
+        });
+    },
     col_show_hide_setting(url_slug) {
       console.log(this.show_hide_col_list.length + "col lenght");
       if (this.show_hide_col_list.length == 0) {
@@ -451,8 +469,8 @@ export default {
     Fire.$emit('byr_has_selected',this.$session.get('byr_buyer_id'));
     Fire.$emit('permission_check_for_buyer',this.$session.get('byr_buyer_id'));
 
-
-
+this.byr_buyer_id = this.$session.get('byr_buyer_id');
+this.getbuyerJsonSetting();
     // console.log(this.$route.query);
     this.param_data=this.$route.query
     console.log(this.$session.get('voucher_page_query_param'));
