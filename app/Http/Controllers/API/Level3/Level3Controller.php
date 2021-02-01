@@ -422,8 +422,8 @@ class Level3Controller extends Controller
     }
     public function getShipmentFile(Request $request)
     {
-        $url_path = \Config::get('app.url') . 'storage/app/Shipment_CSV/moved/';
-        $path = \storage_path('/app/Shipment_CSV/');
+        $url_path = \Config::get('app.url') . 'storage/app/shipment_csv/moved/';
+        $path = \storage_path('/app/shipment_csv/');
         $files = array_values(array_diff(scandir($path), array('.', '..')));
         $files_array = array();
         if (!empty($files)) {
