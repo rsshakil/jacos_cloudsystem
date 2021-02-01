@@ -47,7 +47,11 @@ class Byr_orderController extends Controller
         $byr_buyer = byr_buyer::all();
         return response()->json(['order_list' => $result, 'byr_buyer_list' => $byr_buyer]);
     }
+    public function buyerJsonSetting($byr_buyer_id){
+        $buyer_settings = byr_buyer::select('setting_information')->where('byr_buyer_id', $byr_buyer_id)->first();
 
+        return response()->json([ 'buyer_settings' => $buyer_settings->setting_information]);
+    }
     public function get_byr_order_list(Request $request)
     {
         $adm_user_id = $request->adm_user_id;
