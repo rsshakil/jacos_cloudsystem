@@ -827,7 +827,7 @@ export default {
       //     link.revokeObjectURL();
       //   });
 //downloadcsvshipment_confirm
-
+var _this = this;
           axios.post(this.BASE_URL + "api/downloadcsvshipment_confirm",{data_order_id:(this.param_data.data_order_id),order_info:this.order_info}).then(({data})=>{
                 console.log(data);
                 const link = document.createElement("a");
@@ -835,6 +835,11 @@ export default {
                 link.setAttribute("download", "shipmentcsvfile.csv"); //ここらへんは適当に設定する
                 document.body.appendChild(link);
                 link.click();
+                axios
+          .get(_this.BASE_URL + "api/deletedownloadedshipmentCsv/"+data.new_file_name)
+          .then((data) => {
+            console.log(data);
+          });
                 link.revokeObjectURL();
                 })
 
