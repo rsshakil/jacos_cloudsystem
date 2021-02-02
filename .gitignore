@@ -19,7 +19,8 @@ storage/app/public/backend/images/default/*
 storage/app/fixed_length_files/*
 storage/app/indepen_csv_files/*
 storage/app/indepen_files/*
-storage/app/Shipment_CSV/*
+storage/app/shipment_csv/*
+storage/app/shipment_updated_csv/*
 storage/app/order/*
 storage/app/temp/*
 

@@ -242,7 +242,7 @@
               </p>
             </div>
             <div class="pcontentBtom">
-              <input type="file" class="form-control uploadBtn" />
+              <input type="file" @change="shipmentUpdate" class="form-control uploadBtn" />
               <button class="btn btn-primary active" type="button">
                 <b-icon
                   icon="upload"
@@ -739,6 +739,29 @@ export default {
                     _this.alert_title="";
                     _this.alert_text=data.csv_data_count+"件の確定伝票を送信しました。";
                     _this.sweet_normal_alert();
+                })
+               }
+      })
+    },
+    shipmentUpdate(e){
+      var _this=this;
+      this.alert_icon = "warning";
+      this.alert_title = "";
+      this.alert_text = _this.selectedNum+"件の伝票を送信しますがよろしいでしょうか。";
+      this.yes_btn = "はい";
+      this.cancel_btn = "キャンセル";
+      this.confirm_sweet().then((result) => {
+              if (result.value) {
+                  const formData = new FormData();
+                  let file = e.target.files[0];
+                  console.log(file);
+                  formData.append("file", file);
+                axios.post(this.BASE_URL + "api/shipment_update",formData).then(({data})=>{
+                  console.log(data);
+                //   _this.alert_icon='success';
+                //     _this.alert_title="";
+                //     _this.alert_text=data.csv_data_count+"件の確定伝票を送信しました。";
+                //     _this.sweet_normal_alert();
                 })
                }
       })

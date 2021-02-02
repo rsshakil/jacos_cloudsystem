@@ -84,8 +84,8 @@ Route::get('/buyerJsonSetting/{byr_buyer_id}', 'API\Byr_orderController@buyerJso
 Route::get('/get_all_company_list/{adm_user_id}', 'API\BYR\ByrController@get_all_company_list');
 Route::post('/update_shipment_detail', 'API\Byr_orderController@update_shipment_detail');
 Route::post('/update_shipment_detail_bycurrentdatetime', 'API\Byr_orderController@update_shipment_detail_bycurrentdatetime');
-Route::post('/shipment_confirm', 'API\Byr_orderController@shipmentConfirm');
-Route::post('/downloadcsvshipment_confirm', 'API\Byr_orderController@downloadcsvshipment_confirm');
+Route::post('/shipment_confirm', 'API\DATA\SHIPMENT\ShipmentConroller@shipmentConfirm');
+Route::post('/downloadcsvshipment_confirm', 'API\DATA\SHIPMENT\ShipmentConroller@downloadShipmentCsv');
 Route::post('/cmn_user_create', 'API\CMN\CommonController@cmn_user_create');
 Route::post('/slr_seller_user_create', 'API\BYR\ByrController@slr_seller_user_create');
 Route::post('/create_buyer', 'API\BYR\ByrController@createBuyer');
@@ -114,7 +114,7 @@ Route::post('/load_canvas_setting_data', 'API\Byr_orderController@canvasSettingD
 Route::post('/canvas_data_save', 'API\Byr_orderController@canvasDataSave');
 Route::post('/load_canvas_data', 'API\Byr_orderController@canvasAllData');
 Route::post('/delete_canvas', 'API\Byr_orderController@deleteCanvasData');
-Route::post('/shipment_csv_create', 'API\ShipmentConroller@shipmentCSVCreate');
+Route::post('/shipment_update', 'API\DATA\SHIPMENT\ShipmentConroller@shipmentUpdate');
 
 Route::post('/get_permissions_for_buyer', 'API\BYR\ByrController@getPermissionForBuyer');
 Route::post('/get_seller_list', 'API\SLR\SlrController@getSellerList');
