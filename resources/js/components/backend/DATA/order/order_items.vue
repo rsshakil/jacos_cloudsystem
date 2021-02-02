@@ -14,11 +14,11 @@
             <td class="cl_custom_color">納品日</td>
             <td>{{order_item_lists.mes_lis_ord_tra_dat_delivery_date}}</td>
             <td class="cl_custom_color">部門</td>
-            <td></td>
-            <td class="cl_custom_color">便</td>
             <td>{{order_item_lists.mes_lis_ord_tra_goo_major_category}}</td>
+            <td class="cl_custom_color">便</td>
+            <td> {{order_item_lists.mes_lis_shi_log_del_delivery_service_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_log_del_delivery_service_code',order_item_lists.mes_lis_shi_log_del_delivery_service_code)}}</td>
             <td class="cl_custom_color">配送温度区分</td>
-            <td>{{order_item_lists.mes_lis_ord_tra_ins_temperature_code}} {{get_jsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code','01')}}</td>
+            <td>{{order_item_lists.mes_lis_ord_tra_ins_temperature_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_item_lists.mes_lis_ord_tra_ins_temperature_code)}}</td>
           </tr>
         </table>
       </div>
@@ -301,7 +301,6 @@ export default {
       order_item_lists: {},
       order_item_shipment_data_headTable: {},
       order_date: "",
-      buyer_settings: {},
       order_detail_list: [],
       show_hide_col_list: [],
       expected_delivery_date: "",
@@ -320,15 +319,7 @@ export default {
     };
   },
   methods: {
-    get_jsonValueBykeyName(arrName,arrKey){
-      // if(this.buyer_settings.orders[arrName].lenght>0){
-        // console.log(this.buyer_settings[arrName]);
-        var values = this.buyer_settings[arrName].map(function(o) { return o[arrKey]; });
-        return values[0];
-        // return this.buyer_settings[arrName][arrKey];
-      // }
-      
-    },
+    
     checkAll() {
       this.isCheckAll = !this.isCheckAll;
       this.selected = [];
@@ -428,7 +419,7 @@ export default {
     get_all_byr_order_item_detail() {
       axios.get(this.BASE_URL + "api/order_item_details/"+this.data_order_voucher_id)
         .then(({data}) => {
-
+          //this.getbuyerJsonSetting();
           console.log(data.order_item_list_detail);
           this.order_item_detail_lists = data.order_item_list_detail;
           this.mes_lis_shi_tot_tot_net_price_total = data.order_item_list_detail[0].mes_lis_shi_tot_tot_net_price_total;
@@ -438,14 +429,7 @@ export default {
           this.loader.hide();
         });
     },
-    getbuyerJsonSetting(){
-        axios.get(this.BASE_URL + "api/buyerJsonSetting/"+this.byr_buyer_id)
-        .then(({data}) => {
-          this.buyer_settings = JSON.parse(data.buyer_settings);
-         this.buyer_settings= this.buyer_settings.orders;
-          console.log(this.buyer_settings);
-        });
-    },
+    
     col_show_hide_setting(url_slug) {
       console.log(this.show_hide_col_list.length + "col lenght");
       if (this.show_hide_col_list.length == 0) {
@@ -466,11 +450,13 @@ export default {
   },
 
   created() {
+    this.byr_buyer_id = this.$session.get('byr_buyer_id');
+    //this.getbuyerJsonSetting();
     Fire.$emit('byr_has_selected',this.$session.get('byr_buyer_id'));
     Fire.$emit('permission_check_for_buyer',this.$session.get('byr_buyer_id'));
+console.log('first');
 
-this.byr_buyer_id = this.$session.get('byr_buyer_id');
-this.getbuyerJsonSetting();
+
     // console.log(this.$route.query);
     this.param_data=this.$route.query
     console.log(this.$session.get('voucher_page_query_param'));
@@ -526,6 +512,8 @@ this.getbuyerJsonSetting();
     },
   },
   mounted() {
+    console.log('second');
+    
     console.log("byr order detail page loaded");
     Fire.$on("voucher_page_query_param", (query_param) => {
       console.log('getparams');

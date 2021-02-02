@@ -21,12 +21,39 @@ export default {
             sellers: [],
             selected_seller: [],
             yes_btn:'Yes, delete it!',
-            cancel_btn:"Cancel"
+            cancel_btn:"Cancel",
+            byr_buyer_id: null,
+            buyer_settings:{},
             // loader: "",
         };
     },
     methods: {
         // Database created and updated datetime conversion 
+        getbuyerJsonSettingvalue(){
+            axios.get(this.BASE_URL + "api/buyerJsonSetting/"+this.byr_buyer_id)
+            .then(({data}) => {
+              this.buyer_settings = JSON.parse(data.buyer_settings);
+             this.buyer_settings= this.buyer_settings.orders;
+            });
+        },
+        getbyrjsonValueBykeyName(arrName,arrKey){
+            if(arrKey!=''){
+        var newarr  =[];
+              var values =  this.buyer_settings[arrName].map(function(o) {
+                var parsedobj = JSON.parse(JSON.stringify(o));
+                if(typeof(parsedobj[arrKey]) !== 'undefined' || parsedobj[arrKey] !== null){
+                  newarr[Object.keys(parsedobj)[0]]=Object.values(parsedobj)[0];
+                }
+                return newarr;
+                // return o[arrKey];
+                 
+                  });
+             console.log(values);
+            return values[0][arrKey];
+            }else{
+              return '';
+            }
+          },
         formatDate(date_string) {
             var date = new Date(date_string)
             return date.getFullYear() + '-' +
@@ -266,6 +293,8 @@ export default {
 
     },
     created() {
+        this.byr_buyer_id = this.$session.get('byr_buyer_id');
+        this.getbuyerJsonSettingvalue();
         // this.user_data = this.app._data;
 
         // this.global_user_id = Globals.user_info_id;
