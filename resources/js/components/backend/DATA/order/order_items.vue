@@ -16,9 +16,9 @@
             <td class="cl_custom_color">部門</td>
             <td>{{order_item_lists.mes_lis_ord_tra_goo_major_category}}</td>
             <td class="cl_custom_color">便</td>
-            <td> {{order_item_lists.mes_lis_shi_log_del_delivery_service_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_log_del_delivery_service_code',order_item_lists.mes_lis_shi_log_del_delivery_service_code)}}</td>
+            <td> {{order_item_lists.mes_lis_shi_log_del_delivery_service_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_log_del_delivery_service_code',order_item_lists.mes_lis_shi_log_del_delivery_service_code,'orders')}}</td>
             <td class="cl_custom_color">配送温度区分</td>
-            <td>{{order_item_lists.mes_lis_ord_tra_ins_temperature_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_item_lists.mes_lis_ord_tra_ins_temperature_code)}}</td>
+            <td>{{order_item_lists.mes_lis_ord_tra_ins_temperature_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_item_lists.mes_lis_ord_tra_ins_temperature_code,'orders')}}</td>
           </tr>
         </table>
       </div>
@@ -37,9 +37,9 @@
           </tr>
           <tr>
             <td class="cl_custom_color">定／特</td>
-            <td>{{order_item_shipment_data_headTable.mes_lis_shi_tra_ins_goods_classification_code}}</td>
+            <td>{{order_item_shipment_data_headTable.mes_lis_shi_tra_ins_goods_classification_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_goods_classification_code',order_item_shipment_data_headTable.mes_lis_shi_tra_ins_goods_classification_code,'orders')}}</td>
             <td class="cl_custom_color">不定貴区分</td>
-            <td>{{order_item_shipment_data_headTable.mes_lis_shi_tra_fre_variable_measure_item_code}}</td>
+            <td>{{order_item_shipment_data_headTable.mes_lis_shi_tra_fre_variable_measure_item_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_fre_variable_measure_item_code',order_item_shipment_data_headTable.mes_lis_shi_tra_fre_variable_measure_item_code,'orders')}}</td>
             <td class="cl_custom_color">発注者</td>
             <td>{{order_item_shipment_data_headTable.mes_lis_buy_name}}</td>
           </tr>
@@ -47,7 +47,7 @@
             <td class="cl_custom_color">発注日</td>
             <td>{{order_item_shipment_data_headTable.mes_lis_shi_tra_dat_order_date}}</td>
             <td class="cl_custom_color">伝票区分</td>
-            <td>{{order_item_shipment_data_headTable.mes_lis_shi_tra_ins_trade_type_code}}</td>
+            <td>{{order_item_shipment_data_headTable.mes_lis_shi_tra_ins_trade_type_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_trade_type_code',order_item_shipment_data_headTable.mes_lis_shi_tra_ins_trade_type_code,'orders')}}</td>
             <td class="cl_custom_color">出荷状況</td>
             <td>{{order_item_shipment_data_headTable.status}}</td>
           </tr>
@@ -57,7 +57,7 @@
           </tr>
           <tr>
             <td class="cl_custom_color">税区分・税率</td>
-            <td>{{order_item_shipment_data_headTable.mes_lis_shi_tra_tax_tax_type_code}} {{order_item_shipment_data_headTable.mes_lis_shi_tra_tax_tax_rate}}</td>
+            <td>{{order_item_shipment_data_headTable.mes_lis_shi_tra_tax_tax_type_code}} {{order_item_shipment_data_headTable.mes_lis_shi_tra_tax_tax_rate}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_tax_tax_type_code',order_item_shipment_data_headTable.mes_lis_shi_tra_tax_tax_type_code,'orders')}}</td>
             <td class="cl_custom_color_extra">実納品日</td>
             <td colspan="3"><input class="form-control" type="date" v-model="order_item_shipment_data_headTable.mes_lis_shi_tra_dat_revised_delivery_date"></td>
           </tr>
@@ -111,7 +111,7 @@
                 <input type="text" class="form-control" v-model="order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units">
                 {{order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units}}</td>
                 <td>
-                {{order_item_detail_list.mes_lis_shi_lin_qua_unit_of_measure}}
+                {{order_item_detail_list.mes_lis_shi_lin_qua_unit_of_measure}}  {{getbyrjsonValueBykeyName('mes_lis_ord_lin_qua_unit_of_measure',order_item_detail_list.mes_lis_shi_lin_qua_unit_of_measure,'orders')}}
                 </td>
                 <td>
                  <input type="text" class="form-control" v-model="order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity">
@@ -126,7 +126,7 @@
                  <input type="text" class="form-control" v-model="order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price">
                 {{order_item_detail_list.mes_lis_ord_lin_amo_item_selling_price_unit_price}}</td>
                 <td>{{order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price}}</td>
-                <td>{{order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code}}</td>
+                <td>{{order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code}} {{getbyrjsonValueBykeyName('mes_lis_shi_lin_qua_sto_reason_code',order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code,'shipments')}}</td>
               </tr>
             </tbody>
             <tfoot>

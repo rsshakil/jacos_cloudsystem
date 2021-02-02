@@ -21,9 +21,9 @@
             <td class="cl_custom_color">部門</td>
             <td>{{ order_info.mes_lis_shi_tra_goo_major_category }}</td>
             <td class="cl_custom_color">便</td>
-            <td>{{ order_info.mes_lis_shi_log_del_delivery_service_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_log_del_delivery_service_code',order_info.mes_lis_shi_log_del_delivery_service_code)}}</td>
+            <td>{{ order_info.mes_lis_shi_log_del_delivery_service_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_log_del_delivery_service_code',order_info.mes_lis_shi_log_del_delivery_service_code,'orders')}}</td>
             <td class="cl_custom_color">配送温度区分</td>
-            <td>{{ order_info.mes_lis_shi_tra_ins_temperature_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_info.mes_lis_ord_tra_ins_temperature_code)}}</td>
+            <td>{{ order_info.mes_lis_shi_tra_ins_temperature_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_info.mes_lis_ord_tra_ins_temperature_code,'orders')}}</td>
           </tr>
         </table>
       </div>
@@ -219,7 +219,7 @@
                 <td>
                   {{
                     order_detail_list.mes_lis_shi_tra_ins_goods_classification_code
-                  }} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_goods_classification_code',order_detail_list.mes_lis_shi_tra_ins_goods_classification_code)}}
+                  }} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_goods_classification_code',order_detail_list.mes_lis_shi_tra_ins_goods_classification_code,'orders')}}
                 </td>
                 <td>
                   {{ order_detail_list.mes_lis_shi_tot_tot_net_price_total }}
@@ -242,15 +242,22 @@
               </p>
             </div>
             <div class="pcontentBtom">
-              <input type="file" @change="shipmentUpdate" class="form-control uploadBtn" />
-              <button class="btn btn-primary active" type="button">
+            <label for="updateordershipmentcsv" class="custom-file-upload">
+    <b-icon
+                  icon="upload"
+                  animation="fade"
+                  font-scale="1.2"
+                ></b-icon> アップロード
+</label>
+              <input type="file" @change="shipmentUpdate" id="updateordershipmentcsv" class="form-control uploadBtn" style="display:none;" />
+             <!-- <button class="btn btn-primary active" type="button">
                 <b-icon
                   icon="upload"
                   animation="fade"
                   font-scale="1.2"
                 ></b-icon>
                 アップロード
-              </button>
+              </button>-->
             </div>
           </div>
           <div class="col-6 text-right">

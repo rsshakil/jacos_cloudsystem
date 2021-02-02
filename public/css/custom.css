@@ -164,6 +164,13 @@
 .modal-header{
     border-bottom: 4px solid #538ED3;
 }
+.custom-file-upload{
+    cursor: pointer;
+    background: #538ED3;
+    padding: 10px 15px;
+    color: #fff;
+    border-radius: 5px;
+}
 .orderDetailTable{
     background: #fff;
 }

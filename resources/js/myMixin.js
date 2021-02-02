@@ -33,13 +33,13 @@ export default {
             axios.get(this.BASE_URL + "api/buyerJsonSetting/"+this.byr_buyer_id)
             .then(({data}) => {
               this.buyer_settings = JSON.parse(data.buyer_settings);
-             this.buyer_settings= this.buyer_settings.orders;
+            // this.buyer_settings= this.buyer_settings.orders;
             });
         },
-        getbyrjsonValueBykeyName(arrName,arrKey){
+        getbyrjsonValueBykeyName(arrName,arrKey,orderType="orders"){
             if(arrKey!=''){
         var newarr  =[];
-              var values =  this.buyer_settings[arrName].map(function(o) {
+              var values =  this.buyer_settings[orderType][arrName].map(function(o) {
                 var parsedobj = JSON.parse(JSON.stringify(o));
                 if(typeof(parsedobj[arrKey]) !== 'undefined' || parsedobj[arrKey] !== null){
                   newarr[Object.keys(parsedobj)[0]]=Object.values(parsedobj)[0];
