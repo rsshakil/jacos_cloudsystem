@@ -16,6 +16,7 @@ class CreateDataReceiveVouchersTable extends Migration
         Schema::create('data_receive_vouchers', function (Blueprint $table) {
             $table->increments('data_receive_voucher_id')->unsigned()->comment('data_receive_voucher_id');
             $table->integer('data_receive_id')->unsigned()->comment('data_receive_id');
+            $table->dateTime('check_datetime')->nullable()->comment('確認日時');
             $table->string('mes_lis_acc_tra_trade_number', 10)->comment('取引番号（発注・返品）');
             $table->string('mes_lis_acc_tra_additional_trade_number', 10)->comment('取引付属番号');
             $table->string('mes_lis_acc_fre_shipment_number', 11)->default('')->comment('出荷者管理番号');
@@ -69,22 +70,22 @@ class CreateDataReceiveVouchersTable extends Migration
             $table->date('mes_lis_acc_tra_dat_transfer_of_ownership_date')->comment('計上日');
             $table->date('mes_lis_acc_tra_dat_campaign_start_date')->comment('販促開始日');
             $table->date('mes_lis_acc_tra_dat_campaign_end_date')->comment('販促終了日');
-            $table->string('mes_lis_acc_tra_ins_goods_classification_code',2)->comment('商品区分');
-            $table->string('mes_lis_acc_tra_ins_order_classification_code',2)->comment('発注区分');
-            $table->string('mes_lis_acc_tra_ins_ship_notification_request_code',2)->comment('出荷データ有無区分');
-            $table->string('mes_lis_acc_tra_ins_eos_code',2)->default('')->comment('EOS区分');
-            $table->string('mes_lis_acc_tra_ins_private_brand_code',2)->comment('PB区分');
-            $table->string('mes_lis_acc_tra_ins_temperature_code',2)->comment('配送温度区分');
-            $table->string('mes_lis_acc_tra_ins_liquor_code',2)->comment('酒区分');
-            $table->string('mes_lis_acc_tra_ins_trade_type_code',2)->comment('処理種別');
-            $table->string('mes_lis_acc_tra_ins_paper_form_less_code',2)->comment('伝票レス区分');
-            $table->string('mes_lis_acc_tra_fre_trade_number_request_code',2)->comment('取引番号区分');
-            $table->string('mes_lis_acc_tra_fre_package_code',2)->comment('パック区分');
-            $table->string('mes_lis_acc_tra_fre_variable_measure_item_code',2)->comment('不定貫区分');
-            $table->string('mes_lis_acc_tra_tax_tax_type_code',2)->comment('税区分');
-            $table->string('mes_lis_acc_tra_tax_tax_rate',6)->comment('税率');
-            $table->string('mes_lis_acc_tra_not_text',60)->comment('自由使用欄');
-            $table->string('mes_lis_acc_tra_not_text_sbcs',60)->comment('自由使用欄半角カナ');
+            $table->string('mes_lis_acc_tra_ins_goods_classification_code', 2)->comment('商品区分');
+            $table->string('mes_lis_acc_tra_ins_order_classification_code', 2)->comment('発注区分');
+            $table->string('mes_lis_acc_tra_ins_ship_notification_request_code', 2)->comment('出荷データ有無区分');
+            $table->string('mes_lis_acc_tra_ins_eos_code', 2)->default('')->comment('EOS区分');
+            $table->string('mes_lis_acc_tra_ins_private_brand_code', 2)->comment('PB区分');
+            $table->string('mes_lis_acc_tra_ins_temperature_code', 2)->comment('配送温度区分');
+            $table->string('mes_lis_acc_tra_ins_liquor_code', 2)->comment('酒区分');
+            $table->string('mes_lis_acc_tra_ins_trade_type_code', 2)->comment('処理種別');
+            $table->string('mes_lis_acc_tra_ins_paper_form_less_code', 2)->comment('伝票レス区分');
+            $table->string('mes_lis_acc_tra_fre_trade_number_request_code', 2)->comment('取引番号区分');
+            $table->string('mes_lis_acc_tra_fre_package_code', 2)->comment('パック区分');
+            $table->string('mes_lis_acc_tra_fre_variable_measure_item_code', 2)->comment('不定貫区分');
+            $table->string('mes_lis_acc_tra_tax_tax_type_code', 2)->comment('税区分');
+            $table->string('mes_lis_acc_tra_tax_tax_rate', 6)->comment('税率');
+            $table->string('mes_lis_acc_tra_not_text', 60)->comment('自由使用欄');
+            $table->string('mes_lis_acc_tra_not_text_sbcs', 60)->comment('自由使用欄半角カナ');
             $table->integer('mes_lis_acc_tot_tot_net_price_total')->comment('原価金額合計');
             $table->integer('mes_lis_acc_tot_tot_selling_price_total')->comment('売価金額合計');
             $table->integer('mes_lis_acc_tot_tot_tax_total')->comment('税額合計金額');
@@ -93,7 +94,7 @@ class CreateDataReceiveVouchersTable extends Migration
             $table->integer('mes_lis_acc_tot_fre_unit_weight_total')->comment('重量合計');
             $table->smallInteger('deleted')->unsigned()->default(1)->comment('削除フラグ');
             $table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
-			$table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
+            $table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
         });
     }
 
