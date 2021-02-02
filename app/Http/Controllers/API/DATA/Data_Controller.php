@@ -789,7 +789,11 @@ class Data_Controller extends Controller
             ->where('mes_lis_shi_tra_dat_delivery_date',$value[74]);
 
             $data_shipment_voucher_info=$data_shipment_voucher_query->first();
+            \Log::info($data_shipment_voucher_info);
 
+            if (empty($data_shipment_voucher_info)) {
+                return response()->json(['status'=>0,'message'=>'Error']);
+            }
             $data_shipment_id=$data_shipment_voucher_info->data_shipment_id;
 
             $data_shipment_voucher_query->update($tmp_shipment_voucher);
