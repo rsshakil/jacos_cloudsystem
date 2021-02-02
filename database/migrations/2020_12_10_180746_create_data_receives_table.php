@@ -15,15 +15,11 @@ class CreateDataReceivesTable extends Migration
     {
         Schema::create('data_receives', function (Blueprint $table) {
             $table->increments('data_receive_id')->unsigned()->comment('data_receive_id');
-            $table->integer('data_order_id')->unsigned()->comment('data_order_id');
             $table->integer('cmn_connect_id')->unsigned()->comment('cmn_connect_id');
-            $table->dateTime('upload_datetime')->nullable()->comment('アップロード日時');
-            $table->string('upload_file_path', 200)->nullable()->comment('upload_file_path');
-            $table->dateTime('send_datetime')->nullable()->comment('送信日時');
-            $table->string('send_file_path', 200)->nullable()->comment('送信ファイルパス');
+            $table->dateTime('receive_datetime')->nullable()->comment('受信日時');
             $table->string('sta_sen_identifier', 30)->comment('送信者ＩＤ');
             $table->string('sta_sen_ide_authority', 10)->comment('送信者ＩＤ発行元');
-            $table->string('sta_rec_identifier',20)->comment('受信者ＩＤ');
+            $table->string('sta_rec_identifier', 20)->comment('受信者ＩＤ');
             $table->string('sta_rec_ide_authority', 10)->comment('受信者ＩＤ発行元');
             $table->string('sta_doc_standard', 20)->comment('標準名称');
             $table->string('sta_doc_type_version', 10)->comment('バージョン');
@@ -54,7 +50,7 @@ class CreateDataReceivesTable extends Migration
             $table->string('mes_lis_buy_name_sbcs', 20)->comment('発注者名称カナ');
             $table->smallInteger('deleted')->unsigned()->default(1)->comment('削除フラグ');
             $table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
-			$table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
+            $table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
         });
     }
 
