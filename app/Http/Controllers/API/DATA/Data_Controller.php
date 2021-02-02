@@ -5,6 +5,9 @@ namespace App\Http\Controllers\API\DATA;
 use App\Http\Controllers\Controller;
 use App\Models\DATA\ORD\data_order;
 use App\Models\DATA\SHIPMENT\data_shipment;
+use App\Models\DATA\SHIPMENT\data_shipment_voucher;
+use App\Models\DATA\SHIPMENT\data_shipment_item;
+use App\Models\DATA\SHIPMENT\data_shipment_item_detail;
 
 class Data_Controller extends Controller
 {
@@ -606,9 +609,14 @@ class Data_Controller extends Controller
             'mes_lis_shi_lin_pac_con_lot_number',
         ];
     }
-    public static function shipmentUpdateArray($data_array){
-        $data_shipment_array=array();
+    public static function shipmentUpdateArray($data_array,$file_name=""){
+        // $data_shipment_array=array();
+        // $data_shipment_voucher_array=array();
+        // $data_shipment_item_array=array();
+        // $data_shipment_item_details_array=array();
         foreach ($data_array as $key => $value) {
+            $tmp_shipment['upload_datetime']=date('y-m-d H:i:s');
+            $tmp_shipment['upload_file_path']=$file_name;
             $tmp_shipment['sta_sen_identifier']=$value[0];
             $tmp_shipment['sta_sen_ide_authority']=$value[1];
             $tmp_shipment['sta_rec_identifier']=$value[2];
@@ -662,129 +670,170 @@ class Data_Controller extends Controller
             $tmp_shipment_voucher['mes_lis_shi_par_pay_gln']=$value[49];
             $tmp_shipment_voucher['mes_lis_shi_par_pay_name']=$value[50];
             $tmp_shipment_voucher['mes_lis_shi_par_pay_name_sbcs']=$value[51];
+            $tmp_shipment_voucher['mes_lis_shi_par_sel_code']=$value[52];
+            $tmp_shipment_voucher['mes_lis_shi_par_sel_gln']=$value[53];
+            $tmp_shipment_voucher['mes_lis_shi_par_sel_name']=$value[54];
+            $tmp_shipment_voucher['mes_lis_shi_par_sel_name_sbcs']=$value[55];
+            $tmp_shipment_voucher['mes_lis_shi_par_sel_branch_number']=$value[56];
+            $tmp_shipment_voucher['mes_lis_shi_par_sel_ship_location_code']=$value[57];
+            $tmp_shipment_voucher['mes_lis_shi_log_shi_gln']=$value[58];
+            $tmp_shipment_voucher['mes_lis_shi_log_del_route_code']=$value[59];
+            $tmp_shipment_voucher['mes_lis_shi_log_del_delivery_service_code']=$value[60];
+            $tmp_shipment_voucher['mes_lis_shi_log_del_stock_transfer_code']=$value[61];
+            $tmp_shipment_voucher['mes_lis_shi_log_del_delivery_code']=$value[62];
+            $tmp_shipment_voucher['mes_lis_shi_log_del_delivery_time']=$value[63];
+            $tmp_shipment_voucher['mes_lis_shi_log_del_transportation_code']=$value[64];
+            $tmp_shipment_voucher['mes_lis_shi_log_log_barcode_print']=$value[65];
+            $tmp_shipment_voucher['mes_lis_shi_log_log_category_name_print1']=$value[66];
+            $tmp_shipment_voucher['mes_lis_shi_log_log_category_name_print2']=$value[67];
+            $tmp_shipment_voucher['mes_lis_shi_log_log_receiver_abbr_name']=$value[68];
+            $tmp_shipment_voucher['mes_lis_shi_log_log_text']=$value[69];
+            $tmp_shipment_voucher['mes_lis_shi_log_log_text_sbcs']=$value[70];
+            $tmp_shipment_voucher['mes_lis_shi_tra_goo_major_category']=$value[71];
+            $tmp_shipment_voucher['mes_lis_shi_tra_goo_sub_major_category']=$value[72];
+            $tmp_shipment_voucher['mes_lis_shi_tra_dat_order_date']=$value[73];
+            $tmp_shipment_voucher['mes_lis_shi_tra_dat_delivery_date']=$value[74];
+            $tmp_shipment_voucher['mes_lis_shi_tra_dat_delivery_date_to_receiver']=$value[75];
+            $tmp_shipment_voucher['mes_lis_shi_tra_dat_transfer_of_ownership_date']=$value[76];
+            $tmp_shipment_voucher['mes_lis_shi_tra_dat_campaign_start_date']=$value[77];
+            $tmp_shipment_voucher['mes_lis_shi_tra_dat_campaign_end_date']=$value[78];
+            $tmp_shipment_voucher['mes_lis_shi_tra_ins_goods_classification_code']=$value[79];
+            $tmp_shipment_voucher['mes_lis_shi_tra_ins_order_classification_code']=$value[80];
+            $tmp_shipment_voucher['mes_lis_shi_tra_ins_ship_notification_request_code']=$value[81];
+            $tmp_shipment_voucher['mes_lis_shi_tra_ins_private_brand_code']=$value[82];
+            $tmp_shipment_voucher['mes_lis_shi_tra_ins_temperature_code']=$value[83];
+            $tmp_shipment_voucher['mes_lis_shi_tra_ins_liquor_code']=$value[84];
+            $tmp_shipment_voucher['mes_lis_shi_tra_ins_trade_type_code']=$value[85];
+            $tmp_shipment_voucher['mes_lis_shi_tra_ins_paper_form_less_code']=$value[86];
+            $tmp_shipment_voucher['mes_lis_shi_tra_fre_trade_number_request_code']=$value[87];
+            $tmp_shipment_voucher['mes_lis_shi_tra_fre_package_code']=$value[88];
+            $tmp_shipment_voucher['mes_lis_shi_tra_fre_variable_measure_item_code']=$value[89];
+            $tmp_shipment_voucher['mes_lis_shi_tra_tax_tax_type_code']=$value[90];
+            $tmp_shipment_voucher['mes_lis_shi_tra_tax_tax_rate']=$value[91];
+            $tmp_shipment_voucher['mes_lis_shi_tra_not_text']=$value[92];
+            $tmp_shipment_voucher['mes_lis_shi_tra_not_text_sbcs']=$value[93];
+            $tmp_shipment_voucher['mes_lis_shi_tot_tot_net_price_total']=$value[94];
+            $tmp_shipment_voucher['mes_lis_shi_tot_tot_selling_price_total']=$value[95];
+            $tmp_shipment_voucher['mes_lis_shi_tot_tot_tax_total']=$value[96];
+            $tmp_shipment_voucher['mes_lis_shi_tot_tot_item_total']=$value[97];
+            $tmp_shipment_voucher['mes_lis_shi_tot_tot_unit_total']=$value[98];
+            $tmp_shipment_voucher['mes_lis_shi_tot_fre_unit_weight_total']=$value[99];
+            // data_shipment_items
+            $tmp_shipment_item['mes_lis_shi_lin_lin_line_number']=$value[100];
+            $tmp_shipment_item['mes_lis_shi_lin_lin_additional_line_number']=$value[101];
+            $tmp_shipment_item['mes_lis_shi_lin_fre_trade_number']=$value[102];
+            $tmp_shipment_item['mes_lis_shi_lin_fre_line_number']=$value[103];
+            $tmp_shipment_item['mes_lis_shi_lin_goo_minor_category']=$value[104];
+            $tmp_shipment_item['mes_lis_shi_lin_goo_detailed_category']=$value[105];
+            $tmp_shipment_item['mes_lis_shi_lin_ite_scheduled_date']=$value[106];
+            $tmp_shipment_item['mes_lis_shi_lin_ite_deadline_date']=$value[107];
+            $tmp_shipment_item['mes_lis_shi_lin_ite_center_delivery_instruction_code']=$value[108];
+            $tmp_shipment_item['mes_lis_shi_lin_ite_maker_code']=$value[109];
+            $tmp_shipment_item['mes_lis_shi_lin_ite_gtin']=$value[110];
+            $tmp_shipment_item['mes_lis_shi_lin_ite_order_item_code']=$value[111];
+            $tmp_shipment_item['mes_lis_shi_lin_ite_code_type']=$value[112];
+            $tmp_shipment_item['mes_lis_shi_lin_ite_supplier_item_code']=$value[113];
+            $tmp_shipment_item['mes_lis_shi_lin_ite_name']=$value[114];
+            $tmp_shipment_item['mes_lis_shi_lin_ite_name_sbcs']=$value[115];
+            $tmp_shipment_item['mes_lis_shi_lin_ite_ite_spec']=$value[116];
+            $tmp_shipment_item['mes_lis_shi_lin_ite_ite_spec_sbcs']=$value[117];
+            $tmp_shipment_item['mes_lis_shi_lin_ite_col_color_code']=$value[118];
+            $tmp_shipment_item['mes_lis_shi_lin_ite_col_description']=$value[119];
+            $tmp_shipment_item['mes_lis_shi_lin_ite_col_description_sbcs']=$value[120];
+            $tmp_shipment_item['mes_lis_shi_lin_ite_siz_size_code']=$value[121];
+            $tmp_shipment_item['mes_lis_shi_lin_ite_siz_description']=$value[122];
+            $tmp_shipment_item['mes_lis_shi_lin_ite_siz_description_sbcs']=$value[123];
+            $tmp_shipment_item['mes_lis_shi_lin_fre_packing_quantity']=$value[124];
+            $tmp_shipment_item['mes_lis_shi_lin_fre_prefecture_code']=$value[125];
+            $tmp_shipment_item['mes_lis_shi_lin_fre_country_code']=$value[126];
+            $tmp_shipment_item['mes_lis_shi_lin_fre_field_name']=$value[127];
+            $tmp_shipment_item['mes_lis_shi_lin_fre_water_area_code']=$value[128];
+            $tmp_shipment_item['mes_lis_shi_lin_fre_water_area_name']=$value[129];
+            $tmp_shipment_item['mes_lis_shi_lin_fre_area_of_origin']=$value[130];
+            $tmp_shipment_item['mes_lis_shi_lin_fre_item_grade']=$value[131];
+            $tmp_shipment_item['mes_lis_shi_lin_fre_item_class']=$value[132];
+            $tmp_shipment_item['mes_lis_shi_lin_fre_brand']=$value[133];
+            $tmp_shipment_item['mes_lis_shi_lin_fre_item_pr']=$value[134];
+            $tmp_shipment_item['mes_lis_shi_lin_fre_bio_code']=$value[135];
+            $tmp_shipment_item['mes_lis_shi_lin_fre_breed_code']=$value[136];
+            $tmp_shipment_item['mes_lis_shi_lin_fre_cultivation_code']=$value[137];
+            $tmp_shipment_item['mes_lis_shi_lin_fre_defrost_code']=$value[138];
+            $tmp_shipment_item['mes_lis_shi_lin_fre_item_preservation_code']=$value[139];
+            $tmp_shipment_item['mes_lis_shi_lin_fre_item_shape_code']=$value[140];
+            $tmp_shipment_item['mes_lis_shi_lin_fre_use']=$value[141];
+            $tmp_shipment_item['mes_lis_shi_lin_sta_statutory_classification_code']=$value[142];
+            $tmp_shipment_item['mes_lis_shi_lin_amo_item_net_price']=$value[143];
+            $tmp_shipment_item['mes_lis_shi_lin_amo_item_net_price_unit_price']=$value[144];
+            $tmp_shipment_item['mes_lis_shi_lin_amo_item_selling_price']=$value[145];
+            $tmp_shipment_item['mes_lis_shi_lin_amo_item_selling_price_unit_price']=$value[146];
+            $tmp_shipment_item['mes_lis_shi_lin_amo_item_tax']=$value[147];
+            $tmp_shipment_item['mes_lis_shi_lin_qua_unit_multiple']=$value[148];
+            $tmp_shipment_item['mes_lis_shi_lin_qua_unit_of_measure']=$value[149];
+            $tmp_shipment_item['mes_lis_shi_lin_qua_package_indicator']=$value[150];
+            $tmp_shipment_item['mes_lis_shi_lin_qua_ord_quantity']=$value[151];
+            $tmp_shipment_item['mes_lis_shi_lin_qua_ord_num_of_order_units']=$value[152];
+            $tmp_shipment_item['mes_lis_shi_lin_fre_unit_weight']=$value[153];
+            $tmp_shipment_item['mes_lis_shi_lin_fre_unit_weight_code']=$value[154];
+            $tmp_shipment_item['mes_lis_shi_lin_fre_item_weight']=$value[155];
+            $tmp_shipment_item['mes_lis_shi_lin_fre_order_weight']=$value[156];
+            // data_shipment_item_details
+            $tmp_shipment_item_details['mes_lis_shi_lin_pac_itf_code']=$value[157];
+            $tmp_shipment_item_details['mes_lis_shi_lin_pac_package_indicator']=$value[158];
+            $tmp_shipment_item_details['mes_lis_shi_lin_pac_number_of_packages']=$value[159];
+            $tmp_shipment_item_details['mes_lis_shi_lin_pac_con_sell_by_date']=$value[160];
+            $tmp_shipment_item_details['mes_lis_shi_lin_pac_con_production_date']=$value[161];
+            $tmp_shipment_item_details['mes_lis_shi_lin_pac_con_lot_number']=$value[162];
 
-            $data_shipment_array['data_shipment']=$tmp_shipment;
-            $data_shipment_array['data_shipment_voucher']=$tmp_shipment_voucher;
+            // $data_shipment_voucher_query=data_shipment_voucher::select('data_shipment_id')
+            $data_shipment_voucher_query=data_shipment_voucher::where('mes_lis_shi_tra_trade_number',$value[31])
+            ->where('mes_lis_shi_tra_dat_delivery_date',$value[74]);
+
+            $data_shipment_voucher_info=$data_shipment_voucher_query->first();
+            \Log::info($data_shipment_voucher_info);
+
+            if (empty($data_shipment_voucher_info)) {
+                return response()->json(['status'=>0,'message'=>'Error']);
+            }
+            $data_shipment_id=$data_shipment_voucher_info->data_shipment_id;
+
+            $data_shipment_voucher_query->update($tmp_shipment_voucher);
+
+            data_shipment::where('data_shipment_id',$data_shipment_id)->update($tmp_shipment);
+
+            $all_voucher=$data_shipment_voucher_query->get();
+            foreach ($all_voucher as $key1 => $voucher) {
+                $data_shipment_voucher_id=$voucher->data_shipment_voucher_id;
+
+                $data_shipment_item_query=data_shipment_item::where('data_shipment_voucher_id',$data_shipment_voucher_id)
+                ->where('mes_lis_shi_lin_ite_gtin',$value[110]);
+
+                $data_shipment_item_query->update($tmp_shipment_item);
+                $data_shipment_items=$data_shipment_item_query->get();
+                foreach ($data_shipment_items as $key2 => $data_shipment_item) {
+                    $data_shipment_item_id=$data_shipment_item->data_shipment_item_id;
+                    data_shipment_item_detail::where('data_shipment_item_id',$data_shipment_item_id)
+                    ->update($tmp_shipment_item_details);
+                }
+
+            }
+
+
+            // data_shipment_item_detail
+            // mes_lis_shi_lin_ite_gtin
+            // $data_shipment_array[]=$tmp_shipment;
+            // $data_shipment_voucher_array[]=$tmp_shipment_voucher;
+            // $data_shipment_item_array[]=$tmp_shipment_item;
+            // $data_shipment_item_details_array[]=$tmp_shipment_item_details;
         }
-        return $data_shipment_array;
-        // return [
-        //     // data_shipment_vouchers
-        //     '',
-        //     '',
-        //     'mes_lis_shi_par_sel_code',
-        //     'mes_lis_shi_par_sel_gln',
-        //     'mes_lis_shi_par_sel_name',
-        //     'mes_lis_shi_par_sel_name_sbcs',
-        //     'mes_lis_shi_par_sel_branch_number',
-        //     'mes_lis_shi_par_sel_ship_location_code',
-        //     'mes_lis_shi_log_shi_gln',
-        //     'mes_lis_shi_log_del_route_code',
-        //     'mes_lis_shi_log_del_delivery_service_code',
-        //     'mes_lis_shi_log_del_stock_transfer_code',
-        //     'mes_lis_shi_log_del_delivery_code',
-        //     'mes_lis_shi_log_del_delivery_time',
-        //     'mes_lis_shi_log_del_transportation_code',
-        //     'mes_lis_shi_log_log_barcode_print',
-        //     'mes_lis_shi_log_log_category_name_print1',
-        //     'mes_lis_shi_log_log_category_name_print2',
-        //     'mes_lis_shi_log_log_receiver_abbr_name',
-        //     'mes_lis_shi_log_log_text',
-        //     'mes_lis_shi_log_log_text_sbcs',
-        //     'mes_lis_shi_tra_goo_major_category',
-        //     'mes_lis_shi_tra_goo_sub_major_category',
-        //     'mes_lis_shi_tra_dat_order_date',
-        //     'mes_lis_shi_tra_dat_delivery_date',
-        //     'mes_lis_shi_tra_dat_delivery_date_to_receiver',
-        //     'mes_lis_shi_tra_dat_transfer_of_ownership_date',
-        //     'mes_lis_shi_tra_dat_campaign_start_date',
-        //     'mes_lis_shi_tra_dat_campaign_end_date',
-        //     'mes_lis_shi_tra_ins_goods_classification_code',
-        //     'mes_lis_shi_tra_ins_order_classification_code',
-        //     'mes_lis_shi_tra_ins_ship_notification_request_code',
-        //     'mes_lis_shi_tra_ins_private_brand_code',
-        //     'mes_lis_shi_tra_ins_temperature_code',
-        //     'mes_lis_shi_tra_ins_liquor_code',
-        //     'mes_lis_shi_tra_ins_trade_type_code',
-        //     'mes_lis_shi_tra_ins_paper_form_less_code',
-        //     'mes_lis_shi_tra_fre_trade_number_request_code',
-        //     'mes_lis_shi_tra_fre_package_code',
-        //     'mes_lis_shi_tra_fre_variable_measure_item_code',
-        //     'mes_lis_shi_tra_tax_tax_type_code',
-        //     'mes_lis_shi_tra_tax_tax_rate',
-        //     'mes_lis_shi_tra_not_text',
-        //     'mes_lis_shi_tra_not_text_sbcs',
-        //     'mes_lis_shi_tot_tot_net_price_total',
-        //     'mes_lis_shi_tot_tot_selling_price_total',
-        //     'mes_lis_shi_tot_tot_tax_total',
-        //     'mes_lis_shi_tot_tot_item_total',
-        //     'mes_lis_shi_tot_tot_unit_total',
-        //     'mes_lis_shi_tot_fre_unit_weight_total',
-        //     // data_shipment_items
-        //     'mes_lis_shi_lin_lin_line_number',
-        //     'mes_lis_shi_lin_lin_additional_line_number',
-        //     'mes_lis_shi_lin_fre_trade_number',
-        //     'mes_lis_shi_lin_fre_line_number',
-        //     'mes_lis_shi_lin_goo_minor_category',
-        //     'mes_lis_shi_lin_goo_detailed_category',
-        //     'mes_lis_shi_lin_ite_scheduled_date',
-        //     'mes_lis_shi_lin_ite_deadline_date',
-        //     'mes_lis_shi_lin_ite_center_delivery_instruction_code',
-        //     'mes_lis_shi_lin_ite_maker_code',
-        //     'mes_lis_shi_lin_ite_gtin',
-        //     'mes_lis_shi_lin_ite_order_item_code',
-        //     'mes_lis_shi_lin_ite_code_type',
-        //     'mes_lis_shi_lin_ite_supplier_item_code',
-        //     'mes_lis_shi_lin_ite_name',
-        //     'mes_lis_shi_lin_ite_name_sbcs',
-        //     'mes_lis_shi_lin_ite_ite_spec',
-        //     'mes_lis_shi_lin_ite_ite_spec_sbcs',
-        //     'mes_lis_shi_lin_ite_col_color_code',
-        //     'mes_lis_shi_lin_ite_col_description',
-        //     'mes_lis_shi_lin_ite_col_description_sbcs',
-        //     'mes_lis_shi_lin_ite_siz_size_code',
-        //     'mes_lis_shi_lin_ite_siz_description',
-        //     'mes_lis_shi_lin_ite_siz_description_sbcs',
-        //     'mes_lis_shi_lin_fre_packing_quantity',
-        //     'mes_lis_shi_lin_fre_prefecture_code',
-        //     'mes_lis_shi_lin_fre_country_code',
-        //     'mes_lis_shi_lin_fre_field_name',
-        //     'mes_lis_shi_lin_fre_water_area_code',
-        //     'mes_lis_shi_lin_fre_water_area_name',
-        //     'mes_lis_shi_lin_fre_area_of_origin',
-        //     'mes_lis_shi_lin_fre_item_grade',
-        //     'mes_lis_shi_lin_fre_item_class',
-        //     'mes_lis_shi_lin_fre_brand',
-        //     'mes_lis_shi_lin_fre_item_pr',
-        //     'mes_lis_shi_lin_fre_bio_code',
-        //     'mes_lis_shi_lin_fre_breed_code',
-        //     'mes_lis_shi_lin_fre_cultivation_code',
-        //     'mes_lis_shi_lin_fre_defrost_code',
-        //     'mes_lis_shi_lin_fre_item_preservation_code',
-        //     'mes_lis_shi_lin_fre_item_shape_code',
-        //     'mes_lis_shi_lin_fre_use',
-        //     'mes_lis_shi_lin_sta_statutory_classification_code',
-        //     'mes_lis_shi_lin_amo_item_net_price',
-        //     'mes_lis_shi_lin_amo_item_net_price_unit_price',
-        //     'mes_lis_shi_lin_amo_item_selling_price',
-        //     'mes_lis_shi_lin_amo_item_selling_price_unit_price',
-        //     'mes_lis_shi_lin_amo_item_tax',
-        //     'mes_lis_shi_lin_qua_unit_multiple',
-        //     'mes_lis_shi_lin_qua_unit_of_measure',
-        //     'mes_lis_shi_lin_qua_package_indicator',
-        //     'mes_lis_shi_lin_qua_ord_quantity',
-        //     'mes_lis_shi_lin_qua_ord_num_of_order_units',
-        //     'mes_lis_shi_lin_fre_unit_weight',
-        //     'mes_lis_shi_lin_fre_unit_weight_code',
-        //     'mes_lis_shi_lin_fre_item_weight',
-        //     'mes_lis_shi_lin_fre_order_weight',
-        //     // data_shipment_item_details
-        //     'mes_lis_shi_lin_pac_itf_code',
-        //     'mes_lis_shi_lin_pac_package_indicator',
-        //     'mes_lis_shi_lin_pac_number_of_packages',
-        //     'mes_lis_shi_lin_pac_con_sell_by_date',
-        //     'mes_lis_shi_lin_pac_con_production_date',
-        //     'mes_lis_shi_lin_pac_con_lot_number',
-        // ];
+        // $shipment_array=array(
+        //     'data_shipment'=>$data_shipment_array,
+        //     'data_shipment_voucher'=>$data_shipment_voucher_array,
+        //     'data_shipment_item'=>$data_shipment_item_array,
+        //     'data_shipment_item_details'=>$data_shipment_item_details_array,
+        // );
+        // return $shipment_array;
+        return response()->json(['message'=>"Success",'status'=>1]);
+
     }
 
 
