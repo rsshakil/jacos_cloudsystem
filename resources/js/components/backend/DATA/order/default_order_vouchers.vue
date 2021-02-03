@@ -765,10 +765,10 @@ export default {
                   formData.append("file", file);
                 axios.post(this.BASE_URL + "api/shipment_update",formData).then(({data})=>{
                   console.log(data);
-                //   _this.alert_icon='success';
-                //     _this.alert_title="";
-                //     _this.alert_text=data.csv_data_count+"件の確定伝票を送信しました。";
-                //     _this.sweet_normal_alert();
+                  _this.alert_icon='success';
+                    _this.alert_title="Inserted";
+                    _this.alert_text="Shipment CSV Updated";
+                    _this.sweet_normal_alert();
                 })
                }
       })

@@ -28,7 +28,7 @@ export default {
         };
     },
     methods: {
-        // Database created and updated datetime conversion 
+        // Database created and updated datetime conversion
         getbuyerJsonSettingvalue(){
             axios.get(this.BASE_URL + "api/buyerJsonSetting/"+this.byr_buyer_id)
             .then(({data}) => {
@@ -39,17 +39,19 @@ export default {
         getbyrjsonValueBykeyName(arrName,arrKey,orderType="orders"){
             if(arrKey!=''){
         var newarr  =[];
-              var values =  this.buyer_settings[orderType][arrName].map(function(o) {
+        var buyer_settings_length=Object.keys(this.buyer_settings).length;
+        if (buyer_settings_length>0) {
+            var values =  this.buyer_settings[orderType][arrName].map(function(o) {
                 var parsedobj = JSON.parse(JSON.stringify(o));
                 if(typeof(parsedobj[arrKey]) !== 'undefined' || parsedobj[arrKey] !== null){
                   newarr[Object.keys(parsedobj)[0]]=Object.values(parsedobj)[0];
                 }
                 return newarr;
-                // return o[arrKey];
-                 
                   });
-             console.log(values);
             return values[0][arrKey];
+        }else{
+            console.log('Object not found yet');
+        }
             }else{
               return '';
             }
@@ -92,7 +94,7 @@ export default {
             this.app.req.post(this.BASE_URL + "logout").then(() => {
                 // this.app.user=null;
                 // this.$router.push('/login');
-                
+
                 window.location.reload();
                 this.$router.push("home");
                 his.loader.hide();
@@ -213,7 +215,7 @@ export default {
         init() {
             // let access_token = localStorage
             let access_token = document.cookie;
-            console.log(access_token);
+            // console.log(access_token);
             // console.log(localStorage);
             // return 0;
             if (!access_token) {
