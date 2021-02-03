@@ -11,6 +11,7 @@ use App\Models\ADM\User;
 use App\Models\CMN\cmn_scenario;
 use App\Http\Controllers\API\DATA\Data_Controller;
 use App\Exports\ShipmentCSVExport;
+use App\Exports\ShipmentCSVExportAllData;
 
 class ShipmentConroller extends Controller
 {
