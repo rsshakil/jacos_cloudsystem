@@ -130,7 +130,7 @@
             <div class="row">
               <div class="col-4" style="padding-left: 0 !important">
                 <p class="mb-0">検索結果のダウンロードはこちら</p>
-                <b-button
+                <!--<b-button
                   class="active"
                   variant="primary"
                   v-on:click="order_download"
@@ -140,8 +140,25 @@
                     animation="fade"
                     font-scale="1.2"
                   ></b-icon>
-                  ダウンロード</b-button
-                >
+                  ダウンロード</b-button>-->
+
+                <div class="btn-group">
+  <button type="button" class="btn btn-primary active dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <b-icon
+                    icon="download"
+                    animation="fade"
+                    font-scale="1.2"
+                  ></b-icon>
+                  ダウンロード
+  </button>
+  <div class="dropdown-menu dropdown-menu-right">
+    <button class="dropdown-item" @click="order_download(1)" type="button">CSV</button>
+    <button class="dropdown-item" @click="order_download(2)" type="button">JCA</button>
+  </div>
+</div>
+
+
+
               </div>
               <div class="col-3">
                 <p class="mb-0">商品別の更新はこちら</p>
@@ -815,7 +832,7 @@ export default {
       this.edit_order_modal = true;
     },
     // order data download
-    order_download() {
+    order_download(downloadType=1) {
       console.log("order_download");
       // axios
       //   .post(this.BASE_URL + "api/scenario_exec", {
@@ -835,8 +852,8 @@ export default {
       //   });
 //downloadcsvshipment_confirm
 var _this = this;
-          axios.post(this.BASE_URL + "api/downloadcsvshipment_confirm",{data_order_id:(this.param_data.data_order_id),order_info:this.order_info}).then(({data})=>{
-                console.log(data);
+          axios.post(this.BASE_URL + "api/downloadcsvshipment_confirm",{data_order_id:(this.param_data.data_order_id),order_info:this.order_info,downloadType:downloadType}).then(({data})=>{
+              //  console.log(data);
                 const link = document.createElement("a");
                 link.href = data.url;
                 link.setAttribute("download", "shipmentcsvfile.csv"); //ここらへんは適当に設定する
@@ -845,9 +862,9 @@ var _this = this;
                 axios
           .get(_this.BASE_URL + "api/deletedownloadedshipmentCsv/"+data.new_file_name)
           .then((data) => {
-            console.log(data);
+            //console.log(data);
           });
-                link.revokeObjectURL();
+                //link.revokeObjectURL();
                 })
 
     },
