@@ -23,18 +23,25 @@ class ShipmentConroller extends Controller
     {
         //return $request->all();
         // return "Hi";
-        $new_file_name = "Shipment_csv_".date('Y-m-d')."_".time().".csv";
-        $download_file_url = \Config::get('app.url')."storage/app".config('const.SHIPMENT_CSV_PATH')."/". $new_file_name;
-        $csv_data_count = Data_Controller::get_shipment_data($request)->count();
-        (new ShipmentCSVExport($request))->store(config('const.SHIPMENT_CSV_PATH').'/'.$new_file_name);
-        return response()->json(['message' => 'Success','status'=>1, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
+        // $downloadType=$request->downloadType;
+        // if ($downloadType==1) {
+            $new_file_name = "Shipment_csv_".date('Y-m-d')."_".time().".csv";
+            $download_file_url = \Config::get('app.url')."storage/app".config('const.SHIPMENT_CSV_PATH')."/". $new_file_name;
+            $csv_data_count = Data_Controller::get_shipment_data($request)->count();
+            (new ShipmentCSVExport($request))->store(config('const.SHIPMENT_CSV_PATH').'/'.$new_file_name);
+            return response()->json(['message' => 'Success','status'=>1, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
+        // }
     }
     public function downloadShipmentCsv(Request $request)
     {
-        $new_file_name = "Shipment_csv_".date('Y-m-d')."_".time().".csv";
-        $download_file_url = \Config::get('app.url')."storage/app".config('const.SHIPMENT_CSV_PATH')."/". $new_file_name;
-        $csv_data_count = Data_Controller::get_shipment_data($request)->count();
-        (new ShipmentCSVExport($request))->store(config('const.SHIPMENT_CSV_PATH').'/'.$new_file_name);
+        $downloadType=$request->downloadType;
+        if ($downloadType==1) {
+            $new_file_name = "Shipment_csv_".date('Y-m-d')."_".time().".csv";
+            $download_file_url = \Config::get('app.url')."storage/app".config('const.SHIPMENT_CSV_PATH')."/". $new_file_name;
+            $csv_data_count = Data_Controller::get_shipment_data($request)->count();
+            (new ShipmentCSVExport($request))->store(config('const.SHIPMENT_CSV_PATH').'/'.$new_file_name);
+        }
+
         return response()->json(['message' => 'Success','status'=>1,'new_file_name'=>$new_file_name, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
     }
     public function deletedownloadedshipmentCsv($fileUrl){
