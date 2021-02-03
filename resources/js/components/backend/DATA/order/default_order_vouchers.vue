@@ -65,14 +65,14 @@
             <td class="cl_custom_color">定／特</td>
             <td>
               <select class="form-control" v-model="form.fixedSpecial" style="width: 220px">
-                <option value="">全て</option>
+                <option value="*">全て</option>
                 <option :value="item" v-for="item in fixedSpecialOptionList">{{ item }}</option>
               </select>
             </td>
             <td class="cl_custom_color">確定状況</td>
             <td>
               <select class="form-control" v-model="form.situation" style="width: 220px">
-              <option value="">全て</option>
+              <option value="*">全て</option>
                 <option :value="item" v-for="item in situationOptionList">{{ item }}</option>
               </select>
             </td>

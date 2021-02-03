@@ -57,7 +57,7 @@
           </tr>
           <tr>
             <td class="cl_custom_color">税区分・税率</td>
-            <td>{{order_item_shipment_data_headTable.mes_lis_shi_tra_tax_tax_type_code}} {{order_item_shipment_data_headTable.mes_lis_shi_tra_tax_tax_rate}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_tax_tax_type_code',order_item_shipment_data_headTable.mes_lis_shi_tra_tax_tax_type_code,'orders')}}</td>
+            <td>{{order_item_shipment_data_headTable.mes_lis_shi_tra_tax_tax_type_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_tax_tax_type_code',order_item_shipment_data_headTable.mes_lis_shi_tra_tax_tax_type_code,'orders')}} {{order_item_shipment_data_headTable.mes_lis_shi_tra_tax_tax_rate}} %</td>
             <td class="cl_custom_color_extra">実納品日</td>
             <td colspan="3"><input class="form-control" type="date" v-model="order_item_shipment_data_headTable.mes_lis_shi_tra_dat_revised_delivery_date"></td>
           </tr>
@@ -126,7 +126,11 @@
                  <input type="text" class="form-control" v-model="order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price">
                 {{order_item_detail_list.mes_lis_ord_lin_amo_item_selling_price_unit_price}}</td>
                 <td>{{order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price}}</td>
-                <td>{{order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code}} {{getbyrjsonValueBykeyName('mes_lis_shi_lin_qua_sto_reason_code',order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code,'shipments')}}</td>
+                <td>{{order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code}} {{getbyrjsonValueBykeyName('mes_lis_shi_lin_qua_sto_reason_code',order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code,'shipments')}}
+                <select v-model="order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code" class="form-control ">
+                <option v-for="item in buyer_setting_valuess.shipments.mes_lis_shi_lin_qua_sto_reason_code" :value="Object.keys(item)[0]">{{Object.values(item)[0]}}</option>
+                </select>
+                </td>
               </tr>
             </tbody>
             <tfoot>
@@ -299,6 +303,7 @@ export default {
       order_detail_lists: {},
       order_item_detail_lists: {},
       order_item_lists: {},
+      buyer_setting_valuess:{},
       order_item_shipment_data_headTable: {},
       order_date: "",
       order_detail_list: [],
@@ -319,7 +324,14 @@ export default {
     };
   },
   methods: {
-    
+    getbuyerJsonSettings(){
+            axios.get(this.BASE_URL + "api/buyerJsonSetting/"+this.byr_buyer_id)
+            .then(({data}) => {
+              this.buyer_setting_valuess = JSON.parse(data.buyer_settings);
+              console.log(this.buyer_setting_valuess);
+            // this.buyer_settings= this.buyer_settings.orders;
+            });
+        },
     checkAll() {
       this.isCheckAll = !this.isCheckAll;
       this.selected = [];
@@ -456,7 +468,7 @@ export default {
     Fire.$emit('permission_check_for_buyer',this.$session.get('byr_buyer_id'));
 console.log('first');
 
-
+this.getbuyerJsonSettings();
     // console.log(this.$route.query);
     this.param_data=this.$route.query
     console.log(this.$session.get('voucher_page_query_param'));
