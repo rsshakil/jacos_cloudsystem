@@ -37,10 +37,15 @@ export default {
             });
         },
         getbyrjsonValueBykeyName(arrName,arrKey,orderType="orders"){
+            var buyer_settings_length=Object.keys(this.buyer_settings).length;
+            if(buyer_settings_length==0){
+                this.getbuyerJsonSettingvalue();
+            }
+           
             if(arrKey!=''){
         var newarr  =[];
-        var buyer_settings_length=Object.keys(this.buyer_settings).length;
-        if (buyer_settings_length>0) {
+        var buyer_settings_length_check=Object.keys(this.buyer_settings).length;
+        if (buyer_settings_length_check>0) {
             var values =  this.buyer_settings[orderType][arrName].map(function(o) {
                 var parsedobj = JSON.parse(JSON.stringify(o));
                 if(typeof(parsedobj[arrKey]) !== 'undefined' || parsedobj[arrKey] !== null){
@@ -296,7 +301,7 @@ export default {
     },
     created() {
         this.byr_buyer_id = this.$session.get('byr_buyer_id');
-        this.getbuyerJsonSettingvalue();
+        //this.getbuyerJsonSettingvalue();
         // this.user_data = this.app._data;
 
         // this.global_user_id = Globals.user_info_id;
