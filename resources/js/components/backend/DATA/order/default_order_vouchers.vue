@@ -579,6 +579,7 @@ export default {
       situationOptionList:['未確定あり','確定済'],
       fixedSpecialOptionList:['未印刷あり','未印刷あり'],
       deliveryDestnationOptionList:['店舗','物流センター'],
+      date_null:false,
       form: new Form({
         printingStatus:'',
         situation:'',
@@ -619,12 +620,30 @@ export default {
     checkAll() {
       this.isCheckAll = !this.isCheckAll;
       this.selected = [];
-      var temp_seleted = [];
+      var null_seleted = [];
+      var not_null_seleted = [];
+    //   console.log(this.order_detail_lists.data[0].decision_datetime)
+
       if (this.isCheckAll) {
         for (var key in this.order_detail_lists.data) {
             this.selected.push(this.order_detail_lists.data[key].data_shipment_voucher_id);
+            if (this.order_detail_lists.data[key].decision_datetime) {
+
+                not_null_seleted.push(this.order_detail_lists.data[key].data_shipment_voucher_id);
+            }else{
+                null_seleted.push(this.order_detail_lists.data[key].data_shipment_voucher_id);
+            }
+
         }
       }
+      console.log(this.select_field_per_page_num)
+      if (null_seleted.length<(this.select_field_per_page_num)) {
+        this.alert_text = "対象となる伝票確定を取消しますがよろしいでしょうか。";
+        this.date_null=true;
+        this.updateBuyerDecissionDateTime(false)
+      }
+    //   console.log(null_seleted)
+    //   console.log(not_null_seleted)
     },
     updateCheckall() {
       if (this.selected.length == this.order_detail_lists.data.length) {
@@ -632,20 +651,6 @@ export default {
       } else {
         this.isCheckAll = false;
       }
-    },
-    decissionDateUpdate(data_shipment_voucher_id){
-
-        var _this=this;
-        this.alert_icon = "warning";
-        this.alert_title = "";
-        this.alert_text = "伝票確定を取消しますがよろしいでしょうか。";
-        this.yes_btn = "はい";
-        this.cancel_btn = "キャンセル";
-        this.confirm_sweet().then((result) => {
-                if (result.value) {
-                    console.log(data_shipment_voucher_id)
-                }
-        })
     },
 
     update_checked_item_list() {
@@ -724,42 +729,57 @@ export default {
           console.log(response);
         });
     },
+    decissionDateUpdate(data_shipment_voucher_id){
+        this.selected=[];
+        (this.selected).push(data_shipment_voucher_id);
+        this.alert_text = "伝票確定を取消しますがよろしいでしょうか。";
+        this.date_null=true;
+        this.updateBuyerDecissionDateTime()
+    },
     updateDatetimeDecessionfield() {
-      this.selectedNum = this.selected.length;
+        this.date_null=false;
+        this.alert_text = (this.selected.length)+"件の伝票を確定しますがよろしいでしょうか。";
+        this.updateBuyerDecissionDateTime()
+
+    },
+    updateBuyerDecissionDateTime(last_warning=true){
+        this.selectedNum = this.selected.length;
       if(this.selectedNum>0){
       var _this=this;
       this.alert_icon = "warning";
       this.alert_title = "";
-      this.alert_text = this.selectedNum+"件の伝票を確定しますがよろしいでしょうか。";
       this.yes_btn = "はい";
       this.cancel_btn = "キャンセル";
       this.confirm_sweet().then((result) => {
               if (result.value) {
-                axios({
-                  method: "POST",
-                  url: this.BASE_URL + "api/update_shipment_detail_bycurrentdatetime",
-                  data: {update_id:this.selected},
-                })
-                  .then(function (response) {
-                    //handle success
+                  console.log(this.selected)
+                //   return 0;
+                axios.post(this.BASE_URL + "api/update_shipment_detail_bycurrentdatetime",{update_id:this.selected,date_null:this.date_null}).then(({data})=>{
                     _this.alert_icon='success';
                     _this.alert_title="";
                     _this.alert_text=_this.selectedNum+"件の伝票を確定しました。";
                     _this.sweet_normal_alert();
                     Fire.$emit("LoadByrorderDetail");
-
-                  })
-                  .catch(function (response) {
+                    this.selected=[];
+                    this.date_null=false;
+                    this.isCheckAll=false
+                }).catch(function (response) {
                     //handle error
-                    console.log(response);
+                    // console.log(response);
                   });
+
+              }else{
+                  this.selected=[];
+                  this.isCheckAll=false
               }
       });
   }else{
-    this.alert_icon = "warning";
+      if (last_warning==true) {
+          this.alert_icon = "warning";
       this.alert_title = "";
       this.alert_text = "対象となる伝票がありません、再度確認して実行してください。";
       this.sweet_normal_alert();
+      }
   }
     },
     shipmentConfirm(){
