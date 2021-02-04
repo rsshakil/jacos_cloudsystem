@@ -151,7 +151,7 @@
             </tfoot>
 
           </table>
-          <button style="float:right" class="btn btn-lg btn-primary pull-right text-right active">
+          <button style="float:right" @click="updateShipmentItemDetails" class="btn btn-lg btn-primary pull-right text-right active">
               更新
             </button>
         </div>
@@ -324,6 +324,32 @@ export default {
     };
   },
   methods: {
+    updateShipmentItemDetails(){
+      var _this = this;
+      console.log("====update======");
+      console.log(this.order_item_detail_lists);
+      console.log(this.order_item_shipment_data_headTable.mes_lis_shi_tra_dat_revised_delivery_date);
+      var order_detailitem = {'items':this.order_item_detail_lists,'updated_date':this.order_item_shipment_data_headTable.mes_lis_shi_tra_dat_revised_delivery_date};
+      axios({
+        method: "POST",
+        url: this.BASE_URL + "api/update_shipment_item_details",
+        data: order_detailitem,
+      })
+        .then(function (response) {
+          //handle success
+          console.log(response);
+          _this.alert_icon = "success";
+      _this.alert_title = "";
+      _this.alert_text = "Shipment item data has been updated";
+      _this.sweet_normal_alert();
+          Fire.$emit("LoadByrorderItemDetail");
+        })
+        .catch(function (response) {
+          //handle error
+          console.log(response);
+        });
+      console.log("====update======");
+    },
     getbuyerJsonSettings(){
             axios.get(this.BASE_URL + "api/buyerJsonSetting/"+this.byr_buyer_id)
             .then(({data}) => {

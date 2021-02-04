@@ -86,6 +86,7 @@ Route::post('/update_shipment_detail', 'API\Byr_orderController@update_shipment_
 Route::post('/update_shipment_detail_bycurrentdatetime', 'API\Byr_orderController@update_shipment_detail_bycurrentdatetime');
 Route::post('/shipment_confirm', 'API\DATA\SHIPMENT\ShipmentConroller@shipmentConfirm');
 Route::post('/downloadcsvshipment_confirm', 'API\DATA\SHIPMENT\ShipmentConroller@downloadShipmentCsv');
+Route::post('/update_shipment_item_details', 'API\DATA\SHIPMENT\ShipmentConroller@update_shipment_item_details');
 Route::get('/deletedownloadedshipmentCsv/{fileUrl}', 'API\DATA\SHIPMENT\ShipmentConroller@deletedownloadedshipmentCsv');
 Route::post('/cmn_user_create', 'API\CMN\CommonController@cmn_user_create');
 Route::post('/slr_seller_user_create', 'API\BYR\ByrController@slr_seller_user_create');
