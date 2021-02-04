@@ -726,6 +726,7 @@ export default {
     },
     updateDatetimeDecessionfield() {
       this.selectedNum = this.selected.length;
+      if(this.selectedNum>0){
       var _this=this;
       this.alert_icon = "warning";
       this.alert_title = "";
@@ -753,7 +754,13 @@ export default {
                     console.log(response);
                   });
               }
-      })
+      });
+  }else{
+    this.alert_icon = "warning";
+      this.alert_title = "";
+      this.alert_text = "対象となる伝票がありません、再度確認して実行してください。";
+      this.sweet_normal_alert();
+  }
     },
     shipmentConfirm(){
       var _this=this;
