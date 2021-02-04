@@ -13,6 +13,9 @@ use App\Http\Controllers\API\DATA\Data_Controller;
 use App\Exports\ShipmentCSVExport;
 use App\Exports\ShipmentCSVExportAllData;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
+use App\Models\BYR\byr_shipment_item;
+use App\Models\DATA\SHIPMENT\data_shipment_item;
+use App\Models\DATA\SHIPMENT\data_shipment_voucher;
 
 class ShipmentConroller extends Controller
 {
@@ -66,5 +69,37 @@ class ShipmentConroller extends Controller
             unlink(storage_path().'/app/'.$path);
         }
         return $update_status;
+    }
+
+    public function update_shipment_item_details(Request $request){
+        //return $request->all();
+        $items = $request->items;
+        // print_r($items[0]['data_shipment_voucher_id']);exit;
+        // echo $items[0]->data_shipment_voucher_id;exit;
+        $updated_date = $request->updated_date;
+        data_shipment_voucher::where('data_shipment_voucher_id', $items[0]['data_shipment_voucher_id'])->update(['mes_lis_shi_tra_dat_revised_delivery_date'=>$updated_date]);
+        foreach($items as $item){
+            data_shipment_item::where('data_shipment_item_id', $item['data_shipment_item_id'])->update([
+               // 'mes_lis_shi_tra_dat_revised_delivery_date'=>$item->mes_lis_shi_tra_dat_revised_delivery_date,
+                // 'mes_lis_shi_tot_tot_net_price_total'=>$item->mes_lis_shi_tot_tot_net_price_total,
+                // 'mes_lis_shi_tot_tot_selling_price_total'=>$item->mes_lis_shi_tot_tot_selling_price_total,
+                // 'mes_lis_shi_tot_tot_tax_total'=>$item->mes_lis_shi_tot_tot_tax_total,
+                // 'mes_lis_shi_tot_tot_item_total'=>$item->mes_lis_shi_tot_tot_item_total,
+                // 'mes_lis_shi_tot_tot_unit_total'=>$item->mes_lis_shi_tot_tot_unit_total,
+                // 'mes_lis_shi_tot_fre_unit_weight_total'=>$item->mes_lis_shi_tot_fre_unit_weight_total,
+
+                'mes_lis_shi_lin_qua_shi_quantity'=>$item['mes_lis_shi_lin_qua_shi_quantity'],
+                'mes_lis_shi_lin_qua_shi_num_of_order_units'=>$item['mes_lis_shi_lin_qua_shi_num_of_order_units'],
+                'mes_lis_shi_lin_qua_sto_quantity'=>$item['mes_lis_shi_lin_qua_sto_quantity'],
+                'mes_lis_shi_lin_qua_sto_num_of_order_units'=>$item['mes_lis_shi_lin_qua_sto_num_of_order_units'],
+                'mes_lis_shi_lin_qua_sto_reason_code'=>$item['mes_lis_shi_lin_qua_sto_reason_code'],
+                'mes_lis_shi_lin_amo_item_net_price'=>$item['mes_lis_shi_lin_amo_item_net_price'],
+                'mes_lis_shi_lin_amo_item_net_price_unit_price'=>$item['mes_lis_shi_lin_amo_item_net_price_unit_price'],
+                'mes_lis_shi_lin_amo_item_selling_price'=>$item['mes_lis_shi_lin_amo_item_selling_price'],
+                'mes_lis_shi_lin_amo_item_selling_price_unit_price'=>$item['mes_lis_shi_lin_amo_item_selling_price_unit_price'],
+            ]);
+        }
+        
+        return response()->json(['success' => '1']);
     }
 }
