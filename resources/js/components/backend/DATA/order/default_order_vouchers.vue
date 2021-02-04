@@ -215,7 +215,7 @@
                 :key="index"
               >
                 <td>{{(order_detail_lists.current_page*select_field_per_page_num)-select_field_per_page_num + index+1}}</td>
-                <td><span v-if="order_detail_list.decision_datetime!=null">済</span><span v-else><input  type="checkbox" v-bind:value='order_detail_list.data_shipment_voucher_id' v-model='selected' @change='updateCheckall()'></span></td>
+                <td><span v-if="order_detail_list.decision_datetime!=null"><b-button pill variant="info" @click="decissionDateUpdate(order_detail_list.data_shipment_voucher_id)">済</b-button></span><span v-else><input  type="checkbox" v-bind:value='order_detail_list.data_shipment_voucher_id' v-model='selected' @change='updateCheckall()'></span></td>
                 <td>{{ order_detail_list.mes_lis_shi_par_shi_code }}</td>
                 <td>
                   {{ order_detail_list.mes_lis_shi_par_rec_code }}
@@ -622,15 +622,8 @@ export default {
       var temp_seleted = [];
       if (this.isCheckAll) {
         for (var key in this.order_detail_lists.data) {
-          // console.log(this.order_detail_lists.data[key].data_shipment_voucher_id);
-			                  this.selected.push(this.order_detail_lists.data[key].data_shipment_voucher_id);
-			                }
-        // this.order_detail_lists.data.forEach(function (order_detail_list) {
-        //   // temp_seleted.push(order_detail_list.byr_order_detail_id);
-        //   console.log(order_detail_list);
-        //   this.selected.push(order_detail_list.byr_order_detail_id);
-        // });
-        // this.selected = temp_seleted;
+            this.selected.push(this.order_detail_lists.data[key].data_shipment_voucher_id);
+        }
       }
     },
     updateCheckall() {
@@ -639,6 +632,20 @@ export default {
       } else {
         this.isCheckAll = false;
       }
+    },
+    decissionDateUpdate(data_shipment_voucher_id){
+
+        var _this=this;
+        this.alert_icon = "warning";
+        this.alert_title = "";
+        this.alert_text = "伝票確定を取消しますがよろしいでしょうか。";
+        this.yes_btn = "はい";
+        this.cancel_btn = "キャンセル";
+        this.confirm_sweet().then((result) => {
+                if (result.value) {
+                    console.log(data_shipment_voucher_id)
+                }
+        })
     },
 
     update_checked_item_list() {
