@@ -23,7 +23,7 @@
             <td class="cl_custom_color">便</td>
             <td>{{ order_info.mes_lis_shi_log_del_delivery_service_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_log_del_delivery_service_code',order_info.mes_lis_shi_log_del_delivery_service_code,'orders')}}</td>
             <td class="cl_custom_color">配送温度区分</td>
-            <td>{{ order_info.mes_lis_shi_tra_ins_temperature_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_info.mes_lis_ord_tra_ins_temperature_code,'orders')}}</td>
+            <td>{{ order_info.mes_lis_shi_tra_ins_temperature_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_info.mes_lis_shi_tra_ins_temperature_code,'orders')}}</td>
           </tr>
         </table>
       </div>
