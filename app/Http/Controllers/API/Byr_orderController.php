@@ -236,8 +236,9 @@ class Byr_orderController extends Controller
     public function orderItemDetails($data_shipment_voucher_id)
     {
         $orderItem = collect(\DB::select("
-        SELECT * FROM data_order_items
+        SELECT data_shipment_vouchers.*,data_orders.* FROM data_order_items
         inner join data_order_vouchers on data_order_vouchers.data_order_voucher_id=data_order_items.data_order_voucher_id
+        inner join data_shipment_vouchers on data_shipment_vouchers.data_order_voucher_id=data_order_items.data_order_voucher_id
         inner join data_orders on data_orders.data_order_id=data_order_vouchers.data_order_id
         where data_order_items.data_order_voucher_id = '$data_shipment_voucher_id'
         "))->first();

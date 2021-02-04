@@ -8,17 +8,17 @@
             <td class="cl_custom_color">受信日時</td>
             <td>{{order_item_lists.receive_datetime}}</td>
             <td class="cl_custom_color">取引先</td>
-            <td colspan="5">{{order_item_lists.mes_lis_ord_par_sel_code}} {{order_item_lists.mes_lis_ord_par_sel_name}}</td>
+            <td colspan="5">{{order_item_lists.mes_lis_shi_par_sel_code}} {{order_item_lists.mes_lis_shi_par_sel_name}}</td>
           </tr>
           <tr>
             <td class="cl_custom_color">納品日</td>
-            <td>{{order_item_lists.mes_lis_ord_tra_dat_delivery_date}}</td>
+            <td>{{order_item_lists.mes_lis_shi_tra_dat_delivery_date}}</td>
             <td class="cl_custom_color">部門</td>
-            <td>{{order_item_lists.mes_lis_ord_tra_goo_major_category}}</td>
+            <td>{{order_item_lists.mes_lis_shi_tra_goo_major_category}}</td>
             <td class="cl_custom_color">便</td>
             <td> {{order_item_lists.mes_lis_shi_log_del_delivery_service_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_log_del_delivery_service_code',order_item_lists.mes_lis_shi_log_del_delivery_service_code,'orders')}}</td>
             <td class="cl_custom_color">配送温度区分</td>
-            <td>{{order_item_lists.mes_lis_ord_tra_ins_temperature_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_item_lists.mes_lis_ord_tra_ins_temperature_code,'orders')}}</td>
+            <td>{{order_item_lists.mes_lis_shi_tra_ins_temperature_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_item_lists.mes_lis_shi_tra_ins_temperature_code,'orders')}}</td>
           </tr>
         </table>
       </div>
