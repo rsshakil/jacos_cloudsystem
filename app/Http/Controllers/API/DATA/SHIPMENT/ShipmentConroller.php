@@ -12,6 +12,7 @@ use App\Models\CMN\cmn_scenario;
 use App\Http\Controllers\API\DATA\Data_Controller;
 use App\Exports\ShipmentCSVExport;
 use App\Exports\ShipmentCSVExportAllData;
+use PhpOffice\PhpSpreadsheet\Reader\Csv;
 
 class ShipmentConroller extends Controller
 {
@@ -22,9 +23,9 @@ class ShipmentConroller extends Controller
     }
     public function shipmentConfirm(Request $request)
     {
-        //return $request->all();
-        // return "Hi";
-        // $downloadType=$request->downloadType;
+        // downloadType=1 for Csv
+        // downloadType=2 for Fixed length
+
         // if ($downloadType==1) {
             $new_file_name = "Shipment_csv_".date('Y-m-d')."_".time().".csv";
             $download_file_url = \Config::get('app.url')."storage/app".config('const.SHIPMENT_CSV_PATH')."/". $new_file_name;
@@ -39,8 +40,8 @@ class ShipmentConroller extends Controller
         if ($downloadType==1) {
             $new_file_name = "Shipment_csv_".date('Y-m-d')."_".time().".csv";
             $download_file_url = \Config::get('app.url')."storage/app".config('const.SHIPMENT_CSV_PATH')."/". $new_file_name;
-            $csv_data_count = Data_Controller::get_shipment_data_download($request)->count();
-            (new ShipmentCSVExportAllData($request))->store(config('const.SHIPMENT_CSV_PATH').'/'.$new_file_name);
+            $csv_data_count = Data_Controller::get_shipment_data($request)->count();
+            (new ShipmentCSVExport($request))->store(config('const.SHIPMENT_CSV_PATH').'/'.$new_file_name);
         }
 
         return response()->json(['message' => 'Success','status'=>1,'new_file_name'=>$new_file_name, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
