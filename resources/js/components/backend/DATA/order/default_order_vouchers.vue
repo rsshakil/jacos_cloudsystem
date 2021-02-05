@@ -21,9 +21,27 @@
             <td class="cl_custom_color">部門</td>
             <td>{{ order_info.mes_lis_shi_tra_goo_major_category }}</td>
             <td class="cl_custom_color">便</td>
-            <td>{{ order_info.mes_lis_shi_log_del_delivery_service_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_log_del_delivery_service_code',order_info.mes_lis_shi_log_del_delivery_service_code,'orders')}}</td>
+            <td>
+              {{ order_info.mes_lis_shi_log_del_delivery_service_code }}
+              {{
+                getbyrjsonValueBykeyName(
+                  "mes_lis_ord_log_del_delivery_service_code",
+                  order_info.mes_lis_shi_log_del_delivery_service_code,
+                  "orders"
+                )
+              }}
+            </td>
             <td class="cl_custom_color">配送温度区分</td>
-            <td>{{ order_info.mes_lis_shi_tra_ins_temperature_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_info.mes_lis_shi_tra_ins_temperature_code,'orders')}}</td>
+            <td>
+              {{ order_info.mes_lis_shi_tra_ins_temperature_code }}
+              {{
+                getbyrjsonValueBykeyName(
+                  "mes_lis_ord_tra_ins_temperature_code",
+                  order_info.mes_lis_shi_tra_ins_temperature_code,
+                  "orders"
+                )
+              }}
+            </td>
           </tr>
         </table>
       </div>
@@ -35,17 +53,23 @@
           <tr>
             <td class="cl_custom_color">直接納品先コード</td>
             <td>
-              <input
-                type="text"
-                class="form-control topHeaderInputFieldBtn"
-
-              />
-              <button @click="deliverySearchForm1" class="btn btn-primary active">参照</button>
+              <input type="text" class="form-control topHeaderInputFieldBtn" />
+              <button
+                @click="deliverySearchForm1"
+                class="btn btn-primary active"
+              >
+                参照
+              </button>
             </td>
             <td class="cl_custom_color">最終納品先コード</td>
             <td>
               <input type="text" class="form-control topHeaderInputFieldBtn" />
-              <button @click="deliverySearchForm2" class="btn btn-primary active">参照</button>
+              <button
+                @click="deliverySearchForm2"
+                class="btn btn-primary active"
+              >
+                参照
+              </button>
             </td>
             <td class="cl_custom_color">伝票番号</td>
             <td>
@@ -55,34 +79,53 @@
           <tr>
             <td class="cl_custom_color">商品コード</td>
             <td>
-              <input
-                type="text"
-                class="form-control topHeaderInputFieldBtn"
-
-              />
-              <button @click="deliverySearchForm3" class="btn btn-primary active">参照</button>
+              <input type="text" class="form-control topHeaderInputFieldBtn" />
+              <button
+                @click="deliverySearchForm3"
+                class="btn btn-primary active"
+              >
+                参照
+              </button>
             </td>
             <td class="cl_custom_color">定／特</td>
             <td>
-              <select class="form-control" v-model="form.fixedSpecial" style="width: 220px">
+              <select
+                class="form-control"
+                v-model="form.fixedSpecial"
+                style="width: 220px"
+              >
                 <option value="*">全て</option>
-                <option :value="item" v-for="item in fixedSpecialOptionList">{{ item }}</option>
+                <option :value="item" v-for="item in fixedSpecialOptionList">
+                  {{ item }}
+                </option>
               </select>
             </td>
             <td class="cl_custom_color">確定状況</td>
             <td>
-              <select class="form-control" v-model="form.situation" style="width: 220px">
-              <option value="*">全て</option>
-                <option :value="item" v-for="item in situationOptionList">{{ item }}</option>
+              <select
+                class="form-control"
+                v-model="form.situation"
+                style="width: 220px"
+              >
+                <option value="*">全て</option>
+                <option :value="item" v-for="item in situationOptionList">
+                  {{ item }}
+                </option>
               </select>
             </td>
           </tr>
           <tr>
             <td class="cl_custom_color">印刷状況</td>
             <td colspan="7">
-              <select class="form-control" v-model="form.printingStatus" style="width: 220px">
-              <option value="">全て</option>
-                <option :value="item" v-for="item in printingStatusOptionList">{{ item }}</option>
+              <select
+                class="form-control"
+                v-model="form.printingStatus"
+                style="width: 220px"
+              >
+                <option value="">全て</option>
+                <option :value="item" v-for="item in printingStatusOptionList">
+                  {{ item }}
+                </option>
               </select>
             </td>
           </tr>
@@ -103,25 +146,35 @@
         <div class="row">
           <div class="col-5">
             <p>
-              <span class="tableRowsInfo">{{order_detail_lists.from}}〜{{order_detail_lists.to}} 件表示中／全：{{order_detail_lists.total}}件</span>
-              <span class="pagi"
-                >
-              <advanced-laravel-vue-paginate :data="order_detail_lists"
-              :onEachSide="2"
-              previousText="<"
-              nextText=">"
-              alignment="center"
-                @paginateTo="get_all_byr_order_detail"/>
+              <span class="tableRowsInfo"
+                >{{ order_detail_lists.from }}〜{{
+                  order_detail_lists.to
+                }}
+                件表示中／全：{{ order_detail_lists.total }}件</span
+              >
+              <span class="pagi">
+                <advanced-laravel-vue-paginate
+                  :data="order_detail_lists"
+                  :onEachSide="2"
+                  previousText="<"
+                  nextText=">"
+                  alignment="center"
+                  @paginateTo="get_all_byr_order_detail"
+                />
               </span>
               <span class="selectPagi">
-                <select @change="selectNumPerPage" v-model="select_field_per_page_num" class="form-control selectPage">
+                <select
+                  @change="selectNumPerPage"
+                  v-model="select_field_per_page_num"
+                  class="form-control selectPage"
+                >
                   <!--<option value="0">表示行数</option>
                   <option v-for="n in order_detail_lists.last_page" :key="n"
                 :value="n">{{n}}</option>-->
-                <option value="10">10行</option>
-                <option value="20">20行</option>
-                <option value="50">50行</option>
-                <option value="100">100行</option>
+                  <option value="10">10行</option>
+                  <option value="20">20行</option>
+                  <option value="50">50行</option>
+                  <option value="100">100行</option>
                 </select>
               </span>
             </p>
@@ -143,27 +196,46 @@
                   ダウンロード</b-button>-->
 
                 <div class="btn-group">
-  <button type="button" class="btn btn-primary active dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <b-icon
-                    icon="download"
-                    animation="fade"
-                    font-scale="1.2"
-                  ></b-icon>
-                  ダウンロード
-  </button>
-  <div class="dropdown-menu dropdown-menu-right">
-    <button class="dropdown-item" @click="order_download(1)" type="button">CSV</button>
-    <button class="dropdown-item" @click="order_download(2)" type="button">JCA</button>
-  </div>
-</div>
-
-
-
+                  <button
+                    type="button"
+                    class="btn btn-primary active dropdown-toggle"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    <b-icon
+                      icon="download"
+                      animation="fade"
+                      font-scale="1.2"
+                    ></b-icon>
+                    ダウンロード
+                  </button>
+                  <div class="dropdown-menu dropdown-menu-right">
+                    <button
+                      class="dropdown-item"
+                      @click="order_download(1)"
+                      type="button"
+                    >
+                      CSV
+                    </button>
+                    <button
+                      class="dropdown-item"
+                      @click="order_download(2)"
+                      type="button"
+                    >
+                      JCA
+                    </button>
+                  </div>
+                </div>
               </div>
               <div class="col-3">
                 <p class="mb-0">商品別の更新はこちら</p>
-                <router-link to="/order_list/order_list_detail/item_search" class="active btn btn-primary">
-                  商品別登録</router-link>
+                <router-link
+                  to="/order_list/order_list_detail/item_search"
+                  class="active btn btn-primary"
+                >
+                  商品別登録</router-link
+                >
               </div>
               <div class="col-5">
                 <b-form inline>
@@ -190,11 +262,17 @@
             style="overflow-x: scroll"
           >
             <thead>
-            <tr class="first_heading_th">
-              <th></th>
-              <th><input @click="checkAll" v-model='isCheckAll' type="checkbox">全選択</th>
-              <th colspan="9"></th>
-            </tr>
+              <tr class="first_heading_th">
+                <th></th>
+                <th>
+                  <input
+                    @click="checkAll"
+                    v-model="isCheckAll"
+                    type="checkbox"
+                  />全選択
+                </th>
+                <th colspan="9"></th>
+              </tr>
               <tr>
                 <th>No</th>
                 <th>確定</th>
@@ -214,8 +292,35 @@
                 v-for="(order_detail_list, index) in order_detail_lists.data"
                 :key="index"
               >
-                <td>{{(order_detail_lists.current_page*select_field_per_page_num)-select_field_per_page_num + index+1}}</td>
-                <td><span v-if="order_detail_list.decision_datetime!=null"><b-button pill variant="info" @click="decissionDateUpdate(order_detail_list.data_shipment_voucher_id)">済</b-button></span><span v-else><input  type="checkbox" v-bind:value='order_detail_list.data_shipment_voucher_id' v-model='selected' @change='updateCheckall()'></span></td>
+                <td>
+                  {{
+                    order_detail_lists.current_page *
+                      select_field_per_page_num -
+                    select_field_per_page_num +
+                    index +
+                    1
+                  }}
+                </td>
+                <td>
+                  <span v-if="order_detail_list.decision_datetime != null"
+                    ><b-button
+                      pill
+                      variant="info"
+                      @click="
+                        decissionDateUpdate(
+                          order_detail_list.data_shipment_voucher_id
+                        )
+                      "
+                      >済</b-button
+                    ></span
+                  ><span v-else
+                    ><input
+                      type="checkbox"
+                      v-bind:value="order_detail_list.data_shipment_voucher_id"
+                      v-model="selected"
+                      @change="updateCheckall()"
+                  /></span>
+                </td>
                 <td>{{ order_detail_list.mes_lis_shi_par_shi_code }}</td>
                 <td>
                   {{ order_detail_list.mes_lis_shi_par_rec_code }}
@@ -225,7 +330,10 @@
                   <router-link
                     :to="{
                       name: 'order_item_list_detail',
-                      params: { data_order_list_voucher_id: order_detail_list.data_shipment_voucher_id },
+                      params: {
+                        data_order_list_voucher_id:
+                          order_detail_list.data_shipment_voucher_id,
+                      },
                     }"
                     class=""
                     >{{
@@ -236,7 +344,14 @@
                 <td>
                   {{
                     order_detail_list.mes_lis_shi_tra_ins_goods_classification_code
-                  }} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_goods_classification_code',order_detail_list.mes_lis_shi_tra_ins_goods_classification_code,'orders')}}
+                  }}
+                  {{
+                    getbyrjsonValueBykeyName(
+                      "mes_lis_ord_tra_ins_goods_classification_code",
+                      order_detail_list.mes_lis_shi_tra_ins_goods_classification_code,
+                      "orders"
+                    )
+                  }}
                 </td>
                 <td>
                   {{ order_detail_list.mes_lis_shi_tot_tot_net_price_total }}
@@ -259,15 +374,22 @@
               </p>
             </div>
             <div class="pcontentBtom">
-            <label for="updateordershipmentcsv" class="custom-file-upload">
-    <b-icon
+              <label for="updateordershipmentcsv" class="custom-file-upload">
+                <b-icon
                   icon="upload"
                   animation="fade"
                   font-scale="1.2"
-                ></b-icon> アップロード
-</label>
-              <input type="file" @change="shipmentUpdate" id="updateordershipmentcsv" class="form-control uploadBtn" style="display:none;" />
-             <!-- <button class="btn btn-primary active" type="button">
+                ></b-icon>
+                アップロード
+              </label>
+              <input
+                type="file"
+                @change="shipmentUpdate"
+                id="updateordershipmentcsv"
+                class="form-control uploadBtn"
+                style="display: none"
+              />
+              <!-- <button class="btn btn-primary active" type="button">
                 <b-icon
                   icon="upload"
                   animation="fade"
@@ -278,10 +400,18 @@
             </div>
           </div>
           <div class="col-6 text-right">
-            <button @click="updateDatetimeDecessionfield" class="btn btn-lg btn-primary active">
+            <button
+              @click="updateDatetimeDecessionfield"
+              class="btn btn-lg btn-primary active"
+            >
               選択行を伝票確定
             </button>
-            <button class="btn btn-lg btn-danger active" @click="shipmentConfirm">確定データ送信</button>
+            <button
+              class="btn btn-lg btn-danger active"
+              @click="shipmentConfirm"
+            >
+              確定データ送信
+            </button>
           </div>
         </div>
       </div>
@@ -418,25 +548,47 @@
         >
           <tr>
             <td class="cl_custom_color">納品先コード</td>
-            <td><input type="text" class="form-control" v-model="form.deliveryCode"/></td>
+            <td>
+              <input
+                type="text"
+                class="form-control"
+                v-model="form.deliveryCode"
+              />
+            </td>
             <td class="cl_custom_color">納品先名</td>
             <td>
-              <input type="text" class="form-control" v-model="form.deliveryName"/>
+              <input
+                type="text"
+                class="form-control"
+                v-model="form.deliveryName"
+              />
             </td>
           </tr>
           <tr>
             <td class="cl_custom_color">納品先形態区分</td>
             <td>
-            <select class="form-control" v-model="form.deliveryDestnation" style="width: 220px">
-              <option value="">全て</option>
-                <option :value="item" v-for="item in deliveryDestnationOptionList">{{ item }}</option>
+              <select
+                class="form-control"
+                v-model="form.deliveryDestnation"
+                style="width: 220px"
+              >
+                <option value="">全て</option>
+                <option
+                  :value="item"
+                  v-for="item in deliveryDestnationOptionList"
+                >
+                  {{ item }}
+                </option>
               </select>
             </td>
             <td class="cl_custom_color">納品可能日</td>
             <td>
-              <input type="date" class="form-control" v-model="form.deliveryDate">
+              <input
+                type="date"
+                class="form-control"
+                v-model="form.deliveryDate"
+              />
             </td>
-
           </tr>
         </table>
       </div>
@@ -457,25 +609,47 @@
         >
           <tr>
             <td class="cl_custom_color">納品先コード</td>
-            <td><input type="text" class="form-control" v-model="form.deliveryCode"/></td>
+            <td>
+              <input
+                type="text"
+                class="form-control"
+                v-model="form.deliveryCode"
+              />
+            </td>
             <td class="cl_custom_color">納品先名</td>
             <td>
-              <input type="text" class="form-control" v-model="form.deliveryName"/>
+              <input
+                type="text"
+                class="form-control"
+                v-model="form.deliveryName"
+              />
             </td>
           </tr>
           <tr>
             <td class="cl_custom_color">納品先形態区分</td>
             <td>
-            <select class="form-control" v-model="form.deliveryDestnation" style="width: 220px">
-              <option value="">全て</option>
-                <option :value="item" v-for="item in deliveryDestnationOptionList">{{ item }}</option>
+              <select
+                class="form-control"
+                v-model="form.deliveryDestnation"
+                style="width: 220px"
+              >
+                <option value="">全て</option>
+                <option
+                  :value="item"
+                  v-for="item in deliveryDestnationOptionList"
+                >
+                  {{ item }}
+                </option>
               </select>
             </td>
             <td class="cl_custom_color">納品可能日</td>
             <td>
-              <input type="date" class="form-control" v-model="form.deliveryDate">
+              <input
+                type="date"
+                class="form-control"
+                v-model="form.deliveryDate"
+              />
             </td>
-
           </tr>
         </table>
       </div>
@@ -496,45 +670,82 @@
         >
           <tr>
             <td class="cl_custom_color">商品コード（発注用）</td>
-            <td><input type="text" class="form-control" v-model="form.deliveryCode"/></td>
+            <td>
+              <input
+                type="text"
+                class="form-control"
+                v-model="form.deliveryCode"
+              />
+            </td>
             <td class="cl_custom_color">JANコード</td>
             <td>
-              <input type="text" class="form-control" v-model="form.deliveryName"/>
+              <input
+                type="text"
+                class="form-control"
+                v-model="form.deliveryName"
+              />
             </td>
           </tr>
 
           <tr>
             <td class="cl_custom_color">商品名</td>
-            <td colspan="3"><input type="" class="form-control"/></td>
+            <td colspan="3"><input type="" class="form-control" /></td>
           </tr>
           <tr>
             <td class="cl_custom_color">規格</td>
-            <td colspan="3"><input type="" class="form-control"/></td>
+            <td colspan="3"><input type="" class="form-control" /></td>
           </tr>
           <tr>
             <td class="cl_custom_color">取引先コード</td>
-            <td><input type="text" class="form-control" v-model="form.deliveryCode"/></td>
+            <td>
+              <input
+                type="text"
+                class="form-control"
+                v-model="form.deliveryCode"
+              />
+            </td>
             <td class="cl_custom_color">納品先コード</td>
             <td>
-              <input type="text" class="form-control" v-model="form.deliveryName"/>
+              <input
+                type="text"
+                class="form-control"
+                v-model="form.deliveryName"
+              />
             </td>
           </tr>
           <tr>
             <td class="cl_custom_color">部門</td>
             <td>
-            <select class="form-control" v-model="form.deliveryDestnation" style="width: 220px">
-              <option value="">全て</option>
-                <option :value="item" v-for="item in deliveryDestnationOptionList">{{ item }}</option>
+              <select
+                class="form-control"
+                v-model="form.deliveryDestnation"
+                style="width: 220px"
+              >
+                <option value="">全て</option>
+                <option
+                  :value="item"
+                  v-for="item in deliveryDestnationOptionList"
+                >
+                  {{ item }}
+                </option>
               </select>
             </td>
             <td class="cl_custom_color">不定貴区分</td>
             <td>
-              <select class="form-control" v-model="form.deliveryDestnation" style="width: 220px">
-              <option value="">全て</option>
-                <option :value="item" v-for="item in deliveryDestnationOptionList">{{ item }}</option>
+              <select
+                class="form-control"
+                v-model="form.deliveryDestnation"
+                style="width: 220px"
+              >
+                <option value="">全て</option>
+                <option
+                  :value="item"
+                  v-for="item in deliveryDestnationOptionList"
+                >
+                  {{ item }}
+                </option>
               </select>
             </td>
-
           </tr>
         </table>
       </div>
@@ -542,13 +753,13 @@
   </div>
 </template>
 <script>
-import AdvancedLaravelVuePaginate from 'advanced-laravel-vue-paginate';
-import 'advanced-laravel-vue-paginate/dist/advanced-laravel-vue-paginate.css'
+import AdvancedLaravelVuePaginate from "advanced-laravel-vue-paginate";
+import "advanced-laravel-vue-paginate/dist/advanced-laravel-vue-paginate.css";
 
 export default {
   components: {
-        AdvancedLaravelVuePaginate
-    },
+    AdvancedLaravelVuePaginate,
+  },
   // props: ["param_data"],
   data() {
     return {
@@ -571,79 +782,78 @@ export default {
       order_search_modal2: false,
       order_search_modal3: false,
       selected: [],
-      selectedNum:0,
-      select_field_page_num:0,
-      select_field_per_page_num:10,
+      selectedNum: 0,
+      select_field_page_num: 0,
+      select_field_per_page_num: 10,
       isCheckAll: false,
-      printingStatusOptionList:['01 定番','02 準特価','03 特売'],
-      situationOptionList:['未確定あり','確定済'],
-      fixedSpecialOptionList:['未印刷あり','未印刷あり'],
-      deliveryDestnationOptionList:['店舗','物流センター'],
-      date_null:false,
+      printingStatusOptionList: ["01 定番", "02 準特価", "03 特売"],
+      situationOptionList: ["未確定あり", "確定済"],
+      fixedSpecialOptionList: ["未印刷あり", "未印刷あり"],
+      deliveryDestnationOptionList: ["店舗", "物流センター"],
+      date_null: false,
       form: new Form({
-        printingStatus:'',
-        situation:'',
-        fixedSpecial:'',
-        deliveryDestnation:'',
-        deliveryCode:'',
-        deliveryDate:'',
-        deliveryName:'',
+        printingStatus: "",
+        situation: "",
+        fixedSpecial: "",
+        deliveryDestnation: "",
+        deliveryCode: "",
+        deliveryDate: "",
+        deliveryName: "",
       }),
       param_data: [],
       // buyer_settings:null,
     };
   },
   methods: {
-    deliverySearchForm1(){
+    deliverySearchForm1() {
       this.order_search_modal1 = true;
     },
-    deliverySearchForm2(){
+    deliverySearchForm2() {
       this.order_search_modal2 = true;
     },
-    deliverySearchForm3(){
+    deliverySearchForm3() {
       this.order_search_modal3 = true;
     },
-    selectNumPage(){
-      if(this.select_field_page_num!=0){
-
+    selectNumPage() {
+      if (this.select_field_page_num != 0) {
         this.get_all_byr_order_detail(this.select_field_page_num);
       }
-
     },
-    selectNumPerPage(){
-      if(this.select_field_per_page_num!=0){
+    selectNumPerPage() {
+      if (this.select_field_per_page_num != 0) {
         Fire.$emit("LoadByrorderDetail");
         // this.get_all_byr_order_detail(this.select_field_page_num);
       }
-
     },
     checkAll() {
       this.isCheckAll = !this.isCheckAll;
       this.selected = [];
       var null_seleted = [];
       var not_null_seleted = [];
-    //   console.log(this.order_detail_lists.data[0].decision_datetime)
+      //   console.log(this.order_detail_lists.data[0].decision_datetime)
 
       if (this.isCheckAll) {
         for (var key in this.order_detail_lists.data) {
-            this.selected.push(this.order_detail_lists.data[key].data_shipment_voucher_id);
-            if (this.order_detail_lists.data[key].decision_datetime) {
-
-                not_null_seleted.push(this.order_detail_lists.data[key].data_shipment_voucher_id);
-            }else{
-                null_seleted.push(this.order_detail_lists.data[key].data_shipment_voucher_id);
-            }
-
+          this.selected.push(
+            this.order_detail_lists.data[key].data_shipment_voucher_id
+          );
+          if (this.order_detail_lists.data[key].decision_datetime) {
+            not_null_seleted.push(
+              this.order_detail_lists.data[key].data_shipment_voucher_id
+            );
+          } else {
+            null_seleted.push(
+              this.order_detail_lists.data[key].data_shipment_voucher_id
+            );
+          }
         }
       }
-      console.log(this.select_field_per_page_num)
-      if (null_seleted.length<(this.select_field_per_page_num)) {
-        this.alert_text = "対象となる伝票確定を取消しますがよろしいでしょうか。";
-        this.date_null=true;
-        this.updateBuyerDecissionDateTime(false)
+    //   console.log(this.select_field_per_page_num);
+      if (null_seleted.length < this.select_field_per_page_num && null_seleted.length !=0) {
+          this.date_null = true;
+      }else{
+          this.date_null = false;
       }
-    //   console.log(null_seleted)
-    //   console.log(not_null_seleted)
     },
     updateCheckall() {
       if (this.selected.length == this.order_detail_lists.data.length) {
@@ -729,110 +939,131 @@ export default {
           console.log(response);
         });
     },
-    decissionDateUpdate(data_shipment_voucher_id){
-        this.selected=[];
-        (this.selected).push(data_shipment_voucher_id);
-        this.alert_text = "伝票確定を取消しますがよろしいでしょうか。";
-        this.date_null=true;
-        this.updateBuyerDecissionDateTime()
+    decissionDateUpdate(data_shipment_voucher_id) {
+    //   this.selected = [];
+    if (this.selected.length>0) {
+        this.alert_text = "対象となる伝票確定を取消しますがよろしいでしょうか。";
+      }else{
+          this.alert_text = "伝票確定を取消しますがよろしいでしょうか。";
+      }
+      this.selected.push(data_shipment_voucher_id);
+
+
+      this.date_null = true;
+      this.updateBuyerDecissionDateTime();
     },
     updateDatetimeDecessionfield() {
-        this.date_null=false;
-        this.alert_text = (this.selected.length)+"件の伝票を確定しますがよろしいでしょうか。";
-        this.updateBuyerDecissionDateTime()
-
+      this.alert_text = this.selected.length + "件の伝票を確定しますがよろしいでしょうか。";
+      this.updateBuyerDecissionDateTime();
     },
-    updateBuyerDecissionDateTime(last_warning=true){
-        this.selectedNum = this.selected.length;
-      if(this.selectedNum>0){
-      var _this=this;
-      this.alert_icon = "warning";
-      this.alert_title = "";
-      this.yes_btn = "はい";
-      this.cancel_btn = "キャンセル";
-      this.confirm_sweet().then((result) => {
-              if (result.value) {
-                  console.log(this.selected)
-                //   return 0;
-                axios.post(this.BASE_URL + "api/update_shipment_detail_bycurrentdatetime",{update_id:this.selected,date_null:this.date_null}).then(({data})=>{
-                    _this.alert_icon='success';
-                    _this.alert_title="";
-                    _this.alert_text=_this.selectedNum+"件の伝票を確定しました。";
-                    _this.sweet_normal_alert();
-                    Fire.$emit("LoadByrorderDetail");
-                    this.selected=[];
-                    this.date_null=false;
-                    this.isCheckAll=false
-                }).catch(function (response) {
-                    //handle error
-                    // console.log(response);
-                  });
-
-              }else{
-                  this.selected=[];
-                  this.isCheckAll=false
-              }
-      });
-  }else{
-      if (last_warning==true) {
-          this.alert_icon = "warning";
-      this.alert_title = "";
-      this.alert_text = "対象となる伝票がありません、再度確認して実行してください。";
-      this.sweet_normal_alert();
+    updateBuyerDecissionDateTime() {
+        // console.log(this.date_null);
+        // return 0;
+      this.selectedNum = this.selected.length;
+      if (this.selectedNum > 0) {
+        var _this = this;
+        this.alert_icon = "warning";
+        this.alert_title = "";
+        this.yes_btn = "はい";
+        this.cancel_btn = "キャンセル";
+        this.confirm_sweet().then((result) => {
+          if (result.value) {
+            console.log(this.selected);
+            //   return 0;
+            axios
+              .post(
+                this.BASE_URL + "api/update_shipment_detail_bycurrentdatetime",
+                { update_id: this.selected, date_null: this.date_null }
+              )
+              .then(({ data }) => {
+                _this.alert_icon = "success";
+                _this.alert_title = "";
+                // _this.alert_text = _this.selectedNum + "件の伝票を確定しました。";
+                _this.alert_text = "伝票確定を取消しました。";
+                _this.sweet_normal_alert();
+                Fire.$emit("LoadByrorderDetail");
+                this.selected = [];
+                // this.date_null = false;
+                this.isCheckAll = false;
+              })
+              .catch(function (response) {
+                //handle error
+                // console.log(response);
+              });
+          } else {
+            this.selected = [];
+            this.isCheckAll = false;
+          }
+        });
+      } else {
+        this.alert_icon = "warning";
+        this.alert_title = "";
+        this.alert_text =
+          "対象となる伝票がありません、再度確認して実行してください。";
+        this.sweet_normal_alert();
       }
-  }
     },
-    shipmentConfirm(){
-      var _this=this;
+    shipmentConfirm() {
+      var _this = this;
       this.alert_icon = "warning";
       this.alert_title = "";
-      this.alert_text = _this.selectedNum+"件の伝票を送信しますがよろしいでしょうか。";
+      this.alert_text =
+        _this.selectedNum + "件の伝票を送信しますがよろしいでしょうか。";
       this.yes_btn = "はい";
       this.cancel_btn = "キャンセル";
       this.confirm_sweet().then((result) => {
-              if (result.value) {
-                axios.post(this.BASE_URL + "api/shipment_confirm",{data_order_id:(this.param_data.data_order_id),order_info:this.order_info}).then(({data})=>{
-                //   console.log(data);
-                  _this.alert_icon='success';
-                    _this.alert_title="";
-                    _this.alert_text=data.csv_data_count+"件の確定伝票を送信しました。";
-                    _this.sweet_normal_alert();
-                })
-               }
-      })
+        if (result.value) {
+          axios
+            .post(this.BASE_URL + "api/shipment_confirm", {
+              data_order_id: this.param_data.data_order_id,
+              order_info: this.order_info,
+            })
+            .then(({ data }) => {
+              //   console.log(data);
+              _this.alert_icon = "success";
+              _this.alert_title = "";
+              _this.alert_text =
+                data.csv_data_count + "件の確定伝票を送信しました。";
+              _this.sweet_normal_alert();
+            });
+        }
+      });
     },
-    shipmentUpdate(e){
-      var _this=this;
+    shipmentUpdate(e) {
+      var _this = this;
       this.alert_icon = "warning";
       this.alert_title = "";
-      this.alert_text = _this.selectedNum+"件の伝票を送信しますがよろしいでしょうか。";
+      this.alert_text =
+        _this.selectedNum + "件の伝票を送信しますがよろしいでしょうか。";
       this.yes_btn = "はい";
       this.cancel_btn = "キャンセル";
       this.confirm_sweet().then((result) => {
-              if (result.value) {
-                  const formData = new FormData();
-                  let file = e.target.files[0];
-                  console.log(file);
-                  formData.append("file", file);
-                axios.post(this.BASE_URL + "api/shipment_update",formData).then(({data})=>{
-                  console.log(data);
-                  _this.alert_icon='success';
-                    _this.alert_title="Inserted";
-                    _this.alert_text="Shipment CSV Updated";
-                    _this.sweet_normal_alert();
-                })
-               }
-      })
+        if (result.value) {
+          const formData = new FormData();
+          let file = e.target.files[0];
+          console.log(file);
+          formData.append("file", file);
+          axios
+            .post(this.BASE_URL + "api/shipment_update", formData)
+            .then(({ data }) => {
+              console.log(data);
+              _this.alert_icon = "success";
+              _this.alert_title = "Inserted";
+              _this.alert_text = "Shipment CSV Updated";
+              _this.sweet_normal_alert();
+            });
+        }
+      });
     },
     //get Table data
     get_all_byr_order_detail(page = 1) {
-      this.param_data['page']=page;
-      this.param_data['per_page']=this.select_field_per_page_num;
+      this.param_data["page"] = page;
+      this.param_data["per_page"] = this.select_field_per_page_num;
       this.select_field_page_num = page;
       axios
         .post(this.BASE_URL + "api/order_details", this.param_data)
         .then(({ data }) => {
-        console.log(data);
+          console.log(data);
           this.order_detail_lists = data.order_list_detail;
           this.order_info = data.order_info;
           this.loader.hide();
@@ -866,7 +1097,7 @@ export default {
       this.edit_order_modal = true;
     },
     // order data download
-    order_download(downloadType=1) {
+    order_download(downloadType = 1) {
       console.log("order_download");
       // axios
       //   .post(this.BASE_URL + "api/scenario_exec", {
@@ -884,31 +1115,40 @@ export default {
       //     link.click();
       //     link.revokeObjectURL();
       //   });
-//downloadcsvshipment_confirm
-var _this = this;
-          axios.post(this.BASE_URL + "api/downloadcsvshipment_confirm",{data_order_id:(this.param_data.data_order_id),order_info:this.order_info,downloadType:downloadType}).then(({data})=>{
-              //  console.log(data);
-                const link = document.createElement("a");
-                link.href = data.url;
-                link.setAttribute("download", "shipmentcsvfile.csv"); //ここらへんは適当に設定する
-                document.body.appendChild(link);
-                link.click();
-                axios
-          .get(_this.BASE_URL + "api/deletedownloadedshipmentCsv/"+data.new_file_name)
-          .then((data) => {
-            //console.log(data);
-          });
-                //link.revokeObjectURL();
-                })
-
+      //downloadcsvshipment_confirm
+      var _this = this;
+      axios
+        .post(this.BASE_URL + "api/downloadcsvshipment_confirm", {
+          data_order_id: this.param_data.data_order_id,
+          order_info: this.order_info,
+          downloadType: downloadType,
+        })
+        .then(({ data }) => {
+          //  console.log(data);
+          const link = document.createElement("a");
+          link.href = data.url;
+          link.setAttribute("download", "shipmentcsvfile.csv"); //ここらへんは適当に設定する
+          document.body.appendChild(link);
+          link.click();
+          axios
+            .get(
+              _this.BASE_URL +
+                "api/deletedownloadedshipmentCsv/" +
+                data.new_file_name
+            )
+            .then((data) => {
+              //console.log(data);
+            });
+          //link.revokeObjectURL();
+        });
     },
   },
 
   created() {
     Fire.$emit("byr_has_selected", this.$session.get("byr_buyer_id"));
     Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
-    Fire.$emit("voucher_page_query_param", 'myData');
-    this.$session.set('voucher_page_query_param',this.$route.query);
+    Fire.$emit("voucher_page_query_param", "myData");
+    this.$session.set("voucher_page_query_param", this.$route.query);
     // console.log(this.$route.query);
     this.param_data = this.$route.query;
 
