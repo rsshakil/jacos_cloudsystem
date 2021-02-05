@@ -77,6 +77,9 @@ class ShipmentConroller extends Controller
         // print_r($items[0]['data_shipment_voucher_id']);exit;
         // echo $items[0]->data_shipment_voucher_id;exit;
         $updated_date = $request->updated_date;
+        $total_selling_price = $request->total_selling_price;
+        $total_cost_price = $request->total_cost_price;
+        $updated_date = $request->updated_date;
         data_shipment_voucher::where('data_shipment_voucher_id', $items[0]['data_shipment_voucher_id'])->update(['mes_lis_shi_tra_dat_revised_delivery_date'=>$updated_date]);
         foreach($items as $item){
             data_shipment_item::where('data_shipment_item_id', $item['data_shipment_item_id'])->update([
@@ -93,9 +96,9 @@ class ShipmentConroller extends Controller
                 'mes_lis_shi_lin_qua_sto_quantity'=>$item['mes_lis_shi_lin_qua_sto_quantity'],
                 'mes_lis_shi_lin_qua_sto_num_of_order_units'=>$item['mes_lis_shi_lin_qua_sto_num_of_order_units'],
                 'mes_lis_shi_lin_qua_sto_reason_code'=>$item['mes_lis_shi_lin_qua_sto_reason_code'],
-                'mes_lis_shi_lin_amo_item_net_price'=>$item['mes_lis_shi_lin_amo_item_net_price'],
+                'mes_lis_shi_lin_amo_item_net_price'=>$total_cost_price,
                 'mes_lis_shi_lin_amo_item_net_price_unit_price'=>$item['mes_lis_shi_lin_amo_item_net_price_unit_price'],
-                'mes_lis_shi_lin_amo_item_selling_price'=>$item['mes_lis_shi_lin_amo_item_selling_price'],
+                'mes_lis_shi_lin_amo_item_selling_price'=>$total_selling_price,
                 'mes_lis_shi_lin_amo_item_selling_price_unit_price'=>$item['mes_lis_shi_lin_amo_item_selling_price_unit_price'],
             ]);
         }
