@@ -96,6 +96,7 @@
               
             </thead>
             <tbody>
+
               <tr v-for="(order_item_detail_list, index) in order_item_detail_lists" :key="index">
                 <td>{{index+1}}</td>
                 <td style="text-align:left;">
@@ -103,9 +104,7 @@
                  JANコード： {{order_item_detail_list.mes_lis_shi_lin_ite_gtin}}<br>
                  商品名：{{order_item_detail_list.mes_lis_shi_lin_ite_name}}<br>
                  規格：{{order_item_detail_list.mes_lis_shi_lin_ite_ite_spec}}<br>
-                 産地：{{order_item_detail_list.mes_lis_shi_lin_fre_field_name}}<br>
-                 
-                </td>
+                 産地：{{order_item_detail_list.mes_lis_shi_lin_fre_field_name}}<br></td>
                 <td>{{order_item_detail_list.mes_lis_shi_lin_fre_packing_quantity}}</td>
                 <td>
                 <input type="text" class="form-control" v-model="order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units">
@@ -117,20 +116,23 @@
                  <input type="text" class="form-control" v-model="order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity">
                 {{order_item_detail_list.mes_lis_shi_lin_qua_ord_quantity}}</td>
 
-                <td>{{order_item_detail_list.mes_lis_shi_lin_fre_order_weight}}</td>
+                <td>{{order_item_detail_list.mes_lis_shi_lin_fre_item_weight * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity}}</td>
                 <td>
                  <input type="text" class="form-control" v-model="order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price">
                 {{order_item_detail_list.mes_lis_ord_lin_amo_item_net_price_unit_price}}</td>
-                <td>{{order_item_detail_list.mes_lis_shi_lin_amo_item_net_price}}</td>
+                <td> {{ order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity}}</td>
                 <td>
                  <input type="text" class="form-control" v-model="order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price">
                 {{order_item_detail_list.mes_lis_ord_lin_amo_item_selling_price_unit_price}}</td>
-                <td>{{order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price}}</td>
+                <td>{{order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity}}</td>
                 <td>{{order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code}} {{getbyrjsonValueBykeyName('mes_lis_shi_lin_qua_sto_reason_code',order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code,'shipments')}}
                 <select v-model="order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code" class="form-control ">
                 <option v-for="item in buyer_setting_valuess.shipments.mes_lis_shi_lin_qua_sto_reason_code" :value="Object.keys(item)[0]">{{Object.values(item)[0]}}</option>
                 </select>
+                <!--<input type="hidden" v-model="totalCostPrice += order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity">
+                <input type="hidden" v-model="totalSellingPrice += order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity">-->
                 </td>
+
               </tr>
             </tbody>
             <tfoot>
@@ -143,9 +145,9 @@
               <th></th>
               <th></th>
               <th style="background:#538ED3;color:#fff;text-align:center;">原価全額<br>合計</th>
-              <th style="text-align:center;">{{mes_lis_shi_tot_tot_net_price_total}}</th>
+              <th style="text-align:center;">{{totalCostPriceVal}}</th>
               <th style="background:#538ED3;color:#fff;text-align:center;">売価全額<br>合計</th>
-              <th style="text-align:center;">{{mes_lis_shi_tot_tot_selling_price_total}}</th>
+              <th style="text-align:center;">{{totalSellingPriceVal}}</th>
               <th></th>
               </tr>
             </tfoot>
@@ -301,7 +303,7 @@ export default {
       reverse: true,
       order_by: "asc",
       order_detail_lists: {},
-      order_item_detail_lists: {},
+      order_item_detail_lists: [],
       order_item_lists: {},
       buyer_setting_valuess:{},
       order_item_shipment_data_headTable: {},
@@ -312,6 +314,8 @@ export default {
       data_order_voucher_id:'',
       mes_lis_shi_tot_tot_net_price_total:0,
       mes_lis_shi_tot_tot_selling_price_total:0,
+      totalCostPrice:0,
+      totalSellingPrice:0,
       status: "",
       // byr_order_id: "",
       edit_order_modal: false,
@@ -329,7 +333,7 @@ export default {
       console.log("====update======");
       console.log(this.order_item_detail_lists);
       console.log(this.order_item_shipment_data_headTable.mes_lis_shi_tra_dat_revised_delivery_date);
-      var order_detailitem = {'items':this.order_item_detail_lists,'updated_date':this.order_item_shipment_data_headTable.mes_lis_shi_tra_dat_revised_delivery_date};
+      var order_detailitem = {'items':this.order_item_detail_lists,'updated_date':this.order_item_shipment_data_headTable.mes_lis_shi_tra_dat_revised_delivery_date,'total_cost_price':this.totalCostPriceVal,'total_selling_price':this.totalSellingPriceVal};
       axios({
         method: "POST",
         url: this.BASE_URL + "api/update_shipment_item_details",
@@ -521,6 +525,20 @@ this.getbuyerJsonSettings();
       // return this.order_item_detail_lists.reduce(function(a, c){return a + Number((c.mes_lis_shi_lin_amo_item_selling_price) || 0)}, 0)
         // return this.mes_lis_shi_tot_tot_selling_price_total;
     return 0;
+    },
+    totalCostPriceVal: function() {
+      return this.order_item_detail_lists.reduce(function(sum,order_item_detail_list){return  sum+order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity;}, 0)
+
+      // return this.order_item_detail_lists.reduce(function (sum,order_item_detail_list) {
+      //  return  sum+order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity;
+      // },0);
+      
+    },
+    totalSellingPriceVal: function() {
+      return this.order_item_detail_lists.reduce(function (sumselling,order_item_detail_list) {
+       return  sumselling+order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity;
+      },0);
+      
     },
     total_net_price: function() {
       // this.order_item_detail_lists.forEach(function (order_item_detail_list) {
