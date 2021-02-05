@@ -286,7 +286,7 @@ class data_csv_order extends Model
                 $data_shi_voucher_array['mes_lis_shi_tra_dat_order_date']=$value[73];
                 $data_shi_voucher_array['mes_lis_shi_tra_dat_delivery_date']=$value[74];
                 $data_shi_voucher_array['mes_lis_shi_tra_dat_delivery_date_to_receiver']=$value[75];
-                $data_shi_voucher_array['mes_lis_shi_tra_dat_revised_delivery_date']='';
+                $data_shi_voucher_array['mes_lis_shi_tra_dat_revised_delivery_date']=$value[75];
                 $data_shi_voucher_array['mes_lis_shi_tra_dat_transfer_of_ownership_date']=$value[76];
                 $data_shi_voucher_array['mes_lis_shi_tra_dat_campaign_start_date']=$value[77];
                 $data_shi_voucher_array['mes_lis_shi_tra_dat_campaign_end_date']=$value[78];
@@ -436,11 +436,11 @@ class data_csv_order extends Model
             $data_shi_item_array['mes_lis_shi_lin_qua_package_indicator']=$value[151];
             $data_shi_item_array['mes_lis_shi_lin_qua_ord_quantity']=$value[152];
             $data_shi_item_array['mes_lis_shi_lin_qua_ord_num_of_order_units']=$value[153];
-            $data_shi_item_array['mes_lis_shi_lin_qua_shi_quantity']='';
-            $data_shi_item_array['mes_lis_shi_lin_qua_shi_num_of_order_units']='';
+            $data_shi_item_array['mes_lis_shi_lin_qua_shi_quantity']=$value[152];
+            $data_shi_item_array['mes_lis_shi_lin_qua_shi_num_of_order_units']=$value[153];
             $data_shi_item_array['mes_lis_shi_lin_qua_sto_quantity']='';
             $data_shi_item_array['mes_lis_shi_lin_qua_sto_num_of_order_units']='';
-            $data_shi_item_array['mes_lis_shi_lin_qua_sto_reason_code']='';
+            $data_shi_item_array['mes_lis_shi_lin_qua_sto_reason_code']='00';
             $data_shi_item_array['mes_lis_shi_lin_fre_unit_weight']=$value[154];
             $data_shi_item_array['mes_lis_shi_lin_fre_unit_weight_code']=$value[155];
             $data_shi_item_array['mes_lis_shi_lin_fre_item_weight']=$value[156];
