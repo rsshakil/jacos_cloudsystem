@@ -4,10 +4,14 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\API\AllUsedFunction;
 use App\Http\Controllers\Controller;
+
+use Illuminate\Http\Request;
 use App\Models\ADM\User;
 use App\Models\BYR\byr_invoice;
 use App\Models\BYR\byr_order_detail;
-
+use App\Models\DATA\INVOICE\data_invoice;
+use App\Models\DATA\INVOICE\data_invoice_pay;
+use DB;
 class Byr_invoiceController extends Controller
 {
 
@@ -105,5 +109,44 @@ class Byr_invoiceController extends Controller
         $voucher_list = array();
         $byr_buyer = array();
         return response()->json(['invoice_list' => $result, 'byr_buyer_list' => $byr_buyer, 'shop_list' => $shop_list, 'voucher_list' => $voucher_list]);
+    }
+
+    public function invoiceInsert(Request $request){
+
+        $invoice_id = data_invoice::insertGetId([
+            'sta_sen_identifier'=>'',
+            'sta_sen_ide_authority'=>'',
+            'sta_rec_identifier'=>'',
+            'sta_rec_ide_authority'=>'',
+            'sta_doc_standard'=>'',
+            'sta_doc_type_version'=>'',
+            'sta_doc_instance_identifier'=>'',
+            'sta_doc_type'=>'',
+            'sta_doc_creation_date_and_time'=>'',
+            'sta_bus_scope_instance_identifier'=>'',
+            'sta_bus_scope_type'=>'',
+            'sta_bus_scope_identifier'=>'',
+            'mes_ent_unique_creator_identification'=>'',
+            'mes_mes_sender_station_address'=>'',
+            'mes_mes_ultimate_receiver_station_address'=>'',
+            'mes_mes_immediate_receiver_station_addres'=>'',
+            'mes_mes_number_of_trading_documents'=>'',
+            'mes_mes_system_info'=>'',
+            'mes_mes_sys_key'=>'',
+            'mes_mes_sys_value'=>'',
+            'mes_lis_con_version'=>'',
+            'mes_lis_doc_version'=>'',
+            'mes_lis_ext_namespace'=>'',
+            'mes_lis_ext_version'=>'',
+            'mes_lis_pay_code'=>'',
+            'mes_lis_pay_gln'=>'',
+            'mes_lis_pay_name'=>'',
+            'mes_lis_pay_name_sbcs'=>'',
+        ]);
+        $request['data_invoice_id'] = $invoice_id;
+        data_invoice_pay::insert($request->all());
+        
+        
+        return response()->json(['success' => 1]);
     }
 }

@@ -136,7 +136,7 @@
       size="lg"
       :hide-backdrop="true"
       title="新規請求作成"
-      ok-title="検　索"
+      ok-title="登録"
       cancel-title="閉じる"
       @ok.prevent="insertInvoice()"
       v-model="invoiceCreateModal"
@@ -148,16 +148,16 @@
         >
           <tr>
             <td class="cl_custom_color">請求取引先コード</td>
-            <td><input type="text" class="form-control" /></td>
+            <td><input type="text" v-model="invoiceData.mes_lis_inv_pay_code" class="form-control" /></td>
             <td class="cl_custom_color">締日</td>
             <td>
               <div class="input-group mb-3">
       
-      <input type="date" class="form-control">
+      <input type="date" v-model="invoiceData.mes_lis_inv_per_begin_date" class="form-control">
       <div class="input-group-prepend">
         <span class="input-group-text">~</span>
       </div>
-      <input type="date" class="form-control">
+      <input type="date" v-model="invoiceData.mes_lis_inv_per_end_date" class="form-control">
     </div> 
             </td>
           </tr>
@@ -178,6 +178,11 @@ export default {
       invoiceCreateModal:false,
       file: "",
       selected_byr: "0",
+      invoiceData:{
+        mes_lis_inv_pay_code:'',
+        mes_lis_inv_per_begin_date:'',
+        mes_lis_inv_per_end_date:'',
+      }
     };
   },
   methods: {
@@ -191,6 +196,19 @@ export default {
         .then((data) => {
           this.invoice_lists = data.data.invoice_list;
           this.byr_buyer_lists = data.data.byr_buyer_list;
+        });
+    },
+    insertInvoice() {
+      var _this = this;
+      axios
+        .post(this.BASE_URL + "api/invoiceInsert",this.invoiceData)
+        .then((data) => {
+         Fire.$emit("LoadByrinvoice");
+         _this.alert_icon = "success";
+        _this.alert_title = "";
+        _this.alert_text =
+          "Invoice insert success";
+        _this.sweet_normal_alert();
         });
     },
     check_byr_order_api() {
