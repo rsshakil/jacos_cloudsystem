@@ -29,7 +29,7 @@ class Cmn_ScenarioController extends Controller
         // return response()->json(['status'=>$request->all()]);
         \Log::debug(get_class().':'.__FUNCTION__.' start  ---------------');
         \Log::Info(Auth::user());
-        
+
         if (!Auth::user()) {
             $this->validate($request, ['email' => 'required|email', 'password' => 'required']);
             $user = ['email' => $request->get('email'),'password'=>$request->get('password')];
@@ -117,7 +117,7 @@ class Cmn_ScenarioController extends Controller
         } finally {
             \Log::debug(get_class().':'.__FUNCTION__.' end  ---------------');
         }
-
+return $ret;
         return self::history_create($this->success, "scenario exec success");
     }
 

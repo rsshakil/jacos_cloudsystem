@@ -124,6 +124,26 @@ class cmn_scenarioSeeder extends Seeder
                 'description' => 'LEVEL3_TEST_SCENARIO',
                 'file_path' => 'Scenarios/LV3/level3_test_scenario',
             ],
+            [
+                'byr_buyer_id' => 1,
+                'slr_seller_id' => 0,
+                'adm_role_id' => 5,
+                'class' => 'order',
+                'vector' => 'to_jacos',
+                'name' => 'DATA_RECEIVE_CSV_INSERTION',
+                'description' => 'DATA_RECEIVE_CSV_INSERTION',
+                'file_path' => 'Scenarios/receive/data_csv_receive_order',
+            ],
+            [
+                'byr_buyer_id' => 1,
+                'slr_seller_id' => 0,
+                'adm_role_id' => 5,
+                'class' => 'payment',
+                'vector' => 'to_jacos',
+                'name' => 'DATA_PAYMENT_CSV_INSERTION',
+                'description' => 'DATA_PAYMENT_CSV_INSERTION',
+                'file_path' => 'Scenarios/payment/data_csv_payment_order',
+            ],
         );
         cmn_scenario::insert($scenarios);
     }

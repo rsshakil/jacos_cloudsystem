@@ -7,6 +7,8 @@ return [
     // Scenarios
     // Order data
     'ORDER_DATA_PATH' => 'order/',
+    'RECEIVE_DATA_PATH' => 'receives/',
+    'PAYMENT_DATA_PATH' => 'payments/',
 
 
     // Tools

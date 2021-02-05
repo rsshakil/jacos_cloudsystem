@@ -22,6 +22,8 @@ storage/app/indepen_files/*
 storage/app/shipment_csv/*
 storage/app/shipment_updated_csv/*
 storage/app/order/*
+storage/app/receives/*
+storage/app/payments/*
 storage/app/temp/*
 
 public/backend/images/users/*
