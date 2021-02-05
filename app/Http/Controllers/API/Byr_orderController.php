@@ -178,6 +178,8 @@ class Byr_orderController extends Controller
         $temperature_code = $request->temperature_code;
         $per_page = $request->per_page == null ? 10 : $request->per_page;
         $temperature_code = $temperature_code == null ? '' : $temperature_code;
+       $form_search = $request->form_search;
+
         data_order_voucher::where('data_order_id',$data_order_id)->where('mes_lis_ord_tra_goo_major_category',$major_category)->where('mes_lis_ord_log_del_delivery_service_code',$delivery_service_code)->where('mes_lis_ord_tra_dat_delivery_date',$delivery_date)->whereNull('check_datetime')->update(['check_datetime'=>date('Y-m-d H:i:s')]);
         $result = DB::table('data_shipments as ds')
             ->select(
@@ -208,17 +210,41 @@ class Byr_orderController extends Controller
             ->where('dsv.mes_lis_shi_tra_dat_delivery_date', $delivery_date)
             ->where('dsv.mes_lis_shi_tra_goo_major_category', $major_category)
             ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $delivery_service_code)
-            ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $temperature_code)
-            ->groupBy('dsv.mes_lis_shi_tra_trade_number')
-            ->paginate($per_page);
+            ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $temperature_code);
+                if($form_search['mes_lis_shi_tra_trade_number']!=""){
+                    $result->where('dsv.mes_lis_shi_tra_trade_number', $form_search['mes_lis_shi_tra_trade_number']);
+                }
+                if($form_search['fixedSpecial']!="*"){
+                    $result->where('dsv.mes_lis_shi_tra_ins_goods_classification_code', $form_search['fixedSpecial']);
+                }
+                if($form_search['printingStatus']!="*"){
+                    if($form_search['printingStatus']=="未印刷あり"){
+                        $result->whereNull('dsv.print_datetime');
+                    }
+                    if($form_search['printingStatus']=="印刷済"){
+                        $result->whereNotNull('dsv.print_datetime');
+                    }
+                    
+                }
+                if($form_search['situation']!="*"){
+                    if($form_search['situation']=="未確定あり"){
+                        $result->whereNull('dsv.decision_datetime');
+                    }
+                    if($form_search['situation']=="確定済"){
+                        $result->whereNotNull('dsv.decision_datetime');
+                    }
+                }
+           $result->groupBy('dsv.mes_lis_shi_tra_trade_number');
+            $result = $result->paginate($per_page);
+            
         $order_info=[
-            'receive_datetime' => $result->first()->receive_datetime,
-            'mes_lis_shi_par_sel_code' => $result->first()->mes_lis_shi_par_sel_code,
-            'mes_lis_shi_par_sel_name' => $result->first()->mes_lis_shi_par_sel_name,
-            'mes_lis_shi_tra_dat_delivery_date' => $result->first()->mes_lis_shi_tra_dat_delivery_date,
-            'mes_lis_shi_tra_goo_major_category' => $result->first()->mes_lis_shi_tra_goo_major_category,
-            'mes_lis_shi_log_del_delivery_service_code' => $result->first()->mes_lis_shi_log_del_delivery_service_code,
-            'mes_lis_shi_tra_ins_temperature_code' => $result->first()->mes_lis_shi_tra_ins_temperature_code,
+            'receive_datetime' => (isset($result->first()->receive_datetime)?$result->first()->receive_datetime:''),
+            'mes_lis_shi_par_sel_code' => (isset($result->first()->mes_lis_shi_par_sel_code)?$result->first()->mes_lis_shi_par_sel_code:''),
+            'mes_lis_shi_par_sel_name' => (isset($result->first()->mes_lis_shi_par_sel_name)?$result->first()->mes_lis_shi_par_sel_name:''),
+            'mes_lis_shi_tra_dat_delivery_date' => (isset($result->first()->mes_lis_shi_tra_dat_delivery_date)?$result->first()->mes_lis_shi_tra_dat_delivery_date:''),
+            'mes_lis_shi_tra_goo_major_category' => (isset($result->first()->mes_lis_shi_tra_goo_major_category)?$result->first()->mes_lis_shi_tra_goo_major_category:''),
+            'mes_lis_shi_log_del_delivery_service_code' => (isset($result->first()->mes_lis_shi_log_del_delivery_service_code)?$result->first()->mes_lis_shi_log_del_delivery_service_code:''),
+            'mes_lis_shi_tra_ins_temperature_code' => (isset($result->first()->mes_lis_shi_tra_ins_temperature_code)?$result->first()->mes_lis_shi_tra_ins_temperature_code:''),
         ];
         /*coll setting*/
         $slected_list = array();

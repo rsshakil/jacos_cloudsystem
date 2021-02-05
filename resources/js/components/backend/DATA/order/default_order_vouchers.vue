@@ -73,7 +73,7 @@
             </td>
             <td class="cl_custom_color">伝票番号</td>
             <td>
-              <input type="text" class="form-control" />
+              <input type="text" v-model="form.mes_lis_shi_tra_trade_number" class="form-control" />
             </td>
           </tr>
           <tr>
@@ -95,9 +95,14 @@
                 style="width: 220px"
               >
                 <option value="*">全て</option>
-                <option :value="item" v-for="item in fixedSpecialOptionList">
-                  {{ item }}
-                </option>
+               
+                     <option
+                v-for="(opt, i) in fixedSpecialOptionList"
+                :key="i"
+                :value="Object.keys(opt)[0]"
+              >
+                {{ Object.values(opt)[0] }}
+              </option>
               </select>
             </td>
             <td class="cl_custom_color">確定状況</td>
@@ -122,7 +127,7 @@
                 v-model="form.printingStatus"
                 style="width: 220px"
               >
-                <option value="">全て</option>
+                <option value="*">全て</option>
                 <option :value="item" v-for="item in printingStatusOptionList">
                   {{ item }}
                 </option>
@@ -133,7 +138,7 @@
       </div>
 
       <div class="col-12" style="text-align: center">
-        <button class="btn btn-primary active srchBtn" type="button">
+        <button @click="searchByFormData" class="btn btn-primary active srchBtn" type="button">
           {{ myLang.search }}
         </button>
       </div>
@@ -786,19 +791,20 @@ export default {
       select_field_page_num: 0,
       select_field_per_page_num: 10,
       isCheckAll: false,
-      printingStatusOptionList: ["01 定番", "02 準特価", "03 特売"],
+      fixedSpecialOptionList: [{"01":"定番"}, {"02":"準特価"}, {"03":"特売"}],
       situationOptionList: ["未確定あり", "確定済"],
-      fixedSpecialOptionList: ["未印刷あり", "未印刷あり"],
+      printingStatusOptionList: ["未印刷あり", "印刷済"],
       deliveryDestnationOptionList: ["店舗", "物流センター"],
       date_null: false,
       form: new Form({
-        printingStatus: "",
-        situation: "",
-        fixedSpecial: "",
+        printingStatus: "*",
+        situation: "*",
+        fixedSpecial: "*",
         deliveryDestnation: "",
         deliveryCode: "",
         deliveryDate: "",
         deliveryName: "",
+        mes_lis_shi_tra_trade_number:"",
       }),
       param_data: [],
       // buyer_settings:null,
@@ -824,6 +830,9 @@ export default {
         Fire.$emit("LoadByrorderDetail");
         // this.get_all_byr_order_detail(this.select_field_page_num);
       }
+    },
+    searchByFormData(){
+       Fire.$emit("LoadByrorderDetail");
     },
     checkAll() {
       this.isCheckAll = !this.isCheckAll;
@@ -1059,6 +1068,7 @@ export default {
     get_all_byr_order_detail(page = 1) {
       this.param_data["page"] = page;
       this.param_data["per_page"] = this.select_field_per_page_num;
+      this.param_data['form_search'] = this.form;
       this.select_field_page_num = page;
       axios
         .post(this.BASE_URL + "api/order_details", this.param_data)
