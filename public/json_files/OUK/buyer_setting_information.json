@@ -1,6 +1,6 @@
 {
     "orders": {
-        "mes_lis_ord_lin_ite_code_type": [
+        "mes_lis_ord_lin_ite_ord_code_type": [
             { "004": "EAN（ＪＡＮ)/UCC8桁" },
             { "005": "EAN(ＪＡＮ）/UCC13桁" },
             { "006": "EAN/UCC14桁（GTIN）" },

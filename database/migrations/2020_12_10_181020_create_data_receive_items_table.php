@@ -29,7 +29,7 @@ class CreateDataReceiveItemsTable extends Migration
             $table->string('mes_lis_acc_lin_ite_maker_code',13)->comment('メーカーコード');
             $table->string('mes_lis_acc_lin_ite_gtin',14)->comment('商品コード（ＧTIN）');
             $table->string('mes_lis_acc_lin_ite_order_item_code',14)->comment('商品コード（発注用）');
-            $table->string('mes_lis_acc_lin_ite_ord_code_type',3)->comment('商品コード区分');
+            $table->string('mes_lis_acc_lin_ite_ord_code_type',10)->comment('商品コード区分');
             $table->string('mes_lis_acc_lin_ite_supplier_item_code',14)->comment('商品コード（取引先）');
             $table->string('mes_lis_acc_lin_ite_name',25)->comment('商品名');
             $table->string('mes_lis_acc_lin_ite_name_sbcs',25)->comment('商品名カナ');

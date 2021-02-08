@@ -38,8 +38,8 @@ class data_csv_payment_order extends Model
         $dataArr = $this->all_functions->csvReader($received_path, 1);
         // $cmn_connect_id=$this->all_functions->get_connect_id_from_file_name($file_name);
 
-        $order_flg = true;
-        $trade_number = '';
+        // $order_flg = true;
+        // $trade_number = '';
 
         foreach ($dataArr as $key => $value) {
             if (count($value) === 1) {
@@ -47,7 +47,7 @@ class data_csv_payment_order extends Model
                 continue;
             }
 
-            if ($order_flg) {
+            // if ($order_flg) {
                 $data_payment_array['sta_sen_identifier']=$value[0];
                 $data_payment_array['sta_sen_ide_authority']=$value[1];
                 $data_payment_array['sta_rec_identifier']=$value[2];
@@ -57,15 +57,15 @@ class data_csv_payment_order extends Model
                 $data_payment_array['sta_doc_instance_identifier']=$value[6];
                 $data_payment_array['sta_doc_type']=$value[7];
                 $data_payment_array['sta_doc_creation_date_and_time']=$value[8];
-                $data_payment_array['sta_bus_scope_instance_identifier']=$value[10];
                 $data_payment_array['sta_bus_scope_type']=$value[9];
+                $data_payment_array['sta_bus_scope_instance_identifier']=$value[10];
                 $data_payment_array['sta_bus_scope_identifier']=$value[11];
                 $data_payment_array['mes_ent_unique_creator_identification']=$value[12];
                 $data_payment_array['mes_mes_sender_station_address']=$value[13];
                 $data_payment_array['mes_mes_ultimate_receiver_station_address']=$value[14];
                 $data_payment_array['mes_mes_immediate_receiver_station_addres']=$value[15];
                 $data_payment_array['mes_mes_number_of_trading_documents']=$value[16];
-                $data_payment_array['mes_mes_system_info']=$value[17]; //New added
+                $data_payment_array['mes_mes_system_info']=""; //New added
                 $data_payment_array['mes_mes_sys_key']=$value[17];
                 $data_payment_array['mes_mes_sys_value']=$value[18];
                 $data_payment_array['mes_lis_con_version']=$value[19];
@@ -78,58 +78,58 @@ class data_csv_payment_order extends Model
 
                 $data_payment_id = data_payment::insertGetId($data_payment_array);
 
-                $order_flg =false;
-            }
-            if ($trade_number !=$value[31].'-'.$value[32]) {
+            //     $order_flg =false;
+            // }
+            // if ($trade_number !=$value[31].'-'.$value[32]) {
                 $data_payment_pay_array['mes_lis_buy_code']=$value[27];
                 $data_payment_pay_array['mes_lis_buy_gln']=$value[28];
                 $data_payment_pay_array['mes_lis_buy_name']=$value[29];
                 $data_payment_pay_array['mes_lis_buy_name_sbcs']=$value[30];
-                $data_payment_pay_array['mes_lis_pay_pay_code']=$value[48];
-                $data_payment_pay_array['mes_lis_pay_pay_id']=$value[48];  //new added
-                $data_payment_pay_array['mes_lis_pay_pay_gln']=$value[49];
-                $data_payment_pay_array['mes_lis_pay_pay_name']=$value[50];
-                $data_payment_pay_array['mes_lis_pay_pay_name_sbcs']=$value[51];
-                $data_payment_pay_array['mes_lis_pay_per_begin_date']=$value[100]; //new added
-                $data_payment_pay_array['mes_lis_pay_per_end_date']=$value[100]; // new added
+                $data_payment_pay_array['mes_lis_pay_pay_code']=$value[32];
+                $data_payment_pay_array['mes_lis_pay_pay_id']=$value[31];  //new added
+                $data_payment_pay_array['mes_lis_pay_pay_gln']=$value[33];
+                $data_payment_pay_array['mes_lis_pay_pay_name']=$value[34];
+                $data_payment_pay_array['mes_lis_pay_pay_name_sbcs']=$value[35];
+                $data_payment_pay_array['mes_lis_pay_per_begin_date']=$value[36]; //new added
+                $data_payment_pay_array['mes_lis_pay_per_end_date']=$value[37]; // new added
                 $data_payment_pay_array['data_payment_id']=$data_payment_id;
                 $data_payment_pay_id = data_payment_pay::insertGetId($data_payment_pay_array);
 
-            }
+            // }
  //new Added
-            $data_payment_details_array['mes_lis_pay_lin_lin_trade_number_eference']=$value[101];
-            $data_payment_details_array['mes_lis_pay_lin_lin_issue_classification_code']=$value[102];
-            $data_payment_details_array['mes_lis_pay_lin_lin_sequence_number']=$value[103];
-            $data_payment_details_array['mes_lis_pay_lin_tra_code']=$value[104];
-            $data_payment_details_array['mes_lis_pay_lin_tra_gln']=$value[105];
-            $data_payment_details_array['mes_lis_pay_lin_tra_name']=$value[106];
-            $data_payment_details_array['mes_lis_pay_lin_tra_name_sbcs']=$value[107];
-            $data_payment_details_array['mes_lis_pay_lin_sel_code']=$value[108];
-            $data_payment_details_array['mes_lis_pay_lin_sel_gln']=$value[109];
-            $data_payment_details_array['mes_lis_pay_lin_sel_name']=$value[110];
-            $data_payment_details_array['mes_lis_pay_lin_sel_name_sbcs']=$value[111];
-            $data_payment_details_array['mes_lis_pay_lin_det_goo_major_category']=$value[112];
-            $data_payment_details_array['mes_lis_pay_lin_det_goo_sub_major_category']=$value[113];
-            $data_payment_details_array['mes_lis_pay_lin_det_transfer_of_ownership_date']=$value[114];
-            $data_payment_details_array['mes_lis_pay_lin_det_pay_out_date']=$value[115];
-            $data_payment_details_array['mes_lis_pay_lin_det_amo_requested_amount']=$value[116];
-            $data_payment_details_array['mes_lis_pay_lin_det_amo_req_plus_minus']=$value[117];
-            $data_payment_details_array['mes_lis_pay_lin_det_amo_payable_amount']=$value[118];
-            $data_payment_details_array['mes_lis_pay_lin_det_amo_pay_plus_minus']=$value[119];
-            $data_payment_details_array['mes_lis_pay_lin_det_amo_optional_amount']=$value[120];
-            $data_payment_details_array['mes_lis_pay_lin_det_amo_opt_plus_minus']=$value[121];
-            $data_payment_details_array['mes_lis_pay_lin_det_amo_tax']=$value[122];
-            $data_payment_details_array['mes_lis_pay_lin_det_trade_type_code']=$value[123];
-            $data_payment_details_array['mes_lis_pay_lin_det_balance_carried_code']=$value[124];
-            $data_payment_details_array['mes_lis_pay_lin_det_creditor_unsettled_code']=$value[125];
-            $data_payment_details_array['mes_lis_pay_lin_det_verification_result_code']=$value[126];
-            $data_payment_details_array['mes_lis_pay_lin_det_pay_code']=$value[127];
-            $data_payment_details_array['mes_lis_pay_lin_det_det_code']=$value[128];
-            $data_payment_details_array['mes_lis_pay_lin_det_det_meaning']=$value[129];
-            $data_payment_details_array['mes_lis_pay_lin_det_det_meaning_sbcs']=$value[130];
-            $data_payment_details_array['mes_lis_pay_lin_det_payment_method_code']=$value[131];
-            $data_payment_details_array['mes_lis_pay_lin_det_tax_tax_type_code']=$value[132];
-            $data_payment_details_array['mes_lis_pay_lin_det_tax_tax_rate']=$value[133];
+            $data_payment_details_array['mes_lis_pay_lin_lin_trade_number_eference']=$value[38];
+            $data_payment_details_array['mes_lis_pay_lin_lin_issue_classification_code']=$value[39];
+            $data_payment_details_array['mes_lis_pay_lin_lin_sequence_number']=$value[40];
+            $data_payment_details_array['mes_lis_pay_lin_tra_code']=$value[41];
+            $data_payment_details_array['mes_lis_pay_lin_tra_gln']=$value[42];
+            $data_payment_details_array['mes_lis_pay_lin_tra_name']=$value[43];
+            $data_payment_details_array['mes_lis_pay_lin_tra_name_sbcs']=$value[44];
+            $data_payment_details_array['mes_lis_pay_lin_sel_code']=$value[45];
+            $data_payment_details_array['mes_lis_pay_lin_sel_gln']=$value[46];
+            $data_payment_details_array['mes_lis_pay_lin_sel_name']=$value[47];
+            $data_payment_details_array['mes_lis_pay_lin_sel_name_sbcs']=$value[48];
+            $data_payment_details_array['mes_lis_pay_lin_det_goo_major_category']=$value[49];
+            $data_payment_details_array['mes_lis_pay_lin_det_goo_sub_major_category']=$value[50];
+            $data_payment_details_array['mes_lis_pay_lin_det_transfer_of_ownership_date']=$value[51];
+            $data_payment_details_array['mes_lis_pay_lin_det_pay_out_date']=$value[52];
+            $data_payment_details_array['mes_lis_pay_lin_det_amo_requested_amount']=$value[53];
+            $data_payment_details_array['mes_lis_pay_lin_det_amo_req_plus_minus']=$value[54];
+            $data_payment_details_array['mes_lis_pay_lin_det_amo_payable_amount']=$value[55];
+            $data_payment_details_array['mes_lis_pay_lin_det_amo_pay_plus_minus']=$value[56];
+            $data_payment_details_array['mes_lis_pay_lin_det_amo_optional_amount']=$value[57];
+            $data_payment_details_array['mes_lis_pay_lin_det_amo_opt_plus_minus']=$value[58];
+            $data_payment_details_array['mes_lis_pay_lin_det_amo_tax']=$value[59];
+            $data_payment_details_array['mes_lis_pay_lin_det_trade_type_code']=$value[60];
+            $data_payment_details_array['mes_lis_pay_lin_det_balance_carried_code']=$value[61];
+            $data_payment_details_array['mes_lis_pay_lin_det_creditor_unsettled_code']=$value[62];
+            $data_payment_details_array['mes_lis_pay_lin_det_verification_result_code']=$value[63];
+            $data_payment_details_array['mes_lis_pay_lin_det_pay_code']=$value[64];
+            $data_payment_details_array['mes_lis_pay_lin_det_det_code']=$value[65];
+            $data_payment_details_array['mes_lis_pay_lin_det_det_meaning']=$value[66];
+            $data_payment_details_array['mes_lis_pay_lin_det_det_meaning_sbcs']=$value[67];
+            $data_payment_details_array['mes_lis_pay_lin_det_payment_method_code']=$value[68];
+            $data_payment_details_array['mes_lis_pay_lin_det_tax_tax_type_code']=$value[69];
+            $data_payment_details_array['mes_lis_pay_lin_det_tax_tax_rate']=$value[70];
  //new Added
             $data_payment_details_array['data_payment_pay_id']=$data_payment_pay_id;
             data_payment_pay_detail::insert($data_payment_details_array);
