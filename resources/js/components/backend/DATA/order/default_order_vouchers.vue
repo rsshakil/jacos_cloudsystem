@@ -950,17 +950,15 @@ export default {
         });
     },
     decissionDateUpdate(data_shipment_voucher_id) {
-    //   this.selected = [];
-    console.log(this.selected)
-    if (this.selected.length>0) {
+    if (this.isCheckAll) {
         this.alert_text = "対象となる伝票確定を取消しますがよろしいでしょうか。";
-      }else{
-          this.alert_text = "伝票確定を取消しますがよろしいでしょうか。";
-      }
-      this.selected.push(data_shipment_voucher_id);
-
-
+        this.selected = (this.null_selected).concat(this.not_null_selected);
+    }else{
+       this.selected.push(data_shipment_voucher_id);
+       this.alert_text = "伝票確定を取消しますがよろしいでしょうか。";
+    }
       this.date_null = true;
+      this.null_selected_message=false;
       this.updateBuyerDecissionDateTime();
     },
     updateDatetimeDecessionfield() {

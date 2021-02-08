@@ -28,12 +28,15 @@ class ShipmentConroller extends Controller
     {
         // downloadType=1 for Csv
         // downloadType=2 for Fixed length
+        $dateTime = date('Y-m-d H:i:s');
+        // \Log::debug(Data_Controller::get_shipment_data($request)->get());
 
         // if ($downloadType==1) {
             $new_file_name = "Shipment_csv_".date('Y-m-d')."_".time().".csv";
             $download_file_url = \Config::get('app.url')."storage/app".config('const.SHIPMENT_CSV_PATH')."/". $new_file_name;
-            $csv_data_count = Data_Controller::get_shipment_data($request)->count();
+            $csv_data_count = Data_Controller::get_shipment_data($request)->get()->count();
             (new ShipmentCSVExport($request))->store(config('const.SHIPMENT_CSV_PATH').'/'.$new_file_name);
+            data_shipment_voucher::where('decision_datetime','!=',null)->update(array('send_datetime'=>$dateTime));
             return response()->json(['message' => 'Success','status'=>1, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
         // }
     }
@@ -102,7 +105,7 @@ class ShipmentConroller extends Controller
                 'mes_lis_shi_lin_amo_item_selling_price_unit_price'=>$item['mes_lis_shi_lin_amo_item_selling_price_unit_price'],
             ]);
         }
-        
+
         return response()->json(['success' => '1']);
     }
     public function get_all_shipment_item_by_search(Request $request){
@@ -186,14 +189,14 @@ class ShipmentConroller extends Controller
                     $result->where('dsi.mes_lis_shi_lin_ite_ite_spec', $form_search['mes_lis_shi_lin_ite_ite_spec']);
                 }
                 if($form_search['mes_lis_shi_tra_fre_variable_measure_item_code']!="*"){
-                   
+
                     $result->where('dsv.mes_lis_shi_tra_fre_variable_measure_item_code', $form_search['mes_lis_shi_tra_fre_variable_measure_item_code']);
                 }
-                
+
                 $result->groupBy('dsv.mes_lis_shi_tra_trade_number');
                 $result = $result->paginate($per_page);
-            
-        
+
+
         return response()->json(['order_list_detail' => $result, 'order_info' => $order_info]);
     }
 }
