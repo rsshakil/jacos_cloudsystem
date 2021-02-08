@@ -53,20 +53,20 @@
         <table class="table orderTopDetailTable table-bordered" style="width: 100%">
           <tr>
             <td class="cl_custom_color_active">ケース数</td>
-            <td><input type="text" class="form-control"/></td>
+            <td><input type="text" class="form-control" /></td>
             <td class="cl_custom_color_active">バラ数</td>
-            <td><input type="text" class="form-control"/></td>
+            <td><input type="text" class="form-control" /></td>
             <td class="cl_custom_color_active">重量</td>
-            <td><input type="text" class="form-control"/></td>
+            <td><input type="text" class="form-control" /></td>
             <td class="cl_custom_color_active">原単価</td>
-            <td><input type="text" class="form-control"/></td>
+            <td><input type="text" class="form-control" /></td>
           </tr>
           <tr>
             <td class="cl_custom_color_active">売単価</td>
-            <td><input type="text" class="form-control"/></td>
+            <td><input type="text" class="form-control" /></td>
             <td class="cl_custom_color_active">欠品理由</td>
             <td colspan="5">
-              <select class="form-control">
+              <select class="form-control" />
                 <option value="">00 欠品なし</option>
               </select>
             </td>
@@ -115,20 +115,22 @@
             <tbody>
               <tr v-for="(order_item_detail_list, index) in order_item_detail_lists" :key="index">
                 <td>{{index+1}}</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{order_item_detail_list.mes_lis_shi_tra_trade_number}}</td>
+                <td>{{order_item_detail_list.mes_lis_shi_par_shi_code}}</td>
+                
+                <td>{{order_item_detail_list.mes_lis_shi_par_rec_code}}</td>
+                <td>{{order_item_detail_list.mes_lis_shi_lin_lin_line_number}}</td>
+                <td>{{order_item_detail_list.mes_lis_shi_lin_fre_packing_quantity}}</td>
+                <td>{{order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units}}</td>
+                <td>{{order_item_detail_list.mes_lis_shi_lin_qua_unit_of_measure}}</td>
+                <td>{{order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity}}</td>
+                <td>{{order_item_detail_list.mes_lis_shi_lin_fre_order_weight}}</td>
+                <td>{{order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price}}</td>
+                <td>{{order_item_detail_list.mes_lis_shi_lin_amo_item_net_price}}</td>
+
+                <td>{{order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price}}</td>
+                <td>{{order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price}}</td>
+                <td>{{order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code}}</td>
                 <td></td>
               </tr>
             </tbody>
@@ -313,7 +315,7 @@ export default {
       order_detail_list: [],
       show_hide_col_list: [],
       expected_delivery_date: "",
-      data_order_voucher_id:'',
+      item_id:'',
       mes_lis_shi_tot_tot_net_price_total:0,
       mes_lis_shi_tot_tot_selling_price_total:0,
       status: "",
@@ -424,7 +426,7 @@ export default {
     },
     //get Table data
     get_all_byr_order_item_detail() {
-      axios.get(this.BASE_URL + "api/order_item_details/"+this.data_order_voucher_id)
+      axios.get(this.BASE_URL + "api/shipment_item_detail_search/"+this.item_id)
         .then(({data}) => {
 
           console.log(data.order_item_list_detail);
@@ -479,13 +481,14 @@ export default {
     Fire.$emit('permission_check_for_buyer',this.$session.get('byr_buyer_id'));
     this.param_data = this.$session.get('voucher_page_query_param');
     this.orderListdetailQ = this.$session.get('voucher_page_query_param');
-    this.data_order_voucher_id = this.$route.params.data_order_list_voucher_id;
+    this.item_id = this.$route.params.item_id;
+    this.get_all_byr_order_item_detail();
     Fire.$on("LoadByrorderItemDetail", () => {
       this.get_all_byr_order_item_detail();
     });
     this.get_all_byr_order_detail();
     this.col_show_hide_setting(this.$route.name);
-    
+    this.loader = Vue.$loading.show();
   },
   computed: {
     
