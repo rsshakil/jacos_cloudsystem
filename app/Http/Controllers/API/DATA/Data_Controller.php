@@ -132,7 +132,7 @@ class Data_Controller extends Controller
             'mes_lis_ord_lin_ite_maker_code',
             'mes_lis_ord_lin_ite_gtin',
             'mes_lis_ord_lin_ite_order_item_code',
-            'mes_lis_ord_lin_ite_code_type',
+            'mes_lis_ord_lin_ite_ord_code_type',
             'mes_lis_ord_lin_ite_supplier_item_code',
             'mes_lis_ord_lin_ite_name',
             'mes_lis_ord_lin_ite_name_sbcs',
@@ -371,7 +371,7 @@ class Data_Controller extends Controller
             'data_shipment_items.mes_lis_shi_lin_ite_maker_code',
             'data_shipment_items.mes_lis_shi_lin_ite_gtin',
             'data_shipment_items.mes_lis_shi_lin_ite_order_item_code',
-            'data_shipment_items.mes_lis_shi_lin_ite_code_type',
+            'data_shipment_items.mes_lis_shi_lin_ite_ord_code_type',
             'data_shipment_items.mes_lis_shi_lin_ite_supplier_item_code',
             'data_shipment_items.mes_lis_shi_lin_ite_name',
             'data_shipment_items.mes_lis_shi_lin_ite_name_sbcs',
@@ -578,7 +578,7 @@ class Data_Controller extends Controller
             'mes_lis_shi_lin_ite_maker_code',
             'mes_lis_shi_lin_ite_gtin',
             'mes_lis_shi_lin_ite_order_item_code',
-            'mes_lis_shi_lin_ite_code_type',
+            'mes_lis_shi_lin_ite_ord_code_type',
             'mes_lis_shi_lin_ite_supplier_item_code',
             'mes_lis_shi_lin_ite_name',
             'mes_lis_shi_lin_ite_name_sbcs',
@@ -761,7 +761,7 @@ class Data_Controller extends Controller
             $tmp_shipment_item['mes_lis_shi_lin_ite_maker_code']=$value[109];
             $tmp_shipment_item['mes_lis_shi_lin_ite_gtin']=$value[110];
             $tmp_shipment_item['mes_lis_shi_lin_ite_order_item_code']=$value[111];
-            $tmp_shipment_item['mes_lis_shi_lin_ite_code_type']=$value[112];
+            $tmp_shipment_item['mes_lis_shi_lin_ite_ord_code_type']=$value[112];
             $tmp_shipment_item['mes_lis_shi_lin_ite_supplier_item_code']=$value[113];
             $tmp_shipment_item['mes_lis_shi_lin_ite_name']=$value[114];
             $tmp_shipment_item['mes_lis_shi_lin_ite_name_sbcs']=$value[115];

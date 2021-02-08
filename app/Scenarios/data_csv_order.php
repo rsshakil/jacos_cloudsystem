@@ -338,7 +338,7 @@ class data_csv_order extends Model
             $data_item_array['mes_lis_ord_lin_ite_maker_code']=$value[110];
             $data_item_array['mes_lis_ord_lin_ite_gtin']=$value[111];
             $data_item_array['mes_lis_ord_lin_ite_order_item_code']=$value[112];
-            $data_item_array['mes_lis_ord_lin_ite_code_type']=$value[113];
+            $data_item_array['mes_lis_ord_lin_ite_ord_code_type']=$value[113];
             $data_item_array['mes_lis_ord_lin_ite_supplier_item_code']=$value[114];
             $data_item_array['mes_lis_ord_lin_ite_name']=$value[115];
             $data_item_array['mes_lis_ord_lin_ite_name_sbcs']=$value[116];
@@ -398,7 +398,7 @@ class data_csv_order extends Model
             $data_shi_item_array['mes_lis_shi_lin_ite_maker_code']=$value[110];
             $data_shi_item_array['mes_lis_shi_lin_ite_gtin']=$value[111];
             $data_shi_item_array['mes_lis_shi_lin_ite_order_item_code']=$value[112];
-            $data_shi_item_array['mes_lis_shi_lin_ite_code_type']=$value[113];
+            $data_shi_item_array['mes_lis_shi_lin_ite_ord_code_type']=$value[113];
             $data_shi_item_array['mes_lis_shi_lin_ite_supplier_item_code']=$value[114];
             $data_shi_item_array['mes_lis_shi_lin_ite_name']=$value[115];
             $data_shi_item_array['mes_lis_shi_lin_ite_name_sbcs']=$value[116];

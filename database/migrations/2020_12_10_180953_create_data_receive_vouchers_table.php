@@ -51,7 +51,7 @@ class CreateDataReceiveVouchersTable extends Migration
             $table->string('mes_lis_acc_log_del_stock_transfer_code', 20)->comment('通過在庫区分');
             $table->string('mes_lis_acc_log_del_delivery_code', 20)->comment('納品区分');
             $table->string('mes_lis_acc_log_del_delivery_time', 20)->comment('指定納品時刻');
-            $table->string('mes_lis_ord_log_del_transportation_code', 20)->comment('輸送手段');
+            $table->string('mes_lis_acc _log_del_transportation_code', 20)->comment('輸送手段');
             $table->string('mes_lis_acc_log_log_barcode_print', 20)->comment('バーコード情報');
             $table->string('mes_lis_acc_log_log_category_name_print1', 20)->comment('カテゴリー名称1（印字用）');
             $table->string('mes_lis_acc_log_log_category_name_print2', 20)->comment('カテゴリー名称2（印字用）');

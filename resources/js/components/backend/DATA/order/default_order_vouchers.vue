@@ -95,7 +95,7 @@
                 style="width: 220px"
               >
                 <option value="*">全て</option>
-               
+
                      <option
                 v-for="(opt, i) in fixedSpecialOptionList"
                 :key="i"
@@ -307,24 +307,12 @@
                   }}
                 </td>
                 <td>
-                  <span v-if="order_detail_list.decision_datetime != null"
-                    ><b-button
-                      pill
-                      variant="info"
-                      @click="
-                        decissionDateUpdate(
-                          order_detail_list.data_shipment_voucher_id
-                        )
-                      "
-                      >済</b-button
-                    ></span
-                  ><span v-else
-                    ><input
-                      type="checkbox"
-                      v-bind:value="order_detail_list.data_shipment_voucher_id"
-                      v-model="selected"
-                      @change="updateCheckall()"
-                  /></span>
+                    <span v-if="order_detail_list.decision_datetime != null">
+                        <b-button pill variant="info" @click="decissionDateUpdate(order_detail_list.data_shipment_voucher_id)">済</b-button>
+                    </span>
+                    <span v-else>
+                        <input type="checkbox" v-bind:value="order_detail_list.data_shipment_voucher_id" v-model="selected" @change="updateCheckall()"/>
+                    </span>
                 </td>
                 <td>{{ order_detail_list.mes_lis_shi_par_shi_code }}</td>
                 <td>
@@ -796,6 +784,9 @@ export default {
       printingStatusOptionList: ["未印刷あり", "印刷済"],
       deliveryDestnationOptionList: ["店舗", "物流センター"],
       date_null: false,
+      null_selected:[],
+      not_null_selected:[],
+      null_selected_message:false,
       form: new Form({
         printingStatus: "*",
         situation: "*",
@@ -837,39 +828,49 @@ export default {
     checkAll() {
       this.isCheckAll = !this.isCheckAll;
       this.selected = [];
-      var null_seleted = [];
-      var not_null_seleted = [];
+      this.null_selected = [];
+      this.not_null_selected = [];
       //   console.log(this.order_detail_lists.data[0].decision_datetime)
 
       if (this.isCheckAll) {
         for (var key in this.order_detail_lists.data) {
-          this.selected.push(
-            this.order_detail_lists.data[key].data_shipment_voucher_id
-          );
+        //   this.selected.push(
+        //     this.order_detail_lists.data[key].data_shipment_voucher_id
+        //   );
           if (this.order_detail_lists.data[key].decision_datetime) {
-            not_null_seleted.push(
+            this.not_null_selected.push(
               this.order_detail_lists.data[key].data_shipment_voucher_id
             );
           } else {
-            null_seleted.push(
+            this.null_selected.push(
               this.order_detail_lists.data[key].data_shipment_voucher_id
             );
           }
         }
       }
+
     //   console.log(this.select_field_per_page_num);
-      if (null_seleted.length < this.select_field_per_page_num && null_seleted.length !=0) {
-          this.date_null = true;
-      }else{
+      if (this.null_selected.length <= this.select_field_per_page_num && this.null_selected.length !=0) {
           this.date_null = false;
+          this.selected=this.null_selected;
+          this.null_selected_message=true;
+      }else if(this.not_null_selected.length <= this.select_field_per_page_num && this.not_null_selected.length !=0){
+          this.date_null = true;
+          this.selected=this.not_null_selected;
+          this.null_selected_message=false;
       }
+    //   console.log(this.selected);
     },
     updateCheckall() {
+        // console.log(this.selected)
       if (this.selected.length == this.order_detail_lists.data.length) {
         this.isCheckAll = true;
       } else {
         this.isCheckAll = false;
       }
+      this.null_selected=this.selected
+      this.null_selected_message=true;
+      this.date_null = false;
     },
 
     update_checked_item_list() {
@@ -950,6 +951,7 @@ export default {
     },
     decissionDateUpdate(data_shipment_voucher_id) {
     //   this.selected = [];
+    console.log(this.selected)
     if (this.selected.length>0) {
         this.alert_text = "対象となる伝票確定を取消しますがよろしいでしょうか。";
       }else{
@@ -962,19 +964,24 @@ export default {
       this.updateBuyerDecissionDateTime();
     },
     updateDatetimeDecessionfield() {
-      this.alert_text = this.selected.length + "件の伝票を確定しますがよろしいでしょうか。";
-      this.updateBuyerDecissionDateTime();
+        if (this.null_selected.length>0) {
+            this.alert_text = this.selected.length + "件の伝票を確定しますがよろしいでしょうか。";
+            this.updateBuyerDecissionDateTime();
+        }else{
+            this.alert_icon = "warning";
+            this.alert_title = "";
+            this.alert_text ="対象となる伝票がありません、再度確認して実行してください。";
+            this.sweet_normal_alert();
+        }
     },
     updateBuyerDecissionDateTime() {
-        // console.log(this.date_null);
-        // return 0;
-      this.selectedNum = this.selected.length;
-      if (this.selectedNum > 0) {
         var _this = this;
         this.alert_icon = "warning";
         this.alert_title = "";
         this.yes_btn = "はい";
         this.cancel_btn = "キャンセル";
+      this.selectedNum = this.selected.length;
+      if (this.selectedNum > 0) {
         this.confirm_sweet().then((result) => {
           if (result.value) {
             console.log(this.selected);
@@ -987,13 +994,16 @@ export default {
               .then(({ data }) => {
                 _this.alert_icon = "success";
                 _this.alert_title = "";
-                // _this.alert_text = _this.selectedNum + "件の伝票を確定しました。";
-                _this.alert_text = "伝票確定を取消しました。";
+                _this.alert_text = _this.selectedNum + "件の伝票を確定しました。";
+                if (!this.null_selected_message) {
+                    _this.alert_text = "伝票確定を取消しました。";
+                }
                 _this.sweet_normal_alert();
                 Fire.$emit("LoadByrorderDetail");
                 this.selected = [];
                 // this.date_null = false;
                 this.isCheckAll = false;
+                this.null_selected_message=false;
               })
               .catch(function (response) {
                 //handle error
@@ -1002,14 +1012,14 @@ export default {
           } else {
             this.selected = [];
             this.isCheckAll = false;
+            this.null_selected_message=false;
           }
         });
       } else {
-        this.alert_icon = "warning";
-        this.alert_title = "";
-        this.alert_text =
-          "対象となる伝票がありません、再度確認して実行してください。";
+          this.null_selected_message=false;
+        this.alert_text = "対象となる伝票がありません、再度確認して実行してください。";
         this.sweet_normal_alert();
+
       }
     },
     shipmentConfirm() {

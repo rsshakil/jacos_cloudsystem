@@ -18,7 +18,7 @@ class CreateBmsShipmentsTable extends Migration
             // $table->string('file_name',100)->comment('発注ファイル名');
             // $table->string('customer_id', 6)->comment('取引先ID');
             $table->integer('byr_shipment_id')->unsigned()->comment('byr_shipment_id');
-            // data shipment 
+            // data shipment
             $table->string('sta_sen_identifier', 30)->comment('送信者ＩＤ');
             $table->string('sta_sen_ide_authority', 10)->comment('送信者ＩＤ発行元');
             $table->string('sta_rec_identifier',20)->comment('受信者ＩＤ');
@@ -50,7 +50,7 @@ class CreateBmsShipmentsTable extends Migration
             $table->string('mes_lis_buy_gln', 13)->comment('発注者GLN');
             $table->string('mes_lis_buy_name', 20)->comment('発注者名称');
             $table->string('mes_lis_buy_name_sbcs', 20)->comment('発注者名称カナ');
-            // data shipment voucher 
+            // data shipment voucher
             $table->string('mes_lis_shi_tra_trade_number', 10)->comment('取引番号（発注・返品）');
             $table->string('mes_lis_shi_tra_additional_trade_number', 10)->comment('取引付属番号');
             $table->string('mes_lis_shi_fre_shipment_number', 10)->comment('出荷者管理番号');
@@ -141,7 +141,7 @@ class CreateBmsShipmentsTable extends Migration
             $table->string('mes_lis_shi_lin_ite_maker_code',13)->comment('メーカーコード');
             $table->string('mes_lis_shi_lin_ite_gtin',14)->comment('商品コード（ＧTIN）');
             $table->string('mes_lis_shi_lin_ite_order_item_code',14)->comment('商品コード（発注用）');
-            $table->string('mes_lis_shi_lin_ite_code_type',3)->comment('商品コード区分');
+            $table->string('mes_lis_shi_lin_ite_ord_code_type',3)->comment('商品コード区分');
             $table->string('mes_lis_shi_lin_ite_supplier_item_code',14)->comment('商品コード（取引先）');
             $table->string('mes_lis_shi_lin_ite_name',25)->comment('商品名');
             $table->string('mes_lis_shi_lin_ite_name_sbcs',25)->comment('商品名カナ');
@@ -193,7 +193,7 @@ class CreateBmsShipmentsTable extends Migration
             $table->string('mes_lis_shi_lin_fre_item_weight',13)->comment('商品重量');
             $table->string('mes_lis_shi_lin_fre_order_weight',15)->comment('発注重量');
             $table->string('mes_lis_shi_lin_fre_shipment_weight',15)->comment('出荷重量');
-            // data shipment item details 
+            // data shipment item details
             $table->string('mes_lis_shi_lin_pac_itf_code',15)->comment('ITFコード(集合包装GTIN)');
             $table->string('mes_lis_shi_lin_pac_package_indicator',15)->comment('出荷荷姿コード');
             $table->string('mes_lis_shi_lin_pac_number_of_packages',15)->comment('出荷数量（出荷荷姿数）');
