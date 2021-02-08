@@ -204,6 +204,12 @@
                   >
                     表示項目設定
                   </button>
+                  <button
+                    @click="display_invoice_upload_setting"
+                    class="dropdown-item"
+                  >
+                    表示項目設定
+                  </button>
                   <!-- <div class="dropdown-divider"></div>
               <a class="dropdown-item setting_printing" href="#">印刷</a>
               <div class="dropdown-divider"></div>
@@ -311,6 +317,26 @@
         </ul>
       </b-form-checkbox-group>-->
     </b-modal>
+    <b-modal
+      id="invoiceJsonSetting"
+      :hide-backdrop="true"
+      ref="invoiceJsonSettingShowHide"
+      title="締日登録"
+      cancel-title="キャンセル"
+      ok-title="決定"
+      @ok.prevent="update_invoice_json_setting()"
+    >
+     <h4>請求業務の締日を登録できます</h4>
+     <label for="invoicejson_0" class="">締日</label>
+     <div class="selectFildlistdata" style="position:relative;">
+     
+     <select class="form-control custominvoicejsnslect" v-model="input.value" v-for="input in selectfieldList" :key="input.id">
+        <option v-for="n in 30" :value="n">{{n}}日</option>
+        <option value="月末">月末</option>
+     </select> <b-icon @click="addSelectField" class="customPlusIcon" icon="plus-square-fill" aria-hidden="true"></b-icon>
+    </div>
+    </b-modal>
+    
   </main>
 </template>
 
@@ -325,6 +351,7 @@ export default {
       company_name: null,
       user_byr_slr_list: [],
       hover: false,
+      invouce_upload_setting:false,
       selected_customer_list: "未選択",
       // buyer_info_for_saller:[],
       fields: [
@@ -346,10 +373,46 @@ export default {
         { isActive: true, header_1: "イオン", header_2: "500件" },
         { isActive: true, header_1: "イオン", header_2: "500件" },
       ],
+      selectfieldCounter:0,
+      selectfieldList:[{
+        id:'invoicejson_0',
+        value:''
+      }],
       // BASE_URL:BASE_URL,
     };
   },
   methods: {
+    addSelectField() {
+      this.selectfieldList.push({
+        id: `invoicejson_${++this.selectfieldCounter}`,
+        value: '',
+      });
+    },
+    update_invoice_json_setting(){
+            console.log(this.selectfieldList);
+            var post_data = {
+        selected_item: this.selectfieldList,
+        user_id: Globals.user_info_id,
+      };
+      console.log();
+      axios
+        .post(this.BASE_URL + "api/update_cmn_connects_optional", post_data)
+        .then((data) => {
+          console.log(data);
+            this.$root.$emit(
+                "bv::hide::modal",
+                "invoiceJsonSetting",
+                "#invoiceJsonSettingShowHide"
+            );
+          Swal.fire({
+          icon: "success",
+          title: "optional value!",
+          text: "You can successfully added optional value",
+        });
+        });
+            
+
+        },
     imageSrc() {
       return (
         this.BASE_URL +

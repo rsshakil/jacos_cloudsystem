@@ -23,11 +23,20 @@ export default {
             yes_btn:'Yes, delete it!',
             cancel_btn:"Cancel",
             byr_buyer_id: null,
+            
             buyer_settings:{},
             // loader: "",
         };
     },
     methods: {
+        display_invoice_upload_setting(){
+            this.$root.$emit(
+                "bv::show::modal",
+                "invoiceJsonSetting",
+                "#invoiceJsonSettingShowHide"
+            );
+        },
+        
         // Database created and updated datetime conversion
         getbuyerJsonSettingvalue(){
             axios.get(this.BASE_URL + "api/buyerJsonSetting/"+this.byr_buyer_id)
@@ -131,6 +140,7 @@ export default {
                 });
             }
         },
+        
         update_col_setting() {
             console.log("update col setting");
 

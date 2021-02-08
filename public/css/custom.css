@@ -217,3 +217,14 @@
     padding-left: 3px;
     padding-right: 3px;
 }
+.customPlusIcon{
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 36px;
+    cursor: pointer;
+}
+
+.custominvoicejsnslect{
+    margin-bottom: 15px;
+}

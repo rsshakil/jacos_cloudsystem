@@ -283,7 +283,7 @@ export default {
     },
     searchItemDetail(){
        Fire.$emit("LoadByrorderDetail");
-        this.order_search_modal3 = true;
+        this.order_search_modal3 = false;
     },
     //get Table data
     get_all_byr_order_detail(page = 1) {
