@@ -107,15 +107,33 @@
                 v-for="(order_detail_list, index) in order_detail_lists.data"
                 :key="index"
               >
-                <td>{{ index + 1 }}</td>
-                
                 <td>
-                  {{ order_detail_list.mes_lis_shi_tot_tot_net_price_total }}
+                  {{
+                    order_detail_lists.current_page *
+                      select_field_per_page_num -
+                    select_field_per_page_num +
+                    index +
+                    1
+                  }}
                 </td>
-                <td>{{ order_detail_list.status }}</td>
-                <td>{{ order_detail_list.updated_at }}</td>
-                <td>{{ order_detail_list.print_datetime }}</td>
-                <td>{{ order_detail_list.send_datetime }}</td>
+                
+                <td><router-link
+                    :to="{
+                      name: 'item_search_detail',
+                      params: {
+                        item_id:
+                          order_detail_list.mes_lis_shi_lin_ite_supplier_item_code,
+                      },
+                    }"
+                    class=""
+                    >
+                  {{ order_detail_list.mes_lis_shi_lin_ite_supplier_item_code }}
+                  </router-link>
+                </td>
+                <td>{{ order_detail_list.mes_lis_shi_lin_ite_gtin }}</td>
+                <td>{{ order_detail_list.mes_lis_shi_lin_ite_name }}</td>
+                <td>{{ order_detail_list.mes_lis_shi_lin_ite_ite_spec }}</td>
+                <td>{{ order_detail_list.mes_lis_shi_par_sel_code }}</td>
               </tr>
             </tbody>
           </table>
@@ -132,7 +150,7 @@
       title="商品コード"
       ok-title="検　索"
       cancel-title="閉じる"
-      @ok.prevent="update_order_voucher_detail()"
+      @ok.prevent="searchItemDetail()"
       v-model="order_search_modal3"
     >
       <div class="panel-body">
@@ -142,27 +160,27 @@
         >
           <tr>
             <td class="cl_custom_color">商品コード（発注用）</td>
-            <td><input type="text" class="form-control" v-model="form.deliveryCode"/></td>
+            <td><input type="text" class="form-control" v-model="form.mes_lis_shi_lin_ite_supplier_item_code"/></td>
             <td class="cl_custom_color">JANコード</td>
             <td>
-              <input type="text" class="form-control" v-model="form.deliveryName"/>
+              <input type="text" class="form-control" v-model="form.mes_lis_shi_lin_ite_gtin"/>
             </td>
           </tr>
           
           <tr>
             <td class="cl_custom_color">商品名</td>
-            <td colspan="3"><input type="" class="form-control"/></td>
+            <td colspan="3"><input type="text" v-model="form.mes_lis_shi_lin_ite_name" class="form-control"/></td>
           </tr>
           <tr>
             <td class="cl_custom_color">規格</td>
-            <td colspan="3"><input type="" class="form-control"/></td>
+            <td colspan="3"><input type="text" v-model="form.mes_lis_shi_lin_ite_ite_spec" class="form-control"/></td>
           </tr>
           <tr>
             <td class="cl_custom_color">取引先コード</td>
-            <td><input type="text" class="form-control" v-model="form.deliveryCode"/></td>
+            <td><input type="text" class="form-control"/></td>
             <td class="cl_custom_color">納品先コード</td>
             <td>
-              <input type="text" class="form-control" v-model="form.deliveryName"/>
+              <input type="text" class="form-control"/>
             </td>
           </tr>
           <tr>
@@ -175,8 +193,8 @@
             </td>
             <td class="cl_custom_color">不定貴区分</td>
             <td>
-              <select class="form-control" v-model="form.deliveryDestnation" style="width: 220px">
-              <option value="">全て</option>
+              <select class="form-control" v-model="form.mes_lis_shi_tra_fre_variable_measure_item_code" style="width: 220px">
+              <option value="*">全て</option>
                 <option :value="item" v-for="item in deliveryDestnationOptionList">{{ item }}</option>
               </select>
             </td>
@@ -235,13 +253,11 @@ export default {
       fixedSpecialOptionList:['未印刷あり','未印刷あり'],
       deliveryDestnationOptionList:['店舗','物流センター'],
       form: new Form({
-        printingStatus:'',
-        situation:'',
-        fixedSpecial:'',
-        deliveryDestnation:'',
-        deliveryCode:'',
-        deliveryDate:'',
-        deliveryName:'',
+        mes_lis_shi_lin_ite_supplier_item_code:'',
+        mes_lis_shi_lin_ite_gtin:'',
+        mes_lis_shi_lin_ite_name:'',
+        mes_lis_shi_lin_ite_ite_spec:'',
+        mes_lis_shi_tra_fre_variable_measure_item_code:'*'
       }),
       param_data: [],
      
@@ -262,18 +278,21 @@ export default {
     selectNumPerPage(){
       if(this.select_field_per_page_num!=0){
         Fire.$emit("LoadByrorderDetail");
-        // this.get_all_byr_order_detail(this.select_field_page_num);
       }
       
     },
-    
+    searchItemDetail(){
+       Fire.$emit("LoadByrorderDetail");
+        this.order_search_modal3 = true;
+    },
     //get Table data
     get_all_byr_order_detail(page = 1) {
       this.param_data['page']=page;
       this.param_data['per_page']=this.select_field_per_page_num;
+      this.param_data['form_search'] = this.form;
       this.select_field_page_num = page;
       axios
-        .post(this.BASE_URL + "api/order_details", this.param_data)
+        .post(this.BASE_URL + "api/get_all_shipment_item_by_search", this.param_data)
         .then(({ data }) => {
         console.log(data);
           this.order_detail_lists = data.order_list_detail;

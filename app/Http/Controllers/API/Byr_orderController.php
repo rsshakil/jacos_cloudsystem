@@ -178,9 +178,31 @@ class Byr_orderController extends Controller
         $temperature_code = $request->temperature_code;
         $per_page = $request->per_page == null ? 10 : $request->per_page;
         $temperature_code = $temperature_code == null ? '' : $temperature_code;
-       $form_search = $request->form_search;
+        $form_search = $request->form_search;
 
         data_order_voucher::where('data_order_id',$data_order_id)->where('mes_lis_ord_tra_goo_major_category',$major_category)->where('mes_lis_ord_log_del_delivery_service_code',$delivery_service_code)->where('mes_lis_ord_tra_dat_delivery_date',$delivery_date)->whereNull('check_datetime')->update(['check_datetime'=>date('Y-m-d H:i:s')]);
+        $order_info = DB::table('data_shipments as ds')
+        ->select(
+            'dor.receive_datetime',
+            'dsv.mes_lis_shi_par_sel_code',
+            'dsv.mes_lis_shi_par_sel_name',
+            'dsv.mes_lis_shi_tra_dat_delivery_date',
+            'dsv.mes_lis_shi_tra_goo_major_category',
+            'dsv.mes_lis_shi_log_del_delivery_service_code',
+            'dsv.mes_lis_shi_tra_ins_temperature_code',
+            'dsv.mes_lis_shi_tra_trade_number'
+        )
+        ->join('data_shipment_vouchers as dsv', 'dsv.data_shipment_id', '=', 'ds.data_shipment_id')
+        ->join('data_shipment_items as dsi', 'dsi.data_shipment_voucher_id', '=', 'dsv.data_shipment_voucher_id')
+        ->join('data_orders as dor', 'dor.data_order_id', '=', 'ds.data_order_id')
+        ->where('ds.data_order_id', $data_order_id)
+        ->where('dsv.mes_lis_shi_tra_dat_delivery_date', $delivery_date)
+        ->where('dsv.mes_lis_shi_tra_goo_major_category', $major_category)
+        ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $delivery_service_code)
+        ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $temperature_code)
+        ->groupBy('dsv.mes_lis_shi_tra_trade_number')
+        ->first();
+
         $result = DB::table('data_shipments as ds')
             ->select(
                 'dor.receive_datetime',
@@ -237,15 +259,7 @@ class Byr_orderController extends Controller
            $result->groupBy('dsv.mes_lis_shi_tra_trade_number');
             $result = $result->paginate($per_page);
             
-        $order_info=[
-            'receive_datetime' => (isset($result->first()->receive_datetime)?$result->first()->receive_datetime:''),
-            'mes_lis_shi_par_sel_code' => (isset($result->first()->mes_lis_shi_par_sel_code)?$result->first()->mes_lis_shi_par_sel_code:''),
-            'mes_lis_shi_par_sel_name' => (isset($result->first()->mes_lis_shi_par_sel_name)?$result->first()->mes_lis_shi_par_sel_name:''),
-            'mes_lis_shi_tra_dat_delivery_date' => (isset($result->first()->mes_lis_shi_tra_dat_delivery_date)?$result->first()->mes_lis_shi_tra_dat_delivery_date:''),
-            'mes_lis_shi_tra_goo_major_category' => (isset($result->first()->mes_lis_shi_tra_goo_major_category)?$result->first()->mes_lis_shi_tra_goo_major_category:''),
-            'mes_lis_shi_log_del_delivery_service_code' => (isset($result->first()->mes_lis_shi_log_del_delivery_service_code)?$result->first()->mes_lis_shi_log_del_delivery_service_code:''),
-            'mes_lis_shi_tra_ins_temperature_code' => (isset($result->first()->mes_lis_shi_tra_ins_temperature_code)?$result->first()->mes_lis_shi_tra_ins_temperature_code:''),
-        ];
+        
         /*coll setting*/
         $slected_list = array();
         $result_data = cmn_tbl_col_setting::where('url_slug', 'order_list_detail')->first();
