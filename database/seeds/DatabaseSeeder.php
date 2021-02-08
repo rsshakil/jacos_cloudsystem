@@ -17,11 +17,9 @@ class DatabaseSeeder extends Seeder
         $this->call(roleHasPermissionsTableDataSeeder::class);
         $this->call(modelHasrolesTableDataSeeder::class);
         $this->call(ModelHasPermissionSeeder::class);
-        // JCS Seeders  
+        // JCS Seeders
         $this->call(cmn_companySeeder::class);
        // $this->call(Byr_shipment_detailSeeder::class);
-        // $this->call(lv3_jobSeeder::class);
-        // $this->call(lv3_trigger_file_pathSeeder::class);
         // $this->call(lv3_trigger_scheduleSeeder::class);
         // $this->call(lv3_historySeeder::class);
         $this->call(cmn_companies_userSeeder::class);
@@ -32,5 +30,10 @@ class DatabaseSeeder extends Seeder
         $this->call(slr_sellerSeeder::class);
         $this->call(cmnPdfCanvasSeeder::class);
         $this->call(cmn_blogSeeder::class);
+        // Level3 Seeder
+        $this->call(Lv3ServiceSeeder::class);
+        $this->call(Lv3TriggerFilePathSeeder::class);
+        $this->call(Lv3ScheduleSeeder::class);
+        $this->call(Lv3JobSeeder::class);
     }
 }
