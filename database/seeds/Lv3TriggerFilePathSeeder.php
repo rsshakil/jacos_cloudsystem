@@ -23,11 +23,11 @@ class Lv3TriggerFilePathSeeder extends Seeder
             ],
             [
                 'lv3_service_id'=>2,
-                'check_folder_path'=>"C:\Users\ASUS\OneDrive\Desktop\JCS\Check Folder",
-                'moved_folder_path'=>"C:\Users\ASUS\OneDrive\Desktop\JCS\Check Folder\done",
+                'check_folder_path'=>"",
+                'moved_folder_path'=>"",
                 'api_url'=>"https://jcs.dev.jacos.jp/api/get_shipment_file",
                 'api_folder_path'=>"C:\Users\ASUS\OneDrive\Desktop\JCS\Shipment_File",
-                'path_execution_flag'=>1,
+                'path_execution_flag'=>0,
             ]
         );
         lv3_trigger_file_path::insert($path_array);
