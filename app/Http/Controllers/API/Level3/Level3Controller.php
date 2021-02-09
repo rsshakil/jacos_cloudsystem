@@ -425,33 +425,61 @@ class Level3Controller extends Controller
         $url_path = \Config::get('app.url') . 'storage/app/shipment_csv/moved/';
         $path = \storage_path('/app/shipment_csv/');
         $files = array_values(array_diff(scandir($path), array('.', '..')));
-        $files_array = array();
+        $file_name='';
+        $file_path='';
         if (!empty($files)) {
-            for ($i = 0; $i < count($files); $i++) {
-                if (is_file($path . $files[$i])) {
-                    $tmp_array['file_name'] = $files[$i];
-                    $tmp_array['file_path'] = $url_path . $files[$i];
-
-                    rename($path . $files[$i], $path . 'moved/' . $files[$i]);
-                    $files_array[] = $tmp_array;
-                }
-
+            if (is_file($path . $files[0])) {
+                $file_name = $files[0];
+                $file_path = $url_path . $files[0];
+                rename($path . $files[0], $path . 'moved/' . $files[0]);
             }
         } else {
             $this->message = "フォルダが空です";
             $this->status_code = 400;
-            return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'files_array' => $files_array]);
+            return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'file_name' => $file_name,'file_path'=>$file_path]);
         }
 
-        if (!empty($files_array)) {
+        if (!empty($file_name)) {
             $this->message = "ファイルが見つかりました。";
             $this->status_code = 200;
         } else {
             $this->message = "ファイルが見つかりませんでした。";
             $this->status_code = 401;
         }
-        return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'files_array' => $files_array]);
+        return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'file_name' => $file_name,'file_path'=>$file_path]);
     }
+    // public function getShipmentFile(Request $request)
+    // {
+    //     $url_path = \Config::get('app.url') . 'storage/app/shipment_csv/moved/';
+    //     $path = \storage_path('/app/shipment_csv/');
+    //     $files = array_values(array_diff(scandir($path), array('.', '..')));
+    //     $files_array = array();
+    //     if (!empty($files)) {
+    //         for ($i = 0; $i < count($files); $i++) {
+    //             if (is_file($path . $files[$i])) {
+    //                 $tmp_array['file_name'] = $files[$i];
+    //                 $tmp_array['file_path'] = $url_path . $files[$i];
+
+    //                 rename($path . $files[$i], $path . 'moved/' . $files[$i]);
+    //                 $files_array[] = $tmp_array;
+    //             }
+
+    //         }
+    //     } else {
+    //         $this->message = "フォルダが空です";
+    //         $this->status_code = 400;
+    //         return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'files_array' => $files_array]);
+    //     }
+
+    //     if (!empty($files_array)) {
+    //         $this->message = "ファイルが見つかりました。";
+    //         $this->status_code = 200;
+    //     } else {
+    //         $this->message = "ファイルが見つかりませんでした。";
+    //         $this->status_code = 401;
+    //     }
+    //     return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'files_array' => $files_array]);
+    // }
     public function deleteService(Request $request)
     {
         $service_id = $request->service_id;
