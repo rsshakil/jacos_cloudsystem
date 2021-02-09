@@ -208,7 +208,7 @@
                     @click="display_invoice_upload_setting"
                     class="dropdown-item"
                   >
-                    表示項目設定
+                    締日登録
                   </button>
                   <!-- <div class="dropdown-divider"></div>
               <a class="dropdown-item setting_printing" href="#">印刷</a>
@@ -329,11 +329,14 @@
      <h4>請求業務の締日を登録できます</h4>
      <label for="invoicejson_0" class="">締日</label>
      <div class="selectFildlistdata" style="position:relative;">
-     
-     <select class="form-control custominvoicejsnslect" v-model="input.value" v-for="input in selectfieldList" :key="input.id">
+     <div class="customselectFields" v-for="input in selectfieldList" :key="input.id">
+     <select class="form-control custominvoicejsnslect" v-model="input.value">
         <option v-for="n in 30" :value="n">{{n}}日</option>
         <option value="月末">月末</option>
-     </select> <b-icon @click="addSelectField" class="customPlusIcon" icon="plus-square-fill" aria-hidden="true"></b-icon>
+     </select>
+     <b-icon @click="removeSelectField(input)" v-if="input.id!=0" class="customMinusIcon" icon="trash" aria-hidden="true"></b-icon>
+      <b-icon @click="addSelectField" v-if="input.id==0" class="customPlusIcon" icon="plus-square-fill" aria-hidden="true"></b-icon>
+    </div>
     </div>
     </b-modal>
     
@@ -387,6 +390,9 @@ export default {
         id: `invoicejson_${++this.selectfieldCounter}`,
         value: '',
       });
+    },
+    removeSelectField(event){
+      this.selectfieldList.splice(this.selectfieldList.indexOf(event), 1);
     },
     update_invoice_json_setting(){
             console.log(this.selectfieldList);
@@ -448,6 +454,28 @@ export default {
          
         });
     },
+     display_invoice_upload_setting(){
+           var _this = this; 
+             axios
+        .get(
+          this.BASE_URL +
+            "api/get_allInvoiceJsonSetting_info"
+        )
+        .then(({ data }) => {
+          console.log(data.result);
+          if(data.success!=0){
+            this.selectfieldList = [];
+            this.selectfieldList = data.result;
+          }
+        
+        });
+         this.$root.$emit(
+                "bv::show::modal",
+                "invoiceJsonSetting",
+                "#invoiceJsonSettingShowHide"
+            );
+        },
+    
   },
   created() {
     this.get_user_company_info();

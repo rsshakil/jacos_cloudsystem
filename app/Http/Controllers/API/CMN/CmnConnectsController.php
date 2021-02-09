@@ -97,4 +97,20 @@ class CmnConnectsController extends Controller
         cmn_connect::where('cmn_connect_id',1)->update(['optional'=>$invoicedayslistjson]);
         return response()->json(['success'=>1]);
     }
+
+    public function get_allInvoiceJsonSetting_info(Request $request){
+        $result = cmn_connect::where('cmn_connect_id',1)->first();
+        $jsnresp = array();
+        if($result->optional){
+            $jsdecode = \json_decode($result->optional);
+            foreach($jsdecode->invoice as $key=>$inv){
+                $jsnresp[]= array(
+                    'id'=>$key,
+                    'value'=>$inv
+                );
+            }
+            return response()->json(['result'=>$jsnresp,'success'=>1]);
+        }
+        return response()->json(['result'=>$jsnresp,'success'=>0]);
+    }
 }

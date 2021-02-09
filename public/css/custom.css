@@ -228,3 +228,15 @@
 .custominvoicejsnslect{
     margin-bottom: 15px;
 }
+.customselectFields{
+    position: relative;
+}
+.customMinusIcon{
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 36px;
+    cursor: pointer;
+    background: red;
+    color:#fff;
+}

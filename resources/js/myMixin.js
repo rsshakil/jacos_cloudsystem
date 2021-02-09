@@ -29,13 +29,7 @@ export default {
         };
     },
     methods: {
-        display_invoice_upload_setting(){
-            this.$root.$emit(
-                "bv::show::modal",
-                "invoiceJsonSetting",
-                "#invoiceJsonSettingShowHide"
-            );
-        },
+       
         
         // Database created and updated datetime conversion
         getbuyerJsonSettingvalue(){
