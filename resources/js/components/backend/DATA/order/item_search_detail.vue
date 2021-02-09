@@ -6,41 +6,41 @@
         <table class="table orderTopDetailTable table-bordered" style="width: 100%">
           <tr>
             <td class="cl_custom_color">受信日時</td>
-            <td>{{ order_info.receive_datetime }}</td>
+            <td>{{ order_item_lists.receive_datetime }}</td>
             <td class="cl_custom_color">取引先</td>
-            <td colspan="5">{{ order_info.mes_lis_shi_par_sel_code }}
-              {{ order_info.mes_lis_shi_par_sel_name }}</td>
+            <td colspan="5">{{ order_item_lists.mes_lis_shi_par_sel_code }}
+              {{ order_item_lists.mes_lis_shi_par_sel_name }}</td>
           </tr>
           <tr>
             <td class="cl_custom_color">納品日</td>
-            <td>{{ order_info.mes_lis_shi_tra_dat_delivery_date }}</td>
+            <td>{{ order_item_lists.mes_lis_shi_tra_dat_delivery_date }}</td>
             <td class="cl_custom_color">部門</td>
-            <td>{{ order_info.mes_lis_shi_tra_goo_major_category }}</td>
+            <td>{{ order_item_lists.mes_lis_shi_tra_goo_major_category }}</td>
             <td class="cl_custom_color">便</td>
-            <td>{{ order_info.mes_lis_shi_log_del_delivery_service_code }}</td>
+            <td>{{ order_item_lists.mes_lis_shi_log_del_delivery_service_code }}</td>
             <td class="cl_custom_color">配送温度区分</td>
-            <td>{{ order_info.mes_lis_shi_tra_ins_temperature_code }}</td>
+            <td>{{ order_item_lists.mes_lis_shi_tra_ins_temperature_code }}</td>
           </tr>
           <tr>
             <td class="cl_custom_color">受信日時</td>
-            <td>{{ order_info.receive_datetime }}</td>
+            <td>{{ order_item_lists.receive_datetime }}</td>
             <td class="cl_custom_color">取引先</td>
             <td colspan="5">
-              {{ order_info.mes_lis_shi_par_sel_code }}
-              {{ order_info.mes_lis_shi_par_sel_name }}
+              {{ order_item_lists.mes_lis_shi_par_sel_code }}
+              {{ order_item_lists.mes_lis_shi_par_sel_name }}
             </td>
           </tr>
           <tr>
             <td class="cl_custom_color">商品名</td>
-            <td colspan="7">健康ミネラル麦茶</td>
+            <td colspan="7">{{order_item_lists.mes_lis_shi_lin_ite_name}}</td>
             
           </tr>
           <tr>
             <td class="cl_custom_color">規格名</td>
-            <td>５００ｍｌ</td>
+            <td>{{order_item_lists.mes_lis_shi_lin_ite_ite_spec}}</td>
             <td class="cl_custom_color">産地</td>
             <td colspan="5">
-              北海道産
+              {{order_item_lists.mes_lis_shi_lin_fre_field_name}}
             </td>
           </tr>
         </table>
@@ -53,21 +53,21 @@
         <table class="table orderTopDetailTable table-bordered" style="width: 100%">
           <tr>
             <td class="cl_custom_color_active">ケース数</td>
-            <td><input type="text" class="form-control" /></td>
+            <td><input type="text" class="form-control" v-model="order_item_lists.mes_lis_shi_lin_qua_shi_num_of_order_units" /></td>
             <td class="cl_custom_color_active">バラ数</td>
-            <td><input type="text" class="form-control" /></td>
+            <td><input type="text" class="form-control" v-model="order_item_lists.mes_lis_shi_lin_qua_shi_quantity"/></td>
             <td class="cl_custom_color_active">重量</td>
-            <td><input type="text" class="form-control" /></td>
+            <td><input type="text" class="form-control" v-model="order_item_lists.mes_lis_shi_lin_fre_order_weight"/></td>
             <td class="cl_custom_color_active">原単価</td>
-            <td><input type="text" class="form-control" /></td>
+            <td><input type="text" class="form-control" v-model="order_item_lists.mes_lis_shi_lin_amo_item_net_price_unit_price"/></td>
           </tr>
           <tr>
             <td class="cl_custom_color_active">売単価</td>
-            <td><input type="text" class="form-control" /></td>
+            <td><input type="text" class="form-control" v-model="order_item_lists.mes_lis_shi_lin_amo_item_net_price"/></td>
             <td class="cl_custom_color_active">欠品理由</td>
             <td colspan="5">
-              <select class="form-control" />
-                <option value="">00 欠品なし</option>
+              <select class="form-control" v-model="order_item_lists.mes_lis_shi_lin_qua_sto_reason_code">
+                <option value="00">00 欠品なし</option>
               </select>
             </td>
             
@@ -309,7 +309,7 @@ export default {
       order_detail_lists: {},
       order_info: {},
       order_item_detail_lists: {},
-      order_item_lists: {},
+      order_item_lists: [],
       order_item_shipment_data_headTable: {},
       order_date: "",
       order_detail_list: [],
@@ -434,28 +434,14 @@ export default {
           this.mes_lis_shi_tot_tot_net_price_total = data.order_item_list_detail[0].mes_lis_shi_tot_tot_net_price_total;
           this.mes_lis_shi_tot_tot_selling_price_total = data.order_item_list_detail[0].mes_lis_shi_tot_tot_selling_price_total;
           this.order_item_lists = data.orderItem;
+          console.log("--");
+          console.log(this.order_item_lists);
+          console.log("--");
           this.order_item_shipment_data_headTable = data.order_item_list_detail[0];
           this.loader.hide();
         });
     },
 
-//get Table data
-    get_all_byr_order_detail(page = 1) {
-      this.param_data['page']=page;
-      this.param_data['per_page']=this.select_field_per_page_num;
-      this.select_field_page_num = page;
-      axios
-        .post(this.BASE_URL + "api/order_details", this.param_data)
-        .then(({ data }) => {
-        console.log(data);
-          this.order_detail_lists = data.order_list_detail;
-          this.order_info = data.order_info;
-          this.order_item_lists = data.orderItem;
-          this.loader.hide();
-          console.log(this.order_detail_lists);
-          
-        });
-    },
 
     col_show_hide_setting(url_slug) {
       console.log(this.show_hide_col_list.length + "col lenght");
@@ -486,7 +472,6 @@ export default {
     Fire.$on("LoadByrorderItemDetail", () => {
       this.get_all_byr_order_item_detail();
     });
-    this.get_all_byr_order_detail();
     this.col_show_hide_setting(this.$route.name);
     this.loader = Vue.$loading.show();
   },
