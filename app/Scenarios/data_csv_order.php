@@ -88,7 +88,7 @@ class data_csv_order extends Model
     public function exec($request, $sc)
     {
         \Log::debug(get_class().' exec start  ---------------');
-        if (!array_key_exists('up_file',$request->all())) {
+        if (!array_key_exists('up_file', $request->all())) {
             // return response()->json(['message' => "error", 'status' => '0']);
             return ['message' => "error", 'status' => '0'];
         }
@@ -161,6 +161,12 @@ class data_csv_order extends Model
                 $data_order_array['upload_file_path']='';
                 $data_order_array['send_datetime']='';
                 $data_order_array['send_file_path']='';
+                $data_order_array['sta_sen_identifier']=$value[2];
+                $data_order_array['sta_sen_ide_authority']=$value[3];
+                $data_order_array['sta_rec_identifier']=$value[0];
+                $data_order_array['sta_rec_ide_authority']=$value[1];
+                $data_order_array['sta_doc_type']='Shipment Notification';
+
 
                 $data_shipment_id = data_shipment::insertGetId($data_order_array);
 
