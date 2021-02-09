@@ -455,7 +455,7 @@ class data_csv_order extends Model
             $data_shi_item_array['mes_lis_shi_lin_fre_unit_weight_code']=$value[155];
             $data_shi_item_array['mes_lis_shi_lin_fre_item_weight']=$value[156];
             $data_shi_item_array['mes_lis_shi_lin_fre_order_weight']=$value[157];
-            $data_shi_item_array['mes_lis_shi_lin_fre_shipment_weight']='';
+            $data_shi_item_array['mes_lis_shi_lin_fre_shipment_weight']=$value[157];
             // 158 done
 
             $data_item_array['data_order_voucher_id']=$data_order_voucher_id;
