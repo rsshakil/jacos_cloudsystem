@@ -36,7 +36,7 @@ class ShipmentConroller extends Controller
             $download_file_url = \Config::get('app.url')."storage/app".config('const.SHIPMENT_CSV_PATH')."/". $new_file_name;
             $csv_data_count = Data_Controller::get_shipment_data($request)->get()->count();
             (new ShipmentCSVExport($request))->store(config('const.SHIPMENT_CSV_PATH').'/'.$new_file_name);
-            data_shipment_voucher::where('decision_datetime','!=',null)->update(array('send_datetime'=>$dateTime));
+            data_shipment_voucher::where('decision_datetime','!=',null)->update(['send_datetime'=>$dateTime]);
             return response()->json(['message' => 'Success','status'=>1, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
         // }
     }

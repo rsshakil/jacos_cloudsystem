@@ -228,7 +228,7 @@ class Byr_orderController extends Controller
             ->join('data_shipment_vouchers as dsv', 'dsv.data_shipment_id', '=', 'ds.data_shipment_id')
             ->join('data_shipment_items as dsi', 'dsi.data_shipment_voucher_id', '=', 'dsv.data_shipment_voucher_id')
             ->join('data_orders as dor', 'dor.data_order_id', '=', 'ds.data_order_id')
-            ->where('ds.data_order_id', $data_order_id)
+            // ->where('ds.data_order_id', $data_order_id);
             ->where('dsv.mes_lis_shi_tra_dat_delivery_date', $delivery_date)
             ->where('dsv.mes_lis_shi_tra_goo_major_category', $major_category)
             ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $delivery_service_code)
@@ -246,7 +246,7 @@ class Byr_orderController extends Controller
                     if($form_search['printingStatus']=="印刷済"){
                         $result->whereNotNull('dsv.print_datetime');
                     }
-                    
+
                 }
                 if($form_search['situation']!="*"){
                     if($form_search['situation']=="未確定あり"){
@@ -258,8 +258,8 @@ class Byr_orderController extends Controller
                 }
            $result->groupBy('dsv.mes_lis_shi_tra_trade_number');
             $result = $result->paginate($per_page);
-            
-        
+
+
         /*coll setting*/
         $slected_list = array();
         $result_data = cmn_tbl_col_setting::where('url_slug', 'order_list_detail')->first();
@@ -336,7 +336,7 @@ class Byr_orderController extends Controller
         ->where('dsi.mes_lis_shi_lin_ite_supplier_item_code', $item_code)
         ->groupBy('dsv.mes_lis_shi_tra_trade_number')->first();
         //shipment
-        
+
         $result = DB::table('data_shipments as ds')
             ->select(
                 'dor.receive_datetime',
