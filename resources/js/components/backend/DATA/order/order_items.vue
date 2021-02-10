@@ -127,7 +127,7 @@
                 <td>{{order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity}}</td>
                 <td>{{order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code}} {{getbyrjsonValueBykeyName('mes_lis_shi_lin_qua_sto_reason_code',order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code,'shipments')}}
                 <select v-model="order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code" class="form-control ">
-                <option v-for="item in buyer_setting_valuess.shipments.mes_lis_shi_lin_qua_sto_reason_code" :value="Object.keys(item)[0]">{{Object.values(item)[0]}}</option>
+                <option v-for="item in mes_lis_shi_lin_qua_sto_reason_codeList" :value="Object.keys(item)[0]">{{Object.values(item)[0]}}</option>
                 </select>
                 <!--<input type="hidden" v-model="totalCostPrice += order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity">
                 <input type="hidden" v-model="totalSellingPrice += order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity">-->
@@ -305,7 +305,6 @@ export default {
       order_detail_lists: {},
       order_item_detail_lists: [],
       order_item_lists: {},
-      buyer_setting_valuess:{},
       order_item_shipment_data_headTable: {},
       order_date: "",
       order_detail_list: [],
@@ -354,14 +353,7 @@ export default {
         });
       console.log("====update======");
     },
-    getbuyerJsonSettings(){
-            axios.get(this.BASE_URL + "api/buyerJsonSetting/"+this.byr_buyer_id)
-            .then(({data}) => {
-              this.buyer_setting_valuess = JSON.parse(data.buyer_settings);
-              console.log(this.buyer_setting_valuess);
-            // this.buyer_settings= this.buyer_settings.orders;
-            });
-        },
+  
     checkAll() {
       this.isCheckAll = !this.isCheckAll;
       this.selected = [];
@@ -496,9 +488,7 @@ export default {
     //this.getbuyerJsonSetting();
     Fire.$emit('byr_has_selected',this.$session.get('byr_buyer_id'));
     Fire.$emit('permission_check_for_buyer',this.$session.get('byr_buyer_id'));
-console.log('first');
-
-this.getbuyerJsonSettings();
+this.getbuyerJsonSettingvalue();
     // console.log(this.$route.query);
     this.param_data=this.$route.query
     console.log(this.$session.get('voucher_page_query_param'));

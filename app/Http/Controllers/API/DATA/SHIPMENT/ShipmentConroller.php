@@ -194,6 +194,7 @@ class ShipmentConroller extends Controller
                 }
 
                 $result->groupBy('dsv.mes_lis_shi_tra_trade_number');
+                $result->groupBy('dsi.mes_lis_shi_lin_ite_supplier_item_code');
                 $result = $result->paginate($per_page);
 
 
