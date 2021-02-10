@@ -22,12 +22,11 @@
             <td>{{ order_item_lists.mes_lis_shi_tra_ins_temperature_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_item_lists.mes_lis_shi_tra_ins_temperature_code,'orders')}}</td>
           </tr>
           <tr>
-            <td class="cl_custom_color">受信日時</td>
-            <td>{{ order_item_lists.receive_datetime }}</td>
-            <td class="cl_custom_color">取引先</td>
+            <td class="cl_custom_color">商品コード</td>
+            <td>{{ order_item_lists.mes_lis_shi_lin_ite_order_item_code }}</td>
+            <td class="cl_custom_color">JANコード</td>
             <td colspan="5">
-              {{ order_item_lists.mes_lis_shi_par_sel_code }}
-              {{ order_item_lists.mes_lis_shi_par_sel_name }}
+              {{ order_item_lists.mes_lis_shi_lin_ite_gtin }}
             </td>
           </tr>
           <tr>
@@ -121,23 +120,44 @@
                 <td>{{order_item_detail_list.mes_lis_shi_par_rec_code}}</td>
                 <td>{{order_item_detail_list.mes_lis_shi_lin_lin_line_number}}</td>
                 <td>{{order_item_detail_list.mes_lis_shi_lin_fre_packing_quantity}}</td>
-                <td>{{order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units}}</td>
-                <td>{{order_item_detail_list.mes_lis_shi_lin_qua_unit_of_measure}}</td>
-                <td>{{order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity}}</td>
-                <td>{{order_item_detail_list.mes_lis_shi_lin_fre_order_weight}}</td>
-                <td>{{order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price}}</td>
-                <td>{{order_item_detail_list.mes_lis_shi_lin_amo_item_net_price}}</td>
+                <td><input type="text" v-model="order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units" class="form-control"/>
+                {{order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units}}
+                </td>
+                <td>{{order_item_detail_list.mes_lis_shi_lin_qua_unit_of_measure}} {{getbyrjsonValueBykeyName('mes_lis_ord_lin_qua_unit_of_measure',order_item_detail_list.mes_lis_shi_lin_qua_unit_of_measure,'orders')}}</td>
+                <td><input type="text" v-model="order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity" class="form-control"/>
+                            {{order_item_detail_list.mes_lis_shi_lin_qua_ord_quantity}}
+                </td>
+                <td>{{order_item_detail_list.mes_lis_shi_lin_fre_item_weight * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity}}</td>
+                <td><input type="text" v-model="order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price" class="form-control"/>
+                    {{order_item_detail_list.mes_lis_ord_lin_amo_item_net_price_unit_price}}
+                </td>
+                <td><!--{{order_item_detail_list.mes_lis_shi_lin_amo_item_net_price}}-->
+                {{ order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity}}
+                </td>
 
-                <td>{{order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price}}</td>
-                <td>{{order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price}}</td>
-                <td>{{order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code}}</td>
-                <td></td>
+                <td><input type="text" v-model="order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price" class="form-control"/>
+                    {{order_item_detail_list.mes_lis_ord_lin_amo_item_selling_price_unit_price}}
+                </td>
+                <td><!--{{order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price}}-->
+                {{order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity}}
+                </td>
+                <td>
+                
+                
+                {{order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code}} {{getbyrjsonValueBykeyName('mes_lis_shi_lin_qua_sto_reason_code',order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code,'shipments')}}
+                <select v-model="order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code" class="form-control ">
+                <option v-for="item in mes_lis_shi_lin_qua_sto_reason_codeList" :value="Object.keys(item)[0]">{{Object.values(item)[0]}}</option>
+                </select>
+                
+                
+                </td>
+                <td><input type="checkbox" class="form-control"></td>
               </tr>
             </tbody>
             
 
           </table>
-          <button style="float:right" class="btn btn-primary pull-right text-right active">
+          <button style="float:right" @click="updateShipmentItemDetails" class="btn btn-primary pull-right text-right active">
               更新
             </button>
         </div>
@@ -319,6 +339,8 @@ export default {
       item_id:'',
       mes_lis_shi_tot_tot_net_price_total:0,
       mes_lis_shi_tot_tot_selling_price_total:0,
+      totalCostPrice:0,
+      totalSellingPrice:0,
       status: "",
       // byr_order_id: "",
       edit_order_modal: false,
@@ -330,7 +352,32 @@ export default {
     };
   },
   methods: {
-    
+    updateShipmentItemDetails(){
+      var _this = this;
+      console.log("====update======");
+      console.log(this.order_item_detail_lists);
+      console.log(this.order_item_shipment_data_headTable.mes_lis_shi_tra_dat_revised_delivery_date);
+      var order_detailitem = {'items':this.order_item_detail_lists,'updated_date':this.order_item_shipment_data_headTable.mes_lis_shi_tra_dat_revised_delivery_date,'total_cost_price':this.totalCostPriceVal,'total_selling_price':this.totalSellingPriceVal};
+      axios({
+        method: "POST",
+        url: this.BASE_URL + "api/update_shipment_item_details",
+        data: order_detailitem,
+      })
+        .then(function (response) {
+          //handle success
+          console.log(response);
+          _this.alert_icon = "success";
+      _this.alert_title = "";
+      _this.alert_text = "Shipment item data has been updated";
+      _this.sweet_normal_alert();
+          Fire.$emit("LoadByrorderItemDetail");
+        })
+        .catch(function (response) {
+          //handle error
+          console.log(response);
+        });
+      console.log("====update======");
+    },
     checkAll() {
       this.isCheckAll = !this.isCheckAll;
       this.selected = [];
@@ -480,7 +527,16 @@ export default {
    
   },
   computed: {
-    
+    totalCostPriceVal: function() {
+      return this.order_item_detail_lists.reduce(function(sum,order_item_detail_list){return  sum+order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity;}, 0);
+      
+    },
+    totalSellingPriceVal: function() {
+      return this.order_item_detail_lists.reduce(function (sumselling,order_item_detail_list) {
+       return  sumselling+order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity;
+      },0);
+      
+    },
   },
   mounted() {
     console.log("byr order search detail");

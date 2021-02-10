@@ -92,6 +92,7 @@
                 <th>売単価</th>
                 <th>売価全額</th>
                 <th>欠品理由</th>
+                <th>選択</th>
               </tr>
               
             </thead>
@@ -132,7 +133,7 @@
                 <!--<input type="hidden" v-model="totalCostPrice += order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity">
                 <input type="hidden" v-model="totalSellingPrice += order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity">-->
                 </td>
-
+                <td><input type="checkbox" class="form-control"></td>
               </tr>
             </tbody>
             <tfoot>
