@@ -26,22 +26,25 @@ class ShipmentConroller extends Controller
     }
     public function shipmentConfirm(Request $request)
     {
-        // downloadType=1 for Csv
-        // downloadType=2 for Fixed length
-        $dateTime = date('Y-m-d H:i:s');
-        // \Log::debug(Data_Controller::get_shipment_data($request)->get());
-
-        // if ($downloadType==1) {
+        $data_count=$request->data_count;
+        $download_file_url='';
+        $csv_data_count = Data_Controller::get_shipment_data($request)->get()->count();
+        if (!$data_count) {
+            $dateTime = date('Y-m-d H:i:s');
             $new_file_name = "Shipment_csv_".date('Y-m-d')."_".time().".csv";
             $download_file_url = \Config::get('app.url')."storage/app".config('const.SHIPMENT_CSV_PATH')."/". $new_file_name;
-            $csv_data_count = Data_Controller::get_shipment_data($request)->get()->count();
             (new ShipmentCSVExport($request))->store(config('const.SHIPMENT_CSV_PATH').'/'.$new_file_name);
-            data_shipment_voucher::where('decision_datetime','!=',null)->update(['send_datetime'=>$dateTime]);
-            return response()->json(['message' => 'Success','status'=>1, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
-        // }
+            data_shipment_voucher::where('decision_datetime','!=',null)
+            ->where('send_datetime','=',null)
+            ->update(['send_datetime'=>$dateTime]);
+        }
+
+        return response()->json(['message' => 'Success','status'=>1, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
     }
     public function downloadShipmentCsv(Request $request)
     {
+        // downloadType=1 for Csv
+        // downloadType=2 for Fixed length
         $downloadType=$request->downloadType;
         if ($downloadType==1) {
             $new_file_name = "Shipment_csv_".date('Y-m-d')."_".time().".csv";
