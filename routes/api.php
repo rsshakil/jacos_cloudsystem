@@ -64,7 +64,7 @@ Route::post('/change_password', 'API\UsersController@changePassword');
 Route::get('/user_details/{user_id}', 'API\UsersController@userDetails');
 Route::post('/users_update', 'API\UsersController@update');
 
-Route::get('/home_lang_data', 'API\LanguageController@homeLangData');
+// Route::get('/home_lang_data', 'API\LanguageController@homeLangData');
 
 // Route::post('/permission_check', 'API\PermissionController@check');
 
@@ -96,7 +96,7 @@ Route::post('/slr_company_create', 'API\BYR\ByrController@slr_company_create');
 Route::post('/get_byr_info_by_data_order_id', 'API\Byr_orderController@get_byr_info_by_data_order_id');
 Route::get('/dispaly_col_by_user/{url_slug}/{user_id}', 'API\Tbl_col_settingController@dispaly_col_by_user');
 
-Route::post('/bms_order_save/{job_id}', 'API\BmsOrderController@store');
+// Route::post('/bms_order_save/{job_id}', 'API\BmsOrderController@store');
 Route::get('/get_data_order_byr_order_id/{byr_order_id}', 'API\Byr_orderController@get_data_order_byr_order_id');
 Route::post('/update_byr_order_detail_status', 'API\Byr_orderController@update_byr_order_detail_status');
 Route::post('item_master_exec', 'API\Cmn_jobController@exec');

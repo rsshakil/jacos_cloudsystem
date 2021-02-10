@@ -73,7 +73,11 @@
             </td>
             <td class="cl_custom_color">伝票番号</td>
             <td>
-              <input type="text" v-model="form.mes_lis_shi_tra_trade_number" class="form-control" />
+              <input
+                type="text"
+                v-model="form.mes_lis_shi_tra_trade_number"
+                class="form-control"
+              />
             </td>
           </tr>
           <tr>
@@ -96,13 +100,13 @@
               >
                 <option value="*">全て</option>
 
-                     <option
-                v-for="(opt, i) in fixedSpecialOptionList"
-                :key="i"
-                :value="Object.keys(opt)[0]"
-              >
-                {{ Object.values(opt)[0] }}
-              </option>
+                <option
+                  v-for="(opt, i) in fixedSpecialOptionList"
+                  :key="i"
+                  :value="Object.keys(opt)[0]"
+                >
+                  {{ Object.values(opt)[0] }}
+                </option>
               </select>
             </td>
             <td class="cl_custom_color">確定状況</td>
@@ -138,7 +142,11 @@
       </div>
 
       <div class="col-12" style="text-align: center">
-        <button @click="searchByFormData" class="btn btn-primary active srchBtn" type="button">
+        <button
+          @click="searchByFormData"
+          class="btn btn-primary active srchBtn"
+          type="button"
+        >
           {{ myLang.search }}
         </button>
       </div>
@@ -307,12 +315,26 @@
                   }}
                 </td>
                 <td>
-                    <span v-if="order_detail_list.decision_datetime != null">
-                        <b-button pill variant="info" @click="decissionDateUpdate(order_detail_list.data_shipment_voucher_id)">済</b-button>
-                    </span>
-                    <span v-else>
-                        <input type="checkbox" v-bind:value="order_detail_list.data_shipment_voucher_id" v-model="selected" @change="updateCheckall()"/>
-                    </span>
+                  <span v-if="order_detail_list.decision_datetime != null">
+                    <b-button
+                      pill
+                      variant="info"
+                      @click="
+                        decissionDateUpdate(
+                          order_detail_list.data_shipment_voucher_id
+                        )
+                      "
+                      >済</b-button
+                    >
+                  </span>
+                  <span v-else>
+                    <input
+                      type="checkbox"
+                      v-bind:value="order_detail_list.data_shipment_voucher_id"
+                      v-model="selected"
+                      @change="updateCheckall()"
+                    />
+                  </span>
                 </td>
                 <td>{{ order_detail_list.mes_lis_shi_par_shi_code }}</td>
                 <td>
@@ -779,14 +801,18 @@ export default {
       select_field_page_num: 0,
       select_field_per_page_num: 10,
       isCheckAll: false,
-      fixedSpecialOptionList: [{"01":"定番"}, {"02":"準特価"}, {"03":"特売"}],
+      fixedSpecialOptionList: [
+        { "01": "定番" },
+        { "02": "準特価" },
+        { "03": "特売" },
+      ],
       situationOptionList: ["未確定あり", "確定済"],
       printingStatusOptionList: ["未印刷あり", "印刷済"],
       deliveryDestnationOptionList: ["店舗", "物流センター"],
       date_null: false,
-      null_selected:[],
-      not_null_selected:[],
-      null_selected_message:false,
+      null_selected: [],
+      not_null_selected: [],
+      null_selected_message: false,
       form: new Form({
         printingStatus: "*",
         situation: "*",
@@ -795,7 +821,7 @@ export default {
         deliveryCode: "",
         deliveryDate: "",
         deliveryName: "",
-        mes_lis_shi_tra_trade_number:"",
+        mes_lis_shi_tra_trade_number: "",
       }),
       param_data: [],
       // buyer_settings:null,
@@ -812,18 +838,20 @@ export default {
       this.order_search_modal3 = true;
     },
     selectNumPage() {
+        console.log(this.select_field_page_num);
       if (this.select_field_page_num != 0) {
         this.get_all_byr_order_detail(this.select_field_page_num);
       }
     },
     selectNumPerPage() {
+
       if (this.select_field_per_page_num != 0) {
-        Fire.$emit("LoadByrorderDetail");
+        Fire.$emit("LoadByrorderDetail",this.select_field_page_num);
         // this.get_all_byr_order_detail(this.select_field_page_num);
       }
     },
-    searchByFormData(){
-       Fire.$emit("LoadByrorderDetail");
+    searchByFormData() {
+      Fire.$emit("LoadByrorderDetail",this.select_field_page_num);
     },
     checkAll() {
       this.isCheckAll = !this.isCheckAll;
@@ -834,9 +862,9 @@ export default {
 
       if (this.isCheckAll) {
         for (var key in this.order_detail_lists.data) {
-        //   this.selected.push(
-        //     this.order_detail_lists.data[key].data_shipment_voucher_id
-        //   );
+          //   this.selected.push(
+          //     this.order_detail_lists.data[key].data_shipment_voucher_id
+          //   );
           if (this.order_detail_lists.data[key].decision_datetime) {
             this.not_null_selected.push(
               this.order_detail_lists.data[key].data_shipment_voucher_id
@@ -849,27 +877,33 @@ export default {
         }
       }
 
-    //   console.log(this.select_field_per_page_num);
-      if (this.null_selected.length <= this.select_field_per_page_num && this.null_selected.length !=0) {
-          this.date_null = false;
-          this.selected=this.null_selected;
-          this.null_selected_message=true;
-      }else if(this.not_null_selected.length <= this.select_field_per_page_num && this.not_null_selected.length !=0){
-          this.date_null = true;
-          this.selected=this.not_null_selected;
-          this.null_selected_message=false;
+      //   console.log(this.select_field_per_page_num);
+      if (
+        this.null_selected.length <= this.select_field_per_page_num &&
+        this.null_selected.length != 0
+      ) {
+        this.date_null = false;
+        this.selected = this.null_selected;
+        this.null_selected_message = true;
+      } else if (
+        this.not_null_selected.length <= this.select_field_per_page_num &&
+        this.not_null_selected.length != 0
+      ) {
+        this.date_null = true;
+        this.selected = this.not_null_selected;
+        this.null_selected_message = false;
       }
-    //   console.log(this.selected);
+      //   console.log(this.selected);
     },
     updateCheckall() {
-        // console.log(this.selected)
+      // console.log(this.selected)
       if (this.selected.length == this.order_detail_lists.data.length) {
         this.isCheckAll = true;
       } else {
         this.isCheckAll = false;
       }
-      this.null_selected=this.selected
-      this.null_selected_message=true;
+      this.null_selected = this.selected;
+      this.null_selected_message = true;
       this.date_null = false;
     },
 
@@ -882,7 +916,7 @@ export default {
         .post(this.BASE_URL + "api/update_byr_order_detail_status", post_data)
         .then((data) => {
           console.log(data);
-          Fire.$emit("LoadByrorderDetail");
+          Fire.$emit("LoadByrorderDetail",this.select_field_page_num);
         });
     },
 
@@ -942,7 +976,7 @@ export default {
         .then(function (response) {
           //handle success
           console.log(response);
-          Fire.$emit("LoadByrorderDetail");
+          Fire.$emit("LoadByrorderDetail",this.select_field_page_num);
         })
         .catch(function (response) {
           //handle error
@@ -950,34 +984,37 @@ export default {
         });
     },
     decissionDateUpdate(data_shipment_voucher_id) {
-    if (this.isCheckAll) {
-        this.alert_text = "対象となる伝票確定を取消しますがよろしいでしょうか。";
-        this.selected = (this.null_selected).concat(this.not_null_selected);
-    }else{
-       this.selected.push(data_shipment_voucher_id);
-       this.alert_text = "伝票確定を取消しますがよろしいでしょうか。";
-    }
+      if (this.isCheckAll) {
+        this.alert_text =
+          "対象となる伝票確定を取消しますがよろしいでしょうか。";
+        this.selected = this.null_selected.concat(this.not_null_selected);
+      } else {
+        this.selected.push(data_shipment_voucher_id);
+        this.alert_text = "伝票確定を取消しますがよろしいでしょうか。";
+      }
       this.date_null = true;
-      this.null_selected_message=false;
+      this.null_selected_message = false;
       this.updateBuyerDecissionDateTime();
     },
     updateDatetimeDecessionfield() {
-        if (this.null_selected.length>0) {
-            this.alert_text = this.selected.length + "件の伝票を確定しますがよろしいでしょうか。";
-            this.updateBuyerDecissionDateTime();
-        }else{
-            this.alert_icon = "warning";
-            this.alert_title = "";
-            this.alert_text ="対象となる伝票がありません、再度確認して実行してください。";
-            this.sweet_normal_alert();
-        }
-    },
-    updateBuyerDecissionDateTime() {
-        var _this = this;
+      if (this.null_selected.length > 0) {
+        this.alert_text =
+          this.selected.length + "件の伝票を確定しますがよろしいでしょうか。";
+        this.updateBuyerDecissionDateTime();
+      } else {
         this.alert_icon = "warning";
         this.alert_title = "";
-        this.yes_btn = "はい";
-        this.cancel_btn = "キャンセル";
+        this.alert_text =
+          "対象となる伝票がありません、再度確認して実行してください。";
+        this.sweet_normal_alert();
+      }
+    },
+    updateBuyerDecissionDateTime() {
+      var _this = this;
+      this.alert_icon = "warning";
+      this.alert_title = "";
+      this.yes_btn = "はい";
+      this.cancel_btn = "キャンセル";
       this.selectedNum = this.selected.length;
       if (this.selectedNum > 0) {
         this.confirm_sweet().then((result) => {
@@ -992,16 +1029,17 @@ export default {
               .then(({ data }) => {
                 _this.alert_icon = "success";
                 _this.alert_title = "";
-                _this.alert_text = _this.selectedNum + "件の伝票を確定しました。";
+                _this.alert_text =
+                  _this.selectedNum + "件の伝票を確定しました。";
                 if (!this.null_selected_message) {
-                    _this.alert_text = "伝票確定を取消しました。";
+                  _this.alert_text = "伝票確定を取消しました。";
                 }
                 _this.sweet_normal_alert();
-                Fire.$emit("LoadByrorderDetail");
+                Fire.$emit("LoadByrorderDetail",_this.select_field_page_num);
                 this.selected = [];
                 // this.date_null = false;
                 this.isCheckAll = false;
-                this.null_selected_message=false;
+                this.null_selected_message = false;
               })
               .catch(function (response) {
                 //handle error
@@ -1010,48 +1048,60 @@ export default {
           } else {
             this.selected = [];
             this.isCheckAll = false;
-            this.null_selected_message=false;
+            this.null_selected_message = false;
           }
         });
       } else {
-          this.null_selected_message=false;
-        this.alert_text = "対象となる伝票がありません、再度確認して実行してください。";
+        this.null_selected_message = false;
+        this.alert_text =
+          "対象となる伝票がありません、再度確認して実行してください。";
         this.sweet_normal_alert();
-
       }
     },
     shipmentConfirm() {
       var _this = this;
       this.alert_icon = "warning";
       this.alert_title = "";
-      this.alert_text =
-        _this.selectedNum + "件の伝票を送信しますがよろしいでしょうか。";
       this.yes_btn = "はい";
       this.cancel_btn = "キャンセル";
-      this.confirm_sweet().then((result) => {
-        if (result.value) {
-          axios
-            .post(this.BASE_URL + "api/shipment_confirm", {
-              data_order_id: this.param_data.data_order_id,
-              order_info: this.order_info,
-            })
-            .then(({ data }) => {
-              //   console.log(data);
-              _this.alert_icon = "success";
-              _this.alert_title = "";
-              _this.alert_text =
-                data.csv_data_count + "件の確定伝票を送信しました。";
-              _this.sweet_normal_alert();
+      axios.post(this.BASE_URL + "api/shipment_confirm", {
+          data_order_id: this.param_data.data_order_id,
+          order_info: this.order_info,
+          data_count: true,
+        }).then(({ data }) => {
+          let csv_data_count = data.csv_data_count;
+          if (csv_data_count > 0) {
+            _this.alert_text = csv_data_count + "件の伝票を送信しますがよろしいでしょうか。";
+            this.confirm_sweet().then((result) => {
+              if (result.value) {
+                // console.log(data);
+                axios
+                  .post(this.BASE_URL + "api/shipment_confirm", {
+                    data_order_id: this.param_data.data_order_id,
+                    order_info: this.order_info,
+                    data_count: false,
+                  })
+                  .then(({ data }) => {
+                    _this.alert_icon = "success";
+                    _this.alert_title = "";
+                    _this.alert_text =
+                      data.csv_data_count + "件の確定伝票を送信しました。";
+                    _this.sweet_normal_alert();
+                    Fire.$emit("LoadByrorderDetail",_this.select_field_page_num);
+                  });
+              }
             });
-        }
-      });
+          } else {
+            _this.alert_text = "対象となる伝票がありません、再度確認して実行してください。";
+            _this.sweet_normal_alert();
+          }
+        });
     },
     shipmentUpdate(e) {
       var _this = this;
       this.alert_icon = "warning";
       this.alert_title = "";
-      this.alert_text =
-        _this.selectedNum + "件の伝票を送信しますがよろしいでしょうか。";
+      this.alert_text = _this.selectedNum + "件の伝票を送信しますがよろしいでしょうか。";
       this.yes_btn = "はい";
       this.cancel_btn = "キャンセル";
       this.confirm_sweet().then((result) => {
@@ -1076,7 +1126,7 @@ export default {
     get_all_byr_order_detail(page = 1) {
       this.param_data["page"] = page;
       this.param_data["per_page"] = this.select_field_per_page_num;
-      this.param_data['form_search'] = this.form;
+      this.param_data["form_search"] = this.form;
       this.select_field_page_num = page;
       axios
         .post(this.BASE_URL + "api/order_details", this.param_data)
@@ -1174,8 +1224,8 @@ export default {
     this.loader = Vue.$loading.show();
     this.data_order_id = this.$route.params.data_order_id;
     this.get_all_byr_order_detail();
-    Fire.$on("LoadByrorderDetail", () => {
-      this.get_all_byr_order_detail();
+    Fire.$on("LoadByrorderDetail", (page=1) => {
+      this.get_all_byr_order_detail(page);
     });
     this.col_show_hide_setting(this.$route.name);
   },

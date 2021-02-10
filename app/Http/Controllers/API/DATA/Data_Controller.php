@@ -447,6 +447,7 @@ class Data_Controller extends Controller
 
         if (!(array_key_exists("downloadType", $request_all))) {
             $csv_data->where('data_shipment_vouchers.decision_datetime','!=',null);
+            $csv_data->where('data_shipment_vouchers.send_datetime','=',null);
         }
         $csv_data->groupBy('data_shipment_vouchers.data_shipment_voucher_id');
         $csv_data->orderBy("data_shipments.data_shipment_id");
