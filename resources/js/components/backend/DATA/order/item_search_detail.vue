@@ -17,9 +17,9 @@
             <td class="cl_custom_color">部門</td>
             <td>{{ order_item_lists.mes_lis_shi_tra_goo_major_category }}</td>
             <td class="cl_custom_color">便</td>
-            <td>{{ order_item_lists.mes_lis_shi_log_del_delivery_service_code }}</td>
+            <td>{{ order_item_lists.mes_lis_shi_log_del_delivery_service_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_log_del_delivery_service_code',order_item_lists.mes_lis_shi_log_del_delivery_service_code,'orders')}}</td>
             <td class="cl_custom_color">配送温度区分</td>
-            <td>{{ order_item_lists.mes_lis_shi_tra_ins_temperature_code }}</td>
+            <td>{{ order_item_lists.mes_lis_shi_tra_ins_temperature_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_item_lists.mes_lis_shi_tra_ins_temperature_code,'orders')}}</td>
           </tr>
           <tr>
             <td class="cl_custom_color">受信日時</td>
@@ -67,7 +67,7 @@
             <td class="cl_custom_color_active">欠品理由</td>
             <td colspan="5">
               <select class="form-control" v-model="order_item_lists.mes_lis_shi_lin_qua_sto_reason_code">
-                <option value="00">00 欠品なし</option>
+                <option v-for="(item,i) in mes_lis_shi_lin_qua_sto_reason_codeList" :key="i" :value="Object.keys(item)[0]">{{Object.values(item)[0]}}</option>
               </select>
             </td>
             
@@ -309,6 +309,7 @@ export default {
       order_detail_lists: {},
       order_info: {},
       order_item_detail_lists: {},
+      buyer_setting_valuesse: {},
       order_item_lists: [],
       order_item_shipment_data_headTable: {},
       order_date: "",
@@ -329,6 +330,7 @@ export default {
     };
   },
   methods: {
+    
     checkAll() {
       this.isCheckAll = !this.isCheckAll;
       this.selected = [];
@@ -468,12 +470,14 @@ export default {
     this.param_data = this.$session.get('voucher_page_query_param');
     this.orderListdetailQ = this.$session.get('voucher_page_query_param');
     this.item_id = this.$route.params.item_id;
+    this.getbuyerJsonSettingvalue();
     this.get_all_byr_order_item_detail();
     Fire.$on("LoadByrorderItemDetail", () => {
       this.get_all_byr_order_item_detail();
     });
     this.col_show_hide_setting(this.$route.name);
     this.loader = Vue.$loading.show();
+   
   },
   computed: {
     
