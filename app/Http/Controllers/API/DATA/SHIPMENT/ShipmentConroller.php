@@ -122,7 +122,7 @@ class ShipmentConroller extends Controller
             'mes_lis_shi_lin_amo_item_net_price'=>$items['mes_lis_shi_lin_amo_item_net_price'],
             'mes_lis_shi_lin_qua_sto_reason_code'=>$items['mes_lis_shi_lin_qua_sto_reason_code']
         );
-        data_shipment_item::where('data_shipment_item_id', $items['data_shipment_item_id'])->update($updateArry);
+        data_shipment_item::where('mes_lis_shi_lin_ite_supplier_item_code', $items['mes_lis_shi_lin_ite_supplier_item_code'])->update($updateArry);
         return response()->json(['success' => '1']);
     }
     public function get_all_shipment_item_by_search(Request $request){

@@ -384,7 +384,7 @@ export default {
       _this.alert_title = "";
       _this.alert_text = "Shipment item form data has been updated";
       _this.sweet_normal_alert();
-          //Fire.$emit("LoadByrorderItemDetail");
+          Fire.$emit("LoadByrorderItemDetail");
         })
         .catch(function (response) {
           //handle error
