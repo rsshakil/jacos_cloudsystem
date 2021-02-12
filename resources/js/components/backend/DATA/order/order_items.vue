@@ -108,13 +108,13 @@
                  産地：{{order_item_detail_list.mes_lis_shi_lin_fre_field_name}}<br></td>
                 <td>{{order_item_detail_list.mes_lis_shi_lin_fre_packing_quantity}}</td>
                 <td>
-                <input type="text" class="form-control" v-model="order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units">
+                <input type="text" class="form-control" @keyup="ball_case_cal(order_item_detail_list,'ケース')" v-model="order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units">
                 {{order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units}}</td>
                 <td>
                 {{order_item_detail_list.mes_lis_shi_lin_qua_unit_of_measure}}  {{getbyrjsonValueBykeyName('mes_lis_ord_lin_qua_unit_of_measure',order_item_detail_list.mes_lis_shi_lin_qua_unit_of_measure,'orders')}}
                 </td>
                 <td>
-                 <input type="text" class="form-control" v-model="order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity">
+                 <input type="text" class="form-control" @keyup="ball_case_cal(order_item_detail_list,'バラ')" v-model="order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity">
                 {{order_item_detail_list.mes_lis_shi_lin_qua_ord_quantity}}</td>
 
                 <td>{{order_item_detail_list.mes_lis_shi_lin_fre_item_weight * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity}}</td>
@@ -328,6 +328,35 @@ export default {
     };
   },
   methods: {
+    ball_case_cal(order_item_detail_list,field_type){
+      if(field_type=='ケース'){
+        order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity=order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units*order_item_detail_list.mes_lis_shi_lin_qua_ord_quantity;
+      }else{
+        order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units=Math.round(order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity/order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units);
+      }
+      this.checkUpdateDeliveryStatus();
+    },
+    checkUpdateDeliveryStatus(){
+      var caseBallQtycheck = [];
+      var allIsZero = [];
+      var allIsNotZero = [];
+      var allIsZeroNotZero = [];
+      var totalRows = this.order_item_detail_lists.length;
+      this.order_item_detail_lists.forEach(function (order_item_detail_listData) {
+          if(order_item_detail_listData.mes_lis_shi_lin_qua_shi_quantity==0){
+            allIsZero.push(0);
+          }else{
+            allIsNotZero.push(1);
+          }
+      });
+      this.order_item_shipment_data_headTable.status = '一部未納';
+      if(totalRows==allIsZero.length){
+        this.order_item_shipment_data_headTable.status='未納';
+      }
+      if(totalRows==allIsNotZero.length){
+        this.order_item_shipment_data_headTable.status='完納';
+      }
+    },
     updateShipmentItemDetails(){
       var _this = this;
       console.log("====update======");
