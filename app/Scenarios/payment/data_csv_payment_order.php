@@ -36,7 +36,8 @@ class data_csv_payment_order extends Model
         // フォーマット変換
 
         $dataArr = $this->all_functions->csvReader($received_path, 1);
-        // $cmn_connect_id=$this->all_functions->get_connect_id_from_file_name($file_name);
+        $cmn_connect_id=$this->all_functions->get_connect_id_from_file_name($file_name);
+        // return ['message' => "error", 'status' => $cmn_connect_id];
 
         // $order_flg = true;
         // $trade_number = '';
@@ -75,6 +76,8 @@ class data_csv_payment_order extends Model
                 $data_payment_array['mes_lis_pay_gln']=$value[24];
                 $data_payment_array['mes_lis_pay_name']=$value[25];
                 $data_payment_array['mes_lis_pay_name_sbcs']=$value[26];
+
+                $data_payment_array['cmn_connect_id']=$cmn_connect_id;
 
                 $data_payment_id = data_payment::insertGetId($data_payment_array);
 
