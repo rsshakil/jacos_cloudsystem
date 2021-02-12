@@ -19,7 +19,7 @@ import { Form, HasError, AlertError } from "vform";
 import Multiselect from "vue-multiselect";
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 // import FlagIcon from 'vue-flag-icon'
-// Fabric js 
+// Fabric js
 import { fabric } from 'fabric'
 // import VueKonva from 'vue-konva'
 import { Cropper } from 'vue-advanced-cropper'
@@ -27,7 +27,7 @@ import { Cropper } from 'vue-advanced-cropper'
 import Loading from 'vue-loading-overlay';
 // Import stylesheet
 import 'vue-loading-overlay/dist/vue-loading.css';
-// Vue session 
+// Vue session
 import VueSession from 'vue-session'
 Vue.use(VueSession)
     //vue font awsam
@@ -63,7 +63,7 @@ Vue.use(BootstrapVue)
     //     // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
     // Vue.use(FlagIcon);
-    // Register fabric js globally 
+    // Register fabric js globally
 Vue.use(fabric)
 Vue.use(Cropper)
     // Vue.use(VueKonva)
@@ -73,7 +73,7 @@ Vue.component('multiselect', Multiselect)
 
 //Pagination laravel-vue-pagination
 Vue.component('pagination', require('laravel-vue-pagination'));
-// spinner register 
+// spinner register
 Vue.component('spinner', require('vue-simple-spinner'));
 Vue.use(Loading, {
     // props
@@ -171,11 +171,11 @@ var router = new VueRouter({
     base: "/jcs"
 });
 router.onReady(() => {
-    if(Globals.user_info_id=='' && router.currentRoute.path!="/home"){
+    if (Globals.user_info_id == '' && router.currentRoute.path != "/home") {
         router.push("home")
     }
-  });
-  
+});
+
 import App from "./components/backend/app.vue";
 import { nextTick } from "q";
 

@@ -71,7 +71,7 @@ export default {
   methods: {
     //get Table data
     get_all_order(){
-        axios.get(this.BASE_URL +"api/get_byr_order_corrected_receive_list/"+Globals.user_info_id).then((data) => {
+        axios.get(this.BASE_URL +"api/corrected_receive_list/"+Globals.user_info_id).then((data) => {
             this.order_corrected_receive_lists = data.data.corrected_list;
             this.byr_buyer_lists = data.data.byr_buyer_list;
         });

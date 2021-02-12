@@ -103,8 +103,10 @@ Route::post('/update_byr_order_detail_status', 'API\Byr_orderController@update_b
 Route::post('item_master_exec', 'API\Cmn_jobController@exec');
 // Route::post('bms_csv_exec', 'API\Cmn_jobController@exec');
 Route::get('get_all_master_item/{adm_user_id}', 'API\Byr_itemController@get_all_master_item');
-Route::get('get_byr_order_receive_list/{adm_user_id}', 'API\Byr_order_receiveController@get_byr_order_receive_list');
-Route::get('get_byr_order_corrected_receive_list/{adm_user_id}', 'API\Byr_order_receiveController@get_byr_order_corrected_receive_list');
+// receive
+Route::post('data_receive_list', 'API\DATA\RECEIVE\ReceiveController@orderReceiveList');
+Route::get('corrected_receive_list/{adm_user_id}', 'API\DATA\RECEIVE\ReceiveController@correctedReceiveList');
+// receive end 
 Route::get('get_byr_payment_list/{adm_user_id}', 'API\Byr_paymentController@get_byr_payment_list');
 Route::get('get_byr_return_list/{adm_user_id}', 'API\Byr_return_itemController@get_byr_return_list');
 Route::get('get_all_cat_list/{adm_user_id}', 'API\Cmn_categoryController@get_all_cat_list');

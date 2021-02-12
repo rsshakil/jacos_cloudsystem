@@ -1135,15 +1135,6 @@ export default {
           this.order_detail_lists = data.order_list_detail;
           this.order_info = data.order_info;
           this.loader.hide();
-          console.log(this.order_detail_lists);
-          // return 0;
-          // // this.order_detail_lists = data.data.order_list_detail;
-          // this.show_hide_col_list = data.data.slected_list;
-          // this.order_date = data.data.order_list_detail[0].order_date;
-          // this.expected_delivery_date =
-          //   data.data.order_list_detail[0].expected_delivery_date;
-          // this.status = data.data.order_list_detail[0].status;
-          // this.loader.hide();
         });
     },
 
@@ -1166,23 +1157,6 @@ export default {
     },
     // order data download
     order_download(downloadType = 1) {
-      console.log("order_download");
-      // axios
-      //   .post(this.BASE_URL + "api/scenario_exec", {
-      //     scenario_id: "11",
-      //     email: "user@jacos.co.jp",
-      //     password: "Qe75ymSr",
-      //   })
-      //   .then(({ data }) => {
-      //     console.log(data);
-      //     const url = URL.createObjectURL(new Blob([data]));
-      //     const link = document.createElement("a");
-      //     link.href = url;
-      //     link.setAttribute("download", "file.csv"); //ここらへんは適当に設定する
-      //     document.body.appendChild(link);
-      //     link.click();
-      //     link.revokeObjectURL();
-      //   });
       //downloadcsvshipment_confirm
       var _this = this;
       axios
@@ -1213,6 +1187,7 @@ export default {
   },
 
   created() {
+    // console.log(this.$session.get("byr_buyer_id"))
     Fire.$emit("byr_has_selected", this.$session.get("byr_buyer_id"));
     Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
     Fire.$emit("voucher_page_query_param", "myData");

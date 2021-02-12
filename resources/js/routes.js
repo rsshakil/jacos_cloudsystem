@@ -37,7 +37,7 @@ import slr_job_list from './components/backend/SLR/slr_job_list.vue'
 // import company_seller_user_list from './components/backend/CMN/cmn_company_seller_user_list.vue'
 import item_master from './components/backend/BYR/byr_item_master.vue'
 import item_category from './components/backend/BYR/item_category.vue'
-import order_receive from './components/backend/order_receive.vue'
+import data_order_receive from './components/backend/DATA/RECEIVE/data_order_receive.vue'
 import order_corrected_receive from './components/backend/order_corrected_receive.vue'
 import return_item_list from './components/backend/return_item_list.vue'
 import payment_list from './components/backend/payment_list.vue'
@@ -56,7 +56,7 @@ export const routes = [
     {
         path: '/home',
         component: Home,
-        name:'home',
+        name: 'home',
         meta: {
             breadcrumb: {
                 label: 'HOME'
@@ -74,15 +74,15 @@ export const routes = [
     {
         path: '/order_list',
         component: order_list,
-        name:'order_list',
+        name: 'order_list',
         meta: {
             breadcrumb: {
                 label: '受注受信一覧',
-                parent:'home'
+                parent: 'home'
             },
         },
         children: [
-            
+
             {
                 path: '/order_list/order_details_canvas/:byr_order_id',
                 component: order_details_canvas,
@@ -106,7 +106,7 @@ export const routes = [
                 parent: 'order_list'
             },
         },
-        
+
     },
 
     {
@@ -114,13 +114,13 @@ export const routes = [
         component: item_search,
         name: 'item_search',
         meta: {
-           
+
             breadcrumb: {
                 label: '受注商品別一覧',
                 parent: 'order_list_detail'
             },
         },
-        
+
     },
 
     {
@@ -128,15 +128,15 @@ export const routes = [
         component: item_search_detail,
         name: 'item_search_detail',
         meta: {
-           
+
             breadcrumb: {
                 label: '受注商品別明細',
                 parent: 'item_search'
             },
         },
-        
+
     },
-   {
+    {
         path: '/order_list/order_list_detail/order_item_list_detail/:data_order_list_voucher_id',
         component: order_items,
         name: 'order_item_list_detail',
@@ -321,18 +321,13 @@ export const routes = [
 
     {
         path: '/order_receive',
-        component: default_parent,
+        component: data_order_receive,
+        name: 'order_receive',
         meta: {
             breadcrumb: {
                 label: '受領受信一覧'
             }
         },
-        children: [{
-            path: '/',
-            component: order_receive,
-            name: 'order_receive'
-        }, ]
-
     },
     {
         path: '/order_corrected_receive',
@@ -388,18 +383,19 @@ export const routes = [
                 label: '請求一覧'
             }
         },
-        
+
 
     },
     {
         path: '/invoice_list/invoice_detail/:byr_invoice_id',
         component: invoice_detail,
         name: 'invoice_detail',
-        meta: { 
-            breadcrumb:{ label:'請求伝票一覧',
-                    parent:'invoice_list'
-                }
-    }
+        meta: {
+            breadcrumb: {
+                label: '請求伝票一覧',
+                parent: 'invoice_list'
+            }
+        }
     },
     {
         path: '/invoice_list/voucher_detail/:voucher_number',
@@ -435,7 +431,7 @@ export const routes = [
         name: 'selected_buyer',
         props: true,
 
-        meta: { breadcrumb:{label:'ブログ',parent:'home'} },
+        meta: { breadcrumb: { label: 'ブログ', parent: 'home' } },
         // children: [{
         //         path: '/',
         //         component: selected_buyer,
