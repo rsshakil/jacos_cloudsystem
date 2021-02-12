@@ -63,7 +63,12 @@
     <div class="row">
       <div class="col-12">
       <p>
-              <span class="tableRowsInfo">1〜10 件表示中／全：99件</span>
+              <span class="tableRowsInfo"
+                >{{ order_detail_lists.from }}〜{{
+                  order_detail_lists.to
+                }}
+                件表示中／全：{{ order_detail_lists.total }}件</span
+              >
               <span class="pagi"
                 >
               <advanced-laravel-vue-paginate :data="order_detail_lists" 
@@ -74,7 +79,8 @@
                 @paginateTo="get_all_byr_order_detail"/>
               </span>
               <span class="selectPagi">
-                <select class="form-control selectPage">
+                <select class="form-control selectPage" @change="selectNumPerPage"
+                  v-model="select_field_per_page_num">
                   <!--<option value="0">表示行数</option>
                   <option v-for="n in order_detail_lists.last_page" :key="n"
                 :value="n">{{n}}</option>-->
