@@ -7,7 +7,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\API\AllUsedFunction;
 use App\Models\ADM\User;
 use App\Models\DATA\RCV\data_receive;
+use App\Models\CMN\cmn_companies_user;
+use App\Models\BYR\byr_buyer;
 use App\Models\BYR\byr_corrected_receive;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\Paginator;
 
 class ReceiveController extends Controller
 {
@@ -20,9 +24,10 @@ class ReceiveController extends Controller
     }
 
     public function orderReceiveList(Request $request){
-        return $request->all();
+        // return $request->all();
         $adm_user_id = $request->adm_user_id;
         $byr_buyer_id = $request->byr_buyer_id;
+        $per_page = $request->per_page == null ? 10 : $request->per_page;
         $submit_type = $request->submit_type;
         $search_where = '';
         $having_var = '';
@@ -100,62 +105,25 @@ class ReceiveController extends Controller
         }
 
         // 検索
-        $result = DB::select("SELECT
-        dor.data_order_id,
-        dor.receive_datetime,
-        dov.mes_lis_ord_par_sel_code,
-        dov.mes_lis_ord_par_sel_name,
-        dov.mes_lis_ord_tra_dat_delivery_date,
-        dov.mes_lis_ord_tra_goo_major_category,
-        dov.mes_lis_ord_log_del_delivery_service_code,
-        dov.mes_lis_ord_tra_ins_temperature_code
-        ,COUNT(distinct dov.data_order_voucher_id) AS cnt
-        ,COUNT( isnull( dsv.decision_datetime) OR NULL) AS decision_cnt
-        ,COUNT( isnull( dsv.print_datetime)  OR NULL) AS print_cnt
-        ,dov.check_datetime
+        $result=data_receive::select('data_receives.data_receive_id','data_receives.receive_datetime','drv.mes_lis_acc_par_sel_code','drv.mes_lis_acc_par_sel_name',
+        'drv.mes_lis_acc_tra_dat_transfer_of_ownership_date','drv.mes_lis_acc_tra_dat_delivery_date','drv.mes_lis_acc_tra_goo_major_category',
+        'drv.mes_lis_acc_log_del_delivery_service_code','drv.mes_lis_acc_tra_ins_temperature_code','drv.check_datetime')
+        ->join('data_receive_vouchers as drv','data_receives.data_receive_id','=','drv.data_receive_id')
+        ->where('data_receives.cmn_connect_id','=',$cmn_connect_id)
+        ->groupBy('data_receives.receive_datetime')
+        ->groupBy('data_receives.sta_sen_identifier')
+        ->groupBy('drv.mes_lis_acc_tra_dat_delivery_date')
+        ->groupBy('drv.mes_lis_acc_tra_goo_major_category')
+        ->groupBy('drv.mes_lis_acc_log_del_delivery_service_code')
+        ->groupBy('drv.mes_lis_acc_tra_ins_temperature_code')
+        ->paginate($per_page);
 
-        FROM data_orders AS dor
-        INNER JOIN data_order_vouchers AS dov ON dor.data_order_id=dov.data_order_id
-        INNER JOIN data_shipment_vouchers AS dsv ON dsv.data_order_voucher_id = dov.data_order_voucher_id
-        WHERE
-        dor.cmn_connect_id='$cmn_connect_id'
-        $search_where
-        GROUP BY
-        dor.receive_datetime
-        ,dor.sta_sen_identifier
-        ,dov.mes_lis_ord_tra_dat_delivery_date
-        ,dov.mes_lis_ord_tra_goo_major_category
-        ,dov.mes_lis_ord_log_del_delivery_service_code
-        ,dov.mes_lis_ord_tra_ins_temperature_code
-        $having_var
-
-        ");
+        // $result = new Paginator($result, 2);
         $buyer_settings = byr_buyer::select('setting_information')->where('byr_buyer_id', $byr_buyer_id)->first();
         $byr_buyer = $this->all_used_fun->get_company_list($cmn_company_id);
 
-        return response()->json(['order_list' => $result, 'byr_buyer_list' => $byr_buyer, 'buyer_settings' => $buyer_settings->setting_information]);
-        // $authUser=User::find($adm_user_id);
-        // $cmn_company_id = 0;
-        // if(!$authUser->hasRole(config('const.adm_role_name'))){
-        //     $cmn_company_info = $this->all_used_fun->get_user_info($adm_user_id);
-        //     $cmn_company_id = $cmn_company_info['cmn_company_id'];
-        //     $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
-        //     $result = data_receive::select('data_receives.*','cmn_companies.company_name')
-        //     ->join('cmn_connects','cmn_connects.cmn_connect_id','=','data_receives.cmn_connect_id')
-        //     ->join('byr_buyers','byr_buyers.byr_buyer_id','=','cmn_connects.byr_buyer_id')
-        //     ->join('cmn_companies','cmn_companies.cmn_company_id','=','byr_buyers.cmn_company_id')
-        //     ->where('data_receives.cmn_connect_id',$cmn_connect_id)->get();
-        // }else{
-        //     $result = data_receive::select('data_receives.*','cmn_companies.company_name')
-        //     ->join('cmn_connects','cmn_connects.cmn_connect_id','=','data_receives.cmn_connect_id')
-        //     ->join('byr_buyers','byr_buyers.byr_buyer_id','=','cmn_connects.byr_buyer_id')
-        //     ->join('cmn_companies','cmn_companies.cmn_company_id','=','byr_buyers.cmn_company_id')->get();
+        return response()->json(['received_item_list' => $result, 'byr_buyer_list' => $byr_buyer, 'buyer_settings' => $buyer_settings->setting_information]);
 
-        // }
-
-        // $byr_buyer =$this->all_used_fun->get_company_list($cmn_company_id);
-
-        // return response()->json(['received_item_list' => $result,'byr_buyer_list'=>$byr_buyer]);
     }
 
     public function correctedReceiveList($adm_user_id){

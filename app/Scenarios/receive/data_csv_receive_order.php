@@ -81,6 +81,7 @@ class data_csv_receive_order extends Model
                 $data_receive_array['mes_lis_buy_name_sbcs']=$value[30];
 
                 // Order
+                $data_receive_array['receive_datetime']=date('y-m-d h:i:s');
                 $data_receive_array['cmn_connect_id']=$cmn_connect_id;
 
                 $data_receive_id = data_receive::insertGetId($data_receive_array);

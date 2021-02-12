@@ -40,7 +40,7 @@ import item_category from './components/backend/BYR/item_category.vue'
 import data_order_receive from './components/backend/DATA/RECEIVE/data_order_receive.vue'
 import order_corrected_receive from './components/backend/order_corrected_receive.vue'
 import return_item_list from './components/backend/return_item_list.vue'
-import payment_list from './components/backend/payment_list.vue'
+import payment_list from './components/backend/DATA/PAYMENT/payment_list.vue'
 import invoice_list from './components/backend/invoice_list.vue'
 import invoice_detail from './components/backend/invoice_detail.vue'
 import voucher_detail from './components/backend/voucher_detail.vue'
@@ -361,17 +361,13 @@ export const routes = [
     },
     {
         path: '/payment_list',
-        component: default_parent,
+        component: payment_list,
+        name: 'payment_list',
         meta: {
             breadcrumb: {
                 label: '支払受信一覧'
             }
-        },
-        children: [{
-            path: '/',
-            component: payment_list,
-            name: 'payment_list'
-        }, ]
+        }
 
     },
     {
