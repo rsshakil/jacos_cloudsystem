@@ -52,7 +52,7 @@ class cmn_scenarioSeeder extends Seeder
                 'vector' => 'to_jacos',
                 'name' => 'DATA_ORDER_CSV_INSERTION',
                 'description' => 'DATA_ORDER_CSV_INSERTION',
-                'file_path' => 'Scenarios/data_csv_order',
+                'file_path' => 'Scenarios/order/data_csv_order',
             ],
             [
                 'byr_buyer_id' => 1,
