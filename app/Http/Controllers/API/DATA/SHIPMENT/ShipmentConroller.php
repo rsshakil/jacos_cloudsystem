@@ -111,6 +111,20 @@ class ShipmentConroller extends Controller
 
         return response()->json(['success' => '1']);
     }
+
+    public function update_shipment_item_detail_form_data(Request $request){
+        $items = $request->items;
+        $updateArry = array(
+            'mes_lis_shi_lin_qua_shi_quantity'=>$items['mes_lis_shi_lin_qua_shi_quantity'],
+            'mes_lis_shi_lin_qua_shi_num_of_order_units'=>$items['mes_lis_shi_lin_qua_shi_num_of_order_units'],
+            'mes_lis_shi_lin_fre_order_weight'=>$items['mes_lis_shi_lin_fre_order_weight'],
+            'mes_lis_shi_lin_amo_item_net_price_unit_price'=>$items['mes_lis_shi_lin_amo_item_net_price_unit_price'],
+            'mes_lis_shi_lin_amo_item_net_price'=>$items['mes_lis_shi_lin_amo_item_net_price'],
+            'mes_lis_shi_lin_qua_sto_reason_code'=>$items['mes_lis_shi_lin_qua_sto_reason_code']
+        );
+        data_shipment_item::where('data_shipment_item_id', $items['data_shipment_item_id'])->update($updateArry);
+        return response()->json(['success' => '1']);
+    }
     public function get_all_shipment_item_by_search(Request $request){
         $data_order_id = $request->data_order_id;
         $delivery_date = $request->delivery_date;
