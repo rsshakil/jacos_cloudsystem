@@ -74,7 +74,7 @@
           
           
         </table>
-        <button class="btn btn-primary" style="float:right;">選択行に一括反映 -></button>
+        <button class="btn btn-primary" @click="updateOrderItemFormData" style="float:right;">選択行に一括反映 -></button>
       </div>
       <div class="col-12" style="text-align: center">
        
@@ -354,9 +354,6 @@ export default {
   methods: {
     updateShipmentItemDetails(){
       var _this = this;
-      console.log("====update======");
-      console.log(this.order_item_detail_lists);
-      console.log(this.order_item_shipment_data_headTable.mes_lis_shi_tra_dat_revised_delivery_date);
       var order_detailitem = {'items':this.order_item_detail_lists,'updated_date':this.order_item_shipment_data_headTable.mes_lis_shi_tra_dat_revised_delivery_date,'total_cost_price':this.totalCostPriceVal,'total_selling_price':this.totalSellingPriceVal};
       axios({
         method: "POST",
@@ -364,8 +361,6 @@ export default {
         data: order_detailitem,
       })
         .then(function (response) {
-          //handle success
-          console.log(response);
           _this.alert_icon = "success";
       _this.alert_title = "";
       _this.alert_text = "Shipment item data has been updated";
@@ -376,7 +371,25 @@ export default {
           //handle error
           console.log(response);
         });
-      console.log("====update======");
+    },
+    updateOrderItemFormData(){
+      var _this = this;
+      var order_detailitem = {'items':this.order_item_lists};
+      axios({
+        method: "POST",
+        url: this.BASE_URL + "api/update_shipment_item_detail_form_data",
+        data: order_detailitem,
+      }).then(function (response) {
+          _this.alert_icon = "success";
+      _this.alert_title = "";
+      _this.alert_text = "Shipment item form data has been updated";
+      _this.sweet_normal_alert();
+          //Fire.$emit("LoadByrorderItemDetail");
+        })
+        .catch(function (response) {
+          //handle error
+          console.log(response);
+        });
     },
     checkAll() {
       this.isCheckAll = !this.isCheckAll;
