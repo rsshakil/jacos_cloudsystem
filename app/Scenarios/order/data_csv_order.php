@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Scenarios;
+namespace App\Scenarios\order;
 
 use App\Scenarios\Common;
 use Illuminate\Database\Eloquent\Model;

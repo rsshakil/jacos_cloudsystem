@@ -106,8 +106,8 @@ Route::get('get_all_master_item/{adm_user_id}', 'API\Byr_itemController@get_all_
 // receive
 Route::post('data_receive_list', 'API\DATA\RECEIVE\ReceiveController@orderReceiveList');
 Route::get('corrected_receive_list/{adm_user_id}', 'API\DATA\RECEIVE\ReceiveController@correctedReceiveList');
-// receive end 
-Route::get('get_byr_payment_list/{adm_user_id}', 'API\Byr_paymentController@get_byr_payment_list');
+// receive end
+Route::post('get_payment_list', 'API\DATA\PAYMENT\PaymentController@getPaymentList');
 Route::get('get_byr_return_list/{adm_user_id}', 'API\Byr_return_itemController@get_byr_return_list');
 Route::get('get_all_cat_list/{adm_user_id}', 'API\Cmn_categoryController@get_all_cat_list');
 Route::get('get_all_invoice_list/{adm_user_id}', 'API\Byr_invoiceController@get_all_invoice_list');

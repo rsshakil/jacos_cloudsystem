@@ -59,7 +59,7 @@
               <input
                 type="date"
                 class="form-control"
-                v-model="form.delivery_date_from"
+                v-model="form.wnership_date_from"
               />
             </td>
             <td style="width: 9%; text-align: center">
@@ -73,13 +73,13 @@
               <input
                 type="date"
                 class="form-control"
-                v-model="form.delivery_date_to"
+                v-model="form.wnership_date_to"
               />
             </td>
             <!-- <td>{{ myLang.shipment }}</td> -->
             <td class="cl_custom_color">部門</td>
             <td style="width: 10%; text-align: center">
-              <select class="form-control">
+              <select class="form-control" v-model="form.major_category">
                 <option :value="0">全て</option>
               </select>
               <!-- <input type="text" class="form-control" v-model="form.delivery_service_code"> -->
@@ -89,7 +89,7 @@
             </td>
             <td class="cl_custom_color">便</td>
             <td style="width: 15%">
-              <select class="form-control">
+              <select class="form-control" v-model="form.delivery_service_code">
                 <option :value="0">全て</option>
               </select>
             </td>
@@ -104,15 +104,15 @@
             <!-- <td>{{ myLang.voucher_type }}</td> -->
             <td class="cl_custom_color" style="width: 10%">配送温度区分</td>
             <td colspan="3">
-              <select class="form-control" style="width: 300px">
+              <select class="form-control" style="width: 300px" v-model="form.temperature_code">
                 <option :value="0">全て</option>
               </select>
             </td>
             <!-- <td>{{ myLang.printing_status }}</td> -->
             <td class="cl_custom_color">データ種別</td>
             <td style="width: 10%; text-align: center" colspan="3">
-              <select class="form-control" style="width: 300px">
-                <option :value="0">全て</option>
+              <select class="form-control" style="width: 300px" >
+                <option :value="0" >全て</option>
               </select>
             </td>
             <!-- <td>{{ myLang.confirmation_status }}</td> -->
@@ -126,7 +126,7 @@
             </td>
             <td class="cl_custom_color">参照状況</td>
             <td colspan="3">
-              <select class="form-control" style="width: 300px">
+              <select class="form-control" style="width: 300px" v-model="form.check_datetime">
                 <option :value="0">全て</option>
               </select>
             </td>
@@ -135,7 +135,7 @@
       </div>
     </div>
     <div class="col-12" style="text-align: center">
-      <button class="btn btn-primary" type="button" @click="searchOrder()">
+      <button class="btn btn-primary" type="button" @click="searchReceivedItem">
         {{ myLang.search }}
       </button>
     </div>
@@ -146,6 +146,42 @@
         {{ myLang.download }}
       </button>
     </div>
+    <div class="col-12">
+        <div class="row">
+          <div class="col-5">
+            <p>
+              <span class="tableRowsInfo"
+                >{{ received_item_list.from }}〜{{
+                  received_item_list.to
+                }}
+                件表示中／全：{{ received_item_list.total }}件</span
+              >
+              <span class="pagi">
+                <advanced-laravel-vue-paginate
+                  :data="received_item_list"
+                  :onEachSide="2"
+                  previousText="<"
+                  nextText=">"
+                  alignment="center"
+                  @paginateTo="getAllReceivedItem"
+                />
+              </span>
+              <span class="selectPagi">
+                <select
+                  @change="getAllReceivedItem"
+                  v-model="form.select_field_per_page_num"
+                  class="form-control selectPage"
+                >
+                  <option value="10">10行</option>
+                  <option value="20">20行</option>
+                  <option value="50">50行</option>
+                  <option value="100">100行</option>
+                </select>
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
     <div class="col-12">
       <div class="">
         <table class="table table-striped table-bordered order_item_details_table data_table">
@@ -166,20 +202,31 @@
           </thead>
           <tbody>
             <tr
-              v-for="(order_receive_list, index) in order_receive_lists"
-              :key="order_receive_list.byr_receive_id"
+              v-for="(received_item, index) in received_item_list.data"
+              :key="index"
             >
               <td>{{ index + 1 }}</td>
-              <td>{{ order_receive_list.company_name }}</td>
-              <td>{{ order_receive_list.receive_date }}</td>
-              <td>{{ order_receive_list.download_date }}</td>
+              <td>{{ received_item.receive_datetime }}</td>
+              <td>{{ received_item.mes_lis_acc_par_sel_code }} {{ received_item.mes_lis_acc_par_sel_name }}</td>
+              <td>{{ received_item.mes_lis_acc_tra_dat_transfer_of_ownership_date }}</td>
+              <td>{{ received_item.mes_lis_acc_tra_goo_major_category }}</td>
+              <td>{{ received_item.mes_lis_acc_log_del_delivery_service_code }}</td>
+              <td>{{ received_item.mes_lis_acc_tra_ins_temperature_code }}</td>
+              <td>
+                  <!-- {{
+                    received_item.mes_lis_acc_tra_ins_temperature_code
+                  }}
+                  {{
+                    getbyrjsonValueBykeyName(
+                      "mes_lis_acc_log_del_delivery_service_code",
+                      received_item.mes_lis_acc_log_del_delivery_service_code,
+                      "receives"
+                    )
+                  }} -->
+              </td>
               <td></td>
               <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td>{{ received_item.check_datetime }}</td>
             </tr>
           </tbody>
         </table>
@@ -191,85 +238,56 @@
 export default {
   data() {
     return {
-      order_receive_lists: {},
+      received_item_list: {},
       byr_buyer_lists: {},
-      file: "",
-      selected_byr: "0",
       byr_buyer_id:null,
       form: new Form({
+        select_field_per_page_num:10,
+        page:1,
         adm_user_id: Globals.user_info_id,
         byr_buyer_id: null,
         receive_date_from: null,
         receive_date_to: null,
-        delivery_date_from: null,
-        delivery_date_to: null,
-        check_datetime: null,
+        wnership_date_from: null,
+        wnership_date_to: null,
+        major_category: "01",
         delivery_service_code: "01",
-        temperature: "01",
-        print_cnt: "*",
-        decission_cnt: "*",
+        temperature_code: "01",
+        check_datetime: null,
+        // print_cnt: "*",
+        // decission_cnt: "*",
         submit_type: "page_load",
       }),
     };
   },
   methods: {
     //get Table data
-    get_all_order() {
-      axios.post(this.BASE_URL +"api/data_receive_list",{adm_user_id:Globals.user_info_id,byr_buyer_id:this.byr_buyer_id})
-        .then(({data}) => {
-            console.log(data);
-          this.order_receive_lists = data.received_item_list;
-          this.byr_buyer_lists = data.byr_buyer_list;
-        });
+    getAllReceivedItem(page = 1) {
+        this.form.page=page;
+        axios.post(this.BASE_URL +"api/data_receive_list",this.form)
+            .then(({data}) => {
+                console.log(data);
+                this.received_item_list = data.received_item_list;
+                this.byr_buyer_lists = data.byr_buyer_list;
+            });
     },
-    check_byr_order_api() {
-      let formData = new FormData();
-      formData.append("up_file", this.file);
-      formData.append("email", "user@jacos.co.jp");
-      formData.append("password", "Qe75ymSr");
-      axios({
-        method: "POST",
-        url: this.BASE_URL + "api/job_exec/1",
-        data: formData,
-        headers: { "Content-Type": "multipart/form-data" },
-      })
-        .then(function (response) {
-          //handle success
-          console.log(response);
-          Fire.$emit("LoadByrorder");
-        })
-        .catch(function (response) {
-          //handle error
-          console.log(response);
-        });
-    },
-    onChangeFileUpload() {
-      this.file = this.$refs.file.files[0];
-      this.check_byr_order_api();
-    },
-    change(e) {
-      const selectedCode = e.target.value;
-      const option = this.options.find((option) => {
-        return selectedCode === option.byr_buyer_id;
-      });
-      //   this.$emit("input", option);
-    },
+    searchReceivedItem(){
+        this.form.submit_type="search"
+        this.getAllReceivedItem();
+    }
   },
 
   created() {
-      this.byr_buyer_id=this.$session.get("byr_buyer_id");
-      console.log(this.byr_buyer_id)
-    this.get_all_order();
-    Fire.$on("LoadByrorder", () => {
-      this.get_all_order();
-    });
-    Fire.$emit("byr_has_selected",this.byr_buyer_id);
-    Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
-    Fire.$emit("loadPageTitle", "受領受信一覧");
-    console.log("created byr order log");
+        this.byr_buyer_id=this.$session.get("byr_buyer_id");
+        this.form.byr_buyer_id=this.byr_buyer_id;
+        this.getAllReceivedItem();
+        // Fire.$on("LoadAllReceiveItem", () => {
+        //   this.getAllReceivedItem();
+        // });
+        Fire.$emit("byr_has_selected",this.byr_buyer_id);
+        Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
+        Fire.$emit("loadPageTitle", "受領受信一覧");
   },
-  mounted() {
-    console.log("User page loaded");
-  },
+  mounted() {},
 };
 </script>
