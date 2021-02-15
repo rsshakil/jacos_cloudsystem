@@ -65,7 +65,7 @@ class PaymentController extends Controller
         'dpp.check_datetime',
         'dpp.mes_lis_pay_per_end_date',
         'dppd.mes_lis_pay_lin_det_pay_out_date',
-        'dppd.mes_lis_pay_lin_det_amo_payable_amount',
+        'dppd.mes_lis_pay_lin_det_amo_payable_amount'
         )
         ->join('data_payment_pays as dpp','data_payments.data_payment_id','=','dpp.data_payment_id')
         ->join('data_payment_pay_details as dppd','dpp.data_payment_pay_id','=','dppd.data_payment_pay_id')
@@ -82,5 +82,29 @@ class PaymentController extends Controller
         $byr_buyer = $this->all_used_fun->get_company_list($cmn_company_id);
         // 'buyer_settings' => $buyer_settings->setting_information
         return response()->json(['payment_item_list' => $result, 'byr_buyer_list' => $byr_buyer]);
+    }
+
+    public function get_payment_detail_list(Request $request){
+        $payment_id = $request->payment_id;
+        $result=data_payment::select('data_payments.data_payment_id','data_payments.receive_datetime',
+        'dpp.mes_lis_pay_pay_code',
+        'dpp.mes_lis_pay_pay_name',
+        'dpp.mes_lis_buy_name',
+        'dpp.mes_lis_buy_code',
+        'dpp.check_datetime',
+        'dpp.mes_lis_pay_per_end_date',
+        'dppd.mes_lis_pay_lin_det_pay_out_date',
+        'dppd.mes_lis_pay_lin_det_amo_payable_amount'
+        )
+        ->join('data_payment_pays as dpp','data_payments.data_payment_id','=','dpp.data_payment_id')
+        ->join('data_payment_pay_details as dppd','dpp.data_payment_pay_id','=','dppd.data_payment_pay_id')
+        ->where('dpp.data_payment_id',$payment_id)
+        // ->where('data_payments.cmn_connect_id','=',$cmn_connect_id)
+        ->groupBy('data_payments.receive_datetime')
+        ->groupBy('dpp.mes_lis_pay_pay_code')
+        ->groupBy('dpp.mes_lis_pay_per_end_date')
+        ->groupBy('dppd.mes_lis_pay_lin_det_pay_out_date')
+        ->first();
+        return response()->json(['payment_item_header' => $result]);
     }
 }

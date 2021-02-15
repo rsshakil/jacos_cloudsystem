@@ -136,7 +136,18 @@
           <tbody>
             <tr v-for="(payment, index) in payment_lists.data" :key="index">
               <td>{{ index + 1 }}</td>
-              <td>{{ payment.receive_datetime }}</td>
+              <td><router-link
+                    :to="{
+                      name: 'payment_detail',
+                      params: {
+                        payment_id:
+                          payment.data_payment_id,
+                      },
+                    }"
+                    class=""
+                    >{{ payment.receive_datetime }}
+                    </router-link>
+                    </td>
               <td>{{ payment.mes_lis_pay_pay_code }}</td>
               <td>{{ payment.mes_lis_buy_name }}</td>
               <td>{{ payment.mes_lis_pay_per_end_date }}</td>

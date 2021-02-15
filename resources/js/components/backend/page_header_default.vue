@@ -28,6 +28,8 @@
           this.page_heading = '受領受信一覧';
       }else if(this.$route.name=='payment_list'){
           this.page_heading = '支払受信一覧';
+      }else if(this.$route.name=='payment_detail'){
+          this.page_heading = '支払合計';
       }else if(this.$route.name=='invoice_list'){
           this.page_heading = '請求一覧';
       }else if(this.$route.name=='invoice_detail'){

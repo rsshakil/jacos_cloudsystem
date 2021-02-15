@@ -1,0 +1,183 @@
+<template>
+  <div class="row">
+    <div class="col-12" style="background: #d8e3f0; padding: 10px">
+      <!--<h4 class="top_title text-center" style="margin-top:10px;">{{myLang.payment_data}}</h4>-->
+      <table class="table orderDetailTable table-bordered" style="width: 100%">
+        <tr>
+          <td class="cl_custom_color" >受信日時</td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="payment_detail_header.receive_datetime"
+            />
+          </td>
+
+          <td class="cl_custom_color">請求取引先</td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="payment_detail_header.mes_lis_pay_pay_code+' '+payment_detail_header.mes_lis_pay_pay_name"
+            />
+          </td>
+          
+        </tr>
+        <tr>
+          <td class="cl_custom_color">発注者</td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="payment_detail_header.mes_lis_buy_code+' '+payment_detail_header.mes_lis_buy_name"
+            />
+          </td>
+
+          <td class="cl_custom_color" >締日</td>
+          <td >
+            <input
+              type="date"
+              class="form-control"
+              v-model="payment_detail_header.mes_lis_pay_per_end_date"
+            />
+          </td>
+          
+        </tr>
+        <tr>
+          <td class="cl_custom_color">支払日</td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="payment_detail_header.mes_lis_pay_lin_det_pay_out_date"
+            />
+          </td>
+
+          <td class="cl_custom_color" >支払金額</td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="payment_detail_header.mes_lis_pay_lin_det_amo_payable_amount"
+            />
+          </td>
+          
+        </tr>
+      </table>
+    </div>
+    <div class="col-12" style="text-align: right;float:right">
+      <button class="btn btn-primary active" type="button">
+        支払案内書
+      </button>
+      <button class="btn btn-primary active" type="button" >
+        ダウンロード <b-icon icon="download" animation="fade" font-scale="1.2"></b-icon>
+      </button>
+    </div>
+
+    <div class="col-12">
+      <div class="row">
+      <div class="col-4">
+      <h4 class="page_custom_title">支払合計</h4>
+        <table
+          class="table table-striped order_item_details_table table-bordered data_table"
+        >
+          <thead>
+            <tr>
+              <th style="cursor: pointer">No</th>
+              <th style="cursor: pointer">内容</th>
+              <th style="cursor: pointer">金額</th>
+            </tr>
+          </thead>
+          <tbody>
+           
+          </tbody>
+        </table>
+      </div>
+      <div class="col-8">
+        <h4 class="page_custom_title">取引先別支払合計</h4>
+          <table
+          class="table table-striped order_item_details_table table-bordered data_table"
+        >
+          <thead>
+            <tr>
+              <th style="cursor: pointer">No</th>
+              <th style="cursor: pointer">取引先</th>
+              <th style="cursor: pointer">請求書番号</th>
+              <th style="cursor: pointer">支払金額合計</th>
+            </tr>
+          </thead>
+          <tbody>
+           
+          </tbody>
+        </table>
+        <br>
+        <h4 class="page_custom_title">相殺明細</h4>
+          <table
+          class="table table-striped order_item_details_table table-bordered data_table"
+        >
+          <thead>
+            <tr>
+              <th style="cursor: pointer">No</th>
+              <th style="cursor: pointer">相殺コード</th>
+              <th style="cursor: pointer">相殺名称</th>
+              <th style="cursor: pointer">取引先コード</th>
+              <th style="cursor: pointer">相殺金額</th>
+            </tr>
+          </thead>
+          <tbody>
+           
+          </tbody>
+        </table>
+      </div>
+        
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      payment_detail_header: {},
+      byr_buyer_id: null,
+      form: new Form({
+        select_field_per_page_num: 10,
+        page: 1,
+        adm_user_id: Globals.user_info_id,
+        byr_buyer_id: null,
+        mes_lis_pay_pay_code: null,
+        receive_date_from: null,
+        receive_date_to: null,
+        mes_lis_buy_name: null,
+        mes_lis_pay_per_end_date_from: null,
+        mes_lis_pay_per_end_date_to: null,
+        check_datetime: null,
+        submit_type: "page_load",
+        payment_id:'',
+      }),
+    };
+  },
+  methods: {
+    //get Table data
+    getAllPaymentDetails() {
+      axios.post(this.BASE_URL + "api/get_payment_detail_list", this.form)
+        .then(({ data }) => {
+            console.log(data)
+          this.payment_detail_header = data.payment_item_header;
+        });
+    },
+    
+  },
+
+  created() {
+    this.byr_buyer_id = this.$session.get("byr_buyer_id");
+    this.form.byr_buyer_id = this.byr_buyer_id;
+    this.form.payment_id = this.$route.params.payment_id
+    this.getAllPaymentDetails();
+    Fire.$emit("byr_has_selected", this.byr_buyer_id);
+    Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
+    Fire.$emit("loadPageTitle", "支払合計");
+  },
+  mounted() {},
+};
+</script>

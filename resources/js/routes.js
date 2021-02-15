@@ -41,6 +41,7 @@ import data_order_receive from './components/backend/DATA/RECEIVE/data_order_rec
 import order_corrected_receive from './components/backend/order_corrected_receive.vue'
 import return_item_list from './components/backend/return_item_list.vue'
 import payment_list from './components/backend/DATA/PAYMENT/payment_list.vue'
+import payment_detail from './components/backend/DATA/PAYMENT/payment_detail.vue'
 import invoice_list from './components/backend/invoice_list.vue'
 import invoice_detail from './components/backend/invoice_detail.vue'
 import voucher_detail from './components/backend/voucher_detail.vue'
@@ -368,6 +369,19 @@ export const routes = [
                 label: '支払受信一覧'
             }
         }
+
+    },
+    {
+        path: '/payment_list/payment_detail/:payment_id',
+        component: payment_detail,
+        name: 'payment_detail',
+        meta: {
+
+            breadcrumb: {
+                label: '支払合計',
+                parent: 'payment_list'
+            },
+        },
 
     },
     {
