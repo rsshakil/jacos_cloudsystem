@@ -38,8 +38,8 @@ class data_csv_receive_order extends Model
         $dataArr = $this->all_functions->csvReader($received_path, 1);
         $cmn_connect_id=$this->all_functions->get_connect_id_from_file_name($file_name);
         $cur_date=date('y-m-d h:i:s');
-        // $order_flg = true;
-        // $trade_number = '';
+        $rcv_flg = true;
+        $trade_number = '';
 
         foreach ($dataArr as $key => $value) {
             if (count($value) === 1) {
@@ -47,7 +47,7 @@ class data_csv_receive_order extends Model
                 continue;
             }
 
-            // if ($order_flg) {
+            if ($rcv_flg) {
                 $data_receive_array['sta_sen_identifier']=$value[0];
                 $data_receive_array['sta_sen_ide_authority']=$value[1];
                 $data_receive_array['sta_rec_identifier']=$value[2];
@@ -86,10 +86,10 @@ class data_csv_receive_order extends Model
 
                 $data_receive_id = data_receive::insertGetId($data_receive_array);
 
-            //     $order_flg =false;
-            // }
+                $rcv_flg =false;
+            }
 
-            // if ($trade_number !=$value[31].'-'.$value[32]) {
+            if ($trade_number !=$value[31].'-'.$value[32]) {
                 $data_receive_voucher_array['mes_lis_acc_tra_trade_number']=$value[31];
                 $data_receive_voucher_array['mes_lis_acc_tra_additional_trade_number']=$value[32];
                 $data_receive_voucher_array['mes_lis_acc_fre_shipment_number']=$value[33]; //New Added
@@ -169,7 +169,7 @@ class data_csv_receive_order extends Model
                 $data_receive_voucher_array['data_receive_id']=$data_receive_id;
                 $data_receive_voucher_id = data_receive_voucher::insertGetId($data_receive_voucher_array);
 
-            // }
+            }
             $data_receive_item_array['mes_lis_acc_lin_lin_line_number']=$value[106];
             $data_receive_item_array['mes_lis_acc_lin_lin_additional_line_number']=$value[107];
             $data_receive_item_array['mes_lis_acc_lin_fre_trade_number']=$value[108];
