@@ -39,16 +39,16 @@ class data_csv_payment_order extends Model
         $cmn_connect_id=$this->all_functions->get_connect_id_from_file_name($file_name);
         // return ['message' => "error", 'status' => $cmn_connect_id];
 
-        // $order_flg = true;
+        $payment_flg = true;
         // $trade_number = '';
-
+ $cur_date=date('y-m-d h:i:s');
         foreach ($dataArr as $key => $value) {
             if (count($value) === 1) {
                 // 空であればcontinue
                 continue;
             }
 
-            // if ($order_flg) {
+            if ($payment_flg) {
                 $data_payment_array['sta_sen_identifier']=$value[0];
                 $data_payment_array['sta_sen_ide_authority']=$value[1];
                 $data_payment_array['sta_rec_identifier']=$value[2];
@@ -77,12 +77,13 @@ class data_csv_payment_order extends Model
                 $data_payment_array['mes_lis_pay_name']=$value[25];
                 $data_payment_array['mes_lis_pay_name_sbcs']=$value[26];
 
+                $data_payment_array['receive_datetime']=$cur_date;
                 $data_payment_array['cmn_connect_id']=$cmn_connect_id;
 
                 $data_payment_id = data_payment::insertGetId($data_payment_array);
 
-            //     $order_flg =false;
-            // }
+                $payment_flg =false;
+            }
             // if ($trade_number !=$value[31].'-'.$value[32]) {
                 $data_payment_pay_array['mes_lis_buy_code']=$value[27];
                 $data_payment_pay_array['mes_lis_buy_gln']=$value[28];

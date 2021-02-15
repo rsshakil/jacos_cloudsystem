@@ -9,7 +9,7 @@
             <input
               type="text"
               class="form-control"
-              v-model="form.delivery_date_from"
+              v-model="form.mes_lis_pay_pay_code"
             />
           </td>
 
@@ -38,7 +38,7 @@
             <input
               type="text"
               class="form-control"
-              v-model="form.delivery_date_from"
+              v-model="form.mes_lis_buy_name"
             />
           </td>
 
@@ -47,7 +47,7 @@
             <input
               type="date"
               class="form-control"
-              v-model="form.receive_date_from"
+              v-model="form.mes_lis_pay_per_end_date_from"
             />
           </td>
           <td style="width: 9%; text-align: center">
@@ -57,14 +57,12 @@
             <input
               type="date"
               class="form-control"
-              v-model="form.receive_date_to"
+              v-model="form.mes_lis_pay_per_end_date_from_to"
             />
           </td>
           <td class="cl_custom_color" style="width: 9%">参照状況</td>
           <td>
-            <select class="form-control" style="width: 150px">
-              <option :value="0">全て</option>
-            </select>
+              <input type="date" class="form-control" v-model="form.check_datetime" />
           </td>
         </tr>
       </table>
@@ -138,13 +136,13 @@
           <tbody>
             <tr v-for="(payment, index) in payment_lists.data" :key="index">
               <td>{{ index + 1 }}</td>
-              <td>{{ value.check_datetime }}</td>
+              <td>{{ payment.receive_datetime }}</td>
               <td>{{ payment.mes_lis_pay_pay_code }}</td>
               <td>{{ payment.mes_lis_buy_name }}</td>
               <td>{{ payment.mes_lis_pay_per_end_date }}</td>
               <td>{{ payment.mes_lis_pay_lin_det_pay_out_date }}</td>
               <td>{{ payment.mes_lis_pay_lin_det_amo_payable_amount }}</td>
-              <td>{{ value.check_datetime }}</td>
+              <td>{{ payment.check_datetime }}</td>
             </tr>
           </tbody>
         </table>
@@ -164,16 +162,13 @@ export default {
         page: 1,
         adm_user_id: Globals.user_info_id,
         byr_buyer_id: null,
+        mes_lis_pay_pay_code: null,
         receive_date_from: null,
         receive_date_to: null,
-        wnership_date_from: null,
-        wnership_date_to: null,
-        major_category: "01",
-        delivery_service_code: "01",
-        temperature_code: "01",
+        mes_lis_buy_name: null,
+        mes_lis_pay_per_end_date_from: null,
+        mes_lis_pay_per_end_date_to: null,
         check_datetime: null,
-        // print_cnt: "*",
-        // decission_cnt: "*",
         submit_type: "page_load",
       }),
     };
