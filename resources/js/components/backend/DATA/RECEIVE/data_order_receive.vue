@@ -211,18 +211,18 @@
               <td>{{ received_item.mes_lis_acc_tra_dat_transfer_of_ownership_date }}</td>
               <td>{{ received_item.mes_lis_acc_tra_goo_major_category }}</td>
               <td>{{ received_item.mes_lis_acc_log_del_delivery_service_code }}</td>
-              <td>{{ received_item.mes_lis_acc_tra_ins_temperature_code }}</td>
+              <!-- <td>{{ received_item.mes_lis_acc_tra_ins_temperature_code }}</td> -->
               <td>
-                  <!-- {{
+                  {{
                     received_item.mes_lis_acc_tra_ins_temperature_code
                   }}
                   {{
                     getbyrjsonValueBykeyName(
-                      "mes_lis_acc_log_del_delivery_service_code",
-                      received_item.mes_lis_acc_log_del_delivery_service_code,
-                      "receives"
+                      "mes_lis_ord_tra_ins_temperature_code",
+                      received_item.mes_lis_acc_tra_ins_temperature_code,
+                      "orders",buyer_settings
                     )
-                  }} -->
+                  }}
               </td>
               <td></td>
               <td></td>
@@ -241,6 +241,7 @@ export default {
       received_item_list: {},
       byr_buyer_lists: {},
       byr_buyer_id:null,
+      buyer_settings:[],
       form: new Form({
         select_field_per_page_num:10,
         page:1,
@@ -269,6 +270,8 @@ export default {
                 console.log(data);
                 this.received_item_list = data.received_item_list;
                 this.byr_buyer_lists = data.byr_buyer_list;
+                this.buyer_settings = JSON.parse(data.buyer_settings);
+
             });
     },
     searchReceivedItem(){

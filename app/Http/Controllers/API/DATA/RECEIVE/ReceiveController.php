@@ -112,10 +112,12 @@ class ReceiveController extends Controller
         ->where('data_receives.cmn_connect_id','=',$cmn_connect_id)
         ->groupBy('data_receives.receive_datetime')
         ->groupBy('data_receives.sta_sen_identifier')
-        ->groupBy('drv.mes_lis_acc_tra_dat_delivery_date')
-        ->groupBy('drv.mes_lis_acc_tra_goo_major_category')
-        ->groupBy('drv.mes_lis_acc_log_del_delivery_service_code')
-        ->groupBy('drv.mes_lis_acc_tra_ins_temperature_code')
+        ->groupBy('drv.mes_lis_acc_par_sel_code')
+        ->groupBy('drv.mes_lis_acc_par_sel_name')
+        // ->groupBy('drv.mes_lis_acc_tra_dat_delivery_date')
+        // ->groupBy('drv.mes_lis_acc_tra_goo_major_category')
+        // ->groupBy('drv.mes_lis_acc_log_del_delivery_service_code')
+        // ->groupBy('drv.mes_lis_acc_tra_ins_temperature_code')
         ->paginate($per_page);
 
         // $result = new Paginator($result, 2);

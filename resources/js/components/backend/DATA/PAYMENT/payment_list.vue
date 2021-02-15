@@ -136,15 +136,15 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(payment, index) in payment_lists" :key="index">
+            <tr v-for="(payment, index) in payment_lists.data" :key="index">
               <td>{{ index + 1 }}</td>
-              <!-- <td>{{ value.check_datetime }}</td> -->
+              <td>{{ value.check_datetime }}</td>
               <td>{{ payment.mes_lis_pay_pay_code }}</td>
               <td>{{ payment.mes_lis_buy_name }}</td>
               <td>{{ payment.mes_lis_pay_per_end_date }}</td>
               <td>{{ payment.mes_lis_pay_lin_det_pay_out_date }}</td>
               <td>{{ payment.mes_lis_pay_lin_det_amo_payable_amount }}</td>
-              <!-- <td>{{ value.check_datetime }}</td> -->
+              <td>{{ value.check_datetime }}</td>
             </tr>
           </tbody>
         </table>
@@ -183,7 +183,7 @@ export default {
     getAllPayments() {
       axios.post(this.BASE_URL + "api/get_payment_list", this.form)
         .then(({ data }) => {
-            // console.log(data)
+            console.log(data)
           this.payment_lists = data.payment_item_list;
           this.byr_buyer_lists = data.byr_buyer_list;
         });

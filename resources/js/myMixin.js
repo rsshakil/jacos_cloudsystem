@@ -15,58 +15,66 @@ export default {
             selected_columns: [],
             col_lists: [],
             buyer_info_for_saller: [],
-            mes_lis_shi_lin_qua_sto_reason_codeList:[],
+            mes_lis_shi_lin_qua_sto_reason_codeList: [],
             filter_select_box: false,
             buyers: [],
             selected_buyer: [],
             sellers: [],
             selected_seller: [],
-            yes_btn:'Yes, delete it!',
-            cancel_btn:"Cancel",
+            yes_btn: 'Yes, delete it!',
+            cancel_btn: "Cancel",
             byr_buyer_id: null,
-            
-            buyer_settings:{},
+
+            buyer_settings: {},
             // loader: "",
         };
     },
     methods: {
-       
-        
-        // Database created and updated datetime conversion
-        getbuyerJsonSettingvalue(){
-            axios.get(this.BASE_URL + "api/buyerJsonSetting/"+this.byr_buyer_id)
-            .then(({data}) => {
-              this.buyer_settings = JSON.parse(data.buyer_settings);
-              this.mes_lis_shi_lin_qua_sto_reason_codeList = this.buyer_settings.shipments.mes_lis_shi_lin_qua_sto_reason_code;
 
-            // this.buyer_settings= this.buyer_settings.orders;
-            });
+
+        // Database created and updated datetime conversion
+        getbuyerJsonSettingvalue() {
+            axios.get(this.BASE_URL + "api/buyerJsonSetting/" + this.byr_buyer_id)
+                .then(({ data }) => {
+                    this.buyer_settings = JSON.parse(data.buyer_settings);
+                    this.mes_lis_shi_lin_qua_sto_reason_codeList = this.buyer_settings.shipments.mes_lis_shi_lin_qua_sto_reason_code;
+
+                    // this.buyer_settings= this.buyer_settings.orders;
+                });
         },
-        getbyrjsonValueBykeyName(arrName,arrKey,orderType="orders"){
-            var buyer_settings_length=Object.keys(this.buyer_settings).length;
-            if(buyer_settings_length==0){
+        getbyrjsonValueBykeyName(arrName, arrKey, orderType = "orders", buyer_settings = []) {
+            if (buyer_settings.length > 0) {
+                this.buyer_settings = buyer_settings;
+            }
+            var buyer_settings_length = Object.keys(this.buyer_settings).length;
+            if (buyer_settings_length == 0) {
                 this.getbuyerJsonSettingvalue();
             }
-           
-            if(arrKey!=''){
-        var newarr  =[];
-        var buyer_settings_length_check=Object.keys(this.buyer_settings).length;
-        if (buyer_settings_length_check>0) {
-            var values =  this.buyer_settings[orderType][arrName].map(function(o) {
-                var parsedobj = JSON.parse(JSON.stringify(o));
-                if(typeof(parsedobj[arrKey]) !== 'undefined' || parsedobj[arrKey] !== null){
-                  newarr[Object.keys(parsedobj)[0]]=Object.values(parsedobj)[0];
+
+            if (arrKey != '') {
+                var newarr = [];
+                var buyer_settings_length_check = Object.keys(this.buyer_settings).length;
+                console.log(buyer_settings_length_check);
+                // console.log(this.buyer_settings);
+                if (buyer_settings_length_check > 0) {
+                    var values = this.buyer_settings[orderType][arrName].map(function(o) {
+                        var parsedobj = JSON.parse(JSON.stringify(o));
+                        if (typeof(parsedobj[arrKey]) !== 'undefined' || parsedobj[arrKey] !== null) {
+                            newarr[Object.keys(parsedobj)[0]] = Object.values(parsedobj)[0];
+                        }
+                        return newarr;
+                    });
+
+                    console.log(newarr)
+                        // console.log(values[0][arrKey])
+                    return values[0][arrKey];
+                } else {
+                    console.log('Object not found yet');
                 }
-                return newarr;
-                  });
-            return values[0][arrKey];
-        }else{
-            console.log('Object not found yet');
-        }
-            }else{
-              return '';
+            } else {
+                return '';
             }
-          },
+        },
         formatDate(date_string) {
             var date = new Date(date_string)
             return date.getFullYear() + '-' +
@@ -101,7 +109,7 @@ export default {
             return this.global_image_path;
         },
         logout() {
-            this.loader =Vue.$loading.show()
+            this.loader = Vue.$loading.show()
             this.app.req.post(this.BASE_URL + "logout").then(() => {
                 // this.app.user=null;
                 // this.$router.push('/login');
@@ -137,7 +145,7 @@ export default {
                 });
             }
         },
-        
+
         update_col_setting() {
             console.log("update col setting");
 
