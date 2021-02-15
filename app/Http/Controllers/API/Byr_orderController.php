@@ -306,7 +306,7 @@ class Byr_orderController extends Controller
 
     public function shipment_item_detail_search($item_code)
     {
-        $orderItem = DB::table('data_shipments as ds')
+        $orderItem = DB::table('data_shipment_items as dsi')
         ->select(
             'dor.receive_datetime',
             'dsv.mes_lis_shi_par_sel_code',
@@ -330,14 +330,15 @@ class Byr_orderController extends Controller
             'dsi.*'
 
         )
-        ->join('data_shipment_vouchers as dsv', 'dsv.data_shipment_id', '=', 'ds.data_shipment_id')
-        ->join('data_shipment_items as dsi', 'dsi.data_shipment_voucher_id', '=', 'dsv.data_shipment_voucher_id')
+        ->leftJoin('data_shipment_vouchers as dsv', 'dsv.data_shipment_voucher_id', '=', 'dsi.data_shipment_voucher_id')
+        ->join('data_shipments as ds', 'ds.data_shipment_id', '=', 'dsv.data_shipment_id')
         ->join('data_orders as dor', 'dor.data_order_id', '=', 'ds.data_order_id')
         ->where('dsi.mes_lis_shi_lin_ite_supplier_item_code', $item_code)
-        ->groupBy('dsv.mes_lis_shi_tra_trade_number')->first();
+        ->whereNull('dsv.decision_datetime')
+        ->groupBy('dsv.mes_lis_shi_tra_trade_number')->toSql();
         //shipment
 
-        $result = DB::table('data_shipments as ds')
+        $result = DB::table('data_shipment_items as dsi')
             ->select(
                 'dor.receive_datetime',
                 'dsv.mes_lis_shi_par_sel_code',
@@ -361,10 +362,13 @@ class Byr_orderController extends Controller
                 'dsi.*'
 
             )
-            ->join('data_shipment_vouchers as dsv', 'dsv.data_shipment_id', '=', 'ds.data_shipment_id')
-            ->join('data_shipment_items as dsi', 'dsi.data_shipment_voucher_id', '=', 'dsv.data_shipment_voucher_id')
+            
+           
+            ->leftJoin('data_shipment_vouchers as dsv', 'dsv.data_shipment_voucher_id', '=', 'dsi.data_shipment_voucher_id')
+            ->join('data_shipments as ds', 'ds.data_shipment_id', '=', 'dsv.data_shipment_id')
             ->join('data_orders as dor', 'dor.data_order_id', '=', 'ds.data_order_id')
             ->where('dsi.mes_lis_shi_lin_ite_supplier_item_code', $item_code)
+            ->whereNull('dsv.decision_datetime')
             ->groupBy('dsv.mes_lis_shi_tra_trade_number')->get();
 
 

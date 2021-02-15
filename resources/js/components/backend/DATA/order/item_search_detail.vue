@@ -107,7 +107,6 @@
                 <th>売単価</th>
                 <th>売価全額</th>
                 <th>欠品理由</th>
-                <th>選択</th>
               </tr>
               
             </thead>
@@ -151,7 +150,6 @@
                 
                 
                 </td>
-                <td><input type="checkbox" class="form-control"></td>
               </tr>
             </tbody>
             

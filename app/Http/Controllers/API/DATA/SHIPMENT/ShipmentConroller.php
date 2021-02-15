@@ -135,7 +135,7 @@ class ShipmentConroller extends Controller
         $temperature_code = $temperature_code == null ? '' : $temperature_code;
         $form_search = $request->form_search;
 
-        $order_info = DB::table('data_shipments as ds')
+        $order_info = DB::table('data_shipment_items as dsi')
         ->select(
             'dor.receive_datetime',
             'dsv.mes_lis_shi_par_sel_code',
@@ -146,18 +146,19 @@ class ShipmentConroller extends Controller
             'dsv.mes_lis_shi_tra_ins_temperature_code',
             'dsv.mes_lis_shi_tra_trade_number'
         )
-        ->join('data_shipment_vouchers as dsv', 'dsv.data_shipment_id', '=', 'ds.data_shipment_id')
-        ->join('data_shipment_items as dsi', 'dsi.data_shipment_voucher_id', '=', 'dsv.data_shipment_voucher_id')
+        ->leftJoin('data_shipment_vouchers as dsv', 'dsv.data_shipment_voucher_id', '=', 'dsi.data_shipment_voucher_id')
+        ->join('data_shipments as ds', 'ds.data_shipment_id', '=', 'dsv.data_shipment_id')
         ->join('data_orders as dor', 'dor.data_order_id', '=', 'ds.data_order_id')
         ->where('ds.data_order_id', $data_order_id)
         ->where('dsv.mes_lis_shi_tra_dat_delivery_date', $delivery_date)
         ->where('dsv.mes_lis_shi_tra_goo_major_category', $major_category)
         ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $delivery_service_code)
         ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $temperature_code)
+        ->whereNull('dsv.decision_datetime')
         ->groupBy('dsv.mes_lis_shi_tra_trade_number')
         ->first();
 
-        $result = DB::table('data_shipments as ds')
+        $result = DB::table('data_shipment_items as dsi')
             ->select(
                 'dor.receive_datetime',
                 'dsv.mes_lis_shi_par_sel_code',
@@ -185,13 +186,14 @@ class ShipmentConroller extends Controller
                 'dsv.mes_lis_shi_tra_fre_variable_measure_item_code'
 
             )
-            ->join('data_shipment_vouchers as dsv', 'dsv.data_shipment_id', '=', 'ds.data_shipment_id')
-            ->join('data_shipment_items as dsi', 'dsi.data_shipment_voucher_id', '=', 'dsv.data_shipment_voucher_id')
+            ->leftJoin('data_shipment_vouchers as dsv', 'dsv.data_shipment_voucher_id', '=', 'dsi.data_shipment_voucher_id')
+            ->join('data_shipments as ds', 'ds.data_shipment_id', '=', 'dsv.data_shipment_id')
             ->join('data_orders as dor', 'dor.data_order_id', '=', 'ds.data_order_id')
             ->where('ds.data_order_id', $data_order_id)
             ->where('dsv.mes_lis_shi_tra_dat_delivery_date', $delivery_date)
             ->where('dsv.mes_lis_shi_tra_goo_major_category', $major_category)
             ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $delivery_service_code)
+            ->whereNull('dsv.decision_datetime')
             ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $temperature_code);
                 if($form_search['mes_lis_shi_lin_ite_supplier_item_code']!=""){
                     $result->where('dsi.mes_lis_shi_lin_ite_supplier_item_code', $form_search['mes_lis_shi_lin_ite_supplier_item_code']);
