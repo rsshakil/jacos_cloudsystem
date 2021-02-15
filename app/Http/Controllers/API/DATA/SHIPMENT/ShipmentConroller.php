@@ -86,7 +86,8 @@ class ShipmentConroller extends Controller
         $total_selling_price = $request->total_selling_price;
         $total_cost_price = $request->total_cost_price;
         $updated_date = $request->updated_date;
-        data_shipment_voucher::where('data_shipment_voucher_id', $items[0]['data_shipment_voucher_id'])->update(['mes_lis_shi_tra_dat_revised_delivery_date'=>$updated_date]);
+        $status = $request->order_status;
+        data_shipment_voucher::where('data_shipment_voucher_id', $items[0]['data_shipment_voucher_id'])->update(['mes_lis_shi_tra_dat_revised_delivery_date'=>$updated_date,'status'=>$status]);
         foreach($items as $item){
             data_shipment_item::where('data_shipment_item_id', $item['data_shipment_item_id'])->update([
                // 'mes_lis_shi_tra_dat_revised_delivery_date'=>$item->mes_lis_shi_tra_dat_revised_delivery_date,

@@ -284,10 +284,14 @@ class Byr_orderController extends Controller
         "))->first();
         //shipment
         $result = DB::select("
-        SELECT * FROM data_shipment_items
+        SELECT data_shipment_items.*,data_shipment_vouchers.*,data_order_vouchers.*,data_order_items.* FROM data_shipment_items
         inner join data_shipment_vouchers on data_shipment_vouchers.data_shipment_voucher_id=data_shipment_items.data_shipment_voucher_id
         inner join data_shipments on data_shipments.data_shipment_id=data_shipment_vouchers.data_shipment_id
+        inner join data_orders on data_orders.data_order_id=data_shipments.data_order_id
+        inner join data_order_vouchers on data_order_vouchers.data_order_id=data_orders.data_order_id
+        inner join data_order_items on data_order_items.data_order_voucher_id=data_order_vouchers.data_order_voucher_id 
         where data_shipment_items.data_shipment_voucher_id = '$data_shipment_voucher_id'
+        group by data_shipment_items.mes_lis_shi_lin_ite_order_item_code
         ");
         $slected_list = array();
         $result_data = cmn_tbl_col_setting::where('url_slug', 'order_item_list_detail')->first();

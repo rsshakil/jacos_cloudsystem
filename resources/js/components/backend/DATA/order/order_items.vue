@@ -330,8 +330,12 @@ export default {
       if(field_type=='ケース'){
         order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity=order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units*order_item_detail_list.mes_lis_shi_lin_qua_ord_quantity;
       }else{
-        order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units=Math.round(order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity/order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units);
-      }
+        
+        var calval=order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity/order_item_detail_list.mes_lis_shi_lin_qua_ord_quantity;
+    if(calval>0 && calval%1===0){
+      order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units=calval;
+    }
+  }
       this.checkUpdateDeliveryStatus();
     },
     checkUpdateDeliveryStatus(){
@@ -360,7 +364,7 @@ export default {
       console.log("====update======");
       console.log(this.order_item_detail_lists);
       console.log(this.order_item_shipment_data_headTable.mes_lis_shi_tra_dat_revised_delivery_date);
-      var order_detailitem = {'items':this.order_item_detail_lists,'updated_date':this.order_item_shipment_data_headTable.mes_lis_shi_tra_dat_revised_delivery_date,'total_cost_price':this.totalCostPriceVal,'total_selling_price':this.totalSellingPriceVal};
+      var order_detailitem = {'items':this.order_item_detail_lists,'updated_date':this.order_item_shipment_data_headTable.mes_lis_shi_tra_dat_revised_delivery_date,'total_cost_price':this.totalCostPriceVal,'total_selling_price':this.totalSellingPriceVal,'order_status':this.order_item_shipment_data_headTable.status};
       axios({
         method: "POST",
         url: this.BASE_URL + "api/update_shipment_item_details",
