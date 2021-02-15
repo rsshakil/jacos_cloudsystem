@@ -131,8 +131,8 @@
                 </div>
                 <!-- <div class="col-12"> -->
                 <!-- <div class="col-8" style="height:500px; overflow:auto"> -->
-                <!-- <div class="col-12" style="height:500px;overflow:auto;"> -->
-                <div class="col-12">
+                <div class="col-12" style="height:500px;overflow:auto;">
+                <!-- <div class="col-12"> -->
                     <center><canvas id="c">Your browser does not support the canvas element.</canvas></center>
                 </div>
                 <div class="col-12">
@@ -142,7 +142,7 @@
                           <h6 class="m-0">Canvas List</h6>
                       </div>
                       <div class="card-body p-0 pb-3" id="canvasList">
-                          <table id="" class="table mb-0"> 
+                          <table id="" class="table mb-0">
                               <thead class="bg-light">
                                   <tr>
                                       <th>#</th>
@@ -181,7 +181,7 @@
                             :src="modal_image"
                             @change="change"
                           ></cropper>
-                          
+
                             <!-- @change="change" -->
                           <!-- <img :src="bg_image_path" alt=""> -->
                         </div>
@@ -255,6 +255,8 @@ methods:{
           backgroundDelete(){
             this.canvas.backgroundImage=0;
             this.canvas.setBackgroundColor("#fff");
+            // this.canvas.setWidth(this.canvas_width);
+            // this.canvas.setHeight(this.canvas_height);
             this.canvas.renderAll();
             this.update_image_info=null
           },
@@ -282,7 +284,7 @@ methods:{
           cancelImage(){
             this.backgroundModalShow=false;
             if (this.tmp_modal_image==null) {
-              this.canvas.backgroundImage = 0; 
+              this.canvas.backgroundImage = 0;
               this.canvas.renderAll();
             }else{
               this.backgroundImageSet(this.tmp_modal_image);
@@ -340,8 +342,8 @@ methods:{
           },
           deleteCanvas(cmn_pdf_platform_canvas_id){
               this.init();
-              this.delete_sweet().then((result) => {     
-              if (result.value) { 
+              this.delete_sweet().then((result) => {
+              if (result.value) {
                 //Send Request to server
                 axios.post(this.BASE_URL+'api/delete_pdf_platform_canvas',{cmn_pdf_canvas_id:cmn_pdf_platform_canvas_id})
                     .then(({data})=> {
@@ -363,7 +365,7 @@ methods:{
             },
           bgImageChange(e) {
               let file = e.target.files[0];
-              let reader = new FileReader();  
+              let reader = new FileReader();
               if(file.size < 2111775){
                   if (file.type =="image/png" ||file.type =="image/jpeg") {
                     var mainThis=this;
@@ -413,13 +415,14 @@ methods:{
               img.onload = function() {
                   var f_img = new fabric.Image(img);
                   mainCanvas.setBackgroundImage(f_img, mainCanvas.renderAll.bind(mainCanvas), {
-                      width: mainCanvas.width,
-                      height: mainCanvas.height,
+                    //   width: mainCanvas.width,
+                    //   height: mainCanvas.height,
                       originX: 'left',
                       originY: 'top'
                   });
-                  // mainCanvas.setWidth(img.width);
-                  // mainCanvas.setHeight(img.height);
+                //   console.log(img.width)
+                  mainCanvas.setWidth(img.width);
+                  mainCanvas.setHeight(img.height);
               };
               img.src = bg_image;
           },
@@ -459,7 +462,7 @@ methods:{
             if (this.printBg==false) {
               if (this.bg_image_path) {
                 var imgSrc = canvas.backgroundImage._element.src;
-                canvas.backgroundImage = 0; 
+                canvas.backgroundImage = 0;
                 canvas.renderAll();
               }
             }
@@ -548,7 +551,7 @@ methods:{
                 .catch(() => {
                 this.sweet_advance_alert();
                 });
-        
+
           },
           // createReactObj(){
             createObj(left=100,top=50,width=150,height=22,fontSize=20,textAlign="left",lineHeight=1.16,scaleX=1,scaleY=1,text="Created by default",createdBy='auto'){
@@ -606,7 +609,7 @@ methods:{
             this.addText(text_data);
           }
         }else{
-          this.addText(text_data); 
+          this.addText(text_data);
         }
           },
           doubleClick(option){
@@ -634,17 +637,18 @@ methods:{
             backgroundImageOpacity: 0,
             // should the image be resized to fit the container?
             backgroundImageStretch: false,
-            // image size as canvas size 
-            width: this.canvas.width,
-            height: this.canvas.height
+            // image size as canvas size
+            // width: this.canvas.width,
+            // height: this.canvas.height
         });
-        // canvas size by image size 
-        // this.bgImageWH(imgUrl);
+        // canvas size by image size
+        this.bgImageWH(imgUrl);
       },
       bgImageWH(imgUrl){
         var mainCanvas=this.canvas;
         const img = new Image();
         img.src = imgUrl;
+        console.log(img.naturalWidth);
         img.onload = function() {
           mainCanvas.setWidth(img.naturalWidth);
           mainCanvas.setHeight(img.naturalHeight);
@@ -680,10 +684,10 @@ methods:{
         this.activeObjects = this.canvas.getActiveObjects();
       },
       createLine(){
-        var line = new fabric.Line([0, 211, 795, 211], { 
+        var line = new fabric.Line([0, 211, 795, 211], {
             stroke: 'black',
-        }); 
-        // Render the rectanle in canvas 
+        });
+        // Render the rectanle in canvas
         this.canvas.add(line).setActiveObject(line);
       },
       createRect(){
@@ -700,13 +704,13 @@ methods:{
       this.canvas.add(rect).setActiveObject(rect);
       },
       createCircle(){
-        var circle = new fabric.Circle({ 
-            radius: 50, 
-            fill: '', 
-            stroke: 'green', 
-            strokeWidth: 3 
-        }); 
-        // Render the circle in canvas 
+        var circle = new fabric.Circle({
+            radius: 50,
+            fill: '',
+            stroke: 'green',
+            strokeWidth: 3
+        });
+        // Render the circle in canvas
         this.canvas.add(circle).setActiveObject(circle);
       },
       // changeObjectSetting($event=null){
@@ -715,9 +719,9 @@ methods:{
       //   this.getActiveObject()
       //   if (this.activeObjects.length) {
       //           this.activeObjects.forEach(function(object) {
-      //             object.set({ 
+      //             object.set({
       //             // textAlign:$event==null?_this.selectedJustifier.name:$event.name,
-      //             width:Number(_this.width), 
+      //             width:Number(_this.width),
       //             height:Number(_this.height),
       //             // fontSize:Number(_this.fontSize),
       //             // strokeWidth: val,
@@ -996,7 +1000,7 @@ methods:{
     },
       copyObject(){
         console.log("Copy function");
-        // copy function start 
+        // copy function start
         var canvas=this.canvas;
         var _this=this;
         var activeObject=canvas.getActiveObject();
@@ -1005,7 +1009,7 @@ methods:{
           _this.copiedObjects = cloned;
         });
         }
-        // Copy function End 
+        // Copy function End
       },
       pasteObject(){
         var canvas=this.canvas;
@@ -1050,9 +1054,11 @@ methods:{
       },
       mounted(){
           this.canvas = new fabric.Canvas("c");
+        //   fabric.Object.prototype.transparentCorners = false;
           this.canvas.setWidth(this.canvas_width);
           this.canvas.setHeight(this.canvas_height);
-          this.canvas.setBackgroundColor("#fff");
+        //   this.canvas.renderAll();
+        //   this.canvas.setBackgroundColor("#fff");
         //   this.canvas = new fabric.Canvas('c', {width: 720, height: 1280});
         //   this.canvas.setDimensions({width: '640px', height: '360px'}, {cssOnly: true});
           // this.canvas.controlsAboveOverlay = true;
@@ -1070,9 +1076,9 @@ methods:{
             this.keyEventFunc(e);
           })
           document.addEventListener('keydown', function(e) {
-              if (e.keyCode == 46 || (e.ctrlKey && e.keyCode == 8) || 
-              (e.ctrlKey && e.shiftKey && e.keyCode == 65) || (e.ctrlKey && e.shiftKey && e.keyCode == 67) || 
-              (e.ctrlKey && e.shiftKey && e.keyCode == 86) || e.keyCode == 37 || e.keyCode == 38 || 
+              if (e.keyCode == 46 || (e.ctrlKey && e.keyCode == 8) ||
+              (e.ctrlKey && e.shiftKey && e.keyCode == 65) || (e.ctrlKey && e.shiftKey && e.keyCode == 67) ||
+              (e.ctrlKey && e.shiftKey && e.keyCode == 86) || e.keyCode == 37 || e.keyCode == 38 ||
               e.keyCode == 39 || e.keyCode == 40 || (e.ctrlKey && e.keyCode == 90)) {
                   e.preventDefault();
               }

@@ -83,14 +83,16 @@
       <label for="printBg">Print Background</label> <input type="checkbox" v-model="printBg" id="printBg">
       <br />
       <br />
-      <center><canvas id="c">Your browser does not support the canvas element.</canvas></center>
+    </div>
+    <div class="col-12" style="height:500px;overflow:auto;">
+        <center><canvas id="c">Your browser does not support the canvas element.</canvas></center>
     </div>
     <div class="col-12 text-center">
       <span>{{canvasDataLength==0?0:(itr+1)}} of {{canvasDataLength}} </span>
       <b-button pill variant="info" :disabled="prev==0?true:false" v-if="canvasDataLength>1" @click="canvasDesignLeft"><b-icon icon="caret-left" font-scale="3"></b-icon></b-button>
       <b-button pill variant="info" :disabled="next==0?true:false" v-if="canvasDataLength>1" @click="canvasDesignRight"><b-icon icon="caret-right" font-scale="3"></b-icon></b-button>
     </div>
-    
+
   </div>
   <!-- <div class="row"> -->
 
@@ -115,7 +117,7 @@ export default {
       bg_image_path: null,
       canvas_name: null,
       canvas_id: null,
-      byr_order_id: 1,
+      data_order_id: 1,
       canvas_width:790,
       canvas_height:1040,
       // canvas_width: 1219,
@@ -129,14 +131,16 @@ export default {
   },
   methods: {
     loadCanvasData() {
-      axios.post(this.BASE_URL + "api/load_pdf_platform_canvas_data/4", {
-          byr_order_id: this.byr_order_id,
+        // console.log(this.data_order_id)
+      axios.post(this.BASE_URL + "api/load_pdf_platform_canvas_data", {
+          data_order_id: this.data_order_id,
+          scenario_id:14,
         })
         .then(({ data }) => {
-          // console.log(data);
+          console.log(data);
           var canvas_data=data.canvas_data;
           if (canvas_data.length>0) {
-            this.allName=data.canvas_data
+            this.allName=canvas_data
             this.canvasSelectedName=this.allName[0]
             this.line_gap=Number(this.canvasSelectedName.line_gap);
             if ((this.allName)[0].canvas_bg_image) {
@@ -144,17 +148,21 @@ export default {
               this.backgroundImageSet(this.bg_image_path);
             }
           }
-          if (data.can_info) {
+          if (data.can_info.length>0) {
             this.canvasAllData=data.can_info
             this.canvasDataLength=this.canvasAllData.length;
-            if (this.canvasDataLength>1) {
+            if (this.canvasDataLength>0) {
               this.prev=0;
               this.next=(this.canvasDataLength-1);
-            }
-            if (this.canvasDataLength>0) {
               this.canvasDesign(this.itr)
             }
-          
+            // if (this.canvasDataLength>0) {
+
+            // }
+
+          }else{
+              console.log("No Data");
+            //   this.canvasDesign(this.itr)
           }
         })
         .catch(() => {
@@ -182,14 +190,15 @@ export default {
       }
       // this.canvasClear();
       // setTimeout(_this.clearCanvasObjects,1000)
-      
+
       this.clearCanvasObjects(loopVal);
-      if (this.canvasDataLength>0) {
+    //   if (this.canvasDataLength>0) {
         var canvasAllDataArray=this.canvasAllData[iteration];
         // console.log(canvasAllDataArray)
-        if (canvasAllDataArray.length) {
+        // if (canvasAllDataArray.length) {
           // var position_values= JSON.parse(this.canvasSelectedName.position_values);
           var position_values= JSON.parse(this.canvasSelectedName.canvas_objects).objects;
+          console.log(position_values)
           position_values.forEach(element => {
             if (element.type==="textbox") {
               var positionTop=element.top;
@@ -215,9 +224,9 @@ export default {
              }
             }else{
                 if (element.type=="line") {
-                  var line = new fabric.Line([Number(element.left), Number(element.top), Number(element.width), Number(element.top)], { 
-                    stroke: 'black' 
-                  }); 
+                  var line = new fabric.Line([Number(element.left), Number(element.top), Number(element.width), Number(element.top)], {
+                    stroke: 'black'
+                  });
                   canvas.add(line);
                 }else if (element.type=="rect") {
                   var rect = new fabric.Rect({
@@ -231,24 +240,24 @@ export default {
                 });
                   canvas.add(rect);
                 }else if(element.type=="circle"){
-                  var circle = new fabric.Circle({ 
-                  left: element.left, 
-                  top: element.top, 
-                  radius: element.radius, 
-                  fill: element.fill, 
-                  stroke: element.stroke, 
+                  var circle = new fabric.Circle({
+                  left: element.left,
+                  top: element.top,
+                  radius: element.radius,
+                  fill: element.fill,
+                  stroke: element.stroke,
                   strokeWidth: element.strokeWidth
                   });
-                  canvas.add(circle); 
+                  canvas.add(circle);
                 }else{
                   // console.log(element);
                 }
             }
-            
+
           });
-        }
+        // }
         this.emptyObjRemove();
-      }
+    //   }
     },
     emptyObjRemove(){
       var canvasAllObj = this.canvas.getObjects();
@@ -262,7 +271,7 @@ export default {
     },
     splitString(givenString){
       var first_part=givenString.substring(0, 5);
-      
+
       var last_part=givenString.slice(-1);
       var main_part="";
       if (last_part==0) {
@@ -279,13 +288,13 @@ export default {
       }else{
         result=givenString
       }
-       return result;   
+       return result;
     },
     showCanvasBg($event) {
       this.canvasSelectedName=$event;
       if ($event.canvas_bg_image) {
         this.bg_image_path = this.BASE_URL + "storage/app/public/backend/images/canvas/pdf_platform/Background/"+$event.canvas_bg_image;
-        this.backgroundImageSet(this.bg_image_path); 
+        this.backgroundImageSet(this.bg_image_path);
       }
       this.canvasDesign(this.itr);
     },
@@ -318,13 +327,13 @@ export default {
       // this.canvas_id = null;
       // this.submit_button = "Save";
       // this.update_image_info = null;
-      
+
       // setTimeout(function(){
         // if (loopVal!=1) {
         if (_this.allName.length>0) {
         if ((_this.allName)[0].canvas_bg_image) {
           console.log((_this.allName)[0].canvas_bg_image)
-          _this.bg_image_path = _this.BASE_URL + "storage/app/public/backend/images/canvas/pdf_platform/Background/"+(_this.allName)[0].canvas_bg_image; 
+          _this.bg_image_path = _this.BASE_URL + "storage/app/public/backend/images/canvas/pdf_platform/Background/"+(_this.allName)[0].canvas_bg_image;
           _this.backgroundImageSet(_this.bg_image_path);
         }else{
           _this.canvas.setBackgroundColor("#fff");
@@ -367,7 +376,7 @@ export default {
          if (_this.allName.length>0) {
         if ((_this.allName)[0].canvas_bg_image) {
           // console.log((_this.allName)[0].canvas_bg_image)
-          _this.bg_image_path = _this.BASE_URL + "storage/app/public/backend/images/canvas/pdf_platform/Background/"+(_this.allName)[0].canvas_bg_image; 
+          _this.bg_image_path = _this.BASE_URL + "storage/app/public/backend/images/canvas/pdf_platform/Background/"+(_this.allName)[0].canvas_bg_image;
           _this.backgroundImageSet(_this.bg_image_path);
         }else{
           _this.canvas.setBackgroundColor("#fff");
@@ -390,13 +399,13 @@ export default {
       });
       var imgSrc = this.bg_image_path;
       var canvas=this.canvas;
-      
+
       for (let i = 0; i < (this.canvasDataLength); i++) {
-        setTimeout(() => { 
+        setTimeout(() => {
           if (this.printBg==false) {
             if (imgSrc) {
               // var imgSrc = canvas.backgroundImage._element.src;
-              canvas.backgroundImage = 0; 
+              canvas.backgroundImage = 0;
               canvas.renderAll();
             }
           }
@@ -405,7 +414,7 @@ export default {
            var image_data=this.canvas.toDataURL();
            doc.addImage(image_data,"",0,0)
            if (i!=(this.canvasDataLength-1)) {
-            doc.addPage(); 
+            doc.addPage();
            }
             // console.log(image_data);
            }, 400);
@@ -421,7 +430,7 @@ export default {
         this.canvasDesign(this.itr);
         this.loader.hide();
       },(this.canvasDataLength*300))
-      
+
       // this.canvasDesign(this.itr);
     },
     printSingleCanvas(){
@@ -439,7 +448,7 @@ export default {
       if (this.printBg==false) {
         if (imgSrc) {
           // var imgSrc = canvas.backgroundImage._element.src;
-          canvas.backgroundImage = 0; 
+          canvas.backgroundImage = 0;
           canvas.renderAll();
         }
       }
@@ -547,7 +556,7 @@ export default {
             this.addText(text_data);
           }
         }else{
-          this.addText(text_data); 
+          this.addText(text_data);
         }
     },
     addText(text_data) {
@@ -629,13 +638,13 @@ export default {
           // should the image be resized to fit the container?
           backgroundImageStretch: false,
           // image size as canvas size
-          width: this.canvas.width,
-          height: this.canvas.height
+        //   width: this.canvas.width,
+        //   height: this.canvas.height
         }
       );
       // console.log(imgUrl);
       // canvas size by image size
-      // this.bgImageWH(imgUrl);
+      this.bgImageWH(imgUrl);
       // var img_dym=this.bgImageDymension(imgUrl);
       // mainCanvas.setWidth(img_dym.width);
       // mainCanvas.setHeight(img_dym.height);
@@ -666,7 +675,7 @@ export default {
     // this.canvasOpen();
   },
   mounted() {
-    // this.byr_order_id = this.$route.params.byr_order_id;
+    // this.data_order_id = this.$route.params.data_order_id;
     this.canvas = new fabric.Canvas("c");
     this.canvas.setWidth(this.canvas_width);
     this.canvas.setHeight(this.canvas_height);
