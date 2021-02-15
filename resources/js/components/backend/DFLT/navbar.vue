@@ -329,13 +329,13 @@
      <h4>請求業務の締日を登録できます</h4>
      <label for="invoicejson_0" class="">締日</label>
      <div class="selectFildlistdata" style="position:relative;">
-     <div class="customselectFields" v-for="input in selectfieldList" :key="input.id">
+     <div class="customselectFields" v-for="(input,index) in selectfieldList" :key="input.id">
      <select class="form-control custominvoicejsnslect" v-model="input.value">
         <option v-for="n in 30" :value="n">{{n}}日</option>
         <option value="月末">月末</option>
      </select>
-     <b-icon @click="removeSelectField(input)" v-if="input.id!=0" class="customMinusIcon" icon="trash" aria-hidden="true"></b-icon>
-      <b-icon @click="addSelectField" v-if="input.id==0" class="customPlusIcon" icon="plus-square-fill" aria-hidden="true"></b-icon>
+     <b-icon @click="removeSelectField(input)" v-if="index!=0" class="customMinusIcon" icon="trash" aria-hidden="true"></b-icon>
+      <b-icon @click="addSelectField" v-if="index==0" class="customPlusIcon" icon="plus-square-fill" aria-hidden="true"></b-icon>
     </div>
     </div>
     </b-modal>
