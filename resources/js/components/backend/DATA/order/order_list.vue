@@ -91,7 +91,7 @@
               <option
                 v-for="(temp, i) in json_temperature_code"
                 :key="i"
-                
+                v-if="Object.keys(temp)[0]!=''"
                 :value="Object.keys(temp)[0]"
               >
                 {{ Object.values(temp)[0] }}
