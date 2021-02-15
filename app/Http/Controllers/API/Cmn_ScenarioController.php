@@ -42,12 +42,13 @@ class Cmn_ScenarioController extends Controller
         }else{
             \Log::Info(Auth::user());
         }
-// return response()->json(['status'=>$this->error]);
+
         // 実行ユーザー
         $this->sc_history_array['adm_user_id']=Auth::id();
 
         // シナリオ情報取得
         $cmn_scenario_id=$request->get('scenario_id');
+
         if (!$cmn_scenario_id) {
             // シナリオ名指定
             $cmn_scenario_name=$request->get('scenario_name');
@@ -117,7 +118,7 @@ class Cmn_ScenarioController extends Controller
         } finally {
             \Log::debug(get_class().':'.__FUNCTION__.' end  ---------------');
         }
-return $ret;
+        return $ret;
         return self::history_create($this->success, "scenario exec success");
     }
 
