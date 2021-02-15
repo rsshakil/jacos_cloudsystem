@@ -29,51 +29,18 @@ class PdfPlatform extends Controller
         if (!empty(json_decode($canvas_data))) {
             $line_per_page=$canvas_data[0]->line_per_page;
         }
-        // $request=$request->all();
         $request->request->add(['line_per_page' => $line_per_page]);
-        // return $request->all();
-        // $request['line_per_page']=$line_per_page;
-        // return $request;
         $cs = new Cmn_ScenarioController();
         $ret = $cs->exec($request);
-        // array_pop(,)
-        // return $request->all();
-        \Log::debug($ret->getContent());
-        $ret = json_decode($ret->getContent(), true);
-        if (1 === $ret['status']) {
-            // sceanario exec error
-            \Log::error($ret['message']);
-            return $ret;
-        }
-        return response()->json($ret);
-
-        // $sc=cmn_scenario::where('cmn_scenario_id',$cmn_scenario_id)->first();
-        // // scenario call
-        // if (!file_exists(app_path().'/'.$sc->file_path.'.php')) {
-        //     \Log::error('Scenario file is not exist!:'.$sc->file_path);
-        //     return ['status'=>'1','message'=>'Scenario file is not exist!'.$sc->file_path];
-        // }
-        // // ファイル読み込み
-        // $customClassPath = "\\App\\";
-        // $nw_f_pth = explode('/',$sc->file_path);
-        // foreach($nw_f_pth as $p){
-        //     $customClassPath .= $p.'\\';
-        // }
-        // $customClassPath = rtrim($customClassPath,"\\");
-        // $sc_obj = new $customClassPath;
-        // if (!method_exists($sc_obj, 'exec')) {
-        //     \Log::error('scenario exec error');
-        //     return ['status'=>'1','message'=>'Scenario exec function is not exist!'];
-        // }
-        // $ret = $sc_obj->exec($request,$sc,$line_per_page);
-        // if ($ret !== 0) {
-        //     // error
-        //     \Log::debug('scenario exec error');
-        // } else {
-        //     // success
-        //     \Log::debug('scenario exec success');
+        // \Log::debug($ret->getContent());
+        // return $ret = json_decode($ret->getContent(), true);
+        // if (1 === $ret['status']) {
+        //     // sceanario exec error
+        //     \Log::error($ret['message']);
+        //     // return $ret;
         // }
         // return $ret;
-        return response()->json(['canvas_data'=>$canvas_data,'can_info'=>$ret]);
+        // return response()->json($ret);
+        return response()->json(['canvas_data'=>$canvas_data,'can_info'=>$ret['new_report_array']]);
     }
 }

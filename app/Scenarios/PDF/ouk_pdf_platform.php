@@ -1,16 +1,13 @@
 <?php
 
-namespace App\Scenarios;
+namespace App\Scenarios\PDF;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\BYR\byr_order_detail;
-use App\Models\BYR\byr_order;
-use App\Models\BYR\byr_shop;
 
 class ouk_pdf_platform
 {
     //
-    public function exec($request,$sc)
+    public function exec($request,$sc,$line_per_page=26)
     {
         $line_per_page=$request->line_per_page;
         $data_order_id=$request->data_order_id;
@@ -75,7 +72,9 @@ class ouk_pdf_platform
                 }
 
         }
-        return $    ;
+        return ['status'=>1,'new_report_array'=>$new_report_array];
+        // return response()->json(['status'=>1,'new_report_array'=>$new_report_array]);
+        // return $new_report_array;
     }
 
 

@@ -144,6 +144,16 @@ class cmn_scenarioSeeder extends Seeder
                 'description' => 'DATA_PAYMENT_CSV_INSERTION',
                 'file_path' => 'Scenarios/payment/data_csv_payment_order',
             ],
+            [
+                'byr_buyer_id' => 1,
+                'slr_seller_id' => 0,
+                'adm_role_id' => 5,
+                'class' => 'order',
+                'vector' => 'to_jacos',
+                'name' => 'PDF_PLATFORM_VIEW',
+                'description' => 'PDF_PLATFORM_VIEW',
+                'file_path' => 'Scenarios/PDF/ouk_pdf_platform',
+            ],
         );
         cmn_scenario::insert($scenarios);
     }

@@ -83,7 +83,9 @@
       <label for="printBg">Print Background</label> <input type="checkbox" v-model="printBg" id="printBg">
       <br />
       <br />
-      <center><canvas id="c">Your browser does not support the canvas element.</canvas></center>
+    </div>
+    <div class="col-12" style="height:500px;overflow:auto;">
+        <center><canvas id="c">Your browser does not support the canvas element.</canvas></center>
     </div>
     <div class="col-12 text-center">
       <span>{{canvasDataLength==0?0:(itr+1)}} of {{canvasDataLength}} </span>
@@ -132,13 +134,13 @@ export default {
         // console.log(this.data_order_id)
       axios.post(this.BASE_URL + "api/load_pdf_platform_canvas_data", {
           data_order_id: this.data_order_id,
-          scenario_id:4,
+          scenario_id:14,
         })
         .then(({ data }) => {
-          // console.log(data);
+          console.log(data);
           var canvas_data=data.canvas_data;
           if (canvas_data.length>0) {
-            this.allName=data.canvas_data
+            this.allName=canvas_data
             this.canvasSelectedName=this.allName[0]
             this.line_gap=Number(this.canvasSelectedName.line_gap);
             if ((this.allName)[0].canvas_bg_image) {
@@ -146,17 +148,21 @@ export default {
               this.backgroundImageSet(this.bg_image_path);
             }
           }
-          if (data.can_info) {
+          if (data.can_info.length>0) {
             this.canvasAllData=data.can_info
             this.canvasDataLength=this.canvasAllData.length;
-            if (this.canvasDataLength>1) {
+            if (this.canvasDataLength>0) {
               this.prev=0;
               this.next=(this.canvasDataLength-1);
-            }
-            if (this.canvasDataLength>0) {
               this.canvasDesign(this.itr)
             }
+            // if (this.canvasDataLength>0) {
 
+            // }
+
+          }else{
+              console.log("No Data");
+            //   this.canvasDesign(this.itr)
           }
         })
         .catch(() => {
@@ -186,12 +192,13 @@ export default {
       // setTimeout(_this.clearCanvasObjects,1000)
 
       this.clearCanvasObjects(loopVal);
-      if (this.canvasDataLength>0) {
+    //   if (this.canvasDataLength>0) {
         var canvasAllDataArray=this.canvasAllData[iteration];
         // console.log(canvasAllDataArray)
-        if (canvasAllDataArray.length) {
+        // if (canvasAllDataArray.length) {
           // var position_values= JSON.parse(this.canvasSelectedName.position_values);
           var position_values= JSON.parse(this.canvasSelectedName.canvas_objects).objects;
+          console.log(position_values)
           position_values.forEach(element => {
             if (element.type==="textbox") {
               var positionTop=element.top;
@@ -248,9 +255,9 @@ export default {
             }
 
           });
-        }
+        // }
         this.emptyObjRemove();
-      }
+    //   }
     },
     emptyObjRemove(){
       var canvasAllObj = this.canvas.getObjects();
@@ -631,13 +638,13 @@ export default {
           // should the image be resized to fit the container?
           backgroundImageStretch: false,
           // image size as canvas size
-          width: this.canvas.width,
-          height: this.canvas.height
+        //   width: this.canvas.width,
+        //   height: this.canvas.height
         }
       );
       // console.log(imgUrl);
       // canvas size by image size
-      // this.bgImageWH(imgUrl);
+      this.bgImageWH(imgUrl);
       // var img_dym=this.bgImageDymension(imgUrl);
       // mainCanvas.setWidth(img_dym.width);
       // mainCanvas.setHeight(img_dym.height);
