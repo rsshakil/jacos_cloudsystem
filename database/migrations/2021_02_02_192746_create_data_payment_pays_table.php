@@ -16,6 +16,7 @@ class CreateDataPaymentPaysTable extends Migration
         Schema::create('data_payment_pays', function (Blueprint $table) {
             $table->increments('data_payment_pay_id')->unsigned()->comment('data_payment_pay_id');
             $table->integer('data_payment_id')->unsigned()->comment('data_payment_id');
+            $table->dateTime('check_datetime')->nullable()->comment('check_datetime');
             $table->string('mes_lis_buy_code', 13)->comment('発注者コード');
             $table->string('mes_lis_buy_gln', 13)->comment('発注者GLN');
             $table->string('mes_lis_buy_name', 20)->comment('発注者名称');
