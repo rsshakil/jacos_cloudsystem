@@ -131,7 +131,7 @@ Route::post('/buyer_partner_create', 'API\BYR\ByrController@buyerPartnerCreate')
 
 Route::post('/load_pdf_platform_canvas_setting_data', 'API\CmnPdfPlatformSettings@canvasSettingData');
 Route::post('/pdf_platform_canvas_data_save', 'API\CmnPdfPlatformSettings@canvasDataSave');
-Route::post('load_pdf_platform_canvas_data/{cmn_scenario_id}', 'API\CmnPdfPlatformSettings@pdfPlatformAllData');
+Route::post('load_pdf_platform_canvas_data', 'API\PDF\PdfPlatform@pdfPlatformAllData');
 Route::post('/delete_pdf_platform_canvas', 'API\CmnPdfPlatformSettings@deleteCanvasData');
 Route::post('/blog_create', 'API\Cmn_blogController@store');
 Route::get('/get_all_blog_list', 'API\Cmn_blogController@index');
