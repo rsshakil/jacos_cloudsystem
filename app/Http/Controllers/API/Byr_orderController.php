@@ -335,7 +335,7 @@ class Byr_orderController extends Controller
         ->join('data_orders as dor', 'dor.data_order_id', '=', 'ds.data_order_id')
         ->where('dsi.mes_lis_shi_lin_ite_supplier_item_code', $item_code)
         ->whereNull('dsv.decision_datetime')
-        ->groupBy('dsv.mes_lis_shi_tra_trade_number')->toSql();
+        ->groupBy('dsv.mes_lis_shi_tra_trade_number')->first();
         //shipment
 
         $result = DB::table('data_shipment_items as dsi')
