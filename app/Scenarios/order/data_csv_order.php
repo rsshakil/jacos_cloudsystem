@@ -296,7 +296,7 @@ class data_csv_order extends Model
                 $data_shi_voucher_array['mes_lis_shi_tra_dat_order_date']=$value[73];
                 $data_shi_voucher_array['mes_lis_shi_tra_dat_delivery_date']=$value[74];
                 $data_shi_voucher_array['mes_lis_shi_tra_dat_delivery_date_to_receiver']=$value[75];
-                $data_shi_voucher_array['mes_lis_shi_tra_dat_revised_delivery_date']=$value[75];
+                $data_shi_voucher_array['mes_lis_shi_tra_dat_revised_delivery_date']=null;
                 $data_shi_voucher_array['mes_lis_shi_tra_dat_transfer_of_ownership_date']=$value[76];
                 $data_shi_voucher_array['mes_lis_shi_tra_dat_campaign_start_date']=$value[77];
                 $data_shi_voucher_array['mes_lis_shi_tra_dat_campaign_end_date']=$value[78];
