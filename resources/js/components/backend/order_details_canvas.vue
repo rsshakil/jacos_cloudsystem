@@ -88,7 +88,7 @@
       <b-button pill variant="info" :disabled="prev==0?true:false" v-if="canvasDataLength>1" @click="canvasDesignLeft"><b-icon icon="caret-left" font-scale="3"></b-icon></b-button>
       <b-button pill variant="info" :disabled="next==0?true:false" v-if="canvasDataLength>1" @click="canvasDesignRight"><b-icon icon="caret-right" font-scale="3"></b-icon></b-button>
     </div>
-    
+
   </div>
   <!-- <div class="row"> -->
 
@@ -146,7 +146,7 @@ export default {
             if (this.canvasDataLength>0) {
               this.canvasDesign(this.itr)
             }
-          
+
           }
           this.loader.hide();
         })
@@ -184,7 +184,7 @@ export default {
             var item="";
             if (split_element[1]<canvasAllDataArray.length) {
                 // item=canvasAllDataArray[split_element[1]][split_element[0]];
-                
+
                 if (canvasAllDataArray[split_element[1]][split_element[0]]!=null) {
                   item=canvasAllDataArray[split_element[1]][split_element[0]];
                 }else if(canvasAllDataArray[split_element[1]][split_element[0]]!=null){
@@ -241,7 +241,7 @@ export default {
       }else{
         result=givenString
       }
-       return result;   
+       return result;
     },
     showCanvasBg($event) {
       this.canvasSelectedName=$event;
@@ -272,7 +272,7 @@ export default {
       var obj = this.canvas.getObjects();
       this.canvas.remove(obj);
     },
-    canvasFieldClead() {
+    canvasFieldClear() {
       this.canvas_name = null;
       this.canvas_id = null;
       this.submit_button = "Save";
@@ -306,7 +306,7 @@ export default {
     },
     clearCanvasObjects() {
       this.canvas.clear();
-      this.canvasFieldClead();
+      this.canvasFieldClear();
     },
     printAllCanvas() {
       this.loader =Vue.$loading.show();
@@ -323,13 +323,13 @@ export default {
       canvas.renderAll();
       var all_image="";
       for (let i = 0; i < (this.canvasDataLength); i++) {
-        setTimeout(() => { 
+        setTimeout(() => {
           this.deselectObject()
            this.canvasDesign(i);
            var image_data=this.canvas.toDataURL();
            doc.addImage(image_data,"",0,0)
            if (i!=(this.canvasDataLength-1)) {
-            doc.addPage(); 
+            doc.addPage();
            }
             // console.log(image_data);
            }, 500);
@@ -345,7 +345,7 @@ export default {
         this.canvasDesign(this.itr);
         this.loader.hide();
       },(this.canvasDataLength*500))
-      
+
       // this.canvasDesign(this.itr);
     },
     printSingleCanvas(){
@@ -459,7 +459,7 @@ export default {
             this.addText(text_data);
           }
         }else{
-          this.addText(text_data); 
+          this.addText(text_data);
         }
     },
     addText(text_data) {
