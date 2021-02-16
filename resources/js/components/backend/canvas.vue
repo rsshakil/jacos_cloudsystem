@@ -149,7 +149,7 @@
                           <h6 class="m-0">Canvas List</h6>
                       </div>
                       <div class="card-body p-0 pb-3" id="canvasList">
-                          <table id="" class="table mb-0"> 
+                          <table id="" class="table mb-0">
                               <thead class="bg-light">
                                   <tr>
                                       <th>#</th>
@@ -188,7 +188,7 @@
                             :src="modal_image"
                             @change="change"
                           ></cropper>
-                          
+
                             <!-- @change="change" -->
                           <!-- <img :src="bg_image_path" alt=""> -->
                         </div>
@@ -323,8 +323,8 @@ methods:{
           },
           deleteCanvas(cmn_pdf_canvas_id){
               this.init();
-              this.delete_sweet().then((result) => {     
-              if (result.value) { 
+              this.delete_sweet().then((result) => {
+              if (result.value) {
                 //Send Request to server
                 axios.post(this.BASE_URL+'api/delete_canvas',{cmn_pdf_canvas_id:cmn_pdf_canvas_id})
                     .then(({data})=> {
@@ -346,7 +346,7 @@ methods:{
             },
           bgImageChange(e) {
               let file = e.target.files[0];
-              let reader = new FileReader();  
+              let reader = new FileReader();
               if(file.size < 2111775){
                   if (file.type =="image/png" ||file.type =="image/jpeg") {
                     var mainThis=this;
@@ -379,7 +379,7 @@ methods:{
             var obj = this.canvas.getObjects();
             this.canvas.remove(obj)
           },
-          canvasFieldClead(){
+          canvasFieldClear(){
             this.canvas_name=null;
             this.canvas_id=null;
             this.submit_button='Save'
@@ -407,7 +407,7 @@ methods:{
           },
           clearCanvasObjects(){
             this.canvas.clear();
-            this.canvasFieldClead();
+            this.canvasFieldClear();
           },
           printCanvas(){
             this.deselectObject()
@@ -498,7 +498,7 @@ methods:{
                           this.alert_text="Canvas Created"
                           this.loadCanvasData()
                           this.canvas.clear();
-                          this.canvasFieldClead();
+                          this.canvasFieldClear();
                         }else if(data.message=='updated'){
                           this.alert_text="Canvas Updated"
                           this.loadCanvasData()
@@ -512,7 +512,7 @@ methods:{
                 .catch(() => {
                 this.sweet_advance_alert();
                 });
-        
+
           },
           // createReactObj(){
             createObj(left=100,top=50,width=150,height=22,fontSize=20,textAlign="left",lineHeight=1.16,scaleX=1,scaleY=1,text="Created by default",createdBy='auto'){
@@ -570,7 +570,7 @@ methods:{
             this.addText(text_data);
           }
         }else{
-          this.addText(text_data); 
+          this.addText(text_data);
         }
           },
           doubleClick(option){
@@ -598,11 +598,11 @@ methods:{
             backgroundImageOpacity: 0,
             // should the image be resized to fit the container?
             backgroundImageStretch: false,
-            // image size as canvas size 
+            // image size as canvas size
             // width: this.canvas.width,
             // height: this.canvas.height
         });
-        // canvas size by image size 
+        // canvas size by image size
         this.bgImageWH(imgUrl);
       },
       bgImageWH(imgUrl){
@@ -649,9 +649,9 @@ methods:{
       //   this.getActiveObject()
       //   if (this.activeObjects.length) {
       //           this.activeObjects.forEach(function(object) {
-      //             object.set({ 
+      //             object.set({
       //             // textAlign:$event==null?_this.selectedJustifier.name:$event.name,
-      //             width:Number(_this.width), 
+      //             width:Number(_this.width),
       //             height:Number(_this.height),
       //             // fontSize:Number(_this.fontSize),
       //             // strokeWidth: val,
@@ -930,7 +930,7 @@ methods:{
     },
       copyObject(){
         console.log("Copy function");
-        // copy function start 
+        // copy function start
         var canvas=this.canvas;
         var _this=this;
         var activeObject=canvas.getActiveObject();
@@ -939,7 +939,7 @@ methods:{
           _this.copiedObjects = cloned;
         });
         }
-        // Copy function End 
+        // Copy function End
       },
       pasteObject(){
         var canvas=this.canvas;
@@ -1001,9 +1001,9 @@ methods:{
             this.keyEventFunc(e);
           })
           document.addEventListener('keydown', function(e) {
-              if (e.keyCode == 46 || (e.ctrlKey && e.keyCode == 8) || 
-              (e.ctrlKey && e.shiftKey && e.keyCode == 65) || (e.ctrlKey && e.keyCode == 67) || 
-              (e.ctrlKey && e.keyCode == 86) || e.keyCode == 37 || e.keyCode == 38 || 
+              if (e.keyCode == 46 || (e.ctrlKey && e.keyCode == 8) ||
+              (e.ctrlKey && e.shiftKey && e.keyCode == 65) || (e.ctrlKey && e.keyCode == 67) ||
+              (e.ctrlKey && e.keyCode == 86) || e.keyCode == 37 || e.keyCode == 38 ||
               e.keyCode == 39 || e.keyCode == 40 || (e.ctrlKey && e.keyCode == 90)) {
                   e.preventDefault();
               }

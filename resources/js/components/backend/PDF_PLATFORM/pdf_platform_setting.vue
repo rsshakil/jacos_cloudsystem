@@ -398,7 +398,7 @@ methods:{
             var obj = this.canvas.getObjects();
             this.canvas.remove(obj)
           },
-          canvasFieldClead(){
+          canvasFieldClear(){
             this.canvas_name=null;
             this.canvas_id=null;
             this.submit_button='Save'
@@ -428,7 +428,7 @@ methods:{
           },
           clearCanvasObjects(){
             this.canvas.clear();
-            this.canvasFieldClead();
+            this.canvasFieldClear();
           },
           printCanvas(){
             this.deselectObject()
@@ -537,7 +537,7 @@ methods:{
                           this.alert_text="Canvas Created"
                           this.loadCanvasData()
                           this.canvas.clear();
-                          this.canvasFieldClead();
+                          this.canvasFieldClear();
                         }else if(data.message=='updated'){
                           this.alert_text="Canvas Updated"
                           this.loadCanvasData()
@@ -1075,10 +1075,11 @@ methods:{
           document.addEventListener('keyup', e => {
             this.keyEventFunc(e);
           })
+        //   (e.ctrlKey && e.shiftKey && e.keyCode == 67) ||
+        //       (e.ctrlKey && e.shiftKey && e.keyCode == 86) ||
           document.addEventListener('keydown', function(e) {
               if (e.keyCode == 46 || (e.ctrlKey && e.keyCode == 8) ||
-              (e.ctrlKey && e.shiftKey && e.keyCode == 65) || (e.ctrlKey && e.shiftKey && e.keyCode == 67) ||
-              (e.ctrlKey && e.shiftKey && e.keyCode == 86) || e.keyCode == 37 || e.keyCode == 38 ||
+              (e.ctrlKey && e.shiftKey && e.keyCode == 65) || e.keyCode == 37 || e.keyCode == 38 ||
               e.keyCode == 39 || e.keyCode == 40 || (e.ctrlKey && e.keyCode == 90)) {
                   e.preventDefault();
               }

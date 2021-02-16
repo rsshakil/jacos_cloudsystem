@@ -88,9 +88,9 @@
         <center><canvas id="c">Your browser does not support the canvas element.</canvas></center>
     </div>
     <div class="col-12 text-center">
-      <span>{{canvasDataLength==0?0:(itr+1)}} of {{canvasDataLength}} </span>
-      <b-button pill variant="info" :disabled="prev==0?true:false" v-if="canvasDataLength>1" @click="canvasDesignLeft"><b-icon icon="caret-left" font-scale="3"></b-icon></b-button>
-      <b-button pill variant="info" :disabled="next==0?true:false" v-if="canvasDataLength>1" @click="canvasDesignRight"><b-icon icon="caret-right" font-scale="3"></b-icon></b-button>
+      <span>{{canvasDataLength==0?0:(myItr+1)}} of {{Math.ceil(canvasDataLength/2)}} </span>
+      <b-button pill variant="info" :disabled="prev<=0?true:false" v-if="canvasDataLength>1" @click="canvasDesignLeft"><b-icon icon="caret-left" font-scale="3"></b-icon></b-button>
+      <b-button pill variant="info" :disabled="next<=0?true:false" v-if="canvasDataLength>1" @click="canvasDesignRight"><b-icon icon="caret-right" font-scale="3"></b-icon></b-button>
     </div>
 
   </div>
@@ -110,6 +110,7 @@ export default {
       canvasDataLength:0,
       canvasAllData:[],
       positionObjects:[],
+      myItr:0,
       itr:0,
       prev:0,
       next:0,
@@ -126,7 +127,8 @@ export default {
       pointerY: 50,
       line_gap:28,
       printBg:false,
-      // line_per_page:26,
+      line_per_page:26,
+      scenario_id:14
     };
   },
   methods: {
@@ -134,7 +136,8 @@ export default {
         // console.log(this.data_order_id)
       axios.post(this.BASE_URL + "api/load_pdf_platform_canvas_data", {
           data_order_id: this.data_order_id,
-          scenario_id:14,
+          scenario_id:this.scenario_id,
+          line_per_page:this.line_per_page,
         })
         .then(({ data }) => {
           console.log(data);
@@ -153,7 +156,8 @@ export default {
             this.canvasDataLength=this.canvasAllData.length;
             if (this.canvasDataLength>0) {
               this.prev=0;
-              this.next=(this.canvasDataLength-1);
+              this.next=Math.ceil(this.canvasDataLength)-1;
+            //   this.next=(this.canvasDataLength-1);
               this.canvasDesign(this.itr)
             }
             // if (this.canvasDataLength>0) {
@@ -170,15 +174,17 @@ export default {
         });
     },
     canvasDesignLeft(){
-          this.prev-=1;
-          this.next+=1;
-          this.itr-=1;
+          this.myItr-=1;
+          this.prev-=2;
+          this.next+=2;
+          this.itr-=2;
           this.canvasDesign(this.itr)
     },
     canvasDesignRight(){
-      this.prev+=1;
-      this.next-=1;
-      this.itr+=1;
+        this.myItr+=1;
+      this.prev+=2;
+      this.next-=2;
+      this.itr+=2;
       this.canvasDesign(this.itr)
     },
     canvasDesign(iteration,loopVal=0){
@@ -188,41 +194,61 @@ export default {
         alert("Please select canvas name");
         return 0;
       }
-      // this.canvasClear();
-      // setTimeout(_this.clearCanvasObjects,1000)
-
       this.clearCanvasObjects(loopVal);
     //   if (this.canvasDataLength>0) {
-        var canvasAllDataArray=this.canvasAllData[iteration];
-        // console.log(canvasAllDataArray)
-        // if (canvasAllDataArray.length) {
-          // var position_values= JSON.parse(this.canvasSelectedName.position_values);
+// console.log("It"+iteration)
           var position_values= JSON.parse(this.canvasSelectedName.canvas_objects).objects;
-          console.log(position_values)
           position_values.forEach(element => {
             if (element.type==="textbox") {
               var positionTop=element.top;
               var split_element=(this.splitString(element.text))
-            // console.log(split_element)
-            var item="";
+            var item='';
+
              if(!(Array.isArray(split_element))){
                item=split_element;
-              //  canvas.add(item)
+               console.log(item)
                this.createObj(element.left,element.top,element.width,element.height,element.fontSize,element.textAlign,element.lineHeight,element.scaleX,element.scaleY,item.toString(),'auto')
              }else{
-               if (split_element.length>1) {
-                //  item=canvasAllDataArray[split_element[1]][split_element[0]];
-                 item=canvasAllDataArray[0][split_element[0]];
+               if (split_element.length>2) {
+                //    console.log(iteration)
+                   if (split_element[2]==0) {
+                       item=this.canvasAllData[iteration][0][split_element[0]];
+                   }else{
+                       if (typeof this.canvasAllData[(iteration+1)] !== 'undefined') {
+                           if (Object.keys(this.canvasAllData[(iteration+1)])[0]) {
+                           item=this.canvasAllData[(iteration+1)][0][split_element[0]];
+                       }else{
+                           item='';
+                       }
+                       }else{
+                           item='';
+                       }
+                   }
                  this.createObj(element.left,element.top,element.width,element.height,element.fontSize,element.textAlign,element.lineHeight,element.scaleX,element.scaleY,item.toString(),'auto')
                }else{
-                 for (let i = 0; i < canvasAllDataArray.length; i++) {
-                 item=canvasAllDataArray[i][split_element[0]];
+                //    return 0;
+                 for (let i = 0; i < this.canvasAllData[iteration].length; i++) {
+                     if (split_element[1]==0) {
+                         item=this.canvasAllData[iteration][i][split_element[0]];
+                     }else{
+                         if (typeof this.canvasAllData[(iteration+1)] !== 'undefined') {
+                            if (Object.keys(this.canvasAllData[(iteration+1)])[i]) {
+                             item=this.canvasAllData[(iteration+1)][i][split_element[0]];
+                         }else{
+                             item='';
+                         }
+                        }else{
+                            item='';
+                        }
+
+                     }
                  this.createObj(element.left,positionTop,element.width,element.height,element.fontSize,element.textAlign,element.lineHeight,element.scaleX,element.scaleY,item.toString(),'auto')
                   positionTop+=this.line_gap;
                }
                }
              }
             }else{
+                console.log(element)
                 if (element.type=="line") {
                   var line = new fabric.Line([Number(element.left), Number(element.top), Number(element.width), Number(element.top)], {
                     stroke: 'black'
@@ -270,21 +296,30 @@ export default {
         }
     },
     splitString(givenString){
-      var first_part=givenString.substring(0, 5);
+      var first_part=givenString.substring(0, 6);
 
       var last_part=givenString.slice(-1);
       var main_part="";
       if (last_part==0) {
-        main_part=givenString.slice(5,-2);
+        main_part=givenString.slice(6,-2);
       }else{
-        main_part=givenString.slice(5);
+        main_part=givenString.slice(6);
       }
       var result=[];
-      if (first_part=="[db]_" && last_part==0) {
+      if (first_part=="[db0]_" && last_part==0) {
         result.push(main_part)
         result.push(last_part)
-      }else if (first_part=="[db]_" && last_part!=0) {
+        result.push(0)
+      }else if (first_part=="[db0]_" && last_part!=0) {
         result.push(main_part)
+        result.push(0)
+      }else if (first_part=="[db1]_" && last_part==0) {
+        result.push(main_part)
+        result.push(last_part)
+        result.push(1)
+      }else if (first_part=="[db1]_" && last_part!=0) {
+        result.push(main_part)
+        result.push(1)
       }else{
         result=givenString
       }
@@ -321,18 +356,11 @@ export default {
       var obj = this.canvas.getObjects();
       this.canvas.remove(obj);
     },
-    canvasFieldClead(loopVal=0) {
+    canvasFieldClear(loopVal=0) {
       var _this=this;
-      // this.canvas_name = null;
-      // this.canvas_id = null;
-      // this.submit_button = "Save";
-      // this.update_image_info = null;
-
-      // setTimeout(function(){
-        // if (loopVal!=1) {
         if (_this.allName.length>0) {
         if ((_this.allName)[0].canvas_bg_image) {
-          console.log((_this.allName)[0].canvas_bg_image)
+        //   console.log((_this.allName)[0].canvas_bg_image)
           _this.bg_image_path = _this.BASE_URL + "storage/app/public/backend/images/canvas/pdf_platform/Background/"+(_this.allName)[0].canvas_bg_image;
           _this.backgroundImageSet(_this.bg_image_path);
         }else{
@@ -340,10 +368,6 @@ export default {
         }
       // }
     }
-      // },1000)
-      // else{
-      //   this.bg_image_path = this.BASE_URL + "storage/app/public/backend/images/canvas/pdf_platform/Background/bg_image.png";
-      // }
     },
     bgImageProcess(bg_image) {
       var img = new Image();
@@ -385,7 +409,7 @@ export default {
       // this.canvas.renderAll();
       }else{
         this.canvas.clear();
-        this.canvasFieldClead(loopVal);
+        this.canvasFieldClear(loopVal);
       }
     },
     printAllCanvas() {

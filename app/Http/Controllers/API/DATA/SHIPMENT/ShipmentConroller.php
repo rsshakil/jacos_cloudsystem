@@ -14,6 +14,7 @@ use App\Exports\ShipmentCSVExport;
 use App\Exports\ShipmentCSVExportAllData;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use App\Models\BYR\byr_shipment_item;
+use App\Models\DATA\SHIPMENT\data_shipment;
 use App\Models\DATA\SHIPMENT\data_shipment_item;
 use App\Models\DATA\SHIPMENT\data_shipment_voucher;
 use DB;
@@ -26,12 +27,20 @@ class ShipmentConroller extends Controller
     }
     public function shipmentConfirm(Request $request)
     {
+        // return $request->all();
+        
         $data_count=$request->data_count;
+        $data_order_id=$request->data_order_id;
         $download_file_url='';
+        $partner_info=data_shipment::select('cmn_connects.partner_code')
+        ->join('cmn_connects','cmn_connects.cmn_connect_id','=','data_shipments.cmn_connect_id')
+        ->where('data_shipments.data_order_id',$data_order_id)
+        ->first();
+
         $csv_data_count = Data_Controller::get_shipment_data($request)->get()->count();
         if (!$data_count) {
             $dateTime = date('Y-m-d H:i:s');
-            $new_file_name = "Shipment_csv_".date('Y-m-d')."_".time().".csv";
+            $new_file_name = "shipment-".$partner_info->partner_code."-".date('ymdHis').".csv";
             $download_file_url = \Config::get('app.url')."storage/app".config('const.SHIPMENT_CSV_PATH')."/". $new_file_name;
             (new ShipmentCSVExport($request))->store(config('const.SHIPMENT_CSV_PATH').'/'.$new_file_name);
             data_shipment_voucher::where('decision_datetime','!=',null)
