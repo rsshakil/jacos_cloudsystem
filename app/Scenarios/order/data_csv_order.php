@@ -304,7 +304,7 @@ class data_csv_order extends Model
                 $data_shi_voucher_array['mes_lis_shi_tra_ins_goods_classification_code']=$value[80];
                 $data_shi_voucher_array['mes_lis_shi_tra_ins_order_classification_code']=$value[81];
                 $data_shi_voucher_array['mes_lis_shi_tra_ins_ship_notification_request_code']=$value[82];
-                $data_shi_voucher_array['mes_lis_shi_tra_ins_eos_code']='';
+                $data_shi_voucher_array['mes_lis_shi_tra_ins_eos_code']='01';
                 $data_shi_voucher_array['mes_lis_shi_tra_ins_private_brand_code']=$value[83];
                 $data_shi_voucher_array['mes_lis_shi_tra_ins_temperature_code']=$value[84];
                 $data_shi_voucher_array['mes_lis_shi_tra_ins_liquor_code']=$value[85];
