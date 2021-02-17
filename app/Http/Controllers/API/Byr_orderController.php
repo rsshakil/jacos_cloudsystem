@@ -372,14 +372,17 @@ class Byr_orderController extends Controller
                 'dsv.updated_at',
                 'dsv.print_datetime',
                 'dsv.send_datetime',
-                'dsi.*'
+                'dsi.*',
+                'doi.*'
 
             )
-            
+            //inner join data_order_items on data_order_items.data_order_voucher_id=data_shipment_vouchers.data_order_voucher_id 
            
             ->leftJoin('data_shipment_vouchers as dsv', 'dsv.data_shipment_voucher_id', '=', 'dsi.data_shipment_voucher_id')
             ->join('data_shipments as ds', 'ds.data_shipment_id', '=', 'dsv.data_shipment_id')
             ->join('data_orders as dor', 'dor.data_order_id', '=', 'ds.data_order_id')
+            ->join('data_order_items as doi', 'doi.data_order_voucher_id', '=', 'dsv.data_order_voucher_id')
+            
             ->where('dsi.mes_lis_shi_lin_ite_supplier_item_code', $item_code)
             ->whereNull('dsv.decision_datetime')
             ->groupBy('dsv.mes_lis_shi_tra_trade_number')->get();
