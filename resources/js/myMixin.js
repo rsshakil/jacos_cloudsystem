@@ -26,95 +26,95 @@ export default {
             byr_buyer_id: null,
 
             buyer_settings: {},
-            ordersJson:{},
-            shipmentsJson:{},
-            receivesJson:{},
-            corrected_receivesJson:{},
-            returnsJson:{},
-            invoicesJson:{},
-            paymentsJson:{},
-            selectfieldList:[{
-                id:'invoicejson_0',
-                value:''
-              }],
+            ordersJson: {},
+            shipmentsJson: {},
+            receivesJson: {},
+            corrected_receivesJson: {},
+            returnsJson: {},
+            invoicesJson: {},
+            paymentsJson: {},
+            selectfieldList: [{
+                id: 'invoicejson_0',
+                value: ''
+            }],
             // loader: "",
         };
     },
     methods: {
-/*invoice json setting*/
-        getInvoiceJson(){
+        /*invoice json setting*/
+        getInvoiceJson() {
             axios
-            .get(
-              this.BASE_URL +
-                "api/get_allInvoiceJsonSetting_info"
-            )
-            .then(({ data }) => {
-              console.log(data.result);
-              if(data.success!=0){
-                this.selectfieldList = [];
-                this.selectfieldList = data.result;
-              }
-            
+                .get(
+                    this.BASE_URL +
+                    "api/get_allInvoiceJsonSetting_info"
+                )
+                .then(({ data }) => {
+                    console.log(data.result);
+                    if (data.success != 0) {
+                        this.selectfieldList = [];
+                        this.selectfieldList = data.result;
+                    }
+
+                });
+        },
+        display_invoice_upload_setting() {
+            var _this = this;
+            this.getInvoiceJson();
+            this.$root.$emit(
+                "bv::show::modal",
+                "invoiceJsonSetting",
+                "#invoiceJsonSettingShowHide"
+            );
+        },
+
+        addSelectField() {
+            this.selectfieldList.push({
+                id: `invoicejson_${++this.selectfieldCounter}`,
+                value: '',
             });
         },
-        display_invoice_upload_setting(){
-            var _this = this; 
-            this.getInvoiceJson();
-          this.$root.$emit(
-                 "bv::show::modal",
-                 "invoiceJsonSetting",
-                 "#invoiceJsonSettingShowHide"
-             );
-         },
-
-         addSelectField() {
-            this.selectfieldList.push({
-              id: `invoicejson_${++this.selectfieldCounter}`,
-              value: '',
-            });
-          },
-          removeSelectField(event){
+        removeSelectField(event) {
             this.selectfieldList.splice(this.selectfieldList.indexOf(event), 1);
-          },
-          update_invoice_json_setting(){
-                  console.log(this.selectfieldList);
-                  var post_data = {
-              selected_item: this.selectfieldList,
-              user_id: Globals.user_info_id,
+        },
+        update_invoice_json_setting() {
+            console.log(this.selectfieldList);
+            var post_data = {
+                selected_item: this.selectfieldList,
+                user_id: Globals.user_info_id,
             };
             console.log();
             axios
-              .post(this.BASE_URL + "api/update_cmn_connects_optional", post_data)
-              .then((data) => {
-                console.log(data);
-                  this.$root.$emit(
-                      "bv::hide::modal",
-                      "invoiceJsonSetting",
-                      "#invoiceJsonSettingShowHide"
-                  );
-                Swal.fire({
-                icon: "success",
-                title: "optional value!",
-                text: "You can successfully added optional value",
-              });
-              });
-                  
-      
-              },
-/*invoice json setting*/
+                .post(this.BASE_URL + "api/update_cmn_connects_optional", post_data)
+                .then((data) => {
+                    console.log(data);
+                    this.$root.$emit(
+                        "bv::hide::modal",
+                        "invoiceJsonSetting",
+                        "#invoiceJsonSettingShowHide"
+                    );
+                    Swal.fire({
+                        icon: "success",
+                        title: "optional value!",
+                        text: "You can successfully added optional value",
+                    });
+                });
+
+
+        },
+        /*invoice json setting*/
         // Database created and updated datetime conversion
         getbuyerJsonSettingvalue() {
             axios.get(this.BASE_URL + "api/buyerJsonSetting/" + this.byr_buyer_id)
                 .then(({ data }) => {
                     this.buyer_settings = JSON.parse(data.buyer_settings);
                     this.mes_lis_shi_lin_qua_sto_reason_codeList = this.buyer_settings.shipments.mes_lis_shi_lin_qua_sto_reason_code;
-                    this.ordersJson=this.buyer_settings.orders;
-                    this.shipmentsJson=this.buyer_settings.shipments;
-                    this.receivesJson=this.buyer_settings.receives;
-                    this.corrected_receivesJson=this.buyer_settings.corrected_receives;
-                    this.returnsJson=this.buyer_settings.returns;
-                    this.invoicesJson=this.buyer_settings.invoices;
-                    this.paymentsJson=this.buyer_settings.payments;
+                    this.ordersJson = this.buyer_settings.orders;
+                    this.shipmentsJson = this.buyer_settings.shipments;
+                    this.receivesJson = this.buyer_settings.receives;
+                    this.corrected_receivesJson = this.buyer_settings.corrected_receives;
+                    this.returnsJson = this.buyer_settings.returns;
+                    this.invoicesJson = this.buyer_settings.invoices;
+                    this.paymentsJson = this.buyer_settings.payments;
 
                     // this.buyer_settings= this.buyer_settings.orders;
                 });
@@ -126,11 +126,11 @@ export default {
             var buyer_settings_length = Object.keys(this.buyer_settings).length;
             if (buyer_settings_length == 0) {
                 this.getbuyerJsonSettingvalue();
-               
+
             }
             /*
             var expected_result = '';
-        
+
             switch(orderType){
                 case 'orders':
                         expected_result = this.ordersJson[arrName][arrKey];
@@ -159,7 +159,7 @@ export default {
             }
             return expected_result;
             */
-            
+
             if (arrKey != '') {
                 var newarr = [];
                 var buyer_settings_length_check = Object.keys(this.buyer_settings).length;
