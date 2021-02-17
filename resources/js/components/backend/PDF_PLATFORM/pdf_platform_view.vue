@@ -207,13 +207,19 @@ export default {
 
              if(!(Array.isArray(split_element))){
                item=split_element;
-               console.log(item)
+            //    console.log(item)
                this.createObj(element.left,element.top,element.width,element.height,element.fontSize,element.textAlign,element.lineHeight,element.scaleX,element.scaleY,item.toString(),'auto')
              }else{
                if (split_element.length>2) {
                 //    console.log(iteration)
                    if (split_element[2]==0) {
                        if (split_element[0]=="mes_lis_ord_tra_ins_goods_classification_code") {
+                        //    item = this.getbyrjsonValueBykeyName(
+                        //     "mes_lis_ord_tra_ins_goods_classification_code",
+                        //     '01',
+                        //     "orders"
+                        //     )
+                        //     console.log("My Item",item);
                            item=this.canvasAllData[iteration][0][split_element[0]];
                        }else{
                            item=this.canvasAllData[iteration][0][split_element[0]];
@@ -705,6 +711,7 @@ export default {
     // }
   },
   created() {
+    // console.log("Byter ID",this.$session.get('byr_buyer_id'));
     Fire.$emit('permission_check_for_buyer',this.$session.get('byr_buyer_id'));
     // this.canvasOpen();
   },
