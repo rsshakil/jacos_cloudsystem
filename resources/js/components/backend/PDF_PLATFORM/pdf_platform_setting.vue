@@ -1075,12 +1075,12 @@ methods:{
           document.addEventListener('keyup', e => {
             this.keyEventFunc(e);
           })
-        //   (e.ctrlKey && e.shiftKey && e.keyCode == 67) ||
-        //       (e.ctrlKey && e.shiftKey && e.keyCode == 86) ||
+
           document.addEventListener('keydown', function(e) {
               if (e.keyCode == 46 || (e.ctrlKey && e.keyCode == 8) ||
               (e.ctrlKey && e.shiftKey && e.keyCode == 65) || e.keyCode == 37 || e.keyCode == 38 ||
-              e.keyCode == 39 || e.keyCode == 40 || (e.ctrlKey && e.keyCode == 90)) {
+              e.keyCode == 39 || e.keyCode == 40 || (e.ctrlKey && e.keyCode == 90)|| (e.ctrlKey && e.shiftKey && e.keyCode == 67) ||
+              (e.ctrlKey && e.shiftKey && e.keyCode == 86)) {
                   e.preventDefault();
               }
           });
