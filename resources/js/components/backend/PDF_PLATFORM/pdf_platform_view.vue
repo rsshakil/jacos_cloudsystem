@@ -213,11 +213,19 @@ export default {
                if (split_element.length>2) {
                 //    console.log(iteration)
                    if (split_element[2]==0) {
-                       item=this.canvasAllData[iteration][0][split_element[0]];
+                       if (split_element[0]=="mes_lis_ord_tra_ins_goods_classification_code") {
+                           item=this.canvasAllData[iteration][0][split_element[0]];
+                       }else{
+                           item=this.canvasAllData[iteration][0][split_element[0]];
+                       }
                    }else{
                        if (typeof this.canvasAllData[(iteration+1)] !== 'undefined') {
                            if (Object.keys(this.canvasAllData[(iteration+1)])[0]) {
-                           item=this.canvasAllData[(iteration+1)][0][split_element[0]];
+                               if (split_element[0]=="mes_lis_ord_tra_ins_goods_classification_code") {
+                                    item=this.canvasAllData[(iteration+1)][0][split_element[0]];
+                                }else{
+                                    item=this.canvasAllData[(iteration+1)][0][split_element[0]];
+                                }
                        }else{
                            item='';
                        }
