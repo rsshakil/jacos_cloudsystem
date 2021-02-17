@@ -71,6 +71,7 @@ Vue.use(Cropper)
 Vue.component('multiselect', Multiselect)
     // Vue.use(vueselect);
 
+
 //Pagination laravel-vue-pagination
 Vue.component('pagination', require('laravel-vue-pagination'));
 // spinner register

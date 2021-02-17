@@ -42,6 +42,7 @@ import order_corrected_receive from './components/backend/order_corrected_receiv
 import return_item_list from './components/backend/return_item_list.vue'
 import payment_list from './components/backend/DATA/PAYMENT/payment_list.vue'
 import payment_detail from './components/backend/DATA/PAYMENT/payment_detail.vue'
+
 import invoice_list from './components/backend/invoice_list.vue'
 import invoice_detail from './components/backend/invoice_detail.vue'
 import voucher_detail from './components/backend/voucher_detail.vue'
@@ -49,6 +50,7 @@ import pdf_platform_setting from './components/backend/PDF_PLATFORM/pdf_platform
 import pdf_platform_view from './components/backend/PDF_PLATFORM/pdf_platform_view.vue'
 import blog from './components/backend/CMN/cmn_blog_list.vue'
 import selected_buyer from './components/backend/SLR/selected_byr_page.vue'
+import management_setting from './components/backend/CONFIG/management_setting.vue'
 import { homedir } from 'os'
 // import login_body from './components/login/login_body.vue'
 
@@ -457,6 +459,16 @@ export const routes = [
         // },
         // ]
 
+    },
+    {
+        path: '/management_setting',
+        component: management_setting,
+        name: 'management_setting',
+        meta: {
+            breadcrumb: {
+                label: '管理'
+            }
+        },
     },
     // { path: '/login', name: 'login', component: login_body },
 ];

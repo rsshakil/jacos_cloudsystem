@@ -113,4 +113,10 @@ class CmnConnectsController extends Controller
         }
         return response()->json(['result'=>$jsnresp,'success'=>0]);
     }
+
+    public function get_partner_fax_list(Request $request){
+        $result = cmn_connect::where('byr_buyer_id',$request->byr_buyer_id)->get();
+        
+        return response()->json(['result'=>$result]);
+    }
 }
