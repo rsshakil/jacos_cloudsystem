@@ -14,7 +14,7 @@
      <div class="customselectFields" v-for="(input,index) in selectfieldList" :key="input.id">
      <select class="form-control custominvoicejsnslect" v-model="input.value">
         <option v-for="n in 30" :value="n">{{n}}日</option>
-        <option value="月末">月末</option>
+        <option value="last">月末</option>
      </select>
      <b-icon @click="removeSelectField(input)" v-if="index!=0" class="customMinusIcon" icon="trash" aria-hidden="true"></b-icon>
       <b-icon @click="addSelectField" v-if="index==0" class="customPlusIcon" icon="plus-square-fill" aria-hidden="true"></b-icon>
@@ -38,7 +38,7 @@
           <tbody>
            <tr v-for="(item,index) in cmnConnectOptionList" :key="index">
             <td>{{item.partner_code}}</td>
-            <td></td>
+            <td>{{JSON.parse(item.optional).order.fax.number}}</td>
             <td><b-button-group size="sm">
       <b-button
         v-for="(btn, idx) in buttons"
@@ -50,7 +50,7 @@
         {{ btn.caption }}
       </b-button>
     </b-button-group></td>
-            <td></td>
+            <td>{{JSON.parse(item.optional).payment.fax.number}}</td>
             <td><b-button-group size="sm">
       <b-button
         v-for="(btn, idx) in buttons"
