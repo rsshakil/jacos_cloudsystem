@@ -204,12 +204,12 @@
                   >
                     表示項目設定
                   </button>
-                  <button
+                  <!--<button
                     @click="display_invoice_upload_setting"
                     class="dropdown-item"
                   >
                     締日登録
-                  </button>
+                  </button>-->
                   <!-- <div class="dropdown-divider"></div>
               <a class="dropdown-item setting_printing" href="#">印刷</a>
               <div class="dropdown-divider"></div>
@@ -377,48 +377,12 @@ export default {
         { isActive: true, header_1: "イオン", header_2: "500件" },
       ],
       selectfieldCounter:0,
-      selectfieldList:[{
-        id:'invoicejson_0',
-        value:''
-      }],
+      
       // BASE_URL:BASE_URL,
     };
   },
   methods: {
-    addSelectField() {
-      this.selectfieldList.push({
-        id: `invoicejson_${++this.selectfieldCounter}`,
-        value: '',
-      });
-    },
-    removeSelectField(event){
-      this.selectfieldList.splice(this.selectfieldList.indexOf(event), 1);
-    },
-    update_invoice_json_setting(){
-            console.log(this.selectfieldList);
-            var post_data = {
-        selected_item: this.selectfieldList,
-        user_id: Globals.user_info_id,
-      };
-      console.log();
-      axios
-        .post(this.BASE_URL + "api/update_cmn_connects_optional", post_data)
-        .then((data) => {
-          console.log(data);
-            this.$root.$emit(
-                "bv::hide::modal",
-                "invoiceJsonSetting",
-                "#invoiceJsonSettingShowHide"
-            );
-          Swal.fire({
-          icon: "success",
-          title: "optional value!",
-          text: "You can successfully added optional value",
-        });
-        });
-            
-
-        },
+    
     imageSrc() {
       return (
         this.BASE_URL +
@@ -454,27 +418,7 @@ export default {
          
         });
     },
-     display_invoice_upload_setting(){
-           var _this = this; 
-             axios
-        .get(
-          this.BASE_URL +
-            "api/get_allInvoiceJsonSetting_info"
-        )
-        .then(({ data }) => {
-          console.log(data.result);
-          if(data.success!=0){
-            this.selectfieldList = [];
-            this.selectfieldList = data.result;
-          }
-        
-        });
-         this.$root.$emit(
-                "bv::show::modal",
-                "invoiceJsonSetting",
-                "#invoiceJsonSettingShowHide"
-            );
-        },
+     
     
   },
   created() {

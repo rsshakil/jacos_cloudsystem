@@ -127,6 +127,12 @@
                   {{ myLang.product_management }}
                 </router-link>
               </li>
+              <li class="nav-item" v-can="['invoice_list']">
+                <router-link to="/management_setting" class="nav-link">
+                  <b-icon icon="receipt" font-scale="1.2"></b-icon>
+                  管理
+                </router-link>
+              </li>
               <!--add menu here-->
     </ul>
 </div>
