@@ -153,11 +153,11 @@
         <tr>
           <td class="cl_custom_color">参照状況</td>
           <td colspan="7">
-            <select class="form-control" style="width: 300px">
+            <select class="form-control" v-model="form.check_datetime" style="width: 300px">
               <!--<option :value="0">{{ myLang.voucher_type }}</option>-->
               <option value="*">全て</option>
-              <option value="01">未参照</option>
-              <option value="02">参照済</option>
+              <option value="1">未参照</option>
+              <option value="2">参照済</option>
             </select>
           </td>
         </tr>
@@ -264,9 +264,24 @@
               <td>{{ order_list.mes_lis_ord_tra_dat_delivery_date }}</td>
               <td>{{ order_list.mes_lis_ord_tra_goo_major_category }}</td>
               <td>
-                {{ order_list.mes_lis_ord_log_del_delivery_service_code }}
+                {{ order_list.mes_lis_ord_log_del_delivery_service_code }} 
+                {{
+                getbyrjsonValueBykeyName(
+                  "mes_lis_ord_log_del_delivery_service_code",
+                  order_list.mes_lis_ord_log_del_delivery_service_code,
+                  "orders"
+                )
+              }}
               </td>
-              <td>{{ order_list.mes_lis_ord_tra_ins_temperature_code }}</td>
+              <td>{{ order_list.mes_lis_ord_tra_ins_temperature_code }}
+              {{
+                getbyrjsonValueBykeyName(
+                  "mes_lis_ord_tra_ins_temperature_code",
+                  order_list.mes_lis_ord_tra_ins_temperature_code,
+                  "orders"
+                )
+              }}
+              </td>
               <td>{{ order_list.cnt }}</td>
               <td>{{ order_list.decision_cnt }}</td>
               <td>{{ order_list.print_cnt }}</td>
@@ -345,14 +360,14 @@ export default {
         // delivery_date_to:new Date().toISOString().slice(0, 10),
         delivery_date_from: null,
         delivery_date_to: null,
-        check_datetime: null,
-        // check_datetime:new Date().toISOString().slice(0, 10),
+        check_datetime: '*',
         delivery_service_code: "*",
         temperature: "*",
         // confirmation_status:1,
         print_cnt: "*",
         decission_cnt: "*",
         confirmation_status_data: "*",
+        decisionDateTime:'*',
         submit_type: "page_load",
       }),
     };
@@ -375,9 +390,7 @@ export default {
           this.json_delivery_service_code = this.buyer_settings.orders.mes_lis_ord_log_del_delivery_service_code;
           // this.json_delivery_service_code.push({"00":'全て'});
           // this.json_temperature_code.push({'00':'全て'});
-          
-          console.log(this.json_delivery_service_code );
-          console.log(this.json_temperature_code );
+        
           // console.log(this.buyer_settings.orders.mes_lis_ord_tra_ins_temperature_code);
           this.loader.hide();
         });

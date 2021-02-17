@@ -26,6 +26,13 @@ export default {
             byr_buyer_id: null,
 
             buyer_settings: {},
+            ordersJson:{},
+            shipmentsJson:{},
+            receivesJson:{},
+            corrected_receivesJson:{},
+            returnsJson:{},
+            invoicesJson:{},
+            paymentsJson:{},
             // loader: "",
         };
     },
@@ -38,6 +45,13 @@ export default {
                 .then(({ data }) => {
                     this.buyer_settings = JSON.parse(data.buyer_settings);
                     this.mes_lis_shi_lin_qua_sto_reason_codeList = this.buyer_settings.shipments.mes_lis_shi_lin_qua_sto_reason_code;
+                    this.ordersJson=this.buyer_settings.orders;
+                    this.shipmentsJson=this.buyer_settings.shipments;
+                    this.receivesJson=this.buyer_settings.receives;
+                    this.corrected_receivesJson=this.buyer_settings.corrected_receives;
+                    this.returnsJson=this.buyer_settings.returns;
+                    this.invoicesJson=this.buyer_settings.invoices;
+                    this.paymentsJson=this.buyer_settings.payments;
 
                     // this.buyer_settings= this.buyer_settings.orders;
                 });
@@ -49,13 +63,44 @@ export default {
             var buyer_settings_length = Object.keys(this.buyer_settings).length;
             if (buyer_settings_length == 0) {
                 this.getbuyerJsonSettingvalue();
+               
             }
-
+            /*
+            var expected_result = '';
+        
+            switch(orderType){
+                case 'orders':
+                        expected_result = this.ordersJson[arrName][arrKey];
+                        break;
+                case 'shipments':
+                        expected_result = this.shipmentsJson[arrName][arrKey];
+                        break;
+                case 'receives':
+                        expected_result = this.receivesJson[arrName][arrKey];
+                        break;
+                case 'corrected_receives':
+                        expected_result = this.corrected_receivesJson[arrName][arrKey];
+                        break;
+                case 'returns':
+                        expected_result = this.returnsJson[arrName][arrKey];
+                        break;
+                case 'invoices':
+                        expected_result = this.invoicesJson[arrName][arrKey];
+                        break;
+                case 'payments':
+                        expected_result = this.paymentsJson[arrName][arrKey];
+                        break;
+                default:
+                        expected_result ='';
+                        break;
+            }
+            return expected_result;
+            */
+            
             if (arrKey != '') {
                 var newarr = [];
                 var buyer_settings_length_check = Object.keys(this.buyer_settings).length;
                 console.log(buyer_settings_length_check);
-                // console.log(this.buyer_settings);
                 if (buyer_settings_length_check > 0) {
                     var values = this.buyer_settings[orderType][arrName].map(function(o) {
                         var parsedobj = JSON.parse(JSON.stringify(o));
@@ -65,8 +110,7 @@ export default {
                         return newarr;
                     });
 
-                    console.log(newarr)
-                        // console.log(values[0][arrKey])
+                    //console.log(values)
                     return values[0][arrKey];
                 } else {
                     console.log('Object not found yet');
@@ -74,6 +118,7 @@ export default {
             } else {
                 return '';
             }
+
         },
         formatDate(date_string) {
             var date = new Date(date_string)

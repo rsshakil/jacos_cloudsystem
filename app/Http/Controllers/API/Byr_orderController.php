@@ -68,7 +68,7 @@ class Byr_orderController extends Controller
             $delivery_date_to = $request->delivery_date_to; // 納品日終了
             $delivery_service_code = $request->delivery_service_code; // 便
             $temperature = $request->temperature; // 配送温度区分
-
+            $check_datetime = $request->check_datetime;
             // $check_datetime=$request->check_datetime;
             $confirmation_status = $request->confirmation_status; // 参照
             $decission_cnt = $request->decission_cnt; // 確定
@@ -92,6 +92,15 @@ class Byr_orderController extends Controller
 
             if ($temperature!='*') {
                 $search_where .= "AND dov.mes_lis_ord_tra_ins_temperature_code='" . $temperature . "' ";
+            }
+
+            if ($check_datetime!='*') {
+                if($check_datetime==1){
+                    $search_where .= "AND dov.check_datetime is null ";
+                }else{
+                    $search_where .= "AND dov.check_datetime is not null ";
+                }
+                
             }
 
             // 参照
@@ -289,7 +298,7 @@ class Byr_orderController extends Controller
         inner join data_shipments on data_shipments.data_shipment_id=data_shipment_vouchers.data_shipment_id
         inner join data_orders on data_orders.data_order_id=data_shipments.data_order_id
         inner join data_order_vouchers on data_order_vouchers.data_order_id=data_orders.data_order_id
-        inner join data_order_items on data_order_items.data_order_voucher_id=data_order_vouchers.data_order_voucher_id 
+        inner join data_order_items on data_order_items.data_order_voucher_id=data_shipment_vouchers.data_order_voucher_id 
         where data_shipment_items.data_shipment_voucher_id = '$data_shipment_voucher_id'
         group by data_shipment_items.mes_lis_shi_lin_ite_order_item_code
         ");
