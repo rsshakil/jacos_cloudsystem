@@ -62,10 +62,14 @@ class Byr_orderController extends Controller
 
         if ($submit_type == "search") {
             // 条件指定検索
-            $receive_date_from = $request->receive_date_from; // 受信日時開始
-            $receive_date_to = $request->receive_date_to; // 受信日時終了
-            $delivery_date_from = $request->delivery_date_from; // 納品日開始
-            $delivery_date_to = $request->delivery_date_to; // 納品日終了
+            $receive_date_from = $request->receive_date_from;
+            $receive_date_to = $request->receive_date_to;
+            $delivery_date_from = $request->delivery_date_from;
+            $delivery_date_to = $request->delivery_date_to;
+            $receive_date_from = $receive_date_from!=null? date('Y-m-d 00:00:00',strtotime($receive_date_from)):$receive_date_from; // 受信日時開始
+            $receive_date_to = $receive_date_to!=null? date('Y-m-d 23:59:59',strtotime($receive_date_to)):$receive_date_to; // 受信日時終了
+            $delivery_date_from = $delivery_date_from!=null? date('Y-m-d 00:00:00',strtotime($delivery_date_from)):$delivery_date_from; // 納品日開始
+            $delivery_date_to =$delivery_date_to!=null? date('Y-m-d 23:59:59',strtotime($delivery_date_to)):$delivery_date_to;; // 納品日終了
             $delivery_service_code = $request->delivery_service_code; // 便
             $temperature = $request->temperature; // 配送温度区分
             $check_datetime = $request->check_datetime;
@@ -100,7 +104,7 @@ class Byr_orderController extends Controller
                 }else{
                     $search_where .= "AND dov.check_datetime is not null ";
                 }
-                
+
             }
 
             // 参照
@@ -298,7 +302,7 @@ class Byr_orderController extends Controller
         inner join data_shipments on data_shipments.data_shipment_id=data_shipment_vouchers.data_shipment_id
         inner join data_orders on data_orders.data_order_id=data_shipments.data_order_id
         inner join data_order_vouchers on data_order_vouchers.data_order_id=data_orders.data_order_id
-        inner join data_order_items on data_order_items.data_order_voucher_id=data_shipment_vouchers.data_order_voucher_id 
+        inner join data_order_items on data_order_items.data_order_voucher_id=data_shipment_vouchers.data_order_voucher_id
         where data_shipment_items.data_shipment_voucher_id = '$data_shipment_voucher_id'
         group by data_shipment_items.mes_lis_shi_lin_ite_order_item_code
         ");
@@ -376,13 +380,13 @@ class Byr_orderController extends Controller
                 'doi.*'
 
             )
-            //inner join data_order_items on data_order_items.data_order_voucher_id=data_shipment_vouchers.data_order_voucher_id 
-           
+            //inner join data_order_items on data_order_items.data_order_voucher_id=data_shipment_vouchers.data_order_voucher_id
+
             ->leftJoin('data_shipment_vouchers as dsv', 'dsv.data_shipment_voucher_id', '=', 'dsi.data_shipment_voucher_id')
             ->join('data_shipments as ds', 'ds.data_shipment_id', '=', 'dsv.data_shipment_id')
             ->join('data_orders as dor', 'dor.data_order_id', '=', 'ds.data_order_id')
             ->join('data_order_items as doi', 'doi.data_order_voucher_id', '=', 'dsv.data_order_voucher_id')
-            
+
             ->where('dsi.mes_lis_shi_lin_ite_supplier_item_code', $item_code)
             ->whereNull('dsv.decision_datetime')
             ->groupBy('dsv.mes_lis_shi_tra_trade_number')->get();
