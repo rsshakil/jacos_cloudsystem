@@ -21,12 +21,12 @@ class CreateDataOrdersTable extends Migration
             $table->string('receive_file_path', 200)->nullable()->comment('receive_file_path');
             $table->string('sta_sen_identifier', 30)->comment('送信者ＩＤ');
             $table->string('sta_sen_ide_authority', 10)->comment('送信者ＩＤ発行元');
-            $table->string('sta_rec_identifier',20)->comment('受信者ＩＤ');
+            $table->string('sta_rec_identifier', 20)->comment('受信者ＩＤ');
             $table->string('sta_rec_ide_authority', 10)->comment('受信者ＩＤ発行元');
             $table->string('sta_doc_standard', 20)->comment('標準名称');
             $table->string('sta_doc_type_version', 10)->comment('バージョン');
             $table->string('sta_doc_instance_identifier', 50)->comment('インスタンスＩＤ');
-            $table->string('sta_doc_type', 10)->comment('メッセージ種');
+            $table->string('sta_doc_type', 30)->comment('メッセージ種');
             $table->dateTime('sta_doc_creation_date_and_time')->comment('作成日時');
             $table->string('sta_bus_scope_type', 20)->comment('タイプ');
             $table->string('sta_bus_scope_instance_identifier', 20)->comment('テスト区分ＩＤ');
@@ -52,7 +52,7 @@ class CreateDataOrdersTable extends Migration
             $table->string('mes_lis_buy_name_sbcs', 20)->comment('発注者名称カナ');
             $table->smallInteger('deleted')->unsigned()->default(1)->comment('削除フラグ');
             $table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
-			$table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
+            $table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
         });
     }
 

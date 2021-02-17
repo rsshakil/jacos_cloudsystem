@@ -24,7 +24,7 @@ class CreateDataReceivesTable extends Migration
             $table->string('sta_doc_standard', 20)->comment('標準名称');
             $table->string('sta_doc_type_version', 10)->comment('バージョン');
             $table->string('sta_doc_instance_identifier', 50)->comment('インスタンスＩＤ');
-            $table->string('sta_doc_type', 10)->comment('メッセージ種');
+            $table->string('sta_doc_type', 30)->comment('メッセージ種');
             $table->dateTime('sta_doc_creation_date_and_time')->comment('作成日時');
             $table->string('sta_bus_scope_type', 20)->comment('タイプ');
             $table->string('sta_bus_scope_instance_identifier', 20)->comment('テスト区分ＩＤ');
