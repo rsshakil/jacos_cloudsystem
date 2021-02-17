@@ -4,16 +4,9 @@ namespace App\Http\Controllers\API\DATA\SHIPMENT;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\API\AllUsedFunction;
-use App\Models\ADM\User;
-use App\Models\CMN\cmn_scenario;
 use App\Http\Controllers\API\DATA\Data_Controller;
 use App\Exports\ShipmentCSVExport;
-use App\Exports\ShipmentCSVExportAllData;
-use PhpOffice\PhpSpreadsheet\Reader\Csv;
-use App\Models\BYR\byr_shipment_item;
 use App\Models\DATA\SHIPMENT\data_shipment;
 use App\Models\DATA\SHIPMENT\data_shipment_item;
 use App\Models\DATA\SHIPMENT\data_shipment_voucher;
@@ -27,20 +20,18 @@ class ShipmentConroller extends Controller
     }
     public function shipmentConfirm(Request $request)
     {
-        // return $request->all();
-        
         $data_count=$request->data_count;
         $data_order_id=$request->data_order_id;
         $download_file_url='';
-        $partner_info=data_shipment::select('cmn_connects.partner_code')
-        ->join('cmn_connects','cmn_connects.cmn_connect_id','=','data_shipments.cmn_connect_id')
-        ->where('data_shipments.data_order_id',$data_order_id)
-        ->first();
-
+        // return $csv_data_count = Data_Controller::get_shipment_data($request)->get();
         $csv_data_count = Data_Controller::get_shipment_data($request)->get()->count();
         if (!$data_count) {
+            $partner_info=data_shipment::select('cmn_connects.partner_code')
+            ->join('cmn_connects','cmn_connects.cmn_connect_id','=','data_shipments.cmn_connect_id')
+            ->where('data_shipments.data_order_id',$data_order_id)
+            ->first();
             $dateTime = date('Y-m-d H:i:s');
-            $new_file_name = "shipment-".$partner_info->partner_code."-".date('ymdHis').".csv";
+            $new_file_name = "shipment-".$partner_info->partner_code."-".date('YmdHis').".csv";
             $download_file_url = \Config::get('app.url')."storage/app".config('const.SHIPMENT_CSV_PATH')."/". $new_file_name;
             (new ShipmentCSVExport($request))->store(config('const.SHIPMENT_CSV_PATH').'/'.$new_file_name);
             data_shipment_voucher::where('decision_datetime','!=',null)

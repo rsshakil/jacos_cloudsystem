@@ -202,6 +202,7 @@ export default {
             if (element.type==="textbox") {
               var positionTop=element.top;
               var split_element=(this.splitString(element.text))
+            //   console.log(split_element)
             var item='';
 
              if(!(Array.isArray(split_element))){
@@ -224,6 +225,7 @@ export default {
                            item='';
                        }
                    }
+
                  this.createObj(element.left,element.top,element.width,element.height,element.fontSize,element.textAlign,element.lineHeight,element.scaleX,element.scaleY,item.toString(),'auto')
                }else{
                 //    return 0;
