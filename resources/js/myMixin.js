@@ -33,75 +33,12 @@ export default {
             returnsJson: {},
             invoicesJson: {},
             paymentsJson: {},
-            selectfieldList: [{
-                id: 'invoicejson_0',
-                value: ''
-            }],
+            
             // loader: "",
         };
     },
     methods: {
-        /*invoice json setting*/
-        getInvoiceJson() {
-            axios
-                .get(
-                    this.BASE_URL +
-                    "api/get_allInvoiceJsonSetting_info"
-                )
-                .then(({ data }) => {
-                    console.log(data.result);
-                    if (data.success != 0) {
-                        this.selectfieldList = [];
-                        this.selectfieldList = data.result;
-                    }
-
-                });
-        },
-        display_invoice_upload_setting() {
-            var _this = this;
-            this.getInvoiceJson();
-            this.$root.$emit(
-                "bv::show::modal",
-                "invoiceJsonSetting",
-                "#invoiceJsonSettingShowHide"
-            );
-        },
-
-        addSelectField() {
-            this.selectfieldList.push({
-                id: `invoicejson_${++this.selectfieldCounter}`,
-                value: '',
-            });
-        },
-        removeSelectField(event) {
-            this.selectfieldList.splice(this.selectfieldList.indexOf(event), 1);
-        },
-        update_invoice_json_setting() {
-            console.log(this.selectfieldList);
-            var post_data = {
-                selected_item: this.selectfieldList,
-                user_id: Globals.user_info_id,
-            };
-            console.log();
-            axios
-                .post(this.BASE_URL + "api/update_cmn_connects_optional", post_data)
-                .then((data) => {
-                    console.log(data);
-                    this.$root.$emit(
-                        "bv::hide::modal",
-                        "invoiceJsonSetting",
-                        "#invoiceJsonSettingShowHide"
-                    );
-                    Swal.fire({
-                        icon: "success",
-                        title: "optional value!",
-                        text: "You can successfully added optional value",
-                    });
-                });
-
-
-        },
-        /*invoice json setting*/
+       
         // Database created and updated datetime conversion
         getbuyerJsonSettingvalue() {
             axios.get(this.BASE_URL + "api/buyerJsonSetting/" + this.byr_buyer_id)
