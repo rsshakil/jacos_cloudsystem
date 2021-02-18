@@ -1169,7 +1169,7 @@ export default {
           //  console.log(data);
           const link = document.createElement("a");
           link.href = data.url;
-          link.setAttribute("download", "shipmentcsvfile.csv"); //ここらへんは適当に設定する
+          link.setAttribute("download", data.new_file_name); //ここらへんは適当に設定する
           document.body.appendChild(link);
           link.click();
           axios
