@@ -20,13 +20,13 @@
             <td>
             <input type="text" class="form-control">
             </td>
-            
+
           </tr>
           <tr>
             <td class="cl_custom_color">伝票区分</td>
             <td colspan="7"><input type="text" class="form-control"></td>
-            
-            
+
+
           </tr>
         </table>
     </div>
@@ -44,7 +44,7 @@
                         <table
             class="table table-striped table-bordered order_item_details_table" style="overflow-x: scroll">
                             <thead>
-                               
+
                                 <tr>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer">No <span id="id_icon"></span></th>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer"> 新規請求<span id="orderdate_icon"></span></th>
@@ -55,10 +55,10 @@
                                     <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">請求日時<span id="ordertype_icon"></span></th>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">明細<span id="ordertype_icon"></span></th>
                                 </tr>
-                                
+
                             </thead>
                             <tbody>
-                                
+
                                 <tr v-for="(value,index) in invoice_detail_lists" :key="value.byr_order_detail_id">
                                     <td>{{index+1}}</td>
                                     <td><input type="checkbox" class="form-control"></td>
@@ -71,9 +71,9 @@
                                    <td v-else>{{value.cost_price}}</td>
                                     <td>{{value.send_date}}</td>
                                     <td><router-link :to="{name:'voucher_detail',params:{voucher_number:value.voucher_number} }" class="btn btn-info">詳細</router-link></td>
-                                   
+
                                 </tr>
-                                
+
                             </tbody>
                         </table>
                     </div>
@@ -92,12 +92,17 @@ export default {
         'byr_voucher_lists':{},
         'selected_byr_voucher':'0',
         'file':'',
-        'byr_invoice_id':'',   
+        'byr_invoice_id':'',
         'start_date':'',
         'end_date':'',
         'total_price':0,
     };
   },
+  beforeCreate: function() {
+            if (!this.$session.exists()) {
+                this.$router.push('/home');
+            }
+        },
   methods: {
     //get Table data
     get_all_invoice_detail(){
@@ -133,7 +138,7 @@ export default {
         this.file = this.$refs.file.files[0];
         this.check_byr_order_api();
       },
-     
+
       selectedOption_shop(option) {
       if (this.value) {
         return option.byr_shop_id === this.value.byr_shop_id;

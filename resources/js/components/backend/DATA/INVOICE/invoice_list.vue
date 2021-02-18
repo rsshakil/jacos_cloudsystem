@@ -11,27 +11,27 @@
             <td class="cl_custom_color">請求日時</td>
             <td>
             <div class="input-group mb-3">
-      
+
       <input type="date" class="form-control">
       <div class="input-group-prepend">
         <span class="input-group-text">~</span>
       </div>
       <input type="date" class="form-control">
-    </div> 
+    </div>
             </td>
             <td class="cl_custom_color">発注者</td>
             <td>
             <select class="form-control" style="width: 220px">
                 <option value="">全て</option>
-                
+
               </select>
             </td>
-            
+
           </tr>
           <tr>
             <td class="cl_custom_color">締日</td>
             <td colspan="2"><div class="input-group mb-3">
-      
+
       <input type="date" class="form-control">
       <div class="input-group-prepend">
         <span class="input-group-text">~</span>
@@ -47,7 +47,7 @@
                 <option value="再請求あり">再請求あり</option>
               </select>
             </td>
-            
+
           </tr>
         </table>
     </div>
@@ -65,7 +65,7 @@
               <span class="tableRowsInfo">1〜10 件表示中／全：10件</span>
               <span class="pagi"
                 >
-              <advanced-laravel-vue-paginate :data="invoice_lists" 
+              <advanced-laravel-vue-paginate :data="invoice_lists"
               :onEachSide="2"
               previousText="<"
               nextText=">"
@@ -91,12 +91,12 @@
             style="overflow-x: scroll"
           >
           <thead>
-           
+
             <tr>
               <th style="cursor: pointer">No</th>
               <th style="cursor: pointer">請求日時</th>
               <th style="cursor: pointer">請求取引先コード</th>
-              
+
               <th style="cursor: pointer">発注者</th>
               <th style="cursor: pointer">締日</th>
               <th style="cursor: pointer">請求状況</th>
@@ -124,7 +124,7 @@
                   >{{ myLang.details }}</router-link
                 >
               </td>
-              
+
             </tr>
           </tbody>
         </table>
@@ -152,16 +152,16 @@
             <td class="cl_custom_color">締日</td>
             <td>
               <div class="input-group mb-3">
-      
+
       <input type="date" v-model="invoiceData.mes_lis_inv_per_begin_date" class="form-control">
       <div class="input-group-prepend">
         <span class="input-group-text">~</span>
       </div>
       <input type="date" v-model="invoiceData.mes_lis_inv_per_end_date" class="form-control">
-    </div> 
+    </div>
             </td>
           </tr>
-          
+
         </table>
       </div>
     </b-modal>
@@ -185,6 +185,11 @@ export default {
       }
     };
   },
+  beforeCreate: function() {
+            if (!this.$session.exists()) {
+                this.$router.push('/home');
+            }
+        },
   methods: {
     viewInvoicePopup(){
       this.invoiceCreateModal = true;

@@ -21,7 +21,7 @@
               v-model="payment_detail_header.mes_lis_pay_pay_code+' '+payment_detail_header.mes_lis_pay_pay_name"
             />
           </td>
-          
+
         </tr>
         <tr>
           <td class="cl_custom_color">発注者</td>
@@ -41,7 +41,7 @@
               v-model="payment_detail_header.mes_lis_pay_per_end_date"
             />
           </td>
-          
+
         </tr>
         <tr>
           <td class="cl_custom_color">支払日</td>
@@ -61,7 +61,7 @@
               v-model="payment_detail_header.mes_lis_pay_lin_det_amo_payable_amount"
             />
           </td>
-          
+
         </tr>
       </table>
     </div>
@@ -89,7 +89,7 @@
             </tr>
           </thead>
           <tbody>
-           
+
           </tbody>
         </table>
       </div>
@@ -107,7 +107,7 @@
             </tr>
           </thead>
           <tbody>
-           
+
           </tbody>
         </table>
         <br>
@@ -125,11 +125,11 @@
             </tr>
           </thead>
           <tbody>
-           
+
           </tbody>
         </table>
       </div>
-        
+
       </div>
     </div>
   </div>
@@ -157,6 +157,11 @@ export default {
       }),
     };
   },
+  beforeCreate: function() {
+            if (!this.$session.exists()) {
+                this.$router.push('/home');
+            }
+        },
   methods: {
     //get Table data
     getAllPaymentDetails() {
@@ -166,7 +171,7 @@ export default {
           this.payment_detail_header = data.payment_item_header;
         });
     },
-    
+
   },
 
   created() {

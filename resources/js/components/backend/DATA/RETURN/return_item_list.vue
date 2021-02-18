@@ -4,7 +4,7 @@
                     <h4 class="top_title text-center" style="margin-top:10px;">{{myLang.return_data}}</h4>
                 </div>
                 <div class="col-12 text-center">
-                    
+
       <label>
         <!--<input type="file" id="file" ref="file" v-on:change="onChangeFileUpload()"/>-->
       </label>
@@ -21,7 +21,7 @@
                                             </div>
                                             <select class="form-control" v-model="selected_byr">
                                              <option :value="0">{{myLang.select_buyer}}</option>
-                                              <option v-for="(option, index) in byr_buyer_lists" 
+                                              <option v-for="(option, index) in byr_buyer_lists"
                     :key="index" :value="option.cmn_company_id"
                     :selected="selectedOption(option)">
                     {{ option.company_name }}
@@ -40,7 +40,7 @@
                                     <th style="cursor: pointer">{{myLang.download_date}}</th>
                                     <th style="cursor: pointer">{{myLang.return_data}}</th>
                                 </tr>
-                                
+
                             </thead>
                             <tbody>
                                 <tr v-for="(value,index) in return_lists" :key="value.byr_return_id">
@@ -49,9 +49,9 @@
                                     <td>{{value.receive_date}}</td>
                                     <td>{{value.download_date}}</td>
                                     <td><button class="btn btn-primary">{{myLang.return_data}}</button></td>
-                                   
+
                                 </tr>
-                                
+
                             </tbody>
                         </table>
                     </div>
@@ -68,6 +68,11 @@ export default {
         'selected_byr':'0',
     };
   },
+  beforeCreate: function() {
+            if (!this.$session.exists()) {
+                this.$router.push('/home');
+            }
+        },
   methods: {
     //get Table data
     get_all_order(){
@@ -101,7 +106,7 @@ export default {
         this.file = this.$refs.file.files[0];
         this.check_byr_order_api();
       },
-  
+
     change(e) {
       const selectedCode = e.target.value;
       const option = this.options.find((option) => {

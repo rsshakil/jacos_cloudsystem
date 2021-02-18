@@ -4,7 +4,7 @@
     <br>
         <div class="stats-small stats-small--1 card card-small">
             <div class="card-body p-3">
-    
+
 
                 <!-- <router-view/> -->
                 <!--<page_header_default></page_header_default>-->
@@ -35,6 +35,9 @@
                 home_title:'',
             }
         },
+        // beforeCreate: function() {
+
+        // },
         methods:{
         //    buyer_route_change(byr_buyer_id){
         //      console.log(byr_buyer_id);
@@ -48,6 +51,7 @@
             //   router.app.$session.set('buyer_id', this.$route.params.byr_buyer_id);
             // this.$session.start()
             // this.$session.set('byr_buyer_id', this.$route.params.byr_buyer_id)
+             this.byr_session_check()
              Fire.$emit('byr_has_selected',this.$session.get('byr_buyer_id'));
              Fire.$emit('permission_check_for_buyer',this.$session.get('byr_buyer_id'));
             },

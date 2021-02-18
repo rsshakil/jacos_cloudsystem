@@ -33,12 +33,12 @@ export default {
             returnsJson: {},
             invoicesJson: {},
             paymentsJson: {},
-            
+
             // loader: "",
         };
     },
     methods: {
-       
+
         // Database created and updated datetime conversion
         getbuyerJsonSettingvalue() {
             axios.get(this.BASE_URL + "api/buyerJsonSetting/" + this.byr_buyer_id)
@@ -160,7 +160,7 @@ export default {
                 // this.$router.push('/login');
 
                 window.location.reload();
-                this.$router.push("home");
+                // this.$router.push("home");
                 his.loader.hide();
             });
         },
@@ -323,6 +323,14 @@ export default {
             Fire.$emit('byr_has_selected', byr_buyer_id);
             Fire.$emit('permission_check_for_buyer', byr_buyer_id);
         },
+        byr_session_check() {
+            if (!this.$session.exists()) {
+                this.$router.push('/home');
+            }
+        },
+        // beforeCreate: function() {
+        //     this.byr_session_check()
+        // },
         get_byr_slr_company(cmn_company_id) {
             if (cmn_company_id == null) {
                 this.filter_select_box = true
@@ -360,6 +368,10 @@ export default {
 
     },
     created() {
+        // this.beforeCreate();
+        // if (!this.$session.exists()) {
+        //     this.$router.push('/home')
+        // }
         this.byr_buyer_id = this.$session.get('byr_buyer_id');
         //this.getbuyerJsonSettingvalue();
         // this.user_data = this.app._data;
