@@ -18,10 +18,9 @@ use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 use \Maatwebsite\Excel\Excel;
-use Maatwebsite\Excel\Concerns\WithProperties;
 
 // class ShipmentCSVExport implements FromQuery,WithHeadings,WithMapping,ShouldAutoSize
-class ShipmentCSVExport extends DefaultValueBinder implements WithStrictNullComparison, FromQuery,WithHeadings,ShouldAutoSize,WithColumnFormatting,WithProperties
+class ShipmentCSVExport extends DefaultValueBinder implements WithStrictNullComparison, FromQuery,WithHeadings,ShouldAutoSize,WithColumnFormatting
 {
     use Exportable;
     private $request;
@@ -45,20 +44,6 @@ class ShipmentCSVExport extends DefaultValueBinder implements WithStrictNullComp
         $shipment_csv_data = Data_Controller::get_shipment_data($this->request);
         return $shipment_csv_data;
     }
-    // public function properties(): array
-    // {
-    //     return [
-    //         'creator'        => 'Patrick Brouwers',
-    //         'lastModifiedBy' => 'Patrick Brouwers',
-    //         'title'          => 'Invoices Export',
-    //         'description'    => 'Latest Invoices',
-    //         'subject'        => 'Invoices',
-    //         'keywords'       => 'invoices,export,spreadsheet',
-    //         'category'       => 'Invoices',
-    //         'manager'        => 'Patrick Brouwers',
-    //         'company'        => 'Maatwebsite',
-    //     ];
-    // }
     public function columnFormats(): array
     {
         return [
