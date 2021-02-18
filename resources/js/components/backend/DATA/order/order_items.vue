@@ -58,7 +58,7 @@
           <tr>
             <td class="cl_custom_color">税区分・税率</td>
             <td>{{order_item_shipment_data_headTable.mes_lis_shi_tra_tax_tax_type_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_tax_tax_type_code',order_item_shipment_data_headTable.mes_lis_shi_tra_tax_tax_type_code,'orders')}} {{order_item_shipment_data_headTable.mes_lis_shi_tra_tax_tax_rate}} %</td>
-            <td class="cl_custom_color_extra">実納品日</td>
+            <td class="cl_custom_color_extra">訂正納品日</td>
             <td colspan="3"><input class="form-control" type="date" v-model="order_item_shipment_data_headTable.mes_lis_shi_tra_dat_revised_delivery_date"></td>
           </tr>
           
