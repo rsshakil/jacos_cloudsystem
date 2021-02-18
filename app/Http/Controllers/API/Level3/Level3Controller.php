@@ -427,22 +427,25 @@ class Level3Controller extends Controller
         $files = array_values(array_diff(scandir($path), array('.', '..')));
         $file_name='';
         $file_path='';
+        $checked_files=array();
         if (!empty($files)) {
-            if (is_file($path . $files[0])) {
-                $file_name = $files[0];
-                $file_path = $url_path . $files[0];
-                rename($path . $files[0], $path . 'moved/' . $files[0]);
+            for ($i=0; $i < count($files); $i++) {
+                if (is_file($path . $files[$i])) {
+                    $checked_files[] = $files[$i];
+                }
             }
         } else {
             $this->message = "フォルダが空です";
             $this->status_code = 400;
             return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'file_name' => $file_name,'file_path'=>$file_path]);
         }
-
-        if (!empty($file_name)) {
+        if (!empty($checked_files)) {
+            $file_name = $checked_files[0];
+            $file_path = $url_path . $checked_files[0];
+            rename($path . $checked_files[0], $path . 'moved/' . $checked_files[0]);
             $this->message = "ファイルが見つかりました。";
             $this->status_code = 200;
-        } else {
+        }else {
             $this->message = "ファイルが見つかりませんでした。";
             $this->status_code = 401;
         }
