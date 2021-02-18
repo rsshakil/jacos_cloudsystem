@@ -469,6 +469,13 @@ class Data_Controller extends Controller
             WHEN data_shipment_items.mes_lis_shi_lin_fre_unit_weight=""
             THEN "0"
             ELSE data_shipment_items.mes_lis_shi_lin_fre_unit_weight  END'),
+            'data_shipment_items.mes_lis_shi_lin_fre_unit_weight_code',
+            // \DB::raw('CASE
+            // WHEN data_shipment_items.mes_lis_shi_lin_fre_unit_weight_code=null
+            // THEN "0"
+            // WHEN data_shipment_items.mes_lis_shi_lin_fre_unit_weight_code=""
+            // THEN "0"
+            // ELSE data_shipment_items.mes_lis_shi_lin_fre_unit_weight_code  END'),
             \DB::raw('CASE
             WHEN data_shipment_items.mes_lis_shi_lin_fre_item_weight=null
             THEN "0"
