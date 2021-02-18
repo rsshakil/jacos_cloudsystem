@@ -317,28 +317,7 @@
         </ul>
       </b-form-checkbox-group>-->
     </b-modal>
-    <b-modal
-      id="invoiceJsonSetting"
-      :hide-backdrop="true"
-      ref="invoiceJsonSettingShowHide"
-      title="締日登録"
-      cancel-title="キャンセル"
-      ok-title="決定"
-      @ok.prevent="update_invoice_json_setting()"
-    >
-     <h4>請求業務の締日を登録できます</h4>
-     <label for="invoicejson_0" class="">締日</label>
-     <div class="selectFildlistdata" style="position:relative;">
-     <div class="customselectFields" v-for="(input,index) in selectfieldList" :key="input.id">
-     <select class="form-control custominvoicejsnslect" v-model="input.value">
-        <option v-for="n in 30" :value="n">{{n}}日</option>
-        <option value="月末">月末</option>
-     </select>
-     <b-icon @click="removeSelectField(input)" v-if="index!=0" class="customMinusIcon" icon="trash" aria-hidden="true"></b-icon>
-      <b-icon @click="addSelectField" v-if="index==0" class="customPlusIcon" icon="plus-square-fill" aria-hidden="true"></b-icon>
-    </div>
-    </div>
-    </b-modal>
+    
     
   </main>
 </template>
@@ -354,7 +333,7 @@ export default {
       company_name: null,
       user_byr_slr_list: [],
       hover: false,
-      invouce_upload_setting:false,
+      
       selected_customer_list: "未選択",
       // buyer_info_for_saller:[],
       fields: [

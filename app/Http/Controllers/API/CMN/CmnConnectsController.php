@@ -103,7 +103,7 @@ class CmnConnectsController extends Controller
         $jsnresp = array();
         if($result->optional){
             $jsdecode = \json_decode($result->optional);
-            foreach($jsdecode->invoice as $key=>$inv){
+            foreach($jsdecode->invoice['closing_date'] as $key=>$inv){
                 $jsnresp[]= array(
                     'id'=>$key,
                     'value'=>$inv
