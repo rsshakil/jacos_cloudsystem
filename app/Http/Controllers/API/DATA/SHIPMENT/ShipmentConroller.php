@@ -45,9 +45,14 @@ class ShipmentConroller extends Controller
     {
         // downloadType=1 for Csv
         // downloadType=2 for Fixed length
+        $data_order_id=$request->data_order_id;
         $downloadType=$request->downloadType;
         if ($downloadType==1) {
-            $new_file_name = "Shipment_csv_".date('Y-m-d')."_".time().".csv";
+            $partner_info=data_shipment::select('cmn_connects.partner_code')
+            ->join('cmn_connects','cmn_connects.cmn_connect_id','=','data_shipments.cmn_connect_id')
+            ->where('data_shipments.data_order_id',$data_order_id)
+            ->first();
+            $new_file_name = "shipment-".$partner_info->partner_code."-".date('YmdHis').".csv";
             $download_file_url = \Config::get('app.url')."storage/app".config('const.SHIPMENT_CSV_PATH')."/". $new_file_name;
             $csv_data_count = Data_Controller::get_shipment_data($request)->count();
             (new ShipmentCSVExport($request))->store(config('const.SHIPMENT_CSV_PATH').'/'.$new_file_name);
