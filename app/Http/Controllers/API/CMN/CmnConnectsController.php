@@ -79,6 +79,8 @@ class CmnConnectsController extends Controller
 
     public function update_cmn_connects_optional(Request $request){
         $invoicedayslist = $request->selected_item;
+        $cmn_connect_id = $request->cmn_connect_id;
+        $cmnConnectInfo = cmn_connect::where('cmn_connect_id',$cmn_connect_id)->first();;
         $customdata = array();
         foreach($invoicedayslist as $val){
             if($val['value']!=''){
@@ -86,15 +88,10 @@ class CmnConnectsController extends Controller
             }      
         }
         
-        $jsonArray = array(
-            'order'=>array(
-                'download'=>7,
-            ),
-            'invoice'=>$customdata,
-        );
-        $invoicedayslistjson = \json_encode($jsonArray);
-        
-        cmn_connect::where('cmn_connect_id',1)->update(['optional'=>$invoicedayslistjson]);
+        $optionNalValue =  \json_decode($cmnConnectInfo->optional);
+        $optionNalValue->invoice->closing_date = $customdata;  
+        $invoicedayslistjson = \json_encode($optionNalValue);
+        cmn_connect::where('cmn_connect_id',$cmn_connect_id)->update(['optional'=>$invoicedayslistjson]);
         return response()->json(['success'=>1]);
     }
 
@@ -116,7 +113,25 @@ class CmnConnectsController extends Controller
 
     public function get_partner_fax_list(Request $request){
         $result = cmn_connect::where('byr_buyer_id',$request->byr_buyer_id)->get();
-        
-        return response()->json(['result'=>$result]);
+        $nwArray = array();
+        if($result){
+            foreach($result as $val){
+                $nwArray[]=array(
+                    'rows'=>$val,
+                    'jsonRows'=>json_decode($val->optional),
+                );
+            }
+        }
+        return response()->json(['result'=>$nwArray]);
+    }
+    public function update_cmn_connects_optionalAllJson(Request $request){
+        $postJson = $request->allJson;
+        foreach($postJson as $row){
+            $invoicedayslistjson = \json_encode($row['jsonRows']);
+
+            cmn_connect::where('cmn_connect_id',$row['rows']['cmn_connect_id'])->update(['optional'=>$invoicedayslistjson]);
+        }
+       
+        return response()->json(['success'=>1]);
     }
 }
