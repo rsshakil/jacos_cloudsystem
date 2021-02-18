@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
         $this->call(byr_buyerSeeder::class);
         $this->call(slr_sellerSeeder::class);
         $this->call(cmnPdfCanvasSeeder::class);
+        $this->call(CmnPdfPlatformSeeder::class);
         $this->call(cmn_blogSeeder::class);
         // Level3 Seeder
         $this->call(Lv3ServiceSeeder::class);
