@@ -241,7 +241,7 @@
               <td>
                 <router-link
                   :to="{
-                    name: 'order_list_detail',
+                    name: 'order_list_details',
                     query: {
                       data_order_id: order_list.data_order_id,
                       delivery_date: order_list.mes_lis_ord_tra_dat_delivery_date.valueOf(),

@@ -37,6 +37,18 @@ export default {
             // loader: "",
         };
     },
+    // beforeCreate: function() {
+    //     // console.log(this.$route);
+    //     if (typeof(this.$route) !== 'undefined') {
+    //         if (Permissions.indexOf(this.$route.name) === -1) {
+    //             this.$router.push('/home');
+    //         }
+    //         // console.log(this.$route.name);
+    //     }
+    //     // if (!this.$session.exists()) {
+    //     //     this.$router.push('/home');
+    //     // }
+    // },
     methods: {
 
         // Database created and updated datetime conversion
@@ -167,7 +179,7 @@ export default {
         display_table_col_setting() {
 
             console.log(this.$route.name);
-            if (this.$route.name == 'order_list_detail') {
+            if (this.$route.name == 'order_list_details') {
                 this.$root.$emit(
                     "bv::show::modal",
                     "table_col_setting",

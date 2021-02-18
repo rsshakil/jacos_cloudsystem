@@ -296,7 +296,7 @@ export default {
       },
       {
         to: {
-          name: 'order_list_detail',
+          name: 'order_list_details',
           query: this.orderListdetailQ,
         },
         label: '受注伝票一覧'

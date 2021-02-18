@@ -47,20 +47,21 @@ Vue.use(VueRouter);
 const originalPush = VueRouter.prototype.push
 
 VueRouter.prototype.push = function push(location) {
-        return originalPush.call(this, location).catch(err => err)
-    }
-    //import VueBreadcrumbs from 'vue-2-breadcrumbs';
-    // Vue.use(VueBreadcrumbs, {
-    //     template: '        <ul v-if="$breadcrumbs.length" aria-label="breadcrumb" class="custm_brd_crumbs">\n' +
-    //         '             <li v-for="(crumb, key) in $breadcrumbs" v-if="crumb.meta.breadcrumb" :key="key"><span v-if="key == 0 && getBreadcrumb(crumb.meta.breadcrumb_title)" > {{getBreadcrumb(crumb.meta.breadcrumb_title)}} > </span><router-link class="breadcrumb-item_custom" :to="{ path: getPath(crumb) }"> {{ getBreadcrumb(crumb.meta.breadcrumb) }} </router-link> <span v-if="key+1 != Object.keys($breadcrumbs).length - 1"> > </span> </li>' +
-    //         '        </ul>'
-    // });
-    // Vue.use(VueBreadcrumbs, {
-    //     template: '        <div v-if="$breadcrumbs.length" aria-label="breadcrumb" class="custm_brd_crumbs">\n' +
-    //         '             <router-link v-for="(crumb, key) in $breadcrumbs" v-if="crumb.meta.breadcrumb" :key="key" class="breadcrumb-item_custom btn btn-primary btn-arrow-right" :to="{ path: getPath(crumb) }">{{ getBreadcrumb(crumb.meta.breadcrumb) }} > {{ getBreadcrumb(crumb.meta.breadcrumb_title) }}</router-link>' +
-    //         '        </div>'
-    // });
-    // Install BootstrapVue
+    return originalPush.call(this, location).catch(err => err)
+}
+
+//import VueBreadcrumbs from 'vue-2-breadcrumbs';
+// Vue.use(VueBreadcrumbs, {
+//     template: '        <ul v-if="$breadcrumbs.length" aria-label="breadcrumb" class="custm_brd_crumbs">\n' +
+//         '             <li v-for="(crumb, key) in $breadcrumbs" v-if="crumb.meta.breadcrumb" :key="key"><span v-if="key == 0 && getBreadcrumb(crumb.meta.breadcrumb_title)" > {{getBreadcrumb(crumb.meta.breadcrumb_title)}} > </span><router-link class="breadcrumb-item_custom" :to="{ path: getPath(crumb) }"> {{ getBreadcrumb(crumb.meta.breadcrumb) }} </router-link> <span v-if="key+1 != Object.keys($breadcrumbs).length - 1"> > </span> </li>' +
+//         '        </ul>'
+// });
+// Vue.use(VueBreadcrumbs, {
+//     template: '        <div v-if="$breadcrumbs.length" aria-label="breadcrumb" class="custm_brd_crumbs">\n' +
+//         '             <router-link v-for="(crumb, key) in $breadcrumbs" v-if="crumb.meta.breadcrumb" :key="key" class="breadcrumb-item_custom btn btn-primary btn-arrow-right" :to="{ path: getPath(crumb) }">{{ getBreadcrumb(crumb.meta.breadcrumb) }} > {{ getBreadcrumb(crumb.meta.breadcrumb_title) }}</router-link>' +
+//         '        </div>'
+// });
+// Install BootstrapVue
 import Vue2Crumbs from 'vue-2-crumbs'
 
 Vue.use(Vue2Crumbs)
@@ -179,6 +180,19 @@ var router = new VueRouter({
 router.onReady(() => {
     if (Globals.user_info_id == '' && router.currentRoute.path != "/home") {
         router.push("home")
+    }
+});
+// const defaultRoute = '/home';
+router.beforeEach(async(to, from, next) => {
+    console.log(to.name);
+    if (to.name !== 'home') {
+        if (Permissions.indexOf(to.name) === -1) {
+            next({ name: 'home' });
+        } else {
+            next();
+        }
+    } else {
+        next();
     }
 });
 

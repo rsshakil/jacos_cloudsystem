@@ -232,7 +232,7 @@ export default {
     return {
        breadcumbtitle:'受注商品別一覧',
       parent: {
-        name: 'order_list_detail',
+        name: 'order_list_details',
         query: {},
 },
       rows: 100,

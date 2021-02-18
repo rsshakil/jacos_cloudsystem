@@ -15,6 +15,11 @@ class permissionsTableDataSeeder extends Seeder
     {
         $permission_array=array(
             [
+                'name' => 'home',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
                 'name' => 'role_menu',
                 'guard_name' => 'web',
                 'is_system' => 0,
@@ -179,7 +184,7 @@ class permissionsTableDataSeeder extends Seeder
                 'guard_name' => 'web',
                 'is_system' => 0,
             ],
-            // SLR Permission 
+            // SLR Permission
             [
                 'name' => 'slr_view',
                 'guard_name' => 'web',
@@ -227,6 +232,11 @@ class permissionsTableDataSeeder extends Seeder
             ],
             // Buyer Permissions
             [
+                'name' => 'selected_buyer',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
                 'name' => 'byr_view',
                 'guard_name' => 'web',
                 'is_system' => 0,
@@ -253,6 +263,62 @@ class permissionsTableDataSeeder extends Seeder
             ],
             [
                 'name' => 'pdf_platform_view',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            // New
+            [
+                'name' => 'blog',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'role',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'permission',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'assign_role_to_user',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'assign_permission_to_user',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'users',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'password_reset',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'order_details_canvas',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'order_list_details',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'item_search',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'item_search_detail',
                 'guard_name' => 'web',
                 'is_system' => 0,
             ],

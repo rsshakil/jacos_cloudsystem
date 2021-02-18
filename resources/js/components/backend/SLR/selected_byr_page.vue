@@ -35,9 +35,11 @@
                 home_title:'',
             }
         },
-        // beforeCreate: function() {
-
-        // },
+        beforeCreate: function() {
+            if (!this.$session.exists()) {
+                this.$router.push('/home');
+            }
+        },
         methods:{
         //    buyer_route_change(byr_buyer_id){
         //      console.log(byr_buyer_id);
@@ -51,7 +53,7 @@
             //   router.app.$session.set('buyer_id', this.$route.params.byr_buyer_id);
             // this.$session.start()
             // this.$session.set('byr_buyer_id', this.$route.params.byr_buyer_id)
-             this.byr_session_check()
+            //  this.byr_session_check()
              Fire.$emit('byr_has_selected',this.$session.get('byr_buyer_id'));
              Fire.$emit('permission_check_for_buyer',this.$session.get('byr_buyer_id'));
             },

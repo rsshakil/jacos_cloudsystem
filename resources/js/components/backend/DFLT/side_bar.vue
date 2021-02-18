@@ -8,7 +8,7 @@
       >
         <router-link to="/" class="nav-link" style="line-height: 25px">
           <div class="d-table m-auto">
-           
+
             <span class="d-none d-md-inline ml-1">{{ myLang.heading }}</span>
           </div>
         </router-link>
@@ -17,7 +17,7 @@
         </a>
       </nav>
     </div>-->
-  
+
     <div class="nav-wrapper">
 
       <ul class="nav jcs_left_side_bar_menu flex-column">
@@ -37,7 +37,7 @@
                   <b-icon icon="house-fill" font-scale="1.2"></b-icon> Home
                 </router-link>
               </li>
-              
+
             </ul>
           </div>
         </li>-->
@@ -47,7 +47,7 @@
           </router-link>
         </li>
       </ul>
-      
+
       <adm_menu v-role="['Super Admin']"></adm_menu>
       <common_menu v-role="['Super Admin']"></common_menu>
       <jacos_menu v-role="['Super Admin']"></jacos_menu>
@@ -90,7 +90,7 @@ user_menu,
         permissions_by_user:[],
         permission_menu:false,
     };
-    
+
   },
   methods: {
     logout: function () {
@@ -106,14 +106,17 @@ user_menu,
         .catch((error) => {});
     },
     allPermissionCheck(byr_id=null){
-      axios.post(this.BASE_URL+'api/get_permissions_for_buyer',{byr_id:byr_id}).then(({data})=>{
-        this.permissions_by_user=data.permission_array;
-        if (this.permissions_by_user.length>0) {
-          this.permission_menu= true
+        if (this.$route.name!=='home') {
+           axios.post(this.BASE_URL+'api/get_permissions_for_buyer',{byr_id:byr_id}).then(({data})=>{
+            this.permissions_by_user=data.permission_array;
+            if (this.permissions_by_user.length>0) {
+            this.permission_menu= true
+            }
+
+            // console.log(data);
+        })
         }
-        
-        // console.log(data);
-      })
+
     }
 
   },

@@ -99,9 +99,9 @@ export const routes = [
 
 
     {
-        path: '/order_list/order_list_detail',
+        path: '/order_list/order_list_details',
         component: order_vouchers,
-        name: 'order_list_detail',
+        name: 'order_list_details',
         meta: {
             // breadcrumb: 'Order detail'
             breadcrumb: {
@@ -113,21 +113,21 @@ export const routes = [
     },
 
     {
-        path: '/order_list/order_list_detail/item_search',
+        path: '/order_list/order_list_details/item_search',
         component: item_search,
         name: 'item_search',
         meta: {
 
             breadcrumb: {
                 label: '受注商品別一覧',
-                parent: 'order_list_detail'
+                parent: 'order_list_details'
             },
         },
 
     },
 
     {
-        path: '/order_list/order_list_detail/item_search/:item_id',
+        path: '/order_list/order_list_details/item_search/:item_id',
         component: item_search_detail,
         name: 'item_search_detail',
         meta: {
@@ -140,13 +140,13 @@ export const routes = [
 
     },
     {
-        path: '/order_list/order_list_detail/order_item_list_detail/:data_order_list_voucher_id',
+        path: '/order_list/order_list_details/order_item_list_detail/:data_order_list_voucher_id',
         component: order_items,
         name: 'order_item_list_detail',
         meta: {
             breadcrumb: {
                 label: '受注伝票明細',
-                parent: 'order_list_detail'
+                parent: 'order_list_details'
             }
         }
     },

@@ -3,12 +3,12 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12 p-0">
-        
+
             <navbar :app="this"></navbar>
         </div>
     </div>
     <div class="row">
-        
+
         <div class="col-md-2 px-0">
             <sidebar :app="this"></sidebar>
         </div>
@@ -49,8 +49,8 @@
         <div class="col-md-12" style="margin-top:70px; padding:0px;">
             <projectfooter ></projectfooter>
         </div>
-        
-        
+
+
     </div>
 </div>
 </template>
@@ -99,7 +99,7 @@ methods:{
     },
 },
 created(){
-    this.init_user()
+    // this.init_user()
     console.log("app.vue loaded");
 }
 }

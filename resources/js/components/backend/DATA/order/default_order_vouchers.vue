@@ -244,7 +244,7 @@
               <div class="col-3">
                 <p class="mb-0">商品別の更新はこちら</p>
                 <router-link
-                  to="/order_list/order_list_detail/item_search"
+                  to="/order_list/order_list_details/item_search"
                   class="active btn btn-primary"
                 >
                   商品別登録</router-link

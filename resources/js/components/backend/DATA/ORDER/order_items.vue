@@ -294,7 +294,7 @@ export default {
     return {
       breadcumbtitle:'受注伝票明細',
       parent: {
-        name: 'order_list_detail',
+        name: 'order_list_details',
         query: {},
 },
       today: new Date().toISOString().slice(0, 10),

@@ -275,13 +275,13 @@ class Byr_orderController extends Controller
 
         /*coll setting*/
         $slected_list = array();
-        $result_data = cmn_tbl_col_setting::where('url_slug', 'order_list_detail')->first();
-        $header_list = json_decode($result_data->content_setting);
-        foreach ($header_list as $header) {
-            if ($header->header_status == true) {
-                $slected_list[] = $header->header_field;
-            }
-        }
+        // $result_data = cmn_tbl_col_setting::where('url_slug', 'order_list_details')->first();
+        // $header_list = json_decode($result_data->content_setting);
+        // foreach ($header_list as $header) {
+        //     if ($header->header_status == true) {
+        //         $slected_list[] = $header->header_field;
+        //     }
+        // }
         /*coll setting*/
         return response()->json(['order_list_detail' => $result, 'order_info' => $order_info, 'slected_list' => $slected_list]);
     }
