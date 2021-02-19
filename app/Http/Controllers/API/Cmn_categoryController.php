@@ -41,11 +41,10 @@ class Cmn_categoryController extends Controller
             $cmn_company_id = $cmn_company_info->cmn_company_id;
             $byr_buyer_id = $cmn_company_info->byr_buyer_id;
             $cmn_connect_id = $cmn_company_info->cmn_connect_id;
-
             $categorys = collect(\DB::select("SELECT cp.cmn_category_id AS cmn_category_id,cd2.category_code, GROUP_CONCAT(cd1.category_name ORDER BY cp.lavel SEPARATOR ' > ') AS name, c1.parent_id FROM cmn_category_paths cp LEFT JOIN cmn_categories c1 ON (cp.cmn_category_id = c1.cmn_category_id) LEFT JOIN cmn_categories c2 ON (cp.path_id = c2.cmn_category_id) LEFT JOIN cmn_category_descriptions cd1 ON (cp.path_id = cd1.cmn_category_id) LEFT JOIN cmn_category_descriptions cd2 ON (cp.cmn_category_id = cd2.cmn_category_id) where c1.is_deleted=0 and c2.is_deleted=0 and cd2.byr_buyer_id='".$byr_buyer_id."' GROUP BY cp.cmn_category_id"));
 
-            $parent_list = cmn_category_description::where('byr_buyer_id',$byr_buyer_id,'is_deleted',0)->get();
-
+            $parent_list = cmn_category_description::where(['byr_buyer_id'=>$byr_buyer_id,'is_deleted'=>0])->get();
+            
 
         }else{
             $categorys = collect(\DB::select("SELECT cp.cmn_category_id AS cmn_category_id,cd2.category_code, GROUP_CONCAT(cd1.category_name ORDER BY cp.lavel SEPARATOR ' > ') AS name, c1.parent_id FROM cmn_category_paths cp LEFT JOIN cmn_categories c1 ON (cp.cmn_category_id = c1.cmn_category_id) LEFT JOIN cmn_categories c2 ON (cp.path_id = c2.cmn_category_id) LEFT JOIN cmn_category_descriptions cd1 ON (cp.path_id = cd1.cmn_category_id) LEFT JOIN cmn_category_descriptions cd2 ON (cp.cmn_category_id = cd2.cmn_category_id) where c1.is_deleted=0 and c2.is_deleted=0 GROUP BY cp.cmn_category_id"));

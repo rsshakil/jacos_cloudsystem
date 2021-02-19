@@ -1,11 +1,7 @@
 <template>
-  <div v-can="['slr_view']">
+  <div v-can="['byr_view']">
     <div class="row">
-      <div class="col-12">
-        <h4 class="top_title text-center" style="margin-top: 10px">
-          {{ myLang.wholesaler_management }}
-        </h4>
-      </div>
+      
 
       <div class="col-12">
         <div class="">
@@ -77,7 +73,7 @@
       <!-- <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
       <div class="modal-body">-->
-      <div class="panel-body add_item_body" v-can="['company_create']">
+      <div class="panel-body add_item_body">
         <form>
           <input type="hidden" v-model="form.cmn_category_id" />
           <!--<div class="form-group row">
@@ -226,7 +222,7 @@ export default {
     Fire.$on("AfterCreatecat", () => {
       this.get_all_cat();
     });
-    console.log("created jacos management log");
+    Fire.$emit("loadPageTitle", "問屋管理");
   },
   mounted() {
     console.log("User page loaded");
