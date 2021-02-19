@@ -18,7 +18,6 @@ use App\Models\CMN\cmn_scenario;
 use App\Models\CMN\cmn_tbl_col_setting;
 use App\Models\DATA\SHIPMENT\data_shipment_voucher;
 use App\Models\DATA\ORD\data_order_voucher;
-use App\Models\CMN\cmn_companies_user;
 use App\Models\SLR\slr_seller;
 
 use DB;
