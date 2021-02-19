@@ -18,6 +18,9 @@ use App\Models\CMN\cmn_scenario;
 use App\Models\CMN\cmn_tbl_col_setting;
 use App\Models\DATA\SHIPMENT\data_shipment_voucher;
 use App\Models\DATA\ORD\data_order_voucher;
+use App\Models\CMN\cmn_companies_user;
+use App\Models\SLR\slr_seller;
+
 use DB;
 
 class CmnConnectsController extends Controller
@@ -112,7 +115,11 @@ class CmnConnectsController extends Controller
     }
 
     public function get_partner_fax_list(Request $request){
-        $result = cmn_connect::where('byr_buyer_id',$request->byr_buyer_id)->get();
+        $adm_user_id=$request->adm_user_id;
+        $slrInfo = cmn_companies_user::select('slr_sellers.slr_seller_id','cmn_companies_users.adm_user_id','cmn_companies_users.cmn_company_id')
+        ->join('slr_sellers', 'slr_sellers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
+        ->where('cmn_companies_users.adm_user_id', $adm_user_id)->first();
+        $result = cmn_connect::where('byr_buyer_id',$request->byr_buyer_id)->where('slr_seller_id',$slrInfo->slr_seller_id)->get();
         $nwArray = array();
         if($result){
             foreach($result as $val){
