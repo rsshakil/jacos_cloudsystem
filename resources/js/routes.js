@@ -66,7 +66,13 @@ export const routes = [
             }
         },
     },
-    { path: '/blog', component: blog },
+    { path: '/blog', component: blog,name:'blog',
+    meta: {
+        breadcrumb: {
+            label: 'お知らせ'
+        }
+    },
+},
     { path: '/role', component: Role },
     { path: '/permission', component: permission },
     { path: '/assign_role_to_user', component: assign_role_model },
@@ -301,24 +307,22 @@ export const routes = [
     },
     {
         path: '/item_master',
-        component: default_parent,
+        component: item_master,
+        name:'item_master',
         meta: {
             breadcrumb: {
                 label: '商品メンテ'
             }
         },
-        children: [{
-            path: '/',
-            component: item_master,
-            name: 'item_master'
-        }, {
-            path: '/item_category',
-            component: item_category,
-            name: 'item_category',
-            meta: {
-                breadcrumb: '分類'
-            }
-        }, ]
+    },
+    {
+        
+        path: '/item_category',
+        component: item_category,
+        name: 'item_category',
+        meta: {
+            breadcrumb: '分類'
+        },
 
     },
 
@@ -334,32 +338,24 @@ export const routes = [
     },
     {
         path: '/order_corrected_receive',
-        component: default_parent,
+        component: order_corrected_receive,
+        name: 'order_corrected_receive',
         meta: {
             breadcrumb: {
                 label: '受領訂正データ'
             }
         },
-        children: [{
-            path: '/',
-            component: order_corrected_receive,
-            name: 'order_corrected_receive'
-        }, ]
 
     },
     {
         path: '/return_item_list',
-        component: default_parent,
+        component: return_item_list,
+        name: 'return_item_list',
         meta: {
             breadcrumb: {
                 label: '返品データ'
             }
         },
-        children: [{
-            path: '/',
-            component: return_item_list,
-            name: 'return_item_list'
-        }, ]
 
     },
     {
@@ -424,7 +420,6 @@ export const routes = [
                 label: 'pdfプラットフォーム設定'
             }
         },
-        children: []
 
     },
     {
@@ -436,7 +431,6 @@ export const routes = [
                 label: 'pdfプラットフォーム'
             }
         },
-        children: []
 
     },
     {
@@ -446,20 +440,7 @@ export const routes = [
         props: true,
 
         meta: { breadcrumb: { label: 'ブログ', parent: 'home' } },
-        // children: [{
-        //         path: '/',
-        //         component: selected_buyer,
-        //         name: 'selected_buyer'
-        //     },
-        // {
-        //     path: '/slr_management/company_seller_user_list/:cmn_company_id',
-        //     component: company_seller_user_list,
-        //     name: 'company_seller_user_list',
-        //     meta: {
-        //         breadcrumb: 'seller user list'
-        //     }
-        // },
-        // ]
+    
 
     },
     {
