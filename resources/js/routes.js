@@ -418,6 +418,7 @@ export const routes = [
     {
         path: '/pdf_platform_setting',
         component: pdf_platform_setting,
+        name: 'pdf_platform_setting',
         meta: {
             breadcrumb: {
                 label: 'pdfプラットフォーム設定'
@@ -429,6 +430,7 @@ export const routes = [
     {
         path: '/pdf_platform_view',
         component: pdf_platform_view,
+        name: 'pdf_platform_view',
         meta: {
             breadcrumb: {
                 label: 'pdfプラットフォーム'

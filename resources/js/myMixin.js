@@ -168,17 +168,15 @@ export default {
         logout() {
             this.loader = Vue.$loading.show()
             this.app.req.post(this.BASE_URL + "logout").then(() => {
-                // this.app.user=null;
-                // this.$router.push('/login');
-
+                this.$session.destroy()
+                this.$router.push({ name: 'home' })
                 window.location.reload();
-                // this.$router.push("home");
                 his.loader.hide();
+
             });
         },
         display_table_col_setting() {
-
-            console.log(this.$route.name);
+            // console.log(this.$route.name);
             if (this.$route.name == 'order_list_details') {
                 this.$root.$emit(
                     "bv::show::modal",

@@ -25,6 +25,16 @@ class CmnPdfPlatformSeeder extends Seeder
                 'line_per_page' => "26",
             ],
         );
-        cmn_pdf_platform_canvas::insert($canvas_array);
+        $publicBgPath = public_path('backend/images/pdf_platform/Background/canvas_bg_image_seeder.png'); // BG Public Path
+        $storageBgPath = storage_path('app/public/backend/images/canvas/pdf_platform/Background/canvas_bg_image_seeder.png'); // BG Storage Path
+
+        $publicScPath = public_path('backend/images/pdf_platform/Canvas_screenshoot/canvas_image_screenshoot_seeder.png'); // Screenshoot Public Path
+        $storageScPath = storage_path('app/public/backend/images/canvas/pdf_platform/Canvas_screenshoot/canvas_image_screenshoot_seeder.png'); // Screenshoot Storage Path
+
+        if (\File::copy($publicBgPath , $storageBgPath)) {
+            if (\File::copy($publicScPath , $storageScPath)) {
+                cmn_pdf_platform_canvas::insert($canvas_array);
+            }
+        }
     }
 }
