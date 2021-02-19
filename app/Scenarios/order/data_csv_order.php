@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Scenarios\order;
-
 use App\Scenarios\Common;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\DATA\ORD\data_order;
@@ -12,9 +11,12 @@ use App\Models\DATA\SHIPMENT\data_shipment_voucher;
 use App\Models\DATA\SHIPMENT\data_shipment_item;
 use App\Models\DATA\SHIPMENT\data_shipment_item_detail;
 use App\Http\Controllers\API\AllUsedFunction;
+use Symfony\Component\HttpFoundation\Response;
+use setasign\Fpdi\Tcpdf\Fpdi;
+// use setasign\Fpdi\Tcpdf\Fpdi;
 use DB;
 
-class data_csv_order extends Model
+class data_csv_order
 {
     private $all_functions;
     private $common_class_obj;
@@ -23,70 +25,11 @@ class data_csv_order extends Model
         $this->common_class_obj = new Common();
         $this->all_functions = new AllUsedFunction();
     }
-    private $format = [
-        [
-            "type"=>"header",
-            "key"=>["start" => 1,"length" => 2,"value" => "HD"],
-            "fmt"=>[
-                ["start" => 1,		"length" => 2,"name" => "hd_tag",			"name_jp"=>"タグ"],
-                ["start" => 15,		"length" => 8,"name" => "invoice_num",		"name_jp"=>"伝票番号"],
-                ["start" => 72,		"length" => 8,"name" => "order_date",	"name_jp"=>"発注日"],
-                ["start" => 94,		"length" => 8,"name" => "shipment_date","name_jp"=>"納品指定日"],
-                ["start" => 148,	"length" => 4,"name" => "order_class",	"name_jp"=>"発注区分"],
-                ["start" => 1197,	"length" => 1,"name" => "auto_order",	"name_jp"=>"自動発注区分"],
-                ["start" => 1283,	"length" => 6,"name" => "company_code",	"name_jp"=>"小売企業コード"],
-                ["start" => 1296,	"length" => 10,"name" => "company_name_kana","name_jp"=>"小売企業名称(ｶﾅ)"],
-                ["start" => 1356,	"length" => 40,"name" => "company_name",	"name_jp"=>"小売企業名称(漢字)"],
-                ["start" => 1851,	"length" => 4,"name" => "shop_code",	"name_jp"=>"店舗コード"],
-                ["start" => 1864,	"length" => 6,"name" => "purchase_code",	"name_jp"=>"仕入先コード"],
-                ["start" => 1877,	"length" => 20,"name" => "purchase_name_kana",	"name_jp"=>"仕入先名称(ｶﾅ)"],
-                ["start" => 1897,	"length" => 20,"name" => "purchase_name",	"name_jp"=>"仕入先名称(漢字)"],
-                ["start" => 2141,	"length" => 10,"name" => "ship_name_kana",	"name_jp"=>"店舗名称(ｶﾅ)"],
-                ["start" => 2171,	"length" => 50,"name" => "ship_name",	"name_jp"=>"店舗名称(漢字)"],
-                ["start" => 2405,	"length" => 6,"name" => "transmission_code",	"name_jp"=>"送受信コード"],
-                ["start" => 2811,	"length" => 3,"name" => "major_category_code",	"name_jp"=>"大分類コード"],
-                ["start" => 2817,	"length" => 20,"name" => "major_category_name_kana",	"name_jp"=>"大分類名称(ｶﾅ)"],
-                ["start" => 2847,	"length" => 40,"name" => "major_category_name",	"name_jp"=>"大分類名称(漢字)"],
-            ]
-        ],
-        [
-            "type"=>"data",
-            "key"=>["start" => 1,"length" => 2,"value" => "DT"],
-            "fmt"=>[
-                ["start" => 1,		"length" => 2,"name" => "dt_tag",			"name_jp"=>"タグ"],
-                ["start" => 3,		"length" => 13,"name" => "jan",		"name_jp"=>"SKU"],
-                ["start" => 20,		"length" => 1,"name" => "invoice_line_num",	"name_jp"=>"伝票行番号"],
-                ["start" => 67,		"length" => 13,"name" => "own_jan","name_jp"=>"自社品番"],
-                ["start" => 80,		"length" => 15,"name" => "maker_jan",	"name_jp"=>"メーカー品番"],
-                ["start" => 120,	"length" => 2,"name" => "submajor_category",	"name_jp"=>"中分類"],
-                ["start" => 130,	"length" => 2,"name" => "minor_category",	"name_jp"=>"小分類"],
-                ["start" => 156,	"length" => 10,"name" => "size_name","name_jp"=>"サイズ名称"],
-                ["start" => 360,	"length" => 40,"name" => "item_name",	"name_jp"=>"商品名称(漢字)"],
-                ["start" => 430,	"length" => 10,"name" => "brand_name",	"name_jp"=>"ブランド名称"],
-                ["start" => 547,	"length" => 10,"name" => "color_name",	"name_jp"=>"カラー名称"],
-                ["start" => 669,	"length" => 5,"name" => "order_quentity",	"name_jp"=>"発注数(ﾊﾞﾗ)"],
-                ["start" => 697,	"length" => 5,"name" => "order_quentity_original",	"name_jp"=>"発注数(ﾊﾞﾗ)(納品数量元値)"],
-                ["start" => 715,	"length" => 9,"name" => "item_price",	"name_jp"=>"原価金額"],
-                ["start" => 726,	"length" => 9,"name" => "suggested_retail_price",	"name_jp"=>"標準上代金額"],
-                ["start" => 761,	"length" => 7,"name" => "item_unit_price",	"name_jp"=>"原価"],
-                ["start" => 772,	"length" => 7,"name" => "suggested_retail_unit_price",	"name_jp"=>"標準上代"],
-                ["start" => 786,	"length" => 3,"name" => "lot_quentity",	"name_jp"=>"ロット数"],
-            ]
-        ],
-        [
-            "type"=>"footer",
-            "key"=>["start" => 1,"length" => 2,"value" => "TR"],
-            "fmt"=>[
-                ["start" => 1,		"length" => 2,"name" => "tr_tag",			"name_jp"=>"タグ"],
-                ["start" => 5,		"length" => 10,"name" => "item_price_total",		"name_jp"=>"原価金額合計"],
-                ["start" => 29,		"length" => 10,"name" => "suggested_retail_price_total",	"name_jp"=>"売価金額合計"],
-            ]
-        ],
-    ];
 
     //
     public function exec($request, $sc)
     {
+        return $this->listAction($request);
         \Log::debug(get_class().' exec start  ---------------');
         if (!array_key_exists('up_file', $request->all())) {
             // return response()->json(['message' => "error", 'status' => '0']);
@@ -474,6 +417,78 @@ class data_csv_order extends Model
             $data_item_array=array();
             $data_shi_item_array=array();
         }
+
         return ['message' => "success", 'status' => '1'];
+    }
+    public function listAction($request)
+    {
+
+        // $receipt = new \FPDI();
+        $receipt = new Fpdi();
+
+        // Set PDF margins (top left and right)
+        $receipt-> SetMargins ( 0 ,  0 ,  0 );
+
+        // Disable header output
+        $receipt-> setPrintHeader ( false );
+
+        // Disable footer output
+        $receipt-> setPrintFooter ( false );
+
+        // Register the font
+        // $fontPathRegular  = storage_path('/app/fonts/migmix-2p-regular.ttf');
+        // $receipt->AddFont('DejaVuSans', '', $fontPathRegular, true);
+        // $receipt->SetFont('Helvetica', '', 12);
+        // $fontPathRegular  = \Config::get('app.url').'storage/app/fonts/migmix-2p-regular.ttf';
+        // $receipt->AddFont('migmix-2p-regular','',$fontPathRegular);
+        // $receipt->SetFont('migmix-2p-regular', 'I', 22);
+        // $regularFont = $receipt->addTTFfont($fontPathRegular, '', '', 32);
+        // $receipt->AddFont('migmix-2p-regular.ttf','',$FontPathRegular);
+        // $receipt->SetFont('migmix-2p-regular.ttf','B',11);
+        // $RegularFont  =  $receipt->addTTFfont ($FontPathRegular ,  '' ,  '' ,  32 );
+
+        // $fontPathBold = storage_path('/app/fonts/migmix-2p-bold.ttf');
+        // $boldFont = $receipt->addTTFfont($fontPathBold, '', '', 32);
+        // $receipt->AddFont('migmix-2p-regular','',$fontPathRegular);
+        // Add page
+        $receipt-> AddPage ();
+        // $receipt->SetFont('migmix-2p-regular','',15);
+
+        // Load the template
+        $receipt->setSourceFile (storage_path('app/order_pdf/demo.pdf'));
+
+        // Get the index of the first page of the imported PDF
+        $tplIdx = $receipt->importPage(1);
+
+        // read using the first page of the PDF as a template
+        $receipt->UseTemplate($tplIdx, Null, Null, Null, Null, True );
+        $receipt->setFontSubsetting(true);
+        $fontPathRegular  = storage_path('app/fonts/migmix-2p-regular.ttf');
+        $receipt->addTTFfont($fontPathRegular, 'migmix-2p-regular', '', 32);
+        // $receipt->AddFont('migmix-2p-regular', '', $fontPathRegular, true);
+
+        // specify the font of the character string to be written
+        // $receipt->SetFont($RegularFont, '', 11);
+
+        // Specify the character color of the character string to be written
+        $receipt->SetTextColor(255 , 0 , 0 );
+
+        // At the position of X: 42mm / Y: 108mm
+        $receipt-> SetXY(42, 108 );
+        $receipt->Write ( 0 ,  'ダウンロードしたファイルは解凍して' );
+        // $receipt->SetFont('migmix-2p-regular', '', 12);
+        //Write the string $ receipt- > Write ( 0 ,  'Taro Yamada' );
+
+        $response = new  Response (
+            // Specify the file name in the first argument of the Output function and the output type in the second argument
+            // This time I want you to return as a character string, so the file name is null and the output type is S Select = String
+            $receipt->Output(null , 'S'),200 ,
+            array ( 'content-type'  => 'application / pdf' )
+        );
+
+        // set the Content-Disposition in response header, specify the file name in the Receipt.Pdf
+        $response->headers -> Set ( 'Content-Disposition' ,  'Attachment; Filename = "Receipt.Pdf"' );
+        $receipt->Output(storage_path('Receipt.pdf'), 'F');
+        return $response;
     }
 }
