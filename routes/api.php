@@ -174,5 +174,6 @@ Route::post('/job_list', 'API\Level3\Level3Controller@job_list');
 Route::post('/get_user_company_byr_slr_list', 'API\UsersController@get_user_company_byr_slr_list');
 Route::get('/get_selected_byr_info/{byr_buyer_id}', 'API\BYR\ByrController@get_selected_byr_info');
 Route::post('/update_cmn_connects_optional', 'API\CMN\CmnConnectsController@update_cmn_connects_optional');
+Route::post('/update_cmn_connects_optionalAllJson', 'API\CMN\CmnConnectsController@update_cmn_connects_optionalAllJson');
 Route::get('/get_allInvoiceJsonSetting_info', 'API\CMN\CmnConnectsController@get_allInvoiceJsonSetting_info');
 Route::post('/get_partner_fax_list', 'API\CMN\CmnConnectsController@get_partner_fax_list');

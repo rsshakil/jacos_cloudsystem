@@ -139,7 +139,7 @@
                 <td>{{ order_detail_list.mes_lis_shi_lin_ite_gtin }}</td>
                 <td>{{ order_detail_list.mes_lis_shi_lin_ite_name }}</td>
                 <td>{{ order_detail_list.mes_lis_shi_lin_ite_ite_spec }}</td>
-                <td>{{ order_detail_list.mes_lis_shi_par_sel_code }}</td>
+                <td>{{ order_detail_list.mes_lis_shi_lin_fre_field_name }}</td>
               </tr>
             </tbody>
           </table>

@@ -24,24 +24,21 @@
           </thead>
           <tbody>
            <tr v-for="(item,index) in cmnConnectOptionList" :key="index">
-            <td>{{item.partner_code}}</td>
-            <td>{{JSON.parse(item.optional).order.fax.number}}</td>
+            <td>{{item.rows.partner_code}}</td>
+            <td><input type="text" class="form-control" v-model="item.jsonRows.order.fax.number"/></td>
             <td><label class="switch">
                 <input
-                  @change="execStatusChange(item)"
-                  :id="item.partner_code"
                   type="checkbox"
-                  v-model="JSON.parse(item.optional).order.fax.exec"
+                  v-model="item.jsonRows.order.fax.exec"
                 />
                 <span class="slider round"></span>
               </label></td>
-            <td>{{JSON.parse(item.optional).payment.fax.number}}</td>
+            <td>
+            <input type="text" class="form-control" v-model="item.jsonRows.payment.fax.number"/></td>
             <td><label class="switch">
                 <input
-                  @change="execStatusChange(item)"
-                  :id="item.partner_code+1"
                   type="checkbox"
-                  v-model="JSON.parse(item.optional).order.fax.exec"
+                  v-model="item.jsonRows.payment.fax.exec"
                 />
                 <span class="slider round"></span>
               </label></td>
@@ -49,7 +46,7 @@
            </tr>
           </tbody>
         </table>
-        
+        <button class="btn btn-primary" @click="update_optional_json_value">更新</button>
       </div>
         
       </div>
@@ -64,6 +61,7 @@
     >
      <h4>請求業務の締日を登録できます</h4>
      <label for="invoicejson_0" class="">締日</label>
+     
      <div class="selectFildlistdata" style="position:relative;">
      <div class="customselectFields" v-for="(input,index) in selectfieldList" :key="input.id">
      <select class="form-control custominvoicejsnslect" v-model="input.value">
@@ -82,31 +80,57 @@ export default {
   data() {
     return {
       cmnConnectOptionList: {},
+      order_columns:[],
       byr_buyer_id: null,
+      selectfieldCounter:0,
+      cmn_connect_id_invoice_update:'',
+      tempM:'',
       invoice_update_setting:false,
       selectfieldList: [{
           id: 'invoicejson_0',
           value: ''
       }],
-      
+      updatedFaxList:[
+        {
+          cmn_connect_id:'',
+          type:'',
+          number:'',
+        }
+      ],
       form: new Form({
-        select_field_per_page_num: 10,
-        page: 1,
         adm_user_id: Globals.user_info_id,
         byr_buyer_id: null,
-        mes_lis_pay_pay_code: null,
-        receive_date_from: null,
-        receive_date_to: null,
-        mes_lis_buy_name: null,
-        mes_lis_pay_per_end_date_from: null,
-        mes_lis_pay_per_end_date_to: null,
-        check_datetime: null,
-        submit_type: "page_load",
         payment_id:'',
       }),
     };
   },
   methods: {
+   
+    update_optional_json_value(){
+      //console.log(this.cmnConnectOptionList);
+       this.alert_icon = "warning";
+      this.alert_title = "";
+      this.alert_text = "FAX番号の登録を更新しますがよろしいでしょうか。";
+      this.yes_btn = "はい";
+      this.cancel_btn = "キャンセル";
+      this.confirm_sweet().then((result) => {
+        if(result.value){
+      var formDatas = {
+        allJson : this.cmnConnectOptionList,
+      };
+      axios
+                .post(this.BASE_URL + "api/update_cmn_connects_optionalAllJson", formDatas)
+                .then((data) => {
+                    Swal.fire({
+                        icon: "success",
+                        title: "",
+                        text: "FAX番号の登録を更新しました。",
+                    });
+                    this.getAllCmnConnectOptionalJsons();
+                });
+                }
+      })
+    },
     //get Table data
     getAllCmnConnectOptionalJsons() {
       axios.post(this.BASE_URL + "api/get_partner_fax_list",this.form)
@@ -117,6 +141,17 @@ export default {
     },
    updateInvoiceSettingByModal(item){
      this.invoice_update_setting=true;
+     this.cmn_connect_id_invoice_update =  item.rows.cmn_connect_id;
+      if(item.jsonRows.invoice.closing_date.length>0){
+        this.selectfieldList = [];
+      }
+    item.jsonRows.invoice.closing_date.forEach((value, index) => {
+    this.selectfieldList.push({
+                id: `invoicejson_${++this.selectfieldCounter}`,
+                value: value,
+            });
+});
+     //this.selectfieldList= 
    },
      addSelectField() {
             this.selectfieldList.push({
@@ -130,29 +165,34 @@ export default {
 
         update_invoice_json_setting() {
             console.log(this.selectfieldList);
+            this.alert_icon = "warning";
+      this.alert_title = "";
+      this.alert_text = "締日の登録を更新しますがよろしいでしょうか。";
+      this.yes_btn = "はい";
+      this.cancel_btn = "キャンセル";
+      this.confirm_sweet().then((result) => {
+        if(result.value){
+            this.invoice_update_setting=false;
             var post_data = {
                 selected_item: this.selectfieldList,
                 user_id: Globals.user_info_id,
+                cmn_connect_id:this.cmn_connect_id_invoice_update,
             };
-            console.log();
             axios
                 .post(this.BASE_URL + "api/update_cmn_connects_optional", post_data)
                 .then((data) => {
-                    console.log(data);
-                    this.$root.$emit(
-                        "bv::hide::modal",
-                        "invoiceJsonSetting",
-                        "#invoiceJsonSettingShowHide"
-                    );
                     Swal.fire({
                         icon: "success",
-                        title: "optional value!",
-                        text: "You can successfully added optional value",
+                        title: "",
+                        text: "締日の登録を更新しました。",
                     });
+                    this.getAllCmnConnectOptionalJsons();
                 });
-
+        }
+      })
 
         },
+       
   },
 
   created() {
