@@ -422,9 +422,10 @@ class data_csv_order
     }
     public function listAction($request)
     {
-
+        // require_once('vendor/tecnickcom/tcpdf/tcpdf.php');
         // $receipt = new \FPDI();
         $receipt = new Fpdi();
+        // $receipt = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
         // Set PDF margins (top left and right)
         $receipt-> SetMargins ( 0 ,  0 ,  0 );
@@ -434,18 +435,16 @@ class data_csv_order
 
         // Disable footer output
         $receipt-> setPrintFooter ( false );
+        // var_dump(K_PATH_FONTS);
+        // if (!defined('K_PATH_FONTS')) define('K_PATH_FONTS', 'value');
+        // define('K_PATH_FONTS', storage_path('/app/fonts'));
+        // var_dump(K_PATH_FONTS);
+        // define('K_PATH_FONTS', storage_path('/app/fonts'));
+        // if (!defined('K_PATH_FONTS')) define('K_PATH_FONTS', storage_path('/app/fonts'));
+        // var_dump(K_PATH_FONTS);
 
-        // Register the font
-        // $fontPathRegular  = storage_path('/app/fonts/migmix-2p-regular.ttf');
-        // $receipt->AddFont('DejaVuSans', '', $fontPathRegular, true);
-        // $receipt->SetFont('Helvetica', '', 12);
-        // $fontPathRegular  = \Config::get('app.url').'storage/app/fonts/migmix-2p-regular.ttf';
-        // $receipt->AddFont('migmix-2p-regular','',$fontPathRegular);
-        // $receipt->SetFont('migmix-2p-regular', 'I', 22);
-        // $regularFont = $receipt->addTTFfont($fontPathRegular, '', '', 32);
-        // $receipt->AddFont('migmix-2p-regular.ttf','',$FontPathRegular);
-        // $receipt->SetFont('migmix-2p-regular.ttf','B',11);
-        // $RegularFont  =  $receipt->addTTFfont ($FontPathRegular ,  '' ,  '' ,  32 );
+        $receipt->AddFont('migmix-2p-regular','','migmix-2p-regular.php'); //Regular
+        $receipt->SetFont('migmix-2p-regular','B',30);
 
         // $fontPathBold = storage_path('/app/fonts/migmix-2p-bold.ttf');
         // $boldFont = $receipt->addTTFfont($fontPathBold, '', '', 32);
@@ -463,8 +462,8 @@ class data_csv_order
         // read using the first page of the PDF as a template
         $receipt->UseTemplate($tplIdx, Null, Null, Null, Null, True );
         $receipt->setFontSubsetting(true);
-        $fontPathRegular  = storage_path('app/fonts/migmix-2p-regular.ttf');
-        $receipt->addTTFfont($fontPathRegular, 'migmix-2p-regular', '', 32);
+        // $fontPathRegular  = storage_path('app/fonts/migmix-2p-regular.ttf');
+        // $receipt->addTTFfont($fontPathRegular, 'migmix-2p-regular', '', 32);
         // $receipt->AddFont('migmix-2p-regular', '', $fontPathRegular, true);
 
         // specify the font of the character string to be written
