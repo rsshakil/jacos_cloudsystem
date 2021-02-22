@@ -38,6 +38,7 @@ import slr_job_list from './components/backend/SLR/slr_job_list.vue'
 import item_master from './components/backend/BYR/byr_item_master.vue'
 import item_category from './components/backend/BYR/item_category.vue'
 import data_order_receive from './components/backend/DATA/RECEIVE/data_order_receive.vue'
+import receive_detail from './components/backend/DATA/RECEIVE/receive_detail.vue'
 import order_corrected_receive from './components/backend/DATA/CRTRCV/order_corrected_receive.vue'
 import return_item_list from './components/backend/DATA/RETURN/return_item_list.vue'
 import payment_list from './components/backend/DATA/PAYMENT/payment_list.vue'
@@ -333,6 +334,17 @@ export const routes = [
         meta: {
             breadcrumb: {
                 label: '受領受信一覧'
+            }
+        },
+    },
+    {
+        path: '/order_receive/receive_detail',
+        component: receive_detail,
+        name: 'receive_detail',
+        meta: {
+            breadcrumb: {
+                label: '受領受信',
+                parent: '受領受信一覧'
             }
         },
     },
