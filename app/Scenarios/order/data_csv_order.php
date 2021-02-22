@@ -443,8 +443,8 @@ class data_csv_order
         // if (!defined('K_PATH_FONTS')) define('K_PATH_FONTS', storage_path('/app/fonts'));
         // var_dump(K_PATH_FONTS);
 
-        $receipt->AddFont('migmix-2p-regular','','migmix-2p-regular.php'); //Regular
-        $receipt->SetFont('migmix-2p-regular','B',30);
+        // $receipt->AddFont('migmix-2p-regular','','migmix-2p-regular.php'); //Regular
+        // $receipt->SetFont('migmix-2p-regular','B',30);
 
         // $fontPathBold = storage_path('/app/fonts/migmix-2p-bold.ttf');
         // $boldFont = $receipt->addTTFfont($fontPathBold, '', '', 32);
@@ -462,8 +462,8 @@ class data_csv_order
         // read using the first page of the PDF as a template
         $receipt->UseTemplate($tplIdx, Null, Null, Null, Null, True );
         $receipt->setFontSubsetting(true);
-        // $fontPathRegular  = storage_path('app/fonts/migmix-2p-regular.ttf');
-        // $receipt->addTTFfont($fontPathRegular, 'migmix-2p-regular', '', 32);
+        $fontPathRegular  = storage_path('app/fonts/migmix-2p-regular.ttf');
+        $receipt->addTTFfont($fontPathRegular, 'migmix-2p-regular', '', 32);
         // $receipt->AddFont('migmix-2p-regular', '', $fontPathRegular, true);
 
         // specify the font of the character string to be written
