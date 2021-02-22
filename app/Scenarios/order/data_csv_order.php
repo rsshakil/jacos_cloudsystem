@@ -443,8 +443,8 @@ class data_csv_order
         // if (!defined('K_PATH_FONTS')) define('K_PATH_FONTS', storage_path('/app/fonts'));
         // var_dump(K_PATH_FONTS);
 
-        // $receipt->AddFont('migmix-2p-regular','','migmix-2p-regular.php'); //Regular
-        // $receipt->SetFont('migmix-2p-regular','B',30);
+        $receipt->AddFont('migmix-2p-regular','','migmix-2p-regular.php'); //Regular
+        $receipt->SetFont('migmix-2p-regular','B',30);
 
         // $fontPathBold = storage_path('/app/fonts/migmix-2p-bold.ttf');
         // $boldFont = $receipt->addTTFfont($fontPathBold, '', '', 32);
