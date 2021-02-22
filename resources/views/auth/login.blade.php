@@ -60,7 +60,7 @@
 
                         </div>
                         <!-- Login Form -->
-                        <form method="POST" action="{{Config::get('app.url').'/login'}}" style="padding:20px;">
+                        <form method="POST" action="{{Config::get('app.url').'login'}}" style="padding:20px;">
                             @csrf
                             <div class="form-group">
                                 <label for="email" style="width: 100%"
@@ -141,8 +141,8 @@
         var bookmarkTitle = this.title;
         // console.log(bookmarkUrl);
         // console.log(bookmarkTitle);
-        if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) { 
-//             var e = $.Event("keydown", { keyCode: 112}); 
+        if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
+//             var e = $.Event("keydown", { keyCode: 112});
 // $("body").trigger(e);
             var e = jQuery.Event("keydown");
             e.which = 68;       // # F1 code value
@@ -153,11 +153,11 @@
             // evt.keyCode = 83; // d
             // evt.ctrlKey = true;
             // $(document).trigger(evt);
-                alert("This function is not available in Google Chrome. Click the star symbol at the end of the address-bar or hit Ctrl-D (Command+D for Macs) to create a bookmark.");      
+                alert("This function is not available in Google Chrome. Click the star symbol at the end of the address-bar or hit Ctrl-D (Command+D for Macs) to create a bookmark.");
         }else if (window.sidebar) { // For Mozilla Firefox Bookmark
             window.sidebar.addPanel(bookmarkTitle, bookmarkUrl,"");
         } else if( window.external || document.all) { // For IE Favorite
-            window.external.AddFavorite( bookmarkUrl, bookmarkTitle);          
+            window.external.AddFavorite( bookmarkUrl, bookmarkTitle);
         } else if(window.opera) { // For Opera Browsers
             $("bookmark_save").attr("href",bookmarkUrl);
             $("bookmark_save").attr("title",bookmarkTitle);
@@ -169,7 +169,7 @@
             return false;
         }
 //   });
-        
+
       });
     });
     </script>

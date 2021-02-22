@@ -144,7 +144,7 @@ Route::get('/get_user_top_blog_by_byr_id/{byr_buyer_id}', 'API\Cmn_blogControlle
 Route::post('/update_blog_infos', 'API\Cmn_blogController@update_blog_infos');
 Route::post('/ckeditor_file_up', 'API\Cmn_blogController@ckeditor_file_up');
 
-Route::post('/get_byr_order_data_by_slr', 'API\Byr_orderController@getByrOrderDataBySlr');
+Route::post('/get_byr_order_data_by_slr', 'API\DATA\ORDER\OrderController@getByrOrderDataBySlr');
 Route::post('/order_details', 'API\Byr_orderController@orderDetails');
 Route::get('/order_item_details/{data_shipment_voucher_id}', 'API\Byr_orderController@orderItemDetails');
 Route::get('/shipment_item_detail_search/{item_code}', 'API\Byr_orderController@shipment_item_detail_search');

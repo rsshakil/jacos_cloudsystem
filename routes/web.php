@@ -44,7 +44,7 @@ Route::get('/{any}', 'HomeController@index')->where('any', '.*');
 
 // 	// Role permission Route
 // 	// Route::group(['middleware' => ['role:Super Admin']], function () {
-		
+
 // 		// Route::get('/user_create', 'PermissionController@permission')->name('permission');
 //         Route::get('/permission/{id?}', 'PermissionController@permission')->name('permission');
 // 		Route::post('/permission_insert', 'PermissionController@permissionInsert');
@@ -79,11 +79,11 @@ Route::get('/{any}', 'HomeController@index')->where('any', '.*');
 // 		Route::post('permission_search', 'PermissionController@permissionSearch');
 // 		// Route::post('user_change_password', 'UserManagement@userChangePassword');
 
-// 		// Code Added by Ahasan from 
+// 		// Code Added by Ahasan from
 // 		Route::post('user_update', 'UserManagement@userUpdate');
 // 		Route::get('get_permission_by_role_id/{user_id}', 'RoleController@get_role_permission_by_role_id');
 
 // 	// });
-		
+
 // });
 
