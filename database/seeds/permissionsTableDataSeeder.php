@@ -211,6 +211,11 @@ class permissionsTableDataSeeder extends Seeder
                 'is_system' => 0,
             ],
             [
+                'name' => 'receive_item_detail',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
                 'name' => 'order_corrected_receive',
                 'guard_name' => 'web',
                 'is_system' => 0,

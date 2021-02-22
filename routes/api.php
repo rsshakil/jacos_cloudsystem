@@ -105,6 +105,7 @@ Route::post('item_master_exec', 'API\Cmn_jobController@exec');
 Route::get('get_all_master_item/{adm_user_id}', 'API\Byr_itemController@get_all_master_item');
 // receive
 Route::post('data_receive_list', 'API\DATA\RECEIVE\ReceiveController@orderReceiveList');
+Route::post('data_receive_detail_list', 'API\DATA\RECEIVE\ReceiveController@orderReceiveDetailList');
 Route::get('corrected_receive_list/{adm_user_id}', 'API\DATA\RECEIVE\ReceiveController@correctedReceiveList');
 // receive end
 Route::post('get_payment_list', 'API\DATA\PAYMENT\PaymentController@getPaymentList');

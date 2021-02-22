@@ -39,6 +39,7 @@ import item_master from './components/backend/BYR/byr_item_master.vue'
 import item_category from './components/backend/BYR/item_category.vue'
 import data_order_receive from './components/backend/DATA/RECEIVE/data_order_receive.vue'
 import receive_detail from './components/backend/DATA/RECEIVE/receive_detail.vue'
+import receive_item_detail from './components/backend/DATA/RECEIVE/receive_item_detail.vue'
 import order_corrected_receive from './components/backend/DATA/CRTRCV/order_corrected_receive.vue'
 import return_item_list from './components/backend/DATA/RETURN/return_item_list.vue'
 import payment_list from './components/backend/DATA/PAYMENT/payment_list.vue'
@@ -338,13 +339,24 @@ export const routes = [
         },
     },
     {
-        path: '/order_receive/receive_detail',
+        path: '/order_receive/receive_detail/:data_receive_id',
         component: receive_detail,
         name: 'receive_detail',
         meta: {
             breadcrumb: {
-                label: '受領受信',
-                parent: '受領受信一覧'
+                label: '受領伝票一覧',
+                parent: 'order_receive'
+            }
+        },
+    },
+    {
+        path: '/order_receive/receive_detail/receive_item_detail/:data_receive_voucher_id',
+        component: receive_item_detail,
+        name: 'receive_item_detail',
+        meta: {
+            breadcrumb: {
+                label: '受領伝票一覧',
+                parent: 'receive_detail'
             }
         },
     },
