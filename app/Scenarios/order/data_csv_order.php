@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Scenarios\order;
+
 use App\Scenarios\Common;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\DATA\ORD\data_order;
@@ -13,6 +14,10 @@ use App\Models\DATA\SHIPMENT\data_shipment_item_detail;
 use App\Http\Controllers\API\AllUsedFunction;
 use Symfony\Component\HttpFoundation\Response;
 use setasign\Fpdi\Tcpdf\Fpdi;
+
+require_once(base_path('vendor/tecnickcom/tcpdf/tcpdf.php'));
+use tecnickcom\tcpdf\TCPDF_FONTS;
+
 // use setasign\Fpdi\Tcpdf\Fpdi;
 use DB;
 
@@ -428,13 +433,13 @@ class data_csv_order
         // $receipt = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
         // Set PDF margins (top left and right)
-        $receipt-> SetMargins ( 0 ,  0 ,  0 );
+        $receipt-> SetMargins(0, 0, 0);
 
         // Disable header output
-        $receipt-> setPrintHeader ( false );
+        $receipt-> setPrintHeader(false);
 
         // Disable footer output
-        $receipt-> setPrintFooter ( false );
+        $receipt-> setPrintFooter(false);
         // var_dump(K_PATH_FONTS);
         // if (!defined('K_PATH_FONTS')) define('K_PATH_FONTS', 'value');
         // define('K_PATH_FONTS', storage_path('/app/fonts'));
@@ -443,50 +448,52 @@ class data_csv_order
         // if (!defined('K_PATH_FONTS')) define('K_PATH_FONTS', storage_path('/app/fonts'));
         // var_dump(K_PATH_FONTS);
 
-        $receipt->AddFont('migmix-2p-regular','','migmix-2p-regular.php'); //Regular
-        $receipt->SetFont('migmix-2p-regular','B',30);
+        // $receipt->AddFont('migmix-2p-regular', '', 'migmix-2p-regular.php'); //Regular
+        // $receipt->SetFont('migmix-2p-regular', 'B', 30);
 
         // $fontPathBold = storage_path('/app/fonts/migmix-2p-bold.ttf');
         // $boldFont = $receipt->addTTFfont($fontPathBold, '', '', 32);
         // $receipt->AddFont('migmix-2p-regular','',$fontPathRegular);
         // Add page
-        $receipt-> AddPage ();
+        $receipt-> AddPage();
         // $receipt->SetFont('migmix-2p-regular','',15);
 
         // Load the template
-        $receipt->setSourceFile (storage_path('app/order_pdf/demo.pdf'));
+        $receipt->setSourceFile(storage_path('app/order_pdf/demo.pdf'));
 
         // Get the index of the first page of the imported PDF
         $tplIdx = $receipt->importPage(1);
 
         // read using the first page of the PDF as a template
-        $receipt->UseTemplate($tplIdx, Null, Null, Null, Null, True );
+        $receipt->UseTemplate($tplIdx, null, null, null, null, true);
         $receipt->setFontSubsetting(true);
         $fontPathRegular  = storage_path('app/fonts/migmix-2p-regular.ttf');
-        $receipt->addTTFfont($fontPathRegular, 'migmix-2p-regular', '', 32);
+        // $receipt->addTTFfont($fontPathRegular, 'migmix-2p-regular', '', 32);
         // $receipt->AddFont('migmix-2p-regular', '', $fontPathRegular, true);
+        $receipt->SetFont(\TCPDF_FONTS::addTTFfont($fontPathRegular), '', 16, '', true);
 
         // specify the font of the character string to be written
         // $receipt->SetFont($RegularFont, '', 11);
 
         // Specify the character color of the character string to be written
-        $receipt->SetTextColor(255 , 0 , 0 );
+        $receipt->SetTextColor(255, 0, 0);
 
         // At the position of X: 42mm / Y: 108mm
-        $receipt-> SetXY(42, 108 );
-        $receipt->Write ( 0 ,  'ダウンロードしたファイルは解凍して' );
+        $receipt-> SetXY(42, 108);
+        $receipt->Write(0, 'ダウンロードしたファイルは解凍して');
         // $receipt->SetFont('migmix-2p-regular', '', 12);
         //Write the string $ receipt- > Write ( 0 ,  'Taro Yamada' );
 
-        $response = new  Response (
+        $response = new  Response(
             // Specify the file name in the first argument of the Output function and the output type in the second argument
             // This time I want you to return as a character string, so the file name is null and the output type is S Select = String
-            $receipt->Output(null , 'S'),200 ,
-            array ( 'content-type'  => 'application / pdf' )
+            $receipt->Output(null, 'S'),
+            200,
+            array( 'content-type'  => 'application / pdf' )
         );
 
         // set the Content-Disposition in response header, specify the file name in the Receipt.Pdf
-        $response->headers -> Set ( 'Content-Disposition' ,  'Attachment; Filename = "Receipt.Pdf"' );
+        $response->headers -> Set('Content-Disposition', 'Attachment; Filename = "Receipt.Pdf"');
         $receipt->Output(storage_path('Receipt.pdf'), 'F');
         return $response;
     }
