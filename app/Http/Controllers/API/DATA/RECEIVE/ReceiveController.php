@@ -223,18 +223,17 @@ class ReceiveController extends Controller
         ->groupBy('data_receive_vouchers.mes_lis_acc_par_sel_name')->first();
         /*receive order info for single row*/
         // 検索
-        $result=data_receive_voucher::join('data_receives as dr','dr.data_receive_id','=','data_receive_vouchers.data_receive_id')
+        $result=data_receive_voucher::select('data_receive_vouchers.*','dsv.mes_lis_shi_tra_dat_order_date','dsv.mes_lis_shi_tra_trade_number','dsv.mes_lis_shi_tot_tot_net_price_total','dr.cmn_connect_id')
+        ->join('data_receives as dr','dr.data_receive_id','=','data_receive_vouchers.data_receive_id')
         ->leftJoin('data_shipment_vouchers as dsv','dsv.mes_lis_shi_tra_trade_number','=','data_receive_vouchers.mes_lis_acc_tra_trade_number')
         ->where('dr.cmn_connect_id','=',$cmn_connect_id)
         ->where('data_receive_vouchers.data_receive_id','=',$data_receive_id)
-        ->whereExists(function($query)
-            {
-                $query->select(DB::raw(1))
-                      ->from('dsv')
-                      ->whereRaw('data_receive_vouchers.mes_lis_acc_tra_dat_order_date','=','dsv.mes_lis_shi_tra_dat_order_date')
-        ->whereRaw('data_receive_vouchers.mes_lis_acc_tra_trade_number','=','dsv.mes_lis_shi_tra_trade_number');
-            })
-        
+        // ->whereColumn([
+        //     ['data_receive_vouchers.mes_lis_acc_tra_dat_order_date', 'dsv.mes_lis_shi_tra_dat_order_date'],
+        //     ['data_receive_vouchers.mes_lis_acc_tra_trade_number', 'dsv.mes_lis_shi_tra_trade_number'],
+        // ])
+        //->whereColumn('data_receive_vouchers.mes_lis_acc_tra_dat_order_date','=','dsv.mes_lis_shi_tra_dat_order_date')
+        //->whereColumn('data_receive_vouchers.mes_lis_acc_tra_trade_number','=','dsv.mes_lis_shi_tra_trade_number')
         ->groupBy('data_receive_vouchers.mes_lis_acc_tra_trade_number')
         // ->groupBy('data_receives.receive_datetime')
         // ->groupBy('dr.sta_sen_identifier')
@@ -284,10 +283,13 @@ class ReceiveController extends Controller
         // 検索
         $result=data_receive_item::join('data_receive_vouchers as drv','drv.data_receive_voucher_id','=','data_receive_items.data_receive_voucher_id')
         ->join('data_receives as dr','dr.data_receive_id','=','drv.data_receive_id')
+        ->leftJoin('data_order_vouchers as dov','dov.mes_lis_ord_tra_trade_number','=','drv.mes_lis_acc_tra_trade_number')
+        ->leftJoin('data_order_items as doi','doi.data_order_voucher_id','=','dov.data_order_voucher_id')
         ->where('dr.cmn_connect_id','=',$cmn_connect_id)
         ->where('drv.data_receive_voucher_id','=',$data_receive_voucher_id)
-        ->groupBy('drv.mes_lis_acc_tra_trade_number')
-        ->paginate($per_page);
+        //->groupBy('drv.mes_lis_acc_tra_trade_number')
+       // ->paginate($per_page);
+        ->get();
 
         // $result = new Paginator($result, 2);
         $buyer_settings = byr_buyer::select('setting_information')->where('byr_buyer_id', $byr_buyer_id)->first();
