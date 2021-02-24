@@ -223,8 +223,16 @@
               <td>{{ received_item.mes_lis_acc_par_sel_code }} {{ received_item.mes_lis_acc_par_sel_name }}</td>
               <td>{{ received_item.mes_lis_acc_tra_dat_transfer_of_ownership_date }}</td>
               <td>{{ received_item.mes_lis_acc_tra_goo_major_category }}</td>
-              <td>{{ received_item.mes_lis_acc_log_del_delivery_service_code }}</td>
-              <!-- <td>{{ received_item.mes_lis_acc_tra_ins_temperature_code }}</td> -->
+              <td>{{ received_item.mes_lis_acc_log_del_delivery_service_code }}
+              {{
+                getbyrjsonValueBykeyName(
+                  "mes_lis_ord_log_del_delivery_service_code",
+                  received_item.mes_lis_acc_log_del_delivery_service_code,
+                  "orders",
+                  buyer_settings
+                )
+              }}
+              </td>
               <td>
                   {{
                     received_item.mes_lis_acc_tra_ins_temperature_code
@@ -237,6 +245,7 @@
                     )
                   }}
               </td>
+              <td></td>
               <td></td>
               <td></td>
               <td>{{ received_item.check_datetime }}</td>
