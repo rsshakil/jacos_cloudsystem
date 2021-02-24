@@ -9,19 +9,19 @@
         <table class="table orderTopDetailTable table-bordered" style="width: 100%">
           <tr>
             <td class="cl_custom_color">受信日時</td>
-            <td></td>
+            <td>{{order_item_shipment_data_headTable.mes_lis_acc_par_shi_code}}</td>
             <td class="cl_custom_color">取引先</td>
-            <td></td>
+            <td>{{order_item_shipment_data_headTable.mes_lis_acc_par_rec_code}} {{order_item_shipment_data_headTable.mes_lis_acc_par_rec_name}}</td>
             <td class="cl_custom_color">計上日</td>
-            <td></td>
+            <td>{{order_item_shipment_data_headTable.mes_lis_acc_tra_trade_number}}</td>
             <td class="cl_custom_color">部門</td>
             <td colspan="3"></td>
           </tr>
           <tr>
             <td class="cl_custom_color">定／特</td>
-            <td></td>
+            <td>{{order_item_shipment_data_headTable.mes_lis_acc_tra_ins_goods_classification_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_goods_classification_code',order_item_shipment_data_headTable.mes_lis_acc_tra_ins_goods_classification_code,'orders',buyer_settings)}}</td>
             <td class="cl_custom_color">配送温度区分</td>
-            <td></td>
+            <td>{{order_item_shipment_data_headTable.mes_lis_acc_tra_fre_variable_measure_item_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_fre_variable_measure_item_code',order_item_shipment_data_headTable.mes_lis_acc_tra_fre_variable_measure_item_code,'orders',buyer_settings)}}</td>
             <td class="cl_custom_color">データ種別</td>
             <td></td>
             <td class="cl_custom_color">直接納品先</td>
@@ -37,7 +37,7 @@
             <td class="cl_custom_color">不定貫区分</td>
             <td></td>
             <td class="cl_custom_color">発注日</td>
-            <td></td>
+            <td>{{order_item_shipment_data_headTable.mes_lis_acc_tra_dat_order_date}}</td>
           </tr>
           <tr>
             <td class="cl_custom_color">発注者</td>
@@ -92,7 +92,40 @@
             <tbody>
 
               <tr v-for="(order_item_detail_list, index) in order_item_detail_lists" :key="index">
-                
+                <td>{{index+1}}</td>
+                <td style="text-align:left;">
+                商品コード：{{order_item_detail_list.mes_lis_acc_lin_ite_order_item_code}}<br>
+                 JANコード： {{order_item_detail_list.mes_lis_acc_lin_ite_gtin.slice(1)}}<br>
+                 商品名：{{order_item_detail_list.mes_lis_acc_lin_ite_name}}<br>
+                 規格：{{order_item_detail_list.mes_lis_acc_lin_ite_ite_spec}}<br>
+                 産地：{{order_item_detail_list.mes_lis_acc_lin_fre_field_name}}<br></td>
+                <td>{{order_item_detail_list.mes_lis_acc_lin_fre_packing_quantity}}</td>
+                <td>
+                <input type="text" class="form-control" @keyup="ball_case_cal(order_item_detail_list,'ケース')" v-model="order_item_detail_list.mes_lis_acc_lin_qua_shi_num_of_order_units">
+                {{order_item_detail_list.mes_lis_acc_lin_qua_ord_num_of_order_units}}</td>
+                <td>
+                {{order_item_detail_list.mes_lis_acc_lin_qua_unit_of_measure}}  {{getbyrjsonValueBykeyName('mes_lis_ord_lin_qua_unit_of_measure',order_item_detail_list.mes_lis_acc_lin_qua_unit_of_measure,'orders',buyer_settings)}}
+                </td>
+                <td>
+                 <input type="text" class="form-control" @keyup="ball_case_cal(order_item_detail_list,'バラ')" v-model="order_item_detail_list.mes_lis_acc_lin_qua_shi_quantity">
+                {{order_item_detail_list.mes_lis_acc_lin_qua_ord_quantity}}</td>
+
+                <td>{{order_item_detail_list.mes_lis_acc_lin_fre_item_weight * order_item_detail_list.mes_lis_acc_lin_qua_shi_quantity}}</td>
+                <td>
+                 <input type="text" class="form-control" v-model="order_item_detail_list.mes_lis_acc_lin_amo_item_net_price_unit_price">
+                {{order_item_detail_list.mes_lis_ord_lin_amo_item_net_price_unit_price}}</td>
+                <td> {{ order_item_detail_list.mes_lis_acc_lin_amo_item_net_price_unit_price * order_item_detail_list.mes_lis_acc_lin_qua_shi_quantity}}</td>
+                <td>
+                 <input type="text" class="form-control" v-model="order_item_detail_list.mes_lis_acc_lin_amo_item_selling_price_unit_price">
+                {{order_item_detail_list.mes_lis_ord_lin_amo_item_selling_price_unit_price}}</td>
+                <td>{{order_item_detail_list.mes_lis_acc_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_acc_lin_qua_shi_quantity}}</td>
+                <td>{{order_item_detail_list.mes_lis_acc_lin_qua_rec_reason_code}} {{getbyrjsonValueBykeyName('mes_lis_acc_lin_qua_rec_reason_code',order_item_detail_list.mes_lis_acc_lin_qua_rec_reason_code,'receives',buyer_settings)}}
+                <select v-model="order_item_detail_list.mes_lis_acc_lin_qua_rec_reason_code" class="form-control ">
+                <option v-for="item in mes_lis_acc_lin_qua_rec_reason_codeList" :value="Object.keys(item)[0]">{{Object.values(item)[0]}}</option>
+                </select>
+                <!--<input type="hidden" v-model="totalCostPrice += order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity">
+                <input type="hidden" v-model="totalSellingPrice += order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity">-->
+                </td>
               </tr>
             </tbody>
             <tfoot>
@@ -105,12 +138,13 @@
               <th></th>
               <th></th>
               <th style="background:#538ED3;color:#fff;text-align:center;">原価全額<br>合計</th>
-              <th style="text-align:center;"></th>
+              <th style="text-align:center;">{{totalCostPriceVal}}</th>
               <th style="background:#538ED3;color:#fff;text-align:center;">売価全額<br>合計</th>
-              <th style="text-align:center;"></th>
+              <th style="text-align:center;">{{totalSellingPriceVal}}</th>
               <th></th>
               </tr>
             </tfoot>
+           
 
           </table>
           <button style="float:right" class="btn btn-lg btn-primary pull-right text-right active">
@@ -251,8 +285,11 @@ export default {
       order_detail_lists: {},
       order_item_detail_lists: [],
       order_item_shipment_data_headTable: {},
+      mes_lis_acc_lin_qua_rec_reason_codeList:[],
       order_date: "",
       order_detail_list: [],
+      buyer_settings:[],
+      byr_buyer_lists: {},
       show_hide_col_list: [],
       expected_delivery_date: "",
       data_order_voucher_id:'',
@@ -295,7 +332,7 @@ beforeCreate: function() {
       var allIsZeroNotZero = [];
       var totalRows = this.order_item_detail_lists.length;
       this.order_item_detail_lists.forEach(function (order_item_detail_listData) {
-          if(order_item_detail_listData.mes_lis_shi_lin_qua_shi_quantity==0){
+          if(order_item_detail_listData.mes_lis_acc_lin_qua_shi_quantity==0){
             allIsZero.push(0);
           }else{
             allIsNotZero.push(1);
@@ -319,9 +356,13 @@ beforeCreate: function() {
       };
       axios.post(this.BASE_URL + "api/data_receive_item_detail_list",post_data)
         .then(({data}) => {
-          console.log(data.received_item_detail_list);
+          console.log(data);
           this.order_item_detail_lists = data.received_item_detail_list;
           this.order_item_shipment_data_headTable = data.received_item_detail_list[0];
+          this.byr_buyer_lists = data.byr_buyer_list;
+          this.buyer_settings = JSON.parse(data.buyer_settings);
+          this.mes_lis_acc_lin_qua_rec_reason_codeList = this.buyer_settings.receives.mes_lis_acc_lin_qua_rec_reason_code;
+
           this.loader.hide();
         });
     },
@@ -335,7 +376,6 @@ beforeCreate: function() {
     Fire.$emit('permission_check_for_buyer',this.$session.get('byr_buyer_id'));
     this.loader = Vue.$loading.show();
     this.data_receive_voucher_id = this.$route.params.data_receive_voucher_id;
-    console.log(this.$route.params.data_order_list_voucher_id)
     this.get_all_receive_item_detail();
     Fire.$on("LoadByrorderItemDetail", () => {
 
@@ -345,6 +385,20 @@ beforeCreate: function() {
   },
   computed: {
     
+    totalCostPriceVal: function() {
+      return this.order_item_detail_lists.reduce(function(sum,order_item_detail_list){return  sum+order_item_detail_list.mes_lis_acc_lin_amo_item_net_price_unit_price * order_item_detail_list.mes_lis_acc_lin_qua_shi_quantity;}, 0)
+
+      // return this.order_item_detail_lists.reduce(function (sum,order_item_detail_list) {
+      //  return  sum+order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity;
+      // },0);
+
+    },
+    totalSellingPriceVal: function() {
+      return this.order_item_detail_lists.reduce(function (sumselling,order_item_detail_list) {
+       return  sumselling+order_item_detail_list.mes_lis_acc_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_acc_lin_qua_shi_quantity;
+      },0);
+
+    },
     
   },
   mounted() {
