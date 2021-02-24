@@ -432,7 +432,7 @@ class data_csv_order
         $receipt->AddPage();
 
         // Load the template
-        $receipt->setSourceFile(storage_path('app/order_pdf/demo.pdf'));
+        $receipt->setSourceFile(storage_path('app/order_pdf/demo/blank.pdf'));
 
         // Get the index of the first page of the imported PDF
         $tplIdx = $receipt->importPage(1);
@@ -445,27 +445,27 @@ class data_csv_order
         $receipt->SetFont(\TCPDF_FONTS::addTTFfont($fontPathRegular), '', 8, '', true);
 
         // Specify the character color of the character string to be written
-        $receipt->SetTextColor(255, 0, 0);
+        // $receipt->SetTextColor(255, 0, 0);
         $pdf_datas = $this->pdfDAta($data_order_id);
         $x = 0;
         $y = 0;
         $i = 0;
         foreach ($pdf_datas as $pdf_data) {
             if (!($i > count($pdf_datas))) {
-                $receipt->SetXY($x + 29, $y + 37);
+                $receipt->SetXY($x + 23, $y + 33.5);
                 $receipt->Write(0, $pdf_data[0]->fax);
-                $receipt->SetXY($x + 21, $y + 41.5);
+                $receipt->SetXY($x + 15, $y + 37.8);
                 $receipt->Write(0, $pdf_data[0]->mes_lis_ord_par_sel_name_sbcs);
-                $receipt->SetXY($x + 33, $y + 45.5);
+                $receipt->SetXY($x + 26.5, $y + 41.8);
                 $receipt->Write(0, $pdf_data[0]->mes_lis_ord_par_sel_code);
-                $receipt->SetXY($x + 123, $y + 37);
+                $receipt->SetXY($x + 122, $y + 33);
                 $receipt->Write(0, $pdf_data[0]->mes_lis_ord_par_shi_name);
                 if (isset($pdf_datas[$i])) {
-                    $receipt = $this->coordinateText($receipt, $pdf_datas[$i],$i,0,53.3);
+                    $receipt = $this->coordinateText($receipt, $pdf_datas[$i],$i,0,50.7);
                 }
                 $i += 1;
                 if (isset($pdf_datas[$i])) {
-                    $receipt = $this->coordinateText($receipt, $pdf_datas[$i],$i, 0, 116.2);
+                    $receipt = $this->coordinateText($receipt, $pdf_datas[$i],$i, 0, 117);
                 }
                 $receipt->AddPage();
                 $tplIdx = $receipt->importPage(1);
@@ -488,61 +488,64 @@ class data_csv_order
 
         // set the Content-Disposition in response header, specify the file name in the Receipt.Pdf
         $response->headers->Set('Content-Disposition', 'Attachment; Filename = "Receipt.Pdf"');
-        $receipt->Output(storage_path('Receipt.pdf'), 'F');
+        $datetime=date('YmdHis');
+        $receipt->Output(storage_path('app/order_pdf/created/'.$datetime.'_receipt.pdf'), 'F');
+        // $receipt->Output(storage_path('app/order_pdf/created/Receipt.pdf'), 'F');
         return $response;
     }
-    public function coordinateText($receipt, $pdf_data,$i=0, $x = 0, $y = 53.3)
+    public function coordinateText($receipt, $pdf_data,$i=0, $x = 0, $y = 50.7)
     {
-        $receipt->SetXY($x + 35, $y);
-        $receipt->Write(0, $pdf_data[0]->mes_lis_ord_par_rec_name_sbcs);
-        $receipt->SetXY($x + 66.5, $y);
-        $receipt->Write(0, $pdf_data[0]->mes_lis_ord_par_rec_code);
-        $receipt->SetXY($x + 102.5, $y);
-        $receipt->Write(0, '50');
-        $receipt->SetXY($x + 122.5, $y);
-        $receipt->Write(0, $pdf_data[0]->mes_lis_ord_tra_goo_major_category);
-        $receipt->SetXY($x + 147.1, $y);
-        $receipt->Write(0, $pdf_data[0]->mes_lis_ord_log_del_delivery_service_code);
-        $receipt->SetXY($x + 169, $y);
-        $receipt->Write(0, $pdf_data[0]->mes_lis_ord_tra_trade_number);
-        $receipt->SetXY($x + 203, $y);
-        $receipt->Write(0, $pdf_data[0]->mes_lis_ord_tra_dat_order_date);
-        $receipt->SetXY($x + 237.7, $y);
-        $receipt->Write(0, $pdf_data[0]->mes_lis_ord_tra_dat_delivery_date);
-        $receipt->SetXY($x + 35, $y += 4.5);
-        $receipt->Write(0, $pdf_data[0]->mes_lis_ord_tra_ins_goods_classification_code);
-        $y += 8.2;
+        //Cell($w, $h=0, $txt='', $border=0, $ln=0, $align='', $fill=0, $link='', $stretch=0, $ignore_min_height=false, $calign='T', $valign='M')
+        $receipt->SetXY($x + 29.6, $y);
+        $receipt->Cell(14.8, 0, $pdf_data[0]->mes_lis_ord_par_rec_name_sbcs, 0, 1, 'L', 0, '', 0);
+        $receipt->SetXY($x + 62.5, $y);
+        $receipt->Cell(20, 0, $pdf_data[0]->mes_lis_ord_par_rec_code, 0, 1, 'C', 0, '', 0);
+        $receipt->SetXY($x + 100.5, $y);
+        $receipt->Cell(11.5, 0, '50', 0, 1, 'C', 0, '', 0);
+        $receipt->SetXY($x + 121.5, $y);
+        $receipt->Cell(11.5, 0, $pdf_data[0]->mes_lis_ord_tra_goo_major_category, 0, 1, 'C', 0, '', 0);
+        $receipt->SetXY($x + 147.5, $y);
+        $receipt->Cell(4.5, 0, $pdf_data[0]->mes_lis_ord_log_del_delivery_service_code, 0, 1, 'C', 0, '', 0);
+        $receipt->SetXY($x + 170.2, $y);
+        $receipt->Cell(22, 0, $pdf_data[0]->mes_lis_ord_tra_trade_number, 0, 1, 'C', 0, '', 0);
+        $receipt->SetXY($x + 207, $y);
+        $receipt->Cell(21.6, 0, $pdf_data[0]->mes_lis_ord_tra_dat_order_date, 0, 1, 'C', 0, '', 0);
+        $receipt->SetXY($x + 243, $y);
+        $receipt->Cell(21.6, 0, $pdf_data[0]->mes_lis_ord_tra_dat_delivery_date, 0, 1, 'C', 0, '', 0);
+        $receipt->SetXY($x + 29.6, $y += 4.5);
+        $receipt->Cell(14.8, 0, $pdf_data[0]->mes_lis_ord_tra_ins_goods_classification_code, 0, 1, 'C', 0, '', 0);
+        $y += 8.3;
         foreach ($pdf_data as $key1 => $value) {
-            $receipt->SetXY($x += 26, $y);
-            $receipt->Write(0, str_pad($value->mes_lis_ord_lin_lin_line_number, 2, "0", STR_PAD_LEFT));
-            $receipt->SetXY($x += 10, $y);
-            $receipt->Write(0, $value->mes_lis_ord_lin_ite_name_sbcs);
-            $receipt->SetXY($x += 50, $y);
-            $receipt->Write(0, $value->mes_lis_ord_lin_ite_order_item_code);
-            $receipt->SetXY($x += 40, $y);
-            $receipt->Write(0, $value->mes_lis_ord_lin_qua_ord_quantity);
-            $receipt->SetXY($x += 32, $y);
-            $receipt->Write(0, $value->mes_lis_ord_lin_amo_item_net_price_unit_price);
+            $receipt->SetXY($x += 14.7, $y);
+            $receipt->Cell(14.8, 4.5, str_pad($value->mes_lis_ord_lin_lin_line_number, 2, "0", STR_PAD_LEFT), 0, 1, 'C', 0, '', 0);
+            $receipt->SetXY($x += 15, $y);
+            $receipt->Cell(52.5, 4.5, $value->mes_lis_ord_lin_ite_name_sbcs, 0, 1, 'L', 0, '', 0);
+            $receipt->SetXY($x += 52.5, $y);
+            $receipt->Cell(30, 4.5, $value->mes_lis_ord_lin_ite_order_item_code, 0, 1, 'L', 0, '', 0);
+            $receipt->SetXY($x += 30, $y);
+            $receipt->Cell(21, 4.5, $value->mes_lis_ord_lin_qua_ord_quantity, 0, 1, 'R', 0, '', 0);
+            $receipt->SetXY($x += 21, $y);
+            $receipt->Cell(37, 4.5, $value->mes_lis_ord_lin_amo_item_net_price_unit_price, 0, 1, 'R', 0, '', 0);
             $receipt->SetXY($x += 37, $y);
-            $receipt->Write(0, $value->mes_lis_ord_lin_amo_item_net_price);
-            $receipt->SetXY($x += 22.5, $y);
-            $receipt->Write(0, $value->mes_lis_ord_lin_amo_item_selling_price_unit_price);
-            $receipt->SetXY($x += 32.7, $y);
-            $receipt->Write(0, $value->mes_lis_ord_lin_amo_item_selling_price);
+            $receipt->Cell(36.8, 4.5, $value->mes_lis_ord_lin_amo_item_net_price, 0, 1, 'R', 0, '', 0);
+            $receipt->SetXY($x += 36.8, $y);
+            $receipt->Cell(21.5, 4.5, $value->mes_lis_ord_lin_amo_item_selling_price_unit_price, 0, 1, 'R', 0, '', 0);
+            $receipt->SetXY($x += 21.5, $y);
+            $receipt->Cell(36, 4.5, $value->mes_lis_ord_lin_amo_item_selling_price, 0, 1, 'R', 0, '', 0);
             $x = 0;
             $y += 4.5;
         }
         $x = 0;
         if ($i%2==0) {
-            $y=104.4;
+            $y=103.4;
         }else{
-            $y=166.9;
+            $y=170;
         }
         // $y += 33.7;
-        $receipt->SetXY($x + 195, $y);
-        $receipt->Write(0, $value->mes_lis_ord_tot_tot_net_price_total);
-        $receipt->SetXY($x + 250.2, $y);
-        $receipt->Write(0, $value->mes_lis_ord_tot_tot_selling_price_total);
+        $receipt->SetXY($x + 170.5, $y);
+        $receipt->Cell(36.5, 4.5, $value->mes_lis_ord_tot_tot_net_price_total, 0, 1, 'R', 0, '', 0);
+        $receipt->SetXY($x + 228.2, $y);
+        $receipt->Cell(36.5, 4.5, $value->mes_lis_ord_tot_tot_selling_price_total, 0, 1, 'R', 0, '', 0);
         $y=0;
         return $receipt;
     }
