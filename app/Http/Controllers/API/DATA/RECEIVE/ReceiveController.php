@@ -224,8 +224,17 @@ class ReceiveController extends Controller
         /*receive order info for single row*/
         // 検索
         $result=data_receive_voucher::join('data_receives as dr','dr.data_receive_id','=','data_receive_vouchers.data_receive_id')
+        ->leftJoin('data_shipment_vouchers as dsv','dsv.mes_lis_shi_tra_trade_number','=','data_receive_vouchers.mes_lis_acc_tra_trade_number')
         ->where('dr.cmn_connect_id','=',$cmn_connect_id)
         ->where('data_receive_vouchers.data_receive_id','=',$data_receive_id)
+        ->whereExists(function($query)
+            {
+                $query->select(DB::raw(1))
+                      ->from('dsv')
+                      ->whereRaw('data_receive_vouchers.mes_lis_acc_tra_dat_order_date','=','dsv.mes_lis_shi_tra_dat_order_date')
+        ->whereRaw('data_receive_vouchers.mes_lis_acc_tra_trade_number','=','dsv.mes_lis_shi_tra_trade_number');
+            })
+        
         ->groupBy('data_receive_vouchers.mes_lis_acc_tra_trade_number')
         // ->groupBy('data_receives.receive_datetime')
         // ->groupBy('dr.sta_sen_identifier')

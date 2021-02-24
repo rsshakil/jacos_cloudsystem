@@ -23,12 +23,26 @@
             <td class="cl_custom_color">便</td>
             <td>
               {{ order_info.mes_lis_acc_log_del_delivery_service_code }}
-              
+              {{
+                getbyrjsonValueBykeyName(
+                  "mes_lis_ord_log_del_delivery_service_code",
+                  order_info.mes_lis_acc_log_del_delivery_service_code,
+                  "orders",
+                  buyer_settings
+                )
+              }}
             </td>
             <td class="cl_custom_color">配送温度区分</td>
             <td>
               {{ order_info.mes_lis_acc_tra_ins_temperature_code }}
-              
+              {{
+                getbyrjsonValueBykeyName(
+                  "mes_lis_ord_tra_ins_temperature_code",
+                  order_info.mes_lis_acc_tra_ins_temperature_code,
+                  "orders",
+                  buyer_settings
+                )
+              }}
             </td>
           </tr>
           <tr>
@@ -84,7 +98,7 @@
                 <option value="*">全て</option>
 
                 <option
-                  v-for="(opt, i) in fixedSpecialOptionList"
+                  v-for="(opt, i) in mes_lis_ord_tra_ins_goods_classification_codeList"
                   :key="i"
                   :value="Object.keys(opt)[0]"
                 >
@@ -102,7 +116,7 @@
                 <option value="*">全て</option>
 
                 <option
-                  v-for="(opt, i) in fixedSpecialOptionList"
+                  v-for="(opt, i) in mes_lis_ord_tra_ins_trade_type_codeList"
                   :key="i"
                   :value="Object.keys(opt)[0]"
                 >
@@ -693,6 +707,8 @@ export default {
       printingStatusOptionList: ["未印刷あり", "印刷済"],
       deliveryDestnationOptionList: ["店舗", "物流センター"],
       receiveOptionList: ["受領内容", "訂正あり"],
+      mes_lis_ord_tra_ins_goods_classification_codeList: [],
+      mes_lis_ord_tra_ins_trade_type_codeList: [],
       date_null: false,
       null_selected: [],
       not_null_selected: [],
@@ -748,6 +764,8 @@ export default {
           this.order_detail_lists = data.received_detail_list;
           this.byr_buyer_lists = data.byr_buyer_list;
           this.buyer_settings = JSON.parse(data.buyer_settings);
+          this.mes_lis_ord_tra_ins_goods_classification_codeList = this.buyer_settings.orders.mes_lis_ord_tra_ins_goods_classification_code;
+          this.mes_lis_ord_tra_ins_trade_type_codeList = this.buyer_settings.orders.mes_lis_ord_tra_ins_trade_type_code;
           this.order_info = data.order_info;
           this.loader.hide();
         });
