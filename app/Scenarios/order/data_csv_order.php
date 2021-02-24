@@ -32,7 +32,7 @@ class data_csv_order
     //
     public function exec($request, $sc)
     {
-        return $this->listAction(1);
+        // return $this->listAction(1);
         \Log::debug(get_class() . ' exec start  ---------------');
         if (!array_key_exists('up_file', $request->all())) {
             // return response()->json(['message' => "error", 'status' => '0']);
