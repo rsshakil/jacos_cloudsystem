@@ -32,7 +32,7 @@ class data_csv_order
     //
     public function exec($request, $sc)
     {
-        // return $this->listAction(1);
+        return $this->listAction(1);
         \Log::debug(get_class() . ' exec start  ---------------');
         if (!array_key_exists('up_file', $request->all())) {
             // return response()->json(['message' => "error", 'status' => '0']);
@@ -461,11 +461,11 @@ class data_csv_order
                 $receipt->SetXY($x + 123, $y + 37);
                 $receipt->Write(0, $pdf_data[0]->mes_lis_ord_par_shi_name);
                 if (isset($pdf_datas[$i])) {
-                    $receipt = $this->coordinateText($receipt, $pdf_datas[$i],0,53.3);
+                    $receipt = $this->coordinateText($receipt, $pdf_datas[$i],$i,0,53.3);
                 }
                 $i += 1;
                 if (isset($pdf_datas[$i])) {
-                    $receipt = $this->coordinateText($receipt, $pdf_datas[$i], 0, 116);
+                    $receipt = $this->coordinateText($receipt, $pdf_datas[$i],$i, 0, 116.2);
                 }
                 $receipt->AddPage();
                 $tplIdx = $receipt->importPage(1);
@@ -491,7 +491,7 @@ class data_csv_order
         $receipt->Output(storage_path('Receipt.pdf'), 'F');
         return $response;
     }
-    public function coordinateText($receipt, $pdf_data, $x = 0, $y = 53.3)
+    public function coordinateText($receipt, $pdf_data,$i=0, $x = 0, $y = 53.3)
     {
         $receipt->SetXY($x + 35, $y);
         $receipt->Write(0, $pdf_data[0]->mes_lis_ord_par_rec_name_sbcs);
@@ -513,9 +513,9 @@ class data_csv_order
         $receipt->Write(0, $pdf_data[0]->mes_lis_ord_tra_ins_goods_classification_code);
         $y += 8.2;
         foreach ($pdf_data as $key1 => $value) {
-            $receipt->SetXY($x += 28, $y);
-            $receipt->Write(0, $value->mes_lis_ord_lin_lin_line_number);
-            $receipt->SetXY($x += 8, $y);
+            $receipt->SetXY($x += 26, $y);
+            $receipt->Write(0, str_pad($value->mes_lis_ord_lin_lin_line_number, 2, "0", STR_PAD_LEFT));
+            $receipt->SetXY($x += 10, $y);
             $receipt->Write(0, $value->mes_lis_ord_lin_ite_name_sbcs);
             $receipt->SetXY($x += 50, $y);
             $receipt->Write(0, $value->mes_lis_ord_lin_ite_order_item_code);
@@ -533,7 +533,12 @@ class data_csv_order
             $y += 4.5;
         }
         $x = 0;
-        $y += 33.7;
+        if ($i%2==0) {
+            $y=104.4;
+        }else{
+            $y=166.9;
+        }
+        // $y += 33.7;
         $receipt->SetXY($x + 195, $y);
         $receipt->Write(0, $value->mes_lis_ord_tot_tot_net_price_total);
         $receipt->SetXY($x + 250.2, $y);
