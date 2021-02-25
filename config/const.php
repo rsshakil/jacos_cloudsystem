@@ -26,8 +26,6 @@ return [
     'PDF_SAVE_PATH' => 'app/order_pdf/created/',
     // 'PDF_SEND_MAIL' => 'mayeennbd@gmail.com',
     'PDF_SEND_MAIL' => 'fax849653@ecofax.jp',
-    'FAX_NUMBER' => '',
-    'ATTACHMENT_PATH' => '',
     'adm_role_name' =>'Super Admin',
     'SUCCESS' =>1,
     'ERROR' =>0,

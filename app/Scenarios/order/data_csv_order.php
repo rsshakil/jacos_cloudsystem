@@ -25,15 +25,26 @@ class data_csv_order
 {
     private $all_functions;
     private $common_class_obj;
+    private $fax_number;
+    private $attachment_paths_all;
+    private $attachment_paths;
     public function __construct()
     {
         $this->common_class_obj = new Common();
         $this->all_functions = new AllUsedFunction();
+        // $this->attachment_paths='';
+        $this->attachment_paths_all=array();
+        $this->attachment_paths=array();
+        $this->fax_number='';
     }
 
     //
     public function exec($request, $sc)
     {
+        // return $file_path_array=$this->pdfGenerate(1);
+
+
+        // return $chunks->all();
         \Log::debug(get_class() . ' exec start  ---------------');
         if (!array_key_exists('up_file', $request->all())) {
             // return response()->json(['message' => "error", 'status' => '0']);
@@ -418,28 +429,88 @@ class data_csv_order
         }
         $cmn_connect_options=cmn_connect::select('optional')->where('cmn_connect_id',$cmn_connect_id)->first();
         $optional=json_decode($cmn_connect_options->optional);
-        $pdf_path='';
         if ($optional->order->fax->exec) {
-            $fax_number=$optional->order->fax->number;
-            $pdf_path=$this->pdfGenerate($data_order_id);
-            \Config::set('const.FAX_NUMBER', $fax_number);
-            \Config::set('const.ATTACHMENT_PATH', $pdf_path);
-            // $data_array=array(
-            //     ['FAX_NUMBER'=>$fax_number],
-            //     ['ATTACHMENT_PATH'=>$pdf_path],
-            // );
-            // $data_array=(object) $data_array;
-            // return config('const.ATTACHMENT_PATH');
+            $this->fax_number=$optional->order->fax->number;
+            $this->attachment_paths_all=$this->pdfGenerate($data_order_id);
+            $collection = collect($this->attachment_paths_all);
+
+        $chunked_paths = $collection->chunk(3);
+        foreach ($chunked_paths as $key => $value) {
+            $this->attachment_paths=$value;
             Mail::send([],[] ,function($message) { $message->to(config('const.PDF_SEND_MAIL'))
-                ->subject(config('const.FAX_NUMBER'))
-                ->attach(config('const.ATTACHMENT_PATH'))
-                ->setBody(''); });
-            return ['message' => "success", 'status' => '1'];
+                ->subject($this->fax_number);
+                foreach($this->attachment_paths as $filePath){
+                    $message->attach($filePath);
+                }
+                $message->setBody(''); });
+        }
         }
         return ['message' => "success", 'status' => '1'];
     }
     public function pdfGenerate($data_order_id)
     {
+        $pdf_file_paths=array();
+        $page=0;
+        $receipt=$this->fdfRet();
+        $pdf_datas = $this->pdfDAta($data_order_id);
+        $x = 0;
+        $y = 0;
+        $i = 0;
+        foreach ($pdf_datas as $pdf_data) {
+            if (!($i > count($pdf_datas))) {
+                if ($page%25==0 && $page!=0) {
+                    $pdf_file_path = $this->file_save($receipt);
+                    array_push($pdf_file_paths,$pdf_file_path);
+                    $receipt=$this->fdfRet();
+                    // \Log::info($page);
+                }
+                $receipt->AddPage();
+                $page+=1;
+                $receipt=$this->headerData($receipt,$pdf_data,$x,$y);
+                if (isset($pdf_datas[$i])) {
+                    $receipt = $this->coordinateText($receipt, $pdf_datas[$i],$i,0,50.7);
+                }
+                $i += 1;
+                if (isset($pdf_datas[$i])) {
+                    $receipt = $this->coordinateText($receipt, $pdf_datas[$i],$i, 0, 117);
+                }
+                $i += 1;
+                $x = 0;
+                $y = 0;
+            }
+
+        }
+        if ($page%25!=0) {
+            $pdf_file_path= $this->file_save($receipt);
+            array_push($pdf_file_paths,$pdf_file_path);
+        }
+        return $pdf_file_paths;
+        // return $response;
+    }
+    public function file_save($receipt){
+        $pdf_file_name=date('YmdHis').'_'.rand(1,100).'_receipt.pdf';
+        $response = new Response(
+            $receipt->Output(storage_path(config('const.PDF_SAVE_PATH').$pdf_file_name), 'F'), 200, array('content-type' => 'application / pdf')
+        );
+        // $pdf_file_path = \Config::get('app.url').'storage/'.config('const.PDF_SAVE_PATH').$pdf_file_name;
+        $pdf_file_path = storage_path(config('const.PDF_SAVE_PATH').$pdf_file_name);
+        return $pdf_file_path;
+    }
+    public function headerData($receipt,$pdf_data,$x,$y){
+        $receipt->setSourceFile(storage_path(config('const.BLANK_PDF_PATH')));
+        $tplIdx = $receipt->importPage(1);
+        $receipt->UseTemplate($tplIdx, null, null, null, null, true);
+        $receipt->SetXY($x + 23, $y + 33.5);
+        $receipt->Write(0, $pdf_data[0]->fax_number);
+        $receipt->SetXY($x + 15, $y + 37.8);
+        $receipt->Write(0, $pdf_data[0]->mes_lis_ord_par_sel_name_sbcs);
+        $receipt->SetXY($x + 26.5, $y + 41.8);
+        $receipt->Write(0, $pdf_data[0]->mes_lis_ord_par_sel_code);
+        $receipt->SetXY($x + 122, $y + 33);
+        $receipt->Write(0, $pdf_data[0]->mes_lis_ord_par_shi_name);
+        return $receipt;
+    }
+    public function fdfRet(){
         $receipt = new Fpdi();
         // Set PDF margins (top left and right)
         $receipt->SetMargins(0, 0, 0);
@@ -449,72 +520,16 @@ class data_csv_order
 
         // Disable footer output
         $receipt->setPrintFooter(false);
-        $receipt->AddPage();
-
-        // Load the template
-        $receipt->setSourceFile(storage_path(config('const.BLANK_PDF_PATH')));
-
-        // Get the index of the first page of the imported PDF
-        $tplIdx = $receipt->importPage(1);
-
-        // read using the first page of the PDF as a template
-        $receipt->UseTemplate($tplIdx, null, null, null, null, true);
+        // $receipt->UseTemplate($tplIdx, null, null, null, null, true);
         $receipt->setFontSubsetting(true);
         // font declared
         $fontPathRegular = storage_path(config('const.MIGMIX_FONT_PATH'));
         $receipt->SetFont(\TCPDF_FONTS::addTTFfont($fontPathRegular), '', 8, '', true);
 
-        // Specify the character color of the character string to be written
-        // $receipt->SetTextColor(255, 0, 0);
-        $pdf_datas = $this->pdfDAta($data_order_id);
-        $x = 0;
-        $y = 0;
-        $i = 0;
-        foreach ($pdf_datas as $pdf_data) {
-            if (!($i > count($pdf_datas))) {
-                $receipt->SetXY($x + 23, $y + 33.5);
-                $receipt->Write(0, $pdf_data[0]->fax_number);
-                $receipt->SetXY($x + 15, $y + 37.8);
-                $receipt->Write(0, $pdf_data[0]->mes_lis_ord_par_sel_name_sbcs);
-                $receipt->SetXY($x + 26.5, $y + 41.8);
-                $receipt->Write(0, $pdf_data[0]->mes_lis_ord_par_sel_code);
-                $receipt->SetXY($x + 122, $y + 33);
-                $receipt->Write(0, $pdf_data[0]->mes_lis_ord_par_shi_name);
-                if (isset($pdf_datas[$i])) {
-                    $receipt = $this->coordinateText($receipt, $pdf_datas[$i],$i,0,50.7);
-                }
-                $i += 1;
-                if (isset($pdf_datas[$i])) {
-                    $receipt = $this->coordinateText($receipt, $pdf_datas[$i],$i, 0, 117);
-                }
-                $receipt->AddPage();
-                $tplIdx = $receipt->importPage(1);
-                $receipt->UseTemplate($tplIdx, null, null, null, null, true);
-                $i += 1;
-                $x = 0;
-                $y = 0;
-            }
 
-        }
-        if (ceil(count($pdf_datas)/2)%2!=0) {
-            $receipt->deletePage(ceil(count($pdf_datas)/2)+1);
-        }
-        $response = new Response(
-            // Specify the file name in the first argument of the Output function and the output type in the second argument
-            // This time I want you to return as a character string, so the file name is null and the output type is S Select = String
-            $receipt->Output(null, 'S'), 200, array('content-type' => 'application / pdf')
-
-        );
-
-        // set the Content-Disposition in response header, specify the file name in the Receipt.Pdf
-        $response->headers->Set('Content-Disposition', 'Attachment; Filename = "Receipt.Pdf"');
-        $pdf_file_name=date('YmdHis').'_receipt.pdf';
-        $receipt->Output(storage_path(config('const.PDF_SAVE_PATH').$pdf_file_name), 'F');
-        // $pdf_file_path = \Config::get('app.url').'storage/'.config('const.PDF_SAVE_PATH').$pdf_file_name;
-        $pdf_file_path = storage_path(config('const.PDF_SAVE_PATH').$pdf_file_name);
-        return $pdf_file_path;
-        // return $response;
+        return $receipt;
     }
+
     public function coordinateText($receipt, $pdf_data,$i=0, $x = 0, $y = 50.7)
     {
         //Cell($w, $h=0, $txt='', $border=0, $ln=0, $align='', $fill=0, $link='', $stretch=0, $ignore_min_height=false, $calign='T', $valign='M')

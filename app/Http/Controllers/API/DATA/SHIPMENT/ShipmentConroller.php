@@ -59,7 +59,7 @@ class ShipmentConroller extends Controller
             ->join('cmn_companies','cmn_companies.cmn_company_id','=','byr_buyers.cmn_company_id')
             ->where('data_shipments.data_order_id',$data_order_id)
             ->first();
-            $file_name = $file_name_info->super_code.'-'."shipment-".$file_name_info->super_code.'-'.$file_name_info->partner_code."-".$file_name_info->jcode.'-shipment-'.date('YmdHis').".csv";
+            $file_name = $file_name_info->super_code.'-'."shipment_".$file_name_info->super_code.'-'.$file_name_info->partner_code."-".$file_name_info->jcode.'_shipment_'.date('YmdHis').".csv";
             return $file_name;
     }
     public function deletedownloadedshipmentCsv($fileUrl){
