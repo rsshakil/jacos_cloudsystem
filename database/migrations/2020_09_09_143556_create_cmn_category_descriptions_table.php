@@ -17,7 +17,7 @@ class CreateCmnCategoryDescriptionsTable extends Migration
             $table->integer('cmn_category_id')->unsigned()->comment('category Id');
             $table->integer('byr_buyer_id')->unsigned()->default(0)->comment('byr Id');
             $table->string('category_name',80)->comment('category Name');
-            $table->string('category_code',6)->comment('category Code');
+            $table->string('category_code',12)->comment('category Code');
             $table->string('image',240)->nullable()->comment('Image');
             $table->boolean('is_deleted')->default(0)->comment('delete status');
             $table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('Time of creation');

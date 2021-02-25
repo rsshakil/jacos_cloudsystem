@@ -118,6 +118,7 @@ Route::post('invoiceInsert', 'API\Byr_invoiceController@invoiceInsert');
 Route::get('get_all_invoice_detail_list/{byr_invoice_id}', 'API\Byr_invoiceController@get_all_invoice_detail_list');
 Route::get('get_all_invoice_by_voucher_number/{voucher_number}', 'API\Byr_invoiceController@get_all_invoice_by_voucher_number');
 Route::post('/cmn_category_create', 'API\Cmn_categoryController@store');
+Route::post('/uploadByrCategoryCsv', 'API\Cmn_categoryController@uploadByrCategoryCsv');
 
 // Mayeen
 Route::post('/load_canvas_setting_data', 'API\Byr_orderController@canvasSettingData');

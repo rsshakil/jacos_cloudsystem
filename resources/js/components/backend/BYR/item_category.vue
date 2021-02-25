@@ -23,6 +23,30 @@
                       >
                         {{ myLang.add_user }}
                       </button>
+                     
+              <label for="insertItemCategory" class="custom-file-upload" style="float:right;margin-right:15px;">
+                <b-icon
+                  icon="upload"
+                  animation="fade"
+                  font-scale="1.2"
+                ></b-icon>
+                アップロード
+              </label>
+              <input
+                type="file"
+                @change="insertItemCategory"
+                id="insertItemCategory"
+                class="form-control uploadBtn"
+                style="display: none"
+              />
+              <!-- <button class="btn btn-primary active" type="button">
+                <b-icon
+                  icon="upload"
+                  animation="fade"
+                  font-scale="1.2"
+                ></b-icon>
+                アップロード
+              </button>-->
                     </div>
                   </div>
                 </th>
@@ -91,7 +115,7 @@
               <input
                 type="text"
                 class="form-control"
-                maxlength="2"
+                maxlength="3"
                 :class="{ 'is-invalid': form.errors.has('category_code') }"
                 v-model="form.category_code"
               />
@@ -146,6 +170,32 @@ export default {
     };
   },
   methods: {
+    insertItemCategory(e){
+      var _this = this;
+      this.alert_icon = "warning";
+      this.alert_title = "";
+      this.alert_text = "Do you want to upload category csv";
+      this.yes_btn = "はい";
+      this.cancel_btn = "キャンセル";
+      this.confirm_sweet().then((result) => {
+        if (result.value) {
+          const formData = new FormData();
+          let file = e.target.files[0];
+          console.log(file);
+          formData.append("file", file);
+          formData.append("adm_user_id", Globals.user_info_id);
+          axios
+            .post(this.BASE_URL + "api/uploadByrCategoryCsv", formData)
+            .then(({ data }) => {
+              console.log(data);
+              _this.alert_icon = "success";
+              _this.alert_title = "Inserted";
+              _this.alert_text = "Category CSV inserted";
+              _this.sweet_normal_alert();
+            });
+        }
+      });
+    },
     add_new_category_cmn() {
       this.form.reset();
       this.add_cmn_cat_modal = true;
