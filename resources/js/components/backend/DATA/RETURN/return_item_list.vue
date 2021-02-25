@@ -1,5 +1,5 @@
 <template>
-    <div class="row" v-can="['byr_view']">
+    <div class="row" v-can="['slr_view']">
                 <div class="col-12">
                     <h4 class="top_title text-center" style="margin-top:10px;">{{myLang.return_data}}</h4>
                 </div>

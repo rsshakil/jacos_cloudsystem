@@ -76,7 +76,13 @@
               <li class="nav-item" v-can="['order_list']">
                 <router-link to="/order_list" class="nav-link">
                   <b-icon icon="receipt" font-scale="1.2"></b-icon>
-                  {{ myLang.order_list }}
+                  発注・出荷
+                </router-link>
+              </li>
+               <li class="nav-item" v-can="['order_receive']">
+                <router-link to="/order_receive" class="nav-link">
+                  <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
+                  受領
                 </router-link>
               </li>
               <li class="nav-item" v-can="['voucher_setting']">
@@ -88,13 +94,8 @@
               
               
 
-              <li class="nav-item" v-can="['order_receive']">
-                <router-link to="/order_receive" class="nav-link">
-                  <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
-                  {{ myLang.order_receive }}
-                </router-link>
-              </li>
-
+             
+<!--
               <li class="nav-item" v-can="['order_corrected_receive']">
                 <router-link to="/order_corrected_receive" class="nav-link">
                   <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
@@ -107,20 +108,21 @@
                   {{ myLang.return_data }}
                 </router-link>
               </li>
-
-              <li class="nav-item" v-can="['payment_list']">
-                <router-link to="/payment_list" class="nav-link">
-                  <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
-                  {{ myLang.payment_list }}
-                </router-link>
-              </li>
-
+-->
               <li class="nav-item" v-can="['invoice_list']">
                 <router-link to="/invoice_list" class="nav-link">
                   <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
-                  {{ myLang.invoice_data }}
+                  請求
                 </router-link>
               </li>
+              <li class="nav-item" v-can="['payment_list']">
+                <router-link to="/payment_list" class="nav-link">
+                  <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
+                 支払
+                </router-link>
+              </li>
+
+              
               <li class="nav-item" v-can="['item_master']">
                 <router-link to="/item_master" class="nav-link">
                   <b-icon icon="receipt" font-scale="1.2"></b-icon>
