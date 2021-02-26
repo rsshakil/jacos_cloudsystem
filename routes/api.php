@@ -180,3 +180,6 @@ Route::post('/update_cmn_connects_optional', 'API\CMN\CmnConnectsController@upda
 Route::post('/update_cmn_connects_optionalAllJson', 'API\CMN\CmnConnectsController@update_cmn_connects_optionalAllJson');
 Route::get('/get_allInvoiceJsonSetting_info', 'API\CMN\CmnConnectsController@get_allInvoiceJsonSetting_info');
 Route::post('/get_partner_fax_list', 'API\CMN\CmnConnectsController@get_partner_fax_list');
+
+// Test
+Route::post('/invoice_scheduler', 'API\DATA\INVOICE\InvoiceController@invoiceScheduler');

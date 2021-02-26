@@ -28,6 +28,7 @@ class ShipmentConroller extends Controller
         if (!$data_count) {
             $dateTime = date('Y-m-d H:i:s');
             $new_file_name = self::shipmentFileName($data_order_id);
+            data_shipment::where('data_order_id',$data_order_id)->update(['mes_mes_number_of_trading_documents'=>$csv_data_count]);
             $download_file_url = \Config::get('app.url')."storage/app".config('const.SHIPMENT_CSV_PATH')."/". $new_file_name;
             (new ShipmentCSVExport($request))->store(config('const.SHIPMENT_CSV_PATH').'/'.$new_file_name);
             data_shipment_voucher::where('decision_datetime','!=',null)
