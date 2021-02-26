@@ -26,7 +26,8 @@ class Lv3TriggerFilePathSeeder extends Seeder
                 'check_folder_path'=>"",
                 'moved_folder_path'=>"",
                 'api_url'=>"https://jcs.dev.jacos.jp/api/get_shipment_file",
-                'api_folder_path'=>"C:\Users\ASUS\OneDrive\Desktop\JCS\Shipment_File",
+                // 'api_folder_path'=>"C:\Users\ASUS\OneDrive\Desktop\JCS\Shipment_File",
+                'api_folder_path'=>"C:\Users\Administrator\Documents\jacos\jcs\data\shipment",
                 'path_execution_flag'=>0,
             ]
         );
