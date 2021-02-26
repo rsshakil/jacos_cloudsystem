@@ -56,7 +56,8 @@ class ShipmentConroller extends Controller
         $file_name_info=data_shipment::select('cmn_connects.partner_code','byr_buyers.super_code','cmn_companies.jcode')
             ->join('cmn_connects','cmn_connects.cmn_connect_id','=','data_shipments.cmn_connect_id')
             ->join('byr_buyers','byr_buyers.byr_buyer_id','=','cmn_connects.byr_buyer_id')
-            ->join('cmn_companies','cmn_companies.cmn_company_id','=','byr_buyers.cmn_company_id')
+            ->join('slr_sellers','slr_sellers.slr_seller_id','=','cmn_connects.slr_seller_id')
+            ->join('cmn_companies','cmn_companies.cmn_company_id','=','slr_sellers.cmn_company_id')
             ->where('data_shipments.data_order_id',$data_order_id)
             ->first();
             $file_name = $file_name_info->super_code.'-'."shipment_".$file_name_info->super_code.'-'.$file_name_info->partner_code."-".$file_name_info->jcode.'_shipment_'.date('YmdHis').".csv";
