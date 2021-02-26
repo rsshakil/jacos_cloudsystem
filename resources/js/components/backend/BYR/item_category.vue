@@ -4,6 +4,42 @@
       
 
       <div class="col-12">
+
+<p>
+              <span class="tableRowsInfo"
+                >{{ cat_lists.from }}〜{{
+                  cat_lists.to
+                }}
+                件表示中／全：{{ cat_lists.total }}件</span
+              >
+              <span class="pagi">
+                <advanced-laravel-vue-paginate
+                  :data="cat_lists"
+                  :onEachSide="2"
+                  previousText="<"
+                  nextText=">"
+                  alignment="center"
+                  @paginateTo="get_all_cat"
+                />
+              </span>
+              <span class="selectPagi">
+                <select
+                  @change="selectNumPerPage"
+                  v-model="select_field_per_page_num"
+                  class="form-control selectPage"
+                >
+                  <!--<option value="0">表示行数</option>
+                  <option v-for="n in order_detail_lists.last_page" :key="n"
+                :value="n">{{n}}</option>-->
+                  <option value="10">10行</option>
+                  <option value="20">20行</option>
+                  <option value="50">50行</option>
+                  <option value="100">100行</option>
+                </select>
+              </span>
+            </p>
+
+
         <div class="">
           <table class="table table-striped table-bordered data_table">
             <thead>
@@ -60,10 +96,12 @@
             </thead>
             <tbody>
               <tr
-                v-for="(cat_list, index) in cat_lists"
-                :key="cat_list.cmn_category_id"
+                v-for="(cat_list, index) in (cat_lists.data)"
+                :key="index"
               >
-                <td>{{ index + 1 }}</td>
+                <td>{{
+                    cat_lists.current_page*select_field_per_page_num-select_field_per_page_num+index+1
+                  }}</td>
                 <td>{{ cat_list.name }}</td>
                 <td>{{ cat_list.category_code }}</td>
                 <td>
@@ -116,10 +154,24 @@
                 type="text"
                 class="form-control"
                 maxlength="3"
-                :class="{ 'is-invalid': form.errors.has('category_code') }"
-                v-model="form.category_code"
+                :class="{ 'is-invalid': form.errors.has('category_orign_code') }"
+                v-model="form.category_orign_code"
               />
-              <has-error :form="form" field="category_code"></has-error>
+              <has-error :form="form" field="category_orign_code"></has-error>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="category_name" class="col-sm-4 col-form-label"> 部門名</label>
+            <div class="col-sm-8">
+              <input
+                type="text"
+                class="form-control"
+                maxlength="3"
+                :class="{ 'is-invalid': form.errors.has('category_name') }"
+                v-model="form.category_name"
+              />
+              <has-error :form="form" field="category_name"></has-error>
             </div>
           </div>
 
@@ -154,22 +206,38 @@
   </div>
 </template>
 <script>
+import AdvancedLaravelVuePaginate from "advanced-laravel-vue-paginate";
+import "advanced-laravel-vue-paginate/dist/advanced-laravel-vue-paginate.css";
+
 export default {
+  components: {
+    AdvancedLaravelVuePaginate,
+  },
   data() {
     return {
       cat_lists: {},
       add_cmn_cat_modal: false,
       options: [],
+      select_field_per_page_num:10,
+      select_field_page_num:0,
       form: new Form({
         cmn_category_id: "",
         name: "",
         category_code: "",
+        category_name: "",
+        category_orign_code: "",
         parent_id: "",
         adm_user_id: Globals.user_info_id,
       }),
     };
   },
   methods: {
+    selectNumPerPage() {
+
+      if (this.select_field_per_page_num != 0) {
+        Fire.$emit("AfterCreatecat",this.select_field_page_num);
+      }
+    },
     insertItemCategory(e){
       var _this = this;
       this.alert_icon = "warning";
@@ -192,6 +260,7 @@ export default {
               _this.alert_title = "Inserted";
               _this.alert_text = "Category CSV inserted";
               _this.sweet_normal_alert();
+              _this.get_all_cat(_this.select_field_page_num);
             });
         }
       });
@@ -228,7 +297,7 @@ export default {
             var icon = "warning";
           } else {
             this.add_cmn_cat_modal = false;
-            Fire.$emit("AfterCreatecat");
+            Fire.$emit("AfterCreatecat",this.select_field_page_num);
             if (this.form.cmn_category_id != "") {
               var tittles = "Category Update success";
               var msg_text = "You have successfully updated category";
@@ -255,24 +324,33 @@ export default {
           });
         });
     },
-    get_all_cat() {
+    get_all_cat(page = 1) {
+      var post_data = {
+        adm_user_id:Globals.user_info_id,
+        select_field_per_page_num:this.select_field_per_page_num,
+        select_field_page_num:page,
+        page : page,
+      };
+      this.select_field_page_num=page;
       axios
-        .get(this.BASE_URL + "api/get_all_cat_list/" + Globals.user_info_id)
-        .then((data) => {
-          this.cat_lists = data.data.cat_list;
-          console.log(this.cat_lists);
-          this.options = data.data.cat_list;
+        .post(this.BASE_URL + "api/get_all_cat_list",post_data)
+        .then(({ data }) => {
+          this.cat_lists = data.cat_list;
+          this.options = data.allCatForParent;
+          this.loader.hide();
         });
     },
   },
 
   created() {
     Fire.$emit('permission_check_for_buyer',this.$session.get('byr_buyer_id'));
+    this.loader = Vue.$loading.show();
     this.get_all_cat();
-    Fire.$on("AfterCreatecat", () => {
-      this.get_all_cat();
+    Fire.$on("AfterCreatecat", (page=1) => {
+      this.get_all_cat(page);
     });
     Fire.$emit("loadPageTitle", "問屋管理");
+    
   },
   mounted() {
     console.log("User page loaded");
