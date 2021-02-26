@@ -75,9 +75,7 @@
 
       </div>
       <div class="col-12">
-        <div class="">
-
-          <table class="table table-striped table-bordered table-responsive order_item_details_table data_table" style="overflow-x: scroll;">
+          <table class="table table-striped table-bordered order_item_details_table " style="overflow-x: scroll;">
             <thead>
               <tr>
                 <th>No</th>
@@ -107,30 +105,48 @@
                  産地：{{order_item_detail_list.mes_lis_acc_lin_fre_field_name}}<br></td>
                 <td>{{order_item_detail_list.mes_lis_acc_lin_fre_packing_quantity}}</td>
                 <td>
+                {{order_item_detail_list.mes_lis_acc_lin_qua_rec_num_of_order_units}}
+                <!--
                 <input type="text" class="form-control" @keyup="ball_case_cal(order_item_detail_list,'ケース')" v-model="order_item_detail_list.mes_lis_acc_lin_qua_shi_num_of_order_units">
-                {{order_item_detail_list.mes_lis_acc_lin_qua_ord_num_of_order_units}}</td>
+                {{order_item_detail_list.mes_lis_acc_lin_qua_ord_num_of_order_units}}
+                --></td>
                 <td>
-                {{order_item_detail_list.mes_lis_acc_lin_qua_unit_of_measure}}  {{getbyrjsonValueBykeyName('mes_lis_ord_lin_qua_unit_of_measure',order_item_detail_list.mes_lis_acc_lin_qua_unit_of_measure,'orders',buyer_settings)}}
+               <!-- {{order_item_detail_list.mes_lis_acc_lin_qua_unit_of_measure}}  {{getbyrjsonValueBykeyName('mes_lis_ord_lin_qua_unit_of_measure',order_item_detail_list.mes_lis_acc_lin_qua_unit_of_measure,'orders',buyer_settings)}}-->
+               {{order_item_detail_list.mes_lis_acc_lin_qua_package_indicator}}
                 </td>
                 <td>
-                 <input type="text" class="form-control" @keyup="ball_case_cal(order_item_detail_list,'バラ')" v-model="order_item_detail_list.mes_lis_acc_lin_qua_shi_quantity">
-                {{order_item_detail_list.mes_lis_acc_lin_qua_ord_quantity}}</td>
+                 <!--<input type="text" class="form-control" @keyup="ball_case_cal(order_item_detail_list,'バラ')" v-model="order_item_detail_list.mes_lis_acc_lin_qua_shi_quantity">
+                {{order_item_detail_list.mes_lis_acc_lin_qua_ord_quantity}}-->
+                {{order_item_detail_list.mes_lis_acc_lin_qua_rec_quantity}}
+                
+                </td>
 
-                <td>{{order_item_detail_list.mes_lis_acc_lin_fre_item_weight * order_item_detail_list.mes_lis_acc_lin_qua_shi_quantity}}</td>
+                <td><!--{{order_item_detail_list.mes_lis_acc_lin_fre_item_weight * order_item_detail_list.mes_lis_acc_lin_qua_shi_quantity}}-->
+                {{order_item_detail_list.mes_lis_acc_lin_fre_received_weight}}
+                </td>
                 <td>
-                 <input type="text" class="form-control" v-model="order_item_detail_list.mes_lis_acc_lin_amo_item_net_price_unit_price">
-                {{order_item_detail_list.mes_lis_ord_lin_amo_item_net_price_unit_price}}</td>
-                <td> {{ order_item_detail_list.mes_lis_acc_lin_amo_item_net_price_unit_price * order_item_detail_list.mes_lis_acc_lin_qua_shi_quantity}}</td>
+                <!-- <input type="text" class="form-control" v-model="order_item_detail_list.mes_lis_acc_lin_amo_item_net_price_unit_price">
+                {{order_item_detail_list.mes_lis_ord_lin_amo_item_net_price_unit_price}}-->
+                {{order_item_detail_list.mes_lis_acc_lin_amo_item_net_price_unit_price}}
+                </td>
+                <td> <!--{{ order_item_detail_list.mes_lis_acc_lin_amo_item_net_price_unit_price * order_item_detail_list.mes_lis_acc_lin_qua_shi_quantity}}-->
+                {{order_item_detail_list.mes_lis_acc_lin_amo_item_net_price}}
+                </td>
                 <td>
-                 <input type="text" class="form-control" v-model="order_item_detail_list.mes_lis_acc_lin_amo_item_selling_price_unit_price">
-                {{order_item_detail_list.mes_lis_ord_lin_amo_item_selling_price_unit_price}}</td>
-                <td>{{order_item_detail_list.mes_lis_acc_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_acc_lin_qua_shi_quantity}}</td>
-                <td>{{order_item_detail_list.mes_lis_acc_lin_qua_rec_reason_code}} {{getbyrjsonValueBykeyName('mes_lis_acc_lin_qua_rec_reason_code',order_item_detail_list.mes_lis_acc_lin_qua_rec_reason_code,'receives',buyer_settings)}}
+                 <!--<input type="text" class="form-control" v-model="order_item_detail_list.mes_lis_acc_lin_amo_item_selling_price_unit_price">
+                {{order_item_detail_list.mes_lis_ord_lin_amo_item_selling_price_unit_price}}-->
+                {{order_item_detail_list.mes_lis_acc_lin_amo_item_selling_price_unit_price}}
+                </td>
+                <td><!--{{order_item_detail_list.mes_lis_acc_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_acc_lin_qua_shi_quantity}}-->
+                {{order_item_detail_list.mes_lis_acc_lin_amo_item_selling_price}}
+                </td>
+                <td><!--{{order_item_detail_list.mes_lis_acc_lin_qua_rec_reason_code}} {{getbyrjsonValueBykeyName('mes_lis_acc_lin_qua_rec_reason_code',order_item_detail_list.mes_lis_acc_lin_qua_rec_reason_code,'receives',buyer_settings)}}
                 <select v-model="order_item_detail_list.mes_lis_acc_lin_qua_rec_reason_code" class="form-control ">
                 <option v-for="item in mes_lis_acc_lin_qua_rec_reason_codeList" :value="Object.keys(item)[0]">{{Object.values(item)[0]}}</option>
-                </select>
+                </select>-->
                 <!--<input type="hidden" v-model="totalCostPrice += order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity">
                 <input type="hidden" v-model="totalSellingPrice += order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity">-->
+                {{order_item_detail_list.mes_lis_acc_lin_qua_rec_reason_code}}
                 </td>
               </tr>
             </tbody>
@@ -153,10 +169,9 @@
            
 
           </table>
-          <button style="float:right" class="btn btn-lg btn-primary pull-right text-right active">
+          <!--<button style="float:right" class="btn btn-lg btn-primary pull-right text-right active">
               更新
-            </button>
-        </div>
+            </button>-->
       </div>
     </div>
     <b-modal
