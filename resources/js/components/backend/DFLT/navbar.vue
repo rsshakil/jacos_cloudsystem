@@ -404,7 +404,7 @@ export default {
     this.get_user_company_info();
     this.user_data = this.app._data;
     // console.log(this.global_user_id)
-    this.allBuyerInfoBySaller(this.global_user_id);
+    //this.allBuyerInfoBySaller(this.global_user_id);
     // console.log(this.buyer_info_for_saller);
     // this.allBuyerInfoBySaller(this.user_data.user.id);
     Fire.$on("byr_has_selected", (byr_buyer_id) => {
