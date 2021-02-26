@@ -432,17 +432,20 @@ class data_csv_order
         if ($optional->order->fax->exec) {
             $this->fax_number=$optional->order->fax->number;
             $this->attachment_paths_all=$this->pdfGenerate($data_order_id);
-            $collection = collect($this->attachment_paths_all);
+        //     $collection = collect($this->attachment_paths_all);
 
-        $chunked_paths = $collection->chunk(3);
-        foreach ($chunked_paths as $key => $value) {
+        // $chunked_paths = $collection->chunk(3);
+        foreach ($this->attachment_paths_all as $key => $value) {
+            \Log::info('send mail for fax:[to:'.config('const.PDF_SEND_MAIL').',subject:'.$this->fax_number.']');
             $this->attachment_paths=$value;
             Mail::send([],[] ,function($message) { $message->to(config('const.PDF_SEND_MAIL'))
                 ->subject($this->fax_number);
-                foreach($this->attachment_paths as $filePath){
-                    $message->attach($filePath);
-                }
-                $message->setBody(''); });
+                \Log::info('attach file:'.$this->attachment_paths);
+                $message->attach($this->attachment_paths)
+                // foreach($this->attachment_paths as $filePath){
+                //     $message->attach($filePath);
+                // }
+                ->setBody(''); });
         }
         }
         return ['message' => "success", 'status' => '1'];
