@@ -4,6 +4,8 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Http\Controllers\API\DATA\INVOICE\InvoiceController;
+use Illuminate\Http\Request;
 
 class Kernel extends ConsoleKernel
 {
@@ -24,8 +26,16 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+
+        // $invoice=new InvoiceController();
+        // $schedule->call($invoice->invoiceScheduler())->daily();
+        // $schedule->job($invoice->invoiceScheduler())->everyFiveMinutes();
+
+        $start_time=config('const.INVOICE_SCHEDULE_START_TIME');
+        $end_time=config('const.INVOICE_SCHEDULE_END_TIME');
+        $schedule->command('invoice:scheduler')
+                ->between('7:00', '22:00');
+                //  ->between($start_time, $end_time);;
     }
 
     /**

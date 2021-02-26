@@ -154,6 +154,16 @@ class cmn_scenarioSeeder extends Seeder
                 'description' => 'PDF_PLATFORM_VIEW',
                 'file_path' => 'Scenarios/PDF/ouk_pdf_platform',
             ],
+            [
+                'byr_buyer_id' => 1,
+                'slr_seller_id' => 0,
+                'adm_role_id' => 5,
+                'class' => 'invoice',
+                'vector' => 'to_jacos',
+                'name' => 'DATA_INVOICE_SCHEDULER',
+                'description' => 'DATA_INVOICE_SCHEDULER',
+                'file_path' => 'Scenarios/DATA/INVOICE/data_invoice_scheduler',
+            ],
         );
         cmn_scenario::insert($scenarios);
     }
