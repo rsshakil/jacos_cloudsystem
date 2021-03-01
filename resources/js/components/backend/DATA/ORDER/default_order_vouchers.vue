@@ -1166,19 +1166,17 @@ export default {
           downloadType: downloadType,
         })
         .then(({ data }) => {
-          //  console.log(data);
+           console.log(data);
+        //    return 0;
           const link = document.createElement("a");
           link.href = data.url;
           link.setAttribute("download", data.new_file_name); //ここらへんは適当に設定する
           document.body.appendChild(link);
           link.click();
-          axios
-            .get(
-              _this.BASE_URL +
-                "api/deletedownloadedshipmentCsv/" +
+          return 0;
+          axios.get(_this.BASE_URL + "api/deletedownloadedshipmentCsv/" +
                 data.new_file_name
-            )
-            .then((data) => {
+            ).then((data) => {
               //console.log(data);
             });
           //link.revokeObjectURL();

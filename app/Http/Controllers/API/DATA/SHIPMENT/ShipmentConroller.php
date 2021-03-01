@@ -10,6 +10,7 @@ use App\Exports\ShipmentCSVExport;
 use App\Models\DATA\SHIPMENT\data_shipment;
 use App\Models\DATA\SHIPMENT\data_shipment_item;
 use App\Models\DATA\SHIPMENT\data_shipment_voucher;
+use App\Http\Controllers\API\Cmn_ScenarioController;
 use DB;
 class ShipmentConroller extends Controller
 {
@@ -49,6 +50,27 @@ class ShipmentConroller extends Controller
             $download_file_url = \Config::get('app.url')."storage/app".config('const.SHIPMENT_CSV_PATH')."/". $new_file_name;
             $csv_data_count = Data_Controller::get_shipment_data($request)->count();
             (new ShipmentCSVExport($request))->store(config('const.SHIPMENT_CSV_PATH').'/'.$new_file_name);
+        }else if($downloadType==2){
+            // $request = new \Illuminate\Http\Request();
+            // $request->setMethod('POST');
+            // $request=$this->request;
+            $request->request->add(['scenario_id' => 6]);
+            $request->request->add(['data_order_id' => 1]);
+            $request->request->add(['email' => 'user@jacos.co.jp']);
+            $request->request->add(['password' => 'Qe75ymSr']);
+            // $request->request->remove('downloadType');
+            // return $request->all();
+            $cs = new Cmn_ScenarioController();
+             return $ret = $cs->exec($request);
+            //  return collect($ret)->toJson();
+            // \Log::debug($ret->getContent());
+            return $ret = json_decode($ret->getContent(), true);
+            if (1 === $ret['status']) {
+                // sceanario exec error
+                \Log::error($ret['message']);
+                return $ret;
+            }
+            return response()->json($ret);
         }
 
         return response()->json(['message' => 'Success','status'=>1,'new_file_name'=>$new_file_name, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
