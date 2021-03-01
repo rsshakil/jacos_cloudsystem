@@ -3,7 +3,6 @@
 namespace App\Scenarios\byr\OUK;
 
 use App\Scenarios\Common;
-use App\Models\BMS\bms_order;
 use App\Http\Controllers\API\AllUsedFunction;
 use App\Http\Controllers\API\DATA\Data_Controller;
 
@@ -19,8 +18,10 @@ class fixed_length_generate
 
     public function exec($request, $sc)
     {
+        // return $request->all();
         // order data get
-        $order_data= Data_Controller::get_order_data($request);
+        // $order_data= Data_Controller::get_order_data($request);
+        $order_data= Data_Controller::get_shipment_data($request)->get();
         // \Log::debug($order_data);
 
         $data=[];
@@ -31,7 +32,7 @@ class fixed_length_generate
             // 取引先コード取得
             // 桁あふれ桁少ないのを対応
             $tori_code = substr(str_pad($val['mes_lis_ord_par_sel_code'], 6, '0', STR_PAD_LEFT), -6);
-            
+
             $file_head = 'A00'; //default value wich length is 3
             $file_head.= date('ymdHis', strtotime($val['sta_doc_creation_date_and_time'])); //datetime to date time string wich length is 6+6
             $file_head.= $do;  //length is 6
@@ -89,10 +90,10 @@ class fixed_length_generate
             $items.= str_repeat(" ", 23); //Space added until length is 23
             // Total 128 Character
             // echo($val['mes_lis_ord_lin_amo_item_net_price_unit_price'].PHP_EOL);
-            
+
             $data[$file_head][$voucher_head][] = $items;
         }
-        
+
         $string_data="";
         for ($i=0; $i < count($data); $i++) {
             $step0=array_keys($data)[$i];
@@ -100,7 +101,7 @@ class fixed_length_generate
             $step0_data_array=$data[$step0];
 
             $step0_data_count=count($step0_data_array);
-            
+
             for ($j=0; $j < $step0_data_count; $j++) {
                 $step1=array_keys($step0_data_array)[$j];
                 $string_data.=$step1; //If New line need please add .'\n' after this line
@@ -120,23 +121,23 @@ class fixed_length_generate
         if ($request->get('ebcdic', false)) {
             $string_data=$this->common_class_obj->sjis_2_ebcdic(null, $string_data);
         }
-        
+
         if ($string_data!=null) {
             // $string_data = $this->common_class_obj->ebcdic_2_sjis(null,$string_data);
             // $string_data = mb_convert_encoding($string_data, "UTF-8", "SJIS");
 
             \File::put(storage_path(config('const.FIXED_LENGTH_FILE_PATH').$txt_file_name), $string_data);
-            return response()->json(
-                [
-                'status'=>0,
+            // return response()->json(
+                return [
+                'status'=>1,
                 'message'=>"File has been created",
-                'url'=>\Config('app.url').'storage/'.config('const.FIXED_LENGTH_FILE_PATH').$txt_file_name,
+                'new_file_name'=>\Config('app.url').'storage/'.config('const.FIXED_LENGTH_FILE_PATH').$txt_file_name,
                 'file_name' => $txt_file_name,
                 'file_path' => 'storage/'.config('const.FIXED_LENGTH_FILE_PATH').$txt_file_name,
-            ]
-            );
+                ];
+        // );
         } else {
-            return response()->json(['status'=>1,'message'=>"No file data found"]);
+            return response()->json(['status'=>0,'message'=>"No file data found"]);
         }
     }
 }
