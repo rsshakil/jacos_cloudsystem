@@ -621,7 +621,7 @@ class data_csv_order
             'data_order_items.mes_lis_ord_lin_amo_item_selling_price_unit_price',
             'data_order_items.mes_lis_ord_lin_amo_item_net_price',
             'data_order_items.mes_lis_ord_lin_amo_item_net_price_unit_price',
-            'data_order_items.mes_lis_ord_lin_lin_line_number',
+            'data_order_items.mes_lis_ord_lin_lin_line_number'
         )
             ->join('data_order_vouchers', 'data_order_vouchers.data_order_id', '=', 'data_orders.data_order_id')
             ->join('data_order_items', 'data_order_items.data_order_voucher_id', '=', 'data_order_vouchers.data_order_voucher_id')

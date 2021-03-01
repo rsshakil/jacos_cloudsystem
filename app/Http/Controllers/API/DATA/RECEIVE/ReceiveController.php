@@ -125,8 +125,9 @@ class ReceiveController extends Controller
         // $result = new Paginator($result, 2);
         $buyer_settings = byr_buyer::select('setting_information')->where('byr_buyer_id', $byr_buyer_id)->first();
         $byr_buyer = $this->all_used_fun->get_company_list($cmn_company_id);
+        $byr_buyer_category_list = $this->all_used_fun->get_allCategoryByByrId($byr_buyer_id); 
 
-        return response()->json(['received_item_list' => $result, 'byr_buyer_list' => $byr_buyer, 'buyer_settings' => $buyer_settings->setting_information]);
+        return response()->json(['received_item_list' => $result, 'byr_buyer_list' => $byr_buyer, 'buyer_settings' => $buyer_settings->setting_information,'byr_buyer_category_list'=>$byr_buyer_category_list]);
 
     }
 

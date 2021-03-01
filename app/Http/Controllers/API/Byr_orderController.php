@@ -15,6 +15,9 @@ use App\Models\CMN\cmn_scenario;
 use App\Models\CMN\cmn_tbl_col_setting;
 use App\Models\DATA\SHIPMENT\data_shipment_voucher;
 use App\Models\DATA\ORD\data_order_voucher;
+use App\Models\CMN\cmn_category;
+use App\Models\CMN\cmn_category_description;
+use App\Models\CMN\cmn_category_path;
 use DB;
 use Illuminate\Http\Request;
 
@@ -76,6 +79,7 @@ class Byr_orderController extends Controller
             $confirmation_status = $request->confirmation_status; // 参照
             $decission_cnt = $request->decission_cnt; // 確定
             $print_cnt = $request->print_cnt; // 印刷
+            $byr_category_code = $request->byr_category_code; // 印刷
 
             if ($receive_date_from) {
                 $search_where .= "AND dor.receive_datetime >= '" . $receive_date_from . "' ";
@@ -95,6 +99,10 @@ class Byr_orderController extends Controller
 
             if ($temperature!='*') {
                 $search_where .= "AND dov.mes_lis_ord_tra_ins_temperature_code='" . $temperature . "' ";
+            }
+
+            if ($byr_category_code!='*') {
+                $search_where .= "AND dov.mes_lis_ord_tra_goo_major_category='" . $byr_category_code . "' ";
             }
 
             if ($check_datetime!='*') {
@@ -177,8 +185,8 @@ class Byr_orderController extends Controller
         ");
         $buyer_settings = byr_buyer::select('setting_information')->where('byr_buyer_id', $byr_buyer_id)->first();
         $byr_buyer = $this->all_used_fun->get_company_list($cmn_company_id);
-
-        return response()->json(['order_list' => $result, 'byr_buyer_list' => $byr_buyer, 'buyer_settings' => $buyer_settings->setting_information]);
+        $byr_buyer_category_list = $this->all_used_fun->get_allCategoryByByrId($byr_buyer_id);
+        return response()->json(['order_list' => $result, 'byr_buyer_list' => $byr_buyer, 'buyer_settings' => $buyer_settings->setting_information,'byr_buyer_category_list'=>$byr_buyer_category_list]);
     }
 
     public function orderDetails(Request $request)

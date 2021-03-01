@@ -8,6 +8,9 @@ use App\Models\BYR\byr_buyer;
 use App\Models\CMN\cmn_companies_user;
 use App\Models\CMN\cmn_company;
 use App\Models\SLR\slr_seller;
+use App\Models\CMN\cmn_category;
+use App\Models\CMN\cmn_category_description;
+use App\Models\CMN\cmn_category_path;
 use Auth;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -521,6 +524,11 @@ class AllUsedFunction extends Controller
             'minutes' => $minutes,
             'sec' => $sec,
         );
+    }
+
+    public function get_allCategoryByByrId($byr_buyer_id){
+        $result = cmn_category_path::select('cmn_category_descriptions.*')->join('cmn_category_descriptions','cmn_category_descriptions.cmn_category_id','=','cmn_category_paths.cmn_category_id')->where('cmn_category_descriptions.byr_buyer_id',$byr_buyer_id)->where('cmn_category_descriptions.is_deleted',0)->where('cmn_category_paths.level',0)->groupBy('cmn_category_paths.cmn_category_id')->get();
+        return $result;
     }
 
 }
