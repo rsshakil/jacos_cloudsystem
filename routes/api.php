@@ -113,10 +113,12 @@ Route::post('get_payment_list', 'API\DATA\PAYMENT\PaymentController@getPaymentLi
 Route::post('get_payment_detail_list', 'API\DATA\PAYMENT\PaymentController@get_payment_detail_list');
 Route::get('get_byr_return_list/{adm_user_id}', 'API\Byr_return_itemController@get_byr_return_list');
 Route::post('get_all_cat_list', 'API\Cmn_categoryController@get_all_cat_list');
-Route::get('get_all_invoice_list/{adm_user_id}', 'API\Byr_invoiceController@get_all_invoice_list');
-Route::post('invoiceInsert', 'API\Byr_invoiceController@invoiceInsert');
-Route::get('get_all_invoice_detail_list/{byr_invoice_id}', 'API\Byr_invoiceController@get_all_invoice_detail_list');
-Route::get('get_all_invoice_by_voucher_number/{voucher_number}', 'API\Byr_invoiceController@get_all_invoice_by_voucher_number');
+// Invoice
+Route::post('get_all_invoice_list', 'API\DATA\INVOICE\InvoiceController@get_all_invoice_list');
+Route::post('invoiceInsert', 'API\DATA\INVOICE\InvoiceController@invoiceInsert');
+Route::get('get_all_invoice_detail_list/{byr_invoice_id}', 'API\DATA\INVOICE\InvoiceController@get_all_invoice_detail_list');
+Route::get('get_all_invoice_by_voucher_number/{voucher_number}', 'API\DATA\INVOICE\InvoiceController@get_all_invoice_by_voucher_number');
+// Invoice
 Route::post('/cmn_category_create', 'API\Cmn_categoryController@store');
 Route::post('/uploadByrCategoryCsv', 'API\Cmn_categoryController@uploadByrCategoryCsv');
 
@@ -182,4 +184,4 @@ Route::get('/get_allInvoiceJsonSetting_info', 'API\CMN\CmnConnectsController@get
 Route::post('/get_partner_fax_list', 'API\CMN\CmnConnectsController@get_partner_fax_list');
 
 // Test
-Route::post('/invoice_scheduler', 'API\DATA\INVOICE\InvoiceController@invoiceScheduler');
+// Route::post('/invoice_scheduler', 'API\DATA\INVOICE\InvoiceController@invoiceScheduler');

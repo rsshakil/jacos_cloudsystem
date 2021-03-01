@@ -15,6 +15,7 @@ class CreateDataInvoicesTable extends Migration
     {
         Schema::create('data_invoices', function (Blueprint $table) {
             $table->increments('data_invoice_id')->unsigned()->comment('data_invoice_id');
+            $table->integer('cmn_connect_id')->unsigned()->nullable()->comment('cmn_connect_id');
             $table->string('sta_sen_identifier', 30)->comment('送信者ＩＤ');
             $table->string('sta_sen_ide_authority', 10)->comment('送信者ＩＤ発行元');
             $table->string('sta_rec_identifier', 20)->comment('受信者ＩＤ');

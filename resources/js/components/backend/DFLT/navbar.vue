@@ -34,7 +34,7 @@
             <button
               v-if="company_name != ''"
                @mouseover="hover = true"
-      
+
               class="btn btn-default byr_list_show"
             >
               得意先選択
@@ -242,12 +242,12 @@
                   class="dropdown-menu dropdown-menu-small"
                   aria-labelledby="navbarDropdown"
                 >
-                  <a class="dropdown-item" :href="BASE_URL + '/language/en'">
+                  <a class="dropdown-item" :href="BASE_URL + 'language/en'">
                     <span class="flag-icon flag-icon-us"></span>
                     English
                   </a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" :href="BASE_URL + '/language/ja'">
+                  <a class="dropdown-item" :href="BASE_URL + 'language/ja'">
                     <span class="flag-icon flag-icon-jp"></span>
                     日本語
                   </a>
@@ -317,8 +317,8 @@
         </ul>
       </b-form-checkbox-group>-->
     </b-modal>
-    
-    
+
+
   </main>
 </template>
 
@@ -333,7 +333,7 @@ export default {
       company_name: null,
       user_byr_slr_list: [],
       hover: false,
-      
+
       selected_customer_list: "未選択",
       // buyer_info_for_saller:[],
       fields: [
@@ -356,12 +356,12 @@ export default {
         { isActive: true, header_1: "イオン", header_2: "500件" },
       ],
       selectfieldCounter:0,
-      
+
       // BASE_URL:BASE_URL,
     };
   },
   methods: {
-    
+
     imageSrc() {
       return (
         this.BASE_URL +
@@ -394,11 +394,11 @@ export default {
              this.$session.set('byr_buyer_company',data.byr_info.company_name)
              this.selected_customer_list = data.byr_info.company_name;
           }
-         
+
         });
     },
-     
-    
+
+
   },
   created() {
     this.get_user_company_info();
@@ -415,7 +415,7 @@ export default {
         this.selected_customer_list = '未選択';
       }
     });
-    
+
   },
 };
 </script>

@@ -39,7 +39,8 @@ class InvoiceCommand extends Command
     public function handle()
     {
         $invoice=new InvoiceController();
+        $this->comment("Invoice Running.....");
         $invoice->invoiceScheduler();
-        // $drip->send(User::find($this->argument('user')));
+        $this->comment("Done");
     }
 }

@@ -62,7 +62,7 @@
       </div>
     <div class="col-12">
      <p>
-              <span class="tableRowsInfo">1〜10 件表示中／全：10件</span>
+              <span class="tableRowsInfo">{{ invoice_lists.from }}〜{{ invoice_lists.to }} 件表示中／全：{{ invoice_lists.total }}件</span>
               <span class="pagi"
                 >
               <advanced-laravel-vue-paginate :data="invoice_lists"
@@ -73,7 +73,8 @@
                 @paginateTo="get_all_invoice_list"/>
               </span>
               <span class="selectPagi">
-                <select class="form-control selectPage">
+                <select class="form-control selectPage" @change="get_all_invoice_list"
+                  v-model="form.select_field_per_page_num" >
                   <!--<option value="0">表示行数</option>
                   <option v-for="n in order_detail_lists.last_page" :key="n"
                 :value="n">{{n}}</option>-->
@@ -104,11 +105,12 @@
             </tr>
           </thead>
           <tbody>
+              <!-- {{ i=invoice_lists.from }} -->
             <tr
-              v-for="(value, index) in invoice_lists"
-              :key="value.byr_invoice_id"
+              v-for="(value, index) in invoice_lists.data"
+              :key="index"
             >
-              <td>{{ index + 1 }}</td>
+              <td>{{ (index+1) }}</td>
               <td>{{ value.company_name }}</td>
               <td>{{ value.send_date }}</td>
               <td>{{ value.start_date }}~{{ value.start_date }}</td>
@@ -118,7 +120,7 @@
                 <router-link
                   :to="{
                     name: 'invoice_detail',
-                    params: { byr_invoice_id: value.byr_invoice_id },
+                    params: { data_invoice_id: value.data_invoice_id },
                   }"
                   class="btn btn-info"
                   >{{ myLang.details }}</router-link
@@ -182,7 +184,16 @@ export default {
         mes_lis_inv_pay_code:'',
         mes_lis_inv_per_begin_date:'',
         mes_lis_inv_per_end_date:'',
-      }
+      },
+      form: new Form({
+        select_field_per_page_num:10,
+        page:1,
+        adm_user_id: Globals.user_info_id,
+        byr_buyer_id: null,
+        // print_cnt: "*",
+        // decission_cnt: "*",
+        submit_type: "page_load",
+      }),
     };
   },
   beforeCreate: function() {
@@ -195,12 +206,13 @@ export default {
       this.invoiceCreateModal = true;
     },
     //get Table data
-    get_all_invoice_list() {
-      axios
-        .get(this.BASE_URL + "api/get_all_invoice_list/" + Globals.user_info_id)
-        .then((data) => {
-          this.invoice_lists = data.data.invoice_list;
-          this.byr_buyer_lists = data.data.byr_buyer_list;
+    get_all_invoice_list(page = 1) {
+        this.form.page=page;
+      axios.post(this.BASE_URL + "api/get_all_invoice_list",this.form)
+        .then(({data}) => {
+            console.log(data);
+          this.invoice_lists = data.invoice_list;
+          this.byr_buyer_lists = data.byr_buyer_list;
         });
     },
     insertInvoice() {

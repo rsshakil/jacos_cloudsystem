@@ -66,7 +66,6 @@ class data_csv_payment_order extends Model
                 $data_payment_array['mes_mes_ultimate_receiver_station_address']=$value[14];
                 $data_payment_array['mes_mes_immediate_receiver_station_addres']=$value[15];
                 $data_payment_array['mes_mes_number_of_trading_documents']=$value[16];
-                $data_payment_array['mes_mes_system_info']=""; //New added
                 $data_payment_array['mes_mes_sys_key']=$value[17];
                 $data_payment_array['mes_mes_sys_value']=$value[18];
                 $data_payment_array['mes_lis_con_version']=$value[19];
