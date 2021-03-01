@@ -167,7 +167,7 @@
               <input
                 type="text"
                 class="form-control"
-                maxlength="3"
+                maxlength="8"
                 :class="{ 'is-invalid': form.errors.has('category_name') }"
                 v-model="form.category_name"
               />

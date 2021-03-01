@@ -86,10 +86,17 @@
               <th style="cursor: pointer">No</th>
               <th style="cursor: pointer">内容</th>
               <th style="cursor: pointer">金額</th>
+              <th style="cursor: pointer">支払合計金額</th>
             </tr>
           </thead>
           <tbody>
-
+            <tr>
+              <td>1</td>
+              <td>{{payment_detail_header.mes_lis_pay_pay_gln}} {{
+payment_detail_header.mes_lis_pay_pay_name}}</td>
+              <td>{{payment_detail_header.mes_lis_pay_pay_id}}</td>
+              <td>{{payment_detail_header.mes_lis_pay_lin_det_amo_payable_amount + payment_detail_header.mes_lis_pay_lin_det_amo_tax}}</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -107,7 +114,30 @@
             </tr>
           </thead>
           <tbody>
-
+            <tr>
+              <td>1</td>
+              <td>仕入合計金額</td>
+              <td>仕入合計金額</td>
+              <td>{{payment_detail_header.mes_lis_pay_lin_det_amo_requested_amount}}</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>仕入消費税</td>
+              <td>仕入消費税</td>
+              <td>{{payment_detail_header.mes_lis_pay_lin_det_amo_tax}}</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>相殺合計金額</td>
+              <td>相殺合計金額</td>
+              <td>{{payment_detail_header.mes_lis_pay_lin_det_amo_payable_amount}}</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>相殺消費税</td>
+              <td>相殺消費税</td>
+              <td>{{payment_detail_header.mes_lis_pay_lin_det_amo_tax}}</td>
+            </tr>
           </tbody>
         </table>
         <br>
@@ -119,13 +149,41 @@
             <tr>
               <th style="cursor: pointer">No</th>
               <th style="cursor: pointer">相殺コード</th>
-              <th style="cursor: pointer">相殺名称</th>
+              <th style="cursor: pointer">仕入合計金額</th>
               <th style="cursor: pointer">取引先コード</th>
               <th style="cursor: pointer">相殺金額</th>
             </tr>
           </thead>
           <tbody>
-
+              <tr>
+              <td>1</td>
+              <td>仕入合計金額</td>
+              <td>仕入合計金額</td>
+              <td>仕入合計金額</td>
+              <td>{{payment_detail_header.mes_lis_pay_lin_det_amo_requested_amount}}</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>仕入消費税</td>
+              <td>仕入消費税</td>
+              <td>仕入消費税</td>
+              <td>{{payment_detail_header.mes_lis_pay_lin_det_amo_tax}}</td>
+            </tr>
+             <tr>
+              <td>3</td>
+              <td>{{payment_detail_header.mes_lis_pay_lin_det_amo_requested_amount}}</td>
+              <td>{{payment_detail_header.mes_lis_pay_lin_det_det_code}}</td>
+              <td>{{payment_detail_header.mes_lis_pay_lin_det_det_meaning}}</td>
+              <td>{{payment_detail_header.mes_lis_pay_lin_det_amo_requested_amount}}</td>
+            </tr>
+             <tr>
+              <td>4</td>
+              <td>{{payment_detail_header.mes_lis_pay_lin_det_amo_requested_amount}}</td>
+              <td>{{payment_detail_header.mes_lis_pay_lin_det_det_code}}</td>
+              <td>{{payment_detail_header.mes_lis_pay_lin_det_det_meaning}}</td>
+              <td>{{payment_detail_header.mes_lis_pay_lin_det_amo_requested_amount}}</td>
+            </tr>
+            
           </tbody>
         </table>
       </div>
