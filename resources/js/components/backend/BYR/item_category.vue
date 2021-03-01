@@ -57,10 +57,10 @@
                         @click="add_new_category_cmn"
                         class="btn custom_right btn-primary"
                       >
-                        {{ myLang.add_user }}
+                        新規分類追加
                       </button>
                      
-              <label for="insertItemCategory" class="custom-file-upload" style="float:right;margin-right:15px;">
+              <label for="insertItemCategory" class="custom-file-upload" style="float:right;margin-right:15px;padding:6px 15px;">
                 <b-icon
                   icon="upload"
                   animation="fade"
@@ -89,8 +89,8 @@
               </tr>
               <tr>
                 <th style="cursor: pointer">No</th>
-                <th style="cursor: pointer">{{ myLang.wholesaler_name }}</th>
-                <th style="cursor: pointer">{{ myLang.category_code }}</th>
+                <th style="cursor: pointer">分類名</th>
+                <th style="cursor: pointer">分類コード</th>
                 <th style="cursor: pointer">{{ myLang.details }}</th>
               </tr>
             </thead>
@@ -250,17 +250,21 @@ export default {
           const formData = new FormData();
           let file = e.target.files[0];
           console.log(file);
+          this.loader = Vue.$loading.show();
           formData.append("file", file);
           formData.append("adm_user_id", Globals.user_info_id);
           axios
             .post(this.BASE_URL + "api/uploadByrCategoryCsv", formData)
             .then(({ data }) => {
               console.log(data);
+              
               _this.alert_icon = "success";
               _this.alert_title = "Inserted";
               _this.alert_text = "Category CSV inserted";
               _this.sweet_normal_alert();
+
               _this.get_all_cat(_this.select_field_page_num);
+              
             });
         }
       });
@@ -349,7 +353,7 @@ export default {
     Fire.$on("AfterCreatecat", (page=1) => {
       this.get_all_cat(page);
     });
-    Fire.$emit("loadPageTitle", "問屋管理");
+    Fire.$emit("loadPageTitle", "分類管理");
     
   },
   mounted() {

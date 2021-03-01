@@ -190,8 +190,11 @@ class Cmn_categoryController extends Controller
         // フォーマット変換
 
         $dataArr = $this->all_functions->csvReader($received_path, 1);
+
         if($dataArr){
-            foreach($dataArr as $item){
+            foreach(array_chunk($dataArr, 1000) as $items ) {
+               foreach($items as $item){
+                   if(count($item)==6){
                 $codeKey = 0;
                 $nameKey = 1;
                 for($i=0;$i<3;$i++){
@@ -247,8 +250,10 @@ class Cmn_categoryController extends Controller
                     $codeKey = $codeKey+2;
                     $nameKey = $nameKey+2;
                 }
-               
             }
+            }
+            }
+
         }
         unlink(storage_path().'/app/'.$path);
         return $result = response()->json(['message' => 'update_success']);
