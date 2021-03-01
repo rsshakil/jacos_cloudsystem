@@ -171,7 +171,7 @@ export default {
                 this.$session.destroy()
                 this.$router.push({ name: 'home' })
                 window.location.reload();
-                his.loader.hide();
+                // his.loader.hide();
 
             });
         },
