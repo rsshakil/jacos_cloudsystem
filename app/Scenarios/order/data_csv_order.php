@@ -459,12 +459,15 @@ class data_csv_order
         $x = 0;
         $y = 0;
         $i = 0;
+        $page_limit=10;
+        $file_number=1;
         foreach ($pdf_datas as $pdf_data) {
             if (!($i > count($pdf_datas))) {
-                if ($page%25==0 && $page!=0) {
-                    $pdf_file_path = $this->file_save($receipt);
+                if ($page % $page_limit==0 && $page!=0) {
+                    $pdf_file_path = $this->file_save($receipt,$file_number);
                     array_push($pdf_file_paths,$pdf_file_path);
                     $receipt=$this->fdfRet();
+                    $file_number+=1;
                     // \Log::info($page);
                 }
                 $receipt->AddPage();
@@ -483,15 +486,15 @@ class data_csv_order
             }
 
         }
-        if ($page%25!=0) {
-            $pdf_file_path= $this->file_save($receipt);
+        if ($page % $page_limit!=0) {
+            $pdf_file_path= $this->file_save($receipt,$file_number);
             array_push($pdf_file_paths,$pdf_file_path);
         }
         return $pdf_file_paths;
         // return $response;
     }
-    public function file_save($receipt){
-        $pdf_file_name=date('YmdHis').'_'.rand(1,100).'_receipt.pdf';
+    public function file_save($receipt, $file_number){
+        $pdf_file_name=date('YmdHis').'_'.'_'.$file_number.'_receipt.pdf';
         $response = new Response(
             $receipt->Output(storage_path(config('const.PDF_SAVE_PATH').$pdf_file_name), 'F'), 200, array('content-type' => 'application / pdf')
         );
