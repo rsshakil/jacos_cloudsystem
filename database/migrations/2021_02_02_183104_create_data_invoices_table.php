@@ -32,7 +32,6 @@ class CreateDataInvoicesTable extends Migration
             $table->string('mes_mes_ultimate_receiver_station_address', 8)->comment('最終受信者ステーションアドレス');
             $table->string('mes_mes_immediate_receiver_station_addres', 8)->comment('直接受信者ステーションアドレス');
             $table->string('mes_mes_number_of_trading_documents', 7)->comment('取引数');
-            $table->string('mes_mes_system_info', 20)->comment('システム情報'); //New Added
             $table->string('mes_mes_sys_key', 20)->comment('システム情報キー');
             $table->string('mes_mes_sys_value', 20)->comment('システム情報値');
             $table->string('mes_lis_con_version', 20)->comment('バージョン番号');
