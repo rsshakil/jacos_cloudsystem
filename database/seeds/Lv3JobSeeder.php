@@ -29,7 +29,7 @@ class Lv3JobSeeder extends Seeder
                 'cmn_scenario_id'=>"",
                 // 'batch_file_path'=>"C:\Users\ASUS\OneDrive\Desktop\JCS\Batch\argument_batch.bat arg1 LV3_FILE_PATH",
                 // 'batch_file_path'=>"C:\Users\ASUS\OneDrive\Desktop\JCS\Batch\argument_batch.bat LV3_FILE_PATH DATA-super_code DATA-partner_code DATA-work",
-                'batch_file_path'=>"C:\Users\Administrator\Documents\jacos\jcs\tools\level3_bat\test.vbs LV3_FILE_PATH",
+                'batch_file_path'=>'C:\Users\Administrator\Documents\jacos\jcs\tools\level3_bat\test.vbs LV3_FILE_PATH',
                 'next_service_id'=>'',
                 'append'=>'',
             ]
