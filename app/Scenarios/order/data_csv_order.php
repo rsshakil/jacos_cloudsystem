@@ -41,6 +41,8 @@ class data_csv_order
     //
     public function exec($request, $sc)
     {
+       return $this->pdfGenerate(1);
+        // return $this->pdfDAta(1);
         // return $file_path_array=$this->pdfGenerate(1);
 
 
@@ -435,18 +437,18 @@ class data_csv_order
         //     $collection = collect($this->attachment_paths_all);
 
         // $chunked_paths = $collection->chunk(3);
-        foreach ($this->attachment_paths_all as $key => $value) {
-            \Log::info('send mail for fax:[to:'.config('const.PDF_SEND_MAIL').',subject:'.$this->fax_number.']');
-            $this->attachment_paths=$value;
-            Mail::send([],[] ,function($message) { $message->to(config('const.PDF_SEND_MAIL'))
-                ->subject($this->fax_number);
-                \Log::info('attach file:'.$this->attachment_paths);
-                $message->attach($this->attachment_paths)
-                // foreach($this->attachment_paths as $filePath){
-                //     $message->attach($filePath);
-                // }
-                ->setBody(''); });
-        }
+        // foreach ($this->attachment_paths_all as $key => $value) {
+        //     \Log::info('send mail for fax:[to:'.config('const.PDF_SEND_MAIL').',subject:'.$this->fax_number.']');
+        //     $this->attachment_paths=$value;
+        //     Mail::send([],[] ,function($message) { $message->to(config('const.PDF_SEND_MAIL'))
+        //         ->subject($this->fax_number);
+        //         \Log::info('attach file:'.$this->attachment_paths);
+        //         $message->attach($this->attachment_paths)
+        //         // foreach($this->attachment_paths as $filePath){
+        //         //     $message->attach($filePath);
+        //         // }
+        //         ->setBody(''); });
+        // }
         }
         return ['message' => "success", 'status' => '1'];
     }
@@ -459,10 +461,14 @@ class data_csv_order
         $x = 0;
         $y = 0;
         $i = 0;
+        $mes_lis_ord_par_rec_code='';
         $page_limit=10;
         $file_number=1;
+        $same_rec_code=1;
         foreach ($pdf_datas as $pdf_data) {
+            // \Log::info("i number".$i);
             if (!($i > count($pdf_datas))) {
+                // \Log::DEBUG($pdf_datas[$i][0]->mes_lis_ord_par_rec_code);
                 if ($page % $page_limit==0 && $page!=0) {
                     $pdf_file_path = $this->file_save($receipt,$file_number);
                     array_push($pdf_file_paths,$pdf_file_path);
@@ -470,19 +476,39 @@ class data_csv_order
                     $file_number+=1;
                     // \Log::info($page);
                 }
-                $receipt->AddPage();
-                $page+=1;
-                $receipt=$this->headerData($receipt,$pdf_data,$x,$y);
+
                 if (isset($pdf_datas[$i])) {
-                    $receipt = $this->coordinateText($receipt, $pdf_datas[$i],$i,0,50.7);
+                    if ($mes_lis_ord_par_rec_code!=$pdf_datas[$i][0]->mes_lis_ord_par_rec_code) {
+                        $receipt->AddPage();
+                        $page+=1;
+                        $receipt=$this->headerData($receipt,$pdf_data,$x,$y);
+                        $this->coordinateText($receipt, $pdf_datas[$i],$i,0,50.7,103.4);
+                        // \Log::info("if i number".$i);
+                    }else{
+                        if ($same_rec_code%2==0) {
+                            $receipt->AddPage();
+                            $page+=1;
+                        }
+                        $receipt=$this->headerData($receipt,$pdf_data,$x,$y);
+                        $this->coordinateText($receipt, $pdf_datas[$i],$i,0,117,170);
+                        $same_rec_code+=1;
+                        // \Log::info("else i number".$i);
+                    }
+
+                    $mes_lis_ord_par_rec_code=$pdf_datas[$i][0]->mes_lis_ord_par_rec_code;
                 }
-                $i += 1;
-                if (isset($pdf_datas[$i])) {
-                    $receipt = $this->coordinateText($receipt, $pdf_datas[$i],$i, 0, 117);
-                }
+                // $i += 1;
+                // if (isset($pdf_datas[$i])) {
+                //     $receipt->AddPage();
+                //     $page+=1;
+                //     $receipt=$this->headerData($receipt,$pdf_data,$x,$y);
+                //     $receipt = $this->coordinateText($receipt, $pdf_datas[$i],$i, 0, 117);
+                // }
+                // $mes_lis_ord_par_rec_code=$pdf_datas[$i][0]->mes_lis_ord_par_rec_code;
                 $i += 1;
                 $x = 0;
                 $y = 0;
+                $same_rec_code=1;
             }
 
         }
@@ -536,7 +562,7 @@ class data_csv_order
         return $receipt;
     }
 
-    public function coordinateText($receipt, $pdf_data,$i=0, $x = 0, $y = 50.7)
+    public function coordinateText($receipt, $pdf_data,$i=0, $x = 0, $y = 50.7,$sum_of_y=103.4)
     {
         //Cell($w, $h=0, $txt='', $border=0, $ln=0, $align='', $fill=0, $link='', $stretch=0, $ignore_min_height=false, $calign='T', $valign='M')
         $receipt->SetXY($x + 29.6, $y);
@@ -581,15 +607,15 @@ class data_csv_order
             $y += 4.5;
         }
         $x = 0;
-        if ($i%2==0) {
-            $y=103.4;
-        }else{
-            $y=170;
-        }
+        // if ($i%2==0) {
+        //     $y=103.4;
+        // }else{
+        //     $y=170;
+        // }
         // $y += 33.7;
-        $receipt->SetXY($x + 170.5, $y);
+        $receipt->SetXY($x + 170.5, $sum_of_y);
         $receipt->Cell(36.5, 4.5, number_format($value->mes_lis_ord_tot_tot_net_price_total), 0, 1, 'R', 0, '', 0);
-        $receipt->SetXY($x + 228.2, $y);
+        $receipt->SetXY($x + 228.2, $sum_of_y);
         $receipt->Cell(36.5, 4.5, number_format($value->mes_lis_ord_tot_tot_selling_price_total), 0, 1, 'R', 0, '', 0);
         $y=0;
         return $receipt;
