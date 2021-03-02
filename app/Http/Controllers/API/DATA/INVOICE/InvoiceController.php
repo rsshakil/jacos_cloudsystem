@@ -58,21 +58,34 @@ class InvoiceController extends Controller
             // $byr_buyer_id = $cmn_company_info['byr_buyer_id'];
             $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
-        if (!$authUser->hasRole(config('const.adm_role_name'))) {
-            $result = data_invoice::select('data_invoices.*', 'cmn_companies.company_name')
-                ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'data_invoices.cmn_connect_id')
-                ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
-                ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
-                ->where('data_invoices.cmn_connect_id', $cmn_connect_id)
-                ->paginate($per_page);
+        $result=data_invoice::select('data_invoices.*','dip.*','dipd.*')
+        ->join('data_invoice_pays as dip','data_invoices.data_invoice_id','=','dip.data_invoice_id')
+        ->join('data_invoice_pay_details as dipd','dip.data_invoice_pay_id','=','dipd.data_invoice_pay_id')
+        ->where('data_invoices.cmn_connect_id','=',$cmn_connect_id)
+        // ->groupBy('data_receives.receive_datetime')
+        // ->groupBy('data_receives.sta_sen_identifier')
+        // ->groupBy('drv.mes_lis_acc_par_sel_code')
+        // ->groupBy('drv.mes_lis_acc_par_sel_name')
+        // ->groupBy('drv.mes_lis_acc_tra_dat_delivery_date')
+        // ->groupBy('drv.mes_lis_acc_tra_goo_major_category')
+        // ->groupBy('drv.mes_lis_acc_log_del_delivery_service_code')
+        // ->groupBy('drv.mes_lis_acc_tra_ins_temperature_code')
+        ->paginate($per_page);
+        // if (!$authUser->hasRole(config('const.adm_role_name'))) {
+        //     $result = data_invoice::select('data_invoices.*', 'cmn_companies.company_name')
+        //         ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'data_invoices.cmn_connect_id')
+        //         ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
+        //         ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
+        //         ->where('data_invoices.cmn_connect_id', $cmn_connect_id)
+        //         ->paginate($per_page);
 
-        } else {
-            $result = data_invoice::select('data_invoices.*', 'cmn_companies.company_name')
-                ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'data_invoices.cmn_connect_id')
-                ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
-                ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
-                ->paginate($per_page);
-        }
+        // } else {
+        //     $result = data_invoice::select('data_invoices.*', 'cmn_companies.company_name')
+        //         ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'data_invoices.cmn_connect_id')
+        //         ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
+        //         ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
+        //         ->paginate($per_page);
+        // }
 
         $byr_buyer = $this->all_used_fun->get_company_list($cmn_company_id);
 
