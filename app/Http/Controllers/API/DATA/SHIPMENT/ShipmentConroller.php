@@ -28,7 +28,7 @@ class ShipmentConroller extends Controller
         $csv_data_count = Data_Controller::get_shipment_data($request)->get()->count();
         if (!$data_count) {
             $dateTime = date('Y-m-d H:i:s');
-            $new_file_name = self::shipmentFileName($data_order_id);
+            $new_file_name = self::shipmentFileName($data_order_id,'csv');
             data_shipment::where('data_order_id',$data_order_id)->update(['mes_mes_number_of_trading_documents'=>$csv_data_count]);
             $download_file_url = \Config::get('app.url')."storage/app".config('const.SHIPMENT_CSV_PATH')."/". $new_file_name;
             (new ShipmentCSVExport($request))->store(config('const.SHIPMENT_CSV_PATH').'/'.$new_file_name);
@@ -45,8 +45,9 @@ class ShipmentConroller extends Controller
         // downloadType=2 for Fixed length
         $data_order_id=$request->data_order_id;
         $downloadType=$request->downloadType;
+        $csv_data_count =0;
         if ($downloadType==1) {
-            $new_file_name = $new_file_name = self::shipmentFileName($data_order_id);
+            $new_file_name = $new_file_name = self::shipmentFileName($data_order_id,'csv');
             $download_file_url = \Config::get('app.url')."storage/app".config('const.SHIPMENT_CSV_PATH')."/". $new_file_name;
             $csv_data_count = Data_Controller::get_shipment_data($request)->count();
             (new ShipmentCSVExport($request))->store(config('const.SHIPMENT_CSV_PATH').'/'.$new_file_name);
@@ -58,24 +59,27 @@ class ShipmentConroller extends Controller
             $request->request->add(['data_order_id' => 1]);
             $request->request->add(['email' => 'user@jacos.co.jp']);
             $request->request->add(['password' => 'Qe75ymSr']);
+            $new_file_name = self::shipmentFileName($data_order_id,'txt');
+            $download_file_url = \Config::get('app.url')."storage/".config('const.FIXED_LENGTH_FILE_PATH')."/". $new_file_name;
+            $request->request->add(['file_name' => $new_file_name]);
             // $request->request->remove('downloadType');
             // return $request->all();
             $cs = new Cmn_ScenarioController();
-             return $ret = $cs->exec($request);
+            $ret = $cs->exec($request);
             //  return collect($ret)->toJson();
             // \Log::debug($ret->getContent());
-            return $ret = json_decode($ret->getContent(), true);
-            if (1 === $ret['status']) {
-                // sceanario exec error
-                \Log::error($ret['message']);
-                return $ret;
-            }
-            return response()->json($ret);
+            // return $ret = json_decode($ret->getContent(), true);
+            // if (1 === $ret['status']) {
+            //     // sceanario exec error
+            //     \Log::error($ret['message']);
+            //     return $ret;
+            // }
+            // return response()->json($ret);
         }
 
         return response()->json(['message' => 'Success','status'=>1,'new_file_name'=>$new_file_name, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
     }
-    private static function shipmentFileName($data_order_id){
+    private static function shipmentFileName($data_order_id,$file_type="csv"){
         $file_name_info=data_shipment::select('cmn_connects.partner_code','byr_buyers.super_code','cmn_companies.jcode')
             ->join('cmn_connects','cmn_connects.cmn_connect_id','=','data_shipments.cmn_connect_id')
             ->join('byr_buyers','byr_buyers.byr_buyer_id','=','cmn_connects.byr_buyer_id')
@@ -83,7 +87,7 @@ class ShipmentConroller extends Controller
             ->join('cmn_companies','cmn_companies.cmn_company_id','=','slr_sellers.cmn_company_id')
             ->where('data_shipments.data_order_id',$data_order_id)
             ->first();
-            $file_name = $file_name_info->super_code.'-'."shipment_".$file_name_info->super_code.'-'.$file_name_info->partner_code."-".$file_name_info->jcode.'_shipment_'.date('YmdHis').".csv";
+            $file_name = $file_name_info->super_code.'-'."shipment_".$file_name_info->super_code.'-'.$file_name_info->partner_code."-".$file_name_info->jcode.'_shipment_'.date('YmdHis').'.'.$file_type;
             return $file_name;
     }
     public function deletedownloadedshipmentCsv($fileUrl){
