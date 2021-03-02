@@ -119,7 +119,7 @@ class fixed_length_generate
         $txt_file_name = $request->file_name?$request->file_name:(date('y-m-d').'_Text_File_'.time().".txt");
         $string_data=$this->all_functions->convert_from_utf8_to_sjis__recursively($string_data);
         // if ($request->get('ebcdic', false)) {
-        //     $string_data=$this->common_class_obj->sjis_2_ebcdic(null, $string_data);
+            // $string_data=$this->common_class_obj->sjis_2_ebcdic(null, $string_data);
         // }
 
         if ($string_data!=null) {
