@@ -102,7 +102,7 @@
                 <td>{{
                     cat_lists.current_page*select_field_per_page_num-select_field_per_page_num+index+1
                   }}</td>
-                <td>{{ cat_list.name }}</td>
+                <td>{{ cat_list.category_name }}</td>
                 <td>{{ cat_list.category_code }}</td>
                 <td>
                   <button
@@ -191,7 +191,7 @@
                   v-bind:value="option.cmn_category_id"
                   v-bind:key="option.cmn_category_id"
                 >
-                  {{ option.name }}
+                  {{ option.category_name }}
                 </option>
               </select>
               <has-error :form="form" field="parent_id"></has-error>

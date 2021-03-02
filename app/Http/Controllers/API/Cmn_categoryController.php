@@ -10,8 +10,6 @@ use App\Models\BYR\byr_item;
 use App\Models\BYR\byr_item_class;
 use App\Models\CMN\cmn_maker;
 use App\Models\CMN\cmn_category;
-use App\Models\CMN\cmn_category_description;
-use App\Models\CMN\cmn_category_path;
 use App\Models\BYR\byr_shop;
 use App\Models\CMN\cmn_pdf_canvas;
 use App\Models\CMN\cmn_tbl_col_setting;
@@ -49,39 +47,16 @@ class Cmn_categoryController extends Controller
             $cmn_company_id = $cmn_company_info->cmn_company_id;
             $byr_buyer_id = $cmn_company_info->byr_buyer_id;
             $cmn_connect_id = $cmn_company_info->cmn_connect_id;
-            $categorysAllforOpt = collect(\DB::select("SELECT cp.cmn_category_id AS cmn_category_id,cd2.category_code,cd2.category_name, GROUP_CONCAT(cd1.category_name ORDER BY cp.level SEPARATOR ' > ') AS name, c1.parent_id FROM cmn_category_paths cp LEFT JOIN cmn_categories c1 ON (cp.cmn_category_id = c1.cmn_category_id) LEFT JOIN cmn_categories c2 ON (cp.path_id = c2.cmn_category_id) LEFT JOIN cmn_category_descriptions cd1 ON (cp.path_id = cd1.cmn_category_id) LEFT JOIN cmn_category_descriptions cd2 ON (cp.cmn_category_id = cd2.cmn_category_id) where c1.is_deleted=0 and c2.is_deleted=0 and cd2.byr_buyer_id='".$byr_buyer_id."' GROUP BY cp.cmn_category_id"));
-            $categorys = cmn_category_path::select('cmn_category_paths.cmn_category_id AS cmn_category_id','cd2.category_code','cd2.category_name', 'cd2.category_orign_code',
-            DB::raw('GROUP_CONCAT(cd1.category_name ORDER BY cmn_category_paths.level SEPARATOR " > ") AS name'),
-             'c1.parent_id')
-            ->leftJoin('cmn_categories as c1','cmn_category_paths.cmn_category_id', '=','c1.cmn_category_id')
-            ->leftJoin('cmn_categories as c2','cmn_category_paths.path_id', '=','c2.cmn_category_id')
-            ->leftJoin('cmn_category_descriptions as cd1','cmn_category_paths.path_id','=','cd1.cmn_category_id')
-            ->leftJoin('cmn_category_descriptions as cd2','cmn_category_paths.cmn_category_id','=','cd2.cmn_category_id')
-            ->where(['c1.is_deleted'=>0,'c2.is_deleted'=>0,'cd2.byr_buyer_id'=>$byr_buyer_id])
-            ->groupBy('cmn_category_paths.cmn_category_id')
+            $categorysAllforOpt = cmn_category::where(['cmn_categories.is_deleted'=>0,'cmn_categories.byr_buyer_id'=>$byr_buyer_id])->get();
+            $categorys = cmn_category::where(['cmn_categories.is_deleted'=>0,'cmn_categories.byr_buyer_id'=>$byr_buyer_id])
             ->paginate($per_page);
-
-
-            $parent_list = cmn_category_description::where(['byr_buyer_id'=>$byr_buyer_id,'is_deleted'=>0])->get();
-            
-
         }else{
-            $categorysAllforOpt = collect(\DB::select("SELECT cp.cmn_category_id AS cmn_category_id,cd2.category_code,cd2.category_name, GROUP_CONCAT(cd1.category_name ORDER BY cp.level SEPARATOR ' > ') AS name, c1.parent_id FROM cmn_category_paths cp LEFT JOIN cmn_categories c1 ON (cp.cmn_category_id = c1.cmn_category_id) LEFT JOIN cmn_categories c2 ON (cp.path_id = c2.cmn_category_id) LEFT JOIN cmn_category_descriptions cd1 ON (cp.path_id = cd1.cmn_category_id) LEFT JOIN cmn_category_descriptions cd2 ON (cp.cmn_category_id = cd2.cmn_category_id) where c1.is_deleted=0 and c2.is_deleted=0 GROUP BY cp.cmn_category_id"));
-            $categorys = cmn_category_path::select('cmn_category_paths.cmn_category_id AS cmn_category_id','cd2.category_code','cd2.category_name', 'cd2.category_orign_code',
-            DB::raw('GROUP_CONCAT(cd1.category_name ORDER BY cmn_category_paths.level SEPARATOR " > ") AS name'),
-             'c1.parent_id')
-            ->leftJoin('cmn_categories as c1','cmn_category_paths.cmn_category_id', '=','c1.cmn_category_id')
-            ->leftJoin('cmn_categories as c2','cmn_category_paths.path_id', '=','c2.cmn_category_id')
-            ->leftJoin('cmn_category_descriptions as cd1','cmn_category_paths.path_id','=','cd1.cmn_category_id')
-            ->leftJoin('cmn_category_descriptions as cd2','cmn_category_paths.cmn_category_id','=','cd2.cmn_category_id')
-            ->where(['c1.is_deleted'=>0,'c2.is_deleted'=>0])
-            ->groupBy('cmn_category_paths.cmn_category_id')
+            $categorysAllforOpt = cmn_category::where(['cmn_categories.is_deleted'=>0])->get();
+            $categorys = cmn_category::where(['cmn_categories.is_deleted'=>0])
             ->paginate($per_page);
-            
-            $parent_list = cmn_category_description::where('is_deleted',0)->get();
         }
 
-        return response()->json(['cat_list' => $categorys,'allCatForParent'=>$categorysAllforOpt,'parent_list'=>$parent_list]);
+        return response()->json(['cat_list' => $categorys,'allCatForParent'=>$categorysAllforOpt]);
     }
     /**
      * Store a newly created resource in storage.
@@ -117,8 +92,9 @@ class Cmn_categoryController extends Controller
         $category_code = $request->category_orign_code;
         $category_name = $request->category_name;
         $parent_id = $request->parent_id;
+        $level = '1';
         if($parent_id!=0){
-            $parent_ct = cmn_category_description::where('cmn_category_id',$parent_id)->first();
+            $parent_ct = cmn_category::where('cmn_category_id',$parent_id)->first();
             $last2digits=substr($parent_ct->category_code, -3);
             $last4digits=substr($parent_ct->category_code, -6);
             if($last2digits!=000){
@@ -127,40 +103,22 @@ class Cmn_categoryController extends Controller
                 if($last4digits!='000000'){
                     $first4digits=substr($parent_ct->category_code,0,6);
                     $category_code = $first4digits.$category_code;
+                    $level = '3';
                 }else{
                     $first2digits=substr($parent_ct->category_code,0,3);
                     $category_code = $first2digits.$category_code.'000';
+                    $level = '2';
                 }
             }
         }else{
             $category_code = $category_code.'000000';
+            $level = '1';
         }
         if($cmn_category_id==0){
-            $cat_id = cmn_category::insertGetId(['parent_id'=>$parent_id]);
-            $cat_desc = cmn_category_description::insertGetId(['cmn_category_id'=>$cat_id,'category_name'=>$category_code,'byr_buyer_id'=>$byr_buyer_id,'category_code'=>$category_code,'category_orign_code'=>$category_orign_code,'category_name'=>$category_name]);
-            $result = DB::select("SELECT cmn_category_paths.*,cmn_category_descriptions.category_code FROM cmn_category_paths inner join cmn_category_descriptions on cmn_category_descriptions.cmn_category_id=cmn_category_paths.path_id WHERE cmn_category_paths.cmn_category_id = '". $parent_id . "' ORDER BY `level` ASC");
-            $level=0;
-            if($result){
-                foreach($result as $val){
-                    cmn_category_path::insert(['cmn_category_id'=>$cat_id,'path_id'=>$val->path_id,'level'=>$level]);
-                    $level++;
-                }
-            }
-            cmn_category_path::insert(['cmn_category_id'=>$cat_id,'path_id'=>$cat_id,'level'=>$level]);
+            $cat_id = cmn_category::insertGetId(['parent_category_id'=>$parent_id,'category_name'=>$category_code,'byr_buyer_id'=>$byr_buyer_id,'category_code'=>$category_code,'category_orign_code'=>$category_orign_code,'category_name'=>$category_name,'level'=>$level]);
             return $result = response()->json(['message' => 'insert_success']);
         }else{
-            cmn_category::where('cmn_category_id',$cmn_category_id)->update(['parent_id'=>$parent_id]);
-            cmn_category_description::where('cmn_category_id',$cmn_category_id)->update(['category_name'=>$category_name,'category_code'=>$category_code,'category_orign_code'=>$category_orign_code]);
-            cmn_category_path::where('cmn_category_id',$cmn_category_id)->delete();
-            $result = DB::select("SELECT cmn_category_paths.*,cmn_category_descriptions.category_code FROM cmn_category_paths inner join cmn_category_descriptions on cmn_category_descriptions.cmn_category_id=cmn_category_paths.path_id WHERE cmn_category_paths.cmn_category_id = '". $parent_id . "' ORDER BY `level` ASC");
-            $level=0;
-            if($result){
-                foreach($result as $val){
-                    cmn_category_path::insert(['cmn_category_id'=>$cmn_category_id,'path_id'=>$val->path_id,'level'=>$level]);
-                    $level++;
-                }
-            }
-            cmn_category_path::insert(['cmn_category_id'=>$cmn_category_id,'path_id'=>$cmn_category_id,'level'=>$level]);
+            cmn_category::where('cmn_category_id',$cmn_category_id)->update(['parent_category_id'=>$parent_id,'category_name'=>$category_name,'category_code'=>$category_code,'category_orign_code'=>$category_orign_code,'level'=>$level]);
             return $result = response()->json(['message' => 'update_success']);
         }
 
@@ -197,54 +155,44 @@ class Cmn_categoryController extends Controller
                    if(count($item)==6){
                 $codeKey = 0;
                 $nameKey = 1;
+                $level = '1';
                 for($i=0;$i<3;$i++){
                     if($i==0){
                         $catCode = $item[$codeKey].'000000';
+                        $level = '1';
                     }else if($i==1){
                         $catCode = $item[0].$item[$codeKey].'000';
-                       
+                        $level = '2';
                     }else{
                         $catCode = $item[0].$item[2].$item[$codeKey];
-                       
+                        $level = '3';
                     }
                     $catCode2 = $item[0].'000000';
                     $catCode4 = $item[0].$item[2].'000';
                     
-                    $catInfo = cmn_category_description::select('cmn_category_descriptions.*','cmn_categories.parent_id')->join('cmn_categories','cmn_categories.cmn_category_id','=','cmn_category_descriptions.cmn_category_id')->where('category_code',$catCode)->first();
+                    $catInfo = cmn_category::where('category_code',$catCode)->first();
                     if(!$catInfo){
                         $subCatInfo = array();
 
                         if($i==1){
-                            $subCatInfo = cmn_category_description::select('cmn_category_descriptions.*','cmn_categories.parent_id')->join('cmn_categories','cmn_categories.cmn_category_id','=','cmn_category_descriptions.cmn_category_id')->where('cmn_category_descriptions.category_code',$catCode2)->first();
-                            //echo $catCode2;exit;    
-                            //$subCatInfo = cmn_category_description::where('cmn_category_descriptions.category_code',$catCode2)->first();
-                        
-                        }
+                            $subCatInfo = cmn_category::where('cmn_categories.category_code',$catCode2)->first();
+                            }
                         if($i==2){
-                            $subCatInfo = cmn_category_description::select('cmn_category_descriptions.*','cmn_categories.parent_id')->join('cmn_categories','cmn_categories.cmn_category_id','=','cmn_category_descriptions.cmn_category_id')->where('cmn_category_descriptions.category_code',$catCode4)->first();
+                            $subCatInfo = cmn_category::where('cmn_categories.category_code',$catCode4)->first();
                         }
                         $parent_id = 0;
                         if($subCatInfo){
                             $parent_id = $subCatInfo->cmn_category_id;
                         }
-                        $cat_id = cmn_category::insertGetId(['parent_id'=>$parent_id]);
-                        $cat_desc = cmn_category_description::insertGetId([
-                        'cmn_category_id'=>$cat_id,
+                        $cat_desc = cmn_category::insertGetId([
+                        'parent_category_id'=>$parent_id,
                         'category_name'=>$item[$nameKey],
                         'byr_buyer_id'=>$byr_buyer_id,
                         'category_code'=>$catCode,
-                        'category_orign_code'=>$item[$codeKey]
+                        'category_orign_code'=>$item[$codeKey],
+                        'level'=>$level
                         ]);
-                        $result = DB::select("SELECT cmn_category_paths.*,cmn_category_descriptions.category_code FROM cmn_category_paths inner join cmn_category_descriptions on cmn_category_descriptions.cmn_category_id=cmn_category_paths.path_id WHERE cmn_category_paths.cmn_category_id = '". $parent_id . "' ORDER BY `level` ASC");
-            
-                        $level=0;
-            if($result){
-                foreach($result as $val){
-                    cmn_category_path::insert(['cmn_category_id'=>$cat_id,'path_id'=>$val->path_id,'level'=>$level]);
-                    $level++;
-                }
-            }
-            cmn_category_path::insert(['cmn_category_id'=>$cat_id,'path_id'=>$cat_id,'level'=>$level]);
+                        
                     }
                     
                     $codeKey = $codeKey+2;

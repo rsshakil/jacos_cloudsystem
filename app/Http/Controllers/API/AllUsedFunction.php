@@ -527,7 +527,7 @@ class AllUsedFunction extends Controller
     }
 
     public function get_allCategoryByByrId($byr_buyer_id){
-        $result = cmn_category_path::select('cmn_category_descriptions.*')->join('cmn_category_descriptions','cmn_category_descriptions.cmn_category_id','=','cmn_category_paths.cmn_category_id')->where('cmn_category_descriptions.byr_buyer_id',$byr_buyer_id)->where('cmn_category_descriptions.is_deleted',0)->where('cmn_category_paths.level',0)->groupBy('cmn_category_paths.cmn_category_id')->get();
+        $result = cmn_category::where('byr_buyer_id',$byr_buyer_id)->where('is_deleted',0)->where('level',1)->get();
         return $result;
     }
 
