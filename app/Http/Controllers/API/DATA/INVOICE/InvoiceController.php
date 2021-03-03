@@ -22,7 +22,7 @@ class InvoiceController extends Controller
         $this->request->setMethod('POST');
         $this->all_used_fun = new AllUsedFunction();
     }
-    public function invoiceScheduler(){
+    public function invoiceScheduler($start_date,$end_date){
         // $request = new \Illuminate\Http\Request();
         // $request->setMethod('POST');
         $request=$this->request;
@@ -30,6 +30,8 @@ class InvoiceController extends Controller
         $request->request->add(['data_order_id' => 1]);
         $request->request->add(['email' => 'user@jacos.co.jp']);
         $request->request->add(['password' => 'Qe75ymSr']);
+        $request->request->add(['start_date' => $start_date]);
+        $request->request->add(['end_date' => $end_date]);
         // return $request->all();
         $cs = new Cmn_ScenarioController();
         return $ret = $cs->exec($request);
@@ -58,11 +60,14 @@ class InvoiceController extends Controller
             // $byr_buyer_id = $cmn_company_info['byr_buyer_id'];
             $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
-        $result=data_invoice::select('data_invoices.*','dip.*','dipd.*')
+        $result=data_invoice::select('data_invoices.data_invoice_id','dip.mes_lis_inv_per_end_date',
+        'dip.mes_lis_inv_pay_code','dip.mes_lis_buy_name',
+        'dip.status','dipd.mes_lis_inv_lin_det_amo_requested_amount'
+        )
         ->join('data_invoice_pays as dip','data_invoices.data_invoice_id','=','dip.data_invoice_id')
         ->join('data_invoice_pay_details as dipd','dip.data_invoice_pay_id','=','dipd.data_invoice_pay_id')
         ->where('data_invoices.cmn_connect_id','=',$cmn_connect_id)
-        // ->groupBy('data_receives.receive_datetime')
+        ->groupBy('dip.mes_lis_inv_per_end_date')
         // ->groupBy('data_receives.sta_sen_identifier')
         // ->groupBy('drv.mes_lis_acc_par_sel_code')
         // ->groupBy('drv.mes_lis_acc_par_sel_name')

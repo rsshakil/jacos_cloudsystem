@@ -94,14 +94,12 @@
           <thead>
 
             <tr>
-              <th style="cursor: pointer">No</th>
-              <th style="cursor: pointer">請求日時</th>
-              <th style="cursor: pointer">請求取引先コード</th>
-
-              <th style="cursor: pointer">発注者</th>
-              <th style="cursor: pointer">締日</th>
-              <th style="cursor: pointer">請求状況</th>
-              <th style="cursor: pointer">請求金額</th>
+              <th>No</th>
+              <th>締日</th>
+              <th>請求取引先コード</th>
+              <th>発注者</th>
+              <th>請求状況</th>
+              <th>請求金額</th>
             </tr>
           </thead>
           <tbody>
@@ -111,21 +109,13 @@
               :key="index"
             >
               <td>{{ (index+1) }}</td>
-              <td>{{ value.company_name }}</td>
-              <td>{{ value.send_date }}</td>
-              <td>{{ value.start_date }}~{{ value.start_date }}</td>
-              <td>{{ value.request_amount }}</td>
-              <td>{{ value.status }}</td>
               <td>
-                <router-link
-                  :to="{
-                    name: 'invoice_detail',
-                    params: { data_invoice_id: value.data_invoice_id },
-                  }"
-                  class="btn btn-info"
-                  >{{ myLang.details }}</router-link
-                >
+                <router-link :to="{ name: 'invoice_detail', params: { data_invoice_id: value.data_invoice_id }, }" class="btn btn-info">{{ value.mes_lis_inv_per_end_date }}</router-link>
               </td>
+              <td>{{ value.mes_lis_inv_pay_code }}</td>
+              <td>{{ value.mes_lis_buy_name }}</td>
+              <td>{{ value.status }}</td>
+              <td>{{ value.mes_lis_inv_lin_det_amo_requested_amount }}</td>
 
             </tr>
           </tbody>

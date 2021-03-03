@@ -21,17 +21,21 @@ class data_invoice_scheduler
 
     public function exec($request, $sc)
     {
-
+        // \Log::info($request->all());
         // return $request->all();
         $data_order_id=$request->data_order_id;
+        $start_date=$request->start_date;
+        $end_date=$request->end_date;
+
         $data_invoice_array=array();
         $data_invoice_pay_array=array();
         $data_invoice_pay_details_array=array();
-        $shipment_datas=self::shipmentQuery($data_order_id);
+        $shipment_datas=self::shipmentQuery($data_order_id,$start_date,$end_date);
         $datashipment=true;
         $data_invoice_pay_id=1;
         foreach ($shipment_datas as $key => $shipment_data) {
             if ($datashipment) {
+                $data_invoice_array['cmn_connect_id']=$shipment_data['cmn_connect_id'];
                 $data_invoice_array['sta_sen_identifier']=$shipment_data['sta_sen_identifier'];
                 $data_invoice_array['sta_sen_ide_authority']=$shipment_data['sta_sen_ide_authority'];
                 $data_invoice_array['sta_rec_identifier']=$shipment_data['sta_rec_identifier'];
@@ -73,8 +77,8 @@ class data_invoice_scheduler
                 $data_invoice_pay_array['mes_lis_inv_pay_gln']='';
                 $data_invoice_pay_array['mes_lis_inv_pay_name']='';
                 $data_invoice_pay_array['mes_lis_inv_pay_name_sbcs']='';
-                $data_invoice_pay_array['mes_lis_inv_per_begin_date']='';
-                $data_invoice_pay_array['mes_lis_inv_per_end_date']='';
+                $data_invoice_pay_array['mes_lis_inv_per_begin_date']=$start_date;
+                $data_invoice_pay_array['mes_lis_inv_per_end_date']=$end_date;
                 //static
 
 
@@ -118,8 +122,11 @@ class data_invoice_scheduler
 
         return ['message' => "success", 'status' => '1'];
     }
-    public static function shipmentQuery($data_order_id){
-        return $shipment_datas=data_shipment::select(
+    public static function shipmentQuery($data_order_id,$start_date,$end_date){
+        $start_date = $start_date!=null? date('Y-m-d 00:00:00',strtotime($start_date)):$start_date;
+        $end_date = $end_date!=null? date('Y-m-d 23:59:59',strtotime($end_date)):$end_date;
+        $shipment_datas=data_shipment::select(
+            'data_shipments.cmn_connect_id',
             'data_shipments.sta_sen_identifier',
             'data_shipments.sta_sen_ide_authority',
             'data_shipments.sta_rec_identifier',
@@ -156,6 +163,8 @@ class data_invoice_scheduler
         ->join('data_shipment_items','data_shipment_items.data_shipment_voucher_id','data_shipment_vouchers.data_shipment_voucher_id')
         ->join('data_shipment_item_details','data_shipment_item_details.data_shipment_item_id','data_shipment_items.data_shipment_item_id')
         ->where('data_shipments.data_order_id',$data_order_id)
+        // ->whereBetween('data_shipment_vouchers.mes_lis_shi_tra_dat_transfer_of_ownership_date', [$start_date, $end_date])
         ->get();
+        return $shipment_datas;
     }
 }
