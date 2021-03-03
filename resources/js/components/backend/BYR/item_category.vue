@@ -88,11 +88,22 @@
                 </th>
               </tr>
               <tr>
-                <th style="cursor: pointer">No</th>
-                <th style="cursor: pointer">分類名</th>
-                <th style="cursor: pointer">分類コード</th>
-                <th style="cursor: pointer">{{ myLang.details }}</th>
+                <th rowspan="2" style="cursor: pointer">No</th>
+                <th rowspan="2" style="cursor: pointer">分類コード</th>
+                <th  colspan="2" style="cursor: pointer">大分類</th>
+                <th  colspan="2" style="cursor: pointer">中分類</th>
+                <th  colspan="2" style="cursor: pointer">小分類</th>
+                <th rowspan="2" style="cursor: pointer">{{ myLang.details }}</th>
               </tr>
+              <tr>
+                <th>分類コード</th>
+                <th>分類名</th>
+                <th>分類コード</th>
+                <th>分類名</th>
+                 <th>分類コード</th>
+                <th>分類名</th>
+              </tr>
+             
             </thead>
             <tbody>
               <tr
@@ -102,8 +113,14 @@
                 <td>{{
                     cat_lists.current_page*select_field_per_page_num-select_field_per_page_num+index+1
                   }}</td>
+                  <td>{{ cat_list.category_orign_code }} {{cat_list.category_orign_code2}} {{cat_list.category_orign_code3}}</td>
                 <td>{{ cat_list.category_name }}</td>
-                <td>{{ cat_list.category_code }}</td>
+                <td>{{ cat_list.category_orign_code }}</td>
+                
+                <td>{{ cat_list.category_name2 }}</td>
+                <td>{{ cat_list.category_orign_code2 }}</td>
+                <td>{{ cat_list.category_name3 }}</td>
+                <td>{{ cat_list.category_orign_code3 }}</td>
                 <td>
                   <button
                     @click="edit_category_data(cat_list)"
@@ -182,8 +199,8 @@
             <div class="col-sm-8">
               <select
                 class="form-control"
-                :class="{ 'is-invalid': form.errors.has('parent_id') }"
-                v-model="form.parent_id"
+                :class="{ 'is-invalid': form.errors.has('parent_category_id') }"
+                v-model="form.parent_category_id"
               >
                 <option v-bind:value="0">{{ myLang.select_category }}</option>
                 <option
@@ -194,7 +211,7 @@
                   {{ option.category_name }}
                 </option>
               </select>
-              <has-error :form="form" field="parent_id"></has-error>
+              <has-error :form="form" field="parent_category_id"></has-error>
             </div>
           </div>
         </form>
@@ -223,10 +240,9 @@ export default {
       form: new Form({
         cmn_category_id: "",
         name: "",
-        category_code: "",
         category_name: "",
         category_orign_code: "",
-        parent_id: "",
+        parent_category_id: "",
         adm_user_id: Globals.user_info_id,
       }),
     };
@@ -278,14 +294,7 @@ export default {
       this.add_cmn_cat_modal = true;
 
       this.form.reset();
-      var cat_code = form_data.category_code;
-      if (cat_code.substring(4, 6) != "00") {
-        form_data.category_code = cat_code.substring(4, 6);
-      } else if (cat_code.substring(2, 4) != "00") {
-        form_data.category_code = cat_code.substring(2, 4);
-      } else {
-        form_data.category_code = cat_code.substring(0, 2);
-      }
+      
       this.form.fill(form_data);
       this.form.parent_id = form_data.parent_id;
     },
@@ -340,6 +349,7 @@ export default {
         .post(this.BASE_URL + "api/get_all_cat_list",post_data)
         .then(({ data }) => {
           this.cat_lists = data.cat_list;
+          console.log(this.cat_lists);
           this.options = data.allCatForParent;
           this.loader.hide();
         });
