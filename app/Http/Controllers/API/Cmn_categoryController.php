@@ -50,14 +50,16 @@ class Cmn_categoryController extends Controller
             $cmn_company_id = $cmn_company_info->cmn_company_id;
             $byr_buyer_id = $cmn_company_info->byr_buyer_id;
             $cmn_connect_id = $cmn_company_info->cmn_connect_id;
+            // $categories = cmn_category::where('is_deleted', 0)->with('parent')->get();
+            // print_r($categories);exit;
             $categorysAllforOpt = cmn_category::where(['cmn_categories.is_deleted'=>0,'cmn_categories.byr_buyer_id'=>$byr_buyer_id,'level'=>'1'])->orWhere('level','2')->get();
             $categorys = cmn_category::select('cmn_categories.*',
             'cmn_cat_level2.cmn_category_id as cmn_category_id2',
-            'cmn_cat_level2.category_orign_code as category_orign_code2',
+            'cmn_cat_level2.category_code as category_code2',
             'cmn_cat_level2.category_name as category_name2',
             'cmn_cat_level2.parent_category_id as parent_category_id2',
             'cmn_cat_level3.cmn_category_id as cmn_category_id3',
-            'cmn_cat_level3.category_orign_code as category_orign_code3',
+            'cmn_cat_level3.category_code as category_code3',
             'cmn_cat_level3.category_name as category_name3',
             'cmn_cat_level3.parent_category_id as parent_category_id3'
             )
@@ -83,11 +85,11 @@ class Cmn_categoryController extends Controller
             $categorysAllforOpt = cmn_category::where(['cmn_categories.is_deleted'=>0,'level'=>'1'])->orWhere('level','2')->get();
             $categorys = cmn_category::select('cmn_categories.*',
             'cmn_cat_level2.cmn_category_id as cmn_category_id2',
-            'cmn_cat_level2.category_orign_code as category_orign_code2',
+            'cmn_cat_level2.category_code as category_code2',
             'cmn_cat_level2.category_name as category_name2',
             'cmn_cat_level2.parent_category_id as parent_category_id2',
             'cmn_cat_level3.cmn_category_id as cmn_category_id3',
-            'cmn_cat_level3.category_orign_code as category_orign_code3',
+            'cmn_cat_level3.category_code as category_code3',
             'cmn_cat_level3.category_name as category_name3',
             'cmn_cat_level3.parent_category_id as parent_category_id3'
             )
@@ -121,7 +123,7 @@ class Cmn_categoryController extends Controller
     {
         //
         $this->validate($request,[
-            'category_orign_code' => 'required|string|max:3',
+            'category_code' => 'required|string|max:3|min:3',
             'category_name' => 'required|string|min:2',
         ]);
         $adm_user_id = $request->adm_user_id;
@@ -141,8 +143,7 @@ class Cmn_categoryController extends Controller
 
         $name = $request->name;
         $cmn_category_id = $request->cmn_category_id;
-        $category_orign_code = $request->category_orign_code;
-        $category_code = $request->category_orign_code;
+        $category_code = $request->category_code;
         $category_name = $request->category_name;
         $parent_id = $request->parent_category_id;
         $level = '1';
@@ -151,10 +152,10 @@ class Cmn_categoryController extends Controller
             $level = $parent_ct->level+1;
         }
         if($cmn_category_id==0){
-            $cat_id = cmn_category::insertGetId(['parent_category_id'=>$parent_id,'category_name'=>$category_code,'byr_buyer_id'=>$byr_buyer_id,'category_orign_code'=>$category_orign_code,'category_name'=>$category_name,'level'=>$level]);
+            $cat_id = cmn_category::insertGetId(['parent_category_id'=>$parent_id,'category_name'=>$category_code,'byr_buyer_id'=>$byr_buyer_id,'category_code'=>$category_code,'category_name'=>$category_name,'level'=>$level]);
             return $result = response()->json(['message' => 'insert_success']);
         }else{
-            cmn_category::where('cmn_category_id',$cmn_category_id)->update(['parent_category_id'=>$parent_id,'category_name'=>$category_name,'category_orign_code'=>$category_orign_code,'level'=>$level]);
+            cmn_category::where('cmn_category_id',$cmn_category_id)->update(['parent_category_id'=>$parent_id,'category_name'=>$category_name,'category_code'=>$category_code,'level'=>$level]);
             return $result = response()->json(['message' => 'update_success']);
         }
 
@@ -204,15 +205,15 @@ class Cmn_categoryController extends Controller
                     $cat2name = $item[1];
                     $cat4 = $item[2];
                     $cat4name = $item[3];
-                    $catInfo = cmn_category::where(['category_orign_code'=>$item[$codeKey],'level'=>$level,'category_name'=>$item[$nameKey]])->first();
+                    $catInfo = cmn_category::where(['category_code'=>$item[$codeKey],'level'=>$level,'category_name'=>$item[$nameKey]])->first();
                     if(!$catInfo){
                         $subCatInfo = array();
 
                         if($i==1){
-                            $subCatInfo = cmn_category::where(['category_orign_code'=>$cat2,'category_name'=>$cat2name,'level'=>'1'])->first();
+                            $subCatInfo = cmn_category::where(['category_code'=>$cat2,'category_name'=>$cat2name,'level'=>'1'])->first();
                             }
                         if($i==2){
-                            $subCatInfo = cmn_category::where(['category_orign_code'=>$cat4,'category_name'=>$cat4name,'level'=>'2'])->first();
+                            $subCatInfo = cmn_category::where(['category_code'=>$cat4,'category_name'=>$cat4name,'level'=>'2'])->first();
                         }
                         $parent_id = 0;
                         if($subCatInfo){
@@ -222,7 +223,7 @@ class Cmn_categoryController extends Controller
                         'parent_category_id'=>$parent_id,
                         'category_name'=>$item[$nameKey],
                         'byr_buyer_id'=>$byr_buyer_id,
-                        'category_orign_code'=>$item[$codeKey],
+                        'category_code'=>$item[$codeKey],
                         'level'=>$level
                         ]);
                         
