@@ -61,7 +61,7 @@
         <h4 class="page_custom_title">{{ myLang.search_result }}</h4>
       </div>
     <div class="col-12">
-     <p>
+            <p>
               <span class="tableRowsInfo">{{ invoice_lists.from }}〜{{ invoice_lists.to }} 件表示中／全：{{ invoice_lists.total }}件</span>
               <span class="pagi"
                 >

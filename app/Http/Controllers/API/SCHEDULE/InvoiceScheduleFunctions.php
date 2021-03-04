@@ -13,7 +13,7 @@ class InvoiceScheduleFunctions extends Controller
             $month_end = strtotime('last day of this month', time());
             $closing_date = date('y-m-d', $month_end);
         } else {
-            $closing_date = date('y-m-' . $closing_day);
+            $closing_date = date('y-m-' . str_pad($closing_day, 2, '0', STR_PAD_LEFT));
         }
         return $closing_date;
     }
