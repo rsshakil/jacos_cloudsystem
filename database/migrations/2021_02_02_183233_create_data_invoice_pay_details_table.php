@@ -16,6 +16,7 @@ class CreateDataInvoicePayDetailsTable extends Migration
         Schema::create('data_invoice_pay_details', function (Blueprint $table) {
             $table->increments('data_invoice_pay_detail_id')->unsigned()->comment('data_invoice_pay_detail_id');
             $table->integer('data_invoice_pay_id')->unsigned()->nullable()->comment('data_invoice_pay_id');
+            $table->dateTime('send_datetime')->nullable()->comment('send_datetime');
             $table->string('mes_lis_inv_lin_lin_trade_number_reference', 20)->nullable()->comment('取引番号（発注・返品）');
             $table->string('mes_lis_inv_lin_lin_issue_classification_code', 20)->nullable()->comment('発行区分');
             $table->string('mes_lis_inv_lin_lin_sequence_number', 20)->nullable()->comment('連番');

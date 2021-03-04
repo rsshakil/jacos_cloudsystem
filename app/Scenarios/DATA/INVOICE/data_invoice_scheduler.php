@@ -31,6 +31,9 @@ class data_invoice_scheduler
         $data_invoice_pay_array=array();
         $data_invoice_pay_details_array=array();
         $shipment_datas=self::shipmentQuery($data_order_id,$start_date,$end_date);
+        // \Log::info("Hi");
+        // \Log::info(count($shipment_datas));
+        // return 0;
         $datashipment=true;
         $data_invoice_pay_id=1;
         foreach ($shipment_datas as $key => $shipment_data) {
@@ -52,7 +55,7 @@ class data_invoice_scheduler
                 $data_invoice_array['mes_mes_sender_station_address']=$shipment_data['mes_mes_sender_station_address'];
                 $data_invoice_array['mes_mes_ultimate_receiver_station_address']=$shipment_data['mes_mes_ultimate_receiver_station_address'];
                 $data_invoice_array['mes_mes_immediate_receiver_station_addres']=$shipment_data['mes_mes_immediate_receiver_station_addres'];
-                $data_invoice_array['mes_mes_number_of_trading_documents']=$shipment_data['mes_mes_number_of_trading_documents']; //change
+                $data_invoice_array['mes_mes_number_of_trading_documents']=$shipment_data['tod']; //change
                 $data_invoice_array['mes_mes_sys_key']=$shipment_data['mes_mes_sys_key'];
                 $data_invoice_array['mes_mes_sys_value']=$shipment_data['mes_mes_sys_value'];
                 $data_invoice_array['mes_lis_con_version']=$shipment_data['mes_lis_con_version'];
@@ -158,11 +161,14 @@ class data_invoice_scheduler
             'data_shipments.mes_lis_buy_gln',
             'data_shipments.mes_lis_buy_name',
             'data_shipments.mes_lis_buy_name_sbcs',
-        'data_shipment_vouchers.*','data_shipment_items.*','data_shipment_item_details.*')
-        ->join('data_shipment_vouchers','data_shipment_vouchers.data_shipment_id','data_shipments.data_shipment_id')
-        ->join('data_shipment_items','data_shipment_items.data_shipment_voucher_id','data_shipment_vouchers.data_shipment_voucher_id')
-        ->join('data_shipment_item_details','data_shipment_item_details.data_shipment_item_id','data_shipment_items.data_shipment_item_id')
+        'data_shipment_vouchers.*','data_shipment_items.*','data_shipment_item_details.*',
+        DB::raw('count(data_shipment_vouchers.mes_lis_shi_tra_dat_transfer_of_ownership_date) as tod')
+        )
+        ->leftJoin('data_shipment_vouchers','data_shipment_vouchers.data_shipment_id','data_shipments.data_shipment_id')
+        ->leftJoin('data_shipment_items','data_shipment_items.data_shipment_voucher_id','data_shipment_vouchers.data_shipment_voucher_id')
+        ->leftJoin('data_shipment_item_details','data_shipment_item_details.data_shipment_item_id','data_shipment_items.data_shipment_item_id')
         ->where('data_shipments.data_order_id',$data_order_id)
+        ->groupBy('data_shipment_vouchers.data_shipment_voucher_id')
         ->whereBetween('data_shipment_vouchers.mes_lis_shi_tra_dat_transfer_of_ownership_date', [$start_date, $end_date])
         ->get();
         return $shipment_datas;

@@ -134,42 +134,44 @@ class InvoiceController extends Controller
 
         return response()->json(['success' => 1]);
     }
-    public function get_all_invoice_detail_list($byr_invoice_id)
+    public function invoiceDetailsList(Request $request)
     {
-        $result = byr_invoice::select('byr_invoices.byr_invoice_id', 'byr_invoices.cmn_connect_id', 'byr_invoices.send_date', 'byr_shops.shop_name', 'byr_order_details.voucher_number', 'byr_shipment_details.revised_delivery_date', 'byr_order_details.expected_delivery_date', 'byr_order_details.byr_order_detail_id', 'byr_order_details.cost_price', 'byr_shipment_details.revised_cost_price')
+        $data_invoice_id=$request->data_invoice_id;
+        $per_page = $request->select_field_per_page_num == null ? 10 : $request->select_field_per_page_num;
+        $result=data_invoice::select('data_invoices.data_invoice_id','dip.mes_lis_inv_per_end_date',
+        'dipd.mes_lis_inv_lin_det_transfer_of_ownership_date','dipd.mes_lis_inv_lin_tra_code',
+        'dipd.mes_lis_inv_lin_tra_name','dipd.mes_lis_inv_lin_lin_trade_number_reference',
+        'dipd.mes_lis_inv_lin_det_amo_requested_amount','dipd.mes_lis_inv_lin_det_pay_code',
+        'dipd.mes_lis_inv_lin_det_balance_carried_code','dipd.send_datetime'
+        )
+        ->join('data_invoice_pays as dip','data_invoices.data_invoice_id','=','dip.data_invoice_id')
+        ->join('data_invoice_pay_details as dipd','dip.data_invoice_pay_id','=','dipd.data_invoice_pay_id')
+        ->where('data_invoices.data_invoice_id','=',$data_invoice_id)
+        ->paginate($per_page);
 
-            ->join('byr_orders', 'byr_orders.cmn_connect_id', '=', 'byr_invoices.cmn_connect_id')
-            ->join('byr_order_details', 'byr_order_details.byr_order_id', '=', 'byr_orders.byr_order_id')
-            ->join('byr_shops', 'byr_shops.byr_shop_id', '=', 'byr_order_details.byr_shop_id')
-            ->join('byr_shipment_details', 'byr_shipment_details.byr_order_detail_id', '=', 'byr_order_details.byr_order_detail_id')
-            ->where('byr_invoices.byr_invoice_id', $byr_invoice_id)
-            ->get();
-        $voucher_list = byr_invoice::select('byr_invoices.byr_invoice_id', 'byr_invoices.cmn_connect_id', 'byr_order_details.voucher_number')
-
-            ->join('byr_orders', 'byr_orders.cmn_connect_id', '=', 'byr_invoices.cmn_connect_id')
-            ->join('byr_order_details', 'byr_order_details.byr_order_id', '=', 'byr_orders.byr_order_id')
-            ->where('byr_invoices.byr_invoice_id', $byr_invoice_id)
-            ->groupBy('byr_order_details.voucher_number')
-            ->get();
-        $shop_list = byr_invoice::select('byr_invoices.byr_invoice_id', 'byr_invoices.cmn_connect_id', 'byr_shops.shop_name', 'byr_shops.byr_shop_id')
-
-            ->join('byr_orders', 'byr_orders.cmn_connect_id', '=', 'byr_invoices.cmn_connect_id')
-            ->join('byr_order_details', 'byr_order_details.byr_order_id', '=', 'byr_orders.byr_order_id')
-            ->join('byr_shops', 'byr_shops.byr_shop_id', '=', 'byr_order_details.byr_shop_id')
-            ->where('byr_invoices.byr_invoice_id', $byr_invoice_id)
-            ->groupBy('byr_order_details.byr_shop_id')
-            ->get();
-
-        $byr_buyer = byr_invoice::select('cmn_companies.cmn_company_id', 'cmn_companies.company_name')
-            ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'byr_invoices.cmn_connect_id')
-            ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
-            ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.byr_buyer_id')
-            ->where('byr_invoices.byr_invoice_id', $byr_invoice_id)
-            ->get();
-
-        return response()->json(['invoice_list' => $result, 'byr_buyer_list' => $byr_buyer, 'shop_list' => $shop_list, 'voucher_list' => $voucher_list]);
+        return response()->json(['invoice_details_list' => $result]);
     }
 
+    public function sendInvoiceData(Request $request){
+        $data_count=$request->data_count;
+        $data_invoice_id=$request->data_invoice_id;
+        $download_file_url='';
+        // return $csv_data_count = Data_Controller::get_shipment_data($request)->get();
+        $csv_data_count =1;
+        // $csv_data_count = Data_Controller::get_shipment_data($request)->get()->count();
+        if (!$data_count) {
+            $dateTime = date('Y-m-d H:i:s');
+            // $new_file_name = self::shipmentFileName($data_order_id,'csv');
+            // data_shipment::where('data_order_id',$data_order_id)->update(['mes_mes_number_of_trading_documents'=>$csv_data_count]);
+            // $download_file_url = \Config::get('app.url')."storage/app".config('const.SHIPMENT_CSV_PATH')."/". $new_file_name;
+            // (new ShipmentCSVExport($request))->store(config('const.SHIPMENT_CSV_PATH').'/'.$new_file_name);
+            // data_shipment_voucher::where('decision_datetime','!=',null)
+            // ->where('send_datetime','=',null)
+            // ->update(['send_datetime'=>$dateTime]);
+        }
+
+        return response()->json(['message' => 'Success','status'=>1, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
+    }
     public function get_all_invoice_by_voucher_number($voucher_number)
     {
 

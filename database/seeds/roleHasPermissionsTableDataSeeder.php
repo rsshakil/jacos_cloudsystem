@@ -24,11 +24,11 @@ class roleHasPermissionsTableDataSeeder extends Seeder
         $role_user->givePermissionTo('home','dashboard_menu','dashboard_view','personal_profile_view','personal_user_update','personal_password_change','all_menu_show');
 
         $role_saler = Role::findByName('Slr');
-        $role_saler->givePermissionTo('home','selected_buyer','order_list_details','order_item_list_detail','management_setting','slr_view','add_company_users','order_list','slr_management','order_receive','receive_detail','order_corrected_receive','return_item_list','payment_list','invoice_list','byr_management','item_search','item_search_detail','receive_item_detail','payment_detail');
-        
+        $role_saler->givePermissionTo('home','selected_buyer','order_list_details','order_item_list_detail','management_setting','slr_view','add_company_users','order_list','slr_management','order_receive','receive_detail','order_corrected_receive','return_item_list','payment_list','invoice_list','invoice_detail','byr_management','item_search','item_search_detail','receive_item_detail','payment_detail');
+
         $role_byr = Role::findByName('Byr');
         $role_byr->givePermissionTo('home','voucher_setting','item_category','pdf_platform_setting','pdf_platform_view','byr_view','blog','item_master','item_category');
-       
+
         // $role_byr = Role::findByName('Byr1');
         // $role_byr->givePermissionTo('home','voucher_setting','item_master','item_category','pdf_platform_setting','pdf_platform_view','byr_view');
 

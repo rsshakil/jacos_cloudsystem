@@ -69,12 +69,14 @@ class InvoiceCommand extends Command
                 }else{
                     $start_date=$this->all_used_fun->start_date($closing_date,1);
                 }
+                // Matched
+                \Log::info("Start Date: ".$start_date);
+                \Log::info("End Date: ".$end_date);
+                $this->comment("Invoice Running.....");
+                $this->invoice->invoiceScheduler($start_date,$end_date);
+                $this->comment("Done");
+                // Matched
             }
         }
-        \Log::info("Start Date: ".$start_date);
-        \Log::info("End Date: ".$end_date);
-        $this->comment("Invoice Running.....");
-        $this->invoice->invoiceScheduler($start_date,$end_date);
-        $this->comment("Done");
     }
 }

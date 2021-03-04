@@ -68,13 +68,16 @@ export const routes = [
             }
         },
     },
-    { path: '/blog', component: blog,name:'blog',
-    meta: {
-        breadcrumb: {
-            label: 'お知らせ'
-        }
+    {
+        path: '/blog',
+        component: blog,
+        name: 'blog',
+        meta: {
+            breadcrumb: {
+                label: 'お知らせ'
+            }
+        },
     },
-},
     { path: '/role', component: Role },
     { path: '/permission', component: permission },
     { path: '/assign_role_to_user', component: assign_role_model },
@@ -310,7 +313,7 @@ export const routes = [
     {
         path: '/item_master',
         component: item_master,
-        name:'item_master',
+        name: 'item_master',
         meta: {
             breadcrumb: {
                 label: '商品メンテ'
@@ -318,7 +321,7 @@ export const routes = [
         },
     },
     {
-        
+
         path: '/item_category',
         component: item_category,
         name: 'item_category',
@@ -419,7 +422,7 @@ export const routes = [
 
     },
     {
-        path: '/invoice_list/invoice_detail/:byr_invoice_id',
+        path: '/invoice_list/invoice_detail/:data_invoice_id',
         component: invoice_detail,
         name: 'invoice_detail',
         meta: {
@@ -464,7 +467,7 @@ export const routes = [
         props: true,
 
         meta: { breadcrumb: { label: 'ブログ', parent: 'home' } },
-    
+
 
     },
     {
