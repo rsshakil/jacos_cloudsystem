@@ -52,7 +52,7 @@ class data_invoice_scheduler
                 $data_invoice_array['mes_mes_sender_station_address']=$shipment_data['mes_mes_sender_station_address'];
                 $data_invoice_array['mes_mes_ultimate_receiver_station_address']=$shipment_data['mes_mes_ultimate_receiver_station_address'];
                 $data_invoice_array['mes_mes_immediate_receiver_station_addres']=$shipment_data['mes_mes_immediate_receiver_station_addres'];
-                $data_invoice_array['mes_mes_number_of_trading_documents']=$shipment_data['mes_mes_number_of_trading_documents'];
+                $data_invoice_array['mes_mes_number_of_trading_documents']=$shipment_data['mes_mes_number_of_trading_documents']; //change
                 $data_invoice_array['mes_mes_sys_key']=$shipment_data['mes_mes_sys_key'];
                 $data_invoice_array['mes_mes_sys_value']=$shipment_data['mes_mes_sys_value'];
                 $data_invoice_array['mes_lis_con_version']=$shipment_data['mes_lis_con_version'];
@@ -73,10 +73,10 @@ class data_invoice_scheduler
                 $data_invoice_pay_array['mes_lis_buy_name_sbcs']=$shipment_data['mes_lis_buy_name_sbcs'];
                 //static
                 $data_invoice_pay_array['mes_lis_inv_pay_id']='';
-                $data_invoice_pay_array['mes_lis_inv_pay_code']='';
-                $data_invoice_pay_array['mes_lis_inv_pay_gln']='';
-                $data_invoice_pay_array['mes_lis_inv_pay_name']='';
-                $data_invoice_pay_array['mes_lis_inv_pay_name_sbcs']='';
+                $data_invoice_pay_array['mes_lis_inv_pay_code']=$shipment_data['mes_lis_shi_par_pay_code'];
+                $data_invoice_pay_array['mes_lis_inv_pay_gln']=$shipment_data['mes_lis_shi_par_pay_gln'];
+                $data_invoice_pay_array['mes_lis_inv_pay_name']=$shipment_data['mes_lis_shi_par_pay_name'];
+                $data_invoice_pay_array['mes_lis_inv_pay_name_sbcs']=$shipment_data['mes_lis_shi_par_pay_name_sbcs'];
                 $data_invoice_pay_array['mes_lis_inv_per_begin_date']=$start_date;
                 $data_invoice_pay_array['mes_lis_inv_per_end_date']=$end_date;
                 //static
@@ -89,12 +89,12 @@ class data_invoice_scheduler
                 }
 
                 $data_invoice_pay_details_array['mes_lis_inv_lin_lin_trade_number_reference']=$shipment_data['mes_lis_shi_tra_trade_number'];
-                $data_invoice_pay_details_array['mes_lis_inv_lin_lin_issue_classification_code']=$shipment_data['mes_lis_shi_tra_additional_trade_number'];
-                $data_invoice_pay_details_array['mes_lis_inv_lin_lin_sequence_number']=$shipment_data['mes_lis_shi_fre_shipment_number'];
-                $data_invoice_pay_details_array['mes_lis_inv_lin_tra_code']=$shipment_data['mes_lis_shi_par_shi_code'];
-                $data_invoice_pay_details_array['mes_lis_inv_lin_tra_gln']=$shipment_data['mes_lis_shi_par_shi_gln'];
-                $data_invoice_pay_details_array['mes_lis_inv_lin_tra_name']=$shipment_data['mes_lis_shi_par_shi_name'];
-                $data_invoice_pay_details_array['mes_lis_inv_lin_tra_name_sbcs']=$shipment_data['mes_lis_shi_par_shi_name_sbcs'];
+                $data_invoice_pay_details_array['mes_lis_inv_lin_lin_issue_classification_code']=$shipment_data['mes_lis_shi_tra_additional_trade_number']; //Not confirmed
+                $data_invoice_pay_details_array['mes_lis_inv_lin_lin_sequence_number']=$shipment_data['mes_lis_shi_fre_shipment_number']; //Not confirmed
+                $data_invoice_pay_details_array['mes_lis_inv_lin_tra_code']=$shipment_data['mes_lis_shi_par_tra_code'];
+                $data_invoice_pay_details_array['mes_lis_inv_lin_tra_gln']=$shipment_data['mes_lis_shi_par_tra_gln'];
+                $data_invoice_pay_details_array['mes_lis_inv_lin_tra_name']=$shipment_data['mes_lis_shi_par_tra_name'];
+                $data_invoice_pay_details_array['mes_lis_inv_lin_tra_name_sbcs']=$shipment_data['mes_lis_shi_par_tra_name_sbcs'];
                 $data_invoice_pay_details_array['mes_lis_inv_lin_sel_code']=$shipment_data['mes_lis_shi_par_sel_code'];
                 $data_invoice_pay_details_array['mes_lis_inv_lin_sel_gln']=$shipment_data['mes_lis_shi_par_sel_gln'];
                 $data_invoice_pay_details_array['mes_lis_inv_lin_sel_name']=$shipment_data['mes_lis_shi_par_sel_name'];
@@ -103,12 +103,12 @@ class data_invoice_scheduler
                 $data_invoice_pay_details_array['mes_lis_inv_lin_det_goo_sub_major_category']=$shipment_data['mes_lis_shi_tra_goo_sub_major_category'];
                 $data_invoice_pay_details_array['mes_lis_inv_lin_det_transfer_of_ownership_date']=$shipment_data['mes_lis_shi_tra_dat_transfer_of_ownership_date'];
                 //static
-                $data_invoice_pay_details_array['mes_lis_inv_lin_det_amo_requested_amount']='';
-                $data_invoice_pay_details_array['mes_lis_inv_lin_det_amo_req_plus_minus']='';
-                $data_invoice_pay_details_array['mes_lis_inv_lin_det_amo_tax']='';
-                $data_invoice_pay_details_array['mes_lis_inv_lin_det_balance_carried_code']='';
+                $data_invoice_pay_details_array['mes_lis_inv_lin_det_amo_requested_amount']=$shipment_data['mes_lis_shi_tot_tot_net_price_total'];
+                $data_invoice_pay_details_array['mes_lis_inv_lin_det_amo_req_plus_minus']='+';
+                $data_invoice_pay_details_array['mes_lis_inv_lin_det_amo_tax']=$shipment_data['mes_lis_shi_tot_tot_tax_total'];
+                $data_invoice_pay_details_array['mes_lis_inv_lin_det_balance_carried_code']=''; //Not confirmed
                 $data_invoice_pay_details_array['mes_lis_inv_lin_det_credit_or_unsettlement']='';
-                $data_invoice_pay_details_array['mes_lis_inv_lin_det_pay_code']='';
+                $data_invoice_pay_details_array['mes_lis_inv_lin_det_pay_code']='1001'; //schedule: 1001
                 $data_invoice_pay_details_array['mes_lis_inv_lin_det_tax_tax_type_code']='';
                 $data_invoice_pay_details_array['mes_lis_inv_lin_det_tax_tax_rate']='';
                  //static
@@ -163,7 +163,7 @@ class data_invoice_scheduler
         ->join('data_shipment_items','data_shipment_items.data_shipment_voucher_id','data_shipment_vouchers.data_shipment_voucher_id')
         ->join('data_shipment_item_details','data_shipment_item_details.data_shipment_item_id','data_shipment_items.data_shipment_item_id')
         ->where('data_shipments.data_order_id',$data_order_id)
-        // ->whereBetween('data_shipment_vouchers.mes_lis_shi_tra_dat_transfer_of_ownership_date', [$start_date, $end_date])
+        ->whereBetween('data_shipment_vouchers.mes_lis_shi_tra_dat_transfer_of_ownership_date', [$start_date, $end_date])
         ->get();
         return $shipment_datas;
     }
