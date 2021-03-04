@@ -64,7 +64,7 @@ class InvoiceCommand extends Command
                         $array_end_date=$this->all_used_fun->closing_date(end($closing_date_array));
                         $start_date=$this->all_used_fun->first_start_date($array_end_date,$closing_date);
                     }else{
-                        $start_date=$this->all_used_fun->another_start_date($closing_date_array[$key],$closing_date_array[$key-1]);
+                        $start_date=$this->all_used_fun->another_start_date($closing_date_array[$key-1]);
                     }
                 }else{
                     $start_date=$this->all_used_fun->start_date($closing_date,1);

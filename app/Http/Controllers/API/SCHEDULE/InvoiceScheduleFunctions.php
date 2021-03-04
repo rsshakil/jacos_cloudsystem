@@ -30,17 +30,20 @@ class InvoiceScheduleFunctions extends Controller
         $start_date = date_format($date, "y-m-d");
         return $start_date;
     }
-    public function another_start_date($date1, $date2)
+    public function another_start_date($date)
     {
-        $date1 = $this->closing_date($date1);
-        $date2 = $this->closing_date($date2);
-        $day_diff = ($this->my_date_diff($date1, $date2));
-        $start_date = date('y-m-' .str_pad($day_diff, 2, '0', STR_PAD_LEFT));
+        // $date1 = $this->closing_date($date1);
+        $date = $this->closing_date($date);
+        $start_date=$this->start_date($date, 1);
+        // $day_diff = ($this->my_date_diff($date1, $date2));
+        // $start_date = date('y-m-' .str_pad($day_diff, 2, '0', STR_PAD_LEFT));
+
         return $start_date;
     }
     public function start_date($closing_date, $day)
     {
-        $start_date = date('Y-m-d', strtotime("+" . $day . " day", strtotime($closing_date)));
+        $previous_month=date('y-m-d', strtotime($closing_date." -1 month"));
+        $start_date = date('y-m-d', strtotime("+" . $day . " day", strtotime($previous_month)));
         return $start_date;
     }
     public function my_date_diff($date1, $date2)
