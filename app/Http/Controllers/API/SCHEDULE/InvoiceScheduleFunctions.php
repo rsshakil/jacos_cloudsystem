@@ -34,7 +34,8 @@ class InvoiceScheduleFunctions extends Controller
     {
         // $date1 = $this->closing_date($date1);
         $date = $this->closing_date($date);
-        $start_date=$this->start_date($date, 1);
+        $start_date = date('y-m-d', strtotime("+1 day", strtotime($date)));
+        // $start_date=$this->start_date($date, 1);
         // $day_diff = ($this->my_date_diff($date1, $date2));
         // $start_date = date('y-m-' .str_pad($day_diff, 2, '0', STR_PAD_LEFT));
 
