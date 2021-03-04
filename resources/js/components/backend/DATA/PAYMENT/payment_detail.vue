@@ -5,63 +5,28 @@
       <table class="table orderDetailTable table-bordered" style="width: 100%">
         <tr>
           <td class="cl_custom_color" >受信日時</td>
-          <td>
-            <input
-              type="text"
-              class="form-control"
-              v-model="payment_detail_header.receive_datetime"
-            />
-          </td>
+          <td>{{payment_detail_header.receive_datetime}}</td>
 
           <td class="cl_custom_color">請求取引先</td>
-          <td>
-            <input
-              type="text"
-              class="form-control"
-              v-model="payment_detail_header.mes_lis_pay_pay_code+' '+payment_detail_header.mes_lis_pay_pay_name"
-            />
-          </td>
+          <td>{{payment_detail_header.mes_lis_pay_pay_code}} {{payment_detail_header.mes_lis_pay_pay_name}}</td>
 
         </tr>
         <tr>
           <td class="cl_custom_color">発注者</td>
-          <td>
-            <input
-              type="text"
-              class="form-control"
-              v-model="payment_detail_header.mes_lis_buy_code+' '+payment_detail_header.mes_lis_buy_name"
-            />
+          <td>{{payment_detail_header.mes_lis_buy_code}} {{payment_detail_header.mes_lis_buy_name}}
+            
           </td>
 
           <td class="cl_custom_color" >締日</td>
-          <td >
-            <input
-              type="date"
-              class="form-control"
-              v-model="payment_detail_header.mes_lis_pay_per_end_date"
-            />
-          </td>
+          <td>{{payment_detail_header.mes_lis_pay_per_end_date}}</td>
 
         </tr>
         <tr>
           <td class="cl_custom_color">支払日</td>
-          <td>
-            <input
-              type="text"
-              class="form-control"
-              v-model="payment_detail_header.mes_lis_pay_lin_det_pay_out_date"
-            />
-          </td>
+          <td>{{payment_detail_header.mes_lis_pay_lin_det_pay_out_date}}</td>
 
           <td class="cl_custom_color" >支払金額</td>
-          <td>
-            <input
-              type="text"
-              class="form-control"
-              v-model="payment_detail_header.mes_lis_pay_lin_det_amo_payable_amount"
-            />
-          </td>
-
+          <td>{{payment_detail_header.mes_lis_pay_lin_det_amo_payable_amount}}</td>
         </tr>
       </table>
     </div>
@@ -95,7 +60,7 @@
               <td>{{payment_detail_header.mes_lis_pay_pay_gln}} {{
 payment_detail_header.mes_lis_pay_pay_name}}</td>
               <td>{{payment_detail_header.mes_lis_pay_pay_id}}</td>
-              <td>{{payment_detail_header.mes_lis_pay_lin_det_amo_payable_amount + payment_detail_header.mes_lis_pay_lin_det_amo_tax}}</td>
+              <td>{{payment_detail_header.mes_lis_pay_lin_det_amo_payable_amount }} {{payment_detail_header.mes_lis_pay_lin_det_amo_tax}}</td>
             </tr>
           </tbody>
         </table>
