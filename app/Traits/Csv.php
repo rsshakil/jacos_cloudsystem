@@ -1,8 +1,40 @@
 <?php
 namespace App\Traits;
 
+use Illuminate\Support\Facades\Storage;
+
 trait Csv
 {
+    public static function create($filePath, $data, $header, $encode='UTF-8', $bom=false)
+    {
+        if (!is_null($header)) {
+            // ヘッダー付与
+            array_unshift($data, $header);
+        }
+        $stream = fopen('php://temp', 'r+b');
+        foreach ($data as $row) {
+            fputcsv($stream, $row);
+        }
+        rewind($stream);
+        if (strtolower($encode) == 'shift-jis') {
+            // shift-jis
+            $csv = mb_convert_encoding(stream_get_contents($stream), $encode, 'UTF-8');
+            \Log::debug($csv);
+
+            $csv = str_replace("\n", "\r\n", $csv);
+            \Log::debug($csv);
+        } else {
+            // utf-8
+            if ($bom) {
+                // BOM をつける
+                fwrite($stream, pack('C*', 0xEF, 0xBB, 0xBF));
+            }
+            $csv = $stream;
+        }
+
+        // file save
+        Storage::put($filePath, $csv);
+    }
 
     /**
      * CSVファイルを生成する
