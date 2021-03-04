@@ -53,63 +53,150 @@ class Cmn_categoryController extends Controller
             // $categories = cmn_category::where('is_deleted', 0)->with('parent')->get();
             // print_r($categories);exit;
             $categorysAllforOpt = cmn_category::where(['cmn_categories.is_deleted'=>0,'cmn_categories.byr_buyer_id'=>$byr_buyer_id,'level'=>'1'])->orWhere('level','2')->get();
-            $categorys = cmn_category::select('cmn_categories.*',
-            'cmn_cat_level2.cmn_category_id as cmn_category_id2',
-            'cmn_cat_level2.category_code as category_code2',
-            'cmn_cat_level2.category_name as category_name2',
-            'cmn_cat_level2.parent_category_id as parent_category_id2',
-            'cmn_cat_level3.cmn_category_id as cmn_category_id3',
-            'cmn_cat_level3.category_code as category_code3',
-            'cmn_cat_level3.category_name as category_name3',
-            'cmn_cat_level3.parent_category_id as parent_category_id3'
+            
+            
+
+
+            $catQ1 = DB::table('cmn_categories AS m_cc')
+            ->select(
+                'm_cc.cmn_category_id',
+                'm_cc.level',
+                'm_cc.parent_category_id',
+            'm_cc.category_code AS category_full_code',
+            'm_cc.category_code AS m_code',
+            'm_cc.category_name as m_name',
+            DB::raw('NULL as sm_code'),
+            DB::raw('NULL as sm_name'),
+            DB::raw('NULL as mm_code'),
+            DB::raw('NULL as mm_name')
+            
+           
             )
-            ->leftJoin('cmn_categories as cmn_cat_level2', function($join) use ($level2)
+            ->where(['m_cc.is_deleted'=>0,'m_cc.byr_buyer_id'=>$byr_buyer_id,'m_cc.level'=>'1']);
+
+            $catQ2 = DB::table('cmn_categories AS m_cc')
+            ->select(
+                'sm_cc.cmn_category_id',
+                'sm_cc.level',
+                'sm_cc.parent_category_id',
+                DB::raw("CONCAT(m_cc.category_code,ifnull(sm_cc.category_code,'')) AS category_full_code"),
+                "m_cc.category_code AS m_code",
+                "m_cc.category_name AS m_name",
+                "sm_cc.category_code AS sm_code",
+                "sm_cc.category_name as sm_name",
+                DB::raw('NULL as mm_code'),
+                DB::raw('NULL as mm_name')
+               
+                
+            )
+            ->join('cmn_categories as sm_cc', function($join)
     {
-        $join->on('cmn_categories.cmn_category_id', '=', 'cmn_cat_level2.parent_category_id');
-        // $join->where('cmn_cat_level2.level','=',DB::raw("'".$level2."'"));
-       // $join->where('cmn_cat_level2.parent_category_id','!=',0);
+        $join->on('m_cc.cmn_category_id', '=', 'sm_cc.parent_category_id');
+        $join->where('m_cc.level','=','1');
+        $join->where('sm_cc.level','=','2');
 
     })
-    ->leftJoin('cmn_categories as cmn_cat_level3', function($join) use ($level3)
+            ->where(['m_cc.is_deleted'=>0,'m_cc.byr_buyer_id'=>$byr_buyer_id]);
+            $catQ3 = DB::table('cmn_categories AS m_cc')
+            ->select(
+                'mm_cc.cmn_category_id',
+                'mm_cc.level',
+                'mm_cc.parent_category_id',
+                DB::raw("CONCAT(m_cc.category_code,ifnull(sm_cc.category_code,''),ifnull(mm_cc.category_code,'')) AS category_full_code"),
+                "m_cc.category_code as m_code",
+                "m_cc.category_name as m_name",
+                "sm_cc.category_code as sm_code",
+                "sm_cc.category_name as sm_name",
+                "mm_cc.category_code as mm_code",
+                "mm_cc.category_name as mm_name"
+            )
+            ->join('cmn_categories as sm_cc', function($join)
     {
-        $join->on('cmn_cat_level2.cmn_category_id', '=', 'cmn_cat_level3.parent_category_id');
-        // $join->where('cmn_cat_level3.level','=',DB::raw("'".$level3."'"));
-       // $join->where('cmn_cat_level3.parent_category_id','!=',0);
+        $join->on('m_cc.cmn_category_id', '=', 'sm_cc.parent_category_id');
+        $join->where('m_cc.level','=','1');
+        $join->where('sm_cc.level','=','2');
 
     })
+    ->join('cmn_categories as mm_cc', function($join)
+    {
+        $join->on('sm_cc.cmn_category_id', '=', 'mm_cc.parent_category_id');
+        $join->where('mm_cc.level','=','3');
+        $join->where('sm_cc.level','=','2');
 
-            ->where(['cmn_categories.is_deleted'=>0,'cmn_categories.byr_buyer_id'=>$byr_buyer_id])
-            ->orderBy('cmn_categories.cmn_category_id','desc')
-            ->paginate($per_page);
+    })
+            ->where(['m_cc.is_deleted'=>0,'m_cc.byr_buyer_id'=>$byr_buyer_id]);
+           
         }else{
             $categorysAllforOpt = cmn_category::where(['cmn_categories.is_deleted'=>0,'level'=>'1'])->orWhere('level','2')->get();
-            $categorys = cmn_category::select('cmn_categories.*',
-            'cmn_cat_level2.cmn_category_id as cmn_category_id2',
-            'cmn_cat_level2.category_code as category_code2',
-            'cmn_cat_level2.category_name as category_name2',
-            'cmn_cat_level2.parent_category_id as parent_category_id2',
-            'cmn_cat_level3.cmn_category_id as cmn_category_id3',
-            'cmn_cat_level3.category_code as category_code3',
-            'cmn_cat_level3.category_name as category_name3',
-            'cmn_cat_level3.parent_category_id as parent_category_id3'
+            
+            $catQ1 = DB::table('cmn_categories AS m_cc')
+            ->select(
+                'm_cc.cmn_category_id',
+                'm_cc.level',
+                'm_cc.parent_category_id',
+            'm_cc.category_code AS category_full_code',
+            'm_cc.category_code AS m_code',
+            'm_cc.category_code AS m_name',
+            DB::raw('NULL as sm_code'),
+            DB::raw('NULL as sm_name'),
+            DB::raw('NULL as mm_code'),
+            DB::raw('NULL as mm_name')
+           
             )
-            ->leftJoin('cmn_categories as cmn_cat_level2', function($join) use ($level2)
+            ->where(['m_cc.is_deleted'=>0,'m_cc.level'=>'1']);
+
+            $catQ2 = DB::table('cmn_categories AS m_cc')
+            ->select(
+                'sm_cc.cmn_category_id',
+                'sm_cc.level',
+                'sm_cc.parent_category_id',
+                DB::raw("CONCAT(m_cc.category_code,ifnull(sm_cc.category_code,'')) AS category_full_code"),
+                "m_cc.category_code AS m_code",
+                "m_cc.category_name AS m_name",
+                "sm_cc.category_code AS sm_code",
+                "sm_cc.category_name as sm_name",
+                DB::raw('NULL as mm_code'),
+                DB::raw('NULL as mm_name')
+                
+            )
+            ->join('cmn_categories as sm_cc', function($join)
     {
-        $join->on('cmn_categories.cmn_category_id', '=', 'cmn_cat_level2.parent_category_id');
-        // $join->where('cmn_cat_level2.level','=',DB::raw("'".$level2."'"));
-       // $join->where('cmn_cat_level2.parent_category_id','!=',0);
+        $join->on('m_cc.cmn_category_id', '=', 'sm_cc.parent_category_id');
+        $join->where('m_cc.level','=','1');
+        $join->where('sm_cc.level','=','2');
 
     })
-    ->leftJoin('cmn_categories as cmn_cat_level3', function($join) use ($level3)
+            ->where(['m_cc.is_deleted'=>0]);
+            $catQ3 = DB::table('cmn_categories AS m_cc')
+            ->select(
+                'mm_cc.cmn_category_id',
+                'mm_cc.level',
+                'mm_cc.parent_category_id',
+                DB::raw("CONCAT(m_cc.category_code,ifnull(sm_cc.category_code,''),ifnull(mm_cc.category_code,'')) AS category_full_code"),
+                "m_cc.category_code as m_code",
+                "m_cc.category_name as m_name",
+                "sm_cc.category_code as sm_code",
+                "sm_cc.category_name as sm_name",
+                "mm_cc.category_code as mm_code",
+                "mm_cc.category_name as mm_name"
+            )
+            ->join('cmn_categories as sm_cc', function($join)
     {
-        $join->on('cmn_cat_level2.cmn_category_id', '=', 'cmn_cat_level3.parent_category_id');
-        // $join->where('cmn_cat_level3.level','=',DB::raw("'".$level3."'"));
-       // $join->where('cmn_cat_level3.parent_category_id','!=',0);
+        $join->on('m_cc.cmn_category_id', '=', 'sm_cc.parent_category_id');
+        $join->where('m_cc.level','=','1');
+        $join->where('sm_cc.level','=','2');
 
     })
-            ->where(['cmn_categories.is_deleted'=>0])
-            ->paginate($per_page);
+    ->join('cmn_categories as mm_cc', function($join)
+    {
+        $join->on('sm_cc.cmn_category_id', '=', 'mm_cc.parent_category_id');
+        $join->where('mm_cc.level','=','3');
+        $join->where('sm_cc.level','=','2');
+
+    })
+            ->where(['m_cc.is_deleted'=>0]);
         }
+        $categorys = $catQ1->union($catQ2)->union($catQ3)->orderBy('category_full_code')->paginate($per_page);
 
         return response()->json(['cat_list' => $categorys,'allCatForParent'=>$categorysAllforOpt]);
     }
