@@ -133,14 +133,16 @@
                 <td>{{
                     cat_lists.current_page*select_field_per_page_num-select_field_per_page_num+index+1
                   }}</td>
-                  <td>{{ cat_list.category_code }} {{cat_list.category_code2}} {{cat_list.category_code3}}</td>
-                <td>{{ cat_list.category_name }}</td>
-                <td>{{ cat_list.category_code }}</td>
+                  <td>{{ cat_list.category_full_code }}</td>
+                  <td>{{ cat_list.m_code }}</td>
+                <td>{{ cat_list.m_name }}</td>
                 
-                <td>{{ cat_list.category_name2 }}</td>
-                <td>{{ cat_list.category_code2 }}</td>
-                <td>{{ cat_list.category_name3 }}</td>
-                <td>{{ cat_list.category_code3 }}</td>
+                <td>{{ cat_list.sm_code }}</td>
+                <td>{{ cat_list.sm_name }}</td>
+
+                <td>{{ cat_list.mm_code }}</td>
+                <td>{{ cat_list.mm_name }}</td>
+                
                 <td>
                   <button
                     @click="edit_category_data(cat_list)"
@@ -204,7 +206,7 @@
               <input
                 type="text"
                 class="form-control"
-                maxlength="8"
+                maxlength="80"
                 :class="{ 'is-invalid': form.errors.has('category_name') }"
                 v-model="form.category_name"
               />
@@ -316,7 +318,18 @@ export default {
       this.form.reset();
       
       this.form.fill(form_data);
-      this.form.parent_id = form_data.parent_id;
+      this.form.parent_category_id = form_data.parent_category_id;
+      if(form_data.level=='1'){
+        this.form.category_name =  form_data.m_name;
+        this.form.category_code =  form_data.m_code;
+      }else if(form_data.level=='2'){
+        this.form.category_name =  form_data.sm_name;
+        this.form.category_code =  form_data.sm_code;
+      }else{
+        this.form.category_name =  form_data.mm_name;
+        this.form.category_code =  form_data.mm_code;
+      }
+      
     },
     save_new_cat() {
       console.log("add new");
