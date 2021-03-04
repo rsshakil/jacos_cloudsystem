@@ -4,7 +4,27 @@
       
 
       <div class="col-12">
+      <div class="row"><div class="col-2"></div><div class="col-8">
 
+<div class="searchCategoryForm row">
+<div class="col-6">
+<label class="sr-only" for="inline-form-input-category_code">category_code</label>
+    <b-input-group prepend="分類コード" class="mb-2 mr-sm-2 customPrependColor mb-sm-0">
+      <b-form-input id="inline-form-input-category_code" placeholder="分類コード"></b-form-input>
+    </b-input-group>
+    </div>
+    <div class="col-6">
+    <label class="sr-only" for="inline-form-input-category_name">category_name</label>
+    <b-input-group prepend="分類名" class="mb-2 mr-sm-2 customPrependColor mb-sm-0">
+      <b-form-input id="inline-form-input-category_name" placeholder="分類名"></b-form-input>
+    </b-input-group>
+    </div>
+</div>
+
+<div class="searchBtn text-center">
+  <button class="btn btn-primary"> {{ myLang.search }}</button>
+</div>
+</div><div class="col-2"></div></div>
 <p>
               <span class="tableRowsInfo"
                 >{{ cat_lists.from }}〜{{
@@ -113,14 +133,14 @@
                 <td>{{
                     cat_lists.current_page*select_field_per_page_num-select_field_per_page_num+index+1
                   }}</td>
-                  <td>{{ cat_list.category_orign_code }} {{cat_list.category_orign_code2}} {{cat_list.category_orign_code3}}</td>
+                  <td>{{ cat_list.category_code }} {{cat_list.category_code2}} {{cat_list.category_code3}}</td>
                 <td>{{ cat_list.category_name }}</td>
-                <td>{{ cat_list.category_orign_code }}</td>
+                <td>{{ cat_list.category_code }}</td>
                 
                 <td>{{ cat_list.category_name2 }}</td>
-                <td>{{ cat_list.category_orign_code2 }}</td>
+                <td>{{ cat_list.category_code2 }}</td>
                 <td>{{ cat_list.category_name3 }}</td>
-                <td>{{ cat_list.category_orign_code3 }}</td>
+                <td>{{ cat_list.category_code3 }}</td>
                 <td>
                   <button
                     @click="edit_category_data(cat_list)"
@@ -171,10 +191,10 @@
                 type="text"
                 class="form-control"
                 maxlength="3"
-                :class="{ 'is-invalid': form.errors.has('category_orign_code') }"
-                v-model="form.category_orign_code"
+                :class="{ 'is-invalid': form.errors.has('category_code') }"
+                v-model="form.category_code"
               />
-              <has-error :form="form" field="category_orign_code"></has-error>
+              <has-error :form="form" field="category_code"></has-error>
             </div>
           </div>
 
@@ -241,8 +261,8 @@ export default {
         cmn_category_id: "",
         name: "",
         category_name: "",
-        category_orign_code: "",
-        parent_category_id: "",
+        category_code: "",
+        parent_category_id: 0,
         adm_user_id: Globals.user_info_id,
       }),
     };

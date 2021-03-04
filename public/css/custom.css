@@ -240,3 +240,11 @@
     background: red;
     color:#fff;
 }
+.customPrependColor .input-group-prepend .input-group-text{
+    background: #538ED3 !important;
+    color:#fff !important;
+}
+
+.searchCategoryForm {
+    margin-bottom: 20px;
+}
