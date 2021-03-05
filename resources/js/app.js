@@ -184,7 +184,14 @@ router.onReady(() => {
 });
 // const defaultRoute = '/home';
 router.beforeEach(async(to, from, next) => {
-    console.log(to.name);
+    // console.log(to);
+    // console.log(from);
+    axios.get('api/is-auth').then(({ data }) => {
+        if (!data) {
+            window.location.reload();
+        }
+    }).catch(error => console.log("error"));
+
     if (to.name !== 'home') {
         if (Permissions.indexOf(to.name) === -1) {
             next({ name: 'home' });
@@ -194,10 +201,17 @@ router.beforeEach(async(to, from, next) => {
     } else {
         next();
     }
+    // axios.post('',){
+
+    // }
 });
+// router.beforeEach(async(to, from, next) => {
+//     console.log("Loaded");
+// });
 
 import App from "./components/backend/app.vue";
 import { nextTick } from "q";
+import Axios from "axios";
 
 new Vue({
     router: router,

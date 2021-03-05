@@ -290,6 +290,10 @@ export default {
         init() {
             // let access_token = localStorage
             let access_token = document.cookie;
+
+            // $.get('mysession',function(response) {
+            // self.sessionsData = response;
+            // };
             // console.log(access_token);
             // console.log(localStorage);
             // return 0;

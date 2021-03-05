@@ -1,10 +1,7 @@
 <?php
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\CMN\cmn_connect;
-use App\Models\CMN\cmn_company;
-use App\Models\ADM\User;
-use App\Models\CMN\cmn_companies_user;
+// use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 // use DB;
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +13,12 @@ use App\Models\CMN\cmn_companies_user;
 | contains the "web" middleware group. Now create something great!
 |
 */
+// Route::get('is-auth', function () {
+//     $auth = \Auth::user();
+//     return $auth;
+//     // return response()->json(['user'=>$auth]);
+//     // return $auth;
+// });
 Route::get('language/{locale}', function ($locale) {
     // return $locale;
     Session::put('locale',$locale);
