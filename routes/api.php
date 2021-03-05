@@ -1,5 +1,11 @@
 <?php
-
+use Illuminate\Support\Facades\Route;
+Route::get('is-auth', function () {
+    $auth = \Auth::user();
+    return $auth;
+    // return response()->json(['user'=>$auth]);
+    // return $auth;
+});
 /*
 |--------------------------------------------------------------------------
 | API Routes
