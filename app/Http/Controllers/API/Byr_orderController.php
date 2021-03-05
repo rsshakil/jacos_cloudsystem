@@ -79,8 +79,8 @@ class Byr_orderController extends Controller
             $confirmation_status = $request->confirmation_status; // 参照
             $decission_cnt = $request->decission_cnt; // 確定
             $print_cnt = $request->print_cnt; // 印刷
-            $byr_category_code = $request->byr_category_code; // 印刷
-
+            $byr_category_code = $request->category_code; // 印刷
+            $byr_category_code = $byr_category_code['category_code'];
             if ($receive_date_from) {
                 $search_where .= "AND dor.receive_datetime >= '" . $receive_date_from . "' ";
             }

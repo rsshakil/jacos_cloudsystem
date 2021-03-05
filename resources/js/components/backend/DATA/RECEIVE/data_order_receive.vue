@@ -79,10 +79,12 @@
             <!-- <td>{{ myLang.shipment }}</td> -->
             <td class="cl_custom_color">部門</td>
             <td style="width: 10%; text-align: center">
-              <select class="form-control" v-model="form.byr_category_code">
+                                            <multiselect v-model="form.category_code" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="false" :preserve-search="true" placeholder="部門"></multiselect>
+
+              <!--<select class="form-control" v-model="form.byr_category_code">
             <option value="*">全て</option>
             <option :value="categoryData.category_orign_code" v-for="(categoryData,index) in byr_buyer_category_lists" :key="index">{{categoryData.category_orign_code}}| {{categoryData.category_name}}</option>
-             </select>
+             </select>-->
             </td>
             <td class="cl_custom_color">便</td>
             <td style="width: 15%">
@@ -259,7 +261,7 @@ export default {
     return {
       received_item_list: {},
       byr_buyer_lists: {},
-      byr_buyer_category_lists: {},
+      byr_buyer_category_lists: [],
       byr_buyer_id:null,
       buyer_settings:[],
       form: new Form({
@@ -275,7 +277,7 @@ export default {
         delivery_service_code: "01",
         temperature_code: "01",
         check_datetime: null,
-        byr_category_code:'*',
+        category_code:{category_code:'*',category_name:'全て'},
         // print_cnt: "*",
         // decission_cnt: "*",
         submit_type: "page_load",
@@ -296,7 +298,8 @@ export default {
                 console.log(data);
                 this.received_item_list = data.received_item_list;
                 this.byr_buyer_lists = data.byr_buyer_list;
-                this.byr_buyer_category_lists = data.byr_buyer_category_list
+                this.byr_buyer_category_lists = data.byr_buyer_category_list;
+                this.byr_buyer_category_lists.unshift({category_code:'*',category_name:'全て'});
                 this.buyer_settings = JSON.parse(data.buyer_settings);
 
             });

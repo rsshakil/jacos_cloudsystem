@@ -31,6 +31,8 @@ class ReceiveController extends Controller
         $byr_buyer_id = $request->byr_buyer_id;
         $per_page = $request->per_page == null ? 10 : $request->per_page;
         $submit_type = $request->submit_type;
+        $byr_category_code = $request->category_code; // 印刷
+        $byr_category_code = $byr_category_code['category_code'];
         $search_where = '';
         $having_var = '';
 
@@ -66,6 +68,10 @@ class ReceiveController extends Controller
 
             if ($temperature!='*') {
                 $search_where .= "AND dov.mes_lis_ord_tra_ins_temperature_code='" . $temperature . "' ";
+            }
+
+            if ($byr_category_code!='*') {
+                $search_where .= "AND dov.mes_lis_ord_tra_goo_major_category='" . $byr_category_code . "' ";
             }
 
             // 参照
