@@ -12,6 +12,7 @@ use App\Models\CMN\cmn_category;
 use App\Models\CMN\cmn_category_description;
 use App\Models\CMN\cmn_category_path;
 use Auth;
+use DB;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -527,7 +528,8 @@ class AllUsedFunction extends Controller
     }
 
     public function get_allCategoryByByrId($byr_buyer_id){
-        $result = cmn_category::where('byr_buyer_id',$byr_buyer_id)->where('is_deleted',0)->where('level',1)->get();
+        $result = cmn_category::select('category_code',
+        DB::raw("CONCAT(category_code,' | ',category_name) as category_name"))->where('byr_buyer_id',$byr_buyer_id)->where('is_deleted',0)->where('level',1)->orderBy('category_code')->get();
         return $result;
     }
 

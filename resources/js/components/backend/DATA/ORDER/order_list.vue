@@ -109,10 +109,11 @@
           <!-- <td>{{ myLang.voucher_type }}</td> -->
           <td class="cl_custom_color">部門</td>
           <td>
-            <select class="form-control" v-model="form.byr_category_code">
+                                            <multiselect v-model="form.category_code" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="false" :preserve-search="true" placeholder="部門"></multiselect>
+            <!--<select class="form-control" v-model="form.byr_category_code">
             <option value="*">全て</option>
             <option :value="categoryData.category_orign_code" v-for="(categoryData,index) in byr_buyer_category_lists" :key="index">{{categoryData.category_orign_code}}| {{categoryData.category_name}}</option>
-             </select>
+             </select>-->
           </td>
           <td colspan="2"></td>
           <!-- <td>{{ myLang.printing_status }}</td> -->
@@ -332,7 +333,7 @@ export default {
       // today:new Date().toLocaleDateString(),
       order_lists: {},
       byr_buyer_lists: {},
-      byr_buyer_category_lists: {},
+      byr_buyer_category_lists:[],
       file: "",
       selected_byr: "0",
       showAllCustomerCodeListModal:false,
@@ -349,7 +350,7 @@ export default {
         byr_buyer_id: null,
         receive_date_from: null,
         receive_date_to: null,
-        byr_category_code:'*',
+        category_code:{category_code:'*',category_name:'全て'},
         // receive_date_from:new Date().toISOString().slice(0, 10),
         // receive_date_to:new Date().toISOString().slice(0, 10),
         // delivery_date_from:new Date().toISOString().slice(0, 10),
@@ -391,6 +392,7 @@ export default {
           this.json_delivery_service_code = this.buyer_settings.orders.mes_lis_ord_log_del_delivery_service_code;
           // this.json_delivery_service_code.push({"00":'全て'});
           // this.json_temperature_code.push({'00':'全て'});
+          this.byr_buyer_category_lists.unshift({category_code:'*',category_name:'全て'});
   console.log(this.byr_buyer_category_lists);
           // console.log(this.buyer_settings.orders.mes_lis_ord_tra_ins_temperature_code);
           this.loader.hide();
