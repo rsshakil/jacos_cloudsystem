@@ -8,8 +8,9 @@ use App\Models\ADM\User;
 use App\Http\Controllers\API\AllUsedFunction;
 use App\Models\CMN\cmn_companies_user;
 use App\Models\DATA\PAYMENT\data_payment;
+use App\Models\DATA\PAYMENT\data_payment_pay_detail;
 use App\Models\BYR\byr_buyer;
-
+use DB;
 class PaymentController extends Controller
 {
     private $all_used_fun;
@@ -89,6 +90,8 @@ class PaymentController extends Controller
         $result=data_payment::select('data_payments.data_payment_id','data_payments.receive_datetime',
         'dpp.mes_lis_pay_pay_code',
         'dpp.mes_lis_pay_pay_name',
+        'dpp.mes_lis_pay_pay_gln',
+        'dpp.mes_lis_pay_pay_id',
         'dpp.mes_lis_buy_name',
         'dpp.mes_lis_buy_code',
         'dpp.check_datetime',
@@ -105,6 +108,41 @@ class PaymentController extends Controller
         ->groupBy('dpp.mes_lis_pay_per_end_date')
         ->groupBy('dppd.mes_lis_pay_lin_det_pay_out_date')
         ->first();
-        return response()->json(['payment_item_header' => $result]);
+        $paymentdetailTopTable = data_payment_pay_detail::select(
+DB::raw("SUM(mes_lis_pay_lin_det_amo_payable_amount + mes_lis_pay_lin_det_amo_tax) as totalAmount")
+        )->where(['mes_lis_pay_lin_det_pay_code'=>'3003','data_payment_pay_id'=>$payment_id])->groupBy('data_payment_pay_id')->first();
+
+        $paymentdetailRghtTable = data_payment_pay_detail::select(
+            'data_payment_pay_details.mes_lis_pay_lin_det_amo_requested_amount',
+            'data_payment_pay_details.mes_lis_pay_lin_det_det_meaning',
+            'data_payment_pay_details.mes_lis_pay_lin_det_det_code',
+            'dpp.mes_lis_pay_pay_code')
+            ->join('data_payment_pays as dpp','data_payment_pay_details.data_payment_pay_id','=','dpp.data_payment_id')
+            ->where(['data_payment_pay_details.mes_lis_pay_lin_det_pay_code'=>'2000','data_payment_pay_details.data_payment_pay_id'=>$payment_id])->get();
+
+        $pQ1 = data_payment_pay_detail::select(
+            DB::raw('"仕入合計金額" as p_title'),
+            DB::raw('SUM(mes_lis_pay_lin_det_amo_requested_amount) as amount'),
+            DB::raw('"1" as sumation_type')
+                    )->where('mes_lis_pay_lin_det_pay_code','3001')->where('data_payment_pay_id',$payment_id)->groupBy('data_payment_pay_id');
+        $pQ2 = data_payment_pay_detail::select(
+            DB::raw('"仕入消費税" as p_title'),
+            DB::raw('SUM(mes_lis_pay_lin_det_amo_tax) as amount'),
+            DB::raw('"1" as sumation_type')
+                    )->where('mes_lis_pay_lin_det_pay_code','3001')->where('data_payment_pay_id',$payment_id)->groupBy('data_payment_pay_id');
+        
+        $pQ3 = data_payment_pay_detail::select(
+            DB::raw('"相殺合計金額" as p_title'),
+            DB::raw('SUM(mes_lis_pay_lin_det_amo_payable_amount) as amount'),
+            DB::raw('"2" as sumation_type')
+                    )->where('mes_lis_pay_lin_det_pay_code','3002')->where('data_payment_pay_id',$payment_id)->groupBy('data_payment_pay_id');
+        $pQ4 = data_payment_pay_detail::select(
+            DB::raw('"相殺消費税" as p_title'),
+            DB::raw('SUM(mes_lis_pay_lin_det_amo_tax) as amount'),
+            DB::raw('"2" as sumation_type')
+                    )->where('mes_lis_pay_lin_det_pay_code','3002')->where('data_payment_pay_id',$payment_id)->groupBy('data_payment_pay_id');
+         $pdtableleft =  $pQ1->union($pQ2)->union($pQ3)->union($pQ4)->orderBy('sumation_type','ASC')->get();          
+
+        return response()->json(['payment_item_header' => $result,'paymentdetailTopTable'=>$paymentdetailTopTable,'pdtableleft'=>$pdtableleft,'paymentdetailRghtTable'=>$paymentdetailRghtTable]);
     }
 }

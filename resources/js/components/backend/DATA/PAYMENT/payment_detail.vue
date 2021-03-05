@@ -41,8 +41,8 @@
 
     <div class="col-12">
       <div class="row">
-      <div class="col-4">
-      <h4 class="page_custom_title">支払合計</h4>
+      <div class="col-12">
+      <h4 class="page_custom_title">取引先別支払合計（仕入）</h4>
         <table
           class="table table-striped order_item_details_table table-bordered data_table"
         >
@@ -60,13 +60,13 @@
               <td>{{payment_detail_header.mes_lis_pay_pay_gln}} {{
 payment_detail_header.mes_lis_pay_pay_name}}</td>
               <td>{{payment_detail_header.mes_lis_pay_pay_id}}</td>
-              <td>{{payment_detail_header.mes_lis_pay_lin_det_amo_payable_amount }} {{payment_detail_header.mes_lis_pay_lin_det_amo_tax}}</td>
+              <td>{{paymentdetailTopTable.totalAmount }}</td>
             </tr>
           </tbody>
         </table>
       </div>
-      <div class="col-8">
-        <h4 class="page_custom_title">取引先別支払合計</h4>
+      <div class="col-6">
+        <h4 class="page_custom_title">支払合計（仕入合計ー相殺合計）</h4>
           <table
           class="table table-striped order_item_details_table table-bordered data_table"
         >
@@ -75,38 +75,24 @@ payment_detail_header.mes_lis_pay_pay_name}}</td>
               <th style="cursor: pointer">No</th>
               <th style="cursor: pointer">取引先</th>
               <th style="cursor: pointer">請求書番号</th>
-              <th style="cursor: pointer">支払金額合計</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>仕入合計金額</td>
-              <td>仕入合計金額</td>
-              <td>{{payment_detail_header.mes_lis_pay_lin_det_amo_requested_amount}}</td>
+            <tr v-for="(item,index) in pdtableleft" :key="index" :style="{ color: item.sumation_type == '2' ? 'red' : '#000' }">
+              <td>{{index+1}}</td>
+              <td>{{item.p_title}}</td>
+              <td>{{item.amount}}</td>
             </tr>
             <tr>
-              <td>2</td>
-              <td>仕入消費税</td>
-              <td>仕入消費税</td>
-              <td>{{payment_detail_header.mes_lis_pay_lin_det_amo_tax}}</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>相殺合計金額</td>
-              <td>相殺合計金額</td>
-              <td>{{payment_detail_header.mes_lis_pay_lin_det_amo_payable_amount}}</td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td>相殺消費税</td>
-              <td>相殺消費税</td>
-              <td>{{payment_detail_header.mes_lis_pay_lin_det_amo_tax}}</td>
+            <td colspan="2">Total</td>
+            <td>{{totalAmountVal}}</td>
             </tr>
           </tbody>
         </table>
+        </div>
+        <div class="col-6">
         <br>
-        <h4 class="page_custom_title">相殺明細</h4>
+        <h4 class="page_custom_title">相殺合計（相殺）</h4>
           <table
           class="table table-striped order_item_details_table table-bordered data_table"
         >
@@ -120,33 +106,16 @@ payment_detail_header.mes_lis_pay_pay_name}}</td>
             </tr>
           </thead>
           <tbody>
-              <tr>
-              <td>1</td>
-              <td>仕入合計金額</td>
-              <td>仕入合計金額</td>
-              <td>仕入合計金額</td>
-              <td>{{payment_detail_header.mes_lis_pay_lin_det_amo_requested_amount}}</td>
+              <tr v-for="(item,index) in paymentdetailRghtTable" :key="index">
+              <td>{{index+1}}</td>
+              <td>{{item.mes_lis_pay_pay_code}}</td>
+              <td>{{item.mes_lis_pay_lin_det_det_code}}</td>
+              <td>{{item.mes_lis_pay_lin_det_det_meaning}}</td>
+              <td>{{item.mes_lis_pay_lin_det_amo_requested_amount}}</td>
             </tr>
             <tr>
-              <td>2</td>
-              <td>仕入消費税</td>
-              <td>仕入消費税</td>
-              <td>仕入消費税</td>
-              <td>{{payment_detail_header.mes_lis_pay_lin_det_amo_tax}}</td>
-            </tr>
-             <tr>
-              <td>3</td>
-              <td>{{payment_detail_header.mes_lis_pay_lin_det_amo_requested_amount}}</td>
-              <td>{{payment_detail_header.mes_lis_pay_lin_det_det_code}}</td>
-              <td>{{payment_detail_header.mes_lis_pay_lin_det_det_meaning}}</td>
-              <td>{{payment_detail_header.mes_lis_pay_lin_det_amo_requested_amount}}</td>
-            </tr>
-             <tr>
-              <td>4</td>
-              <td>{{payment_detail_header.mes_lis_pay_lin_det_amo_requested_amount}}</td>
-              <td>{{payment_detail_header.mes_lis_pay_lin_det_det_code}}</td>
-              <td>{{payment_detail_header.mes_lis_pay_lin_det_det_meaning}}</td>
-              <td>{{payment_detail_header.mes_lis_pay_lin_det_amo_requested_amount}}</td>
+              <td colspan="4">Total</td>
+              <td>{{totalAmountVal}}</td>
             </tr>
             
           </tbody>
@@ -163,6 +132,9 @@ export default {
     return {
       payment_detail_header: {},
       byr_buyer_id: null,
+      paymentdetailTopTable:{},
+      pdtableleft:{},
+      paymentdetailRghtTable:{},
       form: new Form({
         select_field_per_page_num: 10,
         page: 1,
@@ -192,6 +164,10 @@ export default {
         .then(({ data }) => {
             console.log(data)
           this.payment_detail_header = data.payment_item_header;
+          this.paymentdetailTopTable = data.paymentdetailTopTable;
+          this.pdtableleft = data.pdtableleft;
+          this.paymentdetailRghtTable = data.paymentdetailRghtTable;
+          console.log(this.pdtableleft);
         });
     },
 
@@ -205,6 +181,20 @@ export default {
     Fire.$emit("byr_has_selected", this.byr_buyer_id);
     Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
     Fire.$emit("loadPageTitle", "支払合計");
+  },
+  computed: {
+   
+    totalAmountVal: function() {
+      return this.pdtableleft.reduce(function (sumselling,val) {
+        if(val.sumation_type=='1'){
+          sumselling = sumselling+val.amount;
+        }else{
+          sumselling = sumselling-val.amount;
+        }
+       return  sumselling;
+      },0);
+
+    },
   },
   mounted() {},
 };
