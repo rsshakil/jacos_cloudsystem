@@ -1,4 +1,3 @@
-
 window._ = require('lodash');
 
 /**
@@ -37,6 +36,10 @@ if (token) {
 } else {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
+// let browser_cookie = document.cookie;
+// let access_token_string = browser_cookie.split(';')[2];
+// let access_token = access_token_string.split('=')[1];
+// console.log(access_token);
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

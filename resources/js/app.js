@@ -183,9 +183,11 @@ router.onReady(() => {
     }
 });
 // const defaultRoute = '/home';
+
 router.beforeEach(async(to, from, next) => {
     // console.log(to);
-    // console.log(from);
+    console.log("Hi");
+    console.log(axios);
     axios.get('api/is-auth').then(({ data }) => {
         if (!data) {
             window.location.reload();
@@ -212,7 +214,6 @@ router.beforeEach(async(to, from, next) => {
 import App from "./components/backend/app.vue";
 import { nextTick } from "q";
 import Axios from "axios";
-
 new Vue({
     router: router,
     render: h => h(App)

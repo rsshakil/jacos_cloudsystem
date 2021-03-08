@@ -98,6 +98,7 @@ export default {
     loadPermissionData() {
       this.init();
       axios.get(this.BASE_URL+"api/permission").then(({ data }) => {
+          this.init(data.status);
             this.permissions=data.permissions;
         })
         .catch(() => {
@@ -145,8 +146,8 @@ export default {
     //Delete Permoission
             deletePermission(id){
               this.init();
-              this.delete_sweet().then((result) => {     
-              if (result.value) { 
+              this.delete_sweet().then((result) => {
+              if (result.value) {
                 //Send Request to server
                 this.form.delete(this.BASE_URL+'api/permission/'+id)
                     .then(({data})=> {

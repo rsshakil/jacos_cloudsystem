@@ -9,7 +9,7 @@
     </div>
     <!-- End Page Header -->
     <!-- Default Light Table -->
-    
+
     <div class="row" id="div">
         <div class="col">
             <div class="card card-small mb-4">
@@ -87,6 +87,7 @@ methods:{
                 var password_data={user_id:this.user_update_id,auth_id:this.auth_id,password:this.password}
                 axios.post(this.BASE_URL+"api/change_password",password_data)
                 .then(({ data }) => {
+                    this.init(data.status);
                     if (data.message=='no_permission') {
                     this.alert_text="You have no permission to change the password"
                     }else if(data.message=='password_changed'){

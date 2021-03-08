@@ -1,10 +1,10 @@
 <template>
 <div>
- 
+
 <!--bloog section-->
 <blog_view></blog_view>
 <!--bloog section-->
-        
+
 </div>
 
 </template>
@@ -26,13 +26,14 @@ import blog_view from './blog_view'
         },
         methods:{
             get_all_blogs(){
-                axios.get(this.BASE_URL +"api/get_all_published_blog_list").then((data) => {
-                    this.blog_lists = data.data.blog_list;
+                axios.get(this.BASE_URL +"api/get_all_published_blog_list").then(({data}) => {
+                    this.init(data.status);
+                    this.blog_lists = data.blog_list;
                 });
             },
             get_signle_top_blog(){
-                axios.get(this.BASE_URL +"api/get_signle_top_blog").then((data) => {
-                    this.single_blog = data.data.blog_list;
+                axios.get(this.BASE_URL +"api/get_signle_top_blog").then(({data}) => {
+                    this.single_blog = data.blog_list;
                     console.log(this.single_blog.length);
                 });
             },
