@@ -110,37 +110,52 @@ class PaymentController extends Controller
         ->first();
         $paymentdetailTopTable = data_payment_pay_detail::select(
 DB::raw("SUM(mes_lis_pay_lin_det_amo_payable_amount + mes_lis_pay_lin_det_amo_tax) as totalAmount")
-        )->where(['mes_lis_pay_lin_det_pay_code'=>'3003','data_payment_pay_id'=>$payment_id])->groupBy('data_payment_pay_id')->first();
+        )
+        ->join('data_payment_pays as dpp','data_payment_pay_details.data_payment_pay_id','=','dpp.data_payment_pay_id')
+        
+        ->where(['mes_lis_pay_lin_det_pay_code'=>'3003','dpp.data_payment_id'=>$payment_id])->groupBy('data_payment_pay_details.data_payment_pay_id')->first();
 
         $paymentdetailRghtTable = data_payment_pay_detail::select(
             'data_payment_pay_details.mes_lis_pay_lin_det_amo_requested_amount',
             'data_payment_pay_details.mes_lis_pay_lin_det_det_meaning',
             'data_payment_pay_details.mes_lis_pay_lin_det_det_code',
             'dpp.mes_lis_pay_pay_code')
-            ->join('data_payment_pays as dpp','data_payment_pay_details.data_payment_pay_id','=','dpp.data_payment_id')
-            ->where(['data_payment_pay_details.mes_lis_pay_lin_det_pay_code'=>'2000','data_payment_pay_details.data_payment_pay_id'=>$payment_id])->get();
+            ->join('data_payment_pays as dpp','data_payment_pay_details.data_payment_pay_id','=','dpp.data_payment_pay_id')
+            ->where(['data_payment_pay_details.mes_lis_pay_lin_det_pay_code'=>'2000','dpp.data_payment_id'=>$payment_id])->get();
 
         $pQ1 = data_payment_pay_detail::select(
             DB::raw('"仕入合計金額" as p_title'),
             DB::raw('SUM(mes_lis_pay_lin_det_amo_requested_amount) as amount'),
             DB::raw('"1" as sumation_type')
-                    )->where('mes_lis_pay_lin_det_pay_code','3001')->where('data_payment_pay_id',$payment_id)->groupBy('data_payment_pay_id');
+                    )
+            ->join('data_payment_pays as dpp','data_payment_pay_details.data_payment_pay_id','=','dpp.data_payment_pay_id')
+                    
+                    ->where('mes_lis_pay_lin_det_pay_code','3001')->where('dpp.data_payment_id',$payment_id)->groupBy('data_payment_pay_details.data_payment_pay_id');
         $pQ2 = data_payment_pay_detail::select(
             DB::raw('"仕入消費税" as p_title'),
             DB::raw('SUM(mes_lis_pay_lin_det_amo_tax) as amount'),
             DB::raw('"1" as sumation_type')
-                    )->where('mes_lis_pay_lin_det_pay_code','3001')->where('data_payment_pay_id',$payment_id)->groupBy('data_payment_pay_id');
+                    )
+            ->join('data_payment_pays as dpp','data_payment_pay_details.data_payment_pay_id','=','dpp.data_payment_pay_id')
+                    
+                    ->where('mes_lis_pay_lin_det_pay_code','3001')->where('dpp.data_payment_id',$payment_id)->groupBy('data_payment_pay_details.data_payment_pay_id');
         
         $pQ3 = data_payment_pay_detail::select(
             DB::raw('"相殺合計金額" as p_title'),
             DB::raw('SUM(mes_lis_pay_lin_det_amo_payable_amount) as amount'),
             DB::raw('"2" as sumation_type')
-                    )->where('mes_lis_pay_lin_det_pay_code','3002')->where('data_payment_pay_id',$payment_id)->groupBy('data_payment_pay_id');
+                    )
+                    ->join('data_payment_pays as dpp','data_payment_pay_details.data_payment_pay_id','=','dpp.data_payment_pay_id')
+            
+                    ->where('mes_lis_pay_lin_det_pay_code','3002')->where('dpp.data_payment_id',$payment_id)->groupBy('data_payment_pay_details.data_payment_pay_id');
         $pQ4 = data_payment_pay_detail::select(
             DB::raw('"相殺消費税" as p_title'),
             DB::raw('SUM(mes_lis_pay_lin_det_amo_tax) as amount'),
             DB::raw('"2" as sumation_type')
-                    )->where('mes_lis_pay_lin_det_pay_code','3002')->where('data_payment_pay_id',$payment_id)->groupBy('data_payment_pay_id');
+                    )
+            ->join('data_payment_pays as dpp','data_payment_pay_details.data_payment_pay_id','=','dpp.data_payment_pay_id')
+                    
+                    ->where('mes_lis_pay_lin_det_pay_code','3002')->where('dpp.data_payment_id',$payment_id)->groupBy('data_payment_pay_details.data_payment_pay_id');
          $pdtableleft =  $pQ1->union($pQ2)->union($pQ3)->union($pQ4)->orderBy('sumation_type','ASC')->get();          
 
         return response()->json(['payment_item_header' => $result,'paymentdetailTopTable'=>$paymentdetailTopTable,'pdtableleft'=>$pdtableleft,'paymentdetailRghtTable'=>$paymentdetailRghtTable]);
