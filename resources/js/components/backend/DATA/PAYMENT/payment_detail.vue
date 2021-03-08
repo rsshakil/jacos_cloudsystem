@@ -26,7 +26,7 @@
           <td>{{payment_detail_header.mes_lis_pay_lin_det_pay_out_date}}</td>
 
           <td class="cl_custom_color" >支払金額</td>
-          <td>{{payment_detail_header.mes_lis_pay_lin_det_amo_payable_amount}}</td>
+          <td class="text-right">{{payment_detail_header.mes_lis_pay_lin_det_amo_payable_amount | priceFormat}}</td>
         </tr>
       </table>
     </div>
@@ -60,7 +60,7 @@
               <td>{{payment_detail_header.mes_lis_pay_pay_gln}} {{
 payment_detail_header.mes_lis_pay_pay_name}}</td>
               <td>{{payment_detail_header.mes_lis_pay_pay_id}}</td>
-              <td>{{paymentdetailTopTable.totalAmount }}</td>
+              <td class="text-right">{{paymentdetailTopTable.totalAmount | priceFormat}}</td>
             </tr>
           </tbody>
         </table>
@@ -81,11 +81,11 @@ payment_detail_header.mes_lis_pay_pay_name}}</td>
             <tr v-for="(item,index) in pdtableleft" :key="index" :style="{ color: item.sumation_type == '2' ? 'red' : '#000' }">
               <td>{{index+1}}</td>
               <td>{{item.p_title}}</td>
-              <td>{{item.amount}}</td>
+              <td class="text-right">{{item.amount | priceFormat}}</td>
             </tr>
             <tr>
             <td colspan="2">Total</td>
-            <td>{{totalAmountVal}}</td>
+            <td class="text-right">{{totalAmountVal | priceFormat}}</td>
             </tr>
           </tbody>
         </table>
@@ -111,11 +111,11 @@ payment_detail_header.mes_lis_pay_pay_name}}</td>
               <td>{{item.mes_lis_pay_pay_code}}</td>
               <td>{{item.mes_lis_pay_lin_det_det_code}}</td>
               <td>{{item.mes_lis_pay_lin_det_det_meaning}}</td>
-              <td>{{item.mes_lis_pay_lin_det_amo_requested_amount}}</td>
+              <td class="text-right">{{item.mes_lis_pay_lin_det_amo_requested_amount | priceFormat}}</td>
             </tr>
             <tr>
               <td colspan="4">Total</td>
-              <td>{{totalAmountVal}}</td>
+              <td class="text-right">{{totalAmountVal | priceFormat}}</td>
             </tr>
             
           </tbody>
