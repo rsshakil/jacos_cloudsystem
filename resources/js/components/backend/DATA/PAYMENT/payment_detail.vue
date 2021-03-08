@@ -133,7 +133,7 @@ export default {
       payment_detail_header: {},
       byr_buyer_id: null,
       paymentdetailTopTable:{},
-      pdtableleft:{},
+      pdtableleft:[],
       paymentdetailRghtTable:{},
       form: new Form({
         select_field_per_page_num: 10,
@@ -185,14 +185,7 @@ export default {
   computed: {
    
     totalAmountVal: function() {
-      return this.pdtableleft.reduce(function (sumselling,val) {
-        if(val.sumation_type=='1'){
-          sumselling = sumselling+val.amount;
-        }else{
-          sumselling = sumselling-val.amount;
-        }
-       return  sumselling;
-      },0);
+      return this.pdtableleft.reduce(function (sumselling,val) {return  sumselling = (val.sumation_type=='1'?sumselling+val.amount:sumselling-val.amount)},0);
 
     },
   },
