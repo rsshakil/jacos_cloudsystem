@@ -381,7 +381,10 @@ export default {
             moment.locale('ja');
             return moment(str).format('LL');
         },
-
+        priceFormat(str){
+            if(!str)return ''
+            return str.toString().replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        },
     },
     created() {
         // this.init();
