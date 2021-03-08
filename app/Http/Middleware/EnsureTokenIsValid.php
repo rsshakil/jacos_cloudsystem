@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Auth;
 
-class MyMiddleWire
+class EnsureTokenIsValid
 {
     /**
      * Handle an incoming request.
@@ -17,9 +17,9 @@ class MyMiddleWire
     public function handle($request, Closure $next)
     {
         if(Auth::check()){
-        return $next($request);
-        }else{
-        return redirect('/login');
-        }
+            return $next($request);
+            }else{
+                return response()->json(['status'=>2]);
+            }
     }
 }

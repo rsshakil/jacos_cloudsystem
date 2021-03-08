@@ -21,7 +21,7 @@ Route::get('is-auth', function () {
 //     return $request->user();
 // });
 // Authentication Route
-// Route::group(['middleware'=>'MyMiddleWire'],function(){
+Route::group(['middleware'=>'ApiMiddleWire'],function(){
 Route::apiResources(
     [
         'role' => 'API\RoleController',
@@ -89,7 +89,7 @@ Route::post('/get_byr_order_list', 'API\Byr_orderController@get_byr_order_list')
 Route::get('/buyerJsonSetting/{byr_buyer_id}', 'API\Byr_orderController@buyerJsonSetting');
 Route::get('/get_all_company_list/{adm_user_id}', 'API\BYR\ByrController@get_all_company_list');
 Route::post('/update_shipment_detail', 'API\Byr_orderController@update_shipment_detail');
-Route::post('/update_shipment_detail_bycurrentdatetime', 'API\Byr_orderController@update_shipment_detail_bycurrentdatetime')->middleware('MyMiddleWire');
+Route::post('/update_shipment_detail_bycurrentdatetime', 'API\Byr_orderController@update_shipment_detail_bycurrentdatetime');
 Route::post('/shipment_confirm', 'API\DATA\SHIPMENT\ShipmentConroller@shipmentConfirm');
 Route::post('/downloadcsvshipment_confirm', 'API\DATA\SHIPMENT\ShipmentConroller@downloadShipmentCsv');
 Route::post('/update_shipment_item_details', 'API\DATA\SHIPMENT\ShipmentConroller@update_shipment_item_details');
@@ -189,6 +189,6 @@ Route::post('/update_cmn_connects_optional', 'API\CMN\CmnConnectsController@upda
 Route::post('/update_cmn_connects_optionalAllJson', 'API\CMN\CmnConnectsController@update_cmn_connects_optionalAllJson');
 Route::get('/get_allInvoiceJsonSetting_info', 'API\CMN\CmnConnectsController@get_allInvoiceJsonSetting_info');
 Route::post('/get_partner_fax_list', 'API\CMN\CmnConnectsController@get_partner_fax_list');
-
+});
 // Test
 // Route::post('/invoice_scheduler', 'API\DATA\INVOICE\InvoiceController@invoiceScheduler');
