@@ -368,8 +368,8 @@
                     )
                   }}
                 </td>
-                <td>
-                  {{ order_detail_list.mes_lis_shi_tot_tot_net_price_total }}
+                <td class="text-right">
+                  {{ order_detail_list.mes_lis_shi_tot_tot_net_price_total | priceFormat}}
                 </td>
                 <td>{{ order_detail_list.status }}</td>
                 <td>{{ order_detail_list.updated_at }}</td>

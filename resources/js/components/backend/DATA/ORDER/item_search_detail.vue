@@ -127,18 +127,18 @@
                             {{order_item_detail_list.mes_lis_shi_lin_qua_ord_quantity}}
                 </td>
                 <td>{{order_item_detail_list.mes_lis_shi_lin_fre_item_weight * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity}}</td>
-                <td><input type="text" v-model="order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price" class="form-control"/>
+                <td class="text-right"><input type="text" v-model="order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price " class="form-control text-right"/>
                     {{order_item_detail_list.mes_lis_ord_lin_amo_item_net_price_unit_price}}
                 </td>
-                <td><!--{{order_item_detail_list.mes_lis_shi_lin_amo_item_net_price}}-->
-                {{ order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity}}
+                <td class="text-right"><!--{{order_item_detail_list.mes_lis_shi_lin_amo_item_net_price}}-->
+                {{ order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity | priceFormat}}
                 </td>
 
-                <td><input type="text" v-model="order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price" class="form-control"/>
+                <td class="text-right"><input type="text" v-model="order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price" class="form-control text-right"/>
                     {{order_item_detail_list.mes_lis_ord_lin_amo_item_selling_price_unit_price}}
                 </td>
-                <td><!--{{order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price}}-->
-                {{order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity}}
+                <td class="text-right"><!--{{order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price}}-->
+                {{order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity | priceFormat}}
                 </td>
                 <td>
 
