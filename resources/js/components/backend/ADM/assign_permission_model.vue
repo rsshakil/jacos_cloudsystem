@@ -42,7 +42,7 @@
                                   <b-form-checkbox :value="not_matche.id" switch><p class="btn btn-info" style="padding:5px;margin:3px;">{{not_matche.name}}</p></b-form-checkbox>
                                 </li>
                               </ul>
-                              
+
                             </b-form-checkbox-group>
                         </b-form-group>
 												</div>
@@ -99,6 +99,7 @@ export default {
     loadUserData() {
       this.init();
       axios.get(this.BASE_URL+"api/all_users_permissions").then(({ data }) => {
+          this.init(data.status);
             this.all_users = data.users;
         })
         .catch(() => {
@@ -106,11 +107,11 @@ export default {
         });
     },
     showPermissions(option){
-      this.init();
        this.user_id=option.user_id;
        if (this.user_id) {
            axios.get(this.BASE_URL+"api/get_permission_model/"+this.user_id)
         .then(({ data }) => {
+            this.init(data.status);
           this.not_matches=data.not_matches
           this.selected_permissions=data.permissions_exist_id
           this.permissions_by_role=data.all_permissions_for_user_array
@@ -119,9 +120,9 @@ export default {
         })
         .catch(() => {
           console.log("Error...");
-        }); 
+        });
        }
-        
+
         },
     //Assign role
     AssignPermissions() {
@@ -129,6 +130,7 @@ export default {
       var assign_permission_data={permission:this.selected_permissions,user_id:this.user_id}
       axios.post(this.BASE_URL+"api/assign_permission_to_user",assign_permission_data)
         .then(({ data }) => {
+            this.init(data.status);
          this.permissions_by_role= data.all_permissions_for_user_array
          if (data.message=='success') {
             this.alert_text=this.myLang.permission_assigned

@@ -19,7 +19,8 @@ class MyMiddleWire
         if(Auth::check()){
         return $next($request);
         }else{
-        return redirect('/login');
+            return response()->json(['status'=>2]);
+        // return redirect('/login');
         }
     }
 }

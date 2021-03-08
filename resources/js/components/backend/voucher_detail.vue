@@ -23,11 +23,11 @@
         </table>
         </div>
           <div class="col"></div>
-          
+
         </div>
       </div>
                 <div class="col-12 text-center">
-                    
+
       <label>
         <!--<input type="file" id="file" ref="file" v-on:change="onChangeFileUpload()"/>-->
       </label>
@@ -44,7 +44,7 @@
                                             </div>
                                             <select class="form-control" v-model="selected_byr">
                                             <option :value="0">全小売</option>
-                                              <option v-for="(option, index) in byr_buyer_lists" 
+                                              <option v-for="(option, index) in byr_buyer_lists"
                     :key="index" :value="option.super_code"
                     :selected="selectedOption(option)">
                     {{ option.super_code }}
@@ -57,7 +57,7 @@
                                             </div>
                                             <select class="form-control" v-model="selected_byr_shop">
                                             <option :value="0">全店舗</option>
-                                              <option v-for="(option, index) in byr_shop_lists" 
+                                              <option v-for="(option, index) in byr_shop_lists"
                     :key="index" :value="option.byr_shop_id"
                     :selected="selectedOption_shop(option)">
                     {{ option.shop_name }}
@@ -71,7 +71,7 @@
                                             </div>
                                             <select class="form-control" v-model="selected_byr_voucher">
                                             <option :value="0">全伝票</option>
-                                              <option v-for="(option, index) in byr_voucher_lists" 
+                                              <option v-for="(option, index) in byr_voucher_lists"
                     :key="index" :value="option.voucher_number"
                     :selected="selectedOption_voucher(option)">
                     {{ option.voucher_number }}
@@ -94,10 +94,10 @@
                                     <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">単価<span id="ordertype_icon"></span></th>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">合計金額<span id="ordertype_icon"></span></th>
                                 </tr>
-                                
+
                             </thead>
                             <tbody>
-                                
+
                                 <tr v-for="(value,index) in invoice_detail_lists" :key="value.byr_invoice_detail_id">
                                     <td>{{index+1}}</td>
                                     <td v-if="value.item_name !== null && value.item_name !== ''">{{value.item_name}}</td>
@@ -112,7 +112,7 @@
                                    <td v-if="value.revised_cost_price !== null && value.revised_cost_price !== 0 && value.revised_cost_price !== ''">{{value.revised_cost_price}}</td>
                                    <td v-else>{{value.cost_price}}</td>
                                 </tr>
-                                
+
                             </tbody>
                         </table>
                     </div>
@@ -141,11 +141,11 @@ export default {
   methods: {
     //get Table data
     get_all_invoice_detail(){
-        axios.get(this.BASE_URL +"api/get_all_invoice_by_voucher_number/"+this.voucher_number).then((data) => {
-            this.invoice_detail_lists = data.data.invoice_list;
-            this.byr_buyer_lists = data.data.byr_buyer_list;
-            this.byr_shop_lists = data.data.shop_list;
-            this.byr_voucher_lists = data.data.voucher_list;
+        axios.get(this.BASE_URL +"api/get_all_invoice_by_voucher_number/"+this.voucher_number).then(({data}) => {
+            this.invoice_detail_lists = data.invoice_list;
+            this.byr_buyer_lists = data.byr_buyer_list;
+            this.byr_shop_lists = data.shop_list;
+            this.byr_voucher_lists = data.voucher_list;
         });
     },
     check_byr_order_api(){
@@ -158,9 +158,9 @@ export default {
     url: this.BASE_URL + "api/job_exec/1",
     data: formData,
     headers: {'Content-Type': 'multipart/form-data' }
-    })
-    .then(function (response) {
+    }).then(({data}) => {
         //handle success
+        this.init(data.status);
         console.log(response);
        Fire.$emit('LoadByrorder');
     })

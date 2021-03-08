@@ -55,6 +55,7 @@ export default {
         getbuyerJsonSettingvalue() {
             axios.get(this.BASE_URL + "api/buyerJsonSetting/" + this.byr_buyer_id)
                 .then(({ data }) => {
+                    this.init(data.status);
                     this.buyer_settings = JSON.parse(data.buyer_settings);
                     this.mes_lis_shi_lin_qua_sto_reason_codeList = this.buyer_settings.shipments.mes_lis_shi_lin_qua_sto_reason_code;
                     this.ordersJson = this.buyer_settings.orders;
@@ -186,6 +187,7 @@ export default {
                 axios
                     .get(this.BASE_URL + "api/tblecolsetting/" + this.$route.name)
                     .then(data => {
+                        this.init(data.status);
                         console.log(data);
                         this.table_col_setting_list = data.data.result;
                         this.table_col_arry = data.data.arrs;
@@ -287,19 +289,20 @@ export default {
                 return false;
             }
         },
-        init() {
-            // let access_token = localStorage
-            let access_token = document.cookie;
-
-            // $.get('mysession',function(response) {
-            // self.sessionsData = response;
-            // };
-            // console.log(access_token);
-            // console.log(localStorage);
-            // return 0;
-            if (!access_token) {
+        init(status = 1) {
+            if (status == 2) {
                 window.location.reload();
             }
+            // let access_token = localStorage
+            // let browser_cookie = document.cookie;
+            // let access_token_string = browser_cookie.split(';')[2];
+            // let access_token = access_token_string.split('=')[1];
+            // console.log(access_token);
+            // // console.log(userInfo);
+            // return 0;
+            // if (!access_token) {
+            //     window.location.reload();
+            // }
             // axios.post(this.BASE_URL + "user").catch(err => {
             //     window.location.reload();
             // });
@@ -382,6 +385,7 @@ export default {
 
     },
     created() {
+        // this.init();
         // this.beforeCreate();
         // if (!this.$session.exists()) {
         //     this.$router.push('/home')

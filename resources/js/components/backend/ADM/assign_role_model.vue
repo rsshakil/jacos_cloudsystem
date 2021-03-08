@@ -27,12 +27,12 @@
 									</div>
 									<div class="form-group row">
 										<label class="col-sm-2 col-form-label">{{myLang.select_role}}</label>
-										<div class="col-md-10">  
+										<div class="col-md-10">
                       <b-form-group v-if="user_id!=''">
                         <b-form-checkbox-group id="checkbox-group" v-model="selected_roles">
                           <b-form-checkbox class="btn outline-secondary" style="margin:3px; line-height:5px; height:25px;" v-for="(role, index) in all_roles" :value="role.role_id" :key="index">{{role.role_name}}</b-form-checkbox>
                         </b-form-checkbox-group>
-                    </b-form-group> 
+                    </b-form-group>
                     <h6 v-else>{{myLang.user_no_select}}</h6>
 										</div>
 									</div>
@@ -71,6 +71,7 @@ export default {
     loadUserData() {
       this.init();
       axios.get(this.BASE_URL+"api/all_users_roles").then(({ data }) => {
+          this.init(data.status);
             this.all_users = data.users;
             this.all_roles = data.roles;
         })
@@ -79,12 +80,13 @@ export default {
         });
     },
     showRoles(option){
-      
+
       this.init();
        this.user_id=option.user_id;
        if (this.user_id) {
            axios.get(this.BASE_URL+"api/get_roles/"+this.user_id)
         .then(({ data }) => {
+            this.init(data.status);
             // console.log(this.selected_roles);
             var roles=data.model_data
             var role_ids=[];
@@ -96,9 +98,9 @@ export default {
         })
         .catch(() => {
           console.log("Error...");
-        }); 
+        });
        }
-        
+
         },
     //Assign role
     AssignRole() {
@@ -107,6 +109,7 @@ export default {
       axios
         .post(this.BASE_URL+"api/assign_role_to_user",assign_role_data)
         .then(({ data }) => {
+            this.init(data.status);
           if (data.message=='success') {
             this.alert_text=this.myLang.assign_role_to_user
           }
