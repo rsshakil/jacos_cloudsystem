@@ -33,6 +33,7 @@ class InvoiceController extends Controller
         $request->request->add(['start_date' => $start_date]);
         $request->request->add(['end_date' => $end_date]);
         // return $request->all();
+        // \Log::info($request->all());
         $cs = new Cmn_ScenarioController();
         return $ret = $cs->exec($request);
         \Log::debug($ret->getContent());

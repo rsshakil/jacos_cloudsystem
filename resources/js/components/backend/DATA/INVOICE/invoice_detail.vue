@@ -1,42 +1,109 @@
 <template>
   <div class="row">
+    <!-- ========= -->
+    <div class="col-12" style="padding: 10px">
+        <table
+          class="table orderTopDetailTable table-bordered"
+          style="width: 100%"
+        >
+          <tr>
+            <td class="cl_custom_color">締日</td>
+            <td>aaaa
+                <!-- {{ order_info.receive_datetime }} -->
+            </td>
+            <td class="cl_custom_color">請求取引先</td>
+            <td colspan="5">
+                aaaa
+              <!-- {{ order_info.mes_lis_shi_par_sel_code }}
+              {{ order_info.mes_lis_shi_par_sel_name }} -->
+            </td>
+          </tr>
+          <tr>
+            <td class="cl_custom_color">発注者</td>
+            <td>
+                aaaa
+                <!-- {{ order_info.mes_lis_shi_tra_dat_delivery_date }} -->
+            </td>
+            <td class="cl_custom_color">請求状況</td>
+            <td>
+                <!-- {{ order_info.mes_lis_shi_tra_goo_major_category }} -->
+            </td>
+            <td class="cl_custom_color">請求金額</td>
+            <td>
+              <!-- {{ order_info.mes_lis_shi_log_del_delivery_service_code }}
+              {{
+                getbyrjsonValueBykeyName(
+                  "mes_lis_ord_log_del_delivery_service_code",
+                  order_info.mes_lis_shi_log_del_delivery_service_code,
+                  "orders"
+                )
+              }} -->
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-12" style="background: #d8e3f0; padding: 10px">
+        <table
+          class="table orderDetailTable table-bordered"
+          style="width: 100%"
+        >
+          <tr>
+            <td class="cl_custom_color">計上日</td>
+            <td>
+              <input type="text" class="form-control" />
+            </td>
+            <td class="cl_custom_color">計上先</td>
+            <!-- @click="deliverySearchForm2" -->
+            <td>
+              <input type="text" class="form-control topHeaderInputFieldBtn" />
+              <button
+
+                class="btn btn-primary active"
+              >
+                参照
+              </button>
+            </td>
+            <td class="cl_custom_color">伝票番号</td>
+            <td>
+              <input
+                type="text"
+                v-model="form.mes_lis_shi_tra_trade_number"
+                class="form-control"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td class="cl_custom_color">確定状況</td>
+            <td>
+              <input type="text" class="form-control" />
+            </td>
+            <td class="cl_custom_color">送信状況</td>
+            <!-- v-model="form.fixedSpecial" -->
+            <td>
+              <input type="text" class="form-control" />
+            </td>
+          </tr>
+
+        </table>
+      </div>
+      <div class="col-12" style="text-align: center">
+          <!-- @click="searchByFormData" -->
+        <button
+
+          class="btn btn-primary active srchBtn"
+          type="button"
+        >
+          {{ myLang.search }}
+        </button>
+      </div>
+      <div class="col-12">
+        <br />
+        <h4 class="page_custom_title">{{ myLang.search_result }}</h4>
+      </div>
+
     <div class="col-12">
-      <table
-        class="table orderTopDetailTable table-bordered"
-        style="width: 100%"
-      >
-        <tr>
-          <td class="cl_custom_color">締日</td>
-          <td><input type="text" class="form-control" /></td>
-          <td class="cl_custom_color">納品日</td>
-          <td>
-            <input type="text" class="form-control" />
-          </td>
-          <td class="cl_custom_color">納品先</td>
-          <td>
-            <input type="text" class="form-control" />
-          </td>
-          <td class="cl_custom_color">伝票番号</td>
-          <td>
-            <input type="text" class="form-control" />
-          </td>
-        </tr>
-        <tr>
-          <td class="cl_custom_color">伝票区分</td>
-          <td colspan="7"><input type="text" class="form-control" /></td>
-        </tr>
-      </table>
-    </div>
-    <div class="col-12 text-center">
-      <button class="btn btn-primary active srchBtn" type="button">
-        {{ myLang.search }}
-      </button>
-    </div>
-    <div class="col-12">
-      <br />
-      <h4 class="page_custom_title">{{ myLang.search_result }}</h4>
-    </div>
-    <div class="col-12">
+        <div class="row">
+          <div class="col-5">
       <p>
         <span class="tableRowsInfo"
           >{{ invoice_detail_lists.from }}〜{{
@@ -70,21 +137,107 @@
           </select>
         </span>
       </p>
-      <div class="">
-        <table
+          </div>
+      <div class="col-7">
+          <div class="row">
+              <div class="col-4" style="padding-left: 0 !important">
+                <p class="mb-0">検索結果のダウンロードはこちら</p>
+                <!--<b-button
+                  class="active"
+                  variant="primary"
+                  v-on:click="order_download"
+                >
+                  <b-icon
+                    icon="download"
+                    animation="fade"
+                    font-scale="1.2"
+                  ></b-icon>
+                  ダウンロード</b-button>-->
+
+                <div class="btn-group">
+                  <button
+                    type="button"
+                    class="btn btn-primary active dropdown-toggle"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    <b-icon
+                      icon="download"
+                      animation="fade"
+                      font-scale="1.2"
+                    ></b-icon>
+                    ダウンロード
+                  </button>
+                  <div class="dropdown-menu dropdown-menu-right">
+                    <button
+                      class="dropdown-item"
+                      @click="order_download(1)"
+                      type="button"
+                    >
+                      CSV
+                    </button>
+                    <button
+                      class="dropdown-item"
+                      @click="order_download(2)"
+                      type="button"
+                    >
+                      JCA
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-3">
+                <p class="mb-0">商品別の更新はこちら</p>
+                <router-link
+                  to="/order_list/order_list_details/item_search"
+                  class="active btn btn-primary"
+                >
+                  商品別登録</router-link
+                >
+              </div>
+              <div class="col-5">
+                <b-form inline>
+                  <label class="sr-only" for="inline-form-input-name"
+                    >各種帳票の印刷はこちら</label
+                  >
+                  <select class="mb-2 mr-sm-2 mb-sm-0 form-control">
+                    <option>選択してください</option>
+                  </select>
+                  <b-button class="active" variant="primary">印刷</b-button>
+                </b-form>
+              </div>
+          </div>
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-12">
+            <table
           class="table table-striped table-bordered order_item_details_table"
           style="overflow-x: scroll"
         >
           <thead>
+              <tr class="first_heading_th">
+                <th></th>
+                <th>
+                  <input
+                    @click="checkAll"
+                    v-model="isCheckAll"
+                    type="checkbox"
+                  /> 全選択
+                </th>
+                <th colspan="9"></th>
+              </tr>
             <tr>
               <th>No</th>
-              <th><input type="checkbox" class="form-control" @click="checkAll" v-model="isCheckAll" /> 全選択</th>
-              <th>締日</th>
+              <th>請求</th>
+              <!-- <th>締日</th> -->
               <th>計上日</th>
               <th>計上先</th>
               <th>伝票番号</th>
-              <th>請求金額</th>
               <th>伝票区分</th>
+               <th>請求金額</th>
               <th>請求区分</th>
               <th>送信日時</th>
             </tr>
@@ -96,7 +249,7 @@
             >
               <td>{{ index + 1 }}</td>
               <td><input type="checkbox" class="form-control" /></td>
-              <td>{{ value.mes_lis_inv_per_end_date }}</td>
+              <!-- <td>{{ value.mes_lis_inv_per_end_date }}</td> -->
               <td>
                 {{ value.mes_lis_inv_lin_det_transfer_of_ownership_date }}
               </td>
@@ -105,16 +258,21 @@
                 {{ value.mes_lis_inv_lin_tra_name }}
               </td>
               <td>{{ value.mes_lis_inv_lin_lin_trade_number_reference }}</td>
-              <td>{{ value.mes_lis_inv_lin_det_amo_requested_amount }}</td>
               <td>{{ value.mes_lis_inv_lin_det_pay_code }}</td>
+              <td>{{ value.mes_lis_inv_lin_det_amo_requested_amount }}</td>
               <td>{{ value.mes_lis_inv_lin_det_balance_carried_code }}</td>
               <td>{{ value.send_datetime }}</td>
               <!-- <td><router-link :to="{name:'voucher_detail',params:{voucher_number:value.voucher_number} }" class="btn btn-info">詳細</router-link></td> -->
             </tr>
           </tbody>
         </table>
-      </div>
+        </div>
     </div>
+    </div>
+
+    <!-- <div class="col-12">
+
+    </div> -->
     <div class="col-12">
         <div class="row">
           <div class="col-6">
@@ -124,7 +282,7 @@
               </p>
             </div>
             <div class="pcontentBtom">
-              <label for="updateordershipmentcsv" class="custom-file-upload">
+              <label for="updateordershipmentcsv" class="btn btn-primary active">
                 <b-icon
                   icon="upload"
                   animation="fade"
@@ -136,7 +294,7 @@
                 type="file"
                 @change="invoiceUpdate"
                 id="updateordershipmentcsv"
-                class="form-control uploadBtn"
+                class="btn btn-primary active"
                 style="display: none"
               />
               <!-- <button class="btn btn-primary active" type="button">
@@ -150,12 +308,13 @@
             </div>
           </div>
           <div class="col-6 text-right">
-            <!-- <button
-              @click="updateDatetimeDecessionfield"
+              <!-- @click="updateDatetimeDecessionfield" -->
+            <button
+
               class="btn btn-lg btn-primary active"
             >
               選択行を伝票確定
-            </button> -->
+            </button>
             <button
               class="btn btn-lg btn-danger active"
               @click="sendInvoiceData"
@@ -246,51 +405,6 @@ export default {
     invoiceUpdate(){
 
     }
-    // check_byr_order_api(){
-    //    let formData = new FormData();
-    // formData.append("up_file", this.file);
-    // formData.append("email", 'user@jacos.co.jp');
-    // formData.append("password", 'Qe75ymSr');
-    //     axios({
-    // method: 'POST',
-    // url: this.BASE_URL + "api/job_exec/1",
-    // data: formData,
-    // headers: {'Content-Type': 'multipart/form-data' }
-    // })
-    // .then(function (response) {
-    //     //handle success
-    //     console.log(response);
-    //    Fire.$emit('LoadByrorder');
-    // })
-    // .catch(function (response) {
-    //     //handle error
-    //     console.log(response);
-    // });
-    // },
-    // onChangeFileUpload(){
-    //     this.file = this.$refs.file.files[0];
-    //     this.check_byr_order_api();
-    //   },
-
-    //   selectedOption_shop(option) {
-    //   if (this.value) {
-    //     return option.byr_shop_id === this.value.byr_shop_id;
-    //   }
-    //   return false;
-    // },
-    //   selectedOption_voucher(option) {
-    //   if (this.value) {
-    //     return option.voucher_number === this.value.voucher_number;
-    //   }
-    //   return false;
-    // },
-    // change(e) {
-    //   const selectedCode = e.target.value;
-    //   const option = this.options.find((option) => {
-    //     return selectedCode === option.byr_buyer_id;
-    //   });
-    // //   this.$emit("input", option);
-    // }
   },
 
   created() {
