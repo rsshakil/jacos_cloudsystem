@@ -49,16 +49,15 @@
           <thead>
             <tr>
               <th style="cursor: pointer">No</th>
-              <th style="cursor: pointer">内容</th>
-              <th style="cursor: pointer">金額</th>
+              <th style="cursor: pointer">取引先</th>
+              <th style="cursor: pointer">請求書番号</th>
               <th style="cursor: pointer">支払合計金額</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>1</td>
-              <td>{{payment_detail_header.mes_lis_pay_pay_gln}} {{
-payment_detail_header.mes_lis_pay_pay_name}}</td>
+              <td>{{payment_detail_header.mes_lis_pay_pay_name}}</td>
               <td>{{payment_detail_header.mes_lis_pay_pay_id}}</td>
               <td class="text-right">{{paymentdetailTopTable.totalAmount | priceFormat}}</td>
             </tr>
@@ -73,8 +72,8 @@ payment_detail_header.mes_lis_pay_pay_name}}</td>
           <thead>
             <tr>
               <th style="cursor: pointer">No</th>
-              <th style="cursor: pointer">取引先</th>
-              <th style="cursor: pointer">請求書番号</th>
+              <th style="cursor: pointer">内容</th>
+              <th style="cursor: pointer">金額</th>
             </tr>
           </thead>
           <tbody>
@@ -84,7 +83,7 @@ payment_detail_header.mes_lis_pay_pay_name}}</td>
               <td class="text-right">{{item.amount | priceFormat}}</td>
             </tr>
             <tr>
-            <td colspan="2">Total</td>
+            <td colspan="2">支払合計金額</td>
             <td class="text-right">{{totalAmountVal | priceFormat}}</td>
             </tr>
           </tbody>
@@ -99,9 +98,9 @@ payment_detail_header.mes_lis_pay_pay_name}}</td>
           <thead>
             <tr>
               <th style="cursor: pointer">No</th>
-              <th style="cursor: pointer">相殺コード</th>
-              <th style="cursor: pointer">仕入合計金額</th>
               <th style="cursor: pointer">取引先コード</th>
+              <th style="cursor: pointer">相殺コード</th>
+              <th style="cursor: pointer">相殺名称</th>
               <th style="cursor: pointer">相殺金額</th>
             </tr>
           </thead>
@@ -111,11 +110,11 @@ payment_detail_header.mes_lis_pay_pay_name}}</td>
               <td>{{item.mes_lis_pay_pay_code}}</td>
               <td>{{item.mes_lis_pay_lin_det_det_code}}</td>
               <td>{{item.mes_lis_pay_lin_det_det_meaning}}</td>
-              <td class="text-right">{{item.mes_lis_pay_lin_det_amo_requested_amount | priceFormat}}</td>
+              <td class="text-right">{{item.mes_lis_pay_lin_det_amo_requested_amount_sum | priceFormat}}</td>
             </tr>
             <tr>
-              <td colspan="4">Total</td>
-              <td class="text-right">{{totalAmountVal | priceFormat}}</td>
+              <td colspan="4">相殺合計金額</td>
+              <td class="text-right">{{totalAmountValOffset | priceFormat}}</td>
             </tr>
             
           </tbody>
@@ -134,7 +133,7 @@ export default {
       byr_buyer_id: null,
       paymentdetailTopTable:{},
       pdtableleft:[],
-      paymentdetailRghtTable:{},
+      paymentdetailRghtTable:[],
       form: new Form({
         select_field_per_page_num: 10,
         page: 1,
@@ -186,6 +185,11 @@ export default {
    
     totalAmountVal: function() {
       return this.pdtableleft.reduce(function (sumselling,val) {return  sumselling = (val.sumation_type=='1'?sumselling+val.amount:sumselling-val.amount)},0);
+
+    },
+   
+    totalAmountValOffset: function() {
+      return this.paymentdetailRghtTable.reduce(function (sumselling,val) {return  sumselling += val.mes_lis_pay_lin_det_amo_requested_amount_sum},0);
 
     },
   },

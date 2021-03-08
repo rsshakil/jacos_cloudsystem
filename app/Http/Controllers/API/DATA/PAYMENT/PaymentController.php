@@ -116,12 +116,12 @@ DB::raw("SUM(mes_lis_pay_lin_det_amo_payable_amount + mes_lis_pay_lin_det_amo_ta
         ->where(['mes_lis_pay_lin_det_pay_code'=>'3003','dpp.data_payment_id'=>$payment_id])->groupBy('data_payment_pay_details.data_payment_pay_id')->first();
 
         $paymentdetailRghtTable = data_payment_pay_detail::select(
-            'data_payment_pay_details.mes_lis_pay_lin_det_amo_requested_amount',
+            DB::raw('SUM(data_payment_pay_details.mes_lis_pay_lin_det_amo_requested_amount) as mes_lis_pay_lin_det_amo_requested_amount_sum'),
             'data_payment_pay_details.mes_lis_pay_lin_det_det_meaning',
             'data_payment_pay_details.mes_lis_pay_lin_det_det_code',
             'dpp.mes_lis_pay_pay_code')
             ->join('data_payment_pays as dpp','data_payment_pay_details.data_payment_pay_id','=','dpp.data_payment_pay_id')
-            ->where(['data_payment_pay_details.mes_lis_pay_lin_det_pay_code'=>'2000','dpp.data_payment_id'=>$payment_id])->get();
+            ->where(['data_payment_pay_details.mes_lis_pay_lin_det_pay_code'=>'2000','dpp.data_payment_id'=>$payment_id])->groupBy('data_payment_pay_details.mes_lis_pay_lin_det_det_code')->get();
 
         $pQ1 = data_payment_pay_detail::select(
             DB::raw('"仕入合計金額" as p_title'),
