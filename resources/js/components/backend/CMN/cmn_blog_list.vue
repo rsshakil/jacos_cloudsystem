@@ -4,8 +4,8 @@
                 <div class="col-12">
                     <h4 class="top_title text-center" style="margin-top:10px;">{{myLang.notice_management}}</h4>
                 </div>
-                
-             
+
+
 
                 <div class="col-12">
                     <div class="">
@@ -23,7 +23,7 @@
                                     <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">{{myLang.update_date}}<span id="delivery_icon"></span></th>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="email" style="cursor: pointer">{{myLang.operation}}<span id="btn1_icon"></span></th>
                                 </tr>
-                                
+
                             </thead>
                             <tbody>
                                 <tr v-for="(value,index) in blog_lists" :key="value.cmn_blog_id">
@@ -33,14 +33,14 @@
                                     <td>{{value.updated_at | ja_date_time}}</td>
                                     <td><b-icon v-if="value.blog_status=='published'" v-tooltip.html="'disable this blog user'" font-scale="2" style="cursor:pointer" icon="eye-fill" variant="success" class="custom_blog_font" @click="blog_update_info(value,0)"></b-icon>
                                     <b-icon v-if="value.blog_status=='unpublished'" v-tooltip.html="'enable this blog for user'" font-scale="2" style="cursor:pointer" icon="eye-slash-fill" variant="danger" class="custom_blog_font" @click="blog_update_info(value,1)"></b-icon>
-                                    
+
                                     <b-icon icon="arrow-bar-up" v-tooltip.html="'Make it top Blog'" font-scale="2" style="cursor:pointer" variant="primary" class="custom_blog_font" @click="blog_update_info(value,2)"></b-icon>
                                     <b-icon icon="trash-fill" v-tooltip.html="'Delete this top Blog'" font-scale="2" style="cursor:pointer" class="custom_blog_font" @click="blog_update_info(value,3)" variant="danger"></b-icon>
                                     <b-icon icon="file-earmark-code" v-tooltip.html="'Update this top Blog'" font-scale="2" style="cursor:pointer" variant="success" class="custom_blog_font" @click="blog_update_info(value,4)"></b-icon>
                                     </td>
-                                    
+
                                 </tr>
-                                
+
                             </tbody>
                         </table>
                     </div>
@@ -100,19 +100,19 @@ import '@ckeditor/ckeditor5-build-classic/build/translations/ja';
 import UploadAdapter from '../../../UploadAdapter';
 // import MediaEmbed from '@ckeditor/ckeditor5-media-embed/src/mediaembed';
 export default {
-  
+
   data() {
     return {
         'blog_lists':{},
         'blog_create_modal':false,
         editor: ClassicEditor,
-        
+
         editorConfig: {
             // The configuration of the editor.
             // language: "ja",
             // language: this.myLang.editor_lang,
             extraPlugins: [ this.uploader ],
-            
+
         },
         form: new Form({
                     blog_title : '',
@@ -120,7 +120,7 @@ export default {
                     blog_content: '',
                     cmn_blog_id: '',
                     blog_by:Globals.user_info_id
-                    
+
                 })
     };
   },
@@ -142,7 +142,7 @@ export default {
           this.blog_update(blog,action_type);
         }
       })
-      
+
       }else{
         this.blog_update(blog,action_type);
       }
@@ -156,7 +156,8 @@ export default {
                     this.BASE_URL + "api/update_blog_infos",
                     post_data
                 )
-                .then(data => {
+                .then(({data}) => {
+                    this.init(data.status);
                     Fire.$emit('AfterCreateblog');
                     if(action_type==0){
                       var alert_icon='warning';
@@ -184,14 +185,14 @@ export default {
     },
     onUploadFiles(e){
       let file = e.target.files[0];
-                let reader = new FileReader();  
+                let reader = new FileReader();
 
                 if(file['size'] < 2111775)
                 {
                     reader.onloadend = (file) => {
                     //console.log('RESULT', reader.result)
                      this.form.feature_img = reader.result;
-                    }              
+                    }
                      reader.readAsDataURL(file);
                 }else{
                     alert('File size can not be bigger than 2 MB')
@@ -202,16 +203,16 @@ export default {
                 return photo;
             },
        get_all_blogs(){
-        axios.get(this.BASE_URL +"api/get_all_blog_list").then((data) => {
-            this.blog_lists = data.data.blog_list;
-            console.log(this.blog_lists);
+        axios.get(this.BASE_URL +"api/get_all_blog_list").then(({data}) => {
+            this.init(data.status);
+            this.blog_lists = data.blog_list;
         });
     },
     new_blog_create_modal(){
       this.form.reset();
       this.form.cmn_blog_id ='';
       this.blog_create_modal = true;
-      
+
 
     },
     create_new_blog(){

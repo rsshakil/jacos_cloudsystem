@@ -99,8 +99,6 @@ methods:{
     },
 },
 created(){
-    // this.init_user()
-    console.log("app.vue loaded");
 }
 }
 </script>

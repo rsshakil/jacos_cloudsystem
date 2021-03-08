@@ -415,11 +415,11 @@ export default {
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
       })
-        .then(function (response) {
+        .then(({data})=> {
           //handle success
-          console.log(response);
+          this.init(data.status);
           // const url = window.URL.createObjectURL(new Blob([response.data]));
-          const url = response.data.file_link;
+          const url = data.file_link;
           console.log(url);
           const link = document.createElement("a");
           link.href = url;
@@ -456,9 +456,8 @@ export default {
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
       })
-        .then(function (response) {
-          //handle success
-          console.log(response);
+        .then(({data})=> {
+          this.init(data.status);
           Fire.$emit("LoadByrorder");
         })
         .catch(function (response) {
@@ -492,10 +491,8 @@ export default {
     Fire.$emit("byr_has_selected", this.$session.get("byr_buyer_id"));
     Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
     Fire.$emit("loadPageTitle", "発注データ一覧");
-    console.log("created byr order log");
   },
   mounted() {
-    console.log("User page loaded");
   },
 };
 </script>

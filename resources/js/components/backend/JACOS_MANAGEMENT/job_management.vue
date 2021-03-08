@@ -11,11 +11,11 @@
                                 <tr>
                                 <th colspan="3" style="border: none;">
                                 <multiselect v-model="form.select_byr_company_id" id="j_code" placeholder="Company name" label="company_name" track-by="cmn_company_id" :options="slr_company_list" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true"  open-direction="bottom" ></multiselect>
-                                    
+
                                     </th>
                                     <th colspan="3" style="border: none;">
                                     <multiselect v-model="form.select_slr_company_id" id="super_code" placeholder="Company name" label="company_name" track-by="cmn_company_id" :options="byr_company_list" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" open-direction="bottom" ></multiselect>
-                                    
+
                                     </th>
                                     <th colspan="2" style="border: none;">
                                     <select name="job_status" class="form-control">
@@ -38,7 +38,7 @@
                                     <th style="cursor: pointer">{{myLang.schedule_setting}}</th>
                                     <td>Action</td>
                                 </tr>
-                                
+
                             </thead>
                             <tbody>
                                 <tr v-for="(value,index) in slr_job_lists" :key="value.cmn_job_id">
@@ -56,9 +56,9 @@
                                       <option value="稼働">{{myLang.status_operation}}</option>
                                     </select></td>
                                     <td><button @click="job_exe_modal_show(value)" class="btn btn-info">{{myLang.schedule_setting}}</button></td>
-                                    
+
                                 </tr>
-                                
+
                             </tbody>
                         </table>
                     </div>
@@ -89,17 +89,18 @@ components:{
   },
   methods: {
       get_all_scenarios(){
-        axios.get(this.BASE_URL +"api/get_scenario_list").then((data) => {
+        axios.get(this.BASE_URL +"api/get_scenario_list").then(({data}) => {
+            this.init(data.status);
             this.scenario_lists = data.data.scenario_list;
             console.log(this.scenario_lists);
         });
     },
     get_all_slr_job_lists(){
-        axios.get(this.BASE_URL +"api/slr_job_list_all").then((data) => {
-            this.slr_job_lists = data.data.job_list;
-            this.byr_company_list = data.data.byr_company_list;
-            this.slr_company_list = data.data.slr_company_list;
-            console.log(this.slr_job_lists);
+        axios.get(this.BASE_URL +"api/slr_job_list_all").then(({data}) => {
+            this.init(data.status);
+            this.slr_job_lists = data.job_list;
+            this.byr_company_list = data.byr_company_list;
+            this.slr_company_list = data.slr_company_list;
         });
     }
   },

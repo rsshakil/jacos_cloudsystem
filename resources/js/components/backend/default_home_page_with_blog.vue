@@ -33,6 +33,7 @@ import blog_view from './blog_view'
             },
             get_signle_top_blog(){
                 axios.get(this.BASE_URL +"api/get_signle_top_blog").then(({data}) => {
+                    this.init(data.status);
                     this.single_blog = data.blog_list;
                     console.log(this.single_blog.length);
                 });
@@ -44,11 +45,9 @@ import blog_view from './blog_view'
       Fire.$on("AfterCreateblog", () => {
         this.get_all_blogs();
     });
-      console.log('created jacos management log');
+      
   },
         mounted() {
-            this.init();
-            console.log('Home Component mounted.')
         }
     }
 </script>

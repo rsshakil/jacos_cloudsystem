@@ -295,7 +295,7 @@ export default {
         this.form.page=page;
         axios.post(this.BASE_URL +"api/data_receive_list",this.form)
             .then(({data}) => {
-                console.log(data);
+                this.init(data.status);
                 this.received_item_list = data.received_item_list;
                 this.byr_buyer_lists = data.byr_buyer_list;
                 this.byr_buyer_category_lists = data.byr_buyer_category_list;

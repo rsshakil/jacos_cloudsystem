@@ -186,8 +186,6 @@ router.onReady(() => {
 
 router.beforeEach(async(to, from, next) => {
     // console.log(to);
-    console.log("Hi");
-    console.log(axios);
     axios.get('api/is-auth').then(({ data }) => {
         if (!data) {
             window.location.reload();

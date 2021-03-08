@@ -1894,14 +1894,12 @@ export default {
     },
     update_shipment_detail(order_detail){
       console.log(order_detail);
-      axios({
-    method: 'POST',
+      axios({method: 'POST',
     url: this.BASE_URL + "api/update_shipment_detail",
     data: order_detail
     })
-    .then(function (response) {
-        //handle success
-        console.log(response);
+    .then(({data})=> {
+        this.init(data.status);
        Fire.$emit('LoadByrorderDetail');
     })
     .catch(function (response) {
@@ -1913,24 +1911,23 @@ export default {
     get_all_byr_order_detail() {
       axios
         .get(this.BASE_URL + "api/get_data_order_byr_order_id/" + this.byr_order_id)
-        .then(data => {
-          console.log(data.data.order_list_detail);
-          this.order_detail_lists = data.data.order_list_detail;
-          this.show_hide_col_list = data.data.slected_list;
+        .then(({data}) => {
+          this.init(data.status);
+          this.order_detail_lists = data.order_list_detail;
+          this.show_hide_col_list = data.slected_list;
         });
     },
 
     col_show_hide_setting(url_slug) {
-      console.log(this.show_hide_col_list.length + "col lenght");
+    //   console.log(this.show_hide_col_list.length + "col lenght");
       if (this.show_hide_col_list.length == 0) {
         var post_data = {
           url_slug: url_slug,
           user_id: Globals.user_info_id
         };
-        axios
-          .post(this.BASE_URL + "api/tblecolsetting", post_data)
-          .then(data => {
-            console.log(data);
+        axios.post(this.BASE_URL + "api/tblecolsetting", post_data)
+          .then(({data}) => {
+              this.init(data.status);
           });
       }
     },
@@ -1948,7 +1945,6 @@ export default {
     this.col_show_hide_setting(this.$route.name);
   },
   mounted() {
-    console.log("byr order detail page loaded");
   }
 };
 </script>

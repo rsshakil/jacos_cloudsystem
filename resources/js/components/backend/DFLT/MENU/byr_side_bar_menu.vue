@@ -45,7 +45,7 @@ export default {
     
   },
   created(){
-    console.log(this.permissions_by_user);
+    // console.log(this.permissions_by_user);
   }
 };
 </script>

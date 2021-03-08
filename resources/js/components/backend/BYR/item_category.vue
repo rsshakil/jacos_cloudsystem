@@ -1,7 +1,7 @@
 <template>
   <div v-can="['byr_view']">
     <div class="row">
-      
+
 
       <div class="col-12">
       <div class="row"><div class="col-2"></div><div class="col-8">
@@ -79,7 +79,7 @@
                       >
                         新規分類追加
                       </button>
-                     
+
               <label for="insertItemCategory" class="custom-file-upload" style="float:right;margin-right:15px;padding:6px 15px;">
                 <b-icon
                   icon="upload"
@@ -123,7 +123,7 @@
                  <th>分類コード</th>
                 <th>分類名</th>
               </tr>
-             
+
             </thead>
             <tbody>
               <tr
@@ -136,13 +136,13 @@
                   <td>{{ cat_list.category_full_code }}</td>
                   <td>{{ cat_list.m_code }}</td>
                 <td>{{ cat_list.m_name }}</td>
-                
+
                 <td>{{ cat_list.sm_code }}</td>
                 <td>{{ cat_list.sm_name }}</td>
 
                 <td>{{ cat_list.mm_code }}</td>
                 <td>{{ cat_list.mm_name }}</td>
-                
+
                 <td>
                   <button
                     @click="edit_category_data(cat_list)"
@@ -291,18 +291,17 @@ export default {
           this.loader = Vue.$loading.show();
           formData.append("file", file);
           formData.append("adm_user_id", Globals.user_info_id);
-          axios
-            .post(this.BASE_URL + "api/uploadByrCategoryCsv", formData)
+          axios.post(this.BASE_URL + "api/uploadByrCategoryCsv", formData)
             .then(({ data }) => {
-              console.log(data);
-              
+              this.init(data.status);
+
               _this.alert_icon = "success";
               _this.alert_title = "Inserted";
               _this.alert_text = "Category CSV inserted";
               _this.sweet_normal_alert();
 
               _this.get_all_cat(_this.select_field_page_num);
-              
+
             });
         }
       });
@@ -316,7 +315,7 @@ export default {
       this.add_cmn_cat_modal = true;
 
       this.form.reset();
-      
+
       this.form.fill(form_data);
       this.form.parent_category_id = form_data.parent_category_id;
       if(form_data.level=='1'){
@@ -329,7 +328,7 @@ export default {
         this.form.category_name =  form_data.mm_name;
         this.form.category_code =  form_data.mm_code;
       }
-      
+
     },
     save_new_cat() {
       console.log("add new");
@@ -381,6 +380,7 @@ export default {
       axios
         .post(this.BASE_URL + "api/get_all_cat_list",post_data)
         .then(({ data }) => {
+            this.init(data.status);
           this.cat_lists = data.cat_list;
           console.log(this.cat_lists);
           this.options = data.allCatForParent;
@@ -397,7 +397,7 @@ export default {
       this.get_all_cat(page);
     });
     Fire.$emit("loadPageTitle", "分類管理");
-    
+
   },
   mounted() {
     console.log("User page loaded");

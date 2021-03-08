@@ -134,10 +134,11 @@ export default {
         this.init();
       axios.get(this.BASE_URL+"api/user_details/"+this.user_id)
         .then(({ data }) => {
+            this.init(data.status);
             var users=data.users[0];
             this.form.name=users.name
             this.form.email=users.email
-// Details data 
+// Details data
             this.form.f_name=users.first_name
             this.form.l_name=users.last_name
             this.form.phone=users.phone
@@ -154,14 +155,14 @@ export default {
         let file = e.target.files[0];
         // console.log(file);
         // console.log(file.type);
-                let reader = new FileReader();  
+                let reader = new FileReader();
                 if(file.size < 2111775){
                     if (file.type =="image/png" ||file.type =="image/jpeg") {
                         reader.onloadend = (file) => {
                     //console.log('RESULT', reader.result)
                      this.form.image_url = reader.result;
                      this.user_image = reader.result;
-                    }              
+                    }
                      reader.readAsDataURL(file);
                     }else{
                         this.alert_text='File must me jpg or png'

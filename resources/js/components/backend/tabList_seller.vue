@@ -24,7 +24,6 @@ export default {
     this.cmn_company_id = this.$route.params.cmn_company_id;
   },
   mounted() {
-    console.log("byr order detail page loaded");
   }
 };
 </script>

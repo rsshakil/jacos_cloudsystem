@@ -4,7 +4,7 @@
     <!-- Page Header -->
     <div class="page-header row no-gutters py-4">
       <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
-        
+
         <!-- <span class="text-uppercase page-subtitle">Overview</span> -->
         <h3 class="page-title">{{myLang.role_management}}</h3>
       </div>
@@ -36,7 +36,7 @@
                         <has-error :form="form" field="permissions"></has-error>
                       </div>
                     </div>
-                    
+
                     <!-- old  -->
 
                     <div class="form-row">
@@ -119,8 +119,8 @@ export default {
   methods: {
     //get Table data
     loadTableData() {
-      this.init();
       axios.get(this.BASE_URL+"api/role").then(({ data }) => {
+          this.init(data.status);
           this.role_permissions = data.role_permissions;
           this.all_permissions = data.role_permissions[0].all_permissions;
         })
@@ -174,8 +174,8 @@ export default {
     //Delete role
             deleteRole(id){
               this.init();
-              this.delete_sweet().then((result) => {     
-              if (result.value) { 
+              this.delete_sweet().then((result) => {
+              if (result.value) {
                 //Send Request to server
                 this.form.delete(this.BASE_URL+'api/role/'+id)
                     .then(({data})=> {

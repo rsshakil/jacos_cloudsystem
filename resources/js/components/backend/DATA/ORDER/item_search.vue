@@ -305,7 +305,7 @@ export default {
       axios
         .post(this.BASE_URL + "api/get_all_shipment_item_by_search", this.param_data)
         .then(({ data }) => {
-        console.log(data);
+        this.init(data.status);
           this.order_detail_lists = data.order_list_detail;
           this.order_info = data.order_info;
           this.order_item_lists = data.orderItem;
@@ -315,7 +315,7 @@ export default {
     },
 
     col_show_hide_setting(url_slug) {
-      console.log(this.show_hide_col_list.length + "col lenght");
+    //   console.log(this.show_hide_col_list.length + "col lenght");
       if (this.show_hide_col_list.length == 0) {
         var post_data = {
           url_slug: url_slug,
@@ -323,8 +323,8 @@ export default {
         };
         axios
           .post(this.BASE_URL + "api/tblecolsetting", post_data)
-          .then((data) => {
-            console.log(data);
+          .then(({data}) => {
+            this.init(data.status);
           });
       }
     },
@@ -345,7 +345,6 @@ export default {
     this.col_show_hide_setting(this.$route.name);
   },
   mounted() {
-    console.log("byr order item search");
   },
 };
 </script>

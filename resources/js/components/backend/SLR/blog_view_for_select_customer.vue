@@ -35,14 +35,14 @@
           <!--admin blog end-->
           <!--
   <b-row>
-    <b-col cols="12" v-for="(value) in blog_lists" :key="value.cmn_blog_id">                    
+    <b-col cols="12" v-for="(value) in blog_lists" :key="value.cmn_blog_id">
 
   <h5 class="my-3 blog_titles"><i class="fas custom_blog_square fa-square-full"></i> {{value.blog_title}}</h5>
   <p class="created_at">Created at @ {{ value.created_at | diffForHumans }}</p>-->
           <!--<b-img v-if="value.feature_img!=null" :src="BASE_URL+'storage/app/public/backend/images/blog_images/'+value.feature_img" fluid-grow alt="Fluid-grow image"></b-img>
   <div class="blogs_content" v-html="value.blog_content"></div>
   </b-col>
-   
+
   </b-row>
 -->
         </b-container>
@@ -66,14 +66,15 @@ export default {
   },
   methods: {
     get_all_blogs() {
-      axios
-        .get(this.BASE_URL + "api/get_all_published_blog_list")
-        .then((data) => {
-          this.blog_lists = data.data.blog_list;
+      axios.get(this.BASE_URL + "api/get_all_published_blog_list")
+        .then(({data}) => {
+            this.init(data.status);
+          this.blog_lists = data.blog_list;
         });
     },
     get_signle_top_blog() {
       axios.get(this.BASE_URL + "api/get_signle_top_blog").then(({ data }) => {
+          this.init(data.status);
         this.single_blog = data.blog_list;
       });
     },
@@ -85,6 +86,7 @@ export default {
       if (byr_buyer_id) {
         axios.get(this.BASE_URL + "api/get_user_top_blog_by_byr_id/" + byr_buyer_id)
         .then(({ data }) => {
+            this.init(data.status);
           this.user_blog = data.blog_list;
         }).catch((error)=>{
           this.user_blog=[];

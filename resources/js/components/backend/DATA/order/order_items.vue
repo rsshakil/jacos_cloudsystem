@@ -375,9 +375,8 @@ beforeCreate: function() {
         url: this.BASE_URL + "api/update_shipment_item_details",
         data: order_detailitem,
       })
-        .then(function (response) {
-          //handle success
-          console.log(response);
+        .then(({data})=> {
+          this.init(data.status);
           _this.alert_icon = "success";
       _this.alert_title = "";
       _this.alert_text = "Shipment item data has been updated";
@@ -417,8 +416,8 @@ beforeCreate: function() {
       };
       axios
         .post(this.BASE_URL + "api/update_byr_order_detail_status", post_data)
-        .then((data) => {
-          console.log(data);
+        .then(({data}) => {
+          this.init(data.status);
           Fire.$emit("LoadByrorderDetail");
         });
     },
@@ -476,9 +475,8 @@ beforeCreate: function() {
         url: this.BASE_URL + "api/update_shipment_detail",
         data: order_detail,
       })
-        .then(function (response) {
-          //handle success
-          console.log(response);
+        .then(({data})=> {
+          this.init(data.status);
           Fire.$emit("LoadByrorderDetail");
         })
         .catch(function (response) {
@@ -490,7 +488,7 @@ beforeCreate: function() {
     get_all_byr_order_item_detail() {
       axios.get(this.BASE_URL + "api/order_item_details/"+this.data_order_voucher_id)
         .then(({data}) => {
-          //this.getbuyerJsonSetting();
+          this.init(data.status);
           console.log(data.order_item_list_detail);
           this.order_item_detail_lists = data.order_item_list_detail;
           this.mes_lis_shi_tot_tot_net_price_total = data.order_item_list_detail[0].mes_lis_shi_tot_tot_net_price_total;
@@ -502,7 +500,7 @@ beforeCreate: function() {
     },
 
     col_show_hide_setting(url_slug) {
-      console.log(this.show_hide_col_list.length + "col lenght");
+    //   console.log(this.show_hide_col_list.length + "col lenght");
       if (this.show_hide_col_list.length == 0) {
         var post_data = {
           url_slug: url_slug,
@@ -510,8 +508,8 @@ beforeCreate: function() {
         };
         axios
           .post(this.BASE_URL + "api/tblecolsetting", post_data)
-          .then((data) => {
-            console.log(data);
+          .then(({data}) => {
+            this.init(data.status);
           });
       }
     },
@@ -595,13 +593,7 @@ this.getbuyerJsonSettingvalue();
     },
   },
   mounted() {
-    console.log('second');
-
-    console.log("byr order detail page loaded");
-    Fire.$on("voucher_page_query_param", (query_param) => {
-      console.log('getparams');
-     console.log(query_param);
-    });
+    Fire.$on("voucher_page_query_param", (query_param) => {});
   },
 };
 </script>

@@ -138,7 +138,7 @@
               </select>
             </td>
           </tr>
-          
+
         </table>
       </div>
 
@@ -243,10 +243,10 @@
                 </div>
               </div>
               <div class="col-3">
-                
+
               </div>
               <div class="col-5">
-               
+
               </div>
             </div>
           </div>
@@ -262,7 +262,7 @@
             style="overflow-x: scroll"
           >
             <thead>
-              
+
               <tr>
                 <th>No</th>
                 <th>直接納品先</th>
@@ -288,11 +288,11 @@
                     1
                   }}
                 </td>
-               
+
                 <td>
                 {{ order_detail_list.mes_lis_acc_par_shi_code }}
                 {{ order_detail_list.mes_lis_acc_par_shi_name }}
-                
+
                 </td>
                 <td>
                   {{ order_detail_list.mes_lis_acc_par_rec_code}}
@@ -326,7 +326,7 @@
           </table>
         </div>
       </div>
-      
+
     </div>
     <b-modal
       size="lg"
@@ -743,7 +743,7 @@ export default {
     deliverySearchForm3() {
       this.order_search_modal3 = true;
     },
-  
+
     selectNumPerPage() {
 
       if (this.form.select_field_per_page_num != 10) {
@@ -753,14 +753,14 @@ export default {
     searchByFormData() {
       Fire.$emit("LoadByrorderDetail",this.form.select_field_page_num);
     },
-    
+
     get_all_receive_detail(page = 1) {
         this.form.page=page;
         this.form.select_field_page_num = page;
       axios
         .post(this.BASE_URL + "api/data_receive_detail_list", this.form)
         .then(({ data }) => {
-          console.log(data);
+          this.init(data.status);
           this.order_detail_lists = data.received_detail_list;
           this.byr_buyer_lists = data.byr_buyer_list;
           this.buyer_settings = JSON.parse(data.buyer_settings);
@@ -771,7 +771,7 @@ export default {
         });
     },
 
-    
+
   },
 
   created() {
@@ -788,7 +788,6 @@ export default {
     });
   },
   mounted() {
-    console.log("byr order detail page loaded");
   },
 };
 </script>

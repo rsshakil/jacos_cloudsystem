@@ -10,7 +10,7 @@
     </div>
     <!-- End Page Header -->
     <!-- Default Light Table -->
-    
+
     <div class="row" v-can="['users_view']">
         <div class="col">
             <div class="card card-small mb-4">
@@ -60,7 +60,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Start Permission modal  -->
     <b-modal size="lg" :hide-backdrop="true" :title="permission_modal_title" v-model="permissionModalShow">
         <div>
@@ -119,7 +119,7 @@
                                     <b-form-checkbox-group id="checkbox-group" v-model="selected_permissions">
                                     <b-form-checkbox v-for="(permission, index) in permissions" :value="permission.permission_id" :key="index" switch>{{permission.permission_name}}</b-form-checkbox>
                                     </b-form-checkbox-group>
-                                </b-form-group> 
+                                </b-form-group>
                             </div>
                         </div>
 
@@ -144,7 +144,7 @@ export default {
         permissions:{},
         selected_roles: [],
         selected_permissions: [],
-        
+
         permissions_for_user:'',
         total_permissions_by_user:0,
         permission_modal_title:'',
@@ -161,6 +161,7 @@ export default {
         this.init();
       axios.get(this.BASE_URL+"api/users")
         .then(({ data }) => {
+            this.init(data.status);
           this.users = data.users;
           this.roles = data.roles;
           this.permissions = data.permissions;
@@ -178,16 +179,17 @@ export default {
         var permission_data= { role_id: role_id }
         axios.post(this.BASE_URL+"api/get_permission_for_roles",permission_data)
         .then(({ data }) => {
-            // made array unic 
+            this.init(data.status);
+            // made array unic
             this.selected_permissions = Array.from(new Set(data.permission_for_role))
-            // Or 
+            // Or
             // this.selected_permissions = (data.permission_for_role).filter((v, i, a) => a.indexOf(v) === i);
         })
         .catch(() => {
           console.log("Error...");
         });
     },
-    // User create 
+    // User create
     save_user(){
         this.init();
         var role_id=[];
@@ -205,13 +207,14 @@ export default {
                  this.sweet_normal_alert();
                  return false;
              }
-             
+
             (this.selected_roles).forEach(element => {
                 role_id.push(element.role_id);
             });
         var user_data={name:this.name,email:this.email,password:this.password,roles:role_id,permissions:this.selected_permissions}
         axios.post(this.BASE_URL+"api/users",user_data)
         .then(({ data }) => {
+            this.init(data.status);
         //   this.sweet_normal_alert();
           if (data.message=='exists') {
             this.alert_text=this.myLang.email_already_database
@@ -247,11 +250,12 @@ export default {
     //Delete User
             deleteUser(id){
                 this.init();
-                this.delete_sweet().then((result) => {     
-              if (result.value) { 
+                this.delete_sweet().then((result) => {
+              if (result.value) {
                 //Send Request to server
                 axios.delete(this.BASE_URL+'api/users/'+id)
                     .then(({data})=> {
+                        this.init(data.status);
                         if (data.message='deleted') {
                             this.alert_text=this.myLang.user_deleted
                         }
@@ -274,6 +278,7 @@ export default {
                 var user_data={user_id:user_id}
                 axios.post(this.BASE_URL+"api/permissions_by_users",user_data)
                 .then(({ data }) => {
+                    this.init(data.status);
                     this.total_permissions_by_user=0;
                     this.permissions_for_user='';
                     this.total_permissions_by_user=data.total_permissions;

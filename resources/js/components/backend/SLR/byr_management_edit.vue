@@ -74,7 +74,7 @@ components:{
       },
        get_all_buyer(){
         axios.get(this.BASE_URL +"api/get_all_buyer").then(({data}) => {
-          console.log(data)
+          this.init(data.status);
             this.company_lists = data.company_list;
             // console.log(this.company_lists);
         });

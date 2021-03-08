@@ -4,7 +4,7 @@
                     <h4 class="top_title text-center" style="margin-top:10px;">{{myLang.master_management}}</h4>
                 </div>
                 <div class="col-12 text-center">
-                    
+
       <label>
         <input type="file" id="file" ref="file" v-on:change="onChangeFileUpload()"/>
       </label>
@@ -15,7 +15,7 @@
                             <thead>
                                 <tr>
                                     <th colspan="100%" style="border: none;">
-                                        
+
                                     </th>
                                 </tr>
                                 <tr>
@@ -41,7 +41,7 @@
                                     <th class="sorting" data-input_type="date" data-sorting_type="asc" data-column_name="end_date"
                                     style="cursor: pointer">{{myLang.end_date}} <span id="end_date_icon"></span></th>
                                 </tr>
-                                
+
                             </thead>
                             <tbody>
                                 <tr v-for="(item_list) in item_lists" :key="item_list.byr_item_id">
@@ -57,7 +57,7 @@
                                     <td>{{item_list.start_date}}</td>
                                     <td>{{item_list.end_date}}</td>
                                 </tr>
-                                
+
                             </tbody>
                         </table>
                     </div>
@@ -98,9 +98,10 @@ export default {
     },
     //get Table data
     get_all_master_item(){
-        axios.get(this.BASE_URL +"api/get_all_master_item/"+Globals.user_info_id).then((data) => {
-            this.item_lists = data.data.item_list;
-            this.byr_buyer_lists = data.data.byr_buyer_list;
+        axios.get(this.BASE_URL +"api/get_all_master_item/"+Globals.user_info_id).then(({data}) => {
+            this.init(data.status);
+            this.item_lists = data.item_list;
+            this.byr_buyer_lists = data.byr_buyer_list;
         });
     },
     check_byr_item_master_api(){
@@ -115,9 +116,8 @@ export default {
     data: formData,
     headers: {'Content-Type': 'multipart/form-data' }
     })
-    .then(function (response) {
-        //handle success
-        console.log(response);
+    .then (({data})=> {
+        this.init(data.status);
        Fire.$emit('LoadByrmasterItem');
     })
     .catch(function (response) {

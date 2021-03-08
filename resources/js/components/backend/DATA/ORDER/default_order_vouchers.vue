@@ -914,8 +914,8 @@ export default {
       };
       axios
         .post(this.BASE_URL + "api/update_byr_order_detail_status", post_data)
-        .then((data) => {
-          console.log(data);
+        .then(({data}) => {
+          this.init(data.status);
           Fire.$emit("LoadByrorderDetail",this.select_field_page_num);
         });
     },
@@ -973,9 +973,8 @@ export default {
         url: this.BASE_URL + "api/update_shipment_detail",
         data: order_detail,
       })
-        .then(function (response) {
-          //handle success
-          console.log(response);
+        .then(({data})=> {
+          this.init(data.status);
           Fire.$emit("LoadByrorderDetail",this.select_field_page_num);
         })
         .catch(function (response) {
@@ -1027,6 +1026,7 @@ export default {
                 { update_id: this.selected, date_null: this.date_null }
               )
               .then(({ data }) => {
+                  this.init(data.status);
                 _this.alert_icon = "success";
                 _this.alert_title = "";
                 _this.alert_text =
@@ -1069,19 +1069,20 @@ export default {
           order_info: this.order_info,
           data_count: true,
         }).then(({ data }) => {
+            this.init(data.status);
           let csv_data_count = data.csv_data_count;
           if (csv_data_count > 0) {
             _this.alert_text = csv_data_count + "件の伝票を送信しますがよろしいでしょうか。";
             this.confirm_sweet().then((result) => {
               if (result.value) {
                 // console.log(data);
-                axios
-                  .post(this.BASE_URL + "api/shipment_confirm", {
+                axios.post(this.BASE_URL + "api/shipment_confirm", {
                     data_order_id: this.param_data.data_order_id,
                     order_info: this.order_info,
                     data_count: false,
                   })
                   .then(({ data }) => {
+                      this.init(data.status);
                     _this.alert_icon = "success";
                     _this.alert_title = "";
                     _this.alert_text =
@@ -1110,9 +1111,9 @@ export default {
           let file = e.target.files[0];
           console.log(file);
           formData.append("file", file);
-          axios
-            .post(this.BASE_URL + "api/shipment_update", formData)
+          axios.post(this.BASE_URL + "api/shipment_update", formData)
             .then(({ data }) => {
+                this.init(data.status);
               console.log(data);
               _this.alert_icon = "success";
               _this.alert_title = "Inserted";
@@ -1131,7 +1132,7 @@ export default {
       axios
         .post(this.BASE_URL + "api/order_details", this.param_data)
         .then(({ data }) => {
-          console.log(data);
+          this.init(data.status);
           this.order_detail_lists = data.order_list_detail;
           this.order_info = data.order_info;
           this.loader.hide();
@@ -1139,7 +1140,7 @@ export default {
     },
 
     col_show_hide_setting(url_slug) {
-      console.log(this.show_hide_col_list.length + "col lenght");
+    //   console.log(this.show_hide_col_list.length + "col lenght");
       if (this.show_hide_col_list.length == 0) {
         var post_data = {
           url_slug: url_slug,
@@ -1147,8 +1148,8 @@ export default {
         };
         axios
           .post(this.BASE_URL + "api/tblecolsetting", post_data)
-          .then((data) => {
-            console.log(data);
+          .then(({data}) => {
+            this.init(data.status);
           });
       }
     },
@@ -1166,17 +1167,18 @@ export default {
           downloadType: downloadType,
         })
         .then(({ data }) => {
-           console.log(data);
+           this.init(data.status);
         //    return 0;
           const link = document.createElement("a");
           link.href = data.url;
           link.setAttribute("download", data.new_file_name); //ここらへんは適当に設定する
           document.body.appendChild(link);
           link.click();
-          return 0;
+        //   return 0;
           axios.get(_this.BASE_URL + "api/deletedownloadedshipmentCsv/" +
                 data.new_file_name
-            ).then((data) => {
+            ).then(({data}) => {
+                this.init(data.status);
               //console.log(data);
             });
           //link.revokeObjectURL();
@@ -1204,7 +1206,6 @@ export default {
     this.col_show_hide_setting(this.$route.name);
   },
   mounted() {
-    console.log("byr order detail page loaded");
   },
 };
 </script>

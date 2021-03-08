@@ -200,7 +200,7 @@ export default {
         this.form.page=page;
       axios.post(this.BASE_URL + "api/get_all_invoice_list",this.form)
         .then(({data}) => {
-            console.log(data);
+            this.init(data.status);
           this.invoice_lists = data.invoice_list;
           this.byr_buyer_lists = data.byr_buyer_list;
         });
@@ -209,7 +209,8 @@ export default {
       var _this = this;
       axios
         .post(this.BASE_URL + "api/invoiceInsert",this.invoiceData)
-        .then((data) => {
+        .then(({data}) => {
+            this.init(data.status);
          Fire.$emit("LoadByrinvoice");
          _this.alert_icon = "success";
         _this.alert_title = "";
@@ -230,9 +231,8 @@ export default {
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
       })
-        .then(function (response) {
-          //handle success
-          console.log(response);
+        .then(({data})=> {
+          this.init(data.status);
           Fire.$emit("LoadByrorder");
         })
         .catch(function (response) {

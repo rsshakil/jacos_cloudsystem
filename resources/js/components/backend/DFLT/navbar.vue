@@ -373,6 +373,7 @@ export default {
       axios
         .post(this.BASE_URL + "api/get_user_company_byr_slr_list")
         .then(({ data }) => {
+            this.init(data.status);
           this.company_name = data.user_company_info.company_name;
           this.user_byr_slr_list = data.byr_slr_list;
           // console.log(this.global_user_id)
@@ -389,7 +390,7 @@ export default {
             "api/get_selected_byr_info/" +byr_buyer_id
         )
         .then(({ data }) => {
-          console.log(data.byr_info);
+          this.init(data.status);
           if(data.byr_info!=null){
              this.$session.set('byr_buyer_company',data.byr_info.company_name)
              this.selected_customer_list = data.byr_info.company_name;

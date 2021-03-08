@@ -279,8 +279,9 @@ export default {
     get_all_slr() {
       axios
         .get(this.BASE_URL + "api/slr_management/" + Globals.user_info_id)
-        .then((data) => {
-          this.slr_lists = data.data.slr_list;
+        .then(({data}) => {
+            this.init(data.status);
+          this.slr_lists = data.slr_list;
           console.log(this.slr_lists);
         });
     },

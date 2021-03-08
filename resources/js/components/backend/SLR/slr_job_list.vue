@@ -4,7 +4,7 @@
                 <div class="col-12">
                     <h4 class="top_title text-center" style="margin-top:10px;">{{myLang.super_value_head}}</h4>
                 </div>
-                
+
                 <div class="col-3"></div>
                 <div class="col-6">
                     <!-- <tabList></tabList> -->
@@ -37,7 +37,7 @@
                                     <th style="cursor: pointer">{{myLang.scenario}}</th>
                                     <th style="cursor: pointer">{{myLang.schedule_setting}}</th>
                                 </tr>
-                                
+
                             </thead>
                             <tbody>
                                 <tr v-for="(value,index) in slr_job_lists" :key="value.cmn_job_id">
@@ -51,9 +51,9 @@
                                       <option value="稼働">{{myLang.status_operation}}</option>
                                     </select></td>
                                     <td><button @click="job_exe_modal_show(value)" class="btn btn-info">{{myLang.schedule_setting}}</button></td>
-                                    
+
                                 </tr>
-                                
+
                             </tbody>
                         </table>
                         <button class="btn btn-primary" style="float:right">{{myLang.save_changes}}</button>
@@ -81,7 +81,7 @@
                                     <th style="cursor: pointer">{{myLang.route}}</th>
                                     <th style="cursor: pointer">{{myLang.scenario}}</th>
                                 </tr>
-                                
+
                             </thead>
                             <tbody>
                                 <tr>
@@ -91,7 +91,7 @@
                                     <td>小売 → Jacos</td>
                                     <td>OUK_BMS_ORDER</td>
                                 </tr>
-                                
+
                             </tbody>
                         </table>
             <form>
@@ -120,9 +120,9 @@ components:{
   },
   methods: {
        get_all_slr_job_lists(){
-        axios.get(this.BASE_URL +"api/slr_job_list_by_seller_id/"+this.slr_seller_id).then((data) => {
-            this.slr_job_lists = data.data.slr_job_list;
-            console.log(this.slr_job_lists);
+        axios.get(this.BASE_URL +"api/slr_job_list_by_seller_id/"+this.slr_seller_id).then(({data}) => {
+            this.init(data.status);
+            this.slr_job_lists = data.slr_job_list;
         });
     },
     save_edit_job(){

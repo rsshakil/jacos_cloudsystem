@@ -118,7 +118,7 @@
                  <!--<input type="text" class="form-control" @keyup="ball_case_cal(order_item_detail_list,'バラ')" v-model="order_item_detail_list.mes_lis_acc_lin_qua_shi_quantity">
                 {{order_item_detail_list.mes_lis_acc_lin_qua_ord_quantity}}-->
                 {{order_item_detail_list.mes_lis_acc_lin_qua_rec_quantity}}
-                
+
                 </td>
 
                 <td><!--{{order_item_detail_list.mes_lis_acc_lin_fre_item_weight * order_item_detail_list.mes_lis_acc_lin_qua_shi_quantity}}-->
@@ -166,7 +166,7 @@
               <th></th>
               </tr>
             </tfoot>
-           
+
 
           </table>
           <!--<button style="float:right" class="btn btn-lg btn-primary pull-right text-right active">
@@ -368,7 +368,7 @@ beforeCreate: function() {
         this.order_item_shipment_data_headTable.status='完納';
       }
     },
-    
+
     //get Table data
     get_all_receive_item_detail() {
       var post_data = {
@@ -378,7 +378,7 @@ beforeCreate: function() {
       };
       axios.post(this.BASE_URL + "api/data_receive_item_detail_list",post_data)
         .then(({data}) => {
-          console.log(data);
+          this.init(data.status);
           this.order_item_detail_lists = data.received_item_detail_list;
           this.order_item_shipment_data_headTable = data.received_item_detail_list[0];
           this.byr_buyer_lists = data.byr_buyer_list;
@@ -390,7 +390,7 @@ beforeCreate: function() {
         });
     },
 
-    
+
   },
 
   created() {
@@ -407,7 +407,7 @@ beforeCreate: function() {
 
   },
   computed: {
-    
+
     totalCostPriceVal: function() {
       return this.order_item_detail_lists.reduce(function(sum,order_item_detail_list){return  sum+order_item_detail_list.mes_lis_acc_lin_amo_item_net_price_unit_price * order_item_detail_list.mes_lis_acc_lin_qua_shi_quantity;}, 0)
 
@@ -422,7 +422,7 @@ beforeCreate: function() {
       },0);
 
     },
-    
+
   },
   mounted() {
   },

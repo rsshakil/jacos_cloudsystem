@@ -76,7 +76,8 @@ export default {
   methods: {
     //get Table data
     get_all_order(){
-        axios.get(this.BASE_URL +"api/get_byr_return_list/"+Globals.user_info_id).then((data) => {
+        axios.get(this.BASE_URL +"api/get_byr_return_list/"+Globals.user_info_id).then(({data}) => {
+            this.init(data.status);
             this.return_lists = data.data.return_list;
             this.byr_buyer_lists = data.data.byr_buyer_list;
         });
@@ -92,9 +93,8 @@ export default {
     data: formData,
     headers: {'Content-Type': 'multipart/form-data' }
     })
-    .then(function (response) {
-        //handle success
-        console.log(response);
+    .then(({data})=> {
+        this.init(data.status);
        Fire.$emit('LoadByrorder');
     })
     .catch(function (response) {

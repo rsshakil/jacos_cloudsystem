@@ -140,7 +140,7 @@ export default {
           line_per_page:this.line_per_page,
         })
         .then(({ data }) => {
-          console.log(data);
+          this.init(data.status);
           var canvas_data=data.canvas_data;
           if (canvas_data.length>0) {
             this.allName=canvas_data

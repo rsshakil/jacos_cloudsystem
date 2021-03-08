@@ -11,7 +11,7 @@
       <div class="col-8">
         <!-- <jacostabList v-if="filter_select_box"></jacostabList>
         <tabList v-else></tabList> -->
-        
+
       </div>
       <div class="col-2"></div>
 
@@ -219,7 +219,7 @@ export default {
       axios
         .get(this.BASE_URL + "api/company_partner_list/" + this.cmn_company_id)
         .then(({ data }) => {
-          // console.log(data)
+          this.init(data.status);
           this.company_partner_lists = data.partner_list;
           this.company_name = data.company_name;
           // console.log(this.company_partner_lists);
@@ -243,6 +243,7 @@ export default {
       axios
         .post(this.BASE_URL + "api/get_seller_list", { cmn_connect_id: null })
         .then(({ data }) => {
+            this.init(data.status);
           this.sellers = data.sellers;
         });
     },
@@ -278,7 +279,7 @@ export default {
           cmn_connect_id: value.cmn_connect_id,
         })
         .then(({ data }) => {
-          // console.log(data);
+          this.init(data.status);
           this.sellers = data.sellers;
           this.form.selected_sellers = data.selected_sellers;
           this.form.partner_code = value.partner_code;

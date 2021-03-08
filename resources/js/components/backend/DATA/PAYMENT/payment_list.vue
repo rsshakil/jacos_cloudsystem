@@ -194,7 +194,7 @@ export default {
     getAllPayments() {
       axios.post(this.BASE_URL + "api/get_payment_list", this.form)
         .then(({ data }) => {
-            console.log(data)
+          this.init(data.status);
           this.payment_lists = data.payment_item_list;
           this.byr_buyer_lists = data.byr_buyer_list;
         });

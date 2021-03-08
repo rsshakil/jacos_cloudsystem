@@ -22,12 +22,12 @@
                                     <th style="cursor: pointer">{{myLang.scenario_file_path}}</th>
                                     <th style="cursor: pointer">{{myLang.details}}</th>
                                 </tr>
-                                
+
                             </thead>
                             <tbody>
-                            
+
                                 <tr v-for="(value,index) in scenario_lists" :key="value.id">
-                                    <td>{{index+1}}</td>   
+                                    <td>{{index+1}}</td>
                                     <td>{{value.name}}</td>
                                     <td>{{value.super_code}}</td>
                                     <td></td>
@@ -35,7 +35,7 @@
                                     <td>{{value.file_path}}</td>
                                     <td><button class="btn btn-info">{{myLang.details}}</button></td>
                                 </tr>
-                                
+
                             </tbody>
                         </table>
                     </div>
@@ -59,9 +59,10 @@ components:{
   },
   methods: {
       get_all_scenarios(){
-        axios.get(this.BASE_URL +"api/get_scenario_list").then((data) => {
-            this.scenario_lists = data.data.scenario_list;
-            console.log(this.scenario_lists);
+        axios.get(this.BASE_URL +"api/get_scenario_list").then(({data}) => {
+            this.init(data.status);
+            this.scenario_lists = data.scenario_list;
+
         });
     },
   },

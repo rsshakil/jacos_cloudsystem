@@ -142,6 +142,7 @@ export default {
     //get Table data
     get_all_invoice_detail(){
         axios.get(this.BASE_URL +"api/get_all_invoice_by_voucher_number/"+this.voucher_number).then(({data}) => {
+            this.init(data.status);
             this.invoice_detail_lists = data.invoice_list;
             this.byr_buyer_lists = data.byr_buyer_list;
             this.byr_shop_lists = data.shop_list;
@@ -161,7 +162,7 @@ export default {
     }).then(({data}) => {
         //handle success
         this.init(data.status);
-        console.log(response);
+        // console.log(response);
        Fire.$emit('LoadByrorder');
     })
     .catch(function (response) {

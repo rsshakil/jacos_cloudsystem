@@ -4,7 +4,7 @@
                 <div class="col-12">
                     <h4 class="top_title text-center" style="margin-top:10px;">{{myLang.super_value_head}}</h4>
                 </div>
-                
+
                 <div class="col-2"></div>
                 <div class="col-8">
                     <tabList></tabList>
@@ -29,7 +29,7 @@
                                     <th style="cursor: pointer">{{myLang.status}}</th>
                                     <th style="cursor: pointer">{{myLang.details}}</th>
                                 </tr>
-                                
+
                             </thead>
                             <tbody>
                                 <tr v-for="(value,index) in company_user_lists" :key="value.id">
@@ -42,9 +42,9 @@
                                       <option value="稼働">{{myLang.status_operation}}</option>
                                     </select></td>
                                     <td><button class="btn btn-info">{{myLang.details}}</button></td>
-                                    
+
                                 </tr>
-                                
+
                             </tbody>
                         </table>
                         <button class="btn btn-danger" style="float:right">{{myLang.cancel}}</button>
@@ -128,16 +128,16 @@ tabList,
   },
   methods: {
        get_all_company_users(){
-        axios.get(this.BASE_URL +"api/company_user_list/"+this.cmn_company_id).then((data) => {
-            this.company_user_lists = data.data.user_list;
-            console.log(this.company_user_lists);
+        axios.get(this.BASE_URL +"api/company_user_list/"+this.cmn_company_id).then(({data}) => {
+            this.init(data.status);
+            this.company_user_lists = data.user_list;
         });
     },
     new_user_create_modal(){
       this.form.reset();
       this.form.cmn_company_id = this.$route.params.cmn_company_id;
       this.user_create_modal = true;
-      
+
 
     },
     create_new_user(){

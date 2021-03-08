@@ -113,7 +113,6 @@ export default {
             if (arrKey != '') {
                 var newarr = [];
                 var buyer_settings_length_check = Object.keys(this.buyer_settings).length;
-                console.log(buyer_settings_length_check);
                 if (buyer_settings_length_check > 0) {
                     var values = this.buyer_settings[orderType][arrName].map(function(o) {
                         var parsedobj = JSON.parse(JSON.stringify(o));
@@ -126,7 +125,7 @@ export default {
                     //console.log(values)
                     return values[0][arrKey];
                 } else {
-                    console.log('Object not found yet');
+                    // console.log('Object not found yet');
                 }
             } else {
                 return '';
@@ -212,8 +211,7 @@ export default {
                 content_setting: this.selected_columns,
                 setting_list: this.table_col_arry,
             };
-            axios
-                .put(
+            axios.put(
                     this.BASE_URL + "api/tblecolsetting/" + this.$route.name,
                     post_data
                 )
@@ -318,6 +316,7 @@ export default {
             // return 0;
             axios.post(this.BASE_URL + "api/get_byr_order_data_by_slr", { user_id: user_id })
                 .then(({ data }) => {
+                    this.init(data.status);
                     // console.log(data);
                     this.buyer_info_for_saller = data.slr_order_info;
                     // return data.slr_order_info;
@@ -352,9 +351,9 @@ export default {
             if (cmn_company_id == null) {
                 this.filter_select_box = true
                     // var company_info=this.get_byr_slr_company(this.cmn_company_id);
-                axios
-                    .get(this.BASE_URL + "api/get_byr_slr_company/" + this.cmn_company_id)
+                axios.get(this.BASE_URL + "api/get_byr_slr_company/" + this.cmn_company_id)
                     .then(({ data }) => {
+                        this.init(data.status);
                         this.buyers = data.buyer_info;
                         this.sellers = data.seller_info;
                         this.selected_buyer = this.buyers[0]

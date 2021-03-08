@@ -2,11 +2,11 @@
   <div class="row">
     <div class="col-12" style="background: #d8e3f0; padding: 10px">
     </div>
-    
+
 
     <div class="col-12">
       <div class="row">
-     
+
       <div class="col-12">
         <h4 class="page_custom_title">取引先別支払合計</h4>
           <table
@@ -48,7 +48,7 @@
         </table>
         <button class="btn btn-primary" @click="update_optional_json_value">更新</button>
       </div>
-        
+
       </div>
     </div>
     <b-modal
@@ -61,7 +61,7 @@
     >
      <h4>請求業務の締日を登録できます</h4>
      <label for="invoicejson_0" class="">締日</label>
-     
+
      <div class="selectFildlistdata" style="position:relative;">
      <div class="customselectFields" v-for="(input,index) in selectfieldList" :key="input.id">
      <select class="form-control custominvoicejsnslect" v-model="input.value">
@@ -105,7 +105,7 @@ export default {
     };
   },
   methods: {
-   
+
     update_optional_json_value(){
       //console.log(this.cmnConnectOptionList);
        this.alert_icon = "warning";
@@ -118,9 +118,9 @@ export default {
       var formDatas = {
         allJson : this.cmnConnectOptionList,
       };
-      axios
-                .post(this.BASE_URL + "api/update_cmn_connects_optionalAllJson", formDatas)
-                .then((data) => {
+      axios.post(this.BASE_URL + "api/update_cmn_connects_optionalAllJson", formDatas)
+                .then(({data}) => {
+                    this.init(data.status);
                     Swal.fire({
                         icon: "success",
                         title: "",
@@ -135,6 +135,7 @@ export default {
     getAllCmnConnectOptionalJsons() {
       axios.post(this.BASE_URL + "api/get_partner_fax_list",this.form)
         .then(({ data }) => {
+            this.init(data.status);
             this.cmnConnectOptionList = data.result;
             console.log(this.cmnConnectOptionList);
         });
@@ -151,7 +152,7 @@ export default {
                 value: value,
             });
 });
-     //this.selectfieldList= 
+     //this.selectfieldList=
    },
      addSelectField() {
             this.selectfieldList.push({
@@ -180,7 +181,8 @@ export default {
             };
             axios
                 .post(this.BASE_URL + "api/update_cmn_connects_optional", post_data)
-                .then((data) => {
+                .then(({data}) => {
+                    this.init(data.status);
                     Swal.fire({
                         icon: "success",
                         title: "",
@@ -192,7 +194,7 @@ export default {
       })
 
         },
-       
+
   },
 
   created() {
@@ -204,7 +206,7 @@ export default {
     Fire.$emit("byr_has_selected", this.byr_buyer_id);
     Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
     Fire.$emit("loadPageTitle", "FAX番号登録");
-    
+
   },
   mounted() {},
 };
