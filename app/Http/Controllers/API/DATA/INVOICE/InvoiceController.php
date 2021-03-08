@@ -116,7 +116,6 @@ class InvoiceController extends Controller
             'mes_mes_ultimate_receiver_station_address'=>'',
             'mes_mes_immediate_receiver_station_addres'=>'',
             'mes_mes_number_of_trading_documents'=>'',
-            'mes_mes_system_info'=>'',
             'mes_mes_sys_key'=>'',
             'mes_mes_sys_value'=>'',
             'mes_lis_con_version'=>'',

@@ -216,6 +216,7 @@ export default {
         _this.alert_text =
           "Invoice insert success";
         _this.sweet_normal_alert();
+        _this.invoiceCreateModal = false;
         });
     },
     check_byr_order_api() {
