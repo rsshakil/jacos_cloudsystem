@@ -44,6 +44,7 @@ import order_corrected_receive from './components/backend/DATA/CRTRCV/order_corr
 import return_item_list from './components/backend/DATA/RETURN/return_item_list.vue'
 import payment_list from './components/backend/DATA/PAYMENT/payment_list.vue'
 import payment_detail from './components/backend/DATA/PAYMENT/payment_detail.vue'
+import payment_item_detail from './components/backend/DATA/PAYMENT/payment_item_detail.vue'
 
 import invoice_list from './components/backend/DATA/INVOICE/invoice_list.vue'
 import invoice_details from './components/backend/DATA/INVOICE/invoice_details.vue'
@@ -405,6 +406,19 @@ export const routes = [
             breadcrumb: {
                 label: '支払合計',
                 parent: 'payment_list'
+            },
+        },
+
+    },
+    {
+        path: '/payment_list/payment_detail/payment_item_detail/:payment_id',
+        component: payment_item_detail,
+        name: 'payment_item_detail',
+        meta: {
+
+            breadcrumb: {
+                label: '取引先別支払明細',
+                parent: 'payment_detail'
             },
         },
 

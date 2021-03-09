@@ -58,7 +58,13 @@
             <tr>
               <td>1</td>
               <td>{{payment_detail_header.mes_lis_pay_pay_name}}</td>
-              <td>{{payment_detail_header.mes_lis_pay_pay_id}}</td>
+              <td><router-link :to="{
+                      name: 'payment_item_detail',
+                      params: {
+                        payment_id:
+                          payment_detail_header.data_payment_id,
+                      },
+                    }">{{payment_detail_header.mes_lis_pay_pay_code}}</router-link></td>
               <td class="text-right">{{paymentdetailTopTable.totalAmount | priceFormat}}</td>
             </tr>
           </tbody>

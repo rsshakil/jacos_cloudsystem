@@ -116,6 +116,7 @@ Route::get('corrected_receive_list/{adm_user_id}', 'API\DATA\RECEIVE\ReceiveCont
 // receive end
 Route::post('get_payment_list', 'API\DATA\PAYMENT\PaymentController@getPaymentList');
 Route::post('get_payment_detail_list', 'API\DATA\PAYMENT\PaymentController@get_payment_detail_list');
+Route::post('get_payment_item_detail_list', 'API\DATA\PAYMENT\PaymentController@get_payment_item_detail_list');
 Route::get('get_byr_return_list/{adm_user_id}', 'API\Byr_return_itemController@get_byr_return_list');
 Route::post('get_all_cat_list', 'API\Cmn_categoryController@get_all_cat_list');
 // Invoice

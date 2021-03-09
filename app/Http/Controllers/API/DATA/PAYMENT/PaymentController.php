@@ -160,4 +160,55 @@ DB::raw("SUM(mes_lis_pay_lin_det_amo_payable_amount + mes_lis_pay_lin_det_amo_ta
 
         return response()->json(['payment_item_header' => $result,'paymentdetailTopTable'=>$paymentdetailTopTable,'pdtableleft'=>$pdtableleft,'paymentdetailRghtTable'=>$paymentdetailRghtTable]);
     }
+
+    public function get_payment_item_detail_list(Request $request){
+        $payment_id = $request->payment_id;
+        $byr_buyer_id = $request->byr_buyer_id;
+        $per_page = $request->select_field_per_page_num;
+        $from_date= $request->from_date;
+        $to_date= $request->to_date;
+        $category_code = $request->category_code;
+        $mes_lis_pay_lin_tra_code = $request->mes_lis_pay_lin_tra_code;
+        $mes_lis_pay_lin_lin_trade_number_eference = $request->mes_lis_pay_lin_lin_trade_number_eference;
+        $result=data_payment::select('data_payments.data_payment_id','data_payments.receive_datetime',
+        'dpp.mes_lis_pay_pay_code',
+        'dpp.mes_lis_pay_pay_name',
+        'dpp.mes_lis_pay_pay_gln',
+        'dpp.mes_lis_pay_pay_id',
+        'dpp.mes_lis_buy_name',
+        'dpp.mes_lis_buy_code',
+        'dpp.check_datetime',
+        'dpp.mes_lis_pay_per_end_date',
+        'dppd.mes_lis_pay_lin_det_pay_out_date',
+        'dppd.mes_lis_pay_lin_det_amo_payable_amount'
+        )
+        ->join('data_payment_pays as dpp','data_payments.data_payment_id','=','dpp.data_payment_id')
+        ->join('data_payment_pay_details as dppd','dpp.data_payment_pay_id','=','dppd.data_payment_pay_id')
+        ->where('dpp.data_payment_id',$payment_id)
+        // ->where('data_payments.cmn_connect_id','=',$cmn_connect_id)
+        ->groupBy('data_payments.receive_datetime')
+        ->groupBy('dpp.mes_lis_pay_pay_code')
+        ->groupBy('dpp.mes_lis_pay_per_end_date')
+        ->groupBy('dppd.mes_lis_pay_lin_det_pay_out_date')
+        ->first();
+        
+        $result1 = data_payment_pay_detail::
+        join('data_payment_pays as dpp','data_payment_pay_details.data_payment_pay_id','=','dpp.data_payment_pay_id')
+        ->where(['dpp.data_payment_id'=>$payment_id]);
+        if($from_date!=''){
+            $result1 = $result1->whereDate('data_payment_pay_details.mes_lis_pay_lin_det_transfer_of_ownership_date','>=',$from_date);
+        }
+        if($to_date!=''){
+            $result1 = $result1->whereDate('data_payment_pay_details.mes_lis_pay_lin_det_transfer_of_ownership_date','<=',$to_date);
+        }
+        if($mes_lis_pay_lin_tra_code!=''){
+            $result1 = $resresult1ult->where('data_payment_pay_details.mes_lis_pay_lin_tra_code',$mes_lis_pay_lin_tra_code);
+        }
+        if($mes_lis_pay_lin_lin_trade_number_eference!=''){
+            $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_lin_trade_number_eference',$mes_lis_pay_lin_lin_trade_number_eference);
+        }
+        $paymentdetailTopTable =  $result1->paginate($per_page);
+        $byr_buyer_category_list = $this->all_used_fun->get_allCategoryByByrId($byr_buyer_id);
+        return response()->json(['payment_item_header' => $result,'paymentdetailTopTable'=>$paymentdetailTopTable,'byr_buyer_category_list'=>$byr_buyer_category_list]);
+    }
 }

@@ -413,6 +413,11 @@ class permissionsTableDataSeeder extends Seeder
                 'is_system' => 0,
             ],
             [
+                'name' => 'payment_item_detail',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
                 'name' => 'invoice_details',
                 'guard_name' => 'web',
                 'is_system' => 0,
