@@ -124,21 +124,21 @@
                 <td><!--{{order_item_detail_list.mes_lis_acc_lin_fre_item_weight * order_item_detail_list.mes_lis_acc_lin_qua_shi_quantity}}-->
                 {{order_item_detail_list.mes_lis_acc_lin_fre_received_weight}}
                 </td>
-                <td>
+                <td class="text-right">
                 <!-- <input type="text" class="form-control" v-model="order_item_detail_list.mes_lis_acc_lin_amo_item_net_price_unit_price">
                 {{order_item_detail_list.mes_lis_ord_lin_amo_item_net_price_unit_price}}-->
-                {{order_item_detail_list.mes_lis_acc_lin_amo_item_net_price_unit_price}}
+                {{order_item_detail_list.mes_lis_acc_lin_amo_item_net_price_unit_price | priceFormat}}
                 </td>
-                <td> <!--{{ order_item_detail_list.mes_lis_acc_lin_amo_item_net_price_unit_price * order_item_detail_list.mes_lis_acc_lin_qua_shi_quantity}}-->
-                {{order_item_detail_list.mes_lis_acc_lin_amo_item_net_price}}
+                <td class="text-right"> <!--{{ order_item_detail_list.mes_lis_acc_lin_amo_item_net_price_unit_price * order_item_detail_list.mes_lis_acc_lin_qua_shi_quantity}}-->
+                {{order_item_detail_list.mes_lis_acc_lin_amo_item_net_price | priceFormat}}
                 </td>
-                <td>
+                <td class="text-right">
                  <!--<input type="text" class="form-control" v-model="order_item_detail_list.mes_lis_acc_lin_amo_item_selling_price_unit_price">
                 {{order_item_detail_list.mes_lis_ord_lin_amo_item_selling_price_unit_price}}-->
-                {{order_item_detail_list.mes_lis_acc_lin_amo_item_selling_price_unit_price}}
+                {{order_item_detail_list.mes_lis_acc_lin_amo_item_selling_price_unit_price | priceFormat}}
                 </td>
-                <td><!--{{order_item_detail_list.mes_lis_acc_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_acc_lin_qua_shi_quantity}}-->
-                {{order_item_detail_list.mes_lis_acc_lin_amo_item_selling_price}}
+                <td class="text-right"><!--{{order_item_detail_list.mes_lis_acc_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_acc_lin_qua_shi_quantity}}-->
+                {{order_item_detail_list.mes_lis_acc_lin_amo_item_selling_price | priceFormat}}
                 </td>
                 <td><!--{{order_item_detail_list.mes_lis_acc_lin_qua_rec_reason_code}} {{getbyrjsonValueBykeyName('mes_lis_acc_lin_qua_rec_reason_code',order_item_detail_list.mes_lis_acc_lin_qua_rec_reason_code,'receives',buyer_settings)}}
                 <select v-model="order_item_detail_list.mes_lis_acc_lin_qua_rec_reason_code" class="form-control ">
@@ -160,9 +160,9 @@
               <th></th>
               <th></th>
               <th style="background:#538ED3;color:#fff;text-align:center;">原価全額<br>合計</th>
-              <th style="text-align:center;">{{totalCostPriceVal}}</th>
+              <th style="text-align:right;">{{totalCostPriceVal | priceFormat}}</th>
               <th style="background:#538ED3;color:#fff;text-align:center;">売価全額<br>合計</th>
-              <th style="text-align:center;">{{totalSellingPriceVal}}</th>
+              <th style="text-align:right;">{{totalSellingPriceVal | priceFormat}}</th>
               <th></th>
               </tr>
             </tfoot>

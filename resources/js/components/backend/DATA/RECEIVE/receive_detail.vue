@@ -317,8 +317,8 @@
                 <td>
                   {{order_detail_list.mes_lis_acc_tra_ins_trade_type_code}}
                 </td>
-                <td>
-                  {{ order_detail_list.mes_lis_acc_tot_tot_net_price_total }}
+                <td class="text-right">
+                  {{ order_detail_list.mes_lis_acc_tot_tot_net_price_total | priceFormat}}
                 </td>
                 <td><span v-if="order_detail_list.mes_lis_acc_tot_tot_net_price_total>0">訂正あり</span><span v-else>訂正なし</span></td>
               </tr>

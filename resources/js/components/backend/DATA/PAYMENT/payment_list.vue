@@ -152,7 +152,7 @@
               <td>{{ payment.mes_lis_buy_name }}</td>
               <td>{{ payment.mes_lis_pay_per_end_date }}</td>
               <td>{{ payment.mes_lis_pay_lin_det_pay_out_date }}</td>
-              <td>{{ payment.mes_lis_pay_lin_det_amo_payable_amount }}</td>
+              <td class="text-right">{{ payment.mes_lis_pay_lin_det_amo_payable_amount | priceFormat}}</td>
               <td>{{ payment.check_datetime }}</td>
             </tr>
           </tbody>
