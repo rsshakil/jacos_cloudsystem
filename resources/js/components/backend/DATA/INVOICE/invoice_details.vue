@@ -8,28 +8,26 @@
         >
           <tr>
             <td class="cl_custom_color">締日</td>
-            <td>aaaa
-                <!-- {{ order_info.receive_datetime }} -->
-            </td>
+            <td>{{ param_data.end_date }}</td>
             <td class="cl_custom_color">請求取引先</td>
             <td colspan="5">
-                aaaa
-              <!-- {{ order_info.mes_lis_shi_par_sel_code }}
-              {{ order_info.mes_lis_shi_par_sel_name }} -->
+              {{ param_data.pay_code }}
+              {{ param_data.pay_name }}
             </td>
           </tr>
           <tr>
             <td class="cl_custom_color">発注者</td>
             <td>
-                aaaa
-                <!-- {{ order_info.mes_lis_shi_tra_dat_delivery_date }} -->
+                {{ param_data.buy_code }}
+                {{ param_data.buy_name }}
             </td>
             <td class="cl_custom_color">請求状況</td>
             <td>
-                <!-- {{ order_info.mes_lis_shi_tra_goo_major_category }} -->
+                {{ param_data.status }}
             </td>
             <td class="cl_custom_color">請求金額</td>
             <td>
+                {{ param_data.requested_amount }}
               <!-- {{ order_info.mes_lis_shi_log_del_delivery_service_code }}
               {{
                 getbyrjsonValueBykeyName(
@@ -50,12 +48,12 @@
           <tr>
             <td class="cl_custom_color">計上日</td>
             <td>
-              <input type="text" class="form-control" />
+              <input type="text" class="form-control" v-model="form.mes_lis_inv_lin_det_transfer_of_ownership_date" />
             </td>
             <td class="cl_custom_color">計上先</td>
             <!-- @click="deliverySearchForm2" -->
             <td>
-              <input type="text" class="form-control topHeaderInputFieldBtn" />
+              <input type="text" class="form-control topHeaderInputFieldBtn" v-model="form.mes_lis_inv_lin_tra_code" />
               <button
 
                 class="btn btn-primary active"
@@ -67,7 +65,7 @@
             <td>
               <input
                 type="text"
-                v-model="form.mes_lis_shi_tra_trade_number"
+                v-model="form.mes_lis_inv_lin_lin_trade_number_reference"
                 class="form-control"
               />
             </td>
@@ -75,12 +73,12 @@
           <tr>
             <td class="cl_custom_color">確定状況</td>
             <td>
-              <input type="text" class="form-control" />
+              <input type="text" class="form-control" v-model="form.decision_datetime_status" />
             </td>
             <td class="cl_custom_color">送信状況</td>
             <!-- v-model="form.fixedSpecial" -->
             <td>
-              <input type="text" class="form-control" />
+              <input type="text" class="form-control" v-model="form.send_datetime_status"/>
             </td>
           </tr>
 
@@ -330,6 +328,7 @@
 export default {
   data() {
     return {
+      param_data: [],
       invoice_detail_lists: {},
       byr_voucher_lists: {},
       file: "",
@@ -342,6 +341,11 @@ export default {
         adm_user_id: Globals.user_info_id,
         byr_buyer_id: null,
         submit_type: "page_load",
+        mes_lis_inv_lin_det_transfer_of_ownership_date:null,
+        mes_lis_inv_lin_tra_code:'',
+        mes_lis_inv_lin_lin_trade_number_reference:'',
+        decision_datetime_status:'',
+        send_datetime_status:'',
       }),
     };
   },
@@ -410,7 +414,8 @@ export default {
   created() {
     Fire.$emit("byr_has_selected", this.$session.get("byr_buyer_id"));
     Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
-    this.form.data_invoice_id = this.$route.params.data_invoice_id;
+    this.param_data = this.$route.query;
+    this.form.data_invoice_id = this.param_data.data_invoice_id;
     this.invoice_details();
     Fire.$on("LoadByrinvoice_detail", () => {
       this.invoice_details();

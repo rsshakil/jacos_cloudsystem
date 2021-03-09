@@ -62,7 +62,7 @@ class InvoiceController extends Controller
             $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
         $result=data_invoice::select('data_invoices.data_invoice_id','dip.mes_lis_inv_per_end_date',
-        'dip.mes_lis_inv_pay_code','dip.mes_lis_buy_name',
+        'dip.mes_lis_inv_pay_code','dip.mes_lis_inv_pay_name','dip.mes_lis_buy_code','dip.mes_lis_buy_name',
         'dip.status','dipd.mes_lis_inv_lin_det_amo_requested_amount'
         )
         ->join('data_invoice_pays as dip','data_invoices.data_invoice_id','=','dip.data_invoice_id')
@@ -77,22 +77,6 @@ class InvoiceController extends Controller
         // ->groupBy('drv.mes_lis_acc_log_del_delivery_service_code')
         // ->groupBy('drv.mes_lis_acc_tra_ins_temperature_code')
         ->paginate($per_page);
-        // if (!$authUser->hasRole(config('const.adm_role_name'))) {
-        //     $result = data_invoice::select('data_invoices.*', 'cmn_companies.company_name')
-        //         ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'data_invoices.cmn_connect_id')
-        //         ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
-        //         ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
-        //         ->where('data_invoices.cmn_connect_id', $cmn_connect_id)
-        //         ->paginate($per_page);
-
-        // } else {
-        //     $result = data_invoice::select('data_invoices.*', 'cmn_companies.company_name')
-        //         ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'data_invoices.cmn_connect_id')
-        //         ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
-        //         ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
-        //         ->paginate($per_page);
-        // }
-
         $byr_buyer = $this->all_used_fun->get_company_list($cmn_company_id);
 
         return response()->json(['invoice_list' => $result, 'byr_buyer_list' => $byr_buyer]);
