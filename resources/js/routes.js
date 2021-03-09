@@ -46,7 +46,7 @@ import payment_list from './components/backend/DATA/PAYMENT/payment_list.vue'
 import payment_detail from './components/backend/DATA/PAYMENT/payment_detail.vue'
 
 import invoice_list from './components/backend/DATA/INVOICE/invoice_list.vue'
-import invoice_detail from './components/backend/DATA/INVOICE/invoice_detail.vue'
+import invoice_details from './components/backend/DATA/INVOICE/invoice_details.vue'
 import voucher_detail from './components/backend/voucher_detail.vue'
 import pdf_platform_setting from './components/backend/PDF_PLATFORM/pdf_platform_setting.vue'
 import pdf_platform_view from './components/backend/PDF_PLATFORM/pdf_platform_view.vue'
@@ -422,9 +422,9 @@ export const routes = [
 
     },
     {
-        path: '/invoice_list/invoice_detail/:data_invoice_id',
-        component: invoice_detail,
-        name: 'invoice_detail',
+        path: '/invoice_list/invoice_details',
+        component: invoice_details,
+        name: 'invoice_details',
         meta: {
             breadcrumb: {
                 label: '請求伝票一覧',

@@ -110,7 +110,21 @@
             >
               <td>{{ (index+1) }}</td>
               <td>
-                <router-link :to="{ name: 'invoice_detail', params: { data_invoice_id: value.data_invoice_id }, }" class="btn btn-info">{{ value.mes_lis_inv_per_end_date }}</router-link>
+                  <router-link
+                  :to="{
+                    name: 'invoice_details',
+                    query: {
+                      data_invoice_id: value.data_invoice_id,
+                      end_date: value.mes_lis_inv_per_end_date.valueOf(),
+                      pay_code: value.mes_lis_inv_pay_code,
+                      pay_name: value.mes_lis_inv_pay_name,
+                      buy_code: value.mes_lis_buy_code,
+                      buy_name: value.mes_lis_buy_name,
+                      status: value.status,
+                      requested_amount: value.mes_lis_inv_lin_det_amo_requested_amount,
+                    },
+                  }" class="">{{ value.mes_lis_inv_per_end_date }}</router-link>
+                <!-- <router-link :to="{ name: 'invoice_detail', params: { data_invoice_id: value.data_invoice_id }, }" class="btn btn-info">{{ value.mes_lis_inv_per_end_date }}</router-link> -->
               </td>
               <td>{{ value.mes_lis_inv_pay_code }}</td>
               <td>{{ value.mes_lis_buy_name }}</td>
