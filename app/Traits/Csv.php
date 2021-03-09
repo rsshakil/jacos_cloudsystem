@@ -94,6 +94,7 @@ trait Csv
      */
     public static function purge($filePath)
     {
+        // \Log::info(storage_path($filePath));
         return unlink(storage_path($filePath));
     }
 }

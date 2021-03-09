@@ -1053,8 +1053,7 @@ export default {
         });
       } else {
         this.null_selected_message = false;
-        this.alert_text =
-          "対象となる伝票がありません、再度確認して実行してください。";
+        this.alert_text = "対象となる伝票がありません、再度確認して実行してください。";
         this.sweet_normal_alert();
       }
     },
@@ -1174,7 +1173,7 @@ export default {
           link.setAttribute("download", data.new_file_name); //ここらへんは適当に設定する
           document.body.appendChild(link);
           link.click();
-        //   return 0;
+          return 0;
           axios.get(_this.BASE_URL + "api/deletedownloadedshipmentCsv/" +
                 data.new_file_name
             ).then(({data}) => {

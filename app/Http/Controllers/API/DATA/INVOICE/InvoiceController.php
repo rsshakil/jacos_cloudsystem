@@ -9,7 +9,11 @@ use App\Models\ADM\User;
 use App\Models\BYR\byr_order_detail;
 use App\Models\DATA\INVOICE\data_invoice;
 use App\Models\DATA\INVOICE\data_invoice_pay;
+use App\Models\DATA\INVOICE\data_invoice_pay_detail;
 use App\Http\Controllers\API\AllUsedFunction;
+use App\Http\Controllers\API\DATA\INVOICE\InvoiceDataController;
+use App\Exports\InvoiceCSVExport;
+use App\Traits\Csv;
 use DB;
 
 class InvoiceController extends Controller
@@ -122,11 +126,11 @@ class InvoiceController extends Controller
     {
         $data_invoice_id=$request->data_invoice_id;
         $per_page = $request->select_field_per_page_num == null ? 10 : $request->select_field_per_page_num;
-        $result=data_invoice::select('data_invoices.data_invoice_id','dip.mes_lis_inv_per_end_date',
+        $result=data_invoice::select('data_invoices.data_invoice_id','dipd.data_invoice_pay_detail_id','dip.mes_lis_inv_per_end_date',
         'dipd.mes_lis_inv_lin_det_transfer_of_ownership_date','dipd.mes_lis_inv_lin_tra_code',
         'dipd.mes_lis_inv_lin_tra_name','dipd.mes_lis_inv_lin_lin_trade_number_reference',
         'dipd.mes_lis_inv_lin_det_amo_requested_amount','dipd.mes_lis_inv_lin_det_pay_code',
-        'dipd.mes_lis_inv_lin_det_balance_carried_code','dipd.send_datetime'
+        'dipd.mes_lis_inv_lin_det_balance_carried_code','dipd.send_datetime','dipd.decision_datetime'
         )
         ->join('data_invoice_pays as dip','data_invoices.data_invoice_id','=','dip.data_invoice_id')
         ->join('data_invoice_pay_details as dipd','dip.data_invoice_pay_id','=','dipd.data_invoice_pay_id')
@@ -140,21 +144,56 @@ class InvoiceController extends Controller
         $data_count=$request->data_count;
         $data_invoice_id=$request->data_invoice_id;
         $download_file_url='';
-        // return $csv_data_count = Data_Controller::get_shipment_data($request)->get();
-        $csv_data_count =1;
-        // $csv_data_count = Data_Controller::get_shipment_data($request)->get()->count();
+        $csv_data_count = InvoiceDataController::get_invoice_data($request)->get()->count();
         if (!$data_count) {
             $dateTime = date('Y-m-d H:i:s');
-            // $new_file_name = self::shipmentFileName($data_order_id,'csv');
-            // data_shipment::where('data_order_id',$data_order_id)->update(['mes_mes_number_of_trading_documents'=>$csv_data_count]);
-            // $download_file_url = \Config::get('app.url')."storage/app".config('const.SHIPMENT_CSV_PATH')."/". $new_file_name;
-            // (new ShipmentCSVExport($request))->store(config('const.SHIPMENT_CSV_PATH').'/'.$new_file_name);
-            // data_shipment_voucher::where('decision_datetime','!=',null)
-            // ->where('send_datetime','=',null)
-            // ->update(['send_datetime'=>$dateTime]);
+            $new_file_name = self::invoiceFileName($data_invoice_id,'csv');
+            data_invoice::where('data_invoice_id',$data_invoice_id)->update(['mes_mes_number_of_trading_documents'=>$csv_data_count]);
+            $download_file_url = \Config::get('app.url')."storage/app".config('const.INVOICE_CSV_PATH')."/". $new_file_name;
+            (new InvoiceCSVExport($request))->store(config('const.INVOICE_CSV_PATH').'/'.$new_file_name);
+            data_invoice_pay_detail::where('decision_datetime','!=',null)
+            ->where('send_datetime','=',null)
+            ->update(['send_datetime'=>$dateTime]);
         }
 
         return response()->json(['message' => 'Success','status'=>1, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
+    }
+    public function downloadInvoice(Request $request){
+        // downloadType=1 for Csv
+        // downloadType=2 for Fixed length
+        $data_invoice_id=$request->data_invoice_id;
+        $downloadType=$request->downloadType;
+        $csv_data_count =0;
+        if ($downloadType==1) {
+            // CSV Download
+            $new_file_name = $new_file_name = self::invoiceFileName($data_invoice_id, 'csv');
+            $download_file_url = \Config::get('app.url')."storage/app".config('const.INVOICE_CSV_PATH')."/". $new_file_name;
+
+            // get shipment data query
+            $invoice_query = InvoiceDataController::get_invoice_data($request);
+            $csv_data_count = $invoice_query->count();
+            $shipment_data = $invoice_query->get()->toArray();
+
+            // CSV create
+            Csv::create(
+                config('const.INVOICE_CSV_PATH')."/". $new_file_name,
+                $shipment_data,
+                InvoiceDataController::invoiceCsvHeading(),
+                'shift-jis'
+            );
+        } elseif ($downloadType==2) {
+            // $request->request->add(['scenario_id' => 6]);
+            // $request->request->add(['data_order_id' => 1]);
+            // $request->request->add(['email' => 'user@jacos.co.jp']);
+            // $request->request->add(['password' => 'Qe75ymSr']);
+            // $new_file_name = self::invoiceFileName($data_order_id, 'txt');
+            // $download_file_url = \Config::get('app.url')."storage/".config('const.FIXED_LENGTH_FILE_PATH')."/". $new_file_name;
+            // $request->request->add(['file_name' => $new_file_name]);
+            // $cs = new Cmn_ScenarioController();
+            // $ret = $cs->exec($request);
+        }
+
+        return response()->json(['message' => 'Success','status'=>1,'new_file_name'=>$new_file_name, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
     }
     public function get_all_invoice_by_voucher_number($voucher_number)
     {
@@ -166,5 +205,35 @@ class InvoiceController extends Controller
         $voucher_list = array();
         $byr_buyer = array();
         return response()->json(['invoice_list' => $result, 'byr_buyer_list' => $byr_buyer, 'shop_list' => $shop_list, 'voucher_list' => $voucher_list]);
+    }
+    public function decessionData(Request $request)
+    {
+        $dateTime = date('Y-m-d H:i:s');
+       $date_null = $request->date_null;
+        if ($date_null) {
+            $dateTime = null;
+        }else{
+            $dateTime = date('Y-m-d H:i:s');
+        }
+        // return $dateTime;
+        $data_invoice_pay_detail_ids = $request->update_id;
+        if ($data_invoice_pay_detail_ids) {
+            foreach ($data_invoice_pay_detail_ids as $id) {
+                data_invoice_pay_detail::where('data_invoice_pay_detail_id', $id)->update(['decision_datetime' => $dateTime]);
+            }
+        }
+        return response()->json(['success' => '1','status'=>1]);
+    }
+    private static function invoiceFileName($data_invoice_id, $file_type="csv")
+    {
+        $file_name_info=data_invoice::select('cmn_connects.partner_code', 'byr_buyers.super_code', 'cmn_companies.jcode')
+            ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'data_invoices.cmn_connect_id')
+            ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
+            ->join('slr_sellers', 'slr_sellers.slr_seller_id', '=', 'cmn_connects.slr_seller_id')
+            ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'slr_sellers.cmn_company_id')
+            ->where('data_invoices.data_invoice_id', $data_invoice_id)
+            ->first();
+        $file_name = $file_name_info->super_code.'-'."invoice_".$file_name_info->super_code.'-'.$file_name_info->partner_code."-".$file_name_info->jcode.'_invoice_'.date('YmdHis').'.'.$file_type;
+        return $file_name;
     }
 }
