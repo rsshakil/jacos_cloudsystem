@@ -274,4 +274,22 @@ class ShipmentConroller extends Controller
 
         return response()->json(['order_list_detail' => $result, 'order_info' => $order_info]);
     }
+    public function decessionData(Request $request)
+    {
+        $dateTime = date('Y-m-d H:i:s');
+       $date_null = $request->date_null;
+        if ($date_null) {
+            $dateTime = null;
+        }else{
+            $dateTime = date('Y-m-d H:i:s');
+        }
+        // return $dateTime;
+        $data_shipment_voucher_ids = $request->update_id;
+        if ($data_shipment_voucher_ids) {
+            foreach ($data_shipment_voucher_ids as $id) {
+                data_shipment_voucher::where('data_shipment_voucher_id', $id)->update(['decision_datetime' => $dateTime]);
+            }
+        }
+        return response()->json(['success' => '1','status'=>1]);
+    }
 }

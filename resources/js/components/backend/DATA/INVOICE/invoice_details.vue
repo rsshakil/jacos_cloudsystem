@@ -1,6 +1,5 @@
 <template>
   <div class="row">
-    <!-- ========= -->
     <div class="col-12" style="padding: 10px">
         <table
           class="table orderTopDetailTable table-bordered"
@@ -28,14 +27,6 @@
             <td class="cl_custom_color">請求金額</td>
             <td>
                 {{ param_data.requested_amount }}
-              <!-- {{ order_info.mes_lis_shi_log_del_delivery_service_code }}
-              {{
-                getbyrjsonValueBykeyName(
-                  "mes_lis_ord_log_del_delivery_service_code",
-                  order_info.mes_lis_shi_log_del_delivery_service_code,
-                  "orders"
-                )
-              }} -->
             </td>
           </tr>
         </table>
@@ -168,20 +159,8 @@
                     ダウンロード
                   </button>
                   <div class="dropdown-menu dropdown-menu-right">
-                    <button
-                      class="dropdown-item"
-                      @click="order_download(1)"
-                      type="button"
-                    >
-                      CSV
-                    </button>
-                    <button
-                      class="dropdown-item"
-                      @click="order_download(2)"
-                      type="button"
-                    >
-                      JCA
-                    </button>
+                    <button class="dropdown-item" @click="invoice_download(1)" type="button"> CSV </button>
+                    <!-- <button class="dropdown-item" @click="order_download(2)" type="button"> JCA </button> -->
                   </div>
                 </div>
               </div>
@@ -245,9 +224,34 @@
               v-for="(value, index) in invoice_detail_lists.data"
               :key="index"
             >
-              <td>{{ index + 1 }}</td>
-              <td><input type="checkbox" class="form-control" /></td>
+              <td>
+                  <!-- {{ index + 1 }} -->
+                  {{ invoice_detail_lists.current_page * form.select_field_per_page_num - form.select_field_per_page_num + index +1 }}
+             </td>
+              <!-- <td><input type="checkbox" class="form-control" /></td> -->
               <!-- <td>{{ value.mes_lis_inv_per_end_date }}</td> -->
+              <td>
+                  <span v-if="value.decision_datetime != null">
+                    <b-button
+                      pill
+                      variant="info"
+                      @click="
+                        decissionDateUpdate(
+                          value.data_invoice_pay_detail_id
+                        )
+                      "
+                      >済</b-button
+                    >
+                  </span>
+                  <span v-else>
+                    <input
+                      type="checkbox"
+                      v-bind:value="value.data_invoice_pay_detail_id"
+                      v-model="selected"
+                      @change="updateCheckall()"
+                    />
+                  </span>
+                </td>
               <td>
                 {{ value.mes_lis_inv_lin_det_transfer_of_ownership_date }}
               </td>
@@ -306,11 +310,7 @@
             </div>
           </div>
           <div class="col-6 text-right">
-              <!-- @click="updateDatetimeDecessionfield" -->
-            <button
-
-              class="btn btn-lg btn-primary active"
-            >
+            <button class="btn btn-lg btn-primary active" @click="updateDatetimeDecessionfield">
               選択行を伝票確定
             </button>
             <button
@@ -334,6 +334,11 @@ export default {
       file: "",
       data_invoice_id: "",
       isCheckAll: false,
+      selected: [],
+      null_selected: [],
+      not_null_selected: [],
+      date_null:false,
+      null_selected_message:false,
       form: new Form({
         data_invoice_id: "",
         select_field_per_page_num: 10,
@@ -361,11 +366,126 @@ export default {
       axios.post(this.BASE_URL + "api/get_invoice_details_list", this.form)
         .then(({ data }) => {
             this.init(data.status);
-          this.invoice_detail_lists = data.invoice_details_list;
+            this.invoice_detail_lists = data.invoice_details_list;
         });
     },
     checkAll() {
       this.isCheckAll = !this.isCheckAll;
+      this.selected = [];
+      this.null_selected = [];
+      this.not_null_selected = [];
+      if (this.isCheckAll) {
+        for (var key in this.invoice_detail_lists.data) {
+          if (this.invoice_detail_lists.data[key].decision_datetime) {
+            this.not_null_selected.push(
+              this.invoice_detail_lists.data[key].data_invoice_pay_detail_id
+            );
+          } else {
+            this.null_selected.push(
+              this.invoice_detail_lists.data[key].data_invoice_pay_detail_id
+            );
+          }
+        }
+      }
+
+        // console.log(this.form.select_field_per_page_num);
+        // console.log(this.null_selected);
+        // console.log(this.not_null_selected);
+      if (this.null_selected.length <= this.form.select_field_per_page_num && this.null_selected.length != 0) {
+        this.date_null = false;
+        this.selected = this.null_selected;
+        this.null_selected_message = true;
+      } else if (this.not_null_selected.length <= this.form.select_field_per_page_num && this.not_null_selected.length != 0) {
+        this.date_null = true;
+        this.selected = this.not_null_selected;
+        this.null_selected_message = false;
+      }
+      //   console.log(this.selected);
+    },
+    updateCheckall() {
+      // console.log(this.selected)
+      if (this.selected.length == this.invoice_detail_lists.data.length) {
+        this.isCheckAll = true;
+      } else {
+        this.isCheckAll = false;
+      }
+      this.null_selected = this.selected;
+      this.null_selected_message = true;
+      this.date_null = false;
+    },
+    decissionDateUpdate(data_invoice_pay_detail_id) {
+      if (this.isCheckAll) {
+        this.alert_text =
+          "対象となる伝票確定を取消しますがよろしいでしょうか。";
+        this.selected = this.null_selected.concat(this.not_null_selected);
+      } else {
+        this.selected.push(data_invoice_pay_detail_id);
+        this.alert_text = "伝票確定を取消しますがよろしいでしょうか。";
+      }
+      this.date_null = true;
+      this.null_selected_message = false;
+      this.updateDecissionDateTime();
+    },
+    updateDecissionDateTime() {
+      var _this = this;
+      this.alert_icon = "warning";
+      this.alert_title = "";
+      this.yes_btn = "はい";
+      this.cancel_btn = "キャンセル";
+      this.selectedNum = this.selected.length;
+      if (this.selectedNum > 0) {
+        this.confirm_sweet().then((result) => {
+          if (result.value) {
+            // console.log(this.selected);
+            //   return 0;
+            axios.post(
+                this.BASE_URL + "api/update_invoice_decession_datetime",
+                { update_id: this.selected, date_null: this.date_null }
+              )
+              .then(({ data }) => {
+                  this.init(data.status);
+                _this.alert_icon = "success";
+                _this.alert_title = "";
+                _this.alert_text =
+                  _this.selectedNum + "件の伝票を確定しました。";
+                if (!this.null_selected_message) {
+                  _this.alert_text = "伝票確定を取消しました。";
+                }
+                _this.sweet_normal_alert();
+                this.invoice_details()
+                // Fire.$emit("LoadByrorderDetail",_this.form.page);
+                this.selected = [];
+                // this.date_null = false;
+                this.isCheckAll = false;
+                this.null_selected_message = false;
+              })
+              .catch(function (response) {
+                //handle error
+                // console.log(response);
+              });
+          } else {
+            this.selected = [];
+            this.isCheckAll = false;
+            this.null_selected_message = false;
+          }
+        });
+      } else {
+        this.null_selected_message = false;
+        this.alert_text = "対象となる伝票がありません、再度確認して実行してください。";
+        this.sweet_normal_alert();
+      }
+    },
+    updateDatetimeDecessionfield() {
+      if (this.null_selected.length > 0) {
+        this.alert_text =
+          this.selected.length + "件の伝票を確定しますがよろしいでしょうか。";
+        this.updateDecissionDateTime();
+      } else {
+        this.alert_icon = "warning";
+        this.alert_title = "";
+        this.alert_text = "対象となる伝票がありません、再度確認して実行してください。";
+        this.sweet_normal_alert();
+      }
     },
     sendInvoiceData() {
       var _this = this;
@@ -386,7 +506,6 @@ export default {
               if (result.value) {
                 axios.post(this.BASE_URL + "api/send_invoice_data", {
                     data_invoice_id: this.form.data_invoice_id,
-                    // order_info: this.order_info,
                     data_count: false,
                   })
                   .then(({ data }) => {
@@ -396,7 +515,7 @@ export default {
                     _this.alert_text =
                       data.csv_data_count + "件の確定伝票を送信しました。";
                     _this.sweet_normal_alert();
-                    Fire.$emit("LoadByrorderDetail",_this.select_field_page_num);
+                    Fire.$emit("LoadByrinvoiceDetails",_this.form.page);
                   });
               }
             });
@@ -404,6 +523,32 @@ export default {
             _this.alert_text = "対象となる伝票がありません、再度確認して実行してください。";
             _this.sweet_normal_alert();
           }
+        });
+    },
+    invoice_download(downloadType = 1) {
+      //downloadcsvshipment_confirm
+      var _this = this;
+      axios.post(this.BASE_URL + "api/download_invoice", {
+          data_invoice_id: this.form.data_invoice_id,
+        //   order_info: this.order_info,
+          downloadType: downloadType,
+        })
+        .then(({ data }) => {
+           this.init(data.status);
+        //    return 0;
+          const link = document.createElement("a");
+          link.href = data.url;
+          link.setAttribute("download", data.new_file_name); //ここらへんは適当に設定する
+          document.body.appendChild(link);
+          link.click();
+          return 0;
+          axios.get(_this.BASE_URL + "api/deletedownloadedshipmentCsv/" +
+                data.new_file_name
+            ).then(({data}) => {
+                this.init(data.status);
+              //console.log(data);
+            });
+          //link.revokeObjectURL();
         });
     },
     invoiceUpdate(){
@@ -417,8 +562,8 @@ export default {
     this.param_data = this.$route.query;
     this.form.data_invoice_id = this.param_data.data_invoice_id;
     this.invoice_details();
-    Fire.$on("LoadByrinvoice_detail", () => {
-      this.invoice_details();
+    Fire.$on("LoadByrinvoiceDetails", (page=1) => {
+      this.invoice_details(page);
     });
   },
   computed: {
