@@ -202,7 +202,7 @@ DB::raw("SUM(mes_lis_pay_lin_det_amo_payable_amount + mes_lis_pay_lin_det_amo_ta
             $result1 = $result1->whereDate('data_payment_pay_details.mes_lis_pay_lin_det_transfer_of_ownership_date','<=',$to_date);
         }
         if($mes_lis_pay_lin_tra_code!=''){
-            $result1 = $resresult1ult->where('data_payment_pay_details.mes_lis_pay_lin_tra_code',$mes_lis_pay_lin_tra_code);
+            $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_tra_code',$mes_lis_pay_lin_tra_code);
         }
         if($mes_lis_pay_lin_lin_trade_number_eference!=''){
             $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_lin_trade_number_eference',$mes_lis_pay_lin_lin_trade_number_eference);
