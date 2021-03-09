@@ -291,19 +291,6 @@ export default {
             if (status == 2) {
                 window.location.reload();
             }
-            // let access_token = localStorage
-            // let browser_cookie = document.cookie;
-            // let access_token_string = browser_cookie.split(';')[2];
-            // let access_token = access_token_string.split('=')[1];
-            // console.log(access_token);
-            // // console.log(userInfo);
-            // return 0;
-            // if (!access_token) {
-            //     window.location.reload();
-            // }
-            // axios.post(this.BASE_URL + "user").catch(err => {
-            //     window.location.reload();
-            // });
         },
         selectedOption(option) {
             if (this.value) {
@@ -381,8 +368,8 @@ export default {
             moment.locale('ja');
             return moment(str).format('LL');
         },
-        priceFormat(str){
-            if(!str)return ''
+        priceFormat(str) {
+            if (!str) return ''
             return str.toString().replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         },
     },

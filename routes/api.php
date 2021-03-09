@@ -74,8 +74,7 @@ Route::post('/users_update', 'API\UsersController@update');
 
 // Route::post('/permission_check', 'API\PermissionController@check');
 
-Route::post('scenario_exec', 'API\Cmn_ScenarioController@exec');
-Route::post('job_exec', 'API\Cmn_jobController@exec');
+
 Route::get('/slr_job_list_by_seller_id/{slr_seller_id}', 'API\Cmn_jobController@slr_job_list_by_seller_id');
 
 Route::get('/cmn_company_user_list/{cmn_company_id?}', 'API\BYR\ByrController@cmn_company_user_list');
@@ -160,8 +159,23 @@ Route::post('/get_byr_order_data_by_slr', 'API\DATA\ORDER\OrderController@getByr
 Route::post('/order_details', 'API\Byr_orderController@orderDetails');
 Route::get('/order_item_details/{data_shipment_voucher_id}', 'API\Byr_orderController@orderItemDetails');
 Route::get('/shipment_item_detail_search/{item_code}', 'API\Byr_orderController@shipment_item_detail_search');
-
-// level3
+Route::get('slr_job_list_all', 'API\Cmn_jobController@index');
+//get user company byr slr list
+Route::post('/get_user_company_byr_slr_list', 'API\UsersController@get_user_company_byr_slr_list');
+Route::get('/get_selected_byr_info/{byr_buyer_id}', 'API\BYR\ByrController@get_selected_byr_info');
+Route::post('/update_cmn_connects_optional', 'API\CMN\CmnConnectsController@update_cmn_connects_optional');
+Route::post('/update_cmn_connects_optionalAllJson', 'API\CMN\CmnConnectsController@update_cmn_connects_optionalAllJson');
+Route::get('/get_allInvoiceJsonSetting_info', 'API\CMN\CmnConnectsController@get_allInvoiceJsonSetting_info');
+Route::post('/get_partner_fax_list', 'API\CMN\CmnConnectsController@get_partner_fax_list');
+});
+// scenario exec
+Route::post('scenario_exec', 'API\Cmn_ScenarioController@exec');
+// Job Exec
+Route::post('job_exec', 'API\Cmn_jobController@exec');
+// Level3
+Route::post('get_shipment_file', 'API\Level3\Level3Controller@getShipmentFile');
+Route::post('delete_service', 'API\Level3\Level3Controller@deleteService');
+Route::post('/job_list', 'API\Level3\Level3Controller@job_list');
 Route::post('get_user_login', 'API\Level3\Level3Controller@userLogin');
 Route::post('history_url', 'API\Level3\Level3Controller@historyData');
 Route::post('get_customer', 'API\Level3\Level3Controller@getCustomer');
@@ -176,19 +190,3 @@ Route::post('lv3_schedule_data', 'API\Level3\Level3Controller@lv3ScheduleData');
 Route::post('get_service_data', 'API\Level3\Level3Controller@getServiceData');
 Route::post('history_create', 'API\Level3\Level3Controller@historyCreate');
 Route::post('job_scenario', 'API\Level3\Level3Controller@jobScenario');
-Route::get('slr_job_list_all', 'API\Cmn_jobController@index');
-Route::post('get_shipment_file', 'API\Level3\Level3Controller@getShipmentFile');
-
-Route::post('delete_service', 'API\Level3\Level3Controller@deleteService');
-Route::post('/job_list', 'API\Level3\Level3Controller@job_list');
-
-//get user company byr slr list
-Route::post('/get_user_company_byr_slr_list', 'API\UsersController@get_user_company_byr_slr_list');
-Route::get('/get_selected_byr_info/{byr_buyer_id}', 'API\BYR\ByrController@get_selected_byr_info');
-Route::post('/update_cmn_connects_optional', 'API\CMN\CmnConnectsController@update_cmn_connects_optional');
-Route::post('/update_cmn_connects_optionalAllJson', 'API\CMN\CmnConnectsController@update_cmn_connects_optionalAllJson');
-Route::get('/get_allInvoiceJsonSetting_info', 'API\CMN\CmnConnectsController@get_allInvoiceJsonSetting_info');
-Route::post('/get_partner_fax_list', 'API\CMN\CmnConnectsController@get_partner_fax_list');
-});
-// Test
-// Route::post('/invoice_scheduler', 'API\DATA\INVOICE\InvoiceController@invoiceScheduler');
