@@ -53,7 +53,6 @@ export default {
     //     })
   },
   mounted() {
-    console.log("byr order detail page parent loaded");
   }
 };
 </script>

@@ -133,7 +133,7 @@
                 <input type="hidden" v-model="totalSellingPrice += order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity">-->
                 </td>
               </tr>
-              <tr v-if="order_item_detail_list && order_item_detail_lists.length==0">
+              <tr v-if="order_item_detail_lists && order_item_detail_lists.length==0">
             <td class="text-center" colspan="12">データがありません</td>
             </tr>
             </tbody>
@@ -369,9 +369,6 @@ beforeCreate: function() {
     },
     updateShipmentItemDetails(){
       var _this = this;
-      console.log("====update======");
-      console.log(this.order_item_detail_lists);
-      console.log(this.order_item_shipment_data_headTable.mes_lis_shi_tra_dat_revised_delivery_date);
       var order_detailitem = {'items':this.order_item_detail_lists,'updated_date':this.order_item_shipment_data_headTable.mes_lis_shi_tra_dat_revised_delivery_date,'total_cost_price':this.totalCostPriceVal,'total_selling_price':this.totalSellingPriceVal,'order_status':this.order_item_shipment_data_headTable.status};
       axios({
         method: "POST",
@@ -387,10 +384,7 @@ beforeCreate: function() {
           Fire.$emit("LoadByrorderItemDetail");
         })
         .catch(function (response) {
-          //handle error
-          console.log(response);
         });
-      console.log("====update======");
     },
 
     checkAll() {
@@ -439,9 +433,6 @@ beforeCreate: function() {
       }
       if (event.key == "Enter") {
         event.preventDefault();
-        console.log(event.key);
-        // event.target.nextElementSibling.focus()
-        // console.log(event.target.parent.closest('.lack_reasons'));
       }
     },
     sortBynumeric_valu(sortKey) {
@@ -472,7 +463,7 @@ beforeCreate: function() {
       }
     },
     update_shipment_detail(order_detail) {
-      console.log(order_detail);
+    
       axios({
         method: "POST",
         url: this.BASE_URL + "api/update_shipment_detail",
@@ -483,8 +474,6 @@ beforeCreate: function() {
           Fire.$emit("LoadByrorderDetail");
         })
         .catch(function (response) {
-          //handle error
-          console.log(response);
         });
     },
     //get Table data
@@ -492,7 +481,6 @@ beforeCreate: function() {
       axios.get(this.BASE_URL + "api/order_item_details/"+this.data_order_voucher_id)
         .then(({data}) => {
           this.init(data.status);
-          console.log(data.order_item_list_detail);
           this.order_item_detail_lists = data.order_item_list_detail;
           this.mes_lis_shi_tot_tot_net_price_total = data.order_item_list_detail[0].mes_lis_shi_tot_tot_net_price_total;
           this.mes_lis_shi_tot_tot_selling_price_total = data.order_item_list_detail[0].mes_lis_shi_tot_tot_selling_price_total;
@@ -503,7 +491,7 @@ beforeCreate: function() {
     },
 
     col_show_hide_setting(url_slug) {
-    //   console.log(this.show_hide_col_list.length + "col lenght");
+   
       if (this.show_hide_col_list.length == 0) {
         var post_data = {
           url_slug: url_slug,
@@ -523,18 +511,18 @@ beforeCreate: function() {
 
   created() {
     this.byr_buyer_id = this.$session.get('byr_buyer_id');
-    //this.getbuyerJsonSetting();
+  
     Fire.$emit('byr_has_selected',this.$session.get('byr_buyer_id'));
     Fire.$emit('permission_check_for_buyer',this.$session.get('byr_buyer_id'));
 this.getbuyerJsonSettingvalue();
-    // console.log(this.$route.query);
+    
     this.param_data=this.$route.query
-    console.log(this.$session.get('voucher_page_query_param'));
+  
     this.parent.query = this.$session.get('voucher_page_query_param');
-    // console.log(this.param_data);
+   
     this.loader = Vue.$loading.show();
     this.data_order_voucher_id = this.$route.params.data_order_list_voucher_id;
-    console.log(this.$route.params.data_order_list_voucher_id)
+    
     this.get_all_byr_order_item_detail();
     Fire.$on("LoadByrorderItemDetail", () => {
 
