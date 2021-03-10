@@ -100,8 +100,6 @@ export default {
        Fire.$emit('LoadByrorder');
     })
     .catch(function (response) {
-        //handle error
-        console.log(response);
     });
     },
     onChangeFileUpload(){

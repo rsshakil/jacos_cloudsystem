@@ -47,11 +47,9 @@ export default {
     },
   },
   created() {
-    console.log("created jacos management log");
   },
   mounted() {
     this.init();
-    console.log("Home Component mounted.");
     this.loadData();
   },
 };

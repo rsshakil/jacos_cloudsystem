@@ -58,7 +58,7 @@
                 </thead>
                 <tbody>
                   <tr
-                    v-for="buyer in buyer_info_for_saller"
+                    v-for="buyer in slr_order_list"
                     :key="buyer.byr_buyer_id"
                   >
                     <td class="btn-outline-primary custom_navbr_button" style="text-align: center;">
@@ -122,11 +122,7 @@
                   class="dropdown-menu dropdown-menu-small"
                   style="margin-left: -60px"
                 >
-                  <!-- @can('personal_profile_view') -->
-                  <!-- <a class="dropdown-item"
-                            :href="BASE_URL+'/users/1'">
-                            <i class="material-icons">&#xE7FD;</i> Profile
-              </a>-->
+                 
                   <router-link
                     :to="{
                       name: 'users',
@@ -331,11 +327,11 @@ export default {
       local: Globals.local,
       user_data: null,
       company_name: null,
-      user_byr_slr_list: [],
+      slr_order_list:null,
       hover: false,
 
       selected_customer_list: "未選択",
-      // buyer_info_for_saller:[],
+      buyer_info_for_saller:[],
       fields: [
         {
           key: "header_1",
@@ -370,17 +366,14 @@ export default {
       );
     },
     get_user_company_info() {
-      axios
-        .post(this.BASE_URL + "api/get_user_company_byr_slr_list")
+       axios
+        .post(this.myLang.base_url + "api/get_byr_order_data_by_slr", {
+          user_id: this.myLang.user_info_id,
+        })
         .then(({ data }) => {
             this.init(data.status);
-          this.company_name = data.user_company_info.company_name;
-          this.user_byr_slr_list = data.byr_slr_list;
-          // console.log(this.global_user_id)
-          // this.buyer_info_for_saller=this.allBuyerInfoBySaller(this.global_user_id)
-
-          // console.log(this.buyer_info_for_saller);
-          // console.log(this.user_data.user.id);
+          
+          this.slr_order_list = data.slr_order_info;
         });
     },
     get_slected_byr_info(byr_buyer_id) {
@@ -393,7 +386,9 @@ export default {
           this.init(data.status);
           if(data.byr_info!=null){
              this.$session.set('byr_buyer_company',data.byr_info.company_name)
+             this.company_name = data.byr_info.company_name;
              this.selected_customer_list = data.byr_info.company_name;
+
           }
 
         });
@@ -404,10 +399,6 @@ export default {
   created() {
     this.get_user_company_info();
     this.user_data = this.app._data;
-    // console.log(this.global_user_id)
-    //this.allBuyerInfoBySaller(this.global_user_id);
-    // console.log(this.buyer_info_for_saller);
-    // this.allBuyerInfoBySaller(this.user_data.user.id);
     Fire.$on("byr_has_selected", (byr_buyer_id) => {
       this.get_slected_byr_info(byr_buyer_id);
       if(this.$session.has('byr_buyer_company')){
