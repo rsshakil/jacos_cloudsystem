@@ -331,9 +331,9 @@ export default {
                 this.$router.push('/home');
             }
         },
-        // beforeCreate: function() {
-        //     this.byr_session_check()
-        // },
+        number_format(number) {
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        },
         get_byr_slr_company(cmn_company_id) {
             if (cmn_company_id == null) {
                 this.filter_select_box = true

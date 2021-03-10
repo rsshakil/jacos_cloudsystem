@@ -254,7 +254,7 @@
               </td>
               <td>{{ value.mes_lis_inv_lin_lin_trade_number_reference }}</td>
               <td>{{ value.mes_lis_inv_lin_det_pay_code }}</td>
-              <td>{{ value.mes_lis_inv_lin_det_amo_requested_amount }}</td>
+              <td>{{ number_format(value.mes_lis_inv_lin_det_amo_requested_amount) }}</td>
               <td>{{ value.mes_lis_inv_lin_det_balance_carried_code }}</td>
               <td>{{ value.send_datetime }}</td>
               <!-- <td><router-link :to="{name:'voucher_detail',params:{voucher_number:value.voucher_number} }" class="btn btn-info">詳細</router-link></td> -->

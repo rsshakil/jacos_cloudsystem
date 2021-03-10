@@ -128,7 +128,7 @@
               <td>{{ value.mes_lis_inv_pay_code }}</td>
               <td>{{ value.mes_lis_buy_name }}</td>
               <td>{{ value.status }}</td>
-              <td>{{ value.mes_lis_inv_lin_det_amo_requested_amount }}</td>
+              <td>{{number_format(value.mes_lis_inv_lin_det_amo_requested_amount) }}</td>
 
             </tr>
             <tr v-if="invoice_lists.data && invoice_lists.data.length==0">
