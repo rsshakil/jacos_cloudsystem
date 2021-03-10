@@ -132,7 +132,7 @@
               <td>{{ value.mes_lis_inv_lin_det_amo_requested_amount }}</td>
 
             </tr>
-            <tr v-if="Object.is(invoice_lists.data)==false">
+            <tr v-if="invoice_detail_lists.data && invoice_detail_lists.data.length==0">
             <td class="text-center" colspan="6">データがありません</td>
             </tr>
             
