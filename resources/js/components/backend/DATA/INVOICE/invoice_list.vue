@@ -132,7 +132,7 @@
               <td>{{ value.mes_lis_inv_lin_det_amo_requested_amount }}</td>
 
             </tr>
-            <tr v-if="invoice_detail_lists.data && invoice_detail_lists.data.length==0">
+            <tr v-if="invoice_lists.data && invoice_lists.data.length==0">
             <td class="text-center" colspan="6">データがありません</td>
             </tr>
             
@@ -254,8 +254,6 @@ export default {
           Fire.$emit("LoadByrorder");
         })
         .catch(function (response) {
-          //handle error
-          console.log(response);
         });
     },
     onChangeFileUpload() {
@@ -279,10 +277,8 @@ export default {
     Fire.$on("LoadByrinvoice", () => {
       this.get_all_invoice_list();
     });
-    console.log("created byr order log");
   },
   mounted() {
-    console.log("User page loaded");
   },
 };
 </script>
