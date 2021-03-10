@@ -45,7 +45,6 @@
   },
         mounted() {
             this.init();
-            console.log('Home Component mounted.')
         }
     }
 </script>

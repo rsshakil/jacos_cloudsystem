@@ -187,7 +187,7 @@ export default {
                     .get(this.BASE_URL + "api/tblecolsetting/" + this.$route.name)
                     .then(data => {
                         this.init(data.status);
-                        console.log(data);
+                        // console.log(data);
                         this.table_col_setting_list = data.data.result;
                         this.table_col_arry = data.data.arrs;
                         this.selected_columns = data.data.selected_columns;
@@ -203,7 +203,7 @@ export default {
         },
 
         update_col_setting() {
-            console.log("update col setting");
+            // console.log("update col setting");
 
             var post_data = {
                 url_slug: this.$route.name,

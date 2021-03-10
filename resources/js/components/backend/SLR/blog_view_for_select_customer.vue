@@ -108,13 +108,10 @@ export default {
       this.get_signle_top_blog();
       this.get_user_top_blog(byr_buyer_id);
     });
-
-    console.log("resue dsd");
     // this.byr_buyer_id=this.$route.params.byr_buyer_id;
   },
   mounted() {
     this.init();
-    console.log("userblog Component mounted.");
   },
   route: {
     canReuse: false,

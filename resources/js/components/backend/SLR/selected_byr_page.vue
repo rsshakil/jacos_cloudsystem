@@ -59,7 +59,6 @@
             },
         mounted() {
             this.init();
-            console.log('Home Component mounted.')
         },
         route: {
             canReuse: false,

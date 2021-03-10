@@ -92,7 +92,6 @@
   },
         mounted() {
             this.init();
-            console.log('Home blog Component mounted.')
         }
     }
 </script>
