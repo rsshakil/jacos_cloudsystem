@@ -130,8 +130,7 @@
               <td>{{ value.mes_lis_buy_name }}</td>
               <td>{{ value.status }}</td>
               <td>{{ value.mes_lis_inv_lin_det_amo_requested_amount }}</td>
-
-            </tr>
+            </tr>       
           </tbody>
         </table>
       </div>

@@ -133,6 +133,9 @@
                 <input type="hidden" v-model="totalSellingPrice += order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity">-->
                 </td>
               </tr>
+              <tr v-if="order_item_detail_lists.length==0">
+            <td class="text-center" colspan="12">データがありません</td>
+            </tr>
             </tbody>
             <tfoot>
             <tr>

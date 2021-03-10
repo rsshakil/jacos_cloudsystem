@@ -151,6 +151,10 @@
 
                 </td>
               </tr>
+              <tr v-if="order_item_detail_lists.length==0">
+            <td class="text-center" colspan="15">データがありません</td>
+            </tr>
+              
             </tbody>
 
 

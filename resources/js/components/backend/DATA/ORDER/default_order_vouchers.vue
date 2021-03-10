@@ -376,6 +376,7 @@
                 <td>{{ order_detail_list.print_datetime }}</td>
                 <td>{{ order_detail_list.send_datetime }}</td>
               </tr>
+              
             </tbody>
           </table>
         </div>
