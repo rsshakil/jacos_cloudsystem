@@ -8,22 +8,36 @@
         >
           <tr>
             <td class="cl_custom_color">受信日時</td>
-            <td>{{ order_info.receive_datetime }}</td>
+            <td>
+            <span v-if="order_info && order_info.length">
+            {{ order_info.receive_datetime }}
+            </span>
+            </td>
             <td class="cl_custom_color">取引先</td>
             <td colspan="5">
+            <span v-if="order_info && order_info.length">
              {{ order_info.mes_lis_shi_par_sel_code }}
               {{ order_info.mes_lis_shi_par_sel_name }}
+              </span>
             </td>
           </tr>
           <tr>
             <td class="cl_custom_color">納品日</td>
-            <td>{{ order_info.mes_lis_shi_tra_dat_delivery_date }}</td>
+            <td>
+            <span v-if="order_info && order_info.length">
+            {{ order_info.mes_lis_shi_tra_dat_delivery_date }}
+            </span>
+            </td>
             <td class="cl_custom_color">部門</td>
-            <td>{{ order_info.mes_lis_shi_tra_goo_major_category }}</td>
+            <td>
+            <span v-if="order_info && order_info.length">
+            {{ order_info.mes_lis_shi_tra_goo_major_category }}
+            </span>
+            </td>
             <td class="cl_custom_color">便</td>
-            <td>{{ order_info.mes_lis_shi_log_del_delivery_service_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_log_del_delivery_service_code',order_info.mes_lis_shi_log_del_delivery_service_code,'orders')}}</td>
+            <td><span v-if="order_info && order_info.length">{{ order_info.mes_lis_shi_log_del_delivery_service_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_log_del_delivery_service_code',order_info.mes_lis_shi_log_del_delivery_service_code,'orders')}}</span></td>
             <td class="cl_custom_color">配送温度区分</td>
-            <td>{{ order_info.mes_lis_shi_tra_ins_temperature_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_info.mes_lis_shi_tra_ins_temperature_code,'orders')}}</td>
+            <td><span v-if="order_info && order_info.length">{{ order_info.mes_lis_shi_tra_ins_temperature_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_info.mes_lis_shi_tra_ins_temperature_code,'orders')}}</span></td>
           </tr>
         </table>
       </div>
@@ -142,7 +156,7 @@
                 <td>{{ order_detail_list.mes_lis_shi_lin_fre_field_name }}</td>
               </tr>
               <tr v-if="order_detail_lists.data && order_detail_lists.data.length==0">
-                <td colspan="6">データがありません</td>
+                <td class="text-center" colspan="6">データがありません</td>
             </tr>
             </tbody>
           </table>

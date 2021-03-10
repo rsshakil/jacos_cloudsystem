@@ -6,40 +6,68 @@
         <table class="table orderTopDetailTable table-bordered" style="width: 100%">
           <tr>
             <td class="cl_custom_color">受信日時</td>
-            <td>{{ order_item_lists.receive_datetime }}</td>
+            <td>
+            <span v-if="order_item_lists && order_item_lists.length">
+            {{ order_item_lists.receive_datetime }}
+            </span>
+            </td>
             <td class="cl_custom_color">取引先</td>
-            <td colspan="5">{{ order_item_lists.mes_lis_shi_par_sel_code }}
-              {{ order_item_lists.mes_lis_shi_par_sel_name }}</td>
+            <td colspan="5">
+            <span v-if="order_item_lists && order_item_lists.length">
+            {{ order_item_lists.mes_lis_shi_par_sel_code }}
+              {{ order_item_lists.mes_lis_shi_par_sel_name }}
+              </span>
+              </td>
           </tr>
           <tr>
             <td class="cl_custom_color">納品日</td>
-            <td>{{ order_item_lists.mes_lis_shi_tra_dat_delivery_date }}</td>
+            <td>
+            <span v-if="order_item_lists && order_item_lists.length">
+            {{ order_item_lists.mes_lis_shi_tra_dat_delivery_date }}
+            </span>
+            </td>
             <td class="cl_custom_color">部門</td>
-            <td>{{ order_item_lists.mes_lis_shi_tra_goo_major_category }}</td>
+            <td>
+            <span v-if="order_item_lists && order_item_lists.length">
+            {{ order_item_lists.mes_lis_shi_tra_goo_major_category }}
+            </span>
+            </td>
             <td class="cl_custom_color">便</td>
-            <td>{{ order_item_lists.mes_lis_shi_log_del_delivery_service_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_log_del_delivery_service_code',order_item_lists.mes_lis_shi_log_del_delivery_service_code,'orders')}}</td>
+            <td>
+            <span v-if="order_item_lists && order_item_lists.length">
+            {{ order_item_lists.mes_lis_shi_log_del_delivery_service_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_log_del_delivery_service_code',order_item_lists.mes_lis_shi_log_del_delivery_service_code,'orders')}}
+            </span>
+            </td>
             <td class="cl_custom_color">配送温度区分</td>
-            <td>{{ order_item_lists.mes_lis_shi_tra_ins_temperature_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_item_lists.mes_lis_shi_tra_ins_temperature_code,'orders')}}</td>
+            <td><span v-if="order_item_lists && order_item_lists.length">{{ order_item_lists.mes_lis_shi_tra_ins_temperature_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_item_lists.mes_lis_shi_tra_ins_temperature_code,'orders')}}</span></td>
           </tr>
           <tr>
             <td class="cl_custom_color">商品コード</td>
-            <td>{{ order_item_lists.mes_lis_shi_lin_ite_order_item_code }}</td>
+            <td><span v-if="order_item_lists && order_item_lists.length">{{ order_item_lists.mes_lis_shi_lin_ite_order_item_code }}</span></td>
             <td class="cl_custom_color">JANコード</td>
             <td colspan="5">
+            <span v-if="order_item_lists && order_item_lists.length">
               {{ order_item_lists.mes_lis_shi_lin_ite_gtin }}
+              </span>
             </td>
           </tr>
           <tr>
             <td class="cl_custom_color">商品名</td>
-            <td colspan="7">{{order_item_lists.mes_lis_shi_lin_ite_name}}</td>
+            <td colspan="7">
+            <span v-if="order_item_lists && order_item_lists.length">
+            {{order_item_lists.mes_lis_shi_lin_ite_name}}
+            </span>
+            </td>
 
           </tr>
           <tr>
             <td class="cl_custom_color">規格名</td>
-            <td>{{order_item_lists.mes_lis_shi_lin_ite_ite_spec}}</td>
+            <td><span v-if="order_item_lists && order_item_lists.length">{{order_item_lists.mes_lis_shi_lin_ite_ite_spec}}</span></td>
             <td class="cl_custom_color">産地</td>
             <td colspan="5">
+            <span v-if="order_item_lists && order_item_lists.length">
               {{order_item_lists.mes_lis_shi_lin_fre_field_name}}
+              </span>
             </td>
           </tr>
         </table>
@@ -501,8 +529,11 @@ export default {
 
           this.init(data.status);
           this.order_item_detail_lists = data.order_item_list_detail;
-          this.mes_lis_shi_tot_tot_net_price_total = data.order_item_list_detail[0].mes_lis_shi_tot_tot_net_price_total;
+          if(data.order_item_list_detail && data.order_item_list_detail.length>0){
+            this.mes_lis_shi_tot_tot_net_price_total = data.order_item_list_detail[0].mes_lis_shi_tot_tot_net_price_total;
           this.mes_lis_shi_tot_tot_selling_price_total = data.order_item_list_detail[0].mes_lis_shi_tot_tot_selling_price_total;
+          }
+          
           this.order_item_lists = data.orderItem;
           console.log("--");
           console.log(this.order_item_lists);
