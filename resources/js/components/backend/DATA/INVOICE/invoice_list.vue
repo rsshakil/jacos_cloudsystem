@@ -7,18 +7,17 @@
         >
           <tr>
             <td class="cl_custom_color">請求取引先コード</td>
-            <td><input type="text" class="form-control"></td>
-            <td class="cl_custom_color">請求日時</td>
+            <td><input type="text" class="form-control" v-model="form.mes_lis_inv_pay_code"></td>
+            <!-- <td class="cl_custom_color">請求日時</td>
             <td>
             <div class="input-group mb-3">
-
-      <input type="date" class="form-control">
-      <div class="input-group-prepend">
-        <span class="input-group-text">~</span>
-      </div>
-      <input type="date" class="form-control">
-    </div>
-            </td>
+                <input type="date" class="form-control">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">~</span>
+                </div>
+                <input type="date" class="form-control">
+            </div>
+            </td> -->
             <td class="cl_custom_color">発注者</td>
             <td>
             <select class="form-control" style="width: 220px">
@@ -26,33 +25,33 @@
 
               </select>
             </td>
-
+            <td class="cl_custom_color">請求状況</td>
+            <td colspan="2">
+                <select class="form-control" style="width: 220px" v-model="form.send_datetime_status">
+                <option value="*">全て</option>
+                <option :value="item" v-for="(item,i) in send_datetime_status" :key="i">
+                  {{ item }}
+                </option>
+              </select>
+            </td>
           </tr>
           <tr>
             <td class="cl_custom_color">締日</td>
-            <td colspan="2"><div class="input-group mb-3">
-
-      <input type="date" class="form-control">
-      <div class="input-group-prepend">
-        <span class="input-group-text">~</span>
-      </div>
-      <input type="date" class="form-control">
-    </div> </td>
-            <td class="cl_custom_color">請求状況</td>
             <td colspan="2">
-            <select class="form-control" style="width: 220px">
-                <option value="">全て</option>
-                <option value="未請求">未請求</option>
-                <option value="請求済">請求済</option>
-                <option value="再請求あり">再請求あり</option>
-              </select>
-            </td>
-
+                <div class="input-group mb-3">
+                    <input type="date" class="form-control" v-model="form.mes_lis_inv_per_begin_date">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">~</span>
+                    </div>
+                    <input type="date" class="form-control" v-model="form.mes_lis_inv_per_end_date">
+                </div>
+        </td>
+        <td colspan="3"></td>
           </tr>
         </table>
     </div>
     <div class="col-12 text-center">
-      <button class="btn btn-primary active srchBtn" type="button">
+      <button class="btn btn-primary active srchBtn" type="button" @click="get_all_invoice_list">
           {{ myLang.search }}
         </button>
     </div>
@@ -135,7 +134,7 @@
             <tr v-if="invoice_lists.data && invoice_lists.data.length==0">
             <td class="text-center" colspan="6">データがありません</td>
             </tr>
-            
+
           </tbody>
         </table>
       </div>
@@ -193,13 +192,16 @@ export default {
         mes_lis_inv_per_begin_date:'',
         mes_lis_inv_per_end_date:'',
       },
+      send_datetime_status: ["未請求", "請求済","再請求あり"],
       form: new Form({
         select_field_per_page_num:10,
         page:1,
         adm_user_id: Globals.user_info_id,
         byr_buyer_id: null,
-        // print_cnt: "*",
-        // decission_cnt: "*",
+        mes_lis_inv_pay_code: '',
+        mes_lis_inv_per_begin_date:'',
+        mes_lis_inv_per_end_date:'',
+        send_datetime_status: "*",
         submit_type: "page_load",
       }),
     };
