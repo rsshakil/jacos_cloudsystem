@@ -249,6 +249,9 @@
               <td></td>
               <td>{{ received_item.check_datetime }}</td>
             </tr>
+            <tr v-if="received_item_list.data && received_item_list.data.length==0">
+                <td colspan="11">データがありません</td>
+            </tr>
           </tbody>
         </table>
       </div>

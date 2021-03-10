@@ -51,7 +51,9 @@
                                     <td><button class="btn btn-primary">{{myLang.received_data}}</button></td>
 
                                 </tr>
-
+                                <tr v-if="order_corrected_receive_lists && order_corrected_receive_lists.length==0">
+                <td colspan="5">データがありません</td>
+            </tr>
                             </tbody>
                         </table>
                     </div>

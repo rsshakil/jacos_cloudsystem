@@ -376,7 +376,9 @@
                 <td>{{ order_detail_list.print_datetime }}</td>
                 <td>{{ order_detail_list.send_datetime }}</td>
               </tr>
-              
+               <tr v-if="order_detail_lists.data && order_detail_lists.data.length==0">
+                <td colspan="11">データがありません</td>
+            </tr>
             </tbody>
           </table>
         </div>

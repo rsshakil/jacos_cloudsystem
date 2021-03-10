@@ -141,6 +141,9 @@
                 <td>{{ order_detail_list.mes_lis_shi_lin_ite_ite_spec }}</td>
                 <td>{{ order_detail_list.mes_lis_shi_lin_fre_field_name }}</td>
               </tr>
+              <tr v-if="order_detail_lists.data && order_detail_lists.data.length==0">
+                <td colspan="6">データがありません</td>
+            </tr>
             </tbody>
           </table>
         </div>

@@ -282,7 +282,7 @@
               <td>{{ order_list.print_cnt }}</td>
               <td>{{ order_list.check_datetime }}</td>
             </tr>
-            <tr v-if="order_lists.length==0">
+            <tr v-if="order_lists && order_lists.length==0">
             <td colspan="11">データがありません</td>
             </tr>
           </tbody>

@@ -322,6 +322,9 @@
                 </td>
                 <td><span v-if="order_detail_list.mes_lis_acc_tot_tot_net_price_total>0">訂正あり</span><span v-else>訂正なし</span></td>
               </tr>
+              <tr v-if="order_detail_lists.data && order_detail_lists.data.length==0">
+                <td colspan="8">データがありません</td>
+            </tr>
             </tbody>
           </table>
         </div>

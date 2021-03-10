@@ -259,6 +259,9 @@
               <td>{{ value.send_datetime }}</td>
               <!-- <td><router-link :to="{name:'voucher_detail',params:{voucher_number:value.voucher_number} }" class="btn btn-info">詳細</router-link></td> -->
             </tr>
+            <tr v-if="invoice_detail_lists.data && invoice_detail_lists.data.length==0">
+                <td colspan="9">データがありません</td>
+            </tr>
           </tbody>
         </table>
         </div>

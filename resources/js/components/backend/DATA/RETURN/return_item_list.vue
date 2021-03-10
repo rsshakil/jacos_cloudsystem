@@ -51,7 +51,9 @@
                                     <td><button class="btn btn-primary">{{myLang.return_data}}</button></td>
 
                                 </tr>
-
+                                <tr v-if="return_lists && return_lists.length==0">
+                <td colspan="5">データがありません</td>
+            </tr>
                             </tbody>
                         </table>
                     </div>

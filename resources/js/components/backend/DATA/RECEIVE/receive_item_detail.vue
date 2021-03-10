@@ -149,6 +149,9 @@
                 {{order_item_detail_list.mes_lis_acc_lin_qua_rec_reason_code}}
                 </td>
               </tr>
+              <tr v-if="order_item_detail_lists && order_item_detail_lists.length==0">
+                <td colspan="12">データがありません</td>
+            </tr>
             </tbody>
             <tfoot>
             <tr>
