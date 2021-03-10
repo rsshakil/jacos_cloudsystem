@@ -130,7 +130,12 @@
               <td>{{ value.mes_lis_buy_name }}</td>
               <td>{{ value.status }}</td>
               <td>{{ value.mes_lis_inv_lin_det_amo_requested_amount }}</td>
-            </tr>       
+
+            </tr>
+            <tr v-if="Object.is(invoice_lists.data)==false">
+            <td class="text-center" colspan="6">データがありません</td>
+            </tr>
+            
           </tbody>
         </table>
       </div>

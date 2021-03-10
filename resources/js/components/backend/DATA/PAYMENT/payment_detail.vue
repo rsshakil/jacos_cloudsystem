@@ -67,6 +67,9 @@
                     }">{{payment_detail_header.mes_lis_pay_pay_code}}</router-link></td>
               <td class="text-right">{{paymentdetailTopTable.totalAmount | priceFormat}}</td>
             </tr>
+            <tr v-if="payment_detail_header && payment_detail_header.length==0">
+            <td class="text-center" colspan="4">データがありません</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -87,6 +90,9 @@
               <td>{{index+1}}</td>
               <td>{{item.p_title}}</td>
               <td class="text-right">{{item.amount | priceFormat}}</td>
+            </tr>
+             <tr v-if="pdtableleft && pdtableleft.length==0">
+            <td class="text-center" colspan="3">データがありません</td>
             </tr>
             <tr>
             <td colspan="2">支払合計金額</td>
@@ -117,6 +123,9 @@
               <td>{{item.mes_lis_pay_lin_det_det_code}}</td>
               <td>{{item.mes_lis_pay_lin_det_det_meaning}}</td>
               <td class="text-right">{{item.mes_lis_pay_lin_det_amo_requested_amount_sum | priceFormat}}</td>
+            </tr>
+             <tr v-if="paymentdetailRghtTable && paymentdetailRghtTable.length==0">
+            <td class="text-center" colspan="5">データがありません</td>
             </tr>
             <tr>
               <td colspan="4">相殺合計金額</td>

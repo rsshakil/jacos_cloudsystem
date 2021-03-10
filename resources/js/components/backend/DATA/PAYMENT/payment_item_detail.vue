@@ -161,9 +161,9 @@ paymentdetailTopTable.current_page *
               <td>{{value.mes_lis_pay_lin_det_amo_optional_amount | priceFormat}}</td>
               <td>{{value.mes_lis_pay_lin_det_verification_result_code}}</td>
             </tr>
-            <!--<tr v-if="paymentdetailTopTable.data.length==0">
+            <tr v-if="paymentdetailTopTable.data && paymentdetailTopTable.data.length==0">
                 <td colspan="11">データがありません</td>
-            </tr>-->
+            </tr>
           </tbody>
         </table>
       </div>

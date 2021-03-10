@@ -155,6 +155,9 @@
               <td class="text-right">{{ payment.mes_lis_pay_lin_det_amo_payable_amount | priceFormat}}</td>
               <td>{{ payment.check_datetime }}</td>
             </tr>
+            <tr v-if="payment_lists.data && payment_lists.data.length==0">
+            <td class="text-center" colspan="8">データがありません</td>
+            </tr>
           </tbody>
         </table>
       </div>
