@@ -386,7 +386,6 @@ export default {
       this.form
         .post(this.BASE_URL + "api/get_byr_order_list", this.form)
         .then(({ data }) => {
-          // console.log(data)
           this.order_lists = data.order_list;
           this.byr_buyer_lists = data.byr_buyer_list;
           this.buyer_settings = JSON.parse(data.buyer_settings);
@@ -396,19 +395,14 @@ export default {
           // this.json_delivery_service_code.push({"00":'全て'});
           // this.json_temperature_code.push({'00':'全て'});
           this.byr_buyer_category_lists.unshift({category_code:'*',category_name:'全て'});
-  console.log(this.byr_buyer_category_lists);
-          // console.log(this.buyer_settings.orders.mes_lis_ord_tra_ins_temperature_code);
           this.loader.hide();
         });
     },
     searchOrder() {
-      // console.log(this.form)
       this.form.submit_type = "search";
-      // console.log(this.form)
       this.get_all_order();
     },
     orderDownload() {
-      console.log("download start");
       let formData = new FormData();
       formData.append("scenario_id", 11);
       formData.append("byr_buyer_id", this.$session.get("byr_buyer_id"));
@@ -423,7 +417,6 @@ export default {
           this.init(data.status);
           // const url = window.URL.createObjectURL(new Blob([response.data]));
           const url = data.file_link;
-          console.log(url);
           const link = document.createElement("a");
           link.href = url;
 
@@ -436,15 +429,12 @@ export default {
           // //デコードするとスペースが"+"になるのでスペースへ置換します
           // fileName = decodeURI(fileName).replace(/\+/g, " ");
           let fileName = url.match(".+/(.+?)([?#;].*)?$")[1];
-          console.log(fileName);
           link.setAttribute("download", fileName);
           document.body.appendChild(link);
           link.click();
           Fire.$emit("LoadByrorder");
         })
         .catch(function (response) {
-          //handle error
-          console.log(response);
         });
     },
     check_byr_order_api() {
@@ -464,8 +454,6 @@ export default {
           Fire.$emit("LoadByrorder");
         })
         .catch(function (response) {
-          //handle error
-          console.log(response);
         });
     },
     onChangeFileUpload() {

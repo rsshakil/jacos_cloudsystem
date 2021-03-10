@@ -855,7 +855,6 @@ export default {
       this.order_search_modal3 = true;
     },
     selectNumPage() {
-        console.log(this.select_field_page_num);
       if (this.select_field_page_num != 0) {
         this.get_all_byr_order_detail(this.select_field_page_num);
       }
@@ -875,7 +874,6 @@ export default {
       this.selected = [];
       this.null_selected = [];
       this.not_null_selected = [];
-      //   console.log(this.order_detail_lists.data[0].decision_datetime)
 
       if (this.isCheckAll) {
         for (var key in this.order_detail_lists.data) {
@@ -894,7 +892,6 @@ export default {
         }
       }
 
-      //   console.log(this.select_field_per_page_num);
       if (
         this.null_selected.length <= this.select_field_per_page_num &&
         this.null_selected.length != 0
@@ -910,10 +907,10 @@ export default {
         this.selected = this.not_null_selected;
         this.null_selected_message = false;
       }
-      //   console.log(this.selected);
+    
     },
     updateCheckall() {
-      // console.log(this.selected)
+   
       if (this.selected.length == this.order_detail_lists.data.length) {
         this.isCheckAll = true;
       } else {
@@ -951,9 +948,7 @@ export default {
       }
       if (event.key == "Enter") {
         event.preventDefault();
-        console.log(event.key);
-        // event.target.nextElementSibling.focus()
-        // console.log(event.target.parent.closest('.lack_reasons'));
+      
       }
     },
     sortBynumeric_valu(sortKey) {
@@ -984,7 +979,7 @@ export default {
       }
     },
     update_shipment_detail(order_detail) {
-      console.log(order_detail);
+     
       axios({
         method: "POST",
         url: this.BASE_URL + "api/update_shipment_detail",
@@ -995,8 +990,7 @@ export default {
           Fire.$emit("LoadByrorderDetail",this.select_field_page_num);
         })
         .catch(function (response) {
-          //handle error
-          console.log(response);
+         
         });
     },
     decissionDateUpdate(data_shipment_voucher_id) {
@@ -1035,8 +1029,6 @@ export default {
       if (this.selectedNum > 0) {
         this.confirm_sweet().then((result) => {
           if (result.value) {
-            console.log(this.selected);
-            //   return 0;
             axios
               .post(
                 this.BASE_URL + "api/update_shipment_detail_bycurrentdatetime",
@@ -1059,8 +1051,7 @@ export default {
                 this.null_selected_message = false;
               })
               .catch(function (response) {
-                //handle error
-                // console.log(response);
+                
               });
           } else {
             this.selected = [];
@@ -1091,7 +1082,7 @@ export default {
             _this.alert_text = csv_data_count + "件の伝票を送信しますがよろしいでしょうか。";
             this.confirm_sweet().then((result) => {
               if (result.value) {
-                // console.log(data);
+              
                 axios.post(this.BASE_URL + "api/shipment_confirm", {
                     data_order_id: this.param_data.data_order_id,
                     order_info: this.order_info,
@@ -1125,12 +1116,12 @@ export default {
         if (result.value) {
           const formData = new FormData();
           let file = e.target.files[0];
-          console.log(file);
+          
           formData.append("file", file);
           axios.post(this.BASE_URL + "api/shipment_update", formData)
             .then(({ data }) => {
                 this.init(data.status);
-              console.log(data);
+           
               _this.alert_icon = "success";
               _this.alert_title = "Inserted";
               _this.alert_text = "Shipment CSV Updated";
@@ -1156,7 +1147,7 @@ export default {
     },
 
     col_show_hide_setting(url_slug) {
-    //   console.log(this.show_hide_col_list.length + "col lenght");
+  
       if (this.show_hide_col_list.length == 0) {
         var post_data = {
           url_slug: url_slug,
@@ -1195,7 +1186,7 @@ export default {
                 data.new_file_name
             ).then(({data}) => {
                 this.init(data.status);
-              //console.log(data);
+              
             });
           //link.revokeObjectURL();
         });
@@ -1204,15 +1195,14 @@ export default {
 
   created() {
     // this.byr_session_check()
-    // console.log(this.$session.get("byr_buyer_id"))
+   
     Fire.$emit("byr_has_selected", this.$session.get("byr_buyer_id"));
     Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
     Fire.$emit("voucher_page_query_param", "myData");
     this.$session.set("voucher_page_query_param", this.$route.query);
-    // console.log(this.$route.query);
+    
     this.param_data = this.$route.query;
 
-    // console.log(this.param_data);
     this.loader = Vue.$loading.show();
     this.data_order_id = this.$route.params.data_order_id;
     this.get_all_byr_order_detail();

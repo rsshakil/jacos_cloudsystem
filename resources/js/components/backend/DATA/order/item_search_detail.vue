@@ -404,8 +404,6 @@ export default {
           Fire.$emit("LoadByrorderItemDetail");
         })
         .catch(function (response) {
-          //handle error
-          console.log(response);
         });
     },
     updateOrderItemFormData(){
@@ -424,8 +422,6 @@ export default {
           Fire.$emit("LoadByrorderItemDetail");
         })
         .catch(function (response) {
-          //handle error
-          console.log(response);
         });
     },
     checkAll() {
@@ -474,9 +470,7 @@ export default {
       }
       if (event.key == "Enter") {
         event.preventDefault();
-        console.log(event.key);
-        // event.target.nextElementSibling.focus()
-        // console.log(event.target.parent.closest('.lack_reasons'));
+        
       }
     },
     sortBynumeric_valu(sortKey) {
@@ -507,7 +501,7 @@ export default {
       }
     },
     update_shipment_detail(order_detail) {
-      console.log(order_detail);
+      
       axios({
         method: "POST",
         url: this.BASE_URL + "api/update_shipment_detail",
@@ -518,8 +512,7 @@ export default {
           Fire.$emit("LoadByrorderDetail");
         })
         .catch(function (response) {
-          //handle error
-          console.log(response);
+          
         });
     },
     //get Table data
@@ -535,9 +528,7 @@ export default {
           }
           
           this.order_item_lists = data.orderItem;
-          console.log("--");
-          console.log(this.order_item_lists);
-          console.log("--");
+          
           this.order_item_shipment_data_headTable = data.order_item_list_detail[0];
           this.loader.hide();
         });
@@ -545,7 +536,7 @@ export default {
 
 
     col_show_hide_setting(url_slug) {
-    //   console.log(this.show_hide_col_list.length + "col lenght");
+   
       if (this.show_hide_col_list.length == 0) {
         var post_data = {
           url_slug: url_slug,

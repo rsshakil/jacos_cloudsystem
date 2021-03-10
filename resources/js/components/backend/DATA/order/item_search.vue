@@ -327,12 +327,11 @@ export default {
           this.order_info = data.order_info;
           this.order_item_lists = data.orderItem;
           this.loader.hide();
-          console.log(this.order_detail_lists);
         });
     },
 
     col_show_hide_setting(url_slug) {
-    //   console.log(this.show_hide_col_list.length + "col lenght");
+   
       if (this.show_hide_col_list.length == 0) {
         var post_data = {
           url_slug: url_slug,
