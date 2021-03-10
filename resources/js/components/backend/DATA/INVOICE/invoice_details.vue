@@ -39,49 +39,47 @@
           <tr>
             <td class="cl_custom_color">計上日</td>
             <td>
-              <input type="text" class="form-control" v-model="form.mes_lis_inv_lin_det_transfer_of_ownership_date" />
+              <input type="date" class="form-control" v-model="form.mes_lis_inv_lin_det_transfer_of_ownership_date" />
             </td>
             <td class="cl_custom_color">計上先</td>
             <!-- @click="deliverySearchForm2" -->
             <td>
               <input type="text" class="form-control topHeaderInputFieldBtn" v-model="form.mes_lis_inv_lin_tra_code" />
-              <button
-
-                class="btn btn-primary active"
-              >
+              <button class="btn btn-primary active">
                 参照
               </button>
             </td>
             <td class="cl_custom_color">伝票番号</td>
             <td>
-              <input
-                type="text"
-                v-model="form.mes_lis_inv_lin_lin_trade_number_reference"
-                class="form-control"
-              />
+              <input type="text" v-model="form.mes_lis_inv_lin_lin_trade_number_reference" class="form-control" placeholder="Reference number" />
             </td>
           </tr>
           <tr>
             <td class="cl_custom_color">確定状況</td>
             <td>
-              <input type="text" class="form-control" v-model="form.decision_datetime_status" />
+              <select class="form-control" v-model="form.decision_datetime_status">
+                <option value="*">全て</option>
+                <option :value="item" v-for="(item,i) in decision_datetime_status" :key="i">
+                  {{ item }}
+                </option>
+              </select>
             </td>
             <td class="cl_custom_color">送信状況</td>
-            <!-- v-model="form.fixedSpecial" -->
+            <!-- v-model="form.fixedSpecial"send_datetime_status -->
             <td>
-              <input type="text" class="form-control" v-model="form.send_datetime_status"/>
+              <select class="form-control" v-model="form.send_datetime_status">
+                <option value="*">全て</option>
+                <option :value="item" v-for="(item,i) in send_datetime_status" :key="i">
+                  {{ item }}
+                </option>
+              </select>
             </td>
           </tr>
 
         </table>
       </div>
       <div class="col-12" style="text-align: center">
-          <!-- @click="searchByFormData" -->
-        <button
-
-          class="btn btn-primary active srchBtn"
-          type="button"
-        >
+        <button class="btn btn-primary active srchBtn" type="button" @click="invoice_details">
           {{ myLang.search }}
         </button>
       </div>
@@ -94,12 +92,7 @@
         <div class="row">
           <div class="col-5">
       <p>
-        <span class="tableRowsInfo"
-          >{{ invoice_detail_lists.from }}〜{{
-            invoice_detail_lists.to
-          }}
-          件表示中／全：{{ invoice_detail_lists.total }}件</span
-        >
+        <span class="tableRowsInfo">{{ invoice_detail_lists.from }}〜{{ invoice_detail_lists.to }} 件表示中／全：{{ invoice_detail_lists.total }}件</span>
         <span class="pagi">
           <advanced-laravel-vue-paginate
             :data="invoice_detail_lists"
@@ -339,6 +332,8 @@ export default {
       not_null_selected: [],
       date_null:false,
       null_selected_message:false,
+      decision_datetime_status: ["未確定あり", "確定済"],
+      send_datetime_status: ["未確定あり", "確定済"],
       form: new Form({
         data_invoice_id: "",
         select_field_per_page_num: 10,
@@ -349,8 +344,8 @@ export default {
         mes_lis_inv_lin_det_transfer_of_ownership_date:null,
         mes_lis_inv_lin_tra_code:'',
         mes_lis_inv_lin_lin_trade_number_reference:'',
-        decision_datetime_status:'',
-        send_datetime_status:'',
+        decision_datetime_status:'*',
+        send_datetime_status:'*',
       }),
     };
   },
@@ -541,13 +536,13 @@ export default {
           link.setAttribute("download", data.new_file_name); //ここらへんは適当に設定する
           document.body.appendChild(link);
           link.click();
-          return 0;
-          axios.get(_this.BASE_URL + "api/deletedownloadedshipmentCsv/" +
-                data.new_file_name
-            ).then(({data}) => {
-                this.init(data.status);
-              //console.log(data);
-            });
+        //   return 0;
+        //   axios.get(_this.BASE_URL + "api/deletedownloadedshipmentCsv/" +
+        //         data.new_file_name
+        //     ).then(({data}) => {
+        //         this.init(data.status);
+        //       //console.log(data);
+        //     });
           //link.revokeObjectURL();
         });
     },

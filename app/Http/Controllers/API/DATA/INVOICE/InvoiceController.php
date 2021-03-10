@@ -124,8 +124,16 @@ class InvoiceController extends Controller
     }
     public function invoiceDetailsList(Request $request)
     {
+        // return $request->all();
         $data_invoice_id=$request->data_invoice_id;
         $per_page = $request->select_field_per_page_num == null ? 10 : $request->select_field_per_page_num;
+
+        $ownership_date=$request->mes_lis_inv_lin_det_transfer_of_ownership_date;
+        $number_reference=$request->mes_lis_inv_lin_lin_trade_number_reference;
+        $decision_datetime_status=$request->decision_datetime_status;
+        $send_datetime_status=$request->send_datetime_status;
+
+
         $result=data_invoice::select('data_invoices.data_invoice_id','dipd.data_invoice_pay_detail_id','dip.mes_lis_inv_per_end_date',
         'dipd.mes_lis_inv_lin_det_transfer_of_ownership_date','dipd.mes_lis_inv_lin_tra_code',
         'dipd.mes_lis_inv_lin_tra_name','dipd.mes_lis_inv_lin_lin_trade_number_reference',
@@ -134,8 +142,25 @@ class InvoiceController extends Controller
         )
         ->join('data_invoice_pays as dip','data_invoices.data_invoice_id','=','dip.data_invoice_id')
         ->join('data_invoice_pay_details as dipd','dip.data_invoice_pay_id','=','dipd.data_invoice_pay_id')
-        ->where('data_invoices.data_invoice_id','=',$data_invoice_id)
-        ->paginate($per_page);
+        ->where('data_invoices.data_invoice_id','=',$data_invoice_id);
+        if ($decision_datetime_status=='未確定あり'){
+            $result=$result->where('dipd.decision_datetime','=',null);
+        }else if ($decision_datetime_status=='確定済'){
+            $result=$result->where('dipd.decision_datetime','!=',null);
+        }
+        if ($send_datetime_status=='未確定あり'){
+            $result=$result->where('dipd.send_datetime','=',null);
+        }else if ($send_datetime_status=='確定済'){
+            $result=$result->where('dipd.send_datetime','!=',null);
+        }
+
+        if($ownership_date!=null){
+            $result=$result->where('dipd.mes_lis_inv_lin_det_transfer_of_ownership_date','=',$ownership_date);
+        }
+        if($number_reference!=null){
+            $result=$result->where('dipd.mes_lis_inv_lin_lin_trade_number_reference','=',$number_reference);
+        }
+        $result=$result->paginate($per_page);
 
         return response()->json(['invoice_details_list' => $result]);
     }
