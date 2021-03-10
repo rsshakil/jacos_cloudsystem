@@ -55,7 +55,13 @@ class InvoiceController extends Controller
         // return $request->all();
         $adm_user_id=$request->adm_user_id;
         $per_page = $request->select_field_per_page_num == null ? 10 : $request->select_field_per_page_num;
+        $mes_lis_inv_pay_code=$request->mes_lis_inv_pay_code;
+        $mes_lis_inv_per_begin_date=$request->mes_lis_inv_per_begin_date;
+        $mes_lis_inv_per_end_date=$request->mes_lis_inv_per_end_date;
+        $send_datetime_status=$request->send_datetime_status;
 
+        $mes_lis_inv_per_begin_date = $mes_lis_inv_per_begin_date!=null? date('Y-m-d 00:00:00',strtotime($mes_lis_inv_per_begin_date)):$mes_lis_inv_per_begin_date; // 受信日時開始
+        $mes_lis_inv_per_end_date = $mes_lis_inv_per_end_date!=null? date('Y-m-d 23:59:59',strtotime($mes_lis_inv_per_end_date)):$mes_lis_inv_per_end_date; // 受信日時終了
 
         $authUser = User::find($adm_user_id);
         $cmn_company_id = 0;
@@ -71,15 +77,23 @@ class InvoiceController extends Controller
         )
         ->join('data_invoice_pays as dip','data_invoices.data_invoice_id','=','dip.data_invoice_id')
         ->join('data_invoice_pay_details as dipd','dip.data_invoice_pay_id','=','dipd.data_invoice_pay_id')
-        ->where('data_invoices.cmn_connect_id','=',$cmn_connect_id)
-        ->groupBy('dip.mes_lis_inv_per_end_date')
-        // ->groupBy('data_receives.sta_sen_identifier')
-        // ->groupBy('drv.mes_lis_acc_par_sel_code')
-        // ->groupBy('drv.mes_lis_acc_par_sel_name')
-        // ->groupBy('drv.mes_lis_acc_tra_dat_delivery_date')
-        // ->groupBy('drv.mes_lis_acc_tra_goo_major_category')
-        // ->groupBy('drv.mes_lis_acc_log_del_delivery_service_code')
-        // ->groupBy('drv.mes_lis_acc_tra_ins_temperature_code')
+        ->where('data_invoices.cmn_connect_id','=',$cmn_connect_id);
+        if ($mes_lis_inv_pay_code!=null) {
+            $result=$result->where('dip.mes_lis_inv_pay_code','=',$mes_lis_inv_pay_code);
+        }
+        if ($mes_lis_inv_per_begin_date && $mes_lis_inv_per_end_date) {
+            $result=$result->whereBetween('dip.mes_lis_inv_per_end_date', [$mes_lis_inv_per_begin_date, $mes_lis_inv_per_end_date]);
+        }
+        // will confirm
+        if ($send_datetime_status=='未請求'){
+            $result=$result->where('dipd.send_datetime','=',null);
+        }else if ($send_datetime_status=='請求済'){
+            $result=$result->where('dipd.send_datetime','!=',null);
+        }else if ($send_datetime_status=='再請求あり'){
+            $result=$result->where('dipd.send_datetime','!=',null);
+        }
+        // will confirm
+        $result=$result->groupBy('dip.mes_lis_inv_per_end_date')
         ->paginate($per_page);
         $byr_buyer = $this->all_used_fun->get_company_list($cmn_company_id);
 
