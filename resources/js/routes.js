@@ -116,10 +116,16 @@ export const routes = [
     meta: {
         breadcrumb: {
             label: 'ユーザーアップデート',
-            parent: 'home'
+            parent: 'users'
         },
     }, },
-    { path: '/password_reset/:id/:auth_id', name: 'password_reset', component: password_reset },
+    { path: '/password_reset/:id/:auth_id', name: 'password_reset', component: password_reset,
+    meta: {
+        breadcrumb: {
+            label: 'パスワードのリセット',
+            parent: 'users'
+        },
+    },  },
     {
         path: '/order_list',
         component: order_list,
@@ -198,152 +204,126 @@ export const routes = [
     },
 
 
-    { path: '/voucher_setting', name: 'voucher_setting', component: voucher_setting },
+    { path: '/voucher_setting', name: 'voucher_setting', component: voucher_setting,
+    meta: {
+
+        breadcrumb: {
+            label: 'Voucher seting'
+        }
+
+    }, 
+},
     {
         path: '/byr_management',
-        component: default_parent,
+        component: byr_management,
+                name: 'byr_management',
         meta: {
 
             breadcrumb: {
                 label: '小売管理',
-                parent: 'Params'
             }
 
         },
-        children: [{
-                path: '/',
-                component: byr_management,
-                name: 'byr_management'
-            },
-            // {
-            //     path: '/byr_management/byr_management_edit/:cmn_company_id',
-            //     component: byr_management_edit,
-            //     name: 'byr_management_edit',
-            //     meta: {
-            //         breadcrumb: '基本情報'
-            //     }
-            // },
-            {
-                path: '/byr_management/byr_company_user_list/:cmn_company_id',
-                component: default_parent,
-                // name: 'cmn_company_user_list',
-                meta: {
-                    breadcrumb: 'ユーザー管理'
-                },
-                children: [{
-                    path: '',
-                    component: cmn_company_user_list,
-                    name: 'byr_company_user_list'
-                }, ]
+       
 
+    },
+    {
+        path: '/byr_management/byr_company_user_list/:cmn_company_id',
+        component: cmn_company_user_list,
+            name: 'byr_company_user_list',
+        meta: {
+            breadcrumb: {
+                label: 'ユーザーリスト管理',
+                parent:'byr_management'
             },
-            {
-                path: '/byr_management/byr_company_partner_list/:cmn_company_id',
-                component: default_parent,
-                // name: 'cmn_company_partner_list',
-                meta: {
-                    breadcrumb: '取引先管理'
-                },
-                children: [{
-                        path: '',
-                        component: cmn_company_partner_list,
-                        name: 'byr_company_partner_list'
-                    },
-                    {
-                        path: '/byr_management/byr_company_partner_list/:byr_buyer_id/slr_job_list/:slr_seller_id',
-                        component: slr_job_list,
-                        name: 'slr_job_list',
-                        meta: {
-                            breadcrumb: 'job list'
-                        }
-                    },
-                ]
-            },
-            {
-                path: '/partner_list_manage',
-                component: cmn_company_partner_list,
-                name: 'partner_list_manage',
-            },
-            {
-                path: '/user_list_manage',
-                component: cmn_company_user_list,
-                name: 'user_list_manage',
-            },
-        ]
+        },
+    },
 
+    {
+        path: '/byr_management/byr_company_partner_list/:byr_buyer_id/slr_job_list/:slr_seller_id',
+        component: slr_job_list,
+        name: 'slr_job_list',
+        meta: {
+            breadcrumb: {
+                label: 'ユーザーリスト管理',
+                parent:'byr_management'
+            },
+        }
+    },
+    {
+        path: '/partner_list_manage',
+        component: cmn_company_partner_list,
+        name: 'partner_list_manage',
+        meta: {
+
+            breadcrumb: {
+                label: 'パートナーリスト'
+            },
+        },
+
+    },
+    {
+        path: '/user_list_manage',
+        component: cmn_company_user_list,
+        name: 'user_list_manage',
+        meta: {
+
+            breadcrumb: {
+                label: 'ユーザーリスト管理'
+            },
+        },
     },
     {
         path: '/scenario_management',
-        component: default_parent,
+        component: scenario_management,
+        name:'scenario_management',
         meta: {
             breadcrumb: {
-                label: 'シナリオ管理',
-                parent: 'Params'
+                label: 'シナリオ管理'
             }
         },
-        children: [{
-            path: '/',
-            component: scenario_management,
-            name: 'scenario_management'
-        }, ]
-
     },
     {
         path: '/job_management',
-        component: default_parent,
+        component: job_management,
+        name:'job_management',
         meta: {
             breadcrumb: {
-                label: '仕事の管理',
-                parent: 'Params'
+                label: '仕事の管理'
             }
         },
-        children: [{
-            path: '/',
-            component: job_management,
-            name: 'job_management'
-        }, ]
-
     },
     {
         path: '/slr_management',
-        component: default_parent,
+        component: slr_management,
+        name:'slr_management',
         meta: {
             breadcrumb: {
-                label: '問屋管理',
-                parent: 'Params'
+                label: '問屋管理'
             }
         },
-        children: [{
-                path: '/',
-                component: slr_management,
-                name: 'slr_management'
-            },
-            {
-                path: '/slr_management/slr_company_user_list/:cmn_company_id',
-                component: default_parent,
-                meta: {
-                    breadcrumb: 'seller user list'
-                },
-                children: [{
-                    path: '/',
-                    component: cmn_company_user_list,
-                    name: 'slr_company_user_list'
-                }, ]
-            },
-            {
-                path: '/slr_management/slr_company_partner_list/:cmn_company_id',
-                component: default_parent,
-                meta: {
-                    breadcrumb: 'seller partner list'
-                },
-                children: [{
-                    path: '/',
-                    component: cmn_company_partner_list,
-                    name: 'slr_company_partner_list'
-                }, ]
-            },
-        ]
-
+    },
+    {
+        path: '/slr_management/slr_company_user_list/:cmn_company_id',
+        component: cmn_company_user_list,
+        name: 'slr_company_user_list',
+        meta: {
+            breadcrumb: {
+                label: '問屋管理'
+            }
+        },
+        
+    },
+    {
+        path: '/slr_management/slr_company_partner_list/:cmn_company_id',
+        component: cmn_company_partner_list,
+            name: 'slr_company_partner_list',
+        meta: {
+            breadcrumb: {
+                label: '問屋管理'
+            }
+        },
+        
     },
     {
         path: '/item_master',
