@@ -359,7 +359,7 @@ methods:{
                       };
                       reader.readAsDataURL(file);
                       reader.onerror = function() {
-                          console.log('there are some problems');
+                          
                       };
                   }else{
                       this.alert_text='File must me jpg or png'
@@ -932,7 +932,7 @@ methods:{
         // }
     },
       copyObject(){
-        console.log("Copy function");
+        
         // copy function start
         var canvas=this.canvas;
         var _this=this;

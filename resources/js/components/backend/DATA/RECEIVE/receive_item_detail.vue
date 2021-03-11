@@ -29,37 +29,38 @@
         <table class="table orderTopDetailTable table-bordered" style="width: 100%">
           <tr>
             <td class="cl_custom_color">直接納品先</td>
-            <td>{{order_item_shipment_data_headTable.mes_lis_acc_par_shi_code}} {{order_item_shipment_data_headTable.mes_lis_acc_par_shi_name}}</td>
+            <td><span v-if="order_item_shipment_data_headTable && order_item_shipment_data_headTable.length">{{order_item_shipment_data_headTable.mes_lis_acc_par_shi_code}} {{order_item_shipment_data_headTable.mes_lis_acc_par_shi_name}}</span></td>
             <td class="cl_custom_color">最終納品先</td>
-            <td>{{order_item_shipment_data_headTable.mes_lis_acc_par_rec_code}} {{order_item_shipment_data_headTable.mes_lis_acc_par_rec_name}}</td>
+            <td><span v-if="order_item_shipment_data_headTable && order_item_shipment_data_headTable.length">{{order_item_shipment_data_headTable.mes_lis_acc_par_rec_code}} {{order_item_shipment_data_headTable.mes_lis_acc_par_rec_name}}</span></td>
             <td class="cl_custom_color">伝票番号</td>
-            <td>{{order_item_shipment_data_headTable.mes_lis_acc_tra_trade_number}}</td>
+            <td><span v-if="order_item_shipment_data_headTable && order_item_shipment_data_headTable.length">{{order_item_shipment_data_headTable.mes_lis_acc_tra_trade_number}}</span></td>
           </tr>
           <tr>
             <td class="cl_custom_color">定／特</td>
-            <td>{{order_item_shipment_data_headTable.mes_lis_acc_tra_ins_goods_classification_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_goods_classification_code',order_item_shipment_data_headTable.mes_lis_acc_tra_ins_goods_classification_code,'orders',buyer_settings)}}</td>
+            <td><span v-if="order_item_shipment_data_headTable && order_item_shipment_data_headTable.length">{{order_item_shipment_data_headTable.mes_lis_acc_tra_ins_goods_classification_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_goods_classification_code',order_item_shipment_data_headTable.mes_lis_acc_tra_ins_goods_classification_code,'orders',buyer_settings)}}</span></td>
             <td class="cl_custom_color">不定貴区分</td>
-            <td>{{order_item_shipment_data_headTable.mes_lis_acc_tra_fre_variable_measure_item_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_fre_variable_measure_item_code',order_item_shipment_data_headTable.mes_lis_acc_tra_fre_variable_measure_item_code,'orders',buyer_settings)}}</td>
+            <td><span v-if="order_item_shipment_data_headTable && order_item_shipment_data_headTable.length">{{order_item_shipment_data_headTable.mes_lis_acc_tra_fre_variable_measure_item_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_fre_variable_measure_item_code',order_item_shipment_data_headTable.mes_lis_acc_tra_fre_variable_measure_item_code,'orders',buyer_settings)}}</span></td>
             <td class="cl_custom_color">発注者</td>
-            <td>{{order_item_shipment_data_headTable.mes_lis_buy_name}}</td>
+            <td><span v-if="order_item_shipment_data_headTable && order_item_shipment_data_headTable.length">{{order_item_shipment_data_headTable.mes_lis_buy_name}}</span></td>
           </tr>
           <tr>
             <td class="cl_custom_color">発注日</td>
-            <td>{{order_item_shipment_data_headTable.mes_lis_acc_tra_dat_order_date}}</td>
+            <td><span v-if="order_item_shipment_data_headTable && order_item_shipment_data_headTable.length">{{order_item_shipment_data_headTable.mes_lis_acc_tra_dat_order_date}}</span></td>
             <td class="cl_custom_color">伝票区分</td>
-            <td>{{order_item_shipment_data_headTable.mes_lis_acc_tra_ins_trade_type_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_trade_type_code',order_item_shipment_data_headTable.mes_lis_acc_tra_ins_trade_type_code,'orders',buyer_settings)}}</td>
+            <td><span v-if="order_item_shipment_data_headTable && order_item_shipment_data_headTable.length">{{order_item_shipment_data_headTable.mes_lis_acc_tra_ins_trade_type_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_trade_type_code',order_item_shipment_data_headTable.mes_lis_acc_tra_ins_trade_type_code,'orders',buyer_settings)}}</span></td>
             <td class="cl_custom_color">受領内容</td>
-            <td>{{order_item_shipment_data_headTable.status='訂正なし'}}</td>
+            <td><span v-if="order_item_shipment_data_headTable && order_item_shipment_data_headTable.length">{{order_item_shipment_data_headTable.status='訂正なし'}}</span></td>
           </tr>
           <tr>
             <td class="cl_custom_color">備考</td>
-            <td colspan="5">{{order_item_shipment_data_headTable.mes_lis_acc_tra_not_text}}</td>
+            <td colspan="5"><span v-if="order_item_shipment_data_headTable && order_item_shipment_data_headTable.length">{{order_item_shipment_data_headTable.mes_lis_acc_tra_not_text}}</span></td>
           </tr>
           <tr>
             <td class="cl_custom_color">税区分・税率</td>
-            <td>{{order_item_shipment_data_headTable.mes_lis_acc_tra_tax_tax_type_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_tax_tax_type_code',order_item_shipment_data_headTable.mes_lis_acc_tra_tax_tax_type_code,'orders',buyer_settings)}} {{order_item_shipment_data_headTable.mes_lis_acc_tra_tax_tax_rate}} %</td>
+            <td><span v-if="order_item_shipment_data_headTable && order_item_shipment_data_headTable.length">{{order_item_shipment_data_headTable.mes_lis_acc_tra_tax_tax_type_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_tax_tax_type_code',order_item_shipment_data_headTable.mes_lis_acc_tra_tax_tax_type_code,'orders',buyer_settings)}} {{order_item_shipment_data_headTable.mes_lis_acc_tra_tax_tax_rate}} %</span></td>
             <td class="cl_custom_color">実納品日 </td>
-            <td colspan="3"><input class="form-control" type="date" v-model="order_item_shipment_data_headTable.mes_lis_acc_tra_dat_revised_delivery_date_to_receiver"></td>
+            <td colspan="3">
+            <input class="form-control" type="date" v-model="order_item_shipment_data_headTable.mes_lis_acc_tra_dat_revised_delivery_date_to_receiver"></td>
           </tr>
 
         </table>

@@ -166,8 +166,7 @@ export default {
        Fire.$emit('LoadByrorder');
     })
     .catch(function (response) {
-        //handle error
-        console.log(response);
+      
     });
     },
     onChangeFileUpload(){
@@ -207,10 +206,10 @@ export default {
       Fire.$on("LoadByrinvoice_detail", () => {
       this.get_all_invoice_detail();
     });
-      console.log('created byr order log');
+      
   },
   mounted() {
-    console.log("User page loaded");
+    
   }
 };
 </script>

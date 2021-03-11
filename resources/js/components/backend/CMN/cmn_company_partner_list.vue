@@ -309,10 +309,10 @@ export default {
     //     // console.log(data)
     //   });
     // }
-    console.log("created jacos management log");
+    
   },
   mounted() {
-    console.log("User page loaded");
+    
   },
 };
 </script>

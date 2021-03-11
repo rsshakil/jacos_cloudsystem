@@ -122,7 +122,7 @@ export default {
     })
     .catch(function (response) {
         //handle error
-        console.log(response);
+      
     });
     },
     onChangeFileUpload(){
@@ -150,10 +150,8 @@ export default {
       Fire.$on("LoadByrmasterItem", () => {
       this.get_all_master_item();
     });
-      console.log('created byr order log');
   },
   mounted() {
-    console.log("User page loaded");
   }
 };
 </script>

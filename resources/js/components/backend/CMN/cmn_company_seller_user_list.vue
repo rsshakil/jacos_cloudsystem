@@ -150,10 +150,10 @@ tabList,
             title: 'User added success',
             text: 'You have successfully added user'
         });
-                    console.log(data);
+                  
                 })
                 .catch((error)=>{
-                  console.log(error);
+                  
                   Swal.fire({
             icon: 'warning',
             title: 'Invalid user info',
@@ -166,16 +166,15 @@ tabList,
   created() {
     this.cmn_company_id = this.$route.params.cmn_company_id;
     this.form.cmn_company_id = this.$route.params.cmn_company_id;
-  console.log( this.cmn_company_id+'cm');
-  console.log( this.form.cmn_company_id+'cm');
+  
       this.get_all_company_users();
       Fire.$on("AfterCreateUser", () => {
         this.get_all_company_users();
     });
-      console.log('created jacos management log');
+    
   },
   mounted() {
-    console.log("User page loaded");
+    
   }
 };
 </script>

@@ -70,7 +70,7 @@ components:{
   },
   methods: {
       delete_company(){
-          console.log('delected');
+          
       },
        get_all_buyer(){
         axios.get(this.BASE_URL +"api/get_all_buyer").then(({data}) => {
@@ -83,10 +83,10 @@ components:{
 
   created() {
       this.get_all_buyer();
-      console.log('created jacos management log');
+    
   },
   mounted() {
-    console.log("User page loaded");
+   
   }
 };
 </script>

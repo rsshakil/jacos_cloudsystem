@@ -247,7 +247,7 @@ export default {
       this.form.fill(form_data);
     },
     save_new_slr() {
-      console.log("add new");
+      
       this.form
         .post(this.BASE_URL + "api/slr_company_create")
         .then((data) => {
@@ -265,10 +265,10 @@ export default {
             title: tittles,
             text: msg_text,
           });
-          console.log(data);
+         
         })
         .catch((error) => {
-          console.log(error);
+        
           Swal.fire({
             icon: "warning",
             title: "Invalid company info",
@@ -282,7 +282,7 @@ export default {
         .then(({data}) => {
             this.init(data.status);
           this.slr_lists = data.slr_list;
-          console.log(this.slr_lists);
+          
         });
     },
   },
@@ -292,10 +292,10 @@ export default {
     Fire.$on("AfterCreatesellerCompany", () => {
       this.get_all_slr();
     });
-    console.log("created jacos management log");
+   
   },
   mounted() {
-    console.log("User page loaded");
+    
   },
 };
 </script>

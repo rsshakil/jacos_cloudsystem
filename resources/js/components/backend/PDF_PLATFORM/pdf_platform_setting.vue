@@ -377,7 +377,7 @@ methods:{
                       };
                       reader.readAsDataURL(file);
                       reader.onerror = function() {
-                          console.log('there are some problems');
+                          
                       };
                   }else{
                       this.alert_text='File must me jpg or png'
@@ -421,7 +421,7 @@ methods:{
                       originX: 'left',
                       originY: 'top'
                   });
-                //   console.log(img.width)
+               
                   mainCanvas.setWidth(img.width);
                   mainCanvas.setHeight(img.height);
               };
@@ -459,7 +459,7 @@ methods:{
           printData(divVar) {
             var canvas=this.canvas;
             var thisVar=this;
-            console.log(this.bg_image_path)
+           
             if (this.printBg==false) {
               if (this.bg_image_path) {
                 var imgSrc = canvas.backgroundImage._element.src;
@@ -489,7 +489,7 @@ methods:{
                   beforePrint: null, // function called before iframe is filled
                   afterPrint: null // function called before iframe is removed
               });
-              // console.log(ppp);
+             
               if (this.printBg==false) {
                   if (this.bg_image_path) {
                   setTimeout(function() {
@@ -529,9 +529,7 @@ methods:{
             //   buyer_id.push(element.byr_buyer_id)
             // });
             var canvas_data= { canvas_id: this.canvas_id, update_image_info: this.update_image_info,byr_id:buyer_id, canvas_name: this.canvas_name, canData: canData, canvasImage: this.getCanvasBgImage(),line_gap:this.line_gap,line_per_page:this.line_per_page }
-            // console.log(this.canvas_id);
-            // console.log(canvas_data);
-            // return 0;
+           
             axios.post(this.BASE_URL+"api/pdf_platform_canvas_data_save",canvas_data)
                 .then(({ data }) => {
                     this.init(data.status);
@@ -615,7 +613,7 @@ methods:{
         }
           },
           doubleClick(option){
-            // console.log(option);
+         
             this.pointerX=option.pointer.x
             this.pointerY=option.pointer.y
             this.createObj(this.pointerX-50,this.pointerY,150,22,20,"left",1.16,1,1,"Created by Click",'clicked');
@@ -650,7 +648,7 @@ methods:{
         var mainCanvas=this.canvas;
         const img = new Image();
         img.src = imgUrl;
-        console.log(img.naturalWidth);
+       
         img.onload = function() {
           mainCanvas.setWidth(img.naturalWidth);
           mainCanvas.setHeight(img.naturalHeight);
@@ -702,7 +700,7 @@ methods:{
         angle: 0,
         padding: 1
       });
-      console.log(rect);
+    
       this.canvas.add(rect).setActiveObject(rect);
       },
       createCircle(){
@@ -896,7 +894,7 @@ methods:{
           }
       },
       keyEventFunc(e){
-        // console.log(e);
+       
         // if (e.keyCode == 46 || (e.ctrlKey && e.keyCode == 8)) {
         if (e.keyCode == 46 || (e.ctrlKey && e.keyCode == 8)) {
             this.deleteObjects();
@@ -1001,7 +999,7 @@ methods:{
         // }
     },
       copyObject(){
-        console.log("Copy function");
+        
         // copy function start
         var canvas=this.canvas;
         var _this=this;

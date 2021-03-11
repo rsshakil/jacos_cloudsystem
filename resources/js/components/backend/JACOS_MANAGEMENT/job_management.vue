@@ -92,7 +92,7 @@ components:{
         axios.get(this.BASE_URL +"api/get_scenario_list").then(({data}) => {
             this.init(data.status);
             this.scenario_lists = data.data.scenario_list;
-            console.log(this.scenario_lists);
+           
         });
     },
     get_all_slr_job_lists(){
@@ -108,10 +108,10 @@ components:{
   created() {
       //this.get_all_scenarios();
       this.get_all_slr_job_lists();
-      console.log('created jacos management log');
+     
   },
   mounted() {
-    console.log("job management page loaded");
+   
   }
 };
 </script>

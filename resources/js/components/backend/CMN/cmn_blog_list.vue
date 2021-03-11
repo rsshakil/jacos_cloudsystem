@@ -137,7 +137,7 @@ export default {
         this.form.fill(blog);
       }else if(action_type==3){
       this.delete_sweet().then((value)=>{
-        console.log(value);
+        
         if(value.isConfirmed){
           this.blog_update(blog,action_type);
         }
@@ -225,10 +225,10 @@ export default {
             title: 'blog added success',
             text: 'You have successfully added blog'
         });
-                    console.log(data);
+                  
                 })
                 .catch((error)=>{
-                  console.log(error);
+                  
                   Swal.fire({
             icon: 'warning',
             title: 'Invalid blog info',
@@ -243,11 +243,11 @@ export default {
       Fire.$on("AfterCreateblog", () => {
         this.get_all_blogs();
     });
-      console.log('created jacos management log');
+      
   },
   mounted() {
     this.editorConfig.language=this.myLang.editor_lang;
-    console.log("User page loaded");
+   
   }
 };
 </script>

@@ -99,7 +99,7 @@ user_menu,
         .then((response) => {
             this.init(response.status);
           if (response.status === 302 || 401) {
-            console.log("logout");
+           
           } else {
             // throw error and go to catch block
           }
@@ -115,7 +115,7 @@ user_menu,
             this.permission_menu= true
             }
 
-            // console.log(data);
+           
         })
         }
 

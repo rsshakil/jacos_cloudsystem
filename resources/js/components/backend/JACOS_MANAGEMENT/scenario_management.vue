@@ -69,10 +69,10 @@ components:{
 
   created() {
       this.get_all_scenarios();
-      console.log('created jacos management log');
+     
   },
   mounted() {
-    console.log("User page loaded");
+   
   }
 };
 </script>

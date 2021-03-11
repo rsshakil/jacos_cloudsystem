@@ -35,7 +35,7 @@ import blog_view from './blog_view'
                 axios.get(this.BASE_URL +"api/get_signle_top_blog").then(({data}) => {
                     this.init(data.status);
                     this.single_blog = data.blog_list;
-                    console.log(this.single_blog.length);
+                    
                 });
             },
         },

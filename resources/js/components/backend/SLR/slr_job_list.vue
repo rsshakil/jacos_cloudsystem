@@ -126,7 +126,7 @@ components:{
         });
     },
     save_edit_job(){
-      console.log('save job');
+      
     },
     job_exe_modal_show(value){
       this.job_exe_modal = true;
@@ -137,10 +137,10 @@ components:{
     this.slr_seller_id = this.$route.params.slr_seller_id;
       this.get_all_slr_job_lists();
 
-      console.log('created jacos management log');
+    
   },
   mounted() {
-    console.log("User page loaded");
+   
   }
 };
 </script>

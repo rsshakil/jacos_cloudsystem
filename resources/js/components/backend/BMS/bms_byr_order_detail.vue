@@ -1866,7 +1866,7 @@ export default {
       }
       if(event.key=='Enter'){
         event.preventDefault()
-        console.log(event.key);
+       
         // event.target.nextElementSibling.focus()
         // console.log(event.target.parent.closest('.lack_reasons'));
       }
@@ -1893,7 +1893,7 @@ export default {
       }
     },
     update_shipment_detail(order_detail){
-      console.log(order_detail);
+     
       axios({method: 'POST',
     url: this.BASE_URL + "api/update_shipment_detail",
     data: order_detail
@@ -1904,7 +1904,7 @@ export default {
     })
     .catch(function (response) {
         //handle error
-        console.log(response);
+        
     });
     },
     //get Table data

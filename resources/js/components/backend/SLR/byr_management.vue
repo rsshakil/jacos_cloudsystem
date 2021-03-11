@@ -277,11 +277,11 @@ export default {
       this.form.fill(form_data);
     },
     save_new_buyer() {
-      console.log("add new");
+     
       this.form
         .post(this.BASE_URL + "api/create_buyer")
         .then(({data}) => {
-          console.log(data)
+          
           Fire.$emit("AfterCreateCompany");
           if (this.form.cmn_company_id != "") {
               this.add_cmn_company_modal = false;
@@ -304,7 +304,7 @@ export default {
         });
     },
     get_all_company() {
-      console.log(Globals.user_info_id);
+   
       axios.get(
           this.BASE_URL + "api/get_all_company_list/" + Globals.user_info_id
         ).then(({data}) => {
@@ -320,10 +320,10 @@ export default {
     Fire.$on("AfterCreateCompany", () => {
       this.get_all_company();
     });
-    console.log("created jacos management log");
+   
   },
   mounted() {
-    console.log("User page loaded");
+   
   },
 };
 </script>

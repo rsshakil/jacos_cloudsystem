@@ -287,7 +287,7 @@ export default {
         if (result.value) {
           const formData = new FormData();
           let file = e.target.files[0];
-          console.log(file);
+         
           this.loader = Vue.$loading.show();
           formData.append("file", file);
           formData.append("adm_user_id", Globals.user_info_id);
@@ -331,7 +331,7 @@ export default {
 
     },
     save_new_cat() {
-      console.log("add new");
+    
       this.form.adm_user_id = Globals.user_info_id;
       this.form
         .post(this.BASE_URL + "api/cmn_category_create")
@@ -358,10 +358,10 @@ export default {
             title: tittles,
             text: msg_text,
           });
-          console.log(data);
+          
         })
         .catch((error) => {
-          console.log(error);
+          
           Swal.fire({
             icon: "warning",
             title: "Invalid category info",
@@ -382,7 +382,7 @@ export default {
         .then(({ data }) => {
             this.init(data.status);
           this.cat_lists = data.cat_list;
-          console.log(this.cat_lists);
+          
           this.options = data.allCatForParent;
           this.loader.hide();
         });
@@ -400,7 +400,7 @@ export default {
 
   },
   mounted() {
-    console.log("User page loaded");
+    
   },
 };
 </script>

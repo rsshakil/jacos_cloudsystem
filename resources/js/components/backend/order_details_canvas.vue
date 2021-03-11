@@ -127,8 +127,7 @@ export default {
           cmn_scenario_id:2,
         }).then(({ data }) => {
             this.init(data.status);
-          console.log(data);
-          // return 0;
+          
           if (data.canvas_data.length>0) {
             this.allName=data.canvas_data
             this.canvasSelectedName=this.allName[0]
