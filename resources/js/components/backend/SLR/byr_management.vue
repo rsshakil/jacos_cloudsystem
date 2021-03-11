@@ -77,8 +77,8 @@
                 <td>
                   <router-link
                     :to="{
-                      name: 'byr_company_partner_list',
-                      params: { cmn_company_id: company_list.cmn_company_id },
+                      name: 'adm_partner_list_manage', //byr_company_partner_list
+                      query: { cmn_company_id: company_list.cmn_company_id },
                     }"
                     class="btn btn-danger"
                     >{{ myLang.partner_management }}</router-link
@@ -277,11 +277,11 @@ export default {
       this.form.fill(form_data);
     },
     save_new_buyer() {
-     
+
       this.form
         .post(this.BASE_URL + "api/create_buyer")
         .then(({data}) => {
-          
+
           Fire.$emit("AfterCreateCompany");
           if (this.form.cmn_company_id != "") {
               this.add_cmn_company_modal = false;
@@ -304,7 +304,7 @@ export default {
         });
     },
     get_all_company() {
-   
+
       axios.get(
           this.BASE_URL + "api/get_all_company_list/" + Globals.user_info_id
         ).then(({data}) => {
@@ -320,10 +320,10 @@ export default {
     Fire.$on("AfterCreateCompany", () => {
       this.get_all_company();
     });
-   
+
   },
   mounted() {
-   
+
   },
 };
 </script>

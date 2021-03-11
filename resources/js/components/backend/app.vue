@@ -40,7 +40,8 @@
                             <page_header_default></page_header_default>
                         </div>
                     </div>
-                    <router-view/>
+                    <!-- <router-view/> -->
+                    <router-view :key="$route.fullPath"/>
                 </div>
             </div>
         </div>

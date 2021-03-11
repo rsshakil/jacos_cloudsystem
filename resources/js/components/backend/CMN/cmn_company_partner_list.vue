@@ -103,7 +103,7 @@
                   <router-link
                     :to="{
                       name: 'slr_job_list',
-                      params: { slr_seller_id: value.slr_seller_id },
+                      query: { slr_seller_id: value.slr_seller_id,byr_buyer_id:value.byr_buyer_id },
                     }"
                     class="btn btn-info"
                     >{{ myLang.details }}</router-link
@@ -292,7 +292,9 @@ export default {
   },
 
   created() {
-    this.cmn_company_id = this.$route.params.cmn_company_id;
+      if (this.$route.query.cmn_company_id) {
+         this.cmn_company_id = this.$route.query.cmn_company_id;
+      }
     this.company_partner_list();
     this.get_byr_slr_company(this.cmn_company_id)
     Fire.$on("company_partner_list_emit", (cmn_company_id) => {
@@ -309,10 +311,10 @@ export default {
     //     // console.log(data)
     //   });
     // }
-    
+
   },
   mounted() {
-    
+
   },
 };
 </script>

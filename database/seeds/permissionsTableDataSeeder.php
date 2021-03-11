@@ -366,6 +366,11 @@ class permissionsTableDataSeeder extends Seeder
                 'is_system' => 0,
             ],
             [
+                'name' => 'adm_partner_list_manage',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
                 'name' => 'partner_list_manage',
                 'guard_name' => 'web',
                 'is_system' => 0,

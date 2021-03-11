@@ -116,6 +116,7 @@ components:{
         'slr_job_lists':{},
         'slr_seller_id':'',
         'job_exe_modal':false,
+        byr_buyer_id:null,
     };
   },
   methods: {
@@ -126,7 +127,7 @@ components:{
         });
     },
     save_edit_job(){
-      
+
     },
     job_exe_modal_show(value){
       this.job_exe_modal = true;
@@ -134,13 +135,14 @@ components:{
   },
 
   created() {
-    this.slr_seller_id = this.$route.params.slr_seller_id;
+    this.slr_seller_id = this.$route.query.slr_seller_id;
+    this.byr_buyer_id = this.$route.query.byr_buyer_id;
       this.get_all_slr_job_lists();
 
-    
+
   },
   mounted() {
-   
+
   }
 };
 </script>

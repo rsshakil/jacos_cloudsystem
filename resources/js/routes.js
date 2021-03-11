@@ -79,53 +79,78 @@ export const routes = [
             }
         },
     },
-    { path: '/role', name: "role", component: Role,
-    meta: {
-        breadcrumb: {
-            label: '役割'
+    {
+        path: '/role',
+        name: "role",
+        component: Role,
+        meta: {
+            breadcrumb: {
+                label: '役割'
+            },
         },
     },
-},
-    { path: '/permission', name: 'permission', component: permission,
-    meta: {
-        breadcrumb: {
-            label: '許可'
+    {
+        path: '/permission',
+        name: 'permission',
+        component: permission,
+        meta: {
+            breadcrumb: {
+                label: '許可'
+            },
         },
     },
-},
-    { path: '/assign_role_to_user', name: 'assign_role_to_user', component: assign_role_model,
-    meta: {
-        breadcrumb: {
-            label: 'ユーザーに役割を割り当てる'
-        },
-    }, },
-    { path: '/assign_permission_to_user', name: 'assign_permission_to_user', component: assign_permission_model ,
-    meta: {
-        breadcrumb: {
-            label: 'ユーザーに権限を割り当てる'
+    {
+        path: '/assign_role_to_user',
+        name: 'assign_role_to_user',
+        component: assign_role_model,
+        meta: {
+            breadcrumb: {
+                label: 'ユーザーに役割を割り当てる'
+            },
         },
     },
-},
-    { path: '/users', name: 'users', component: users,
-    meta: {
-        breadcrumb: {
-            label: 'ユーザー'
+    {
+        path: '/assign_permission_to_user',
+        name: 'assign_permission_to_user',
+        component: assign_permission_model,
+        meta: {
+            breadcrumb: {
+                label: 'ユーザーに権限を割り当てる'
+            },
         },
-    }, },
-    { path: '/users/:id/:auth_id', name: 'user_update', component: user_update,
-    meta: {
-        breadcrumb: {
-            label: 'ユーザーアップデート',
-            parent: 'users'
+    },
+    {
+        path: '/users',
+        name: 'users',
+        component: users,
+        meta: {
+            breadcrumb: {
+                label: 'ユーザー'
+            },
         },
-    }, },
-    { path: '/password_reset/:id/:auth_id', name: 'password_reset', component: password_reset,
-    meta: {
-        breadcrumb: {
-            label: 'パスワードのリセット',
-            parent: 'users'
+    },
+    {
+        path: '/users/:id/:auth_id',
+        name: 'user_update',
+        component: user_update,
+        meta: {
+            breadcrumb: {
+                label: 'ユーザーアップデート',
+                parent: 'users'
+            },
         },
-    },  },
+    },
+    {
+        path: '/password_reset/:id/:auth_id',
+        name: 'password_reset',
+        component: password_reset,
+        meta: {
+            breadcrumb: {
+                label: 'パスワードのリセット',
+                parent: 'users'
+            },
+        },
+    },
     {
         path: '/order_list',
         component: order_list,
@@ -204,19 +229,22 @@ export const routes = [
     },
 
 
-    { path: '/voucher_setting', name: 'voucher_setting', component: voucher_setting,
-    meta: {
+    {
+        path: '/voucher_setting',
+        name: 'voucher_setting',
+        component: voucher_setting,
+        meta: {
 
-        breadcrumb: {
-            label: 'Voucher seting'
-        }
+            breadcrumb: {
+                label: 'Voucher seting'
+            }
 
-    }, 
-},
+        },
+    },
     {
         path: '/byr_management',
         component: byr_management,
-                name: 'byr_management',
+        name: 'byr_management',
         meta: {
 
             breadcrumb: {
@@ -224,29 +252,30 @@ export const routes = [
             }
 
         },
-       
+
 
     },
     {
         path: '/byr_management/byr_company_user_list/:cmn_company_id',
         component: cmn_company_user_list,
-            name: 'byr_company_user_list',
+        name: 'byr_company_user_list',
         meta: {
             breadcrumb: {
                 label: 'ユーザーリスト管理',
-                parent:'byr_management'
+                parent: 'byr_management'
             },
         },
     },
 
     {
-        path: '/byr_management/byr_company_partner_list/:byr_buyer_id/slr_job_list/:slr_seller_id',
+        // path: '/byr_management/byr_company_partner_list/:byr_buyer_id/slr_job_list/:slr_seller_id',
+        path: '/byr_management/byr_company_partner_list',
         component: slr_job_list,
         name: 'slr_job_list',
         meta: {
             breadcrumb: {
                 label: 'ユーザーリスト管理',
-                parent:'byr_management'
+                parent: 'byr_management'
             },
         }
     },
@@ -255,9 +284,20 @@ export const routes = [
         component: cmn_company_partner_list,
         name: 'partner_list_manage',
         meta: {
-
             breadcrumb: {
-                label: 'パートナーリスト'
+                label: 'パートナーリスト',
+            },
+        },
+
+    },
+    {
+        path: '/byr_management/partner_list_manage',
+        component: cmn_company_partner_list,
+        name: 'adm_partner_list_manage',
+        meta: {
+            breadcrumb: {
+                label: 'パートナーリスト',
+                parent: 'byr_management'
             },
         },
 
@@ -276,7 +316,7 @@ export const routes = [
     {
         path: '/scenario_management',
         component: scenario_management,
-        name:'scenario_management',
+        name: 'scenario_management',
         meta: {
             breadcrumb: {
                 label: 'シナリオ管理'
@@ -286,7 +326,7 @@ export const routes = [
     {
         path: '/job_management',
         component: job_management,
-        name:'job_management',
+        name: 'job_management',
         meta: {
             breadcrumb: {
                 label: '仕事の管理'
@@ -296,7 +336,7 @@ export const routes = [
     {
         path: '/slr_management',
         component: slr_management,
-        name:'slr_management',
+        name: 'slr_management',
         meta: {
             breadcrumb: {
                 label: '問屋管理'
@@ -312,18 +352,18 @@ export const routes = [
                 label: '問屋管理'
             }
         },
-        
+
     },
     {
         path: '/slr_management/slr_company_partner_list/:cmn_company_id',
         component: cmn_company_partner_list,
-            name: 'slr_company_partner_list',
+        name: 'slr_company_partner_list',
         meta: {
             breadcrumb: {
                 label: '問屋管理'
             }
         },
-        
+
     },
     {
         path: '/item_master',
