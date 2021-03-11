@@ -63,20 +63,23 @@ class ByrController extends Controller
         return response()->json(['user_list' => $buyer_users, 'company_name' => $company_name]);
     }
 
-    public function company_partner_list($cmn_company_id)
+    public function company_partner_list($cmn_company_id=null)
     {
         $company_name = null;
         $result = DB::table('byr_buyers')
+        ->select('slr_sellers.slr_seller_id', 'cmn_connects.byr_buyer_id', 'cmn_connects.cmn_connect_id',
+        'byr_buyers.super_code', 'cmn_companies.company_name', 'cmn_companies.jcode',
+        'cmn_connects.partner_code', 'cmn_connects.is_active', 'slr_sellers.slr_seller_id')
             ->join('cmn_connects', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
             ->join('slr_sellers', 'slr_sellers.slr_seller_id', '=', 'cmn_connects.slr_seller_id')
-            ->join('cmn_companies', 'slr_sellers.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
-            ->select('slr_sellers.slr_seller_id', 'cmn_connects.byr_buyer_id', 'cmn_connects.cmn_connect_id', 'byr_buyers.super_code', 'cmn_companies.company_name', 'cmn_companies.jcode', 'cmn_connects.partner_code', 'cmn_connects.is_active', 'slr_sellers.slr_seller_id')
-            ->where('byr_buyers.cmn_company_id', $cmn_company_id)
-            ->get();
-        if ($cmn_company_id != 'undefined' || $cmn_company_id != null) {
+            ->join('cmn_companies', 'slr_sellers.cmn_company_id', '=', 'cmn_companies.cmn_company_id');
+
+        if ($cmn_company_id) {
+            $result =$result->where('byr_buyers.cmn_company_id', $cmn_company_id);
             $company_info = cmn_company::select('company_name')->where('cmn_company_id', $cmn_company_id)->first();
             $company_name = $company_info->company_name;
         }
+        $result =$result->get();
         return response()->json(['partner_list' => $result, 'company_name' => $company_name]);
     }
 
