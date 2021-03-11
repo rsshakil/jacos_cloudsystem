@@ -6,19 +6,19 @@
         <table class="table orderTopDetailTable table-bordered" style="width: 100%">
           <tr>
             <td class="cl_custom_color">受信日時</td>
-            <td>{{order_item_lists.receive_datetime}}</td>
+            <td><span v-if="order_item_lists && order_item_lists.length">{{order_item_lists.receive_datetime}}</span></td>
             <td class="cl_custom_color">取引先</td>
-            <td colspan="5">{{order_item_lists.mes_lis_acc_par_sel_code}} {{order_item_lists.mes_lis_acc_par_sel_name}}</td>
+            <td colspan="5"><span v-if="order_item_lists && order_item_lists.length">{{order_item_lists.mes_lis_acc_par_sel_code}} {{order_item_lists.mes_lis_acc_par_sel_name}}</span></td>
           </tr>
           <tr>
             <td class="cl_custom_color">納品日</td>
-            <td>{{order_item_lists.mes_lis_acc_tra_dat_transfer_of_ownership_date}}</td>
+            <td><span v-if="order_item_lists && order_item_lists.length">{{order_item_lists.mes_lis_acc_tra_dat_transfer_of_ownership_date}}</span></td>
             <td class="cl_custom_color">部門</td>
-            <td>{{order_item_lists.mes_lis_acc_tra_goo_major_category}}</td>
+            <td><span v-if="order_item_lists && order_item_lists.length">{{order_item_lists.mes_lis_acc_tra_goo_major_category}}</span></td>
             <td class="cl_custom_color">便</td>
-            <td> {{order_item_lists.mes_lis_acc_log_del_delivery_service_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_log_del_delivery_service_code',order_item_lists.mes_lis_acc_log_del_delivery_service_code,'orders',buyer_settings)}}</td>
+            <td> <span v-if="order_item_lists && order_item_lists.length">{{order_item_lists.mes_lis_acc_log_del_delivery_service_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_log_del_delivery_service_code',order_item_lists.mes_lis_acc_log_del_delivery_service_code,'orders',buyer_settings)}}</span></td>
             <td class="cl_custom_color">配送温度区分</td>
-            <td>{{order_item_lists.mes_lis_acc_tra_ins_temperature_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_item_lists.mes_lis_acc_tra_ins_temperature_code,'orders',buyer_settings)}}</td>
+            <td><span v-if="order_item_lists && order_item_lists.length">{{order_item_lists.mes_lis_acc_tra_ins_temperature_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_item_lists.mes_lis_acc_tra_ins_temperature_code,'orders',buyer_settings)}}</span></td>
           </tr>
         </table>
       </div>
@@ -150,7 +150,7 @@
                 </td>
               </tr>
               <tr v-if="order_item_detail_lists && order_item_detail_lists.length==0">
-                <td colspan="12">データがありません</td>
+                <td class="text-center" colspan="12">データがありません</td>
             </tr>
             </tbody>
             <tfoot>

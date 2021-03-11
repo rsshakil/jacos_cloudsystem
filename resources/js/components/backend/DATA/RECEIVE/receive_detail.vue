@@ -8,20 +8,23 @@
         >
           <tr>
             <td class="cl_custom_color">受信日</td>
-            <td>{{ order_info.receive_datetime }}</td>
+            <td><span v-if="order_info && order_info.length"> {{ order_info.receive_datetime }}</span></td>
             <td class="cl_custom_color">取引先</td>
             <td colspan="5">
+            <span v-if="order_info && order_info.length">
               {{ order_info.mes_lis_acc_par_sel_code}}
               {{ order_info.mes_lis_acc_par_sel_name }}
+              </span>
             </td>
           </tr>
           <tr>
             <td class="cl_custom_color">計上日</td>
-            <td>{{ order_info.mes_lis_acc_tra_dat_transfer_of_ownership_date }}</td>
+            <td><span v-if="order_info && order_info.length">{{ order_info.mes_lis_acc_tra_dat_transfer_of_ownership_date }}</span></td>
             <td class="cl_custom_color">部門</td>
-            <td>{{ order_info.mes_lis_acc_tra_goo_major_category }}</td>
+            <td><span v-if="order_info && order_info.length">{{ order_info.mes_lis_acc_tra_goo_major_category }}</span></td>
             <td class="cl_custom_color">便</td>
             <td>
+            <span v-if="order_info && order_info.length">
               {{ order_info.mes_lis_acc_log_del_delivery_service_code }}
               {{
                 getbyrjsonValueBykeyName(
@@ -31,9 +34,11 @@
                   buyer_settings
                 )
               }}
+              </span>
             </td>
             <td class="cl_custom_color">配送温度区分</td>
             <td>
+            <span v-if="order_info && order_info.length">
               {{ order_info.mes_lis_acc_tra_ins_temperature_code }}
               {{
                 getbyrjsonValueBykeyName(
@@ -43,6 +48,7 @@
                   buyer_settings
                 )
               }}
+              </span>
             </td>
           </tr>
           <tr>
@@ -323,7 +329,7 @@
                 <td><span v-if="order_detail_list.mes_lis_acc_tot_tot_net_price_total>0">訂正あり</span><span v-else>訂正なし</span></td>
               </tr>
               <tr v-if="order_detail_lists.data && order_detail_lists.data.length==0">
-                <td colspan="8">データがありません</td>
+                <td class="text-center" colspan="8">データがありません</td>
             </tr>
             </tbody>
           </table>
@@ -778,8 +784,7 @@ export default {
   },
 
   created() {
-    // this.byr_session_check()
-    // console.log(this.$session.get("byr_buyer_id"))
+   
     Fire.$emit("byr_has_selected", this.$session.get("byr_buyer_id"));
     Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
     this.form.data_receive_id = this.$route.params.data_receive_id;
