@@ -14,7 +14,7 @@ use App\Http\Controllers\API\Cmn_ScenarioController;
 use DB;
 use App\Traits\Csv;
 
-class ShipmentConroller extends Controller
+class ShipmentController extends Controller
 {
     private $all_functions;
     public function __construct()
@@ -287,7 +287,10 @@ class ShipmentConroller extends Controller
         $data_shipment_voucher_ids = $request->update_id;
         if ($data_shipment_voucher_ids) {
             foreach ($data_shipment_voucher_ids as $id) {
-                data_shipment_voucher::where('data_shipment_voucher_id', $id)->update(['decision_datetime' => $dateTime]);
+                data_shipment_voucher::where('data_shipment_voucher_id', $id)->update([
+                    'decision_datetime' => $dateTime,
+                    'mes_lis_shi_tra_dat_transfer_of_ownership_date' => $dateTime
+                    ]);
             }
         }
         return response()->json(['success' => '1','status'=>1]);
