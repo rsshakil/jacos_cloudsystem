@@ -125,7 +125,7 @@ export default {
           this.all_permissions = data.role_permissions[0].all_permissions;
         })
         .catch(() => {
-          console.log("Error...");
+
         });
     },
 
@@ -208,7 +208,7 @@ export default {
     this.loadTableData();
   },
   mounted() {
-    console.log("Role page loaded");
+
   }
 };
 </script>

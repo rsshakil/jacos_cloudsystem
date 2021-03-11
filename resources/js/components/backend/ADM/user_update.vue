@@ -148,7 +148,7 @@ export default {
             this.user_image=this.BASE_URL+'storage/app/public/backend/images/users/'+users.image
         })
         .catch(() => {
-          console.log("Error...");
+
         });
     },
     onFileChange(e) {
@@ -225,7 +225,7 @@ export default {
     this.loadUserDetailsData();
   },
   mounted() {
-    console.log("User details page loaded");
+
   }
 };
 </script>

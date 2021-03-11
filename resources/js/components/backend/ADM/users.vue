@@ -167,7 +167,7 @@ export default {
           this.permissions = data.permissions;
         })
         .catch(() => {
-          console.log("Error...");
+
         });
     },
     permissionForRole(options){
@@ -186,7 +186,7 @@ export default {
             // this.selected_permissions = (data.permission_for_role).filter((v, i, a) => a.indexOf(v) === i);
         })
         .catch(() => {
-          console.log("Error...");
+
         });
     },
     // User create
@@ -295,7 +295,7 @@ export default {
     this.loadUserData();
   },
   mounted() {
-    console.log("User page loaded");
+
   }
 };
 </script>

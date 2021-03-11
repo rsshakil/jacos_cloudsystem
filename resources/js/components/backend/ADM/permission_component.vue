@@ -102,7 +102,7 @@ export default {
             this.permissions=data.permissions;
         })
         .catch(() => {
-          console.log("Error...");
+
         });
     },
 
@@ -181,7 +181,7 @@ export default {
     this.loadPermissionData();
   },
   mounted() {
-    console.log("Permission page loaded");
+
   }
 };
 </script>

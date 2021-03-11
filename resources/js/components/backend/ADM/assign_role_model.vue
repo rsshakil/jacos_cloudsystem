@@ -76,7 +76,7 @@ export default {
             this.all_roles = data.roles;
         })
         .catch(() => {
-          console.log("Error...");
+          
         });
     },
     showRoles(option){
@@ -87,7 +87,7 @@ export default {
            axios.get(this.BASE_URL+"api/get_roles/"+this.user_id)
         .then(({ data }) => {
             this.init(data.status);
-            // console.log(this.selected_roles);
+            
             var roles=data.model_data
             var role_ids=[];
             for (let i = 0; i < roles.length; i++) {
@@ -97,7 +97,7 @@ export default {
             role_ids=[];
         })
         .catch(() => {
-          console.log("Error...");
+          
         });
        }
 
@@ -127,7 +127,7 @@ export default {
     this.loadUserData();
   },
   mounted() {
-    console.log("Assign Role to model page loaded");
+    
   }
 };
 </script>

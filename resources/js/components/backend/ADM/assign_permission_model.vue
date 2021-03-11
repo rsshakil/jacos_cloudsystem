@@ -103,7 +103,7 @@ export default {
             this.all_users = data.users;
         })
         .catch(() => {
-          console.log("Error...");
+          
         });
     },
     showPermissions(option){
@@ -115,11 +115,10 @@ export default {
           this.not_matches=data.not_matches
           this.selected_permissions=data.permissions_exist_id
           this.permissions_by_role=data.all_permissions_for_user_array
-           console.log(this.selected_permissions);
-           console.log(this.not_matches);
+           
         })
         .catch(() => {
-          console.log("Error...");
+          
         });
        }
 
@@ -149,7 +148,7 @@ export default {
     this.loadUserData();
   },
   mounted() {
-    console.log("Assign Permission to model page loaded");
+    
   }
 };
 </script>
