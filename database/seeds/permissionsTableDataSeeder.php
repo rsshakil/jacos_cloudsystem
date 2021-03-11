@@ -184,6 +184,9 @@ class permissionsTableDataSeeder extends Seeder
                 'guard_name' => 'web',
                 'is_system' => 0,
             ],
+//adm permission
+
+
             // SLR Permission
             [
                 'name' => 'slr_view',
