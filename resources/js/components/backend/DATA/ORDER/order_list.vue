@@ -383,17 +383,17 @@ export default {
       this.showAllCustomerCodeListModal = true;
     },
     get_all_order() {
-      this.form
-        .post(this.BASE_URL + "api/get_byr_order_list", this.form)
+      this.form.post(this.BASE_URL + "api/get_order_list", this.form)
         .then(({ data }) => {
           this.order_lists = data.order_list;
           this.byr_buyer_lists = data.byr_buyer_list;
-          this.buyer_settings = JSON.parse(data.buyer_settings);
           this.byr_buyer_category_lists = data.byr_buyer_category_list;
+
+        //   if ((data.buyer_settings)!=null) {
+          this.buyer_settings = JSON.parse(data.buyer_settings);
           this.json_temperature_code = this.buyer_settings.orders.mes_lis_ord_tra_ins_temperature_code;
           this.json_delivery_service_code = this.buyer_settings.orders.mes_lis_ord_log_del_delivery_service_code;
-          // this.json_delivery_service_code.push({"00":'全て'});
-          // this.json_temperature_code.push({'00':'全て'});
+        //   }
           this.byr_buyer_category_lists.unshift({category_code:'*',category_name:'全て'});
           this.loader.hide();
         });

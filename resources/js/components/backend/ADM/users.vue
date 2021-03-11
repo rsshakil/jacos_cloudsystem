@@ -39,7 +39,7 @@
                                 <td>{{user.email}}</td>
                                 <td>
                                     <!-- <?php echo(\Config::get('app.url').'/user_update/'.$user->id)?> -->
-                                    <router-link :to="{ name: 'users', params: { id: user.id,auth_id:global_user_id } }" class="btn btn-info" v-can="['user_profile_view']"><b-icon icon="eye-fill" font-scale="1.2"></b-icon> {{myLang.view}}</router-link>
+                                    <router-link :to="{ name: 'user_update', params: { id: user.id,auth_id:global_user_id } }" class="btn btn-info" v-can="['user_profile_view']"><b-icon icon="eye-fill" font-scale="1.2"></b-icon> {{myLang.view}}</router-link>
                                     <router-link :to="{ name: 'password_reset', params: { id: user.id,auth_id:global_user_id } }" class="btn btn-warning" v-can="['change_password']"><b-icon icon="pencil-square" font-scale="1.2"></b-icon> {{myLang.change_password}}</router-link>
                                     <!-- <router-link to="/user_update/1" class="btn btn-info"><i class="fas fa-eye"></i> View</router-link> -->
                                     <!-- <a href="" class="btn btn-info" id="update_user"><i class="fas fa-eye"></i> View</a> -->
@@ -295,7 +295,7 @@ export default {
     this.loadUserData();
   },
   mounted() {
-    console.log("User page loaded");
+    // console.log("User page loaded");
   }
 };
 </script>

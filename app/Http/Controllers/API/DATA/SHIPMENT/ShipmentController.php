@@ -276,21 +276,26 @@ class ShipmentController extends Controller
     }
     public function decessionData(Request $request)
     {
-        $dateTime = date('Y-m-d H:i:s');
+        $dateTime = null;
        $date_null = $request->date_null;
-        if ($date_null) {
-            $dateTime = null;
-        }else{
+        if (!$date_null) {
             $dateTime = date('Y-m-d H:i:s');
         }
-        // return $dateTime;
         $data_shipment_voucher_ids = $request->update_id;
         if ($data_shipment_voucher_ids) {
             foreach ($data_shipment_voucher_ids as $id) {
-                data_shipment_voucher::where('data_shipment_voucher_id', $id)->update([
-                    'decision_datetime' => $dateTime,
-                    'mes_lis_shi_tra_dat_transfer_of_ownership_date' => $dateTime
-                    ]);
+                if (!$date_null) {
+                    data_shipment_voucher::where('data_shipment_voucher_id', $id)->update([
+                        'decision_datetime' => $dateTime,
+                        'mes_lis_shi_tra_dat_transfer_of_ownership_date' => $dateTime
+                        ]);
+                }else{
+                    data_shipment_voucher::where('data_shipment_voucher_id', $id)->update([
+                        'decision_datetime' => null,
+                        'mes_lis_shi_tra_dat_transfer_of_ownership_date' => null
+                        ]);
+                }
+
             }
         }
         return response()->json(['success' => '1','status'=>1]);
