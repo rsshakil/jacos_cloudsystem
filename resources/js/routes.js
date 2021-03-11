@@ -79,12 +79,46 @@ export const routes = [
             }
         },
     },
-    { path: '/role', name: "role", component: Role },
-    { path: '/permission', name: 'permission', component: permission },
-    { path: '/assign_role_to_user', name: 'assign_role_to_user', component: assign_role_model },
-    { path: '/assign_permission_to_user', name: 'assign_permission_to_user', component: assign_permission_model },
-    { path: '/users', name: 'users', component: users },
-    { path: '/users/:id/:auth_id', name: 'user_update', component: user_update },
+    { path: '/role', name: "role", component: Role,
+    meta: {
+        breadcrumb: {
+            label: '役割'
+        },
+    },
+},
+    { path: '/permission', name: 'permission', component: permission,
+    meta: {
+        breadcrumb: {
+            label: '許可'
+        },
+    },
+},
+    { path: '/assign_role_to_user', name: 'assign_role_to_user', component: assign_role_model,
+    meta: {
+        breadcrumb: {
+            label: 'ユーザーに役割を割り当てる'
+        },
+    }, },
+    { path: '/assign_permission_to_user', name: 'assign_permission_to_user', component: assign_permission_model ,
+    meta: {
+        breadcrumb: {
+            label: 'ユーザーに権限を割り当てる'
+        },
+    },
+},
+    { path: '/users', name: 'users', component: users,
+    meta: {
+        breadcrumb: {
+            label: 'ユーザー'
+        },
+    }, },
+    { path: '/users/:id/:auth_id', name: 'user_update', component: user_update,
+    meta: {
+        breadcrumb: {
+            label: 'ユーザーアップデート',
+            parent: 'home'
+        },
+    }, },
     { path: '/password_reset/:id/:auth_id', name: 'password_reset', component: password_reset },
     {
         path: '/order_list',
