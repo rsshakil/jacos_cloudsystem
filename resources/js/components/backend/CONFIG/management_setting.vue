@@ -107,7 +107,7 @@ export default {
   methods: {
 
     update_optional_json_value(){
-      //console.log(this.cmnConnectOptionList);
+     
        this.alert_icon = "warning";
       this.alert_title = "";
       this.alert_text = "FAX番号の登録を更新しますがよろしいでしょうか。";
@@ -137,7 +137,7 @@ export default {
         .then(({ data }) => {
             this.init(data.status);
             this.cmnConnectOptionList = data.result;
-            console.log(this.cmnConnectOptionList);
+          
         });
     },
    updateInvoiceSettingByModal(item){
@@ -165,7 +165,7 @@ export default {
         },
 
         update_invoice_json_setting() {
-            console.log(this.selectfieldList);
+           
             this.alert_icon = "warning";
       this.alert_title = "";
       this.alert_text = "締日の登録を更新しますがよろしいでしょうか。";

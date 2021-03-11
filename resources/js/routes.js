@@ -79,11 +79,11 @@ export const routes = [
             }
         },
     },
-    { path: '/role', component: Role },
-    { path: '/permission', component: permission },
-    { path: '/assign_role_to_user', component: assign_role_model },
-    { path: '/assign_permission_to_user', component: assign_permission_model },
-    { path: '/users', component: users },
+    { path: '/role', name:"role", component: Role },
+    { path: '/permission',name:'permission', component: permission },
+    { path: '/assign_role_to_user', name:'assign_role_to_user', component: assign_role_model },
+    { path: '/assign_permission_to_user', name:'assign_permission_to_user', component: assign_permission_model },
+    { path: '/users',name:'users', component: users },
     { path: '/users/:id/:auth_id', name: 'users', component: user_update },
     { path: '/password_reset/:id/:auth_id', name: 'password_reset', component: password_reset },
     {
