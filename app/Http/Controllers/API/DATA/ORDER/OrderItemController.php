@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CMN\cmn_tbl_col_setting;
 use App\Http\Controllers\API\AllUsedFunction;
+use DB;
 
 class OrderItemController extends Controller
 {
