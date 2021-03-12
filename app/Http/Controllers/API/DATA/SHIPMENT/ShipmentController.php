@@ -285,12 +285,15 @@ class ShipmentController extends Controller
         if ($data_shipment_voucher_ids) {
             foreach ($data_shipment_voucher_ids as $id) {
                 if (!$date_null) {
-                    data_shipment_voucher::where('data_shipment_voucher_id', $id)->update([
+                    data_shipment_voucher::where('data_shipment_voucher_id', $id)
+                    ->update([
                         'decision_datetime' => $dateTime,
                         // 'mes_lis_shi_tra_dat_transfer_of_ownership_date' => $dateTime
                         ]);
                 }else{
-                    data_shipment_voucher::where('data_shipment_voucher_id', $id)->update([
+                    data_shipment_voucher::where('data_shipment_voucher_id', $id)
+                    ->whereNull('send_datetime')
+                    ->update([
                         'decision_datetime' => null,
                         // 'mes_lis_shi_tra_dat_transfer_of_ownership_date' => null
                         ]);

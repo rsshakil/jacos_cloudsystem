@@ -901,7 +901,6 @@ export default {
         this.selected = this.not_null_selected;
         this.null_selected_message = false;
       }
-
     },
     updateCheckall() {
 
