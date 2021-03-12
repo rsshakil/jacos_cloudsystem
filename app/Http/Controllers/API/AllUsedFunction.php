@@ -10,8 +10,6 @@ use App\Models\CMN\cmn_company;
 use App\Models\CMN\cmn_connect;
 use App\Models\SLR\slr_seller;
 use App\Models\CMN\cmn_category;
-use App\Models\CMN\cmn_category_description;
-use App\Models\CMN\cmn_category_path;
 use Auth;
 use DB;
 use Spatie\Permission\Models\Permission;

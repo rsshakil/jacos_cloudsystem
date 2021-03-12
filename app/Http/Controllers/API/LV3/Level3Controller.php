@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\Level3;
+namespace App\Http\Controllers\API\LV3;
 
 use App\Http\Controllers\API\AllUsedFunction;
 use App\Http\Controllers\API\CMN\CmnScenarioController;

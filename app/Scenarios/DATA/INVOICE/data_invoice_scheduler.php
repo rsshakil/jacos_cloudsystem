@@ -86,7 +86,13 @@ class data_invoice_scheduler
                 //static
 
 
-                $data_invoice_pay_count = data_invoice_pay::where($data_invoice_pay_array)->get()->count();
+                $data_invoice_pay_count = data_invoice_pay::where([
+                    ['mes_lis_inv_pay_id','=',''],
+                    ['mes_lis_buy_code','=',$shipment_data['mes_lis_buy_code']],
+                    ['mes_lis_inv_pay_code','=',$shipment_data['mes_lis_shi_par_pay_code']],
+                    ['mes_lis_inv_per_begin_date','=',$start_date],
+                    ['mes_lis_inv_per_end_date','=',$end_date],
+                ])->get()->count();
                 if (!$data_invoice_pay_count) {
                     $data_invoice_pay_array['data_invoice_id']=$data_invoice_id;
                     $data_invoice_pay_id = data_invoice_pay::insertGetId($data_invoice_pay_array);

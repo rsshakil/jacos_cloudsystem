@@ -146,22 +146,16 @@ class OrderItemController extends Controller
             ->where('cmn_companies_users.adm_user_id',$adm_user_id)->first();
             $byr_buyer_id = $cmn_company_info->byr_buyer_id;
         }
+        $result = byr_item::select('byr_items.*','byr_item_classes.*','cmn_makers.maker_name_kana','cmn_makers.maker_name')
+        ->join('byr_item_classes', 'byr_item_classes.byr_item_id', '=', 'byr_items.byr_item_id')
+        ->join('cmn_makers', 'cmn_makers.cmn_maker_id', '=', 'byr_items.cmn_maker_id');
 
         if(!$authUser->hasRole(config('const.adm_role_name'))){
-            $result = byr_item::select('byr_items.*','byr_item_classes.*','cmn_category_descriptions.category_name','cmn_category_descriptions.category_code','cmn_makers.maker_name_kana','cmn_makers.maker_name')
-            ->join('byr_item_classes', 'byr_item_classes.byr_item_id', '=', 'byr_items.byr_item_id')
-            ->join('cmn_makers', 'cmn_makers.cmn_maker_id', '=', 'byr_items.cmn_maker_id')
-            ->join('cmn_category_descriptions', 'cmn_category_descriptions.cmn_category_id', '=', 'byr_items.cmn_category_id')
-            ->where('byr_items.byr_buyer_id',$byr_buyer_id)
+            $result =$result->where('byr_items.byr_buyer_id',$byr_buyer_id)
             ->get();
-
             $byr_buyer = byr_buyer::where('byr_buyer_id',$byr_buyer_id)->get();
         }else{
-            $result = byr_item::select('byr_items.*','byr_item_classes.*','cmn_category_descriptions.category_name','cmn_category_descriptions.category_code','cmn_makers.maker_name_kana','cmn_makers.maker_name')
-            ->join('byr_item_classes', 'byr_item_classes.byr_item_id', '=', 'byr_items.byr_item_id')
-            ->join('cmn_makers', 'cmn_makers.cmn_maker_id', '=', 'byr_items.cmn_maker_id')
-            ->join('cmn_category_descriptions', 'cmn_category_descriptions.cmn_category_id', '=', 'byr_items.cmn_category_id')
-            ->get();
+            $result =$result->get();
             $byr_buyer = byr_buyer::all();
         }
 

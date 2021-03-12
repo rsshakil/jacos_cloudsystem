@@ -33,7 +33,7 @@ Route::get('/', function () {
 Auth::routes();
 
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HOME\HomeController@index')->name('home');
 Route::post('/user', function(Request $request){
     $user_image=Auth::user()->image;
     $user=Auth::User();
@@ -41,5 +41,5 @@ Route::post('/user', function(Request $request){
     return $user;
     // return response()->json(['user'=>$user]);
 });
-Route::get('/{any}', 'HomeController@index')->where('any', '.*');
+Route::get('/{any}', 'HOME\HomeController@index')->where('any', '.*');
 
