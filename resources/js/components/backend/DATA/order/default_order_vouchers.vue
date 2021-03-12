@@ -6,34 +6,20 @@
           class="table orderTopDetailTable table-bordered"
           style="width: 100%"
         >
+       
           <tr>
-            <td class="cl_custom_color">受信日時</td>
-            <td><span v-if="order_info && order_info.length">{{ order_info.receive_datetime }}</span></td>
-            <td class="cl_custom_color">取引先</td>
-            <td colspan="5">
-            <span v-if="order_info && order_info.length">
+            <td width="10%" class="cl_custom_color">受信日時</td>
+            <td width="15%"><span v-if="order_info">{{ order_info.receive_datetime }}</span></td>
+            <td width="10%" class="cl_custom_color">取引先</td>
+            <td width="15%">
+            <span v-if="order_info">
               {{ order_info.mes_lis_shi_par_sel_code }}
               {{ order_info.mes_lis_shi_par_sel_name }}
               </span>
             </td>
-          </tr>
-          <tr>
-            <td class="cl_custom_color">納品日</td>
-            <td>
-            <span v-if="order_info && order_info.length">
-            {{ order_info.mes_lis_shi_tra_dat_delivery_date }}
-            </span>
-            </td>
-            <td class="cl_custom_color">部門</td>
-            <td>
-            <span v-if="order_info && order_info.length">
-            {{ order_info.mes_lis_shi_tra_goo_major_category }}
-            </span>
-            </td>
-            <td class="cl_custom_color">便</td>
-            <td>
-            <span v-if="order_info && order_info.length">
-              {{ order_info.mes_lis_shi_log_del_delivery_service_code }}
+            <td width="10%" class="cl_custom_color">便</td>
+            <td width="15%">
+            <span v-if="order_info">
               {{
                 getbyrjsonValueBykeyName(
                   "mes_lis_ord_log_del_delivery_service_code",
@@ -43,9 +29,24 @@
               }}
               </span>
             </td>
-            <td class="cl_custom_color">配送温度区分</td>
-            <td>
-            <span v-if="order_info && order_info.length">
+          </tr>
+          <tr>
+            <td width="10%"class="cl_custom_color">納品日</td>
+            <td width="15%">
+            <span v-if="order_info">
+            {{ order_info.mes_lis_shi_tra_dat_delivery_date }}
+            </span>
+            </td>
+            <td width="10%" class="cl_custom_color">部門</td>
+            <td width="15%">
+            <span v-if="order_info">
+            {{ order_info.mes_lis_shi_tra_goo_major_category }}
+            </span>
+            </td>
+            
+            <td width="10%" class="cl_custom_color">配送温度区分</td>
+            <td width="15%">
+            <span v-if="order_info">
               {{ order_info.mes_lis_shi_tra_ins_temperature_code }}
               {{
                 getbyrjsonValueBykeyName(
