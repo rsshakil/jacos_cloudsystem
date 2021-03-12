@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\ADM;
 
 use App\Http\Controllers\Controller;
 use App\Models\ADM\User;
@@ -15,7 +15,7 @@ use Auth;
 class RoleController extends Controller
 {
     private $all_used_functions;
-    
+
     public function __construct()
     {
         $this->all_used_functions = new AllUsedFunction();

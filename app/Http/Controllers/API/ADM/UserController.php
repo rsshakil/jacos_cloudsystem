@@ -1,25 +1,23 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\ADM;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\AllUsedFunction;
 use App\Models\ADM\User;
 use App\Models\ADM\adm_user_details;
-use App\Models\BYR\byr_order_item;
 use App\Models\BYR\byr_order;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
 use DB;
 
-class UsersController extends Controller
+class UserController extends Controller
 {
     private $all_used_functions;
-    
+
     public function __construct()
     {
         $this->all_used_functions = new AllUsedFunction();
@@ -164,7 +162,7 @@ class UsersController extends Controller
             $file_name = time().'.' . explode('/', explode(':', substr($request->image_url, 0, strpos($request->image_url, ';')))[1])[1];
             \Image::make($request->image_url)->save(storage_path("/app/".config('const.USER_UPLOAD_IMAGES_PATH')).$file_name);
             $request->merge(['image_url' => $file_name]);
-           
+
         }else{
             $file_name = $file_name_db;
         }
@@ -268,5 +266,4 @@ public function get_user_company_byr_slr_list(){
     }
     return response()->json(['user_company_info'=>$user_comp_info,'byr_slr_list'=>$slr_order_info]);
 }
-
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\CMN;
 
 use Auth;
 use App\Http\Controllers\Controller;
@@ -9,7 +9,7 @@ use DB;
 use App\Models\CMN\cmn_scenario;
 use App\Models\CMN\cmn_scenario_history;
 
-class Cmn_ScenarioController extends Controller
+class CmnScenarioController extends Controller
 {
     private $sc_history_array;
     public function __construct()

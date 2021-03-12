@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\ADM;
 
 use App\Http\Controllers\API\AllUsedFunction;
 use App\Http\Controllers\Controller;
@@ -61,5 +61,4 @@ class AssignRoleModel extends Controller
         $user->assignRole($role);
         return response()->json(['title' => "Assigned!", 'message' => "success", 'class_name' => 'success']);
     }
-
 }

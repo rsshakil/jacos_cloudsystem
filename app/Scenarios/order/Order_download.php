@@ -4,7 +4,7 @@ namespace App\Scenarios\order;
 
 use Auth;
 use App\Scenarios\Common;
-use App\Http\Controllers\API\Cmn_ScenarioController;
+use App\Http\Controllers\API\CMN\CmnScenarioController;
 use App\Http\Controllers\API\DATA\Data_Controller;
 
 use Illuminate\Database\Eloquent\Model;
@@ -43,7 +43,7 @@ class Order_download extends Model
             $byr_buyer_id=$request->get('byr_buyer_id');
         }
 
-        
+
 
 
         // 追加情報取得　ダウンロード形式
@@ -82,7 +82,7 @@ class Order_download extends Model
             ]);
 
             // シナリオ実行
-            $cs = new Cmn_ScenarioController();
+            $cs = new CmnScenarioController();
             $ret = $cs->exec($req2);
             \Log::debug($ret->getContent());
             // \Log::debug($ret->getContent());
