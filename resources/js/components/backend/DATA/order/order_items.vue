@@ -5,20 +5,21 @@
       <div class="col-12" style="padding: 10px">
         <table class="table orderTopDetailTable table-bordered" style="width: 100%">
           <tr>
-            <td class="cl_custom_color">受信日時</td>
-            <td>{{order_item_lists.receive_datetime}}</td>
-            <td class="cl_custom_color">取引先</td>
-            <td colspan="5">{{order_item_lists.mes_lis_shi_par_sel_code}} {{order_item_lists.mes_lis_shi_par_sel_name}}</td>
+            <td width="10%" class="cl_custom_color">受信日時</td>
+            <td width="15%">{{order_item_lists.receive_datetime}}</td>
+            <td width="10%" class="cl_custom_color">取引先</td>
+            <td width="15%">{{order_item_lists.mes_lis_shi_par_sel_code}} {{order_item_lists.mes_lis_shi_par_sel_name}}</td>
+           <td width="10%" class="cl_custom_color">便</td>
+            <td width="15%"> {{getbyrjsonValueBykeyName('mes_lis_ord_log_del_delivery_service_code',order_item_lists.mes_lis_shi_log_del_delivery_service_code,'orders')}}</td>
+            
           </tr>
           <tr>
-            <td class="cl_custom_color">納品日</td>
-            <td>{{order_item_lists.mes_lis_shi_tra_dat_delivery_date}}</td>
-            <td class="cl_custom_color">部門</td>
-            <td>{{order_item_lists.mes_lis_shi_tra_goo_major_category}}</td>
-            <td class="cl_custom_color">便</td>
-            <td> {{order_item_lists.mes_lis_shi_log_del_delivery_service_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_log_del_delivery_service_code',order_item_lists.mes_lis_shi_log_del_delivery_service_code,'orders')}}</td>
-            <td class="cl_custom_color">配送温度区分</td>
-            <td>{{order_item_lists.mes_lis_shi_tra_ins_temperature_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_item_lists.mes_lis_shi_tra_ins_temperature_code,'orders')}}</td>
+            <td width="10%" class="cl_custom_color">納品日</td>
+            <td width="15%">{{order_item_lists.mes_lis_shi_tra_dat_delivery_date}}</td>
+            <td width="10%" class="cl_custom_color">部門</td>
+            <td width="15%">{{order_item_lists.mes_lis_shi_tra_goo_major_category}}</td>
+           <td width="10%" class="cl_custom_color">配送温度区分</td>
+            <td width="15%">{{order_item_lists.mes_lis_shi_tra_ins_temperature_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_item_lists.mes_lis_shi_tra_ins_temperature_code,'orders')}}</td>
           </tr>
         </table>
       </div>
@@ -28,48 +29,59 @@
       >
         <table class="table orderTopDetailTable table-bordered" style="width: 100%">
           <tr>
-            <td class="cl_custom_color">直接納品先コード</td>
-            <td>{{order_item_shipment_data_headTable.mes_lis_shi_par_shi_code}}</td>
-            <td class="cl_custom_color">最終納品先</td>
-            <td>{{order_item_shipment_data_headTable.mes_lis_shi_par_rec_code}} {{order_item_shipment_data_headTable.mes_lis_shi_par_rec_name}}</td>
-            <td class="cl_custom_color">伝票番号</td>
-            <td>{{order_item_shipment_data_headTable.mes_lis_shi_tra_trade_number}}</td>
+            <td width="10%" class="cl_custom_color">発注日</td>
+            <td width="15%">{{order_item_shipment_data_headTable.mes_lis_shi_tra_dat_order_date}}</td>
+            <td width="10%" class="cl_custom_color">直接納品先</td>
+            <td width="15%">{{order_item_shipment_data_headTable.mes_lis_shi_par_shi_code}} {{order_item_shipment_data_headTable.mes_lis_shi_par_shi_name}}</td>
+            <td width="10%" class="cl_custom_color">最終納品先</td>
+            <td width="15%">{{order_item_shipment_data_headTable.mes_lis_shi_par_rec_code}} {{order_item_shipment_data_headTable.mes_lis_shi_par_rec_name}}</td>
+            
           </tr>
           <tr>
-            <td class="cl_custom_color">定／特</td>
-            <td>{{order_item_shipment_data_headTable.mes_lis_shi_tra_ins_goods_classification_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_goods_classification_code',order_item_shipment_data_headTable.mes_lis_shi_tra_ins_goods_classification_code,'orders')}}</td>
-            <td class="cl_custom_color">不定貴区分</td>
-            <td>{{order_item_shipment_data_headTable.mes_lis_shi_tra_fre_variable_measure_item_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_fre_variable_measure_item_code',order_item_shipment_data_headTable.mes_lis_shi_tra_fre_variable_measure_item_code,'orders')}}</td>
-            <td class="cl_custom_color">発注者</td>
-            <td>{{order_item_shipment_data_headTable.mes_lis_buy_name}}</td>
+          <td width="10%" class="cl_custom_color">伝票番号</td>
+            <td width="15%">{{order_item_shipment_data_headTable.mes_lis_shi_tra_trade_number}}</td>
+            <td width="10%" class="cl_custom_color">伝票区分</td>
+            <td width="15%">{{order_item_shipment_data_headTable.mes_lis_shi_tra_ins_trade_type_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_trade_type_code',order_item_shipment_data_headTable.mes_lis_shi_tra_ins_trade_type_code,'orders')}}</td>
+            <td width="10%" class="cl_custom_color">定／特</td>
+            <td width="15%">{{order_item_shipment_data_headTable.mes_lis_shi_tra_ins_goods_classification_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_goods_classification_code',order_item_shipment_data_headTable.mes_lis_shi_tra_ins_goods_classification_code,'orders')}}</td>
+            
           </tr>
           <tr>
-            <td class="cl_custom_color">発注日</td>
-            <td>{{order_item_shipment_data_headTable.mes_lis_shi_tra_dat_order_date}}</td>
-            <td class="cl_custom_color">伝票区分</td>
-            <td>{{order_item_shipment_data_headTable.mes_lis_shi_tra_ins_trade_type_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_trade_type_code',order_item_shipment_data_headTable.mes_lis_shi_tra_ins_trade_type_code,'orders')}}</td>
-            <td class="cl_custom_color">出荷状況</td>
-            <td>{{order_item_shipment_data_headTable.status}}</td>
+            <td width="10%" class="cl_custom_color">不定貴区分</td>
+            <td width="15%">{{order_item_shipment_data_headTable.mes_lis_shi_tra_fre_variable_measure_item_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_fre_variable_measure_item_code',order_item_shipment_data_headTable.mes_lis_shi_tra_fre_variable_measure_item_code,'orders')}}</td>
+            <td width="10%" class="cl_custom_color">税区分・税率</td>
+            <td width="15%">{{order_item_shipment_data_headTable.mes_lis_shi_tra_tax_tax_type_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_tax_tax_type_code',order_item_shipment_data_headTable.mes_lis_shi_tra_tax_tax_type_code,'orders')}} {{order_item_shipment_data_headTable.mes_lis_shi_tra_tax_tax_rate}} %</td>
+           
+            <td width="10%" class="cl_custom_color">備考</td>
+            <td width="15%">{{order_item_shipment_data_headTable.mes_lis_shi_tra_not_text}}</td>
           </tr>
-          <tr>
-            <td class="cl_custom_color">備考</td>
-            <td colspan="5">{{order_item_shipment_data_headTable.mes_lis_shi_tra_not_text}}</td>
-          </tr>
-          <tr>
-            <td class="cl_custom_color">税区分・税率</td>
-            <td>{{order_item_shipment_data_headTable.mes_lis_shi_tra_tax_tax_type_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_tax_tax_type_code',order_item_shipment_data_headTable.mes_lis_shi_tra_tax_tax_type_code,'orders')}} {{order_item_shipment_data_headTable.mes_lis_shi_tra_tax_tax_rate}} %</td>
-            <td class="cl_custom_color_extra">訂正納品日</td>
-            <td colspan="3"><input class="form-control" type="date" v-model="order_item_shipment_data_headTable.mes_lis_shi_tra_dat_revised_delivery_date"></td>
-          </tr>
+          
 
         </table>
       </div>
       <div class="col-12" style="text-align: center">
-
+       <table class="table orderTopDetailTable table-bordered" style="width: 100%">
+          <tr>
+            
+            <td width="10%" class="cl_custom_color">出荷状況</td>
+            <td width="15%">{{order_item_shipment_data_headTable.status}}</td>
+            <td width="10%" class="cl_custom_color_extra">確定状況</td>
+            <td width="15%">{{order_item_shipment_data_headTable.decision_datetime}}</td>
+            <td width="10%" class="cl_custom_color_extra">送信状況</td>
+            <td width="15%">{{order_item_shipment_data_headTable.send_datetime}}</td>
+          </tr>
+          
+          </table>
       </div>
 
       <div class="col-12">
-
+      <table class="table orderTopDetailTable table-bordered" style="width: 100%">
+          
+          <tr>
+           <td class="cl_custom_color_extra">訂正納品日</td>
+            <td colspan="3"><input class="form-control" :disabled="is_disabled(order_item_shipment_data_headTable.decision_datetime==null?false:true)" type="date" v-model="order_item_shipment_data_headTable.mes_lis_shi_tra_dat_revised_delivery_date"></td>
+          </tr>
+          </table>
       </div>
       <div class="col-12">
 
@@ -155,7 +167,7 @@
             </tfoot>
 
           </table>
-          <button style="float:right" @click="updateShipmentItemDetails" class="btn btn-lg btn-primary pull-right text-right active">
+          <button style="float:right" @click="updateShipmentItemDetails" :disabled="is_disabled(order_item_shipment_data_headTable.decision_datetime==null?false:true)" class="btn btn-lg btn-primary pull-right text-right active">
               更新
             </button>
         </div>
@@ -486,6 +498,8 @@ beforeCreate: function() {
           this.mes_lis_shi_tot_tot_selling_price_total = data.order_item_list_detail[0].mes_lis_shi_tot_tot_selling_price_total;
           this.order_item_lists = data.orderItem;
           this.order_item_shipment_data_headTable = data.order_item_list_detail[0];
+          console.log(this.order_item_shipment_data_headTable);
+          console.log(this.order_item_lists);
           this.loader.hide();
         });
     },
