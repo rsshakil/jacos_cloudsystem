@@ -54,6 +54,7 @@ class InvoiceController extends Controller
     {
         // return $request->all();
         $adm_user_id=$request->adm_user_id;
+        $byr_buyer_id=$request->byr_buyer_id;
         $per_page = $request->select_field_per_page_num == null ? 10 : $request->select_field_per_page_num;
         $mes_lis_inv_pay_code=$request->mes_lis_inv_pay_code;
         $mes_lis_inv_per_begin_date=$request->mes_lis_inv_per_begin_date;
@@ -66,7 +67,7 @@ class InvoiceController extends Controller
         $authUser = User::find($adm_user_id);
         $cmn_company_id = 0;
         if (!$authUser->hasRole(config('const.adm_role_name'))) {
-            $cmn_company_info = $this->all_used_fun->get_user_info($adm_user_id);
+            $cmn_company_info = $this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
             $cmn_company_id = $cmn_company_info['cmn_company_id'];
             // $byr_buyer_id = $cmn_company_info['byr_buyer_id'];
             $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
@@ -105,9 +106,8 @@ class InvoiceController extends Controller
         $authUser = User::find($adm_user_id);
         $cmn_company_id = 0;
         if (!$authUser->hasRole(config('const.adm_role_name'))) {
-            $cmn_company_info = $this->all_used_fun->get_user_info($adm_user_id);
+            $cmn_company_info = $this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
             $cmn_company_id = $cmn_company_info['cmn_company_id'];
-            // $byr_buyer_id = $cmn_company_info['byr_buyer_id'];
             $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
         $invoice_id = data_invoice::insertGetId([

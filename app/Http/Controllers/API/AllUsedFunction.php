@@ -7,6 +7,7 @@ use App\Models\ADM\User;
 use App\Models\BYR\byr_buyer;
 use App\Models\CMN\cmn_companies_user;
 use App\Models\CMN\cmn_company;
+use App\Models\CMN\cmn_connect;
 use App\Models\SLR\slr_seller;
 use App\Models\CMN\cmn_category;
 use App\Models\CMN\cmn_category_description;
@@ -275,7 +276,7 @@ class AllUsedFunction extends Controller
      * @param  int $adm_user_id
      * @return Array Formated Company information
      */
-    public function get_user_info($adm_user_id = 0)
+    public function get_user_info($adm_user_id = 0,$selected_byr_buyer_id=0)
     {
         $arr = array('cmn_company_id' => 0, 'byr_buyer_id' => 0, 'cmn_connect_id' => 0);
         \Log::info($adm_user_id);
@@ -289,6 +290,9 @@ class AllUsedFunction extends Controller
             if ($company_type_info->company_type=='seller') {
                 $cmn_company_info = $cmn_company_info->join('slr_sellers', 'slr_sellers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
                 ->join('cmn_connects', 'cmn_connects.slr_seller_id', '=', 'slr_sellers.slr_seller_id');
+                if($selected_byr_buyer_id!=0){
+                    $cmn_company_info = $cmn_company_info->where('cmn_connects.byr_buyer_id',$selected_byr_buyer_id);
+                }
             }else if($company_type_info->company_type=='buyer'){
                 $cmn_company_info = $cmn_company_info->join('byr_buyers', 'byr_buyers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
                 ->join('cmn_connects', 'cmn_connects.byr_buyer_id', '=', 'byr_buyers.byr_buyer_id');
@@ -298,6 +302,7 @@ class AllUsedFunction extends Controller
             //     ->join('byr_buyers', 'byr_buyers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
             // $cmn_company_info->join('cmn_connects', 'cmn_connects.byr_buyer_id', '=', 'byr_buyers.byr_buyer_id')
             $cmn_company_info=$cmn_company_info->where('cmn_companies_users.adm_user_id', $adm_user_id)->first();
+
             if (!empty($cmn_company_info)) {
                 $arr = array(
                     'cmn_company_id' => $cmn_company_info->cmn_company_id,
@@ -308,6 +313,12 @@ class AllUsedFunction extends Controller
         }
         return $arr;
     }
+
+    public function get_cmn_connect_id_by_seller_id_buyer_id($slr_seller_id,$byr_buyer_id){
+        $cmn_connect_info = cmn_connect::where(['slr_seller_id'=>$slr_seller_id,'byr_buyer_id'=>$byr_buyer_id])->first();
+        return $cmn_connect_info;
+    }
+
     /**
      * Save Base64 image in Directory
      * @param  Object $base64_image_string Base64 Image Object
