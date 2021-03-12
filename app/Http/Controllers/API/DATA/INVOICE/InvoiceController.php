@@ -81,9 +81,9 @@ class InvoiceController extends Controller
         if ($mes_lis_inv_pay_code!=null) {
             $result=$result->where('dip.mes_lis_inv_pay_code','=',$mes_lis_inv_pay_code);
         }
-        if ($mes_lis_inv_per_begin_date && $mes_lis_inv_per_end_date) {
-            $result=$result->whereBetween('dip.mes_lis_inv_per_end_date', [$mes_lis_inv_per_begin_date, $mes_lis_inv_per_end_date]);
-        }
+        // if ($mes_lis_inv_per_begin_date && $mes_lis_inv_per_end_date) {
+        //     $result=$result->whereBetween('dip.mes_lis_inv_per_end_date', [$mes_lis_inv_per_begin_date, $mes_lis_inv_per_end_date]);
+        // }
         // will confirm
         if ($send_datetime_status=='未請求'){
             $result=$result->where('dipd.send_datetime','=',null);
@@ -100,8 +100,18 @@ class InvoiceController extends Controller
         return response()->json(['invoice_list' => $result, 'byr_buyer_list' => $byr_buyer]);
     }
     public function invoiceInsert(Request $request){
-
+        $adm_user_id = $request->adm_user_id;
+        $byr_buyer_id = $request->byr_buyer_id;
+        $authUser = User::find($adm_user_id);
+        $cmn_company_id = 0;
+        if (!$authUser->hasRole(config('const.adm_role_name'))) {
+            $cmn_company_info = $this->all_used_fun->get_user_info($adm_user_id);
+            $cmn_company_id = $cmn_company_info['cmn_company_id'];
+            // $byr_buyer_id = $cmn_company_info['byr_buyer_id'];
+            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+        }
         $invoice_id = data_invoice::insertGetId([
+            'cmn_connect_id'=>$cmn_connect_id,
             'sta_sen_identifier'=>'',
             'sta_sen_ide_authority'=>'',
             'sta_rec_identifier'=>'',
@@ -131,9 +141,14 @@ class InvoiceController extends Controller
             'mes_lis_pay_name_sbcs'=>'',
         ]);
         $request['data_invoice_id'] = $invoice_id;
-        data_invoice_pay::insert($request->all());
+        $data_invoice_pay_id = data_invoice_pay::insertGetId([
+            'data_invoice_id'=>$invoice_id,
+            'mes_lis_inv_pay_code'=>$request->mes_lis_inv_pay_code,
+            'mes_lis_inv_per_begin_date'=>$request->mes_lis_inv_per_begin_date,
+            'mes_lis_inv_per_end_date'=>$request->mes_lis_inv_per_end_date
+            ]);
 
-
+            data_invoice_pay_detail::insert(['data_invoice_pay_id'=>$data_invoice_pay_id]);    
         return response()->json(['success' => 1]);
     }
     public function invoiceDetailsList(Request $request)

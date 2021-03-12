@@ -107,7 +107,13 @@
               v-for="(value, index) in invoice_lists.data"
               :key="index"
             >
-              <td>{{ (index+1) }}</td>
+              <td>{{ 
+                invoice_lists.current_page *
+                      form.select_field_per_page_num -
+                    form.select_field_per_page_num +
+                    index +
+                    1
+               }}</td>
               <td>
                   <router-link
                   :to="{
@@ -128,7 +134,7 @@
               <td>{{ value.mes_lis_inv_pay_code }}</td>
               <td>{{ value.mes_lis_buy_name }}</td>
               <td>{{ value.status }}</td>
-              <td>{{number_format(value.mes_lis_inv_lin_det_amo_requested_amount) }}</td>
+              <td class="text-right">{{value.mes_lis_inv_lin_det_amo_requested_amount | priceFormat }}</td>
 
             </tr>
             <tr v-if="invoice_lists.data && invoice_lists.data.length==0">
@@ -188,6 +194,8 @@ export default {
       file: "",
       selected_byr: "0",
       invoiceData:{
+        adm_user_id: Globals.user_info_id,
+        byr_buyer_id: null,
         mes_lis_inv_pay_code:'',
         mes_lis_inv_per_begin_date:'',
         mes_lis_inv_per_end_date:'',
@@ -275,6 +283,7 @@ export default {
   created() {
     Fire.$emit("byr_has_selected", this.$session.get("byr_buyer_id"));
     Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
+    this.invoiceData.byr_buyer_id = this.$session.get("byr_buyer_id");
     this.get_all_invoice_list();
     Fire.$on("LoadByrinvoice", () => {
       this.get_all_invoice_list();
