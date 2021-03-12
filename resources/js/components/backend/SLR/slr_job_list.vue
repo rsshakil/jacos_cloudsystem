@@ -113,9 +113,9 @@ components:{
 },
   data() {
     return {
-        'slr_job_lists':{},
-        'slr_seller_id':'',
-        'job_exe_modal':false,
+        slr_job_lists:{},
+        slr_seller_id:'',
+        job_exe_modal:false,
         byr_buyer_id:null,
     };
   },
