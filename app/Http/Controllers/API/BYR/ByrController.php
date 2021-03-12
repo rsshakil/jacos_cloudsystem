@@ -175,4 +175,21 @@ class ByrController extends Controller
 
         return response()->json(['byr_info' => $byr_info]);
     }
+    public function buyerJsonSetting($byr_buyer_id){
+        $buyer_settings = byr_buyer::select('setting_information')->where('byr_buyer_id', $byr_buyer_id)->first();
+
+        return response()->json([ 'buyer_settings' => $buyer_settings->setting_information]);
+    }
+    public function getByrByOrderId(Request $request)
+    {
+        $data_order_id = $request->data_order_id;
+
+        $result = DB::table('byr_orders')
+            ->select('byr_buyers.*')
+            ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'byr_orders.cmn_connect_id')
+            ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
+            ->where('byr_orders.byr_order_id', $data_order_id)
+            ->first();
+        return response()->json(['byr_info' => $result]);
+    }
 }

@@ -131,7 +131,7 @@
                 style="width: 220px"
               >
                 <option value="*">全て</option>
-                <option :value="item" v-for="item in situationOptionList">
+                <option :value="item" v-for="(item,i) in situationOptionList" :key="i">
                   {{ item }}
                 </option>
               </select>
@@ -146,7 +146,7 @@
                 style="width: 220px"
               >
                 <option value="*">全て</option>
-                <option :value="item" v-for="item in printingStatusOptionList">
+                <option :value="item" v-for="(item,i) in printingStatusOptionList" :key="i">
                   {{ item }}
                 </option>
               </select>
@@ -330,15 +330,9 @@
                 </td>
                 <td>
                   <span v-if="order_detail_list.decision_datetime != null">
-                    <b-button
-                      pill
-                      variant="info"
-                      @click="
-                        decissionDateUpdate(
-                          order_detail_list.data_shipment_voucher_id
-                        )
-                      "
-                      >済</b-button
+                    <b-button pill variant="info" @click="decissionDateUpdate(order_detail_list.data_shipment_voucher_id)" :disabled="is_disabled(!order_detail_list.send_datetime)">
+                      済
+                    </b-button
                     >
                   </span>
                   <span v-else>
@@ -907,10 +901,10 @@ export default {
         this.selected = this.not_null_selected;
         this.null_selected_message = false;
       }
-    
+
     },
     updateCheckall() {
-   
+
       if (this.selected.length == this.order_detail_lists.data.length) {
         this.isCheckAll = true;
       } else {
@@ -948,7 +942,7 @@ export default {
       }
       if (event.key == "Enter") {
         event.preventDefault();
-      
+
       }
     },
     sortBynumeric_valu(sortKey) {
@@ -979,7 +973,7 @@ export default {
       }
     },
     update_shipment_detail(order_detail) {
-     
+
       axios({
         method: "POST",
         url: this.BASE_URL + "api/update_shipment_detail",
@@ -990,7 +984,7 @@ export default {
           Fire.$emit("LoadByrorderDetail",this.select_field_page_num);
         })
         .catch(function (response) {
-         
+
         });
     },
     decissionDateUpdate(data_shipment_voucher_id) {
@@ -1051,7 +1045,7 @@ export default {
                 this.null_selected_message = false;
               })
               .catch(function (response) {
-                
+
               });
           } else {
             this.selected = [];
@@ -1082,7 +1076,7 @@ export default {
             _this.alert_text = csv_data_count + "件の伝票を送信しますがよろしいでしょうか。";
             this.confirm_sweet().then((result) => {
               if (result.value) {
-              
+
                 axios.post(this.BASE_URL + "api/shipment_confirm", {
                     data_order_id: this.param_data.data_order_id,
                     order_info: this.order_info,
@@ -1116,12 +1110,12 @@ export default {
         if (result.value) {
           const formData = new FormData();
           let file = e.target.files[0];
-          
+
           formData.append("file", file);
           axios.post(this.BASE_URL + "api/shipment_update", formData)
             .then(({ data }) => {
                 this.init(data.status);
-           
+
               _this.alert_icon = "success";
               _this.alert_title = "Inserted";
               _this.alert_text = "Shipment CSV Updated";
@@ -1147,7 +1141,7 @@ export default {
     },
 
     col_show_hide_setting(url_slug) {
-  
+
       if (this.show_hide_col_list.length == 0) {
         var post_data = {
           url_slug: url_slug,
@@ -1186,7 +1180,7 @@ export default {
                 data.new_file_name
             ).then(({data}) => {
                 this.init(data.status);
-              
+
             });
           //link.revokeObjectURL();
         });
@@ -1195,13 +1189,14 @@ export default {
 
   created() {
     // this.byr_session_check()
-   
+
     Fire.$emit("byr_has_selected", this.$session.get("byr_buyer_id"));
     Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
     Fire.$emit("voucher_page_query_param", "myData");
     this.$session.set("voucher_page_query_param", this.$route.query);
-    
+
     this.param_data = this.$route.query;
+    // console.log(this.param_data);
 
     this.loader = Vue.$loading.show();
     this.data_order_id = this.$route.params.data_order_id;

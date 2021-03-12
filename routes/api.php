@@ -85,9 +85,8 @@ Route::get('/get_byr_slr_company/{cmn_company_id?}', 'API\CMN\CommonController@g
 Route::get('/get_scenario_list', 'API\Cmn_ScenarioController@get_scenario_list');
 Route::get('/slr_management/{adm_user_id}', 'API\SLR\SlrController@slr_management');
 Route::post('/get_order_list', 'API\DATA\ORDER\OrderController@orderList');
-Route::get('/buyerJsonSetting/{byr_buyer_id}', 'API\Byr_orderController@buyerJsonSetting');
+Route::get('/buyerJsonSetting/{byr_buyer_id}', 'API\BYR\ByrController@buyerJsonSetting');
 Route::get('/get_all_company_list/{adm_user_id}', 'API\BYR\ByrController@get_all_company_list');
-Route::post('/update_shipment_detail', 'API\Byr_orderController@update_shipment_detail');
 // Shipment
 Route::post('update_shipment_detail_bycurrentdatetime', 'API\DATA\SHIPMENT\ShipmentController@decessionData');
 Route::post('/shipment_confirm', 'API\DATA\SHIPMENT\ShipmentController@shipmentConfirm');
@@ -101,12 +100,11 @@ Route::post('/cmn_user_create', 'API\CMN\CommonController@cmn_user_create');
 Route::post('/slr_seller_user_create', 'API\BYR\ByrController@slr_seller_user_create');
 Route::post('/create_buyer', 'API\BYR\ByrController@createBuyer');
 Route::post('/slr_company_create', 'API\BYR\ByrController@slr_company_create');
-Route::post('/get_byr_info_by_data_order_id', 'API\Byr_orderController@get_byr_info_by_data_order_id');
+Route::post('/get_byr_info_by_data_order_id', 'API\BYR\ByrController@getByrByOrderId');
 Route::get('/dispaly_col_by_user/{url_slug}/{user_id}', 'API\Tbl_col_settingController@dispaly_col_by_user');
 
 // Route::post('/bms_order_save/{job_id}', 'API\BmsOrderController@store');
-Route::get('/get_data_order_byr_order_id/{byr_order_id}', 'API\Byr_orderController@get_data_order_byr_order_id');
-Route::post('/update_byr_order_detail_status', 'API\Byr_orderController@update_byr_order_detail_status');
+Route::get('/get_data_order_byr_order_id/{byr_order_id}', 'API\DATA\ORDER\OrderController@getOrderById');
 Route::post('item_master_exec', 'API\Cmn_jobController@exec');
 // Route::post('bms_csv_exec', 'API\Cmn_jobController@exec');
 Route::get('get_all_master_item/{adm_user_id}', 'API\Byr_itemController@get_all_master_item');
@@ -133,11 +131,12 @@ Route::get('get_all_invoice_by_voucher_number/{voucher_number}', 'API\DATA\INVOI
 Route::post('/cmn_category_create', 'API\Cmn_categoryController@store');
 Route::post('/uploadByrCategoryCsv', 'API\Cmn_categoryController@uploadByrCategoryCsv');
 
-// Mayeen
-Route::post('/load_canvas_setting_data', 'API\Byr_orderController@canvasSettingData');
-Route::post('/canvas_data_save', 'API\Byr_orderController@canvasDataSave');
-Route::post('/load_canvas_data', 'API\Byr_orderController@canvasAllData');
-Route::post('/delete_canvas', 'API\Byr_orderController@deleteCanvasData');
+// Canvas
+Route::post('/load_canvas_setting_data', 'API\CANVAS\CanvasController@canvasSettingData');
+Route::post('/canvas_data_save', 'API\CANVAS\CanvasController@canvasDataSave');
+Route::post('/load_canvas_data', 'API\CANVAS\CanvasController@canvasAllData');
+Route::post('/delete_canvas', 'API\CANVAS\CanvasController@deleteCanvasData');
+
 Route::post('/shipment_update', 'API\DATA\SHIPMENT\ShipmentController@shipmentUpdate');
 
 Route::post('/get_permissions_for_buyer', 'API\BYR\ByrController@getPermissionForBuyer');
@@ -161,9 +160,9 @@ Route::post('/update_blog_infos', 'API\Cmn_blogController@update_blog_infos');
 Route::post('/ckeditor_file_up', 'API\Cmn_blogController@ckeditor_file_up');
 
 Route::post('/get_byr_order_data_by_slr', 'API\DATA\ORDER\OrderController@getByrOrderDataBySlr');
-Route::post('/order_details', 'API\Byr_orderController@orderDetails');
-Route::get('/order_item_details/{data_shipment_voucher_id}', 'API\Byr_orderController@orderItemDetails');
-Route::get('/shipment_item_detail_search/{item_code}', 'API\Byr_orderController@shipment_item_detail_search');
+Route::post('/order_details', 'API\DATA\ORDER\OrderController@orderDetails');
+Route::get('/order_item_details/{data_shipment_voucher_id}', 'API\DATA\ORDER\OrderItemController@orderItemDetails');
+Route::get('/shipment_item_detail_search/{item_code}', 'API\DATA\ORDER\OrderItemController@shipmentItemDetailSearch');
 Route::get('slr_job_list_all', 'API\Cmn_jobController@index');
 //get user company byr slr list
 Route::post('/get_user_company_byr_slr_list', 'API\UsersController@get_user_company_byr_slr_list');

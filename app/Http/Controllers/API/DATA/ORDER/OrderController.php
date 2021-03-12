@@ -10,6 +10,8 @@ use DB;
 use App\Models\ADM\User;
 use App\Models\BYR\byr_buyer;
 use App\Http\Controllers\API\AllUsedFunction;
+use App\Models\DATA\ORD\data_order_voucher;
+use App\Models\CMN\cmn_tbl_col_setting;
 
 class OrderController extends Controller
 {
@@ -175,5 +177,124 @@ class OrderController extends Controller
                 ->get();
             }
         return response()->json(['slr_order_info' => $slr_order_info]);
+    }
+    public function orderDetails(Request $request)
+    {
+        $data_order_id = $request->data_order_id;
+        $delivery_date = $request->delivery_date;
+        $delivery_service_code = $request->delivery_service_code;
+        $major_category = $request->major_category;
+        $temperature_code = $request->temperature_code;
+        $per_page = $request->per_page == null ? 10 : $request->per_page;
+        $temperature_code = $temperature_code == null ? '' : $temperature_code;
+        $form_search = $request->form_search;
+
+        data_order_voucher::where('data_order_id',$data_order_id)->where('mes_lis_ord_tra_goo_major_category',$major_category)->where('mes_lis_ord_log_del_delivery_service_code',$delivery_service_code)->where('mes_lis_ord_tra_dat_delivery_date',$delivery_date)->whereNull('check_datetime')->update(['check_datetime'=>date('Y-m-d H:i:s')]);
+        $order_info = DB::table('data_shipments as ds')
+        ->select(
+            'dor.receive_datetime',
+            'dsv.mes_lis_shi_par_sel_code',
+            'dsv.mes_lis_shi_par_sel_name',
+            'dsv.mes_lis_shi_tra_dat_delivery_date',
+            'dsv.mes_lis_shi_tra_goo_major_category',
+            'dsv.mes_lis_shi_log_del_delivery_service_code',
+            'dsv.mes_lis_shi_tra_ins_temperature_code',
+            'dsv.mes_lis_shi_tra_trade_number'
+        )
+        ->join('data_shipment_vouchers as dsv', 'dsv.data_shipment_id', '=', 'ds.data_shipment_id')
+        ->join('data_shipment_items as dsi', 'dsi.data_shipment_voucher_id', '=', 'dsv.data_shipment_voucher_id')
+        ->join('data_orders as dor', 'dor.data_order_id', '=', 'ds.data_order_id')
+        ->where('ds.data_order_id', $data_order_id)
+        ->where('dsv.mes_lis_shi_tra_dat_delivery_date', $delivery_date)
+        ->where('dsv.mes_lis_shi_tra_goo_major_category', $major_category)
+        ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $delivery_service_code)
+        ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $temperature_code)
+        ->groupBy('dsv.mes_lis_shi_tra_trade_number')
+        ->first();
+
+        $result = DB::table('data_shipments as ds')
+            ->select(
+                'dor.receive_datetime',
+                'dsv.mes_lis_shi_par_sel_code',
+                'dsv.mes_lis_shi_par_sel_name',
+                'dsv.data_shipment_voucher_id',
+                'dsv.mes_lis_shi_tra_dat_delivery_date',
+                'dsv.mes_lis_shi_tra_goo_major_category',
+                'dsv.mes_lis_shi_log_del_delivery_service_code',
+                'dsv.mes_lis_shi_tra_ins_temperature_code',
+                'dsv.decision_datetime',
+                'dsv.mes_lis_shi_par_shi_code',
+                'dsv.mes_lis_shi_par_rec_code',
+                'dsv.mes_lis_shi_par_rec_name',
+                'dsv.mes_lis_shi_tra_trade_number',
+                'dsv.mes_lis_shi_tra_ins_goods_classification_code',
+                'dsv.mes_lis_shi_tot_tot_net_price_total',
+                'dsv.status',
+                'dsv.updated_at',
+                'dsv.print_datetime',
+                'dsv.send_datetime'
+            )
+            ->join('data_shipment_vouchers as dsv', 'dsv.data_shipment_id', '=', 'ds.data_shipment_id')
+            ->join('data_shipment_items as dsi', 'dsi.data_shipment_voucher_id', '=', 'dsv.data_shipment_voucher_id')
+            ->join('data_orders as dor', 'dor.data_order_id', '=', 'ds.data_order_id')
+            // ->where('ds.data_order_id', $data_order_id);
+            ->where('dsv.mes_lis_shi_tra_dat_delivery_date', $delivery_date)
+            ->where('dsv.mes_lis_shi_tra_goo_major_category', $major_category)
+            ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $delivery_service_code)
+            ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $temperature_code);
+                if($form_search['mes_lis_shi_tra_trade_number']!=""){
+                    $result->where('dsv.mes_lis_shi_tra_trade_number', $form_search['mes_lis_shi_tra_trade_number']);
+                }
+                if($form_search['fixedSpecial']!="*"){
+                    $result->where('dsv.mes_lis_shi_tra_ins_goods_classification_code', $form_search['fixedSpecial']);
+                }
+                if($form_search['printingStatus']!="*"){
+                    if($form_search['printingStatus']=="未印刷あり"){
+                        $result->whereNull('dsv.print_datetime');
+                    }
+                    if($form_search['printingStatus']=="印刷済"){
+                        $result->whereNotNull('dsv.print_datetime');
+                    }
+
+                }
+                if($form_search['situation']!="*"){
+                    if($form_search['situation']=="未確定あり"){
+                        $result->whereNull('dsv.decision_datetime');
+                    }
+                    if($form_search['situation']=="確定済"){
+                        $result->whereNotNull('dsv.decision_datetime');
+                    }
+                }
+           $result->groupBy('dsv.mes_lis_shi_tra_trade_number');
+            $result = $result->paginate($per_page);
+
+
+        /*coll setting*/
+        $slected_list = array();
+        // $result_data = cmn_tbl_col_setting::where('url_slug', 'order_list_details')->first();
+        // $header_list = json_decode($result_data->content_setting);
+        // foreach ($header_list as $header) {
+        //     if ($header->header_status == true) {
+        //         $slected_list[] = $header->header_field;
+        //     }
+        // }
+        /*coll setting*/
+        return response()->json(['order_list_detail' => $result, 'order_info' => $order_info, 'slected_list' => $slected_list]);
+    }
+    public function getOrderById($byr_order_id)
+    {
+        $result = DB::table('bms_orders')->where('bms_orders.byr_order_id', $byr_order_id)
+            ->get();
+        /*coll setting*/
+        $slected_list = array();
+        $result_data = cmn_tbl_col_setting::where('url_slug', 'order_list_detail')->first();
+        $header_list = json_decode($result_data->content_setting);
+        foreach ($header_list as $header) {
+            if ($header->header_status == true) {
+                $slected_list[] = $header->header_field;
+            }
+        }
+        /*coll setting*/
+        return response()->json(['order_list_detail' => $result, 'slected_list' => $slected_list]);
     }
 }
