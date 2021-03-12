@@ -13,6 +13,7 @@ use DB;
 class data_invoice_scheduler
 {
     private $all_functions;
+
     public function __construct()
     {
         // $this->common_class_obj = new Common();
@@ -104,7 +105,7 @@ class data_invoice_scheduler
                 $data_invoice_pay_details_array['mes_lis_inv_lin_sel_name_sbcs']=$shipment_data['mes_lis_shi_par_sel_name_sbcs'];
                 $data_invoice_pay_details_array['mes_lis_inv_lin_det_goo_major_category']=$shipment_data['mes_lis_shi_tra_goo_major_category'];
                 $data_invoice_pay_details_array['mes_lis_inv_lin_det_goo_sub_major_category']=$shipment_data['mes_lis_shi_tra_goo_sub_major_category'];
-                $data_invoice_pay_details_array['mes_lis_inv_lin_det_transfer_of_ownership_date']=$shipment_data['mes_lis_shi_tra_dat_transfer_of_ownership_date'];
+                $data_invoice_pay_details_array['mes_lis_inv_lin_det_transfer_of_ownership_date']=$shipment_data['ownership_date'];
                 //static
                 $data_invoice_pay_details_array['mes_lis_inv_lin_det_amo_requested_amount']=$shipment_data['mes_lis_shi_tot_tot_net_price_total'];
                 $data_invoice_pay_details_array['mes_lis_inv_lin_det_amo_req_plus_minus']='+';
@@ -128,6 +129,8 @@ class data_invoice_scheduler
     public static function shipmentQuery($data_order_id,$start_date,$end_date){
         $start_date = $start_date!=null? date('Y-m-d 00:00:00',strtotime($start_date)):$start_date;
         $end_date = $end_date!=null? date('Y-m-d 23:59:59',strtotime($end_date)):$end_date;
+        // \Log::info($start_date);
+        // \Log::info($end_date);
         $shipment_datas=data_shipment::select(
             'data_shipments.cmn_connect_id',
             'data_shipments.sta_sen_identifier',
@@ -162,14 +165,20 @@ class data_invoice_scheduler
             'data_shipments.mes_lis_buy_name',
             'data_shipments.mes_lis_buy_name_sbcs',
         'data_shipment_vouchers.*','data_shipment_items.*','data_shipment_item_details.*',
-        DB::raw('count(data_shipment_vouchers.mes_lis_shi_tra_dat_transfer_of_ownership_date) as tod')
+        DB::raw('count(data_shipment_vouchers.mes_lis_shi_tra_dat_transfer_of_ownership_date) as tod'),
+        DB::raw('(CASE WHEN data_shipment_vouchers.mes_lis_shi_tra_dat_revised_delivery_date is null
+        THEN data_shipment_vouchers.mes_lis_shi_tra_dat_delivery_date
+        ELSE data_shipment_vouchers.mes_lis_shi_tra_dat_revised_delivery_date END) as ownership_date')
         )
         ->leftJoin('data_shipment_vouchers','data_shipment_vouchers.data_shipment_id','data_shipments.data_shipment_id')
         ->leftJoin('data_shipment_items','data_shipment_items.data_shipment_voucher_id','data_shipment_vouchers.data_shipment_voucher_id')
         ->leftJoin('data_shipment_item_details','data_shipment_item_details.data_shipment_item_id','data_shipment_items.data_shipment_item_id')
         ->where('data_shipments.data_order_id',$data_order_id)
         ->groupBy('data_shipment_vouchers.data_shipment_voucher_id')
-        ->whereBetween('data_shipment_vouchers.mes_lis_shi_tra_dat_transfer_of_ownership_date', [$start_date, $end_date])
+
+        ->whereBetween(DB::raw('(CASE WHEN data_shipment_vouchers.mes_lis_shi_tra_dat_revised_delivery_date is null
+        THEN data_shipment_vouchers.mes_lis_shi_tra_dat_delivery_date
+        ELSE data_shipment_vouchers.mes_lis_shi_tra_dat_revised_delivery_date END)'), [$start_date, $end_date])
         ->get();
         return $shipment_datas;
     }
