@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API\Level3;
 
 use App\Http\Controllers\API\AllUsedFunction;
-use App\Http\Controllers\API\Cmn_ScenarioController;
+use App\Http\Controllers\API\CMN\CmnScenarioController;
 use App\Http\Controllers\Controller;
 use App\Models\ADM\User;
 use App\Models\BYR\byr_buyer;
@@ -409,7 +409,7 @@ class Level3Controller extends Controller
     public function jobScenario(Request $request)
     {
         // return $request->all();
-        $cs = new Cmn_ScenarioController();
+        $cs = new CmnScenarioController();
         $ret = $cs->exec($request);
         \Log::debug($ret->getContent());
         $ret = json_decode($ret->getContent(), true);

@@ -24,9 +24,9 @@ Route::get('is-auth', function () {
 Route::group(['middleware'=>'ApiMiddleWire'],function(){
 Route::apiResources(
     [
-        'role' => 'API\RoleController',
-        'permission' => 'API\PermissionController',
-        'users' => 'API\UsersController',
+        'role' => 'API\ADM\RoleController',
+        'permission' => 'API\ADM\PermissionController',
+        'users' => 'API\ADM\UserController',
     ]
 );
 
@@ -34,12 +34,6 @@ Route::apiResources(
     [
         // 'byrorders' => 'API\Byr_orderController',
         'byrshipments' => 'API\Byr_shipmentController',
-    ]
-);
-Route::apiResources(
-
-    [
-        'tblecolsetting' => 'API\Tbl_col_settingController',
     ]
 );
 
@@ -55,34 +49,34 @@ Route::apiResources(
         'master_item' => 'API\Byr_itemController',
     ]
 );
-Route::get('/all_users_roles', 'API\AssignRoleModel@allUsersAndRoles');
-Route::get('/get_roles/{id}', 'API\AssignRoleModel@getRoleById');
-Route::post('/assign_role_to_user', 'API\AssignRoleModel@assignModelRole');
+Route::get('/all_users_roles', 'API\ADM\AssignRoleModel@allUsersAndRoles');
+Route::get('/get_roles/{id}', 'API\ADM\AssignRoleModel@getRoleById');
+Route::post('/assign_role_to_user', 'API\ADM\AssignRoleModel@assignModelRole');
 
-Route::get('/all_users_permissions', 'API\AssignPermissionModel@allUsersAndPermissions');
-Route::get('/get_permission_model/{id?}', 'API\AssignPermissionModel@getPermissionModel');
-Route::post('/assign_permission_to_user', 'API\AssignPermissionModel@assignPermissionToModel');
+Route::get('/all_users_permissions', 'API\ADM\AssignPermissionModel@allUsersAndPermissions');
+Route::get('/get_permission_model/{id?}', 'API\ADM\AssignPermissionModel@getPermissionModel');
+Route::post('/assign_permission_to_user', 'API\ADM\AssignPermissionModel@assignPermissionToModel');
 
-Route::post('/get_permission_for_roles', 'API\AssignPermissionModel@getPermissionsByRole');
-Route::post('/permissions_by_users', 'API\AssignPermissionModel@getPermissionsByUser');
-Route::post('/change_password', 'API\UsersController@changePassword');
+Route::post('/get_permission_for_roles', 'API\ADM\AssignPermissionModel@getPermissionsByRole');
+Route::post('/permissions_by_users', 'API\ADM\AssignPermissionModel@getPermissionsByUser');
+Route::post('/change_password', 'API\ADM\UserController@changePassword');
 
-Route::get('/user_details/{user_id}', 'API\UsersController@userDetails');
-Route::post('/users_update', 'API\UsersController@update');
+Route::get('/user_details/{user_id}', 'API\ADM\UserController@userDetails');
+Route::post('/users_update', 'API\ADM\UserController@update');
 
 // Route::get('/home_lang_data', 'API\LanguageController@homeLangData');
 
-// Route::post('/permission_check', 'API\PermissionController@check');
+// Route::post('/permission_check', 'API\ADM\PermissionController@check');
 
 
-Route::get('/slr_job_list_by_seller_id/{slr_seller_id}', 'API\Cmn_jobController@slr_job_list_by_seller_id');
+Route::get('/slr_job_list_by_seller_id/{slr_seller_id}', 'API\CMN\CmnJobController@slr_job_list_by_seller_id');
 
 Route::get('/cmn_company_user_list/{cmn_company_id?}', 'API\BYR\ByrController@cmn_company_user_list');
 // Route::get('/company_seller_user_list/{cmn_company_id}', 'API\BYR\ByrController@company_seller_user_list');
 Route::get('/company_partner_list/{cmn_company_id?}', 'API\BYR\ByrController@company_partner_list');
 Route::get('/get_byr_slr_company/{cmn_company_id?}', 'API\CMN\CommonController@get_byr_slr_company');
 
-Route::get('/get_scenario_list', 'API\Cmn_ScenarioController@get_scenario_list');
+Route::get('/get_scenario_list', 'API\CMN\CmnScenarioController@get_scenario_list');
 Route::get('/slr_management/{adm_user_id}', 'API\SLR\SlrController@slr_management');
 Route::post('/get_order_list', 'API\DATA\ORDER\OrderController@orderList');
 Route::get('/buyerJsonSetting/{byr_buyer_id}', 'API\BYR\ByrController@buyerJsonSetting');
@@ -101,13 +95,11 @@ Route::post('/slr_seller_user_create', 'API\BYR\ByrController@slr_seller_user_cr
 Route::post('/create_buyer', 'API\BYR\ByrController@createBuyer');
 Route::post('/slr_company_create', 'API\BYR\ByrController@slr_company_create');
 Route::post('/get_byr_info_by_data_order_id', 'API\BYR\ByrController@getByrByOrderId');
-Route::get('/dispaly_col_by_user/{url_slug}/{user_id}', 'API\Tbl_col_settingController@dispaly_col_by_user');
 
 // Route::post('/bms_order_save/{job_id}', 'API\BmsOrderController@store');
 Route::get('/get_data_order_byr_order_id/{byr_order_id}', 'API\DATA\ORDER\OrderController@getOrderById');
-Route::post('item_master_exec', 'API\Cmn_jobController@exec');
-// Route::post('bms_csv_exec', 'API\Cmn_jobController@exec');
-Route::get('get_all_master_item/{adm_user_id}', 'API\Byr_itemController@get_all_master_item');
+Route::post('item_master_exec', 'API\CMN\CmnJobController@exec');
+Route::get('get_all_master_item/{adm_user_id}', 'API\DATA\ORDER\OrderItemController@masterItem');
 // receive
 Route::post('data_receive_list', 'API\DATA\RECEIVE\ReceiveController@orderReceiveList');
 Route::post('data_receive_detail_list', 'API\DATA\RECEIVE\ReceiveController@orderReceiveDetailList');
@@ -117,8 +109,8 @@ Route::get('corrected_receive_list/{adm_user_id}', 'API\DATA\RECEIVE\ReceiveCont
 Route::post('get_payment_list', 'API\DATA\PAYMENT\PaymentController@getPaymentList');
 Route::post('get_payment_detail_list', 'API\DATA\PAYMENT\PaymentController@get_payment_detail_list');
 Route::post('get_payment_item_detail_list', 'API\DATA\PAYMENT\PaymentController@get_payment_item_detail_list');
-Route::get('get_byr_return_list/{adm_user_id}', 'API\Byr_return_itemController@get_byr_return_list');
-Route::post('get_all_cat_list', 'API\Cmn_categoryController@get_all_cat_list');
+Route::get('get_byr_return_list/{adm_user_id}', 'API\DATA\RTN\ReturnController@getReturnItemList');
+Route::post('get_all_cat_list', 'API\CMN\CmnCategoryController@get_all_cat_list');
 // Invoice
 Route::post('get_all_invoice_list', 'API\DATA\INVOICE\InvoiceController@get_all_invoice_list');
 Route::post('invoiceInsert', 'API\DATA\INVOICE\InvoiceController@invoiceInsert');
@@ -128,8 +120,8 @@ Route::post('update_invoice_decession_datetime', 'API\DATA\INVOICE\InvoiceContro
 Route::post('download_invoice', 'API\DATA\INVOICE\InvoiceController@downloadInvoice');
 Route::get('get_all_invoice_by_voucher_number/{voucher_number}', 'API\DATA\INVOICE\InvoiceController@get_all_invoice_by_voucher_number');
 // Invoice
-Route::post('/cmn_category_create', 'API\Cmn_categoryController@store');
-Route::post('/uploadByrCategoryCsv', 'API\Cmn_categoryController@uploadByrCategoryCsv');
+Route::post('/cmn_category_create', 'API\CMN\CmnCategoryController@store');
+Route::post('/uploadByrCategoryCsv', 'API\CMN\CmnCategoryController@uploadByrCategoryCsv');
 
 // Canvas
 Route::post('/load_canvas_setting_data', 'API\CANVAS\CanvasController@canvasSettingData');
@@ -149,23 +141,24 @@ Route::post('/load_pdf_platform_canvas_setting_data', 'API\PDF\PdfPlatformSettin
 Route::post('/pdf_platform_canvas_data_save', 'API\PDF\PdfPlatformSettingController@canvasDataSave');
 Route::post('load_pdf_platform_canvas_data', 'API\PDF\PdfPlatformController@pdfPlatformAllData');
 Route::post('/delete_pdf_platform_canvas', 'API\PDF\PdfPlatformSettingController@deleteCanvasData');
-// Pdf Platform
-Route::post('/blog_create', 'API\Cmn_blogController@store');
-Route::get('/get_all_blog_list', 'API\Cmn_blogController@index');
-Route::get('/get_all_published_blog_list', 'API\Cmn_blogController@get_all_published_blog_list');
-Route::get('/get_signle_top_blog', 'API\Cmn_blogController@get_signle_top_blog');
-Route::get('/get_user_top_blog', 'API\Cmn_blogController@get_user_top_blog');
-Route::get('/get_user_top_blog_by_byr_id/{byr_buyer_id}', 'API\Cmn_blogController@get_user_top_blog_by_byr_id');
-Route::post('/update_blog_infos', 'API\Cmn_blogController@update_blog_infos');
-Route::post('/ckeditor_file_up', 'API\Cmn_blogController@ckeditor_file_up');
+// Pdf Platform End
+// Blog
+Route::post('/blog_create', 'API\CMN\CmnBlogController@store');
+Route::get('/get_all_blog_list', 'API\CMN\CmnBlogController@index');
+Route::get('/get_all_published_blog_list', 'API\CMN\CmnBlogController@get_all_published_blog_list');
+Route::get('/get_signle_top_blog', 'API\CMN\CmnBlogController@get_signle_top_blog');
+Route::get('/get_user_top_blog', 'API\CMN\CmnBlogController@get_user_top_blog');
+Route::get('/get_user_top_blog_by_byr_id/{byr_buyer_id}', 'API\CMN\CmnBlogController@get_user_top_blog_by_byr_id');
+Route::post('/update_blog_infos', 'API\CMN\CmnBlogController@update_blog_infos');
+Route::post('/ckeditor_file_up', 'API\CMN\CmnBlogController@ckeditor_file_up');
 
 Route::post('/get_byr_order_data_by_slr', 'API\DATA\ORDER\OrderController@getByrOrderDataBySlr');
 Route::post('/order_details', 'API\DATA\ORDER\OrderController@orderDetails');
 Route::get('/order_item_details/{data_shipment_voucher_id}', 'API\DATA\ORDER\OrderItemController@orderItemDetails');
 Route::get('/shipment_item_detail_search/{item_code}', 'API\DATA\ORDER\OrderItemController@shipmentItemDetailSearch');
-Route::get('slr_job_list_all', 'API\Cmn_jobController@index');
+Route::get('slr_job_list_all', 'API\CMN\CmnJobController@index');
 //get user company byr slr list
-Route::post('/get_user_company_byr_slr_list', 'API\UsersController@get_user_company_byr_slr_list');
+Route::post('/get_user_company_byr_slr_list', 'API\ADM\UserController@get_user_company_byr_slr_list');
 Route::get('/get_selected_byr_info/{byr_buyer_id}', 'API\BYR\ByrController@get_selected_byr_info');
 Route::post('/update_cmn_connects_optional', 'API\CMN\CmnConnectsController@update_cmn_connects_optional');
 Route::post('/update_cmn_connects_optionalAllJson', 'API\CMN\CmnConnectsController@update_cmn_connects_optionalAllJson');
@@ -173,9 +166,9 @@ Route::get('/get_allInvoiceJsonSetting_info', 'API\CMN\CmnConnectsController@get
 Route::post('/get_partner_fax_list', 'API\CMN\CmnConnectsController@get_partner_fax_list');
 });
 // scenario exec
-Route::post('scenario_exec', 'API\Cmn_ScenarioController@exec');
+Route::post('scenario_exec', 'API\CMN\CmnScenarioController@exec');
 // Job Exec
-Route::post('job_exec', 'API\Cmn_jobController@exec');
+Route::post('job_exec', 'API\CMN\CmnJobController@exec');
 // Level3
 Route::post('get_shipment_file', 'API\Level3\Level3Controller@getShipmentFile');
 Route::post('delete_service', 'API\Level3\Level3Controller@deleteService');

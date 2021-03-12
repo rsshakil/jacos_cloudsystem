@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\ADM;
 
 use App\Http\Controllers\API\AllUsedFunction;
 use App\Http\Controllers\Controller;

@@ -1,30 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\DATA\RTN;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\API\AllUsedFunction;
 use Illuminate\Http\Request;
-use App\Models\CMN\cmn_tbl_col_setting;
-use App\Models\CMN\cmn_scenario;
-use App\Models\CMN\cmn_connect;
-use App\Models\CMN\cmn_company;
 use App\Models\ADM\User;
-use App\Models\CMN\cmn_companies_user;
-use App\Models\BYR\byr_receive;
-use App\Models\BYR\byr_corrected_receive;
-use App\Models\BYR\byr_buyer;
 use App\Models\BYR\byr_return;
-class Byr_return_itemController extends Controller
-{
 
+class ReturnController extends Controller
+{
     private $all_used_fun;
 
     public function __construct(){
         $this->all_used_fun = new AllUsedFunction();
     }
 
-    public function get_byr_return_list($adm_user_id){
+    public function getReturnItemList($adm_user_id){
         $authUser=User::find($adm_user_id);
         $cmn_company_id = 0;
         if(!$authUser->hasRole(config('const.adm_role_name'))){
@@ -49,5 +41,4 @@ class Byr_return_itemController extends Controller
 
         return response()->json(['return_list' => $result,'byr_buyer_list'=>$byr_buyer]);
     }
-    
 }

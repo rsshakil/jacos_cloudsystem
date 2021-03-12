@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\ADM;
 
 use App\Http\Controllers\Controller;
 use DB;
@@ -14,7 +14,7 @@ use App\Models\ADM\User;
 class PermissionController extends Controller
 {
     private $all_used_functions;
-    
+
     public function __construct()
     {
         $this->all_used_functions = new AllUsedFunction();
@@ -52,8 +52,8 @@ class PermissionController extends Controller
                 $permissions = json_decode($permissions);
                 if (empty($permissions)) {
                     Permission::create([
-                        'name' => $permission_name, 
-                        'permission_description' => $permission_description, 
+                        'name' => $permission_name,
+                        'permission_description' => $permission_description,
                         'is_system' => 0]);
                         return response()->json(['message' => "created", 'class_name' => 'success','title'=>'Created!']);
                 } else {
@@ -90,6 +90,6 @@ class PermissionController extends Controller
             return response()->json(['message' =>'deleted', 'class_name' => 'success','title'=>'Deleted!']);
         } else {
             return response()->json(['message' =>'faild', 'class_name' => 'error','title'=>'Not Deleted!']);
-        }   
+        }
     }
 }

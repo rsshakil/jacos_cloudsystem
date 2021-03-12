@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\CMN;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -9,12 +9,10 @@ use Illuminate\Http\Request;
 use App\Models\CMN\cmn_job;
 use App\Models\BYR\byr_buyer;
 use App\Models\SLR\slr_seller;
-use App\Models\CMN\cmn_company;
-use App\Models\ADM\User;
 use DB;
 use Auth;
 
-class Cmn_jobController extends Controller
+class CmnJobController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -54,7 +52,7 @@ class Cmn_jobController extends Controller
         if (!Hash::check($request->password, $user->password)) {
             return ['status'=>1, 'message' => 'Authentication faild!'];
         }
-        
+
         $request_all=$request->all();
         if (array_key_exists("super_code", $request_all) && array_key_exists("partner_code", $request_all) && array_key_exists("class", $request_all)) {
             $super_code=$request->super_code;

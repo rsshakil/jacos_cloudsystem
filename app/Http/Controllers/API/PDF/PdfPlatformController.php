@@ -9,7 +9,7 @@ use App\Models\BYR\byr_buyer;
 use App\Models\CMN\cmn_scenario;
 use App\Models\CMN\cmn_pdf_platform_canvas;
 use App\Models\DATA\ORD\data_order;
-use App\Http\Controllers\API\Cmn_ScenarioController;
+use App\Http\Controllers\API\CMN\CmnScenarioController;
 
 class PdfPlatformController extends Controller
 {
@@ -31,7 +31,7 @@ class PdfPlatformController extends Controller
             $line_per_page=$canvas_data[0]->line_per_page;
         }
         $request->request->add(['line_per_page' => $line_per_page]);
-        $cs = new Cmn_ScenarioController();
+        $cs = new CmnScenarioController();
         $ret = $cs->exec($request);
         // \Log::debug($ret->getContent());
         // return $ret = json_decode($ret->getContent(), true);

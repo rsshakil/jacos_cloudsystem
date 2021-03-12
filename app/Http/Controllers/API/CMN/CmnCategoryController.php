@@ -1,24 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\CMN;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\AllUsedFunction;
-use App\Models\BYR\byr_buyer;
-use App\Models\BYR\byr_item;
-use App\Models\BYR\byr_item_class;
-use App\Models\CMN\cmn_maker;
 use App\Models\CMN\cmn_category;
-use App\Models\BYR\byr_shop;
-use App\Models\CMN\cmn_pdf_canvas;
-use App\Models\CMN\cmn_tbl_col_setting;
-use App\Models\CMN\cmn_scenario;
-use App\Models\CMN\cmn_connect;
 use App\Models\ADM\User;
 use App\Models\CMN\cmn_companies_user;
 use DB;
-class Cmn_categoryController extends Controller
+
+class CmnCategoryController extends Controller
 {
     private $all_functions;
     public function __construct()
@@ -53,8 +45,8 @@ class Cmn_categoryController extends Controller
             // $categories = cmn_category::where('is_deleted', 0)->with('parent')->get();
             // print_r($categories);exit;
             $categorysAllforOpt = cmn_category::where(['cmn_categories.is_deleted'=>0,'cmn_categories.byr_buyer_id'=>$byr_buyer_id,'level'=>'1'])->orWhere('level','2')->get();
-            
-            
+
+
 
 
             $catQ1 = DB::table('cmn_categories AS m_cc')
@@ -69,8 +61,8 @@ class Cmn_categoryController extends Controller
             DB::raw('NULL as sm_name'),
             DB::raw('NULL as mm_code'),
             DB::raw('NULL as mm_name')
-            
-           
+
+
             )
             ->where(['m_cc.is_deleted'=>0,'m_cc.byr_buyer_id'=>$byr_buyer_id,'m_cc.level'=>'1']);
 
@@ -86,8 +78,8 @@ class Cmn_categoryController extends Controller
                 "sm_cc.category_name as sm_name",
                 DB::raw('NULL as mm_code'),
                 DB::raw('NULL as mm_name')
-               
-                
+
+
             )
             ->join('cmn_categories as sm_cc', function($join)
     {
@@ -125,10 +117,10 @@ class Cmn_categoryController extends Controller
 
     })
             ->where(['m_cc.is_deleted'=>0,'m_cc.byr_buyer_id'=>$byr_buyer_id]);
-           
+
         }else{
             $categorysAllforOpt = cmn_category::where(['cmn_categories.is_deleted'=>0,'level'=>'1'])->orWhere('level','2')->get();
-            
+
             $catQ1 = DB::table('cmn_categories AS m_cc')
             ->select(
                 'm_cc.cmn_category_id',
@@ -141,7 +133,7 @@ class Cmn_categoryController extends Controller
             DB::raw('NULL as sm_name'),
             DB::raw('NULL as mm_code'),
             DB::raw('NULL as mm_name')
-           
+
             )
             ->where(['m_cc.is_deleted'=>0,'m_cc.level'=>'1']);
 
@@ -157,7 +149,7 @@ class Cmn_categoryController extends Controller
                 "sm_cc.category_name as sm_name",
                 DB::raw('NULL as mm_code'),
                 DB::raw('NULL as mm_name')
-                
+
             )
             ->join('cmn_categories as sm_cc', function($join)
     {
@@ -313,9 +305,9 @@ class Cmn_categoryController extends Controller
                         'category_code'=>$item[$codeKey],
                         'level'=>$level
                         ]);
-                        
+
                     }
-                    
+
                     $codeKey = $codeKey+2;
                     $nameKey = $nameKey+2;
                 }

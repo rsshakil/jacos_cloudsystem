@@ -10,7 +10,7 @@ use App\Exports\ShipmentCSVExport;
 use App\Models\DATA\SHIPMENT\data_shipment;
 use App\Models\DATA\SHIPMENT\data_shipment_item;
 use App\Models\DATA\SHIPMENT\data_shipment_voucher;
-use App\Http\Controllers\API\Cmn_ScenarioController;
+use App\Http\Controllers\API\CMN\CmnScenarioController;
 use DB;
 use App\Traits\Csv;
 
@@ -79,7 +79,7 @@ class ShipmentController extends Controller
             $request->request->add(['file_name' => $new_file_name]);
             // $request->request->remove('downloadType');
             // return $request->all();
-            $cs = new Cmn_ScenarioController();
+            $cs = new CmnScenarioController();
             $ret = $cs->exec($request);
             //  return collect($ret)->toJson();
             // \Log::debug($ret->getContent());

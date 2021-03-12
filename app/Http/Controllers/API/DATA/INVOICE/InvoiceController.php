@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API\DATA\INVOICE;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Controllers\API\Cmn_ScenarioController;
+use App\Http\Controllers\API\CMN\CmnScenarioController;
 use App\Models\ADM\User;
 use App\Models\BYR\byr_order_detail;
 use App\Models\DATA\INVOICE\data_invoice;
@@ -38,7 +38,7 @@ class InvoiceController extends Controller
         $request->request->add(['end_date' => $end_date]);
         // return $request->all();
         // \Log::info($request->all());
-        $cs = new Cmn_ScenarioController();
+        $cs = new CmnScenarioController();
         return $ret = $cs->exec($request);
         \Log::debug($ret->getContent());
         $ret = json_decode($ret->getContent(), true);
@@ -148,7 +148,7 @@ class InvoiceController extends Controller
             'mes_lis_inv_per_end_date'=>$request->mes_lis_inv_per_end_date
             ]);
 
-            data_invoice_pay_detail::insert(['data_invoice_pay_id'=>$data_invoice_pay_id]);    
+            data_invoice_pay_detail::insert(['data_invoice_pay_id'=>$data_invoice_pay_id]);
         return response()->json(['success' => 1]);
     }
     public function invoiceDetailsList(Request $request)
@@ -243,7 +243,7 @@ class InvoiceController extends Controller
             // $new_file_name = self::invoiceFileName($data_order_id, 'txt');
             // $download_file_url = \Config::get('app.url')."storage/".config('const.FIXED_LENGTH_FILE_PATH')."/". $new_file_name;
             // $request->request->add(['file_name' => $new_file_name]);
-            // $cs = new Cmn_ScenarioController();
+            // $cs = new CmnScenarioController();
             // $ret = $cs->exec($request);
         }
 

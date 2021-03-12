@@ -1,21 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\CMN;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\API\AllUsedFunction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\Models\CMN\cmn_tbl_col_setting;
-use App\Models\CMN\cmn_scenario;
-use App\Models\CMN\cmn_connect;
 use App\Models\CMN\cmn_blog;
 use App\Models\ADM\User;
-use App\Models\CMN\cmn_companies_user;
-use DB;
-use session;
 
-class Cmn_blogController extends Controller
+class CmnBlogController extends Controller
 {
     private $all_used_fun;
 
