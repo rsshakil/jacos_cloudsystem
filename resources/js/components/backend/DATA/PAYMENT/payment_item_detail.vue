@@ -154,12 +154,28 @@ paymentdetailTopTable.current_page *
               <td>{{value.mes_lis_pay_lin_det_goo_major_category}}</td>
               <td>{{value.mes_lis_pay_lin_tra_code}}</td>
               <td>{{value.mes_lis_pay_lin_lin_trade_number_eference}}</td>
-              <td>{{value.mes_lis_pay_lin_det_pay_code}}</td>
+              <td>{{value.mes_lis_pay_lin_det_pay_code}}
+              {{
+                getbyrjsonValueBykeyName(
+                  "mes_lis_inv_lin_det_pay_code",
+                  value.mes_lis_pay_lin_det_pay_code,
+                  "invoices"
+                )
+              }}
+              </td>
               <td>{{value.mes_lis_pay_lin_det_trade_type_code}}</td>
               <td>{{value.mes_lis_pay_lin_det_balance_carried_code}}</td>
-              <td>{{value.mes_lis_pay_lin_det_amo_requested_amount}}</td>
-              <td>{{value.mes_lis_pay_lin_det_amo_optional_amount | priceFormat}}</td>
-              <td>{{value.mes_lis_pay_lin_det_verification_result_code}}</td>
+              <td class="text-right">{{value.mes_lis_pay_lin_det_amo_requested_amount | priceFormat}}</td>
+              <td class="text-right">{{value.mes_lis_pay_lin_det_amo_optional_amount | priceFormat}}</td>
+              <td>{{value.mes_lis_pay_lin_det_verification_result_code}}
+              {{
+                getbyrjsonValueBykeyName(
+                  "mes_lis_pay_lin_det_verification_result_code",
+                  value.mes_lis_pay_lin_det_verification_result_code,
+                  "payments"
+                )
+              }}
+              </td>
             </tr>
             <tr v-if="paymentdetailTopTable.data && paymentdetailTopTable.data.length==0">
                 <td colspan="11">データがありません</td>
