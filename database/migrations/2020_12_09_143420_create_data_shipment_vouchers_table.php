@@ -63,7 +63,7 @@ class CreateDataShipmentVouchersTable extends Migration
             $table->string('mes_lis_shi_log_log_receiver_abbr_name', 5)->comment('最終納品先略称（印字用）');
             $table->string('mes_lis_shi_log_log_text', 60)->comment('ラベル自由使用欄（印字用）');
             $table->string('mes_lis_shi_log_log_text_sbcs', 60)->comment('ラベル自由使用欄半角カナ（印字用）');
-            $table->string('mes_lis_shi_log_maker_code_for_receiving', 10)->default('')->comment('入荷管理用メーカーコード');
+            $table->string('mes_lis_shi_log_maker_code_for_receiving', 13)->default('')->comment('入荷管理用メーカーコード');
             $table->string('mes_lis_shi_log_delivery_slip_number', 10)->default('')->comment('センター納品書番号');
             $table->string('mes_lis_shi_tra_goo_major_category', 10)->comment('商品分類（大）');
             $table->string('mes_lis_shi_tra_goo_sub_major_category', 10)->comment('商品分類（中）');
