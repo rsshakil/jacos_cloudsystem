@@ -18,7 +18,7 @@
             <td width="15%">{{order_item_lists.mes_lis_shi_tra_dat_delivery_date}}</td>
             <td width="10%" class="cl_custom_color">部門</td>
             <td width="15%">{{order_item_lists.mes_lis_shi_tra_goo_major_category}}</td>
-           <td width="10%" class="cl_custom_color">配送温度区分</td>
+           <td width="10%" class="cl_custom_color">温度区分</td>
             <td width="15%">{{order_item_lists.mes_lis_shi_tra_ins_temperature_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_item_lists.mes_lis_shi_tra_ins_temperature_code,'orders')}}</td>
           </tr>
         </table>
@@ -79,7 +79,7 @@
           
           <tr>
            <td class="cl_custom_color_extra">訂正納品日</td>
-            <td colspan="3"><input class="form-control" :disabled="is_disabled(order_item_shipment_data_headTable.decision_datetime==null?false:true)" type="date" v-model="order_item_shipment_data_headTable.mes_lis_shi_tra_dat_revised_delivery_date"></td>
+            <td colspan="3"><input class="form-control" :disabled="is_disabled(order_item_shipment_data_headTable.decision_datetime==null?true:false)" type="date" v-model="order_item_shipment_data_headTable.mes_lis_shi_tra_dat_revised_delivery_date"></td>
           </tr>
           </table>
       </div>
@@ -119,26 +119,26 @@
                  産地：{{order_item_detail_list.mes_lis_shi_lin_fre_field_name}}<br></td>
                 <td>{{order_item_detail_list.mes_lis_shi_lin_fre_packing_quantity}}</td>
                 <td>
-                <input type="text" :disabled="is_disabled(order_item_shipment_data_headTable.decision_datetime==null?false:true)" class="form-control" @keyup="ball_case_cal(order_item_detail_list,'ケース')" v-model="order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units">
+                <input type="text" :disabled="is_disabled(order_item_shipment_data_headTable.decision_datetime==null?true:false)" class="form-control" @keyup="ball_case_cal(order_item_detail_list,'ケース')" v-model="order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units">
                 {{order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units}}</td>
                 <td>
                 {{order_item_detail_list.mes_lis_shi_lin_qua_unit_of_measure}}  {{getbyrjsonValueBykeyName('mes_lis_ord_lin_qua_unit_of_measure',order_item_detail_list.mes_lis_shi_lin_qua_unit_of_measure,'orders')}}
                 </td>
                 <td>
-                 <input type="text" :disabled="is_disabled(order_item_shipment_data_headTable.decision_datetime==null?false:true)" class="form-control" @keyup="ball_case_cal(order_item_detail_list,'バラ')" v-model="order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity">
+                 <input type="text" :disabled="is_disabled(order_item_shipment_data_headTable.decision_datetime==null?true:false)" class="form-control" @keyup="ball_case_cal(order_item_detail_list,'バラ')" v-model="order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity">
                 {{order_item_detail_list.mes_lis_shi_lin_qua_ord_quantity}}</td>
 
                 <td class="text-right">{{order_item_detail_list.mes_lis_shi_lin_fre_item_weight * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity | priceFormat}}</td>
                 <td class="text-right">
-                 <input type="text" :disabled="is_disabled(order_item_shipment_data_headTable.decision_datetime==null?false:true)" class="form-control text-right" v-model="order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price">
+                 <input type="text" :disabled="is_disabled(order_item_shipment_data_headTable.decision_datetime==null?true:false)" class="form-control text-right" v-model="order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price">
                 {{order_item_detail_list.mes_lis_ord_lin_amo_item_net_price_unit_price}}</td>
                 <td class="text-right"> {{ order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity | priceFormat}}</td>
                 <td class="text-right">
-                 <input type="text" :disabled="is_disabled(order_item_shipment_data_headTable.decision_datetime==null?false:true)" class="form-control text-right" v-model="order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price">
+                 <input type="text" :disabled="is_disabled(order_item_shipment_data_headTable.decision_datetime==null?true:false)" class="form-control text-right" v-model="order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price">
                 {{order_item_detail_list.mes_lis_ord_lin_amo_item_selling_price_unit_price }}</td>
                 <td class="text-right">{{order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity | priceFormat }}</td>
                 <td>{{order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code}} {{getbyrjsonValueBykeyName('mes_lis_shi_lin_qua_sto_reason_code',order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code,'shipments')}}
-                <select :disabled="is_disabled(order_item_shipment_data_headTable.decision_datetime==null?false:true)" v-model="order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code" class="form-control ">
+                <select :disabled="is_disabled(order_item_shipment_data_headTable.decision_datetime==null?true:false)" v-model="order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code" class="form-control ">
                 <option v-for="item in mes_lis_shi_lin_qua_sto_reason_codeList" :value="Object.keys(item)[0]">{{Object.values(item)[0]}}</option>
                 </select>
                 <!--<input type="hidden" v-model="totalCostPrice += order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity">
@@ -167,7 +167,7 @@
             </tfoot>
 
           </table>
-          <button style="float:right" @click="updateShipmentItemDetails" :disabled="is_disabled(order_item_shipment_data_headTable.decision_datetime==null?false:true)" class="btn btn-lg btn-primary pull-right text-right active">
+          <button style="float:right" @click="updateShipmentItemDetails" :disabled="is_disabled(order_item_shipment_data_headTable.decision_datetime==null?true:false)" class="btn btn-lg btn-primary pull-right text-right active">
               更新
             </button>
         </div>
@@ -504,20 +504,7 @@ beforeCreate: function() {
         });
     },
 
-    col_show_hide_setting(url_slug) {
-   
-      if (this.show_hide_col_list.length == 0) {
-        var post_data = {
-          url_slug: url_slug,
-          user_id: Globals.user_info_id,
-        };
-        axios
-          .post(this.BASE_URL + "api/tblecolsetting", post_data)
-          .then(({data}) => {
-            this.init(data.status);
-          });
-      }
-    },
+    
     edit_order_detail(order_detail_list) {
       this.edit_order_modal = true;
     },
@@ -542,9 +529,6 @@ this.getbuyerJsonSettingvalue();
 
       this.get_all_byr_order_item_detail();
     });
-
-    // Fire.$emit("voucher_page_query_param");
-    this.col_show_hide_setting(this.$route.name);
 
   },
   computed: {

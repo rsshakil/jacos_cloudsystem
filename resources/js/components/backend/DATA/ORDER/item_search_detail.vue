@@ -534,21 +534,6 @@ export default {
         });
     },
 
-
-    col_show_hide_setting(url_slug) {
-   
-      if (this.show_hide_col_list.length == 0) {
-        var post_data = {
-          url_slug: url_slug,
-          user_id: Globals.user_info_id,
-        };
-        axios
-          .post(this.BASE_URL + "api/tblecolsetting", post_data)
-          .then(({data}) => {
-            this.init(data.status);
-          });
-      }
-    },
     edit_order_detail(order_detail_list) {
       this.edit_order_modal = true;
     },
@@ -565,7 +550,6 @@ export default {
     Fire.$on("LoadByrorderItemDetail", () => {
       this.get_all_byr_order_item_detail();
     });
-    this.col_show_hide_setting(this.$route.name);
     this.loader = Vue.$loading.show();
 
   },

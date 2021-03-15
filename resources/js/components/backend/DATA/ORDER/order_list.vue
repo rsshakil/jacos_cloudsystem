@@ -259,7 +259,7 @@
               <td>{{ order_list.mes_lis_ord_tra_dat_delivery_date }}</td>
               <td>{{ order_list.mes_lis_ord_tra_goo_major_category }}</td>
               <td>
-                {{ order_list.mes_lis_ord_log_del_delivery_service_code }}
+                
                 {{
                 getbyrjsonValueBykeyName(
                   "mes_lis_ord_log_del_delivery_service_code",
