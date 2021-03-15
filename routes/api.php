@@ -33,7 +33,7 @@ Route::apiResources(
 Route::apiResources(
     [
         // 'byrorders' => 'API\Byr_orderController',
-        'byrshipments' => 'API\Byr_shipmentController',
+        'byrshipments' => 'API\DATA\SHIPMENT\ShipmentController',
     ]
 );
 
@@ -46,7 +46,7 @@ Route::apiResources(
 Route::apiResources(
 
     [
-        'master_item' => 'API\Byr_itemController',
+        'master_item' => 'API\DATA\ORDER\OrderItemController',
     ]
 );
 Route::get('/all_users_roles', 'API\ADM\AssignRoleModel@allUsersAndRoles');
@@ -172,7 +172,7 @@ Route::post('job_exec', 'API\CMN\CmnJobController@exec');
 // Level3
 Route::post('get_shipment_file', 'API\LV3\Level3Controller@getShipmentFile');
 Route::post('delete_service', 'API\LV3\Level3Controller@deleteService');
-Route::post('/job_list', 'API\Level3\Level3Controller@job_list');
+Route::post('/job_list', 'API\LV3\Level3Controller@job_list');
 Route::post('get_user_login', 'API\LV3\Level3Controller@userLogin');
 Route::post('history_url', 'API\LV3\Level3Controller@historyData');
 Route::post('get_customer', 'API\LV3\Level3Controller@getCustomer');
