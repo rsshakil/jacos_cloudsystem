@@ -180,6 +180,7 @@ class data_invoice_scheduler
         ->leftJoin('data_shipment_items','data_shipment_items.data_shipment_voucher_id','data_shipment_vouchers.data_shipment_voucher_id')
         ->leftJoin('data_shipment_item_details','data_shipment_item_details.data_shipment_item_id','data_shipment_items.data_shipment_item_id')
         ->where('data_shipments.data_order_id',$data_order_id)
+        ->whereNotNull('data_shipment_vouchers.send_datetime')
         ->groupBy('data_shipment_vouchers.data_shipment_voucher_id')
 
         ->whereBetween(DB::raw('(CASE WHEN data_shipment_vouchers.mes_lis_shi_tra_dat_revised_delivery_date is null
