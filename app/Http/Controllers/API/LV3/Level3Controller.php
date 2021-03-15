@@ -17,6 +17,8 @@ use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
+use function GuzzleHttp\json_decode;
+
 class Level3Controller extends Controller
 {
     private $message;
@@ -71,6 +73,8 @@ class Level3Controller extends Controller
 
     public function getCustomer(Request $request)
     {
+        $customer_array=array();
+
         $user_id = $request->user_id;
         $customers_data = array();
         $authUser = User::find($user_id);
@@ -80,6 +84,7 @@ class Level3Controller extends Controller
                 ->join('cmn_connects', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
                 ->groupBy(['cmn_companies.company_name', 'cmn_connects.partner_code'])
                 ->orderBy('cmn_companies.cmn_company_id')
+                ->orderBy('cmn_connects.cmn_connect_id','ASC')
                 ->get();
         }else{
             //Buyer work
@@ -91,13 +96,35 @@ class Level3Controller extends Controller
         //     ->where('cmn_companies_users.adm_user_id', $user_id)->get();
         // \Log::info($customers_data);
         }
-        return response()->json(['customers_data' => $customers_data]);
+
+        foreach ($customers_data as $key1 => $value) {
+            $tmp['cmn_connect_id']=$value->cmn_connect_id;
+            $tmp['partner_code']=$value->partner_code;
+            $tmp['company_name']=$value->company_name;
+            $request->request->add(['cmn_connect_id' => $value->cmn_connect_id]);
+            $req_data = json_decode($this->showServiceData($request)->getContent(), true)['all_service_data'];
+            $tmp['service_info']=$req_data;
+
+            foreach ($req_data as $key => $service_value) {
+                $request->request->add(['service_id' => $service_value['lv3_service_id']]);
+                $tmp['service_info'][$key]['schedule_data']=json_decode($this->scheduleData($request)->getContent(), true);
+                // $tmp['service_info'][$key]['schedule_data']=$schedule_data;
+
+            }
+
+            // service_id
+            // $this->scheduleData($request);
+            $customer_array[]=$tmp;
+
+        }
+        return response()->json(['customers_data' => $customer_array]);
     }
 
     public function showServiceData(Request $request)
     {
+        // return $request->all();
         $cmn_connect_id = $request->cmn_connect_id;
-        $adm_user_id = $request->adm_user_id;
+        $adm_user_id = $request->user_id;
         $all_service_data = lv3_service::where(['cmn_connect_id' => $cmn_connect_id, 'adm_user_id' => $adm_user_id])->get();
         return \response()->json(['all_service_data' => $all_service_data]);
     }
