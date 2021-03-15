@@ -197,7 +197,8 @@ DB::raw("SUM(mes_lis_pay_lin_det_amo_payable_amount + mes_lis_pay_lin_det_amo_ta
         
         $result1 = data_payment_pay_detail::
         join('data_payment_pays as dpp','data_payment_pay_details.data_payment_pay_id','=','dpp.data_payment_pay_id')
-        ->where(['dpp.data_payment_id'=>$payment_id]);
+        ->where(['dpp.data_payment_id'=>$payment_id])
+        ->whereIn('data_payment_pay_details.mes_lis_pay_lin_det_pay_code', ['1001', '1002','1004']);
         if($from_date!=''){
             $result1 = $result1->whereDate('data_payment_pay_details.mes_lis_pay_lin_det_transfer_of_ownership_date','>=',$from_date);
         }
