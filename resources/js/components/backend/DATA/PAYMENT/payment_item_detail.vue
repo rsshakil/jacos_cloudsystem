@@ -166,7 +166,7 @@ paymentdetailTopTable.current_page *
               <td>{{value.mes_lis_pay_lin_det_trade_type_code}}</td>
               <td>{{value.mes_lis_pay_lin_det_balance_carried_code}}</td>
               <td class="text-right">{{value.mes_lis_pay_lin_det_amo_requested_amount | priceFormat}}</td>
-              <td class="text-right">{{value.mes_lis_pay_lin_det_amo_optional_amount | priceFormat}}</td>
+              <td class="text-right">{{value.mes_lis_pay_lin_det_amo_payable_amount | priceFormat}}</td>
               <td>{{value.mes_lis_pay_lin_det_verification_result_code}}
               {{
                 getbyrjsonValueBykeyName(
@@ -226,7 +226,7 @@ export default {
       this.select_field_page_num = page;
       axios.post(this.BASE_URL + "api/get_payment_item_detail_list", this.form)
         .then(({ data }) => {
-            console.log(data)
+          
           this.payment_detail_header = data.payment_item_header;
           this.paymentdetailTopTable = data.paymentdetailTopTable;
           this.byr_buyer_category_lists = data.byr_buyer_category_list;

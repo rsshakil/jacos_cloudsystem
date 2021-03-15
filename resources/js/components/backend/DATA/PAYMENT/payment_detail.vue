@@ -122,7 +122,7 @@
               <td>{{item.mes_lis_pay_pay_code}}</td>
               <td>{{item.mes_lis_pay_lin_det_det_code}}</td>
               <td>{{item.mes_lis_pay_lin_det_det_meaning}}</td>
-              <td class="text-right">{{item.mes_lis_pay_lin_det_amo_requested_amount_sum | priceFormat}}</td>
+              <td class="text-right">{{item.mes_lis_pay_lin_det_amo_payable_amount_sum | priceFormat}}</td>
             </tr>
              <tr v-if="paymentdetailRghtTable && paymentdetailRghtTable.length==0">
             <td class="text-center" colspan="5">データがありません</td>
@@ -176,12 +176,12 @@ export default {
     getAllPaymentDetails() {
       axios.post(this.BASE_URL + "api/get_payment_detail_list", this.form)
         .then(({ data }) => {
-            console.log(data)
+          
           this.payment_detail_header = data.payment_item_header;
           this.paymentdetailTopTable = data.paymentdetailTopTable;
           this.pdtableleft = data.pdtableleft;
           this.paymentdetailRghtTable = data.paymentdetailRghtTable;
-          console.log(this.pdtableleft);
+          
         });
     },
 
@@ -204,7 +204,7 @@ export default {
     },
    
     totalAmountValOffset: function() {
-      return this.paymentdetailRghtTable.reduce(function (sumselling,val) {return  sumselling += val.mes_lis_pay_lin_det_amo_requested_amount_sum},0);
+      return this.paymentdetailRghtTable.reduce(function (sumselling,val) {return  sumselling += val.mes_lis_pay_lin_det_amo_payable_amount_sum},0);
 
     },
   },

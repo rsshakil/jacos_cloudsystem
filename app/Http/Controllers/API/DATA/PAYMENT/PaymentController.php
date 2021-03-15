@@ -116,7 +116,10 @@ DB::raw("SUM(mes_lis_pay_lin_det_amo_payable_amount + mes_lis_pay_lin_det_amo_ta
         ->where(['mes_lis_pay_lin_det_pay_code'=>'3003','dpp.data_payment_id'=>$payment_id])->groupBy('data_payment_pay_details.data_payment_pay_id')->first();
 
         $paymentdetailRghtTable = data_payment_pay_detail::select(
-            DB::raw('SUM(data_payment_pay_details.mes_lis_pay_lin_det_amo_requested_amount) as mes_lis_pay_lin_det_amo_requested_amount_sum'),
+            // DB::raw('SUM(data_payment_pay_details.mes_lis_pay_lin_det_amo_requested_amount) as mes_lis_pay_lin_det_amo_requested_amount_sum'),
+             DB::raw('SUM(CASE WHEN data_payment_pay_details.mes_lis_pay_lin_det_amo_pay_plus_minus = "+" or data_payment_pay_details.mes_lis_pay_lin_det_amo_pay_plus_minus is NULL then data_payment_pay_details.mes_lis_pay_lin_det_amo_payable_amount
+             WHEN data_payment_pay_details.mes_lis_pay_lin_det_amo_pay_plus_minus = "-" then - data_payment_pay_details.mes_lis_pay_lin_det_amo_payable_amount
+        END) as mes_lis_pay_lin_det_amo_payable_amount_sum'),
             'data_payment_pay_details.mes_lis_pay_lin_det_det_meaning',
             'data_payment_pay_details.mes_lis_pay_lin_det_det_code',
             'dpp.mes_lis_pay_pay_code')
