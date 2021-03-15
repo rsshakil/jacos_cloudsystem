@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
         // $start_time=config('const.INVOICE_SCHEDULE_START_TIME');
         // $end_time=config('const.INVOICE_SCHEDULE_END_TIME');
         $schedule->command('invoice:scheduler')
-                ->between('7:00', '22:00');
+                ->dailyAt('15:40');
                 //  ->between($start_time, $end_time);
     }
 
