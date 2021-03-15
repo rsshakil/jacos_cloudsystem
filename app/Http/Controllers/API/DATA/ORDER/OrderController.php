@@ -112,12 +112,9 @@ class OrderController extends Controller
         $cmn_company_id = '';
         $cmn_connect_id = '';
         if (!$authUser->hasRole(config('const.adm_role_name'))) {
-            $cmn_company_info = cmn_companies_user::select('slr_sellers.cmn_company_id', 'slr_sellers.slr_seller_id', 'cmn_connects.cmn_connect_id')
-                ->join('slr_sellers', 'slr_sellers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
-                ->join('cmn_connects', 'cmn_connects.slr_seller_id', '=', 'slr_sellers.slr_seller_id')
-                ->where('cmn_companies_users.adm_user_id', $adm_user_id)->first();
-            $cmn_company_id = $cmn_company_info->cmn_company_id;
-            $cmn_connect_id = $cmn_company_info->cmn_connect_id;
+            $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
+            $cmn_company_id = $cmn_company_info['cmn_company_id'];
+            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
 
         // 検索
