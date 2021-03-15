@@ -77,11 +77,11 @@ class CreateDataShipmentItemsTable extends Migration
             $table->decimal('mes_lis_shi_lin_qua_sto_quantity', 9, 1)->default(0)->comment('欠品数量(バラ数)');
             $table->integer('mes_lis_shi_lin_qua_sto_num_of_order_units')->default(0)->comment('欠品数量(発注単位数)');
             $table->string('mes_lis_shi_lin_qua_sto_reason_code', 5)->default('')->comment('欠品区分');
-            $table->decimal('mes_lis_shi_lin_fre_unit_weight', 7, 3)->comment('取引単位重量');
+            $table->decimal('mes_lis_shi_lin_fre_unit_weight', 7, 3)->default(0)->comment('取引単位重量');
             $table->string('mes_lis_shi_lin_fre_unit_weight_code', 2)->comment('単価登録単位');
-            $table->decimal('mes_lis_shi_lin_fre_item_weight', 7, 3)->comment('商品重量');
-            $table->decimal('mes_lis_shi_lin_fre_order_weight', 7, 3)->default('')->comment('発注重量');
-            $table->decimal('mes_lis_shi_lin_fre_shipment_weight', 7, 3)->default('')->comment('出荷重量');
+            $table->decimal('mes_lis_shi_lin_fre_item_weight', 7, 3)->default(0)->comment('商品重量');
+            $table->decimal('mes_lis_shi_lin_fre_order_weight', 7, 3)->default(0)->comment('発注重量');
+            $table->decimal('mes_lis_shi_lin_fre_shipment_weight', 7, 3)->comment('出荷重量');
             $table->smallInteger('deleted')->unsigned()->default(1)->comment('削除フラグ');
             $table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
             $table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
