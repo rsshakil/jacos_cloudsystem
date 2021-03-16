@@ -1,5 +1,5 @@
 <template>
-<div class="main-content-container container-fluid px-4">
+<div>
    
                 <byr_slr_list_with_order></byr_slr_list_with_order>
                 <blog_view></blog_view>

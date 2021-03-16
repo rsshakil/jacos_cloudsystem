@@ -115,8 +115,9 @@
                   <!-- @endif -->
                   <span class="d-none d-md-inline-block">
                     <b-avatar variant=""></b-avatar>
-                    {{ user_data.user ? user_data.user.name : "" }}
+                     {{ user_data.global_user_name ? user_data.global_user_name : "" }}
                   </span>
+                 
                 </a>
                 <div
                   class="dropdown-menu dropdown-menu-small"
@@ -170,49 +171,7 @@
                   Logout
                 </button>
               </li>
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle_backup text-nowrap px-3"
-                  href="#"
-                  id="navbarDropdown_setting"
-                  role="button"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  <span class="h4">
-                    <b-icon
-                      icon="gear-fill"
-                      aria-hidden="true"
-                      style="color: #fff"
-                    ></b-icon>
-                  </span>
-                </a>
-                <div
-                  class="dropdown-menu dropdown-menu-small"
-                  aria-labelledby="navbarDropdown_setting"
-                >
-                  <!-- <a class="dropdown-item csv_output" href="#">CSV出力</a>
-              <div class="dropdown-divider"></div>-->
-                  <button
-                    @click="display_table_col_setting"
-                    class="dropdown-item display_item_setting"
-                  >
-                    表示項目設定
-                  </button>
-                  <!--<button
-                    @click="display_invoice_upload_setting"
-                    class="dropdown-item"
-                  >
-                    締日登録
-                  </button>-->
-                  <!-- <div class="dropdown-divider"></div>
-              <a class="dropdown-item setting_printing" href="#">印刷</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item csv_import_jan" href="#">CSVインポート JAN</a>
-              <button class="dropdown-item display_arrow_setting">セル移動</button>-->
-                </div>
-              </li>
+              
 
               <li class="nav-item dropdown">
                 <a
