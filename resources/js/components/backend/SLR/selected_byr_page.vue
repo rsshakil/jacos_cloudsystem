@@ -1,9 +1,5 @@
 <template>
-<div class="main-content-container container-fluid px-4">
-    <!-- Page Header -->
-    <br>
-        <div class="stats-small stats-small--1 card card-small">
-            <div class="card-body p-3">
+<div>
 
 
                 <!-- <router-view/> -->
@@ -12,11 +8,7 @@
                 <blog_view_for_select_customer></blog_view_for_select_customer>
 
 
-            </div>
-
-
-
-        </div>
+           
 </div>
 </template>
 
@@ -56,6 +48,7 @@
             //  this.byr_session_check()
              Fire.$emit('byr_has_selected',this.$session.get('byr_buyer_id'));
              Fire.$emit('permission_check_for_buyer',this.$session.get('byr_buyer_id'));
+             Fire.$emit("loadPageTitle", "得意先別HOME");
             },
         mounted() {
             this.init();

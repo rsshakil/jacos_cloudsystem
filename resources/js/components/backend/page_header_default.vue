@@ -1,6 +1,6 @@
 <template>
 <div style="clear:both">
-<div class="row">
+<div class="row" v-if="page_slug_url!='selected_buyer'">
            <div class="col-12 text-center page_c_title_bar text-sm-left mb-0">
             <h4 class="page_custom_title"> <span v-html="page_heading"></span></h4>
        
@@ -16,13 +16,17 @@
         data(){
             return {
                 page_heading:'<i class="fas fa-wrench custom_wrench"></i> 得意先一覧',
+                page_slug_url: '',
             }
         },
         methods:{
           
         },
           created() {
-      if(this.$route.name=='order_list'){
+             this.page_slug_url =  this.$route.name;
+             if(this.$route.name=='home'){
+                  this.page_heading = '得意先一覧';
+             }else if(this.$route.name=='order_list'){
           this.page_heading = '受注受信一覧';
       }else if(this.$route.name=='order_receive'){
           this.page_heading = '受領受信一覧';

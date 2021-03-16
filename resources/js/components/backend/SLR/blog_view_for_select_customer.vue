@@ -1,9 +1,7 @@
 <template>
   <div>
     <!--bloog section-->
-    <div class="row">
-      <div class="col-12">
-        <b-container class="bv-example-row">
+    
           <!--user blog-->
           <b-row v-can="['slr_view']">
             <b-col v-if="user_blog.length != '0'">
@@ -45,9 +43,7 @@
 
   </b-row>
 -->
-        </b-container>
-      </div>
-    </div>
+        
   </div>
 </template>
 

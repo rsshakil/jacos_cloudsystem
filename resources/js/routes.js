@@ -534,7 +534,7 @@ export const routes = [
         name: 'selected_buyer',
         props: true,
 
-        meta: { breadcrumb: { label: 'ブログ', parent: 'home' } },
+        meta: { breadcrumb: { label: '得意先別HOME', parent: 'home' } },
 
 
     },
