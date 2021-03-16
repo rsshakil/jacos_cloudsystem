@@ -3,71 +3,39 @@
     <div class="col-12" style="background: #d8e3f0; padding: 10px">
       <table class="table orderDetailTable table-bordered" style="width: 100%">
         <tr>
-          <td class="cl_custom_color" style="width: 9%">
+          <td class="cl_custom_color" style="width: 10%">
             {{ myLang.receive_date }}
           </td>
+
+
+
           <td style="width: 15%">
-            <input
-              type="date"
-              class="form-control"
-              v-model="form.receive_date_from"
-            />
+
+<div class="input-group mb-3">
+                    <input type="date" class="form-control" v-model="form.receive_date_from">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">~</span>
+                    </div>
+                    <input type="date" class="form-control" v-model="form.receive_date_to">
+                </div>
           </td>
-          <td style="width: 9%; text-align: center">
-            <b-icon icon="forward" aria-hidden="true" font-scale="1.5"></b-icon>
-          </td>
-          <td style="width: 15%">
-            <input
-              type="date"
-              class="form-control"
-              v-model="form.receive_date_to"
-            />
-          </td>
+         
           <td class="cl_custom_color" style="width: 10%">
             {{ myLang.customer_code }}
           </td>
-          <td colspan="3" style="width: 17%">
+          <td style="width: 15%">
             <input
               type="text"
               class="form-control"
-              style="float: left; width: 150px; margin-right: 15px"
+              style="float: left; width: 90px; margin-right: 5px"
             />
-            <button @click="showAllCustomerCode" class="btn btn-primary" type="button">
-              {{ myLang.refer }}
-            </button>
-            <!-- <select class="form-control">
-              <option :value="0">{{ myLang.customer_code }}</option>
-            </select> -->
-          </td>
-          <!--<td style="width: 10%">
-            <button class="btn btn-primary" type="button">
+            <button @click="showAllCustomerCode" class="btn btn-primary" style="float:left;">
               {{ myLang.refer }}
             </button>
           </td>
-          <td></td>-->
-        </tr>
-        <tr>
-          <td class="cl_custom_color">{{ myLang.delivery_date }}</td>
-          <td>
-            <input
-              type="date"
-              class="form-control"
-              v-model="form.delivery_date_from"
-            />
-          </td>
-          <td style="width: 9%; text-align: center">
-            <b-icon icon="forward" aria-hidden="true" font-scale="1.5"></b-icon>
-          </td>
-          <td>
-            <input
-              type="date"
-              class="form-control"
-              v-model="form.delivery_date_to"
-            />
-          </td>
-          <!-- <td>{{ myLang.shipment }}</td> -->
-          <td class="cl_custom_color">便</td>
-          <td style="width: 10%; text-align: center">
+         
+          <td style="width: 15%;" class="cl_custom_color">便</td>
+          <td style="width: 15%; text-align: center">
             <select class="form-control" v-model="form.delivery_service_code">
                 <option value="*">全て</option>
               <option
@@ -79,12 +47,32 @@
                 {{ Object.values(dsc)[0] }}
               </option>
             </select>
-            <!-- <input type="text" class="form-control" v-model="form.delivery_service_code"> -->
-            <!-- <select class="form-control">
-              <option :value="0">{{ myLang.shipment }}</option>
-            </select> -->
+            
           </td>
-          <td class="cl_custom_color">{{ myLang.temperature }}</td>
+        </tr>
+        <tr>
+          <td style="width: 10%;"class="cl_custom_color">{{ myLang.delivery_date }}</td>
+          <td style="width: 15%;">
+
+<div class="input-group mb-3">
+                    <input type="date" class="form-control" v-model="form.delivery_date_from">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">~</span>
+                    </div>
+                    <input type="date" class="form-control" v-model="form.delivery_date_to">
+                </div>
+          </td>
+          
+          <!-- <td>{{ myLang.shipment }}</td> -->
+          <td style="width: 10%;"class="cl_custom_color">部門</td>
+          <td style="width: 15%;">
+                                            <multiselect v-model="form.category_code" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="false" :preserve-search="true" placeholder="部門"></multiselect>
+            <!--<select class="form-control" v-model="form.byr_category_code">
+            <option value="*">全て</option>
+            <option :value="categoryData.category_orign_code" v-for="(categoryData,index) in byr_buyer_category_lists" :key="index">{{categoryData.category_orign_code}}| {{categoryData.category_name}}</option>
+             </select>-->
+          </td>
+          <td style="width: 10%;" class="cl_custom_color">{{ myLang.temperature }}</td>
           <td style="width: 15%">
             <select class="form-control" v-model="form.temperature">
             <option value="*">全て</option>
@@ -100,25 +88,17 @@
           </td>
         </tr>
         <tr>
-          <!-- <td>{{ myLang.confirmation_status }}</td>
-          <td>
-            <select class="form-control" v-model="form.confirmation_status">
-              <option v-for="(cs, j) in confirmation_status" :key="j" :value="cs.id">{{ cs.name }}</option>
+       <td style="width: 10%;"class="cl_custom_color">参照状況</td>
+          <td style="width: 15%;">
+            <select class="form-control" v-model="form.check_datetime" style="width: 300px">
+              <!--<option :value="0">{{ myLang.voucher_type }}</option>-->
+              <option value="*">全て</option>
+              <option value="1">未参照</option>
+              <option value="2">参照済</option>
             </select>
-          </td> -->
-          <!-- <td>{{ myLang.voucher_type }}</td> -->
-          <td class="cl_custom_color">部門</td>
-          <td>
-                                            <multiselect v-model="form.category_code" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="false" :preserve-search="true" placeholder="部門"></multiselect>
-            <!--<select class="form-control" v-model="form.byr_category_code">
-            <option value="*">全て</option>
-            <option :value="categoryData.category_orign_code" v-for="(categoryData,index) in byr_buyer_category_lists" :key="index">{{categoryData.category_orign_code}}| {{categoryData.category_name}}</option>
-             </select>-->
           </td>
-          <td colspan="2"></td>
-          <!-- <td>{{ myLang.printing_status }}</td> -->
-          <td class="cl_custom_color">印刷状況</td>
-          <td style="width: 10%; text-align: center">
+          <td style="width: 10%;" class="cl_custom_color">印刷状況</td>
+          <td style="width: 15%; text-align: center">
             <select class="form-control" v-model="form.decission_cnt">
               <option
                 v-for="(dcnt, i) in decission_cnt"
@@ -131,8 +111,8 @@
             </select>
           </td>
           <!-- <td>{{ myLang.confirmation_status }}</td> -->
-          <td class="cl_custom_color">確定状況</td>
-          <td>
+          <td style="width: 10%;" class="cl_custom_color">確定状況</td>
+          <td style="width: 15%;">
 
             <select class="form-control" v-model="form.confirmation_status_data">
              <option
@@ -145,17 +125,7 @@
             </select>
           </td>
         </tr>
-        <tr>
-          <td class="cl_custom_color">参照状況</td>
-          <td colspan="7">
-            <select class="form-control" v-model="form.check_datetime" style="width: 300px">
-              <!--<option :value="0">{{ myLang.voucher_type }}</option>-->
-              <option value="*">全て</option>
-              <option value="1">未参照</option>
-              <option value="2">参照済</option>
-            </select>
-          </td>
-        </tr>
+       
       </table>
     </div>
     <!-- </div> -->
@@ -211,7 +181,7 @@
               <th>{{ myLang.delivery_date }}</th>
               <th>部門 コード</th>
               <th>便</th>
-              <th>配達温度区分</th>
+              <th>温度区分</th>
               <th>伝票 枚数</th>
               <th>未確定 伝票枚数</th>
               <th>未印刷 伝票枚数</th>
@@ -481,7 +451,7 @@ export default {
     });
     Fire.$emit("byr_has_selected", this.$session.get("byr_buyer_id"));
     Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
-    Fire.$emit("loadPageTitle", "発注データ一覧");
+    Fire.$emit("loadPageTitle", "受注データ一覧");
   },
   mounted() {
   },

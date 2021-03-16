@@ -157,7 +157,7 @@ export const routes = [
         name: 'order_list',
         meta: {
             breadcrumb: {
-                label: '受注受信一覧',
+                label: '受注トップ',
                 parent: 'home'
             },
         },
