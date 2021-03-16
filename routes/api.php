@@ -177,7 +177,6 @@ Route::post('get_user_login', 'API\LV3\Level3Controller@userLogin');
 Route::post('history_url', 'API\LV3\Level3Controller@historyData');
 Route::post('get_customer', 'API\LV3\Level3Controller@getCustomer');
 // Route::post('delete_customer', 'API\LV3\Level3Controller@deleteCustomer');
-Route::post('show_service_url', 'API\LV3\Level3Controller@showServiceData');
 Route::post('add_service', 'API\LV3\Level3Controller@addService');
 Route::post('get_schedule_data', 'API\LV3\Level3Controller@scheduleData');
 Route::post('set_schedule_data', 'API\LV3\Level3Controller@setScheduleData');

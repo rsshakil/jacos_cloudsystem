@@ -105,15 +105,10 @@ class Level3Controller extends Controller
             $req_data = json_decode($this->showServiceData($request)->getContent(), true)['all_service_data'];
             $tmp['service_info']=$req_data;
 
-            foreach ($req_data as $key => $service_value) {
-                $request->request->add(['service_id' => $service_value['lv3_service_id']]);
-                $tmp['service_info'][$key]['schedule_data']=json_decode($this->scheduleData($request)->getContent(), true);
-                // $tmp['service_info'][$key]['schedule_data']=$schedule_data;
-
-            }
-
-            // service_id
-            // $this->scheduleData($request);
+            // foreach ($req_data as $key => $service_value) {
+            //     $request->request->add(['service_id' => $service_value['lv3_service_id']]);
+            //     $tmp['service_info'][$key]['schedule_data']=json_decode($this->scheduleData($request)->getContent(), true);
+            // }
             $customer_array[]=$tmp;
 
         }
