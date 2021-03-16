@@ -152,6 +152,30 @@
       </button>
     </div>
     <div class="col-12">
+    <p>
+              <span class="tableRowsInfo">{{ order_lists.from }}〜{{ order_lists.to }} 件表示中／全：{{ order_lists.total }}件</span>
+              <span class="pagi"
+                >
+              <advanced-laravel-vue-paginate :data="order_lists"
+              :onEachSide="2"
+              previousText="<"
+              nextText=">"
+              alignment="center"
+                @paginateTo="get_all_order"/>
+              </span>
+              <span class="selectPagi">
+                <select class="form-control selectPage" @change="get_all_order"
+                  v-model="form.per_page" >
+                  <!--<option value="0">表示行数</option>
+                  <option v-for="n in order_detail_lists.last_page" :key="n"
+                :value="n">{{n}}</option>-->
+                <option value="10">10行</option>
+                <option value="20">20行</option>
+                <option value="50">50行</option>
+                <option value="100">100行</option>
+                </select>
+              </span>
+            </p>
       <div class="">
         <table
           class="table table-striped order_item_details_table table-bordered data_table"
@@ -199,8 +223,12 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(order_list, index) in order_lists" :key="index">
-              <td>{{ index + 1 }}</td>
+            <tr v-for="(order_list, index) in order_lists.data" :key="index">
+              <td>{{ order_lists.current_page *
+                      form.per_page -
+                    form.per_page +
+                    index +
+                    1 }}</td>
               <!-- <td>{{order_list.receive_date.valueOf() }}</td> -->
               <!-- ,order_receive_date:order_list.receive_date -->
               <td>
@@ -320,6 +348,8 @@ export default {
       json_delivery_service_code: [],
       form: new Form({
         adm_user_id: Globals.user_info_id,
+        per_page:20,
+        page:1,
         byr_buyer_id: null,
         receive_date_from: null,
         receive_date_to: null,
@@ -352,7 +382,8 @@ export default {
     showAllCustomerCode(){
       this.showAllCustomerCodeListModal = true;
     },
-    get_all_order() {
+    get_all_order(page=1) {
+      this.form.page=page;
       this.form.post(this.BASE_URL + "api/get_order_list", this.form)
         .then(({ data }) => {
           this.order_lists = data.order_list;
