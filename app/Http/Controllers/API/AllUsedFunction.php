@@ -147,6 +147,7 @@ class AllUsedFunction extends Controller
      */
     public function csvReader($baseUrl, $take_header = 1)
     {
+        // $data = array_map('str_getcsv', file($baseUrl));
         $temp_data = file_get_contents($baseUrl);
         if (mb_detect_encoding($temp_data, ['UTF-8', 'SJIS-win', 'SJIS', 'eucJP-win', 'ASCII', 'EUC-JP', 'JIS']) != "UTF-8") {
             $temp_data = mb_convert_encoding($temp_data, "UTF-8", 'SJIS-win, SJIS, eucJP-win, ASCII, EUC-JP, JIS');

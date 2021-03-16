@@ -723,8 +723,10 @@ class Data_Controller extends Controller
         ];
     }
     public static function shipmentUpdateArray($data_array,$file_name=""){
-        try {
+        // try {
             foreach ($data_array as $key => $value) {
+                // \Log::info(count($data_array));
+                // \Log::info($key);
                 $tmp_shipment['upload_datetime']=date('y-m-d H:i:s');
                 $tmp_shipment['upload_file_path']=$file_name;
                 $tmp_shipment['sta_sen_identifier']=$value[0];
@@ -943,10 +945,10 @@ class Data_Controller extends Controller
 
                 }
             }
-    } catch (\Exception $e) {
-        return response()->json(['message'=>'Data updated but '.$e->getMessage().' in array value number: '.$key,'status'=>0]);
-        // echo 'Caught exception: ',  $e->getMessage(), "\n";
-    }
+    // } catch (\Exception $e) {
+    //     return response()->json(['message'=>'Data updated but '.$e->getMessage().' in array value number: '.$key,'status'=>0]);
+    //     // echo 'Caught exception: ',  $e->getMessage(), "\n";
+    // }
         return response()->json(['message'=>"Success",'status'=>1]);
 
     }
