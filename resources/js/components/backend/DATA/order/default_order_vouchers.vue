@@ -6,7 +6,7 @@
           class="table orderTopDetailTable table-bordered"
           style="width: 100%"
         >
-       
+
           <tr>
             <td width="10%" class="cl_custom_color">受信日時</td>
             <td width="15%"><span v-if="order_info">{{ order_info.receive_datetime }}</span></td>
@@ -43,7 +43,7 @@
             {{ order_info.mes_lis_shi_tra_goo_major_category }}
             </span>
             </td>
-            
+
             <td width="10%" class="cl_custom_color">温度区分</td>
             <td width="15%">
             <span v-if="order_info">
@@ -1102,8 +1102,9 @@ export default {
     shipmentUpdate(e) {
       var _this = this;
       this.alert_icon = "warning";
-      this.alert_title = "";
-      this.alert_text = _this.selectedNum + "件の伝票を送信しますがよろしいでしょうか。";
+      this.alert_title = "Update?";
+      this.alert_text = "Will you update your data?";
+    //   this.alert_text = _this.selectedNum + "件の伝票を送信しますがよろしいでしょうか。";
       this.yes_btn = "はい";
       this.cancel_btn = "キャンセル";
       this.confirm_sweet().then((result) => {
@@ -1115,12 +1116,18 @@ export default {
           axios.post(this.BASE_URL + "api/shipment_update", formData)
             .then(({ data }) => {
                 this.init(data.status);
-
-              _this.alert_icon = "success";
-              _this.alert_title = "Inserted";
-              _this.alert_text = "Shipment CSV Updated";
+                if (data.status==0) {
+                    _this.alert_icon = "error";
+                }else{
+                    _this.alert_icon = "success";
+                }
+              _this.alert_title = "Update Info";
+              _this.alert_text = data.message;
               _this.sweet_normal_alert();
+              e.target.value = '';
             });
+        }else{
+            e.target.value = '';
         }
       });
     },
@@ -1140,7 +1147,7 @@ export default {
         });
     },
 
-    
+
     edit_order_detail(order_detail_list) {
       this.edit_order_modal = true;
     },
