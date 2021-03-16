@@ -3,6 +3,7 @@ export default {
     data() {
         return {
             global_user_id: Globals.user_info_id,
+            global_user_name: Globals.user_info_name,
             myLang: Globals,
             BASE_URL: Globals.base_url,
             alert_icon: "error",

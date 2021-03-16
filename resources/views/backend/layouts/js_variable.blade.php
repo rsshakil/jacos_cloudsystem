@@ -3,6 +3,7 @@ var Globals = <?php echo json_encode(array(
     'local' => \App::getLocale(),
     'base_url' => \Config::get('app.url'),
     'user_info_id' => (\Auth::User())?\Auth::User()->id:'',
+    'user_info_name' => (\Auth::User())?\Auth::User()->name:'',
     'welcome_text' => __('messages.welcome'),
     'role_permission_menu' => __('messages.role_permission_menu'),
     'assign_role' => __('messages.assign_role'),

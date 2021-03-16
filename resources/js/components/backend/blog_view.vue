@@ -1,10 +1,7 @@
 <template>
 <div>
 <!--bloog section-->
-        <div class="row">
-            <div class="col-12">
-
-                <b-container class="bv-example-row">
+        
 
 <!--user blog-->
   <!--<b-row v-can="['slr_view']">
@@ -39,11 +36,7 @@
 
   </b-row>
 -->
-</b-container>
 
-
-                </div>
-        </div>
 </div>
 
 </template>
