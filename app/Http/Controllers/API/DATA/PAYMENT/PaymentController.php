@@ -216,7 +216,7 @@ DB::raw("SUM(mes_lis_pay_lin_det_amo_payable_amount + mes_lis_pay_lin_det_amo_ta
         $byr_buyer_category_list = $this->all_used_fun->get_allCategoryByByrId($byr_buyer_id);
         return response()->json(['payment_item_header' => $result,'paymentdetailTopTable'=>$paymentdetailTopTable,'byr_buyer_category_list'=>$byr_buyer_category_list]);
     }
-    public function downloadShipmentCsv(Request $request)
+    public function paymentDownload(Request $request)
     {
         $data_payment_id=$request->data_payment_id;
         $downloadType=$request->downloadType;

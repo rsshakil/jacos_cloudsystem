@@ -531,11 +531,11 @@ class Data_Controller extends Controller
         // receive_datetime not found in shipment tables
 
         if (!(array_key_exists("downloadType", $request_all))) {
-            $csv_data->where('data_shipment_vouchers.decision_datetime','!=',null);
-            $csv_data->where('data_shipment_vouchers.send_datetime','=',null);
+            $csv_data=$csv_data->where('data_shipment_vouchers.decision_datetime','!=',null);
+            $csv_data=$csv_data->where('data_shipment_vouchers.send_datetime','=',null);
         }
-        $csv_data->groupBy('data_shipment_vouchers.data_shipment_voucher_id');
-        $csv_data->orderBy("data_shipments.data_shipment_id");
+        $csv_data=$csv_data->groupBy('data_shipment_vouchers.data_shipment_voucher_id');
+        $csv_data=$csv_data->orderBy("data_shipments.data_shipment_id");
         // 検索
         // $csv_data = $csv_data->limit(100000)->get()->toArray();
         return $csv_data;
