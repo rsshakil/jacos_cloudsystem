@@ -106,6 +106,7 @@ class OrderController extends Controller
             $decission_cnt = $request->decission_cnt; // 確定
             $print_cnt = $request->print_cnt; // 印刷
             $byr_category_code = $request->category_code; // 印刷
+            $mes_lis_ord_par_sel_code = $request->mes_lis_ord_par_sel_code; // 印刷
             $byr_category_code = $byr_category_code['category_code'];
         if ($receive_date_from) {
             $result= $result->where('dor.receive_datetime','>=',$receive_date_from);
@@ -121,6 +122,9 @@ class OrderController extends Controller
         }
         if ($delivery_service_code!='*') {
             $result= $result->where('dov.mes_lis_ord_log_del_delivery_service_code',$delivery_service_code);
+        }
+        if ($mes_lis_ord_par_sel_code!='') {
+            $result= $result->where('dov.mes_lis_ord_par_sel_code',$mes_lis_ord_par_sel_code);
         }
 
         if ($temperature!='*') {

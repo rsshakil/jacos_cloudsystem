@@ -395,15 +395,16 @@ export default {
     },
     //get Table data
     showAllCustomerCode(){
-    
+     let loaders = Vue.$loading.show();
       this.showAllCustomerCodeListModal = true;
       this.form.post(this.BASE_URL + "api/get_order_customer_code_list", this.form)
         .then(({ data }) => {
           this.order_customer_code_lists = data.order_customer_code_lists;
-         
+         loaders.hide();
         });
     },
     get_all_order(page=1) {
+       this.loader = Vue.$loading.show();
       this.form.page=page;
       this.form.post(this.BASE_URL + "api/get_order_list", this.form)
         .then(({ data }) => {
@@ -422,8 +423,9 @@ export default {
     },
     searchOrder() {
       this.form.submit_type = "search";
-      this.loader = Vue.$loading.show();
+     
       this.get_all_order();
+      
     },
     orderDownload() {
       let formData = new FormData();
@@ -497,7 +499,7 @@ export default {
     // this.byr_session_check()
     this.form.byr_buyer_id = this.$session.get("byr_buyer_id");
     // this.today= new Date().toISOString().slice(0, 10);
-    this.loader = Vue.$loading.show();
+   
     this.get_all_order();
     Fire.$on("LoadByrorder", () => {
       this.get_all_order();
