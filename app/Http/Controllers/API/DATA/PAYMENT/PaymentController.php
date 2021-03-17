@@ -9,6 +9,7 @@ use App\Http\Controllers\API\AllUsedFunction;
 use App\Models\CMN\cmn_companies_user;
 use App\Models\DATA\PAYMENT\data_payment;
 use App\Models\DATA\PAYMENT\data_payment_pay_detail;
+use App\Models\BYR\byr_buyer;
 use DB;
 use App\Traits\Csv;
 use App\Http\Controllers\API\DATA\PAYMENT\DataController;
@@ -169,8 +170,17 @@ DB::raw("SUM(mes_lis_pay_lin_det_amo_payable_amount + mes_lis_pay_lin_det_amo_ta
         $from_date= $request->from_date;
         $to_date= $request->to_date;
         $category_code = $request->category_code;
+        if($category_code!='*'){
+            $category_code =$category_code['category_code'];
+        }
+        
         $mes_lis_pay_lin_tra_code = $request->mes_lis_pay_lin_tra_code;
+
         $mes_lis_pay_lin_lin_trade_number_eference = $request->mes_lis_pay_lin_lin_trade_number_eference;
+        $mes_lis_inv_lin_det_pay_code = $request->mes_lis_inv_lin_det_pay_code;
+        $mes_lis_pay_lin_det_verification_result_code = $request->mes_lis_pay_lin_det_verification_result_code;
+        $mes_lis_pay_lin_det_trade_type_code = $request->mes_lis_pay_lin_det_trade_type_code;
+        $mes_lis_pay_lin_det_balance_carried_code = $request->mes_lis_pay_lin_det_balance_carried_code;
         $result=data_payment::select('data_payments.data_payment_id','data_payments.receive_datetime',
         'dpp.mes_lis_pay_pay_code',
         'dpp.mes_lis_pay_pay_name',
@@ -197,21 +207,44 @@ DB::raw("SUM(mes_lis_pay_lin_det_amo_payable_amount + mes_lis_pay_lin_det_amo_ta
         join('data_payment_pays as dpp','data_payment_pay_details.data_payment_pay_id','=','dpp.data_payment_pay_id')
         ->where(['dpp.data_payment_id'=>$payment_id])
         ->whereIn('data_payment_pay_details.mes_lis_pay_lin_det_pay_code', ['1001', '1002','1004']);
-        if($from_date!=''){
+        if($from_date!='' && $from_date!=null){
             $result1 = $result1->whereDate('data_payment_pay_details.mes_lis_pay_lin_det_transfer_of_ownership_date','>=',$from_date);
         }
-        if($to_date!=''){
+        if($to_date!='' && $to_date!=null){
             $result1 = $result1->whereDate('data_payment_pay_details.mes_lis_pay_lin_det_transfer_of_ownership_date','<=',$to_date);
         }
-        if($mes_lis_pay_lin_tra_code!=''){
+        if($mes_lis_pay_lin_tra_code!='' && $mes_lis_pay_lin_tra_code!=null){
             $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_tra_code',$mes_lis_pay_lin_tra_code);
         }
-        if($mes_lis_pay_lin_lin_trade_number_eference!=''){
+        if($mes_lis_pay_lin_lin_trade_number_eference!='' && $mes_lis_pay_lin_lin_trade_number_eference!=null){
             $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_lin_trade_number_eference',$mes_lis_pay_lin_lin_trade_number_eference);
         }
+        
+        if($mes_lis_inv_lin_det_pay_code!='*'){
+            $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_det_pay_code',$mes_lis_inv_lin_det_pay_code);
+        }
+
+        if($mes_lis_pay_lin_det_verification_result_code!='*'){
+            $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_det_verification_result_code',$mes_lis_pay_lin_det_verification_result_code);
+        }
+
+        if($mes_lis_pay_lin_det_trade_type_code!='*'){
+            $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_det_trade_type_code',$mes_lis_pay_lin_det_trade_type_code);
+        }
+
+        if($mes_lis_pay_lin_det_balance_carried_code!='*'){
+            $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_det_balance_carried_code',$mes_lis_pay_lin_det_balance_carried_code);
+        }
+
+        if($category_code!='*'){
+            $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_det_goo_major_category',$category_code);
+        }
+        
         $paymentdetailTopTable =  $result1->paginate($per_page);
         $byr_buyer_category_list = $this->all_used_fun->get_allCategoryByByrId($byr_buyer_id);
-        return response()->json(['payment_item_header' => $result,'paymentdetailTopTable'=>$paymentdetailTopTable,'byr_buyer_category_list'=>$byr_buyer_category_list]);
+        $buyer_settings = byr_buyer::select('setting_information')->where('byr_buyer_id', $byr_buyer_id)->first();
+        $buyer_settings  = $buyer_settings->setting_information;
+        return response()->json(['payment_item_header' => $result,'paymentdetailTopTable'=>$paymentdetailTopTable,'byr_buyer_category_list'=>$byr_buyer_category_list,'buyer_settings'=>$buyer_settings]);
     }
     public function paymentDownload(Request $request)
     {

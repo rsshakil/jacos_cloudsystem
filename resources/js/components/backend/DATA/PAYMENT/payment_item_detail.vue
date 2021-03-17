@@ -30,7 +30,7 @@
         </tr>
       </table>
     </div>
-    <div class="col-12" style="background: #d8e3f0; padding: 10px">
+    <div class="col-12" style=" padding: 10px">
       <table class="table orderTopDetailTable table-bordered" style="width: 100%">
           <tr>
             <td class="cl_custom_color_active">計上日</td>
@@ -50,29 +50,52 @@
           </tr>
           <tr>
             <td class="cl_custom_color_active">納品先コード</td>
-            <td> <input type="text" class="form-control" v-model="form.mes_lis_pay_lin_tra_code"></td>
+            <td> <input type="text" class="form-control" v-model="form.mes_lis_pay_lin_tra_code" style="float:left;width:60%">
+             <button @click="showAllCustomerCode" class="btn btn-primary" style="float:left;width:35%;">
+              {{ myLang.refer }}
+            </button>
+            </td>
             <td class="cl_custom_color_active">伝票番号</td>
             <td><input type="text" class="form-control" v-model="form.mes_lis_pay_lin_lin_trade_number_eference"></td>
             <td class="cl_custom_color_active">支払内容</td>
             <td>
-            <select class="form-control" v-model="form.category_code">
+            <select class="form-control" v-model="form.mes_lis_inv_lin_det_pay_code">
             <option value="*">全て</option>
+            <option v-for="(opt, i) in mes_lis_inv_lin_det_pay_code_list"
+                  :key="i"
+                  :value="Object.keys(opt)[0]"
+                >
+                  {{ Object.values(opt)[0] }}
+                </option>
             </select>
             </td>
           </tr>
           <tr>
             <td class="cl_custom_color_active">伝票区分</td>
-            <td><select class="form-control" v-model="form.category_code">
+            <td><select class="form-control" v-model="form.mes_lis_pay_lin_det_trade_type_code">
             <option value="*">全て</option>
             </select></td>
             <td class="cl_custom_color_active">請求区分</td>
-            <td><select class="form-control" v-model="form.category_code">
+            <td><select class="form-control" v-model="form.mes_lis_pay_lin_det_balance_carried_code">
             <option value="*">全て</option>
+            
+            <option v-for="(opt, i) in mes_lis_inv_lin_det_balance_carried_code_list"
+                  :key="i"
+                  :value="Object.keys(opt)[0]"
+                >
+                  {{ Object.values(opt)[0] }}
+                </option>
             </select></td>
             <td class="cl_custom_color_active">照合結果</td>
             <td>
-            <select class="form-control" v-model="form.category_code">
+            <select class="form-control" v-model="form.mes_lis_pay_lin_det_verification_result_code">
             <option value="*">全て</option>
+            <option v-for="(opt, i) in mes_lis_pay_lin_det_verification_result_code_list"
+                  :key="i"
+                  :value="Object.keys(opt)[0]"
+                >
+                  {{ Object.values(opt)[0] }}
+                </option>
             </select>
             </td>
 
@@ -187,6 +210,49 @@ paymentdetailTopTable.current_page *
 
       </div>
     </div>
+    <b-modal
+      size="lg"
+      :hide-backdrop="true"
+      title="取引先コード一覧"
+      cancel-title="閉じる"
+      v-model="showAllCustomerCodeListModal"
+      :hide-footer="true"
+    >
+      <div class="panel-body add_item_body">
+
+          <div class="row">
+  <table class="table table-striped order_item_details_table table-bordered data_table">
+          <thead>
+            <tr>
+              <th style="cursor: pointer">No</th>
+              <th>取引先コード</th>
+              <th>取引先名</th>
+              <th>請求先コード</th>
+              <th>請求取引先名</th>
+              <th>取引先形態区分</th>
+
+            </tr>
+          </thead>
+          <tbody>
+          <tr v-for="(value,index) in order_customer_code_lists" @click="onRowClicked(value)">
+          <td>{{index+1}}</td>
+          <td>{{value.mes_lis_ord_par_sel_code}}</td>
+          <td>{{value.mes_lis_ord_par_sel_name}}</td>
+          <td>{{value.mes_lis_ord_par_pay_code}}</td>
+          <td>{{value.mes_lis_ord_par_pay_name}}</td>
+          
+          <td></td>
+          </tr>
+          </tbody>
+          </table>
+
+
+
+
+
+          </div>
+      </div>
+    </b-modal>
   </div>
 </template>
 <script>
@@ -195,7 +261,12 @@ export default {
     return {
       payment_detail_header: {},
       byr_buyer_id: null,
+            order_customer_code_lists: {},
+      showAllCustomerCodeListModal:false,
 
+      mes_lis_pay_lin_det_verification_result_code_list:{},
+      mes_lis_inv_lin_det_pay_code_list:{},
+      mes_lis_inv_lin_det_balance_carried_code_list:{},
       paymentdetailTopTable:{},
       byr_buyer_category_lists:[],
       form: new Form({
@@ -207,6 +278,10 @@ export default {
         from_date: null,
         to_date: null,
         category_code: "*",
+        mes_lis_inv_lin_det_pay_code:'*',
+        mes_lis_pay_lin_det_verification_result_code:'*',
+        mes_lis_pay_lin_det_trade_type_code:'*',
+        mes_lis_pay_lin_det_balance_carried_code:'*',
         mes_lis_pay_lin_lin_trade_number_eference: null,
         check_datetime: null,
         submit_type: "page_load",
@@ -220,6 +295,20 @@ export default {
             }
         },
   methods: {
+     onRowClicked (item) {
+        this.form.mes_lis_ord_par_sel_code = item.mes_lis_ord_par_sel_code;
+       this.showAllCustomerCodeListModal = false;
+    },
+    //get Table data
+    showAllCustomerCode(){
+     //let loaders = Vue.$loading.show();
+      this.showAllCustomerCodeListModal = true;
+      // this.form.post(this.BASE_URL + "api/get_order_customer_code_list", this.form)
+      //   .then(({ data }) => {
+      //     this.order_customer_code_lists = data.order_customer_code_lists;
+      //    loaders.hide();
+      //   });
+    },
     //get Table data
     getAllPaymentDetails(page=1) {
       this.form.page = page;
@@ -230,6 +319,11 @@ export default {
           this.payment_detail_header = data.payment_item_header;
           this.paymentdetailTopTable = data.paymentdetailTopTable;
           this.byr_buyer_category_lists = data.byr_buyer_category_list;
+          this.buyer_settings = JSON.parse(data.buyer_settings);
+          
+          this.mes_lis_pay_lin_det_verification_result_code_list = this.buyer_settings.payments.mes_lis_pay_lin_det_verification_result_code;
+          this.mes_lis_inv_lin_det_pay_code_list = this.buyer_settings.invoices.mes_lis_inv_lin_det_pay_code;
+          this.mes_lis_inv_lin_det_balance_carried_code_list = this.buyer_settings.invoices.mes_lis_inv_lin_det_balance_carried_code;
           this.byr_buyer_category_lists.unshift({category_code:'*',category_name:'全て'});
         });
     },
