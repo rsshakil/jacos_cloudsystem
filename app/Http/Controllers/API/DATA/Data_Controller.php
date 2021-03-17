@@ -723,12 +723,7 @@ class Data_Controller extends Controller
         ];
     }
     public static function shipmentUpdateArray($data_array,$file_name=""){
-        // try {
-            // \Log::info($data_array);
             foreach ($data_array as $key => $value) {
-                // \Log::info($value);
-                // \Log::info(count($data_array));
-                // \Log::info($key);
                 $tmp_shipment['upload_datetime']=date('y-m-d H:i:s');
                 $tmp_shipment['upload_file_path']=$file_name;
                 $tmp_shipment['sta_sen_identifier']=$value[0];
@@ -740,27 +735,9 @@ class Data_Controller extends Controller
                 $tmp_shipment['sta_doc_instance_identifier']=$value[6];
                 $tmp_shipment['sta_doc_type']=$value[7];
                 $tmp_shipment['sta_doc_creation_date_and_time']=$value[8];
-
-                // $tmp_shipment['sta_bus_scope_type']=$value[9];
-                // $tmp_shipment['sta_bus_scope_instance_identifier']=$value[10];
-                // $tmp_shipment['sta_bus_scope_identifier']=$value[11];
-
                 $tmp_shipment['mes_ent_unique_creator_identification']=$value[9];
-
-                // $tmp_shipment['mes_mes_sender_station_address']=$value[13];
-                // $tmp_shipment['mes_mes_ultimate_receiver_station_address']=$value[14];
-                // $tmp_shipment['mes_mes_immediate_receiver_station_addres']=$value[15];
-                // $tmp_shipment['mes_mes_number_of_trading_documents']=$value[16];
-                // $tmp_shipment['mes_mes_sys_key']=$value[17];
-                // $tmp_shipment['mes_mes_sys_value']=$value[18];
-                // $tmp_shipment['mes_lis_con_version']=$value[19];
-                // $tmp_shipment['mes_lis_doc_version']=$value[20];
-                // $tmp_shipment['mes_lis_ext_namespace']=$value[21];
-                // $tmp_shipment['mes_lis_ext_version']=$value[22];
                 $tmp_shipment['mes_lis_pay_code']=$value[10];
                 $tmp_shipment['mes_lis_pay_gln']=$value[11];
-                // $tmp_shipment['mes_lis_pay_name']=$value[25];
-                // $tmp_shipment['mes_lis_pay_name_sbcs']=$value[26];
                 $tmp_shipment['mes_lis_buy_code']=$value[12];
                 $tmp_shipment['mes_lis_buy_gln']=$value[13];
                 $tmp_shipment['mes_lis_buy_name']=$value[14];
@@ -781,9 +758,6 @@ class Data_Controller extends Controller
                 $tmp_shipment_voucher['mes_lis_shi_par_tra_gln']=$value[28];
                 $tmp_shipment_voucher['mes_lis_shi_par_tra_name']=$value[29];
                 $tmp_shipment_voucher['mes_lis_shi_par_tra_name_sbcs']=$value[30];
-                // $tmp_shipment_voucher['mes_lis_shi_par_dis_code']=$value[45];
-                // $tmp_shipment_voucher['mes_lis_shi_par_dis_name']=$value[46];
-                // $tmp_shipment_voucher['mes_lis_shi_par_dis_name_sbcs']=$value[47];
                 $tmp_shipment_voucher['mes_lis_shi_par_pay_code']=$value[31];
                 $tmp_shipment_voucher['mes_lis_shi_par_pay_gln']=$value[32];
                 $tmp_shipment_voucher['mes_lis_shi_par_pay_name']=$value[33];
@@ -947,10 +921,6 @@ class Data_Controller extends Controller
 
                 }
             }
-    // } catch (\Exception $e) {
-    //     return response()->json(['message'=>'Data updated but '.$e->getMessage().' in array value number: '.$key,'status'=>0]);
-    //     // echo 'Caught exception: ',  $e->getMessage(), "\n";
-    // }
         return response()->json(['message'=>"Success",'status'=>1]);
 
     }
