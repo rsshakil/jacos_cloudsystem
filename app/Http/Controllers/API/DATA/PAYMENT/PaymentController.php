@@ -9,8 +9,9 @@ use App\Http\Controllers\API\AllUsedFunction;
 use App\Models\CMN\cmn_companies_user;
 use App\Models\DATA\PAYMENT\data_payment;
 use App\Models\DATA\PAYMENT\data_payment_pay_detail;
-use App\Models\BYR\byr_buyer;
 use DB;
+use App\Traits\Csv;
+use App\Http\Controllers\API\DATA\PAYMENT\DataController;
 class PaymentController extends Controller
 {
     private $all_used_fun;
@@ -112,7 +113,7 @@ class PaymentController extends Controller
 DB::raw("SUM(mes_lis_pay_lin_det_amo_payable_amount + mes_lis_pay_lin_det_amo_tax) as totalAmount")
         )
         ->join('data_payment_pays as dpp','data_payment_pay_details.data_payment_pay_id','=','dpp.data_payment_pay_id')
-        
+
         ->where(['mes_lis_pay_lin_det_pay_code'=>'3003','dpp.data_payment_id'=>$payment_id])->groupBy('data_payment_pay_details.data_payment_pay_id')->first();
 
         $paymentdetailRghtTable = data_payment_pay_detail::select(
@@ -132,7 +133,7 @@ DB::raw("SUM(mes_lis_pay_lin_det_amo_payable_amount + mes_lis_pay_lin_det_amo_ta
             DB::raw('"1" as sumation_type')
                     )
             ->join('data_payment_pays as dpp','data_payment_pay_details.data_payment_pay_id','=','dpp.data_payment_pay_id')
-                    
+
                     ->where('mes_lis_pay_lin_det_pay_code','3001')->where('dpp.data_payment_id',$payment_id)->groupBy('data_payment_pay_details.data_payment_pay_id');
         $pQ2 = data_payment_pay_detail::select(
             DB::raw('"仕入消費税" as p_title'),
@@ -140,16 +141,16 @@ DB::raw("SUM(mes_lis_pay_lin_det_amo_payable_amount + mes_lis_pay_lin_det_amo_ta
             DB::raw('"1" as sumation_type')
                     )
             ->join('data_payment_pays as dpp','data_payment_pay_details.data_payment_pay_id','=','dpp.data_payment_pay_id')
-                    
+
                     ->where('mes_lis_pay_lin_det_pay_code','3001')->where('dpp.data_payment_id',$payment_id)->groupBy('data_payment_pay_details.data_payment_pay_id');
-        
+
         $pQ3 = data_payment_pay_detail::select(
             DB::raw('"相殺合計金額" as p_title'),
             DB::raw('SUM(mes_lis_pay_lin_det_amo_payable_amount) as amount'),
             DB::raw('"2" as sumation_type')
                     )
                     ->join('data_payment_pays as dpp','data_payment_pay_details.data_payment_pay_id','=','dpp.data_payment_pay_id')
-            
+
                     ->where('mes_lis_pay_lin_det_pay_code','3002')->where('dpp.data_payment_id',$payment_id)->groupBy('data_payment_pay_details.data_payment_pay_id');
         $pQ4 = data_payment_pay_detail::select(
             DB::raw('"相殺消費税" as p_title'),
@@ -157,9 +158,9 @@ DB::raw("SUM(mes_lis_pay_lin_det_amo_payable_amount + mes_lis_pay_lin_det_amo_ta
             DB::raw('"2" as sumation_type')
                     )
             ->join('data_payment_pays as dpp','data_payment_pay_details.data_payment_pay_id','=','dpp.data_payment_pay_id')
-                    
+
                     ->where('mes_lis_pay_lin_det_pay_code','3002')->where('dpp.data_payment_id',$payment_id)->groupBy('data_payment_pay_details.data_payment_pay_id');
-         $pdtableleft =  $pQ1->union($pQ2)->union($pQ3)->union($pQ4)->orderBy('sumation_type','ASC')->get();          
+         $pdtableleft =  $pQ1->union($pQ2)->union($pQ3)->union($pQ4)->orderBy('sumation_type','ASC')->get();
 
         return response()->json(['payment_item_header' => $result,'paymentdetailTopTable'=>$paymentdetailTopTable,'pdtableleft'=>$pdtableleft,'paymentdetailRghtTable'=>$paymentdetailRghtTable]);
     }
@@ -194,7 +195,7 @@ DB::raw("SUM(mes_lis_pay_lin_det_amo_payable_amount + mes_lis_pay_lin_det_amo_ta
         ->groupBy('dpp.mes_lis_pay_per_end_date')
         ->groupBy('dppd.mes_lis_pay_lin_det_pay_out_date')
         ->first();
-        
+
         $result1 = data_payment_pay_detail::
         join('data_payment_pays as dpp','data_payment_pay_details.data_payment_pay_id','=','dpp.data_payment_pay_id')
         ->where(['dpp.data_payment_id'=>$payment_id])
@@ -214,5 +215,43 @@ DB::raw("SUM(mes_lis_pay_lin_det_amo_payable_amount + mes_lis_pay_lin_det_amo_ta
         $paymentdetailTopTable =  $result1->paginate($per_page);
         $byr_buyer_category_list = $this->all_used_fun->get_allCategoryByByrId($byr_buyer_id);
         return response()->json(['payment_item_header' => $result,'paymentdetailTopTable'=>$paymentdetailTopTable,'byr_buyer_category_list'=>$byr_buyer_category_list]);
+    }
+    public function paymentDownload(Request $request)
+    {
+        $data_payment_id=$request->data_payment_id;
+        $downloadType=$request->downloadType;
+        $csv_data_count =0;
+        if ($downloadType==1) {
+            // CSV Download
+            $new_file_name = $new_file_name = self::paymentFileName($data_payment_id, 'csv');
+            $download_file_url = \Config::get('app.url')."storage/app".config('const.PAYMENT_CSV_PATH')."/". $new_file_name;
+
+            // get shipment data query
+            $payment_query = DataController::getPaymentData($request);
+            $csv_data_count = $payment_query->count();
+            $payment_data = $payment_query->get()->toArray();
+
+            // CSV create
+            Csv::create(
+                config('const.PAYMENT_CSV_PATH')."/". $new_file_name,
+                $payment_data,
+                DataController::paymentCsvHeading(),
+                'shift-jis'
+            );
+        }
+
+        return response()->json(['message' => 'Success','status'=>1,'new_file_name'=>$new_file_name, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
+    }
+    private static function paymentFileName($data_payment_id, $file_type="csv")
+    {
+        $file_name_info=data_payment::select('cmn_connects.partner_code', 'byr_buyers.super_code', 'cmn_companies.jcode')
+            ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'data_payments.cmn_connect_id')
+            ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
+            ->join('slr_sellers', 'slr_sellers.slr_seller_id', '=', 'cmn_connects.slr_seller_id')
+            ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'slr_sellers.cmn_company_id')
+            ->where('data_payments.data_payment_id', $data_payment_id)
+            ->first();
+        $file_name = $file_name_info->super_code.'-'."payment_".$file_name_info->super_code.'-'.$file_name_info->partner_code."-".$file_name_info->jcode.'_payment_'.date('YmdHis').'.'.$file_type;
+        return $file_name;
     }
 }

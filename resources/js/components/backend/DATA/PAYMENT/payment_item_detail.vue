@@ -14,7 +14,7 @@
         <tr>
           <td class="cl_custom_color">発注者</td>
           <td>{{payment_detail_header.mes_lis_buy_code}} {{payment_detail_header.mes_lis_buy_name}}
-            
+
           </td>
 
           <td class="cl_custom_color" >締日</td>
@@ -46,7 +46,7 @@
             <td colspan="3">
                                                         <multiselect v-model="form.category_code" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="false" :preserve-search="true" placeholder="部門"></multiselect>
             </td>
-          
+
           </tr>
           <tr>
             <td class="cl_custom_color_active">納品先コード</td>
@@ -183,7 +183,7 @@ paymentdetailTopTable.current_page *
           </tbody>
         </table>
       </div>
-      
+
 
       </div>
     </div>
@@ -195,7 +195,7 @@ export default {
     return {
       payment_detail_header: {},
       byr_buyer_id: null,
-      
+
       paymentdetailTopTable:{},
       byr_buyer_category_lists:[],
       form: new Form({
@@ -226,7 +226,7 @@ export default {
       this.select_field_page_num = page;
       axios.post(this.BASE_URL + "api/get_payment_item_detail_list", this.form)
         .then(({ data }) => {
-          
+
           this.payment_detail_header = data.payment_item_header;
           this.paymentdetailTopTable = data.paymentdetailTopTable;
           this.byr_buyer_category_lists = data.byr_buyer_category_list;
@@ -242,7 +242,7 @@ searchByFormData() {
   created() {
     this.byr_buyer_id = this.$session.get("byr_buyer_id");
     this.form.byr_buyer_id = this.$session.get("byr_buyer_id");
-    this.form.payment_id = this.$route.params.payment_id
+    this.form.payment_id = this.$route.query.data_payment_id
     this.getAllPaymentDetails();
     Fire.$on("LoadPaymentItemDetail", (page=1) => {
       this.getAllPaymentDetails(page);
@@ -252,12 +252,12 @@ searchByFormData() {
     Fire.$emit("loadPageTitle", "支払合計");
   },
   computed: {
-   
+
     totalAmountVal: function() {
       return this.pdtableleft.reduce(function (sumselling,val) {return  sumselling = (val.sumation_type=='1'?sumselling+val.amount:sumselling-val.amount)},0);
 
     },
-   
+
     totalAmountValOffset: function() {
       return this.paymentdetailRghtTable.reduce(function (sumselling,val) {return  sumselling += val.mes_lis_pay_lin_det_amo_requested_amount_sum},0);
 
