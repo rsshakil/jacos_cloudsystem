@@ -41,7 +41,7 @@
 
     <div class="col-12">
       <div class="row">
-      <div class="col-12">
+      <div class="col-12" style="margin-bottom:40px;">
       <h4 class="page_custom_title">取引先別支払合計（仕入）</h4>
         <table
           class="table table-striped order_item_details_table table-bordered data_table"
@@ -57,7 +57,7 @@
           <tbody>
             <tr>
               <td>1</td>
-              <td>{{payment_detail_header.mes_lis_pay_pay_gln}} {{payment_detail_header.mes_lis_pay_pay_name}}</td>
+              <td>{{payment_detail_header.mes_lis_pay_pay_code}} {{payment_detail_header.mes_lis_pay_pay_name}}</td>
               <td><router-link :to="{
                       name: 'payment_item_detail',
                       query: {
@@ -102,7 +102,7 @@
         </table>
         </div>
         <div class="col-6">
-        <br>
+    
         <h4 class="page_custom_title">相殺合計（相殺）</h4>
           <table
           class="table table-striped order_item_details_table table-bordered data_table"
