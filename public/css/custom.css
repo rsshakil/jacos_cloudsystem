@@ -116,6 +116,9 @@
 .buyer_button_list li .btn{
     font-size: 20px;
 }
+.multiselect__option--highlight{
+    background: #538ED3 !important;
+}
 .selected_byr_by_sly{
     color: #fff;
     font-size: 14px;

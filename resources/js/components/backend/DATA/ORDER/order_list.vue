@@ -66,7 +66,7 @@
           <!-- <td>{{ myLang.shipment }}</td> -->
           <td style="width: 10%;"class="cl_custom_color">部門</td>
           <td style="width: 15%;">
-                                            <multiselect v-model="form.category_code" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="false" :preserve-search="true" placeholder="部門"></multiselect>
+                                            <multiselect v-model="form.category_code" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="true" :select-label="''" :deselect-label="''" :preserve-search="true"  placeholder="部門"></multiselect>
             <!--<select class="form-control" v-model="form.byr_category_code">
             <option value="*">全て</option>
             <option :value="categoryData.category_orign_code" v-for="(categoryData,index) in byr_buyer_category_lists" :key="index">{{categoryData.category_orign_code}}| {{categoryData.category_name}}</option>
