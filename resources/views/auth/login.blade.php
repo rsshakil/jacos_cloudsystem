@@ -34,10 +34,10 @@
                         @endif
                     </a>
                     <div class="dropdown-menu dropdown-menu-small" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="<?php echo(\Config::get('app.url').'/language/en');?>"><span
+                        <a class="dropdown-item" href="<?php echo(\Config::get('app.url').'language/en');?>"><span
                                 class="flag-icon flag-icon-us"></span> English</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="<?php echo(\Config::get('app.url').'/language/ja');?>"><span
+                        <a class="dropdown-item" href="<?php echo(\Config::get('app.url').'language/ja');?>"><span
                                 class="flag-icon flag-icon-jp"></span> 日本語</a>
                     </div>
                 </li>
@@ -109,7 +109,7 @@
                                 <div class="col-md-6 offset-md-3" style="text-align: center; margin-top: -15px;">
                                     @if (Route::has('password.request'))
                                     <a class="underlineHover"
-                                        href="{{Config::get('app.url').'/password/reset'}}">
+                                        href="{{Config::get('app.url').'password/reset'}}">
                                         {{ __('messages.forgot_pass_text') }}
                                     </a>
                                     @endif

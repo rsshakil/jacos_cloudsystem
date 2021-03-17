@@ -10,14 +10,14 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('public/js/app.js') }}" defer></script>
+    <script src="{{ asset('public/css/auth/app.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
 
     <!-- Styles -->
-    <link href="{{ asset('public/css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('public/css/auth/app.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -28,7 +28,7 @@
                           <!-- Icon -->
     <div class="fadeIn first">
       <img style="height: 35px; width: 100px;" src="https://dhakajacos.com.bd/wp-content/uploads/2019/01/cropped-Jacos-main.png" id="icon" alt="User Icon" />
-      
+
     </div>
 
                 </a>
@@ -51,7 +51,7 @@
                             </li>
                             @if (Route::has('register'))
                                 <!-- <li class="nav-item">
-                                    
+
                                 </li> -->
                             @endif
                         @else
