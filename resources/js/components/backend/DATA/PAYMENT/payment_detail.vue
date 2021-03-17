@@ -194,11 +194,7 @@ export default {
         })
         .then(({ data }) => {
            this.init(data.status);
-          const link = document.createElement("a");
-          link.href = data.url;
-          link.setAttribute("download", data.new_file_name); //ここらへんは適当に設定する
-          document.body.appendChild(link);
-          link.click();
+          this.downloadFromUrl(data);
         });
     },
 
