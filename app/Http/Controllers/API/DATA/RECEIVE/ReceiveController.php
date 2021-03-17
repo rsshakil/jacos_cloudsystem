@@ -104,12 +104,9 @@ class ReceiveController extends Controller
         $cmn_company_id = '';
         $cmn_connect_id = '';
         if (!$authUser->hasRole(config('const.adm_role_name'))) {
-            $cmn_company_info = cmn_companies_user::select('slr_sellers.cmn_company_id', 'slr_sellers.slr_seller_id', 'cmn_connects.cmn_connect_id')
-                ->join('slr_sellers', 'slr_sellers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
-                ->join('cmn_connects', 'cmn_connects.slr_seller_id', '=', 'slr_sellers.slr_seller_id')
-                ->where('cmn_companies_users.adm_user_id', $adm_user_id)->first();
-            $cmn_company_id = $cmn_company_info->cmn_company_id;
-            $cmn_connect_id = $cmn_company_info->cmn_connect_id;
+            $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
+            $cmn_company_id = $cmn_company_info['cmn_company_id'];
+            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
 
         // 検索
@@ -131,7 +128,7 @@ class ReceiveController extends Controller
         // $result = new Paginator($result, 2);
         $buyer_settings = byr_buyer::select('setting_information')->where('byr_buyer_id', $byr_buyer_id)->first();
         $byr_buyer = $this->all_used_fun->get_company_list($cmn_company_id);
-        $byr_buyer_category_list = $this->all_used_fun->get_allCategoryByByrId($byr_buyer_id); 
+        $byr_buyer_category_list = $this->all_used_fun->get_allCategoryByByrId($byr_buyer_id);
 
         return response()->json(['received_item_list' => $result, 'byr_buyer_list' => $byr_buyer, 'buyer_settings' => $buyer_settings->setting_information,'byr_buyer_category_list'=>$byr_buyer_category_list]);
 
@@ -262,7 +259,7 @@ class ReceiveController extends Controller
         $byr_buyer_id = $request->byr_buyer_id;
         $data_receive_voucher_id = $request->data_receive_voucher_id;
         $per_page = $request->select_field_per_page_num == null ? 10 : $request->select_field_per_page_num;
-       
+
         $authUser = User::find($adm_user_id);
         $cmn_company_id = '';
         $cmn_connect_id = '';
