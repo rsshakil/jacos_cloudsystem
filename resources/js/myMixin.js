@@ -281,6 +281,13 @@ export default {
             });
             return status;
         },
+        downloadFromUrl(data) {
+            const link = document.createElement("a");
+            link.href = data.url;
+            link.setAttribute("download", data.new_file_name); //ここらへんは適当に設定する
+            document.body.appendChild(link);
+            link.click();
+        },
         is_disabled(is_system = 0) {
             if (is_system == 0) {
                 return true;

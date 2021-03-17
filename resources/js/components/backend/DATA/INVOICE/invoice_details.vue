@@ -528,25 +528,11 @@ export default {
       var _this = this;
       axios.post(this.BASE_URL + "api/download_invoice", {
           data_invoice_id: this.form.data_invoice_id,
-        //   order_info: this.order_info,
           downloadType: downloadType,
         })
         .then(({ data }) => {
            this.init(data.status);
-        //    return 0;
-          const link = document.createElement("a");
-          link.href = data.url;
-          link.setAttribute("download", data.new_file_name); //ここらへんは適当に設定する
-          document.body.appendChild(link);
-          link.click();
-        //   return 0;
-        //   axios.get(_this.BASE_URL + "api/deletedownloadedshipmentCsv/" +
-        //         data.new_file_name
-        //     ).then(({data}) => {
-        //         this.init(data.status);
-        //       //console.log(data);
-        //     });
-          //link.revokeObjectURL();
+           this.downloadFromUrl(data);
         });
     },
     invoiceUpdate(){
