@@ -167,7 +167,7 @@ class InvoiceController extends Controller
         'dipd.mes_lis_inv_lin_det_transfer_of_ownership_date','dipd.mes_lis_inv_lin_tra_code',
         'dipd.mes_lis_inv_lin_tra_name','dipd.mes_lis_inv_lin_lin_trade_number_reference',
         'dipd.mes_lis_inv_lin_det_amo_requested_amount','dipd.mes_lis_inv_lin_det_pay_code',
-        'dipd.mes_lis_inv_lin_det_balance_carried_code','dipd.send_datetime','dipd.decision_datetime'
+        'dipd.mes_lis_inv_lin_det_balance_carried_code','dipd.send_datetime','dipd.decision_datetime','dipd.mes_lis_inv_lin_det_goo_major_category'
         )
         ->join('data_invoice_pays as dip','data_invoices.data_invoice_id','=','dip.data_invoice_id')
         ->join('data_invoice_pay_details as dipd','dip.data_invoice_pay_id','=','dipd.data_invoice_pay_id')
