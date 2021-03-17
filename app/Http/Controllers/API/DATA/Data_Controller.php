@@ -724,7 +724,9 @@ class Data_Controller extends Controller
     }
     public static function shipmentUpdateArray($data_array,$file_name=""){
         // try {
+            // \Log::info($data_array);
             foreach ($data_array as $key => $value) {
+                // \Log::info($value);
                 // \Log::info(count($data_array));
                 // \Log::info($key);
                 $tmp_shipment['upload_datetime']=date('y-m-d H:i:s');
