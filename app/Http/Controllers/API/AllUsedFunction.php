@@ -151,7 +151,7 @@ class AllUsedFunction extends Controller
         $temp_data = file_get_contents($baseUrl);
         if (mb_detect_encoding($temp_data, ['UTF-8', 'SJIS-win', 'SJIS', 'eucJP-win', 'ASCII', 'EUC-JP', 'JIS']) != "UTF-8") {
             $temp_data = mb_convert_encoding($temp_data, "UTF-8", 'SJIS-win, SJIS, eucJP-win, ASCII, EUC-JP, JIS');
-            $data = array_map('str_getcsv', explode("\r\n", $temp_data));
+            $data = array_map('str_getcsv', array_filter(explode("\r\n", $temp_data)));
         } else {
             $data = array_map('str_getcsv', file($baseUrl));
         }
@@ -275,24 +275,24 @@ class AllUsedFunction extends Controller
      * @param  int $adm_user_id
      * @return Array Formated Company information
      */
-    public function get_user_info($adm_user_id = 0,$selected_byr_buyer_id=0)
+    public function get_user_info($adm_user_id = 0, $selected_byr_buyer_id=0)
     {
         $arr = array('cmn_company_id' => 0, 'byr_buyer_id' => 0, 'cmn_connect_id' => 0);
         \Log::info($adm_user_id);
         // return $adm_user_id;
         if ($adm_user_id != 0) {
-            $company_type_info = cmn_companies_user::select('cmn_companies_users.cmn_company_id','cmn_companies.company_type')
-            ->join('cmn_companies','cmn_companies_users.cmn_company_id','=','cmn_companies.cmn_company_id')
-            ->where('cmn_companies_users.adm_user_id',$adm_user_id)
+            $company_type_info = cmn_companies_user::select('cmn_companies_users.cmn_company_id', 'cmn_companies.company_type')
+            ->join('cmn_companies', 'cmn_companies_users.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
+            ->where('cmn_companies_users.adm_user_id', $adm_user_id)
             ->first();
             $cmn_company_info = cmn_companies_user::select('cmn_companies_users.cmn_company_id', 'cmn_connects.cmn_connect_id');
             if ($company_type_info->company_type=='seller') {
                 $cmn_company_info = $cmn_company_info->join('slr_sellers', 'slr_sellers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
                 ->join('cmn_connects', 'cmn_connects.slr_seller_id', '=', 'slr_sellers.slr_seller_id');
-                if($selected_byr_buyer_id!=0){
-                    $cmn_company_info = $cmn_company_info->where('cmn_connects.byr_buyer_id',$selected_byr_buyer_id);
+                if ($selected_byr_buyer_id!=0) {
+                    $cmn_company_info = $cmn_company_info->where('cmn_connects.byr_buyer_id', $selected_byr_buyer_id);
                 }
-            }else if($company_type_info->company_type=='buyer'){
+            } elseif ($company_type_info->company_type=='buyer') {
                 $cmn_company_info = $cmn_company_info->join('byr_buyers', 'byr_buyers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
                 ->join('cmn_connects', 'cmn_connects.byr_buyer_id', '=', 'byr_buyers.byr_buyer_id');
             }
@@ -313,7 +313,8 @@ class AllUsedFunction extends Controller
         return $arr;
     }
 
-    public function get_cmn_connect_id_by_seller_id_buyer_id($slr_seller_id,$byr_buyer_id){
+    public function get_cmn_connect_id_by_seller_id_buyer_id($slr_seller_id, $byr_buyer_id)
+    {
         $cmn_connect_info = cmn_connect::where(['slr_seller_id'=>$slr_seller_id,'byr_buyer_id'=>$byr_buyer_id])->first();
         return $cmn_connect_info;
     }
@@ -537,10 +538,12 @@ class AllUsedFunction extends Controller
         );
     }
 
-    public function get_allCategoryByByrId($byr_buyer_id){
-        $result = cmn_category::select('category_code',
-        DB::raw("CONCAT(category_code,' | ',category_name) as category_name"))->where('byr_buyer_id',$byr_buyer_id)->where('is_deleted',0)->where('level',1)->orderBy('category_code')->get();
+    public function get_allCategoryByByrId($byr_buyer_id)
+    {
+        $result = cmn_category::select(
+            'category_code',
+            DB::raw("CONCAT(category_code,' | ',category_name) as category_name")
+        )->where('byr_buyer_id', $byr_buyer_id)->where('is_deleted', 0)->where('level', 1)->orderBy('category_code')->get();
         return $result;
     }
-
 }
