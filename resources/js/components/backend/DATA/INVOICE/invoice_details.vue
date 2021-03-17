@@ -25,8 +25,8 @@
                 {{ param_data.status }}
             </td>
             <td class="cl_custom_color">請求金額</td>
-            <td>
-                {{ param_data.requested_amount }}
+            <td class="text-right">
+                {{ number_format(param_data.requested_amount) }}
             </td>
           </tr>
         </table>
@@ -202,13 +202,14 @@
             <tr>
               <th>No</th>
               <th>請求</th>
-              <!-- <th>締日</th> -->
               <th>計上日</th>
-              <th>計上先</th>
+              <th>部門コード</th>
+              <th>納品先コード</th>
               <th>伝票番号</th>
-              <th>伝票区分</th>
-               <th>請求金額</th>
+              <th>請求内容</th>
               <th>請求区分</th>
+               <th>請求金額</th>
+              <!-- <th>請求区分</th> -->
               <th>送信日時</th>
             </tr>
           </thead>
@@ -249,18 +250,20 @@
                 {{ value.mes_lis_inv_lin_det_transfer_of_ownership_date }}
               </td>
               <td>
+                {{ value.mes_lis_inv_lin_det_goo_major_category }}
+              </td>
+              <td>
                 {{ value.mes_lis_inv_lin_tra_code }}
-                {{ value.mes_lis_inv_lin_tra_name }}
+                <!-- {{ value.mes_lis_inv_lin_tra_name }} -->
               </td>
               <td>{{ value.mes_lis_inv_lin_lin_trade_number_reference }}</td>
               <td>{{ value.mes_lis_inv_lin_det_pay_code }}</td>
-              <td>{{ number_format(value.mes_lis_inv_lin_det_amo_requested_amount) }}</td>
               <td>{{ value.mes_lis_inv_lin_det_balance_carried_code }}</td>
+              <td class="text-right">{{ number_format(value.mes_lis_inv_lin_det_amo_requested_amount) }}</td>
               <td>{{ value.send_datetime }}</td>
-              <!-- <td><router-link :to="{name:'voucher_detail',params:{voucher_number:value.voucher_number} }" class="btn btn-info">詳細</router-link></td> -->
             </tr>
             <tr v-if="invoice_detail_lists.data && invoice_detail_lists.data.length==0">
-                <td colspan="9">データがありません</td>
+                <td colspan="100%">データがありません</td>
             </tr>
           </tbody>
         </table>
