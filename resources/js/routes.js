@@ -452,7 +452,7 @@ export const routes = [
 
     },
     {
-        path: '/payment_list/payment_detail/:payment_id',
+        path: '/payment_list/payment_detail',
         component: payment_detail,
         name: 'payment_detail',
         meta: {
@@ -465,7 +465,7 @@ export const routes = [
 
     },
     {
-        path: '/payment_list/payment_detail/payment_item_detail/:payment_id',
+        path: '/payment_list/payment_detail/payment_item_detail',
         component: payment_item_detail,
         name: 'payment_item_detail',
         meta: {

@@ -14,7 +14,7 @@
         <tr>
           <td class="cl_custom_color">発注者</td>
           <td>{{payment_detail_header.mes_lis_buy_code}} {{payment_detail_header.mes_lis_buy_name}}
-            
+
           </td>
 
           <td class="cl_custom_color" >締日</td>
@@ -34,7 +34,7 @@
       <button class="btn btn-primary active" type="button">
         支払案内書
       </button>
-      <button class="btn btn-primary active" type="button" >
+      <button class="btn btn-primary active" type="button" @click="download(1)">
         ダウンロード <b-icon icon="download" animation="fade" font-scale="1.2"></b-icon>
       </button>
     </div>
@@ -60,8 +60,8 @@
               <td>{{payment_detail_header.mes_lis_pay_pay_gln}} {{payment_detail_header.mes_lis_pay_pay_name}}</td>
               <td><router-link :to="{
                       name: 'payment_item_detail',
-                      params: {
-                        payment_id:
+                      query: {
+                        data_payment_id:
                           payment_detail_header.data_payment_id,
                       },
                     }">{{payment_detail_header.mes_lis_pay_pay_id}}</router-link></td>
@@ -131,7 +131,7 @@
               <td colspan="4">相殺合計金額</td>
               <td class="text-right">{{totalAmountValOffset | priceFormat}}</td>
             </tr>
-            
+
           </tbody>
         </table>
       </div>
@@ -176,12 +176,31 @@ export default {
     getAllPaymentDetails() {
       axios.post(this.BASE_URL + "api/get_payment_detail_list", this.form)
         .then(({ data }) => {
-          
+
           this.payment_detail_header = data.payment_item_header;
           this.paymentdetailTopTable = data.paymentdetailTopTable;
           this.pdtableleft = data.pdtableleft;
           this.paymentdetailRghtTable = data.paymentdetailRghtTable;
-          
+
+        });
+    },
+    download(downloadType = 1) {
+      //downloadcsvshipment_confirm
+      var _this = this;
+      axios
+        .post(this.BASE_URL + "api/payment_download", {
+          data_payment_id: this.form.payment_id,
+          downloadType: downloadType,
+        })
+        .then(({ data }) => {
+           this.init(data.status);
+           console.log(data);
+           return 0;
+          const link = document.createElement("a");
+          link.href = data.url;
+          link.setAttribute("download", data.new_file_name); //ここらへんは適当に設定する
+          document.body.appendChild(link);
+          link.click();
         });
     },
 
@@ -190,19 +209,19 @@ export default {
   created() {
     this.byr_buyer_id = this.$session.get("byr_buyer_id");
     this.form.byr_buyer_id = this.byr_buyer_id;
-    this.form.payment_id = this.$route.params.payment_id
+    this.form.payment_id = this.$route.query.payment_id
     this.getAllPaymentDetails();
     Fire.$emit("byr_has_selected", this.byr_buyer_id);
     Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
     Fire.$emit("loadPageTitle", "支払合計");
   },
   computed: {
-   
+
     totalAmountVal: function() {
       return this.pdtableleft.reduce(function (sumselling,val) {return  sumselling = (val.sumation_type=='1'?sumselling+val.amount:sumselling-val.amount)},0);
 
     },
-   
+
     totalAmountValOffset: function() {
       return this.paymentdetailRghtTable.reduce(function (sumselling,val) {return  sumselling += val.mes_lis_pay_lin_det_amo_payable_amount_sum},0);
 

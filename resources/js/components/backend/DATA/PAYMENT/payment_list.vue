@@ -139,7 +139,7 @@
               <td><router-link
                     :to="{
                       name: 'payment_detail',
-                      params: {
+                      query: {
                         payment_id:
                           payment.data_payment_id,
                       },
