@@ -26,7 +26,7 @@
           <td style="width: 15%">
             <input
               type="text"
-              class="form-control"
+              class="form-control" v-model="form.mes_lis_ord_par_sel_code"
               style="float: left; width: 90px; margin-right: 5px"
             />
             <button @click="showAllCustomerCode" class="btn btn-primary" style="float:left;">
@@ -72,7 +72,7 @@
             <option :value="categoryData.category_orign_code" v-for="(categoryData,index) in byr_buyer_category_lists" :key="index">{{categoryData.category_orign_code}}| {{categoryData.category_name}}</option>
              </select>-->
           </td>
-          <td style="width: 10%;" class="cl_custom_color">{{ myLang.temperature }}</td>
+          <td style="width: 10%;" class="cl_custom_color">温度区分</td>
           <td style="width: 15%">
             <select class="form-control" v-model="form.temperature">
             <option value="*">全て</option>
@@ -132,7 +132,7 @@
     <br />
     <!-- <div class="row"> -->
     <div class="col-12" style="text-align: center">
-      <button class="btn btn-primary" type="button" @click="searchOrder()">
+      <button class="btn btn-primary active srchBtn" type="button" @click="searchOrder()">
         {{ myLang.search }}
       </button>
     </div>
@@ -312,6 +312,15 @@
             </tr>
           </thead>
           <tbody>
+          <tr v-for="(value,index) in order_customer_code_lists" @click="onRowClicked(value)">
+          <td>{{index+1}}</td>
+          <td>{{value.mes_lis_ord_par_sel_code}}</td>
+          <td>{{value.mes_lis_ord_par_sel_name}}</td>
+          <td>{{value.mes_lis_ord_par_pay_code}}</td>
+          <td>{{value.mes_lis_ord_par_pay_name}}</td>
+          
+          <td></td>
+          </tr>
           </tbody>
           </table>
 
@@ -333,6 +342,7 @@ export default {
       // receive_date:null,
       // today:new Date().toLocaleDateString(),
       order_lists: {},
+      order_customer_code_lists: {},
       byr_buyer_lists: {},
       byr_buyer_category_lists:[],
       file: "",
@@ -363,6 +373,7 @@ export default {
         check_datetime: '*',
         delivery_service_code: "*",
         temperature: "*",
+        mes_lis_ord_par_sel_code:"",
         // confirmation_status:1,
         print_cnt: "*",
         decission_cnt: "*",
@@ -378,9 +389,19 @@ export default {
             }
         },
   methods: {
+    onRowClicked (item) {
+        this.form.mes_lis_ord_par_sel_code = item.mes_lis_ord_par_sel_code;
+       this.showAllCustomerCodeListModal = false;
+    },
     //get Table data
     showAllCustomerCode(){
+    
       this.showAllCustomerCodeListModal = true;
+      this.form.post(this.BASE_URL + "api/get_order_customer_code_list", this.form)
+        .then(({ data }) => {
+          this.order_customer_code_lists = data.order_customer_code_lists;
+         
+        });
     },
     get_all_order(page=1) {
       this.form.page=page;
@@ -401,6 +422,7 @@ export default {
     },
     searchOrder() {
       this.form.submit_type = "search";
+      this.loader = Vue.$loading.show();
       this.get_all_order();
     },
     orderDownload() {

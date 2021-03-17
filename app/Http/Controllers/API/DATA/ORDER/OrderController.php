@@ -21,6 +21,37 @@ class OrderController extends Controller
     {
         $this->all_used_fun = new AllUsedFunction();
     }
+    public function get_order_customer_code_list(Request $request)
+    {
+        // return $request->all();
+        $adm_user_id = $request->adm_user_id;
+        $byr_buyer_id = $request->byr_buyer_id;
+        $submit_type = $request->submit_type;
+        $per_page = $request->per_page?$request->per_page:20;
+
+        $authUser = User::find($adm_user_id);
+        $cmn_company_id = '';
+        $cmn_connect_id = '';
+        if (!$authUser->hasRole(config('const.adm_role_name'))) {
+            $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
+            $cmn_company_id = $cmn_company_info['cmn_company_id'];
+            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+        }
+        $result = DB::select("SELECT
+        dov.mes_lis_ord_par_sel_code,
+        dov.mes_lis_ord_par_sel_name,
+        dov.mes_lis_ord_par_pay_code,
+        dov.mes_lis_ord_par_pay_name
+        FROM
+       data_orders AS dao
+       INNER JOIN data_order_vouchers AS dov ON dao.data_order_id=dov.data_order_id
+       WHERE dao.cmn_connect_id='".$cmn_connect_id."'
+       GROUP BY
+        dov.mes_lis_ord_par_sel_code,
+        dov.mes_lis_ord_par_pay_code");
+        return response()->json(['order_customer_code_lists' => $result]);
+
+    }
     public function orderList(Request $request)
     {
         // return $request->all();
