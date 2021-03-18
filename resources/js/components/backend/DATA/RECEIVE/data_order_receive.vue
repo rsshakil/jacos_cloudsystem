@@ -57,7 +57,7 @@
             <!-- <td>{{ myLang.shipment }}</td> -->
             <td style="width: 10%;"class="cl_custom_color">部門</td>
             <td style="width: 15%; text-align: center">
-                <multiselect v-model="form.category_code" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="false" :preserve-search="true" placeholder="部門"></multiselect>
+                <multiselect v-model="form.category_code" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="true" :select-label="''" :deselect-label="''" :preserve-search="true" placeholder="部門"></multiselect>
             </td>
             <td class="cl_custom_color" style="width: 10%">配送温度区分</td>
             <td style="width: 15%;">
