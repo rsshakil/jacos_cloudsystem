@@ -358,7 +358,9 @@ export default {
                     });
             }
         },
-
+        iconSet(text_value) {
+            return this.form.sort_by == text_value ? (this.form.sort_type == 'ASC' ? 'fa fa-caret-down' : 'fa fa-caret-up') : '';
+        },
     },
     filters: {
 
