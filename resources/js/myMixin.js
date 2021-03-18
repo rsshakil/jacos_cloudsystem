@@ -357,7 +357,8 @@ export default {
                         // console.log(data)
                     });
             }
-        }
+        },
+
     },
     filters: {
 
