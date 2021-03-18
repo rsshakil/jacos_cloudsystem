@@ -141,7 +141,7 @@
     <div class="col-12">
       <hr />
     </div>
-    <div class="col-12">
+    <div class="col-12 text-center">
       <button
         class="btn btn-outline-primary"
         type="button"

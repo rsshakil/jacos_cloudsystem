@@ -134,13 +134,16 @@
       </div>
     </div>
     <div class="col-12" style="text-align: center">
-      <button class="btn btn-primary" type="button" @click="searchReceivedItem">
+      <button class="btn btn-primary active srchBtn" type="button" @click="searchReceivedItem">
         {{ myLang.search }}
       </button>
     </div>
     <div class="col-12 text-center page_c_title_bar text-sm-left mb-0">
       <h4 class="page_custom_title">検索結果：一覧</h4>
-      <button class="btn btn-outline-primary" type="button">
+     
+    </div>
+    <div class="col-12 text-center">
+         <button class="btn btn-outline-primary" type="button">
         <b-icon icon="download" animation="fade" font-scale="1.2"></b-icon>
         {{ myLang.download }}
       </button>

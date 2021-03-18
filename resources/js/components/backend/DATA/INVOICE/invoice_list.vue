@@ -59,6 +59,12 @@
         <br />
         <h4 class="page_custom_title">{{ myLang.search_result }}</h4>
       </div>
+        <div class="col-12 text-center">
+         <button class="btn btn-outline-primary" type="button">
+        <b-icon icon="download" animation="fade" font-scale="1.2"></b-icon>
+        {{ myLang.download }}
+      </button>
+    </div>
     <div class="col-12">
             <p>
               <span class="tableRowsInfo">{{ invoice_lists.from }}〜{{ invoice_lists.to }} 件表示中／全：{{ invoice_lists.total }}件</span>
