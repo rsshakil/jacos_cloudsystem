@@ -10,83 +10,31 @@
           <tr>
             <td class="cl_custom_color" style="width: 10%">受信日</td>
             <td style="width: 15%">
-              <input
-                type="date"
-                class="form-control"
-                v-model="form.receive_date_from"
-              />
+             <div class="input-group mb-3">
+                    <input type="date" class="form-control" v-model="form.receive_date_from">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">~</span>
+                    </div>
+                    <input type="date" class="form-control" v-model="form.receive_date_to">
+                </div>
+             
             </td>
-            <td style="width: 9%; text-align: center">
-              <b-icon
-                icon="forward"
-                aria-hidden="true"
-                font-scale="1.5"
-              ></b-icon>
-            </td>
-            <td style="width: 15%">
-              <input
-                type="date"
-                class="form-control"
-                v-model="form.receive_date_to"
-              />
-            </td>
+            
             <td class="cl_custom_color" style="width: 10%">
               {{ myLang.customer_code }}
             </td>
-            <td colspan="3" style="width: 17%">
+            <td style="width: 15%">
               <input
                 type="text"
                 class="form-control"
-                style="float: left; width: 150px; margin-right: 15px"
+                style="float: left; width: 110px; margin-right: 15px"
               />
-              <button class="btn btn-primary" type="button">
+              <button class="btn btn-primary" style="float:left" type="button">
                 {{ myLang.refer }}
               </button>
-              <!-- <select class="form-control">
-              <option :value="0">{{ myLang.customer_code }}</option>
-            </select> -->
+              
             </td>
-            <!--<td style="width: 10%">
-            <button class="btn btn-primary" type="button">
-              {{ myLang.refer }}
-            </button>
-          </td>
-          <td></td>-->
-          </tr>
-          <tr>
-            <td class="cl_custom_color">計上日</td>
-            <td>
-              <input
-                type="date"
-                class="form-control"
-                v-model="form.wnership_date_from"
-              />
-            </td>
-            <td style="width: 9%; text-align: center">
-              <b-icon
-                icon="forward"
-                aria-hidden="true"
-                font-scale="1.5"
-              ></b-icon>
-            </td>
-            <td>
-              <input
-                type="date"
-                class="form-control"
-                v-model="form.wnership_date_to"
-              />
-            </td>
-            <!-- <td>{{ myLang.shipment }}</td> -->
-            <td class="cl_custom_color">部門</td>
-            <td style="width: 10%; text-align: center">
-                                            <multiselect v-model="form.category_code" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="false" :preserve-search="true" placeholder="部門"></multiselect>
-
-              <!--<select class="form-control" v-model="form.byr_category_code">
-            <option value="*">全て</option>
-            <option :value="categoryData.category_orign_code" v-for="(categoryData,index) in byr_buyer_category_lists" :key="index">{{categoryData.category_orign_code}}| {{categoryData.category_name}}</option>
-             </select>-->
-            </td>
-            <td class="cl_custom_color">便</td>
+           <td style="width: 10%;" class="cl_custom_color">便</td>
             <td style="width: 15%">
               <select class="form-control" v-model="form.delivery_service_code">
                 <option :value="0">全て</option>
@@ -94,42 +42,53 @@
             </td>
           </tr>
           <tr>
-            <!-- <td>{{ myLang.confirmation_status }}</td>
-          <td>
-            <select class="form-control" v-model="form.confirmation_status">
-              <option v-for="(cs, j) in confirmation_status" :key="j" :value="cs.id">{{ cs.name }}</option>
-            </select>
-          </td> -->
-            <!-- <td>{{ myLang.voucher_type }}</td> -->
+            <td style="width: 10%;" class="cl_custom_color">計上日</td>
+            <td style="width: 15%;">
+             <div class="input-group mb-3">
+                    <input type="date" class="form-control" v-model="form.wnership_date_from">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">~</span>
+                    </div>
+                    <input type="date" class="form-control" v-model="form.wnership_date_to">
+                </div>
+             
+            </td>
+            
+            <!-- <td>{{ myLang.shipment }}</td> -->
+            <td style="width: 10%;"class="cl_custom_color">部門</td>
+            <td style="width: 15%; text-align: center">
+                <multiselect v-model="form.category_code" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="false" :preserve-search="true" placeholder="部門"></multiselect>
+            </td>
             <td class="cl_custom_color" style="width: 10%">配送温度区分</td>
-            <td colspan="3">
-              <select class="form-control" style="width: 300px" v-model="form.temperature_code">
+            <td style="width: 15%;">
+              <select class="form-control" v-model="form.temperature_code">
                 <option :value="0">全て</option>
               </select>
             </td>
-            <!-- <td>{{ myLang.printing_status }}</td> -->
-            <td class="cl_custom_color">データ種別</td>
-            <td style="width: 10%; text-align: center" colspan="3">
-              <select class="form-control" style="width: 300px" >
+          </tr>
+          <tr>
+         
+            
+            <td style="width: 10%;"class="cl_custom_color">データ種別</td>
+            <td style="width: 15%; text-align: center">
+              <select class="form-control">
                 <option :value="0" >全て</option>
               </select>
             </td>
-            <!-- <td>{{ myLang.confirmation_status }}</td> -->
-          </tr>
-          <tr>
-            <td class="cl_custom_color">訂正状況</td>
-            <td colspan="3">
-              <select class="form-control" style="width: 300px">
+            <td style="width: 10%;" class="cl_custom_color">訂正状況</td>
+            <td style="width: 15%;">
+              <select class="form-control">
                 <option :value="0">全て</option>
               </select>
             </td>
-            <td class="cl_custom_color">参照状況</td>
-            <td colspan="3">
-              <select class="form-control" style="width: 300px" v-model="form.check_datetime">
+            <td style="width: 10%;"class="cl_custom_color">参照状況</td>
+            <td style="width: 15%;">
+              <select class="form-control" v-model="form.check_datetime">
                 <option :value="0">全て</option>
               </select>
             </td>
           </tr>
+          
         </table>
       </div>
     </div>

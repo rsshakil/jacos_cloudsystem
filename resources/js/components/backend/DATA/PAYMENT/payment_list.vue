@@ -14,26 +14,20 @@
           </td>
 
           <td class="cl_custom_color" style="width: 10%">受信日</td>
-          <td style="width: 10%">
-            <input
-              type="date"
-              class="form-control"
-              v-model="form.receive_date_from"
-            />
-          </td>
-          <td style="width: 9%; text-align: center">
-            <b-icon icon="forward" aria-hidden="true" font-scale="1.5"></b-icon>
-          </td>
           <td style="width: 10%" colspan="3">
-            <input
-              type="date"
-              class="form-control"
-              v-model="form.receive_date_to"
-            />
+          <div class="input-group mb-3">
+                    <input type="date" class="form-control" v-model="form.receive_date_from">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">~</span>
+                    </div>
+                    <input type="date" class="form-control" v-model="form.receive_date_to">
+                </div>
+            
           </td>
+          
         </tr>
         <tr>
-          <td class="cl_custom_color" style="width: 9%">発注者</td>
+          <td class="cl_custom_color" style="width: 10%">発注者</td>
           <td>
             <input
               type="text"
@@ -44,23 +38,15 @@
 
           <td class="cl_custom_color" style="width: 10%">受信日</td>
           <td style="width: 10%">
-            <input
-              type="date"
-              class="form-control"
-              v-model="form.mes_lis_pay_per_end_date_from"
-            />
-          </td>
-          <td style="width: 9%; text-align: center">
-            <b-icon icon="forward" aria-hidden="true" font-scale="1.5"></b-icon>
-          </td>
-          <td style="width: 10%">
-            <input
-              type="date"
-              class="form-control"
-              v-model="form.mes_lis_pay_per_end_date_from_to"
-            />
-          </td>
-          <td class="cl_custom_color" style="width: 9%">参照状況</td>
+          <div class="input-group mb-3">
+                    <input type="date" class="form-control" v-model="form.mes_lis_pay_per_end_date_from">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">~</span>
+                    </div>
+                    <input type="date" class="form-control" v-model="form.mes_lis_pay_per_end_date_from_to">
+                </div>
+           </td>
+          <td class="cl_custom_color" style="width: 10%">参照状況</td>
           <td>
               <input type="date" class="form-control" v-model="form.check_datetime" />
           </td>
