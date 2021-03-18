@@ -68,8 +68,17 @@ class OrderController extends Controller
             $cmn_company_id = $cmn_company_info['cmn_company_id'];
             $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
+        $sort_by = $request->sort_by;
+        $sort_type = $request->sort_type;
 
-
+        $table_name='dor.';
+        if ($sort_by=="data_order_id" || $sort_by=="receive_datetime") {
+            $table_name='dor.';
+        }else if($sort_by=="decision_datetime" || $sort_by=="print_datetime"){
+            $table_name='dsv.';
+        }else{
+            $table_name='dov.';
+        }
         $result = DB::table('data_orders AS dor')
         ->select(
             'dor.data_order_id',
@@ -107,7 +116,13 @@ class OrderController extends Controller
             $print_cnt = $request->print_cnt; // 印刷
             $byr_category_code = $request->category_code; // 印刷
             $mes_lis_ord_par_sel_code = $request->mes_lis_ord_par_sel_code; // 印刷
+
+
             $byr_category_code = $byr_category_code['category_code'];
+
+
+
+
         if ($receive_date_from) {
             $result= $result->where('dor.receive_datetime','>=',$receive_date_from);
         }
@@ -163,6 +178,7 @@ class OrderController extends Controller
             'dov.mes_lis_ord_log_del_delivery_service_code',
             'dov.mes_lis_ord_tra_ins_temperature_code'
         ])
+        ->orderBy($table_name.$sort_by,$sort_type)
         ->paginate($per_page);
         $buyer_settings = byr_buyer::select('setting_information')->where('byr_buyer_id', $byr_buyer_id)->first();
         $byr_buyer = $this->all_used_fun->get_company_list($cmn_company_id);

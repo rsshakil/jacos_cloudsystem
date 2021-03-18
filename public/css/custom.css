@@ -37,7 +37,8 @@
 .jcs_left_side_bar_menu li .active {
     color: #538ED3 !important;
 }
-.jcs_left_side_bar_menu li div{
+
+.jcs_left_side_bar_menu li div {
     background: #fff !important;
 }
 
@@ -111,122 +112,148 @@
     margin-bottom: 30px;
     margin-right: 15px;
     margin-top: 2px;
-
 }
-.buyer_button_list li .btn{
+
+.buyer_button_list li .btn {
     font-size: 20px;
 }
-.multiselect__option--highlight{
+
+.multiselect__option--highlight {
     background: #538ED3 !important;
 }
-.selected_byr_by_sly{
+
+.selected_byr_by_sly {
     color: #fff;
     font-size: 14px;
     padding-top: 13px;
 }
-.custom_navbr_button{
+
+.custom_navbr_button {
     text-align: center !important;
     padding: 0!important;
     padding-top: 0!important;
 }
-.custom_navbr_button:hover .btn{
-    color:#fff !important;
+
+.custom_navbr_button:hover .btn {
+    color: #fff !important;
 }
-.custm_brd_crumbs{
+
+.custm_brd_crumbs {
     list-style: none;
     padding-left: 0!important;
-    padding-top:0 !important;
+    padding-top: 0 !important;
 }
-.custm_brd_crumbs li a:hover{
+
+.custm_brd_crumbs li a:hover {
     text-decoration: none;
 }
-.custm_brd_crumbs li{
+
+.custm_brd_crumbs li {
     float: left;
 }
-.main-sidebar .nav-wrapper{
-    padding:15px;
+
+.main-sidebar .nav-wrapper {
+    padding: 15px;
 }
-.custom_sidebar{
-    box-shadow: 0 2px 0 rgba(90,97,105,.11), 0 4px 8px rgba(90,97,105,.12), 0 10px 10px rgba(90,97,105,.06), 0 7px 70px rgba(90,97,105,.1);
+
+.custom_sidebar {
+    box-shadow: 0 2px 0 rgba(90, 97, 105, .11), 0 4px 8px rgba(90, 97, 105, .12), 0 10px 10px rgba(90, 97, 105, .06), 0 7px 70px rgba(90, 97, 105, .1);
 }
-.card{
+
+.card {
     border-radius: 0!important;
 }
-.order_item_details_table thead tr th{
+
+.order_item_details_table thead tr th {
     background: #538ED3;
-    color:#fff;
+    color: #fff;
     text-align: center;
 }
-.cl_custom_color{
+
+.cl_custom_color {
     text-align: center;
     background: #D8E3F0;
     /* border: 1px solid #999!important; */
     vertical-align: middle !important;
 }
-.cl_custom_color_extra,.cl_custom_color_active{
+
+.cl_custom_color_extra,
+.cl_custom_color_active {
     text-align: center;
     background: #538ED3;
-    color:#fff;
+    color: #fff;
     /* border: 1px solid #999!important; */
     vertical-align: middle !important;
 }
-.modal-header{
+
+.modal-header {
     border-bottom: 4px solid #538ED3;
 }
-.custom-file-upload{
+
+.custom-file-upload {
     cursor: pointer;
     background: #538ED3;
     padding: 10px 15px;
     color: #fff;
     border-radius: 5px;
 }
-.orderDetailTable{
+
+.orderDetailTable {
     background: #fff;
 }
-.orderDetailTable tr td{
+
+.orderDetailTable tr td {
     border: 1px solid #999999;
 }
-.orderTopDetailTable tr td{
+
+.orderTopDetailTable tr td {
     border: 1px solid #999999;
 }
-.topHeaderInputFieldBtn{
+
+.topHeaderInputFieldBtn {
     width: 125px;
     float: left;
     margin-right: 10px;
 }
+
 .srchBtn {
     padding-left: 50px;
     padding-right: 50px;
     margin-top: 30px;
 }
-.uploadBtn{
+
+.uploadBtn {
     float: left;
     width: 250px;
     margin-right: 0;
     border: none;
 }
-.tableRowsInfo{
+
+.tableRowsInfo {
     float: left;
     margin-right: 15px;
     vertical-align: middle;
     padding-top: 5px;
 }
+
 .pagi,
-.selectPagi
-{
+.selectPagi {
     float: left;
 }
-.selectPage{
+
+.selectPage {
     padding: 0;
     margin: 0;
     line-height: 0;
     height: 25px !important;
 }
-.pagi .pagination-sm .page-link{
+
+.pagi .pagination-sm .page-link {
     padding-left: 3px;
     padding-right: 3px;
 }
-.customPlusIcon{
+
+.customPlusIcon {
     position: absolute;
     right: 0;
     top: 0;
@@ -234,26 +261,33 @@
     cursor: pointer;
 }
 
-.custominvoicejsnslect{
+.custominvoicejsnslect {
     margin-bottom: 15px;
 }
-.customselectFields{
+
+.customselectFields {
     position: relative;
 }
-.customMinusIcon{
+
+.customMinusIcon {
     position: absolute;
     right: 0;
     top: 0;
     font-size: 36px;
     cursor: pointer;
     background: red;
-    color:#fff;
+    color: #fff;
 }
-.customPrependColor .input-group-prepend .input-group-text{
+
+.customPrependColor .input-group-prepend .input-group-text {
     background: #538ED3 !important;
-    color:#fff !important;
+    color: #fff !important;
 }
 
 .searchCategoryForm {
     margin-bottom: 20px;
+}
+
+.pointer_class {
+    cursor: pointer
 }

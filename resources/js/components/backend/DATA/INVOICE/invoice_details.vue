@@ -52,8 +52,8 @@
            <td style="width: 10%;" class="cl_custom_color">部門</td>
           <td style="width: 15%;">
             <multiselect v-model="form.category_code" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="true" :select-label="''" :deselect-label="''" :preserve-search="true"  placeholder="部門"></multiselect>
-          </td> 
-           
+          </td>
+
             <td style="width: 10%;" class="cl_custom_color">計上先</td>
             <!-- @click="deliverySearchForm2" -->
             <td style="width: 15%;">
@@ -215,15 +215,14 @@
             <tr>
               <th>No</th>
               <th>請求</th>
-              <th>計上日</th>
-              <th>部門コード</th>
-              <th>納品先コード</th>
-              <th>伝票番号</th>
-              <th>請求内容</th>
-              <th>請求区分</th>
-               <th>請求金額</th>
-              <!-- <th>請求区分</th> -->
-              <th>送信日時</th>
+              <th class="pointer_class" @click="sorting('mes_lis_inv_lin_det_transfer_of_ownership_date')">計上日 <span class="float-right" :class="iconSet('mes_lis_inv_lin_det_transfer_of_ownership_date')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_inv_lin_det_goo_major_category')">部門コード <span class="float-right" :class="iconSet('mes_lis_inv_lin_det_goo_major_category')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_inv_lin_tra_code')">納品先コード <span class="float-right" :class="iconSet('mes_lis_inv_lin_tra_code')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_inv_lin_lin_trade_number_reference')">伝票番号 <span class="float-right" :class="iconSet('mes_lis_inv_lin_lin_trade_number_reference')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_inv_lin_det_pay_code')">請求内容 <span class="float-right" :class="iconSet('mes_lis_inv_lin_det_pay_code')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_inv_lin_det_balance_carried_code')">請求区分 <span class="float-right" :class="iconSet('mes_lis_inv_lin_det_balance_carried_code')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_inv_lin_det_amo_requested_amount')">請求金額 <span class="float-right" :class="iconSet('mes_lis_inv_lin_det_amo_requested_amount')"></span></th>
+              <th class="pointer_class" @click="sorting('send_datetime')">送信日時 <span class="float-right" :class="iconSet('send_datetime')"></span></th>
             </tr>
           </thead>
           <tbody>
@@ -368,6 +367,8 @@ export default {
         decision_datetime_status:'*',
         category_code:{category_code:'*',category_name:'全て'},
         send_datetime_status:'*',
+        sort_by:'data_invoice_pay_detail_id ',
+        sort_type:"ASC",
       }),
     };
   },
@@ -389,6 +390,12 @@ export default {
 
         });
     },
+    sorting(sorted_field){
+          this.form.sort_by=sorted_field;
+          this.form.sort_type=this.form.sort_type=="ASC"?"DESC":"ASC";
+          this.invoice_details();
+
+      },
     checkAll() {
       this.isCheckAll = !this.isCheckAll;
       this.selected = [];

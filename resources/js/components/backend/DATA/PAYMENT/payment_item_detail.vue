@@ -78,7 +78,7 @@
             <td class="cl_custom_color_active">請求区分</td>
             <td><select class="form-control" v-model="form.mes_lis_pay_lin_det_balance_carried_code">
             <option value="*">全て</option>
-            
+
             <option v-for="(opt, i) in mes_lis_inv_lin_det_balance_carried_code_list"
                   :key="i"
                   :value="Object.keys(opt)[0]"
@@ -149,17 +149,17 @@
         >
           <thead>
             <tr>
-              <th style="cursor: pointer">No</th>
-              <th style="cursor: pointer">計上日</th>
-              <th style="cursor: pointer">部門コード</th>
-              <th style="cursor: pointer">納品先コード</th>
-              <th style="cursor: pointer">伝票番号</th>
-              <th style="cursor: pointer">支払内容</th>
-              <th style="cursor: pointer">伝票区分</th>
-              <th style="cursor: pointer">請求区分</th>
-              <th style="cursor: pointer">請求金額</th>
-              <th style="cursor: pointer">支払金額</th>
-              <th style="cursor: pointer">照合結果</th>
+              <th>No</th>
+              <th class="pointer_class" @click="sorting('mes_lis_pay_lin_det_transfer_of_ownership_date')">計上日 <span class="float-right" :class="iconSet('mes_lis_pay_lin_det_transfer_of_ownership_date')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_pay_lin_det_goo_major_category')">部門コード <span class="float-right" :class="iconSet('mes_lis_pay_lin_det_goo_major_category')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_pay_lin_tra_code')">納品先コード <span class="float-right" :class="iconSet('mes_lis_pay_lin_tra_code')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_pay_lin_lin_trade_number_eference')">伝票番号 <span class="float-right" :class="iconSet('mes_lis_pay_lin_lin_trade_number_eference')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_pay_lin_det_pay_code')">支払内容 <span class="float-right" :class="iconSet('mes_lis_pay_lin_det_pay_code')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_pay_lin_det_trade_type_code')">伝票区分 <span class="float-right" :class="iconSet('mes_lis_pay_lin_det_trade_type_code')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_pay_lin_det_balance_carried_code')">請求区分 <span class="float-right" :class="iconSet('mes_lis_pay_lin_det_balance_carried_code')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_pay_lin_det_amo_requested_amount')">請求金額 <span class="float-right" :class="iconSet('mes_lis_pay_lin_det_amo_requested_amount')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_pay_lin_det_amo_payable_amount')">支払金額 <span class="float-right" :class="iconSet('mes_lis_pay_lin_det_amo_payable_amount')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_pay_lin_det_verification_result_code')">照合結果 <span class="float-right" :class="iconSet('mes_lis_pay_lin_det_verification_result_code')"></span></th>
             </tr>
           </thead>
           <tbody>
@@ -234,13 +234,13 @@ paymentdetailTopTable.current_page *
             </tr>
           </thead>
           <tbody>
-          <tr v-for="(value,index) in order_customer_code_lists" @click="onRowClicked(value)">
+          <tr v-for="(value,index) in order_customer_code_lists" @click="onRowClicked(value)" :key="index">
           <td>{{index+1}}</td>
           <td>{{value.mes_lis_ord_par_sel_code}}</td>
           <td>{{value.mes_lis_ord_par_sel_name}}</td>
           <td>{{value.mes_lis_ord_par_pay_code}}</td>
           <td>{{value.mes_lis_ord_par_pay_name}}</td>
-          
+
           <td></td>
           </tr>
           </tbody>
@@ -286,6 +286,8 @@ export default {
         check_datetime: null,
         submit_type: "page_load",
         payment_id:'',
+        sort_by:'data_payment_pay_detail_id ',
+        sort_type:"ASC",
       }),
     };
   },
@@ -299,6 +301,12 @@ export default {
         this.form.mes_lis_ord_par_sel_code = item.mes_lis_ord_par_sel_code;
        this.showAllCustomerCodeListModal = false;
     },
+    sorting(sorted_field){
+          this.form.sort_by=sorted_field;
+          this.form.sort_type=this.form.sort_type=="ASC"?"DESC":"ASC";
+          this.getAllPaymentDetails();
+
+      },
     //get Table data
     showAllCustomerCode(){
      //let loaders = Vue.$loading.show();
@@ -320,7 +328,7 @@ export default {
           this.paymentdetailTopTable = data.paymentdetailTopTable;
           this.byr_buyer_category_lists = data.byr_buyer_category_list;
           this.buyer_settings = JSON.parse(data.buyer_settings);
-          
+
           this.mes_lis_pay_lin_det_verification_result_code_list = this.buyer_settings.payments.mes_lis_pay_lin_det_verification_result_code;
           this.mes_lis_inv_lin_det_pay_code_list = this.buyer_settings.invoices.mes_lis_inv_lin_det_pay_code;
           this.mes_lis_inv_lin_det_balance_carried_code_list = this.buyer_settings.invoices.mes_lis_inv_lin_det_balance_carried_code;

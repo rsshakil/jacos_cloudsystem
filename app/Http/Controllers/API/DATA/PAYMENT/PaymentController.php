@@ -23,12 +23,15 @@ class PaymentController extends Controller
 
 
     public function getPaymentList(Request $request){
+        // return $request->all();
         $adm_user_id = $request->adm_user_id;
         $byr_buyer_id = $request->byr_buyer_id;
         $per_page = $request->per_page == null ? 10 : $request->per_page;
         $submit_type = $request->submit_type;
         $search_where = array();
         $having_var = '';
+        $sort_by = $request->sort_by;
+        $sort_type = $request->sort_type;
 
         if ($submit_type == "search") {
             // 条件指定検索
@@ -59,6 +62,15 @@ class PaymentController extends Controller
         }
         $search_where[]=['data_payments.cmn_connect_id','=',$cmn_connect_id];
         // 検索
+        $table_name='dpp.';
+        if ($sort_by=="receive_datetime" || $sort_by=="data_payment_id") {
+            $table_name='data_payments.';
+        }else if($sort_by=="mes_lis_pay_pay_code" || $sort_by=="mes_lis_buy_name" || $sort_by=="mes_lis_pay_per_end_date" || $sort_by=="check_datetime"){
+            $table_name='dpp.';
+        }else if($sort_by=="mes_lis_pay_lin_det_pay_out_date" || $sort_by=="mes_lis_pay_lin_det_amo_payable_amount"){
+            $table_name='dppd.';
+        }
+
         $result=data_payment::select('data_payments.data_payment_id','data_payments.receive_datetime',
         'dpp.mes_lis_pay_pay_code',
         'dpp.mes_lis_buy_name',
@@ -75,6 +87,8 @@ class PaymentController extends Controller
         ->groupBy('dpp.mes_lis_pay_pay_code')
         ->groupBy('dpp.mes_lis_pay_per_end_date')
         ->groupBy('dppd.mes_lis_pay_lin_det_pay_out_date')
+        ->orderBy($table_name.$sort_by,$sort_type)
+
         ->paginate($per_page);
 
         // $result = new Paginator($result, 2);
@@ -164,16 +178,17 @@ DB::raw("SUM(mes_lis_pay_lin_det_amo_payable_amount + mes_lis_pay_lin_det_amo_ta
     }
 
     public function get_payment_item_detail_list(Request $request){
+        // return $request->all();
         $payment_id = $request->payment_id;
         $byr_buyer_id = $request->byr_buyer_id;
         $per_page = $request->select_field_per_page_num;
         $from_date= $request->from_date;
         $to_date= $request->to_date;
         $category_code = $request->category_code;
-        
+
             $category_code =$category_code['category_code'];
-        
-        
+
+
         $mes_lis_pay_lin_tra_code = $request->mes_lis_pay_lin_tra_code;
 
         $mes_lis_pay_lin_lin_trade_number_eference = $request->mes_lis_pay_lin_lin_trade_number_eference;
@@ -181,6 +196,8 @@ DB::raw("SUM(mes_lis_pay_lin_det_amo_payable_amount + mes_lis_pay_lin_det_amo_ta
         $mes_lis_pay_lin_det_verification_result_code = $request->mes_lis_pay_lin_det_verification_result_code;
         $mes_lis_pay_lin_det_trade_type_code = $request->mes_lis_pay_lin_det_trade_type_code;
         $mes_lis_pay_lin_det_balance_carried_code = $request->mes_lis_pay_lin_det_balance_carried_code;
+        $sort_by = $request->sort_by;
+        $sort_type = $request->sort_type;
         $result=data_payment::select('data_payments.data_payment_id','data_payments.receive_datetime',
         'dpp.mes_lis_pay_pay_code',
         'dpp.mes_lis_pay_pay_name',
@@ -219,7 +236,7 @@ DB::raw("SUM(mes_lis_pay_lin_det_amo_payable_amount + mes_lis_pay_lin_det_amo_ta
         if($mes_lis_pay_lin_lin_trade_number_eference!='' && $mes_lis_pay_lin_lin_trade_number_eference!=null){
             $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_lin_trade_number_eference',$mes_lis_pay_lin_lin_trade_number_eference);
         }
-        
+
         if($mes_lis_inv_lin_det_pay_code!='*'){
             $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_det_pay_code',$mes_lis_inv_lin_det_pay_code);
         }
@@ -239,7 +256,8 @@ DB::raw("SUM(mes_lis_pay_lin_det_amo_payable_amount + mes_lis_pay_lin_det_amo_ta
         if($category_code!='*'){
             $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_det_goo_major_category',$category_code);
         }
-        
+        $result1 = $result1->orderBy('data_payment_pay_details.'.$sort_by,$sort_type);
+
         $paymentdetailTopTable =  $result1->paginate($per_page);
         $byr_buyer_category_list = $this->all_used_fun->get_allCategoryByByrId($byr_buyer_id);
         $buyer_settings = byr_buyer::select('setting_information')->where('byr_buyer_id', $byr_buyer_id)->first();

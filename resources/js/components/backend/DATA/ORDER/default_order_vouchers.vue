@@ -1185,6 +1185,3 @@ export default {
   },
 };
 </script>
-<style>
-.pointer_class{cursor: pointer}
-</style>

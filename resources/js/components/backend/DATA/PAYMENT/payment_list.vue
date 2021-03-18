@@ -75,7 +75,7 @@
 
     <div class="col-12 text-center page_c_title_bar text-sm-left mb-0">
       <h4 class="page_custom_title">検索結果：一覧</h4>
-      
+
     </div>
     <div class="col-12 text-center">
       <button class="btn btn-outline-primary" type="button">
@@ -126,14 +126,14 @@
         >
           <thead>
             <tr>
-              <th style="cursor: pointer">No</th>
-              <th style="cursor: pointer">受注日時</th>
-              <th style="cursor: pointer">請求取引先コード</th>
-              <th style="cursor: pointer">発注者</th>
-              <th style="cursor: pointer">締日</th>
-              <th style="cursor: pointer">支払日</th>
-              <th style="cursor: pointer">支払金額</th>
-              <th style="cursor: pointer">参照状況</th>
+              <th>No</th>
+              <th class="pointer_class" @click="sorting('receive_datetime')">受注日時 <span class="float-right" :class="iconSet('receive_datetime')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_pay_pay_code')">請求取引先コード <span class="float-right" :class="iconSet('mes_lis_pay_pay_code')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_buy_name')">発注者 <span class="float-right" :class="iconSet('mes_lis_buy_name')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_pay_per_end_date')">締日 <span class="float-right" :class="iconSet('mes_lis_pay_per_end_date')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_pay_lin_det_pay_out_date')">支払日 <span class="float-right" :class="iconSet('mes_lis_pay_lin_det_pay_out_date')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_pay_lin_det_amo_payable_amount')">支払金額 <span class="float-right" :class="iconSet('mes_lis_pay_lin_det_amo_payable_amount')"></span></th>
+              <th class="pointer_class" @click="sorting('check_datetime')">参照状況 <span class="float-right" :class="iconSet('check_datetime')"></span></th>
             </tr>
           </thead>
           <tbody>
@@ -187,6 +187,9 @@ export default {
         mes_lis_pay_per_end_date_to: null,
         check_datetime: null,
         submit_type: "page_load",
+        sort_by:'data_payment_id ',
+        sort_type:"ASC",
+
       }),
     };
   },
@@ -205,6 +208,12 @@ export default {
           this.byr_buyer_lists = data.byr_buyer_list;
         });
     },
+    sorting(sorted_field){
+          this.form.sort_by=sorted_field;
+          this.form.sort_type=this.form.sort_type=="ASC"?"DESC":"ASC";
+          this.getAllPayments();
+
+      },
     searchPaymentItem(){
         this.form.submit_type="search"
         this.getAllPayments();

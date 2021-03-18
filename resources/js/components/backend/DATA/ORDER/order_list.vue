@@ -19,7 +19,7 @@
                     <input type="date" class="form-control" v-model="form.receive_date_to">
                 </div>
           </td>
-         
+
           <td class="cl_custom_color" style="width: 10%">
             {{ myLang.customer_code }}
           </td>
@@ -33,7 +33,7 @@
               {{ myLang.refer }}
             </button>
           </td>
-         
+
           <td style="width: 15%;" class="cl_custom_color">便</td>
           <td style="width: 15%; text-align: center">
             <select class="form-control" v-model="form.delivery_service_code">
@@ -47,11 +47,11 @@
                 {{ Object.values(dsc)[0] }}
               </option>
             </select>
-            
+
           </td>
         </tr>
         <tr>
-          <td style="width: 10%;"class="cl_custom_color">{{ myLang.delivery_date }}</td>
+          <td style="width: 10%;" class="cl_custom_color">{{ myLang.delivery_date }}</td>
           <td style="width: 15%;">
 
 <div class="input-group mb-3">
@@ -62,9 +62,9 @@
                     <input type="date" class="form-control" v-model="form.delivery_date_to">
                 </div>
           </td>
-          
+
           <!-- <td>{{ myLang.shipment }}</td> -->
-          <td style="width: 10%;"class="cl_custom_color">部門</td>
+          <td style="width: 10%;" class="cl_custom_color">部門</td>
           <td style="width: 15%;">
                                             <multiselect v-model="form.category_code" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="true" :select-label="''" :deselect-label="''" :preserve-search="true"  placeholder="部門"></multiselect>
             <!--<select class="form-control" v-model="form.byr_category_code">
@@ -78,17 +78,14 @@
             <option value="*">全て</option>
               <option
                 v-for="(temp, i) in json_temperature_code"
-                :key="i"
-                v-if="Object.keys(temp)[0]!=''"
-                :value="Object.keys(temp)[0]"
-              >
+                :key="i" v-if="Object.keys(temp)[0]!='' " :value="Object.keys(temp)[0]">
                 {{ Object.values(temp)[0] }}
               </option>
             </select>
           </td>
         </tr>
         <tr>
-       <td style="width: 10%;"class="cl_custom_color">参照状況</td>
+       <td style="width: 10%;" class="cl_custom_color">参照状況</td>
           <td style="width: 15%;">
             <select class="form-control" v-model="form.check_datetime" style="width: 300px">
               <!--<option :value="0">{{ myLang.voucher_type }}</option>-->
@@ -125,7 +122,7 @@
             </select>
           </td>
         </tr>
-       
+
       </table>
     </div>
     <!-- </div> -->
@@ -200,16 +197,16 @@
                                 </tr> -->
             <tr>
               <th style="cursor: pointer">No</th>
-              <th>{{ myLang.receive_date }}</th>
-              <th>{{ myLang.customer_code }}</th>
-              <th>{{ myLang.delivery_date }}</th>
-              <th>部門 コード</th>
-              <th>便</th>
-              <th>温度区分</th>
-              <th>伝票 枚数</th>
-              <th>未確定 伝票枚数</th>
-              <th>未印刷 伝票枚数</th>
-              <th>参照状況</th>
+              <th class="pointer_class" @click="sorting('receive_datetime')">{{ myLang.receive_date }} <span class="float-right" :class="iconSet('receive_datetime')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_ord_par_sel_code')">{{ myLang.customer_code }} <span class="float-right" :class="iconSet('mes_lis_ord_par_sel_code')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_ord_tra_dat_delivery_date')">{{ myLang.delivery_date }} <span class="float-right" :class="iconSet('mes_lis_ord_tra_dat_delivery_date')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_ord_tra_goo_major_category')">部門 コード <span class="float-right" :class="iconSet('mes_lis_ord_tra_goo_major_category')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_ord_log_del_delivery_service_code')">便 <span class="float-right" :class="iconSet('mes_lis_ord_log_del_delivery_service_code')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_ord_tra_ins_temperature_code')">温度区分 <span class="float-right" :class="iconSet('mes_lis_ord_tra_ins_temperature_code')"></span></th>
+              <th class="pointer_class" @click="sorting('data_order_voucher_id')">伝票 枚数 <span class="float-right" :class="iconSet('data_order_voucher_id')"></span></th>
+              <th class="pointer_class" @click="sorting('decision_datetime')">未確定 伝票枚数 <span class="float-right" :class="iconSet('decision_datetime')"></span></th>
+              <th class="pointer_class" @click="sorting('print_datetime')">未印刷 伝票枚数 <span class="float-right" :class="iconSet('print_datetime')"></span></th>
+              <th class="pointer_class" @click="sorting('check_datetime')">参照状況 <span class="float-right" :class="iconSet('check_datetime')"></span></th>
               <!-- <th style="cursor: pointer">{{ myLang.order_date_time }}</th>
               <th style="cursor: pointer">{{ myLang.buyer_name }}</th>
               <th style="cursor: pointer">{{ myLang.delivery_date }}</th>
@@ -257,7 +254,7 @@
               <td>{{ order_list.mes_lis_ord_tra_dat_delivery_date }}</td>
               <td>{{ order_list.mes_lis_ord_tra_goo_major_category }}</td>
               <td>
-                
+
                 {{
                 getbyrjsonValueBykeyName(
                   "mes_lis_ord_log_del_delivery_service_code",
@@ -312,13 +309,13 @@
             </tr>
           </thead>
           <tbody>
-          <tr v-for="(value,index) in order_customer_code_lists" @click="onRowClicked(value)">
+          <tr v-for="(value,index) in order_customer_code_lists" @click="onRowClicked(value)" :key="index">
           <td>{{index+1}}</td>
           <td>{{value.mes_lis_ord_par_sel_code}}</td>
           <td>{{value.mes_lis_ord_par_sel_name}}</td>
           <td>{{value.mes_lis_ord_par_pay_code}}</td>
           <td>{{value.mes_lis_ord_par_pay_name}}</td>
-          
+
           <td></td>
           </tr>
           </tbody>
@@ -380,6 +377,8 @@ export default {
         confirmation_status_data: "*",
         decisionDateTime:'*',
         submit_type: "page_load",
+        sort_by:'data_order_id ',
+        sort_type:"ASC",
       }),
     };
   },
@@ -403,6 +402,12 @@ export default {
          loaders.hide();
         });
     },
+    sorting(sorted_field){
+          this.form.sort_by=sorted_field;
+          this.form.sort_type=this.form.sort_type=="ASC"?"DESC":"ASC";
+          this.get_all_order();
+
+      },
     get_all_order(page=1) {
        this.loader = Vue.$loading.show();
       this.form.page=page;
@@ -423,9 +428,9 @@ export default {
     },
     searchOrder() {
       this.form.submit_type = "search";
-     
+
       this.get_all_order();
-      
+
     },
     orderDownload() {
       let formData = new FormData();
@@ -499,7 +504,7 @@ export default {
     // this.byr_session_check()
     this.form.byr_buyer_id = this.$session.get("byr_buyer_id");
     // this.today= new Date().toISOString().slice(0, 10);
-   
+
     this.get_all_order();
     Fire.$on("LoadByrorder", () => {
       this.get_all_order();

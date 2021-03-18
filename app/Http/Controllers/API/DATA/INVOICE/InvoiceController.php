@@ -60,10 +60,19 @@ class InvoiceController extends Controller
         $mes_lis_inv_per_begin_date=$request->mes_lis_inv_per_begin_date;
         $mes_lis_inv_per_end_date=$request->mes_lis_inv_per_end_date;
         $send_datetime_status=$request->send_datetime_status;
+        $sort_by = $request->sort_by;
+        $sort_type = $request->sort_type;
 
         $mes_lis_inv_per_begin_date = $mes_lis_inv_per_begin_date!=null? date('Y-m-d 00:00:00',strtotime($mes_lis_inv_per_begin_date)):$mes_lis_inv_per_begin_date; // 受信日時開始
         $mes_lis_inv_per_end_date = $mes_lis_inv_per_end_date!=null? date('Y-m-d 23:59:59',strtotime($mes_lis_inv_per_end_date)):$mes_lis_inv_per_end_date; // 受信日時終了
-
+        $table_name='data_invoices.';
+        if ($sort_by=="data_invoice_id") {
+            $table_name='data_invoices.';
+        }else if($sort_by=="mes_lis_inv_lin_det_amo_requested_amount"){
+            $table_name='dipd.';
+        }else{
+            $table_name='dip.';
+        }
         $authUser = User::find($adm_user_id);
         $cmn_company_id = 0;
         if (!$authUser->hasRole(config('const.adm_role_name'))) {
@@ -95,6 +104,7 @@ class InvoiceController extends Controller
         }
         // will confirm
         $result=$result->groupBy('dip.mes_lis_inv_per_end_date')
+        ->orderBy($table_name.$sort_by,$sort_type)
         ->paginate($per_page);
         $byr_buyer = $this->all_used_fun->get_company_list($cmn_company_id);
 
@@ -157,7 +167,7 @@ class InvoiceController extends Controller
         $data_invoice_id=$request->data_invoice_id;
         $per_page = $request->select_field_per_page_num == null ? 10 : $request->select_field_per_page_num;
 
-       
+
         $number_reference=$request->mes_lis_inv_lin_lin_trade_number_reference;
         $decision_datetime_status=$request->decision_datetime_status;
         $send_datetime_status=$request->send_datetime_status;
@@ -167,6 +177,8 @@ class InvoiceController extends Controller
         $category_code =$category_code['category_code'];
         $from_date = $request->from_date;
         $to_date = $request->to_date;
+        $sort_by = $request->sort_by;
+        $sort_type = $request->sort_type;
 
         $result=data_invoice::select('data_invoices.data_invoice_id','dipd.data_invoice_pay_detail_id','dip.mes_lis_inv_per_end_date',
         'dipd.mes_lis_inv_lin_det_transfer_of_ownership_date','dipd.mes_lis_inv_lin_tra_code',
@@ -207,6 +219,7 @@ class InvoiceController extends Controller
         if($mes_lis_inv_lin_tra_code!=''){
             $result=$result->where('dipd.mes_lis_inv_lin_tra_code','=',$mes_lis_inv_lin_tra_code);
         }
+        $result = $result->orderBy('dipd.'.$sort_by,$sort_type);
         $result=$result->paginate($per_page);
         $byr_buyer_category_list = $this->all_used_fun->get_allCategoryByByrId($byr_buyer_id);
         return response()->json(['invoice_details_list' => $result,'byr_buyer_category_list'=>$byr_buyer_category_list]);

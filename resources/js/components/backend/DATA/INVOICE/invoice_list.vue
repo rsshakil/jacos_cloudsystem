@@ -100,11 +100,11 @@
 
             <tr>
               <th>No</th>
-              <th>締日</th>
-              <th>請求取引先コード</th>
-              <th>発注者</th>
-              <th>請求状況</th>
-              <th>請求金額</th>
+              <th class="pointer_class" @click="sorting('mes_lis_inv_per_end_date')">締日 <span class="float-right" :class="iconSet('mes_lis_inv_per_end_date')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_inv_pay_code')">請求取引先コード <span class="float-right" :class="iconSet('mes_lis_inv_pay_code')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_buy_name')">発注者 <span class="float-right" :class="iconSet('mes_lis_buy_name')"></span></th>
+              <th class="pointer_class" @click="sorting('status')">請求状況 <span class="float-right" :class="iconSet('status')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_inv_lin_det_amo_requested_amount')">請求金額 <span class="float-right" :class="iconSet('mes_lis_inv_lin_det_amo_requested_amount')"></span></th>
             </tr>
           </thead>
           <tbody>
@@ -113,7 +113,7 @@
               v-for="(value, index) in invoice_lists.data"
               :key="index"
             >
-              <td>{{ 
+              <td>{{
                 invoice_lists.current_page *
                       form.select_field_per_page_num -
                     form.select_field_per_page_num +
@@ -217,6 +217,8 @@ export default {
         mes_lis_inv_per_end_date:'',
         send_datetime_status: "*",
         submit_type: "page_load",
+        sort_by:'data_invoice_id ',
+        sort_type:"ASC",
       }),
     };
   },
@@ -239,6 +241,12 @@ export default {
           this.byr_buyer_lists = data.byr_buyer_list;
         });
     },
+    sorting(sorted_field){
+          this.form.sort_by=sorted_field;
+          this.form.sort_type=this.form.sort_type=="ASC"?"DESC":"ASC";
+          this.get_all_invoice_list();
+
+      },
     insertInvoice() {
       var _this = this;
       axios
