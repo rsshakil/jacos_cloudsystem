@@ -326,7 +326,13 @@ export default {
       edit_order_modal: false,
       selected: [],
       isCheckAll: false,
-      form: new Form({}),
+      form: new Form({
+        sort_by:'data_receive_voucher_id ',
+        sort_type:"ASC",
+        data_receive_voucher_id:null,
+        byr_buyer_id:null,
+        adm_user_id:Globals.user_info_id
+      }),
       param_data:[],
       queryData:'',
       byr_buyer_id: null,
@@ -375,12 +381,7 @@ beforeCreate: function() {
 
     //get Table data
     get_all_receive_item_detail() {
-      var post_data = {
-        data_receive_voucher_id:this.data_receive_voucher_id,
-        byr_buyer_id : this.byr_buyer_id,
-        adm_user_id:Globals.user_info_id,
-      };
-      axios.post(this.BASE_URL + "api/data_receive_item_detail_list",post_data)
+      axios.post(this.BASE_URL + "api/data_receive_item_detail_list",this.form)
         .then(({data}) => {
           this.init(data.status);
           this.order_item_detail_lists = data.received_item_detail_list;
@@ -393,16 +394,24 @@ beforeCreate: function() {
           this.loader.hide();
         });
     },
+    sorting(sorted_field){
+          this.form.sort_by=sorted_field;
+          this.form.sort_type=this.form.sort_type=="ASC"?"DESC":"ASC";
+          this.get_all_receive_item_detail();
+
+      },
 
 
   },
 
   created() {
     this.byr_buyer_id = this.$session.get('byr_buyer_id');
+    this.form.byr_buyer_id = this.$session.get('byr_buyer_id');
     Fire.$emit('byr_has_selected',this.$session.get('byr_buyer_id'));
     Fire.$emit('permission_check_for_buyer',this.$session.get('byr_buyer_id'));
     this.loader = Vue.$loading.show();
     this.data_receive_voucher_id = this.$route.params.data_receive_voucher_id;
+    this.form.data_receive_voucher_id = this.$route.params.data_receive_voucher_id;
     this.get_all_receive_item_detail();
     Fire.$on("LoadByrorderItemDetail", () => {
 

@@ -140,7 +140,7 @@
     </div>
     <div class="col-12 text-center page_c_title_bar text-sm-left mb-0">
       <h4 class="page_custom_title">検索結果：一覧</h4>
-     
+
     </div>
     <div class="col-12 text-center">
          <button class="btn btn-outline-primary" type="button">
@@ -189,17 +189,17 @@
         <table class="table table-striped table-bordered order_item_details_table data_table">
           <thead>
             <tr>
-              <th style="cursor: pointer">No</th>
-              <th style="cursor: pointer">受注日時</th>
-              <th style="cursor: pointer">取引先</th>
-              <th style="cursor: pointer">計上日</th>
-              <th style="cursor: pointer">部門 コード</th>
-              <th style="cursor: pointer">便</th>
-              <th style="cursor: pointer">配送温度 区分</th>
-              <th style="cursor: pointer">データ種別</th>
-              <th style="cursor: pointer">伝票枚数</th>
-              <th style="cursor: pointer">訂正あり 伝票枚数</th>
-              <th style="cursor: pointer">参照状況</th>
+              <th class="pointer_class">No</th>
+              <th class="pointer_class" @click="sorting('receive_datetime')">受注日時 <span class="float-right" :class="iconSet('receive_datetime')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_acc_par_sel_code')">取引先 <span class="float-right" :class="iconSet('mes_lis_acc_par_sel_code')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_acc_tra_dat_transfer_of_ownership_date')">計上日 <span class="float-right" :class="iconSet('mes_lis_acc_tra_dat_transfer_of_ownership_date')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_acc_tra_goo_major_category')">部門 コード <span class="float-right" :class="iconSet('mes_lis_acc_tra_goo_major_category')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_acc_log_del_delivery_service_code')">便 <span class="float-right" :class="iconSet('mes_lis_acc_log_del_delivery_service_code')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_acc_tra_ins_temperature_code')">配送温度 区分 <span class="float-right" :class="iconSet('mes_lis_acc_tra_ins_temperature_code')"></span></th>
+              <th class="pointer_class" >データ種別</th>
+              <th class="pointer_class" >伝票枚数</th>
+              <th class="pointer_class" >訂正あり 伝票枚数</th>
+              <th class="pointer_class" @click="sorting('check_datetime')">参照状況 <span class="float-right" :class="iconSet('check_datetime')"></span></th>
             </tr>
           </thead>
           <tbody>
@@ -284,8 +284,8 @@ export default {
         temperature_code: "01",
         check_datetime: null,
         category_code:{category_code:'*',category_name:'全て'},
-        // print_cnt: "*",
-        // decission_cnt: "*",
+        sort_by:'data_receive_id ',
+        sort_type:"ASC",
         submit_type: "page_load",
       }),
     };
@@ -310,6 +310,12 @@ export default {
 
             });
     },
+    sorting(sorted_field){
+          this.form.sort_by=sorted_field;
+          this.form.sort_type=this.form.sort_type=="ASC"?"DESC":"ASC";
+          this.getAllReceivedItem();
+
+      },
     searchReceivedItem(){
         this.form.submit_type="search"
         this.getAllReceivedItem();

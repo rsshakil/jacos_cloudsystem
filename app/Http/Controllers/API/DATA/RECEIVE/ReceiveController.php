@@ -32,9 +32,17 @@ class ReceiveController extends Controller
         $per_page = $request->per_page == null ? 10 : $request->per_page;
         $submit_type = $request->submit_type;
         $byr_category_code = $request->category_code; // 印刷
+        $sort_by = $request->sort_by;
+        $sort_type = $request->sort_type;
+
         $byr_category_code = $byr_category_code['category_code'];
         $search_where = '';
         $having_var = '';
+
+        $table_name='drv.';
+        if ($sort_by=="data_receive_id" || $sort_by=="receive_datetime") {
+            $table_name='data_receives.';
+        }
 
         if ($submit_type == "search") {
             // 条件指定検索
@@ -108,7 +116,6 @@ class ReceiveController extends Controller
             $cmn_company_id = $cmn_company_info['cmn_company_id'];
             $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
-
         // 検索
         $result=data_receive::select('data_receives.data_receive_id','data_receives.receive_datetime','drv.mes_lis_acc_par_sel_code','drv.mes_lis_acc_par_sel_name',
         'drv.mes_lis_acc_tra_dat_transfer_of_ownership_date','drv.mes_lis_acc_tra_dat_delivery_date','drv.mes_lis_acc_tra_goo_major_category',
@@ -123,6 +130,7 @@ class ReceiveController extends Controller
         // ->groupBy('drv.mes_lis_acc_tra_goo_major_category')
         // ->groupBy('drv.mes_lis_acc_log_del_delivery_service_code')
         // ->groupBy('drv.mes_lis_acc_tra_ins_temperature_code')
+        ->orderBy($table_name.$sort_by,$sort_type)
         ->paginate($per_page);
 
         // $result = new Paginator($result, 2);
@@ -141,8 +149,12 @@ class ReceiveController extends Controller
         $data_receive_id = $request->data_receive_id;
         $per_page = $request->select_field_per_page_num == null ? 10 : $request->select_field_per_page_num;
         $submit_type = $request->submit_type;
+        $sort_by = $request->sort_by;
+        $sort_type = $request->sort_type;
         $search_where = '';
         $having_var = '';
+
+        $table_name='data_receive_vouchers.';
 
         if ($submit_type == "search") {
             // 条件指定検索
@@ -208,12 +220,9 @@ class ReceiveController extends Controller
         $cmn_company_id = '';
         $cmn_connect_id = '';
         if (!$authUser->hasRole(config('const.adm_role_name'))) {
-            $cmn_company_info = cmn_companies_user::select('slr_sellers.cmn_company_id', 'slr_sellers.slr_seller_id', 'cmn_connects.cmn_connect_id')
-                ->join('slr_sellers', 'slr_sellers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
-                ->join('cmn_connects', 'cmn_connects.slr_seller_id', '=', 'slr_sellers.slr_seller_id')
-                ->where('cmn_companies_users.adm_user_id', $adm_user_id)->first();
-            $cmn_company_id = $cmn_company_info->cmn_company_id;
-            $cmn_connect_id = $cmn_company_info->cmn_connect_id;
+            $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
+            $cmn_company_id = $cmn_company_info['cmn_company_id'];
+            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
 
 
@@ -243,6 +252,7 @@ class ReceiveController extends Controller
         // ->groupBy('dr.sta_sen_identifier')
         // ->groupBy('data_receive_vouchers.mes_lis_acc_par_sel_code')
         // ->groupBy('data_receive_vouchers.mes_lis_acc_par_sel_name')
+        ->orderBy($table_name.$sort_by,$sort_type)
         ->paginate($per_page);
 
         // $result = new Paginator($result, 2);
@@ -264,12 +274,9 @@ class ReceiveController extends Controller
         $cmn_company_id = '';
         $cmn_connect_id = '';
         if (!$authUser->hasRole(config('const.adm_role_name'))) {
-            $cmn_company_info = cmn_companies_user::select('slr_sellers.cmn_company_id', 'slr_sellers.slr_seller_id', 'cmn_connects.cmn_connect_id')
-                ->join('slr_sellers', 'slr_sellers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
-                ->join('cmn_connects', 'cmn_connects.slr_seller_id', '=', 'slr_sellers.slr_seller_id')
-                ->where('cmn_companies_users.adm_user_id', $adm_user_id)->first();
-            $cmn_company_id = $cmn_company_info->cmn_company_id;
-            $cmn_connect_id = $cmn_company_info->cmn_connect_id;
+            $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
+            $cmn_company_id = $cmn_company_info['cmn_company_id'];
+            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
 
 

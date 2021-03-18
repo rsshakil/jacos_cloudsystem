@@ -138,7 +138,7 @@
                 style="width: 220px"
               >
                 <option value="*">全て</option>
-                <option :value="item" v-for="item in receiveOptionList">
+                <option :value="item" v-for="(item,i) in receiveOptionList" :key="i">
                   {{ item }}
                 </option>
               </select>
@@ -271,13 +271,14 @@
 
               <tr>
                 <th>No</th>
-                <th>直接納品先</th>
-                <th>最終納品先</th>
-                <th>伝票番号</th>
-                <th>定／特</th>
-                <th>伝票区分</th>
-                <th>原価金額合計</th>
-                <th>受領内容</th>
+                <th class="pointer_class" @click="sorting('mes_lis_acc_par_shi_code')">直接納品先 <span class="float-right" :class="iconSet('mes_lis_acc_par_shi_code')"></span></th>
+                <th class="pointer_class" @click="sorting('mes_lis_acc_par_rec_code')">最終納品先 <span class="float-right" :class="iconSet('mes_lis_acc_par_rec_code')"></span></th>
+                <th class="pointer_class" @click="sorting('mes_lis_acc_tra_trade_number')">伝票番号 <span class="float-right" :class="iconSet('mes_lis_acc_tra_trade_number')"></span></th>
+                <th class="pointer_class" @click="sorting('mes_lis_acc_tra_ins_goods_classification_code')">定／特 <span class="float-right" :class="iconSet('mes_lis_acc_tra_ins_goods_classification_code')"></span></th>
+                <th class="pointer_class" @click="sorting('mes_lis_acc_tra_ins_trade_type_code')">伝票区分 <span class="float-right" :class="iconSet('mes_lis_acc_tra_ins_trade_type_code')"></span></th>
+                <th class="pointer_class" @click="sorting('mes_lis_acc_tot_tot_net_price_total')">原価金額合計 <span class="float-right" :class="iconSet('mes_lis_acc_tot_tot_net_price_total')"></span></th>
+                <th class="pointer_class" >受領内容</th>
+                <!-- <th class="pointer_class" @click="sorting('mes_lis_acc_tot_tot_net_price_total')">受領内容 <span class="float-right" :class="iconSet('mes_lis_acc_tot_tot_net_price_total')"></span></th> -->
               </tr>
             </thead>
             <tbody>
@@ -494,10 +495,7 @@
                 style="width: 220px"
               >
                 <option value="">全て</option>
-                <option
-                  :value="item"
-                  v-for="item in deliveryDestnationOptionList"
-                >
+                <option :value="item" v-for="(item,i) in deliveryDestnationOptionList" :key="i">
                   {{ item }}
                 </option>
               </select>
@@ -555,10 +553,7 @@
                 style="width: 220px"
               >
                 <option value="">全て</option>
-                <option
-                  :value="item"
-                  v-for="item in deliveryDestnationOptionList"
-                >
+                <option :value="item" v-for="(item,i) in deliveryDestnationOptionList" :key="i">
                   {{ item }}
                 </option>
               </select>
@@ -643,10 +638,7 @@
                 style="width: 220px"
               >
                 <option value="">全て</option>
-                <option
-                  :value="item"
-                  v-for="item in deliveryDestnationOptionList"
-                >
+                <option :value="item" v-for="(item,i) in deliveryDestnationOptionList" :key="i">
                   {{ item }}
                 </option>
               </select>
@@ -659,10 +651,7 @@
                 style="width: 220px"
               >
                 <option value="">全て</option>
-                <option
-                  :value="item"
-                  v-for="item in deliveryDestnationOptionList"
-                >
+                <option :value="item" v-for="(item,i) in deliveryDestnationOptionList" :key="i">
                   {{ item }}
                 </option>
               </select>
@@ -737,6 +726,8 @@ export default {
         deliveryDate: "",
         deliveryName: "",
         mes_lis_shi_tra_trade_number: "",
+        sort_by:'data_receive_voucher_id ',
+        sort_type:"ASC",
       }),
       param_data: [],
       // buyer_settings:null,
@@ -779,12 +770,18 @@ export default {
           this.loader.hide();
         });
     },
+    sorting(sorted_field){
+          this.form.sort_by=sorted_field;
+          this.form.sort_type=this.form.sort_type=="ASC"?"DESC":"ASC";
+          this.get_all_receive_detail();
+
+      },
 
 
   },
 
   created() {
-   
+
     Fire.$emit("byr_has_selected", this.$session.get("byr_buyer_id"));
     Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
     this.form.data_receive_id = this.$route.params.data_receive_id;
