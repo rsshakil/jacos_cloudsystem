@@ -37,26 +37,39 @@
           style="width: 100%"
         >
           <tr>
-            <td class="cl_custom_color">計上日</td>
-            <td>
-              <input type="date" class="form-control" v-model="form.mes_lis_inv_lin_det_transfer_of_ownership_date" />
+            <td style="width: 10%;" class="cl_custom_color">計上日</td>
+            <td style="width: 15%;">
+            <div class="input-group mb-3">
+
+      <input type="date" class="form-control" v-model="form.from_date">
+      <div class="input-group-prepend">
+        <span class="input-group-text">~</span>
+      </div>
+      <input type="date" class="form-control" v-model="form.to_date">
+    </div>
             </td>
-            <td class="cl_custom_color">計上先</td>
+
+           <td style="width: 10%;" class="cl_custom_color">部門</td>
+          <td style="width: 15%;">
+            <multiselect v-model="form.category_code" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="true" :select-label="''" :deselect-label="''" :preserve-search="true"  placeholder="部門"></multiselect>
+          </td> 
+           
+            <td style="width: 10%;" class="cl_custom_color">計上先</td>
             <!-- @click="deliverySearchForm2" -->
-            <td>
+            <td style="width: 15%;">
               <input type="text" class="form-control topHeaderInputFieldBtn" v-model="form.mes_lis_inv_lin_tra_code" />
-              <button class="btn btn-primary active">
+              <button class="btn btn-primary active" style="float:left;">
                 参照
               </button>
             </td>
-            <td class="cl_custom_color">伝票番号</td>
-            <td>
-              <input type="text" v-model="form.mes_lis_inv_lin_lin_trade_number_reference" class="form-control" placeholder="Reference number" />
-            </td>
           </tr>
           <tr>
-            <td class="cl_custom_color">確定状況</td>
-            <td>
+           <td style="width: 10%;" class="cl_custom_color">伝票番号</td>
+            <td style="width: 15%;">
+              <input type="text" v-model="form.mes_lis_inv_lin_lin_trade_number_reference" class="form-control" placeholder="Reference number" />
+            </td>
+            <td style="width: 10%;" class="cl_custom_color">確定状況</td>
+            <td style="width: 15%;">
               <select class="form-control" v-model="form.decision_datetime_status">
                 <option value="*">全て</option>
                 <option :value="item" v-for="(item,i) in decision_datetime_status" :key="i">
@@ -64,9 +77,9 @@
                 </option>
               </select>
             </td>
-            <td class="cl_custom_color">送信状況</td>
+            <td style="width: 10%;" class="cl_custom_color">送信状況</td>
             <!-- v-model="form.fixedSpecial"send_datetime_status -->
-            <td>
+            <td style="width: 15%;">
               <select class="form-control" v-model="form.send_datetime_status">
                 <option value="*">全て</option>
                 <option :value="item" v-for="(item,i) in send_datetime_status" :key="i">
@@ -158,16 +171,16 @@
                 </div>
               </div>
               <div class="col-3">
-                <p class="mb-0">商品別の更新はこちら</p>
+                <!--<p class="mb-0">商品別の更新はこちら</p>
                 <router-link
                   to="/order_list/order_list_details/item_search"
                   class="active btn btn-primary"
                 >
                   商品別登録</router-link
-                >
+                >-->
               </div>
               <div class="col-5">
-                <b-form inline>
+                <!--<b-form inline>
                   <label class="sr-only" for="inline-form-input-name"
                     >各種帳票の印刷はこちら</label
                   >
@@ -175,7 +188,7 @@
                     <option>選択してください</option>
                   </select>
                   <b-button class="active" variant="primary">印刷</b-button>
-                </b-form>
+                </b-form>-->
               </div>
           </div>
       </div>
@@ -263,7 +276,7 @@
               <td>{{ value.send_datetime }}</td>
             </tr>
             <tr v-if="invoice_detail_lists.data && invoice_detail_lists.data.length==0">
-                <td colspan="100%">データがありません</td>
+                <td class="text-center" colspan="100%">データがありません</td>
             </tr>
           </tbody>
         </table>
@@ -330,6 +343,7 @@ export default {
       param_data: [],
       invoice_detail_lists: {},
       byr_voucher_lists: {},
+      byr_buyer_category_lists:[],
       file: "",
       data_invoice_id: "",
       isCheckAll: false,
@@ -347,10 +361,12 @@ export default {
         adm_user_id: Globals.user_info_id,
         byr_buyer_id: null,
         submit_type: "page_load",
-        mes_lis_inv_lin_det_transfer_of_ownership_date:null,
+        from_date:'',
+        to_date:'',
         mes_lis_inv_lin_tra_code:'',
         mes_lis_inv_lin_lin_trade_number_reference:'',
         decision_datetime_status:'*',
+        category_code:{category_code:'*',category_name:'全て'},
         send_datetime_status:'*',
       }),
     };
@@ -368,6 +384,9 @@ export default {
         .then(({ data }) => {
             this.init(data.status);
             this.invoice_detail_lists = data.invoice_details_list;
+                      this.byr_buyer_category_lists = data.byr_buyer_category_list;
+          this.byr_buyer_category_lists.unshift({category_code:'*',category_name:'全て'});
+
         });
     },
     checkAll() {
@@ -548,6 +567,7 @@ export default {
     Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
     this.param_data = this.$route.query;
     this.form.data_invoice_id = this.param_data.data_invoice_id;
+    this.form.byr_buyer_id = this.$session.get("byr_buyer_id");
     this.invoice_details();
     Fire.$on("LoadByrinvoiceDetails", (page=1) => {
       this.invoice_details(page);

@@ -277,7 +277,7 @@ export default {
         mes_lis_pay_lin_tra_code: null,
         from_date: null,
         to_date: null,
-        category_code: "*",
+        category_code: {category_code:'*',category_name:'全て'},
         mes_lis_inv_lin_det_pay_code:'*',
         mes_lis_pay_lin_det_verification_result_code:'*',
         mes_lis_pay_lin_det_trade_type_code:'*',

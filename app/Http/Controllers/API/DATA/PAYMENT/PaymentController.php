@@ -170,9 +170,9 @@ DB::raw("SUM(mes_lis_pay_lin_det_amo_payable_amount + mes_lis_pay_lin_det_amo_ta
         $from_date= $request->from_date;
         $to_date= $request->to_date;
         $category_code = $request->category_code;
-        if($category_code!='*'){
+        
             $category_code =$category_code['category_code'];
-        }
+        
         
         $mes_lis_pay_lin_tra_code = $request->mes_lis_pay_lin_tra_code;
 
