@@ -66,7 +66,7 @@
           <tr>
            <td style="width: 10%;" class="cl_custom_color">伝票番号</td>
             <td style="width: 15%;">
-              <input type="text" v-model="form.mes_lis_inv_lin_lin_trade_number_reference" class="form-control" placeholder="Reference number" />
+              <input type="text" v-model="form.mes_lis_inv_lin_lin_trade_number_reference" class="form-control" />
             </td>
             <td style="width: 10%;" class="cl_custom_color">確定状況</td>
             <td style="width: 15%;">
