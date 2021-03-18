@@ -327,8 +327,6 @@ export default {
       selected: [],
       isCheckAll: false,
       form: new Form({
-        sort_by:'data_receive_voucher_id ',
-        sort_type:"ASC",
         data_receive_voucher_id:null,
         byr_buyer_id:null,
         adm_user_id:Globals.user_info_id
@@ -394,12 +392,6 @@ beforeCreate: function() {
           this.loader.hide();
         });
     },
-    sorting(sorted_field){
-          this.form.sort_by=sorted_field;
-          this.form.sort_type=this.form.sort_type=="ASC"?"DESC":"ASC";
-          this.get_all_receive_item_detail();
-
-      },
 
 
   },
