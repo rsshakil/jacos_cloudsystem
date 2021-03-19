@@ -34,7 +34,7 @@
             </button>
           </td>
 
-          <td style="width: 15%;" class="cl_custom_color">便</td>
+          <td style="width: 10%;" class="cl_custom_color">便</td>
           <td style="width: 15%; text-align: center">
             <select class="form-control" v-model="form.delivery_service_code">
                 <option value="*">全て</option>
