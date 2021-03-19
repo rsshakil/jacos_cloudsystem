@@ -33,8 +33,8 @@
     <div class="col-12" style=" padding: 10px">
       <table class="table orderTopDetailTable table-bordered" style="width: 100%">
           <tr>
-            <td class="cl_custom_color_active">計上日</td>
-            <td><div class="input-group mb-3">
+            <td style="width:10%" class="cl_custom_color">計上日</td>
+            <td style="width:15%"><div class="input-group mb-3">
 
       <input type="date" class="form-control" v-model="form.from_date">
       <div class="input-group-prepend">
@@ -42,23 +42,23 @@
       </div>
       <input type="date" class="form-control" v-model="form.to_date">
     </div></td>
-            <td class="cl_custom_color_active">部門</td>
+            <td style="width:10%" class="cl_custom_color">部門</td>
             <td colspan="3">
                                                         <multiselect v-model="form.category_code" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="true" :select-label="''" :deselect-label="''" :selected-label="'選択中'" :preserve-search="true" placeholder="部門"></multiselect>
             </td>
 
           </tr>
           <tr>
-            <td class="cl_custom_color_active">納品先コード</td>
-            <td> <input type="text" class="form-control" v-model="form.mes_lis_pay_lin_tra_code" style="float:left;width:60%">
+            <td style="width:10%" class="cl_custom_color">納品先コード</td>
+            <td  style="width:15%"> <input type="text" class="form-control" v-model="form.mes_lis_pay_lin_tra_code" style="float:left;width:60%;margin-right:15px;">
              <button @click="showAllCustomerCode" class="btn btn-primary" style="float:left;width:35%;">
               {{ myLang.refer }}
             </button>
             </td>
-            <td class="cl_custom_color_active">伝票番号</td>
-            <td><input type="text" class="form-control" v-model="form.mes_lis_pay_lin_lin_trade_number_eference"></td>
-            <td class="cl_custom_color_active">支払内容</td>
-            <td>
+            <td style="width:10%" class="cl_custom_color">伝票番号</td>
+            <td style="width:15%"><input type="text" class="form-control" v-model="form.mes_lis_pay_lin_lin_trade_number_eference"></td>
+            <td style="width:10%" class="cl_custom_color">支払内容</td>
+            <td style="width:10%">
             <select class="form-control" v-model="form.mes_lis_inv_lin_det_pay_code">
             <option value="*">全て</option>
             <option v-for="(opt, i) in mes_lis_inv_lin_det_pay_code_list"
@@ -71,12 +71,12 @@
             </td>
           </tr>
           <tr>
-            <td class="cl_custom_color_active">伝票区分</td>
-            <td><select class="form-control" v-model="form.mes_lis_pay_lin_det_trade_type_code">
+            <td style="width:10%" class="cl_custom_color">伝票区分</td>
+            <td style="width:15%"><select class="form-control" v-model="form.mes_lis_pay_lin_det_trade_type_code">
             <option value="*">全て</option>
             </select></td>
-            <td class="cl_custom_color_active">請求区分</td>
-            <td><select class="form-control" v-model="form.mes_lis_pay_lin_det_balance_carried_code">
+            <td style="width:10%" class="cl_custom_color">請求区分</td>
+            <td style="width:15%"><select class="form-control" v-model="form.mes_lis_pay_lin_det_balance_carried_code">
             <option value="*">全て</option>
 
             <option v-for="(opt, i) in mes_lis_inv_lin_det_balance_carried_code_list"
@@ -86,8 +86,8 @@
                   {{ Object.values(opt)[0] }}
                 </option>
             </select></td>
-            <td class="cl_custom_color_active">照合結果</td>
-            <td>
+            <td style="width:10%" class="cl_custom_color">照合結果</td>
+            <td  style="width:15%">
             <select class="form-control" v-model="form.mes_lis_pay_lin_det_verification_result_code">
             <option value="*">全て</option>
             <option v-for="(opt, i) in mes_lis_pay_lin_det_verification_result_code_list"
@@ -98,10 +98,7 @@
                 </option>
             </select>
             </td>
-
           </tr>
-
-
         </table>
     </div>
 
