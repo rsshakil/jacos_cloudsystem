@@ -6,8 +6,8 @@
           style="width: 100%"
         >
           <tr>
-            <td class="cl_custom_color">請求取引先コード</td>
-            <td><input type="text" class="form-control" v-model="form.mes_lis_inv_pay_code"></td>
+            <td style="width:10%" class="cl_custom_color">請求取引先コード</td>
+            <td style="width:15%"><input type="text" class="form-control" v-model="form.mes_lis_inv_pay_code"></td>
             <!-- <td class="cl_custom_color">請求日時</td>
             <td>
             <div class="input-group mb-3">
@@ -18,15 +18,15 @@
                 <input type="date" class="form-control">
             </div>
             </td> -->
-            <td class="cl_custom_color">発注者</td>
-            <td>
+            <td style="width:10%" class="cl_custom_color">発注者</td>
+            <td  style="width:15%">
             <select class="form-control" style="width: 220px">
                 <option value="">全て</option>
 
               </select>
             </td>
-            <td class="cl_custom_color">請求状況</td>
-            <td colspan="2">
+            <td  style="width:10%" class="cl_custom_color">請求状況</td>
+            <td  style="width:15%" colspan="2">
                 <select class="form-control" style="width: 220px" v-model="form.send_datetime_status">
                 <option value="*">全て</option>
                 <option :value="item" v-for="(item,i) in send_datetime_status" :key="i">
@@ -36,8 +36,8 @@
             </td>
           </tr>
           <tr>
-            <td class="cl_custom_color">締日</td>
-            <td colspan="2">
+            <td style="width:10%" class="cl_custom_color">締日</td>
+            <td style="width:15%">
                 <div class="input-group mb-3">
                     <input type="date" class="form-control" v-model="form.mes_lis_inv_per_begin_date">
                     <div class="input-group-prepend">
@@ -46,7 +46,7 @@
                     <input type="date" class="form-control" v-model="form.mes_lis_inv_per_end_date">
                 </div>
         </td>
-        <td colspan="3"></td>
+        <td colspan="4"></td>
           </tr>
         </table>
     </div>
