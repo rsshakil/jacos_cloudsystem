@@ -39,7 +39,7 @@
           <tr>
             <td style="width: 10%;" class="cl_custom_color">計上日</td>
             <td style="width: 15%;">
-            <div class="input-group mb-3">
+            <div class="input-group">
 
       <input type="date" class="form-control" v-model="form.from_date">
       <div class="input-group-prepend">

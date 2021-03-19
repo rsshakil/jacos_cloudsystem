@@ -11,7 +11,7 @@
 
           <td style="width: 15%">
 
-<div class="input-group mb-3">
+<div class="input-group">
                     <input type="date" class="form-control" v-model="form.receive_date_from">
                     <div class="input-group-prepend">
                         <span class="input-group-text">~</span>
@@ -54,7 +54,7 @@
           <td style="width: 10%;" class="cl_custom_color">{{ myLang.delivery_date }}</td>
           <td style="width: 15%;">
 
-<div class="input-group mb-3">
+<div class="input-group">
                     <input type="date" class="form-control" v-model="form.delivery_date_from">
                     <div class="input-group-prepend">
                         <span class="input-group-text">~</span>

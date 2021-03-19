@@ -15,7 +15,7 @@
 
           <td class="cl_custom_color" style="width: 10%">受信日</td>
           <td style="width: 10%" colspan="3">
-          <div class="input-group mb-3">
+          <div class="input-group">
                     <input type="date" class="form-control" v-model="form.receive_date_from">
                     <div class="input-group-prepend">
                         <span class="input-group-text">~</span>
@@ -38,7 +38,7 @@
 
           <td class="cl_custom_color" style="width: 10%">受信日</td>
           <td style="width: 10%">
-          <div class="input-group mb-3">
+          <div class="input-group">
                     <input type="date" class="form-control" v-model="form.mes_lis_pay_per_end_date_from">
                     <div class="input-group-prepend">
                         <span class="input-group-text">~</span>

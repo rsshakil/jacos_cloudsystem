@@ -10,7 +10,7 @@
           <tr>
             <td class="cl_custom_color" style="width: 10%">受信日</td>
             <td style="width: 15%">
-             <div class="input-group mb-3">
+             <div class="input-group">
                     <input type="date" class="form-control" v-model="form.receive_date_from">
                     <div class="input-group-prepend">
                         <span class="input-group-text">~</span>
@@ -44,7 +44,7 @@
           <tr>
             <td style="width: 10%;" class="cl_custom_color">計上日</td>
             <td style="width: 15%;">
-             <div class="input-group mb-3">
+             <div class="input-group">
                     <input type="date" class="form-control" v-model="form.wnership_date_from">
                     <div class="input-group-prepend">
                         <span class="input-group-text">~</span>

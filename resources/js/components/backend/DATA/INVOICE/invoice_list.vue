@@ -8,26 +8,17 @@
           <tr>
             <td style="width:10%" class="cl_custom_color">請求取引先コード</td>
             <td style="width:15%"><input type="text" class="form-control" v-model="form.mes_lis_inv_pay_code"></td>
-            <!-- <td class="cl_custom_color">請求日時</td>
-            <td>
-            <div class="input-group mb-3">
-                <input type="date" class="form-control">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">~</span>
-                </div>
-                <input type="date" class="form-control">
-            </div>
-            </td> -->
+            
             <td style="width:10%" class="cl_custom_color">発注者</td>
             <td  style="width:15%">
-            <select class="form-control" style="width: 220px">
+            <select class="form-control">
                 <option value="">全て</option>
 
               </select>
             </td>
             <td  style="width:10%" class="cl_custom_color">請求状況</td>
             <td  style="width:15%" colspan="2">
-                <select class="form-control" style="width: 220px" v-model="form.send_datetime_status">
+                <select class="form-control" v-model="form.send_datetime_status">
                 <option value="*">全て</option>
                 <option :value="item" v-for="(item,i) in send_datetime_status" :key="i">
                   {{ item }}
@@ -38,7 +29,7 @@
           <tr>
             <td style="width:10%" class="cl_custom_color">締日</td>
             <td style="width:15%">
-                <div class="input-group mb-3">
+                <div class="input-group">
                     <input type="date" class="form-control" v-model="form.mes_lis_inv_per_begin_date">
                     <div class="input-group-prepend">
                         <span class="input-group-text">~</span>
@@ -172,7 +163,7 @@
             <td><input type="text" v-model="invoiceData.mes_lis_inv_pay_code" class="form-control" /></td>
             <td class="cl_custom_color">締日</td>
             <td>
-              <div class="input-group mb-3">
+              <div class="input-group">
 
       <input type="date" v-model="invoiceData.mes_lis_inv_per_begin_date" class="form-control">
       <div class="input-group-prepend">

@@ -34,7 +34,7 @@
       <table class="table orderTopDetailTable table-bordered" style="width: 100%">
           <tr>
             <td style="width:10%" class="cl_custom_color">計上日</td>
-            <td style="width:15%"><div class="input-group mb-3">
+            <td style="width:15%"><div class="input-group">
 
       <input type="date" class="form-control" v-model="form.from_date">
       <div class="input-group-prepend">
@@ -50,7 +50,7 @@
           </tr>
           <tr>
             <td style="width:10%" class="cl_custom_color">納品先コード</td>
-            <td  style="width:15%"> <input type="text" class="form-control" v-model="form.mes_lis_pay_lin_tra_code" style="float:left;width:60%;margin-right:15px;">
+            <td  style="width:15%"> <input type="text" class="form-control" v-model="form.mes_lis_pay_lin_tra_code" style="float:left;width:60%;margin-right:10px;">
              <button @click="showAllCustomerCode" class="btn btn-primary" style="float:left;width:35%;">
               {{ myLang.refer }}
             </button>
