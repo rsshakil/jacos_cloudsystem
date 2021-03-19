@@ -59,6 +59,7 @@
                     :searchable="true"
                     :close-on-select="true"
                     :show-labels="false"
+                    :selected-label="'選択中'"
                     placeholder="Canvas name"
                     label="canvas_name"
                     track-by="cmn_pdf_canvas_id"
