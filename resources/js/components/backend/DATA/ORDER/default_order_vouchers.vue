@@ -66,8 +66,8 @@
           style="width: 100%"
         >
           <tr>
-            <td class="cl_custom_color">直接納品先コード</td>
-            <td>
+            <td style="width:10%" class="cl_custom_color">直接納品先コード</td>
+            <td style="width:15%">
               <input type="text" class="form-control topHeaderInputFieldBtn" />
               <button
                 @click="deliverySearchForm1"
@@ -76,8 +76,8 @@
                 参照
               </button>
             </td>
-            <td class="cl_custom_color">最終納品先コード</td>
-            <td>
+            <td style="width:10%" class="cl_custom_color">最終納品先コード</td>
+            <td style="width:15%">
               <input type="text" class="form-control topHeaderInputFieldBtn" />
               <button
                 @click="deliverySearchForm2"
@@ -86,8 +86,8 @@
                 参照
               </button>
             </td>
-            <td class="cl_custom_color">伝票番号</td>
-            <td>
+            <td style="width:10%" class="cl_custom_color">伝票番号</td>
+            <td style="width:15%">
               <input
                 type="text"
                 v-model="form.mes_lis_shi_tra_trade_number"
@@ -96,8 +96,8 @@
             </td>
           </tr>
           <tr>
-            <td class="cl_custom_color">商品コード</td>
-            <td>
+            <td style="width:10%" class="cl_custom_color">商品コード</td>
+            <td style="width:15%">
               <input type="text" class="form-control topHeaderInputFieldBtn" />
               <button
                 @click="deliverySearchForm3"
@@ -106,12 +106,12 @@
                 参照
               </button>
             </td>
-            <td class="cl_custom_color">定／特</td>
-            <td>
+            <td style="width:10%" class="cl_custom_color">定／特</td>
+            <td style="width:15%">
               <select
                 class="form-control"
                 v-model="form.fixedSpecial"
-                style="width: 220px"
+              
               >
                 <option value="*">全て</option>
 
@@ -124,12 +124,12 @@
                 </option>
               </select>
             </td>
-            <td class="cl_custom_color">確定状況</td>
-            <td>
+            <td style="width:10%" class="cl_custom_color">確定状況</td>
+            <td style="width:15%">
               <select
                 class="form-control"
                 v-model="form.situation"
-                style="width: 220px"
+               
               >
                 <option value="*">全て</option>
                 <option :value="item" v-for="(item,i) in situationOptionList" :key="i">
@@ -139,12 +139,12 @@
             </td>
           </tr>
           <tr>
-            <td class="cl_custom_color">印刷状況</td>
-            <td colspan="7">
+            <td style="width:10%" class="cl_custom_color">印刷状況</td>
+            <td style="width:15%" colspan="7">
               <select
                 class="form-control"
                 v-model="form.printingStatus"
-                style="width: 220px"
+                
               >
                 <option value="*">全て</option>
                 <option :value="item" v-for="(item,i) in printingStatusOptionList" :key="i">

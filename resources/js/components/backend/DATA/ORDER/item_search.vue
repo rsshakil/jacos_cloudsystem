@@ -7,37 +7,38 @@
           style="width: 100%"
         >
           <tr>
-            <td class="cl_custom_color">受信日時</td>
-            <td>
+            <td style="width:10%" class="cl_custom_color">受信日時</td>
+            <td style="width:15%">
             <span v-if="order_info && Object.keys(this.order_info).length">
             {{ order_info.receive_datetime }}
             </span>
             </td>
-            <td class="cl_custom_color">取引先</td>
-            <td colspan="5">
+            <td style="width:10%" class="cl_custom_color">取引先</td>
+            <td style="width:10%">
             <span v-if="order_info && Object.keys(this.order_info).length">
              {{ order_info.mes_lis_shi_par_sel_code }}
               {{ order_info.mes_lis_shi_par_sel_name }}
               </span>
             </td>
+            <td style="width:10%" class="cl_custom_color">便</td>
+            <td style="width:15%"><span v-if="order_info && Object.keys(this.order_info).length">{{ order_info.mes_lis_shi_log_del_delivery_service_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_log_del_delivery_service_code',order_info.mes_lis_shi_log_del_delivery_service_code,'orders')}}</span></td>
           </tr>
           <tr>
-            <td class="cl_custom_color">納品日</td>
-            <td>
+            <td style="width:10%" class="cl_custom_color">納品日</td>
+            <td style="width:15%">
             <span v-if="order_info && Object.keys(this.order_info).length">
             {{ order_info.mes_lis_shi_tra_dat_delivery_date }}
             </span>
             </td>
-            <td class="cl_custom_color">部門</td>
-            <td>
+            <td style="width:10%" class="cl_custom_color">部門</td>
+            <td style="width:15%">
             <span v-if="order_info && Object.keys(this.order_info).length">
             {{ order_info.mes_lis_shi_tra_goo_major_category }}
             </span>
             </td>
-            <td class="cl_custom_color">便</td>
-            <td><span v-if="order_info && Object.keys(this.order_info).length">{{ order_info.mes_lis_shi_log_del_delivery_service_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_log_del_delivery_service_code',order_info.mes_lis_shi_log_del_delivery_service_code,'orders')}}</span></td>
-            <td class="cl_custom_color">配送温度区分</td>
-            <td><span v-if="order_info && Object.keys(this.order_info).length">{{ order_info.mes_lis_shi_tra_ins_temperature_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_info.mes_lis_shi_tra_ins_temperature_code,'orders')}}</span></td>
+            
+            <td style="width:10%" class="cl_custom_color">配送温度区分</td>
+            <td style="width:15%"><span v-if="order_info && Object.keys(this.order_info).length">{{ order_info.mes_lis_shi_tra_ins_temperature_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_info.mes_lis_shi_tra_ins_temperature_code,'orders')}}</span></td>
           </tr>
         </table>
       </div>
