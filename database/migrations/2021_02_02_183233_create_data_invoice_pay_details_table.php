@@ -32,14 +32,14 @@ class CreateDataInvoicePayDetailsTable extends Migration
             $table->string('mes_lis_inv_lin_det_goo_major_category', 20)->nullable()->comment('商品分類（大）');
             $table->string('mes_lis_inv_lin_det_goo_sub_major_category', 20)->nullable()->comment('商品分類（中）');
             $table->date('mes_lis_inv_lin_det_transfer_of_ownership_date')->nullable()->comment('計上日');
-            $table->string('mes_lis_inv_lin_det_amo_requested_amount', 20)->nullable()->comment('請求金額');
+            $table->integer('mes_lis_inv_lin_det_amo_requested_amount')->unsigned()->nullable()->comment('請求金額');
             $table->string('mes_lis_inv_lin_det_amo_req_plus_minus', 10)->nullable()->comment('請求金額符号');
             $table->string('mes_lis_inv_lin_det_amo_tax', 13)->nullable()->comment('税額合計金額');
             $table->string('mes_lis_inv_lin_det_balance_carried_code', 13)->nullable()->comment('請求区分');
             $table->string('mes_lis_inv_lin_det_credit_or_unsettlement', 13)->nullable()->comment('未払買掛区分');
             $table->string('mes_lis_inv_lin_det_pay_code', 13)->nullable()->comment('支払内容');
             $table->string('mes_lis_inv_lin_det_tax_tax_type_code', 13)->nullable()->comment('税区分');
-            $table->string('mes_lis_inv_lin_det_tax_tax_rate', 13)->nullable()->comment('税率');
+            $table->decimal('mes_lis_inv_lin_det_tax_tax_rate', 2,1)->nullable()->comment('税率');
             $table->smallInteger('deleted')->unsigned()->default(1)->comment('削除フラグ');
             $table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
 			$table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
