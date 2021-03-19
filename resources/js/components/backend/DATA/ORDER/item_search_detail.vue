@@ -173,7 +173,7 @@
 
                 {{order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code}} {{getbyrjsonValueBykeyName('mes_lis_shi_lin_qua_sto_reason_code',order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code,'shipments')}}
                 <select v-model="order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code" class="form-control ">
-                <option v-for="item in mes_lis_shi_lin_qua_sto_reason_codeList" :value="Object.keys(item)[0]">{{Object.values(item)[0]}}</option>
+                <option v-for="(item,i) in mes_lis_shi_lin_qua_sto_reason_codeList" :value="Object.keys(item)[0]" :key="i">{{Object.values(item)[0]}}</option>
                 </select>
 
 

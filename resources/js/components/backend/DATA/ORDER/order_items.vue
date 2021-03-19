@@ -139,7 +139,7 @@
                 <td class="text-right">{{order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity | priceFormat }}</td>
                 <td>{{order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code}} {{getbyrjsonValueBykeyName('mes_lis_shi_lin_qua_sto_reason_code',order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code,'shipments')}}
                 <select :disabled="is_disabled(order_item_shipment_data_headTable.decision_datetime==null?true:false)" v-model="order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code" class="form-control ">
-                <option v-for="item in mes_lis_shi_lin_qua_sto_reason_codeList" :value="Object.keys(item)[0]">{{Object.values(item)[0]}}</option>
+                <option v-for="(item,i) in mes_lis_shi_lin_qua_sto_reason_codeList" :value="Object.keys(item)[0]" :key="i">{{Object.values(item)[0]}}</option>
                 </select>
                 <!--<input type="hidden" v-model="totalCostPrice += order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity">
                 <input type="hidden" v-model="totalSellingPrice += order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity">-->
