@@ -204,7 +204,7 @@ class ShipmentController extends Controller
                 'dsi.mes_lis_shi_lin_ite_gtin',
                 'dsi.mes_lis_shi_lin_ite_name',
                 'dsi.mes_lis_shi_lin_ite_ite_spec',
-                'dsi.mes_lis_shi_lin_fre_field_name',
+                'dsi.mes_lis_shi_lin_fre_field_name'
             )
             ->leftJoin('data_shipment_vouchers as dsv', 'dsv.data_shipment_voucher_id', '=', 'dsi.data_shipment_voucher_id')
             ->join('data_shipments as ds', 'ds.data_shipment_id', '=', 'dsv.data_shipment_id')
