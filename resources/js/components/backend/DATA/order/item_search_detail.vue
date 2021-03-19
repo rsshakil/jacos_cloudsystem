@@ -182,7 +182,7 @@
               <tr v-if="order_item_detail_lists && order_item_detail_lists.length==0">
             <td class="text-center" colspan="15">データがありません</td>
             </tr>
-              
+
             </tbody>
 
 
@@ -470,7 +470,7 @@ export default {
       }
       if (event.key == "Enter") {
         event.preventDefault();
-        
+
       }
     },
     sortBynumeric_valu(sortKey) {
@@ -501,7 +501,7 @@ export default {
       }
     },
     update_shipment_detail(order_detail) {
-      
+
       axios({
         method: "POST",
         url: this.BASE_URL + "api/update_shipment_detail",
@@ -512,7 +512,7 @@ export default {
           Fire.$emit("LoadByrorderDetail");
         })
         .catch(function (response) {
-          
+
         });
     },
     //get Table data
@@ -526,9 +526,9 @@ export default {
             this.mes_lis_shi_tot_tot_net_price_total = data.order_item_list_detail[0].mes_lis_shi_tot_tot_net_price_total;
           this.mes_lis_shi_tot_tot_selling_price_total = data.order_item_list_detail[0].mes_lis_shi_tot_tot_selling_price_total;
           }
-          
+
           this.order_item_lists = data.orderItem;
-          
+
           this.order_item_shipment_data_headTable = data.order_item_list_detail[0];
           this.loader.hide();
         });
@@ -542,8 +542,7 @@ export default {
   created() {
     Fire.$emit('byr_has_selected',this.$session.get('byr_buyer_id'));
     Fire.$emit('permission_check_for_buyer',this.$session.get('byr_buyer_id'));
-    this.param_data = this.$session.get('voucher_page_query_param');
-    this.orderListdetailQ = this.$session.get('voucher_page_query_param');
+
     this.item_id = this.$route.params.item_id;
     this.getbuyerJsonSettingvalue();
     this.get_all_byr_order_item_detail();
@@ -566,8 +565,6 @@ export default {
     },
   },
   mounted() {
-    Fire.$on("voucher_page_query_param", (query_param) => {
-    });
   },
 };
 </script>

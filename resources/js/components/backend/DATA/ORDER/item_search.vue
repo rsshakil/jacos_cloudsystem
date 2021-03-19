@@ -9,13 +9,13 @@
           <tr>
             <td class="cl_custom_color">受信日時</td>
             <td>
-            <span v-if="order_info && order_info.length">
+            <span v-if="order_info && Object.keys(this.order_info).length">
             {{ order_info.receive_datetime }}
             </span>
             </td>
             <td class="cl_custom_color">取引先</td>
             <td colspan="5">
-            <span v-if="order_info && order_info.length">
+            <span v-if="order_info && Object.keys(this.order_info).length">
              {{ order_info.mes_lis_shi_par_sel_code }}
               {{ order_info.mes_lis_shi_par_sel_name }}
               </span>
@@ -24,20 +24,20 @@
           <tr>
             <td class="cl_custom_color">納品日</td>
             <td>
-            <span v-if="order_info && order_info.length">
+            <span v-if="order_info && Object.keys(this.order_info).length">
             {{ order_info.mes_lis_shi_tra_dat_delivery_date }}
             </span>
             </td>
             <td class="cl_custom_color">部門</td>
             <td>
-            <span v-if="order_info && order_info.length">
+            <span v-if="order_info && Object.keys(this.order_info).length">
             {{ order_info.mes_lis_shi_tra_goo_major_category }}
             </span>
             </td>
             <td class="cl_custom_color">便</td>
-            <td><span v-if="order_info && order_info.length">{{ order_info.mes_lis_shi_log_del_delivery_service_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_log_del_delivery_service_code',order_info.mes_lis_shi_log_del_delivery_service_code,'orders')}}</span></td>
+            <td><span v-if="order_info && Object.keys(this.order_info).length">{{ order_info.mes_lis_shi_log_del_delivery_service_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_log_del_delivery_service_code',order_info.mes_lis_shi_log_del_delivery_service_code,'orders')}}</span></td>
             <td class="cl_custom_color">配送温度区分</td>
-            <td><span v-if="order_info && order_info.length">{{ order_info.mes_lis_shi_tra_ins_temperature_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_info.mes_lis_shi_tra_ins_temperature_code,'orders')}}</span></td>
+            <td><span v-if="order_info && Object.keys(this.order_info).length">{{ order_info.mes_lis_shi_tra_ins_temperature_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_info.mes_lis_shi_tra_ins_temperature_code,'orders')}}</span></td>
           </tr>
         </table>
       </div>
@@ -51,18 +51,18 @@
             <td>
               <input
                 type="text" class="form-control topHeaderInputFieldBtn"/>
-              <button @click="deliverySearchForm3" class="btn btn-primary active">参照</button>
+              <button class="btn btn-primary active">参照</button>
             </td>
             <td class="cl_custom_color">JANコード</td>
             <td>
-              <input type="text" class="form-control topHeaderInputFieldBtn" />
+              <input type="text" class="form-control topHeaderInputFieldBtn" v-model="form.mes_lis_shi_lin_ite_gtin" />
             </td>
             </tr>
         </table>
       </div>
 
       <div class="col-12" style="text-align: center">
-        <button class="btn btn-primary active srchBtn" type="button">
+        <button class="btn btn-primary active srchBtn" type="button" @click="getItemSearchData">
           {{ myLang.search }}
         </button>
       </div>
@@ -78,23 +78,23 @@
       <div class="col-12">
       <p>
               <span class="tableRowsInfo"
-                >{{ order_detail_lists.from }}〜{{
-                  order_detail_lists.to
+                >{{ order_item_lists.from }}〜{{
+                  order_item_lists.to
                 }}
-                件表示中／全：{{ order_detail_lists.total }}件</span
+                件表示中／全：{{ order_item_lists.total }}件</span
               >
               <span class="pagi"
                 >
-              <advanced-laravel-vue-paginate :data="order_detail_lists"
+              <advanced-laravel-vue-paginate :data="order_item_lists"
               :onEachSide="2"
               previousText="<"
               nextText=">"
               alignment="center"
-                @paginateTo="get_all_byr_order_detail"/>
+                @paginateTo="getItemSearchData"/>
               </span>
               <span class="selectPagi">
-                <select class="form-control selectPage" @change="selectNumPerPage"
-                  v-model="select_field_per_page_num">
+                <select class="form-control selectPage" @change="getItemSearchData"
+                  v-model="form.select_field_per_page_num">
                   <!--<option value="0">表示行数</option>
                   <option v-for="n in order_detail_lists.last_page" :key="n"
                 :value="n">{{n}}</option>-->
@@ -114,27 +114,18 @@
 
               <tr>
                 <th>No</th>
-                <th>商品コード</th>
-                <th>JANコード</th>
-                <th>商品名</th>
-                <th>規格</th>
-                <th>産地</th>
+                <th class="pointer_class" @click="sorting('mes_lis_shi_lin_ite_order_item_code')">商品コード <span class="float-right" :class="iconSet('mes_lis_shi_lin_ite_order_item_code')"></span></th>
+                <th class="pointer_class" @click="sorting('mes_lis_shi_lin_ite_gtin')">JANコード <span class="float-right" :class="iconSet('mes_lis_shi_lin_ite_gtin')"></span></th>
+                <th class="pointer_class" @click="sorting('mes_lis_shi_lin_ite_name')">商品名 <span class="float-right" :class="iconSet('mes_lis_shi_lin_ite_name')"></span></th>
+                <th class="pointer_class" @click="sorting('mes_lis_shi_lin_ite_ite_spec')">規格 <span class="float-right" :class="iconSet('mes_lis_shi_lin_ite_ite_spec')"></span></th>
+                <th class="pointer_class" @click="sorting('mes_lis_shi_lin_fre_field_name')">産地 <span class="float-right" :class="iconSet('mes_lis_shi_lin_fre_field_name')"></span></th>
 
               </tr>
             </thead>
             <tbody>
-              <tr
-                v-for="(order_detail_list, index) in order_detail_lists.data"
-                :key="index"
-              >
+              <tr v-for="(order_detail_list, index) in order_item_lists.data" :key="index">
                 <td>
-                  {{
-                    order_detail_lists.current_page *
-                      select_field_per_page_num -
-                    select_field_per_page_num +
-                    index +
-                    1
-                  }}
+                  {{ order_item_lists.current_page * form.select_field_per_page_num - form.select_field_per_page_num + index + 1 }}
                 </td>
 
                 <td><router-link
@@ -142,12 +133,12 @@
                       name: 'item_search_detail',
                       params: {
                         item_id:
-                          order_detail_list.mes_lis_shi_lin_ite_supplier_item_code,
+                          order_detail_list.mes_lis_shi_lin_ite_order_item_code,
                       },
                     }"
                     class=""
                     >
-                  {{ order_detail_list.mes_lis_shi_lin_ite_supplier_item_code }}
+                  {{ order_detail_list.mes_lis_shi_lin_ite_order_item_code }}
                   </router-link>
                 </td>
                 <td>{{ order_detail_list.mes_lis_shi_lin_ite_gtin }}</td>
@@ -155,7 +146,7 @@
                 <td>{{ order_detail_list.mes_lis_shi_lin_ite_ite_spec }}</td>
                 <td>{{ order_detail_list.mes_lis_shi_lin_fre_field_name }}</td>
               </tr>
-              <tr v-if="order_detail_lists.data && order_detail_lists.data.length==0">
+              <tr v-if="order_item_lists.data && order_item_lists.data.length==0">
                 <td class="text-center" colspan="6">データがありません</td>
             </tr>
             </tbody>
@@ -211,14 +202,14 @@
             <td>
             <select class="form-control" v-model="form.deliveryDestnation" style="width: 220px">
               <option value="">全て</option>
-                <option :value="item" v-for="item in deliveryDestnationOptionList">{{ item }}</option>
+                <option :value="item" v-for="(item,i) in deliveryDestnationOptionList" :key="i">{{ item }}</option>
               </select>
             </td>
             <td class="cl_custom_color">不定貴区分</td>
             <td>
               <select class="form-control" v-model="form.mes_lis_shi_tra_fre_variable_measure_item_code" style="width: 220px">
               <option value="*">全て</option>
-                <option :value="item" v-for="item in deliveryDestnationOptionList">{{ item }}</option>
+                <option :value="item" v-for="(item,i) in deliveryDestnationOptionList" :key="i">{{ item }}</option>
               </select>
             </td>
 
@@ -247,43 +238,30 @@ export default {
 
   data() {
     return {
-       breadcumbtitle:'受注商品別一覧',
-      parent: {
-        name: 'order_list_details',
-        query: {},
-},
-      rows: 100,
-      currentPage: 1,
-      today: new Date().toISOString().slice(0, 10),
-      sortKey: "",
-      reverse: true,
-      order_by: "asc",
-      order_detail_lists: {},
-      order_item_lists: {},
-      order_info: {},
-      order_date: "",
-      order_detail_list: [],
-      show_hide_col_list: [],
-      expected_delivery_date: "",
-      status: "",
-      order_search_modal3: false,
-      selected: [],
-      select_field_page_num:0,
-      select_field_per_page_num:10,
-      isCheckAll: false,
-      printingStatusOptionList:['01 定番','02 準特価','03 特売'],
-      situationOptionList:['未確定あり','確定済'],
-      fixedSpecialOptionList:['未印刷あり','未印刷あり'],
-      deliveryDestnationOptionList:['店舗','物流センター'],
-      form: new Form({
-        mes_lis_shi_lin_ite_supplier_item_code:'',
-        mes_lis_shi_lin_ite_gtin:'',
-        mes_lis_shi_lin_ite_name:'',
-        mes_lis_shi_lin_ite_ite_spec:'',
-        mes_lis_shi_tra_fre_variable_measure_item_code:'*'
-      }),
-      param_data: [],
-
+        breadcumbtitle:'受注商品別一覧',
+        parent: { name: 'order_list_details', query: {}},
+        order_info:[],
+        // deliverySearchForm3:{},
+        order_search_modal3:false,
+        deliveryDestnationOptionList:{},
+        order_item_lists:{},
+        form: new Form({
+            mes_lis_shi_lin_ite_gtin:null,
+            mes_lis_shi_log_del_delivery_service_code:null,
+            mes_lis_shi_par_sel_code:null,
+            mes_lis_shi_par_sel_name:null,
+            mes_lis_shi_tra_dat_delivery_date:null,
+            mes_lis_shi_tra_goo_major_category:null,
+            mes_lis_shi_tra_ins_temperature_code:null,
+            mes_lis_shi_tra_trade_number:null,
+            mes_lis_shi_tra_trade_number:null,
+            receive_datetime:null,
+            select_field_per_page_num:10,
+            data_order_id:null,
+            page:1,
+            sort_by:'data_shipment_voucher_id',
+            sort_type:"ASC",
+        }),
     };
   },
   beforeCreate: function() {
@@ -292,58 +270,49 @@ export default {
             }
         },
   methods: {
+      sorting(sorted_field){
+          this.form.sort_by=sorted_field;
+          this.form.sort_type=this.form.sort_type=="ASC"?"DESC":"ASC";
+          this.getItemSearchData();
 
-    deliverySearchForm3(){
-      this.order_search_modal3 = true;
-    },
-    selectNumPage(){
-      if(this.select_field_page_num!=0){
-
-        this.get_all_byr_order_detail(this.select_field_page_num);
-      }
-
-    },
-    selectNumPerPage(){
-      if(this.select_field_per_page_num!=0){
-        Fire.$emit("LoadByrorderDetail");
-      }
-
-    },
-    searchItemDetail(){
-       Fire.$emit("LoadByrorderDetail");
-        this.order_search_modal3 = false;
-    },
+      },
     //get Table data
-    get_all_byr_order_detail(page = 1) {
-      this.param_data['page']=page;
-      this.param_data['per_page']=this.select_field_per_page_num;
-      this.param_data['form_search'] = this.form;
-      this.select_field_page_num = page;
-      axios
-        .post(this.BASE_URL + "api/get_all_shipment_item_by_search", this.param_data)
+    getItemSearchData(page = 1) {
+        this.form.page=page;
+        axios.post(this.BASE_URL + "api/get_all_shipment_item_by_search", this.form)
         .then(({ data }) => {
-        this.init(data.status);
-          this.order_detail_lists = data.order_list_detail;
-          this.order_info = data.order_info;
-          this.order_item_lists = data.orderItem;
-          this.loader.hide();
+            this.init(data.status);
+            // console.log(data);
+            this.order_item_lists = data.order_item_lists;
+            // this.order_info = data.order_info;
+            this.loader.hide();
         });
     },
 
-    
+
 
   },
 
   created() {
     Fire.$emit("byr_has_selected", this.$session.get("byr_buyer_id"));
     Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
-    this.param_data = this.$session.get('voucher_page_query_param');
-    this.parent.query = this.$session.get('voucher_page_query_param');
     this.loader = Vue.$loading.show();
-    this.data_order_id = this.$route.params.data_order_id;
-    this.get_all_byr_order_detail();
-    Fire.$on("LoadByrorderDetail", () => {
-      this.get_all_byr_order_detail();
+
+    this.order_info=this.$session.get("order_info");
+    console.log(this.order_info)
+    this.form.mes_lis_shi_log_del_delivery_service_code=this.order_info.mes_lis_shi_log_del_delivery_service_code
+    this.form.mes_lis_shi_par_sel_code=this.order_info.mes_lis_shi_par_sel_code
+    this.form.mes_lis_shi_par_sel_name=this.order_info.mes_lis_shi_par_sel_name
+    this.form.mes_lis_shi_tra_dat_delivery_date=this.order_info.mes_lis_shi_tra_dat_delivery_date
+    this.form.mes_lis_shi_tra_goo_major_category=this.order_info.mes_lis_shi_tra_goo_major_category
+    this.form.mes_lis_shi_tra_ins_temperature_code=this.order_info.mes_lis_shi_tra_ins_temperature_code
+    this.form.mes_lis_shi_tra_trade_number=this.order_info.mes_lis_shi_tra_trade_number
+    this.form.receive_datetime=this.order_info.receive_datetime
+
+    this.form.data_order_id=this.$route.query.data_order_id;
+    this.getItemSearchData();
+    Fire.$on("getItemSearchData", () => {
+      this.getItemSearchData();
     });
   },
   mounted() {

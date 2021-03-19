@@ -11,7 +11,7 @@
             <td width="15%">{{order_item_lists.mes_lis_shi_par_sel_code}} {{order_item_lists.mes_lis_shi_par_sel_name}}</td>
            <td width="10%" class="cl_custom_color">便</td>
             <td width="15%"> {{getbyrjsonValueBykeyName('mes_lis_ord_log_del_delivery_service_code',order_item_lists.mes_lis_shi_log_del_delivery_service_code,'orders')}}</td>
-            
+
           </tr>
           <tr>
             <td width="10%" class="cl_custom_color">納品日</td>
@@ -35,7 +35,7 @@
             <td width="15%">{{order_item_shipment_data_headTable.mes_lis_shi_par_shi_code}} {{order_item_shipment_data_headTable.mes_lis_shi_par_shi_name}}</td>
             <td width="10%" class="cl_custom_color">最終納品先</td>
             <td width="15%">{{order_item_shipment_data_headTable.mes_lis_shi_par_rec_code}} {{order_item_shipment_data_headTable.mes_lis_shi_par_rec_name}}</td>
-            
+
           </tr>
           <tr>
           <td width="10%" class="cl_custom_color">伝票番号</td>
@@ -44,25 +44,25 @@
             <td width="15%">{{order_item_shipment_data_headTable.mes_lis_shi_tra_ins_trade_type_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_trade_type_code',order_item_shipment_data_headTable.mes_lis_shi_tra_ins_trade_type_code,'orders')}}</td>
             <td width="10%" class="cl_custom_color">定／特</td>
             <td width="15%">{{order_item_shipment_data_headTable.mes_lis_shi_tra_ins_goods_classification_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_goods_classification_code',order_item_shipment_data_headTable.mes_lis_shi_tra_ins_goods_classification_code,'orders')}}</td>
-            
+
           </tr>
           <tr>
             <td width="10%" class="cl_custom_color">不定貴区分</td>
             <td width="15%">{{order_item_shipment_data_headTable.mes_lis_shi_tra_fre_variable_measure_item_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_fre_variable_measure_item_code',order_item_shipment_data_headTable.mes_lis_shi_tra_fre_variable_measure_item_code,'orders')}}</td>
             <td width="10%" class="cl_custom_color">税区分・税率</td>
             <td width="15%">{{order_item_shipment_data_headTable.mes_lis_shi_tra_tax_tax_type_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_tax_tax_type_code',order_item_shipment_data_headTable.mes_lis_shi_tra_tax_tax_type_code,'orders')}} {{order_item_shipment_data_headTable.mes_lis_shi_tra_tax_tax_rate}} %</td>
-           
+
             <td width="10%" class="cl_custom_color">備考</td>
             <td width="15%">{{order_item_shipment_data_headTable.mes_lis_shi_tra_not_text}}</td>
           </tr>
-          
+
 
         </table>
       </div>
       <div class="col-12" style="text-align: center">
        <table class="table orderTopDetailTable table-bordered" style="width: 100%">
           <tr>
-            
+
             <td width="10%" class="cl_custom_color">出荷状況</td>
             <td width="15%">{{order_item_shipment_data_headTable.status}}</td>
             <td width="10%" class="cl_custom_color_extra">確定状況</td>
@@ -70,13 +70,13 @@
             <td width="10%" class="cl_custom_color_extra">送信状況</td>
             <td width="15%">{{order_item_shipment_data_headTable.send_datetime}}</td>
           </tr>
-          
+
           </table>
       </div>
 
       <div class="col-12">
       <table class="table orderTopDetailTable table-bordered" style="width: 100%">
-          
+
           <tr>
            <td class="cl_custom_color_extra">訂正納品日</td>
             <td colspan="3"><input class="form-control" :disabled="is_disabled(order_item_shipment_data_headTable.decision_datetime==null?true:false)" type="date" v-model="order_item_shipment_data_headTable.mes_lis_shi_tra_dat_revised_delivery_date"></td>
@@ -475,7 +475,7 @@ beforeCreate: function() {
       }
     },
     update_shipment_detail(order_detail) {
-    
+
       axios({
         method: "POST",
         url: this.BASE_URL + "api/update_shipment_detail",
@@ -504,7 +504,7 @@ beforeCreate: function() {
         });
     },
 
-    
+
     edit_order_detail(order_detail_list) {
       this.edit_order_modal = true;
     },
@@ -512,18 +512,16 @@ beforeCreate: function() {
 
   created() {
     this.byr_buyer_id = this.$session.get('byr_buyer_id');
-  
+
     Fire.$emit('byr_has_selected',this.$session.get('byr_buyer_id'));
     Fire.$emit('permission_check_for_buyer',this.$session.get('byr_buyer_id'));
 this.getbuyerJsonSettingvalue();
-    
+
     this.param_data=this.$route.query
-  
-    this.parent.query = this.$session.get('voucher_page_query_param');
-   
+
     this.loader = Vue.$loading.show();
     this.data_order_voucher_id = this.$route.params.data_order_list_voucher_id;
-    
+
     this.get_all_byr_order_item_detail();
     Fire.$on("LoadByrorderItemDetail", () => {
 
@@ -582,7 +580,6 @@ this.getbuyerJsonSettingvalue();
     },
   },
   mounted() {
-    Fire.$on("voucher_page_query_param", (query_param) => {});
   },
 };
 </script>

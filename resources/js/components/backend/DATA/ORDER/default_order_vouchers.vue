@@ -31,7 +31,7 @@
             </td>
           </tr>
           <tr>
-            <td width="10%"class="cl_custom_color">納品日</td>
+            <td width="10%" class="cl_custom_color">納品日</td>
             <td width="15%">
             <span v-if="order_info">
             {{ order_info.mes_lis_shi_tra_dat_delivery_date }}
@@ -259,10 +259,9 @@
               <div class="col-3">
                 <p class="mb-0">商品別の更新はこちら</p>
                 <router-link
-                  to="/order_list/order_list_details/item_search"
-                  class="active btn btn-primary"
-                >
-                  商品別登録</router-link
+                :to="{name: 'item_search',query:{data_order_id:param_data.data_order_id}}" class="active btn btn-primary">
+                  商品別登録
+                </router-link
                 >
               </div>
               <div class="col-5">
@@ -1138,6 +1137,7 @@ export default {
           this.init(data.status);
           this.order_detail_lists = data.order_list_detail;
           this.order_info = data.order_info;
+          this.$session.set("order_info",this.order_info)
           this.loader.hide();
         });
     },
@@ -1168,14 +1168,12 @@ export default {
 
     Fire.$emit("byr_has_selected", this.$session.get("byr_buyer_id"));
     Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
-    Fire.$emit("voucher_page_query_param", "myData");
-    this.$session.set("voucher_page_query_param", this.$route.query);
 
     this.param_data = this.$route.query;
     // console.log(this.param_data);
-
+    // this.$session.set("order_param_data",this.param_data)
     this.loader = Vue.$loading.show();
-    this.data_order_id = this.$route.params.data_order_id;
+    // this.data_order_id = this.$route.params.data_order_id;
     this.get_all_byr_order_detail();
     Fire.$on("LoadByrorderDetail", (page=1) => {
       this.get_all_byr_order_detail(page);
