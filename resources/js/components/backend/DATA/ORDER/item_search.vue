@@ -52,7 +52,7 @@
             <td>
               <input
                 type="text" class="form-control topHeaderInputFieldBtn"/>
-              <button class="btn btn-primary active">参照</button>
+              <button @click="searchBypopupmodal" class="btn btn-primary active">参照</button>
             </td>
             <td class="cl_custom_color">JANコード</td>
             <td>
@@ -276,6 +276,9 @@ export default {
           this.form.sort_type=this.form.sort_type=="ASC"?"DESC":"ASC";
           this.getItemSearchData();
 
+      },
+      searchBypopupmodal(){
+        this.order_search_modal3= true;
       },
     //get Table data
     getItemSearchData(page = 1) {
