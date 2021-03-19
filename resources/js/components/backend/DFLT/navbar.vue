@@ -86,10 +86,10 @@
           </div>
           <div class="col-5 p-0">
             <ul class="navbar-nav top_custom_ul flex-row">
-              <li class="nav-item" v-if="company_name != ''">
+              <li class="nav-item" v-if="userCompanyInfo.company_name != ''">
                 <a class="uer_company nav-link top_menu_custom_a">
                   <b-icon icon="grid3x3-gap-fill"></b-icon>
-                  {{ company_name }}</a
+                  {{ userCompanyInfo.company_name }}</a
                 >
               </li>
 
@@ -288,7 +288,7 @@ export default {
       company_name: null,
       slr_order_list:null,
       hover: false,
-
+      userCompanyInfo:{},
       selected_customer_list: "未選択",
       buyer_info_for_saller:[],
       fields: [
@@ -324,6 +324,16 @@ export default {
         this.user_data.user.image
       );
     },
+    get_logged_user_company(){
+      axios
+        .post(this.myLang.base_url + "api/get_logged_user_company_by_user_id", {
+          user_id: this.myLang.user_info_id,
+        })
+        .then(({ data }) => {
+          this.userCompanyInfo = data.userCompanyInfo;
+           //console.log(data.userCompanyInfo);
+        });
+    },
     get_user_company_info() {
        axios
         .post(this.myLang.base_url + "api/get_byr_order_data_by_slr", {
@@ -332,7 +342,7 @@ export default {
         .then(({ data }) => {
             this.init(data.status);
           
-          this.slr_order_list = data.slr_order_info;
+            this.slr_order_list = data.slr_order_info;
         });
     },
     get_slected_byr_info(byr_buyer_id) {
@@ -357,6 +367,10 @@ export default {
   },
   created() {
     this.get_user_company_info();
+    this.get_logged_user_company();
+    Fire.$on("getLoggedUserInfo", () => {
+      this.get_logged_user_company();
+    });
     this.user_data = this.app._data;
     Fire.$on("byr_has_selected", (byr_buyer_id) => {
       this.get_slected_byr_info(byr_buyer_id);

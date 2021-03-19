@@ -301,10 +301,13 @@ class AllUsedFunction extends Controller
             //     ->join('byr_buyers', 'byr_buyers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
             // $cmn_company_info->join('cmn_connects', 'cmn_connects.byr_buyer_id', '=', 'byr_buyers.byr_buyer_id')
             $cmn_company_info=$cmn_company_info->where('cmn_companies_users.adm_user_id', $adm_user_id)->first();
-
+            
             if (!empty($cmn_company_info)) {
+                $company_details = cmn_company::where('cmn_company_id',$cmn_company_info->cmn_company_id)->first();
                 $arr = array(
                     'cmn_company_id' => $cmn_company_info->cmn_company_id,
+                    'company_name' => $company_details->company_name,
+                    'company_type' => $company_details->company_type,
                     // 'byr_buyer_id' => $cmn_company_info->byr_buyer_id,
                     'cmn_connect_id' => $cmn_company_info->cmn_connect_id,
                 );

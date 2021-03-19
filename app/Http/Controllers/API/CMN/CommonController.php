@@ -99,4 +99,14 @@ class CommonController extends Controller
         }
 
     }
+    public function get_logged_user_company_by_user_id(Request $request){
+        $adm_user_id = $request->user_id;
+        $authUser = User::find($adm_user_id);
+        $result = array();
+        if (!$authUser->hasRole(config('const.adm_role_name'))) {
+            $result = $this->all_used_fun->get_user_info( $adm_user_id);
+        }
+        return response()->json(['userCompanyInfo' => $result]);
+
+    }
 }
