@@ -1,5 +1,6 @@
 <template>
   <div class="row">
+  <div class="col-12">
     <div class="col-12" style="background: #d8e3f0; padding: 10px">
       <!--<h4 class="top_title text-center" style="margin-top:10px;">{{myLang.payment_data}}</h4>-->
       <table class="table orderDetailTable table-bordered" style="width: 100%">
@@ -52,6 +53,7 @@
           </td>
         </tr>
       </table>
+    </div>
     </div>
     <div class="col-12" style="text-align: center">
       <button class="btn btn-primary active srchBtn" type="button" @click="searchPaymentItem">
