@@ -392,7 +392,8 @@ export const routes = [
         name: 'order_receive',
         meta: {
             breadcrumb: {
-                label: '受領受信一覧'
+                label: '受領受信一覧',
+                parent:'home'
             }
         },
     },
@@ -446,7 +447,8 @@ export const routes = [
         name: 'payment_list',
         meta: {
             breadcrumb: {
-                label: '支払受信一覧'
+                label: '支払受信一覧',
+                parent:'home'
             }
         }
 

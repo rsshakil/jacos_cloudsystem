@@ -1,5 +1,6 @@
 <template>
   <div class="row">
+  <div class="col-12">
     <div class="col-12" style="background: #d8e3f0; padding: 10px">
       <!--<h4 class="top_title text-center" style="margin-top:10px;">{{myLang.payment_data}}</h4>-->
       <table class="table orderDetailTable table-bordered" style="width: 100%">
@@ -29,6 +30,7 @@
           <td class="text-right">{{payment_detail_header.mes_lis_pay_lin_det_amo_payable_amount | priceFormat}}</td>
         </tr>
       </table>
+    </div>
     </div>
     <div class="col-12" style="text-align: right;float:right">
       <button class="btn btn-primary active" type="button">

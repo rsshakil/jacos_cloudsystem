@@ -1,8 +1,9 @@
 <template>
   <div class="row">
     <div class="col-12">
+    <div class="col-12" style="background: #d8e3f0; padding: 10px">
      <table
-          class="table orderTopDetailTable table-bordered"
+          class="table orderDetailTable table-bordered"
           style="width: 100%"
         >
           <tr>
@@ -45,6 +46,7 @@
         <td colspan="4"></td>
           </tr>
         </table>
+    </div>
     </div>
     <div class="col-12 text-center">
       <button class="btn btn-primary active srchBtn" type="button" @click="get_all_invoice_list">
@@ -160,7 +162,7 @@
     >
       <div class="panel-body">
         <table
-          class="table orderTopDetailTable table-bordered"
+          class="table orderDetailTable table-bordered"
           style="width: 100%"
         >
           <tr>

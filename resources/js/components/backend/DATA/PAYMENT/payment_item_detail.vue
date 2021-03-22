@@ -1,6 +1,7 @@
 <template>
   <div class="row">
-    <div class="col-12" style="background: #d8e3f0; padding: 10px">
+   <div class="col-12">
+    <div class="col-12" style="background: #d8e3f0; padding: 10px;margin-bottom:20px;">
       <!--<h4 class="top_title text-center" style="margin-top:10px;">{{myLang.payment_data}}</h4>-->
       <table class="table orderDetailTable table-bordered" style="width: 100%">
         <tr>
@@ -30,8 +31,10 @@
         </tr>
       </table>
     </div>
-    <div class="col-12" style=" padding: 10px">
-      <table class="table orderTopDetailTable table-bordered" style="width: 100%">
+    </div>
+    <div class="col-12">
+    <div class="col-12" style="background: #d8e3f0; padding: 10px">
+      <table class="table orderDetailTable table-bordered" style="width: 100%">
           <tr>
             <td style="width:10%" class="cl_custom_color">計上日</td>
             <td style="width:15%"><div class="input-group">
@@ -100,6 +103,7 @@
             </td>
           </tr>
         </table>
+    </div>
     </div>
 
 

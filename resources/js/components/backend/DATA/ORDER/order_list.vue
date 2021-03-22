@@ -1,5 +1,6 @@
 <template>
   <div class="row" v-can="['byr_view', 'slr_view']">
+  <div class="col-12">
     <div class="col-12" style="background: #d8e3f0; padding: 10px">
       <table class="table orderDetailTable table-bordered" style="width: 100%">
         <tr>
@@ -121,6 +122,7 @@
         </tr>
 
       </table>
+    </div>
     </div>
     <!-- </div> -->
     <br />
