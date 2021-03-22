@@ -60,6 +60,7 @@ class InvoiceController extends Controller
         $mes_lis_inv_per_begin_date=$request->mes_lis_inv_per_begin_date;
         $mes_lis_inv_per_end_date=$request->mes_lis_inv_per_end_date;
         $send_datetime_status=$request->send_datetime_status;
+        $mes_lis_inv_pay_id=$request->mes_lis_inv_pay_id;
         $sort_by = $request->sort_by;
         $sort_type = $request->sort_type;
 
@@ -82,7 +83,9 @@ class InvoiceController extends Controller
             $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
         $result=data_invoice::select('data_invoices.data_invoice_id','dip.mes_lis_inv_per_end_date',
-        'dip.mes_lis_inv_pay_code','dip.mes_lis_inv_pay_name','dip.mes_lis_buy_code','dip.mes_lis_buy_name',
+        'dip.mes_lis_inv_pay_code','dip.mes_lis_inv_pay_name','dip.mes_lis_buy_code',
+        'dip.mes_lis_inv_pay_id',
+        'dip.mes_lis_buy_name',
         'dip.status','dipd.mes_lis_inv_lin_det_amo_requested_amount'
         )
         ->join('data_invoice_pays as dip','data_invoices.data_invoice_id','=','dip.data_invoice_id')
@@ -90,6 +93,9 @@ class InvoiceController extends Controller
         ->where('data_invoices.cmn_connect_id','=',$cmn_connect_id);
         if ($mes_lis_inv_pay_code!=null) {
             $result=$result->where('dip.mes_lis_inv_pay_code','=',$mes_lis_inv_pay_code);
+        }
+        if ($mes_lis_inv_pay_id!='') {
+            $result=$result->where('dip.mes_lis_inv_pay_id','=',$mes_lis_inv_pay_id);
         }
         // if ($mes_lis_inv_per_begin_date && $mes_lis_inv_per_end_date) {
         //     $result=$result->whereBetween('dip.mes_lis_inv_per_end_date', [$mes_lis_inv_per_begin_date, $mes_lis_inv_per_end_date]);
@@ -154,6 +160,7 @@ class InvoiceController extends Controller
         $data_invoice_pay_id = data_invoice_pay::insertGetId([
             'data_invoice_id'=>$invoice_id,
             'mes_lis_inv_pay_code'=>$request->mes_lis_inv_pay_code,
+            'mes_lis_inv_pay_id'=>$request->mes_lis_inv_pay_id,
             'mes_lis_inv_per_begin_date'=>$request->mes_lis_inv_per_begin_date,
             'mes_lis_inv_per_end_date'=>$request->mes_lis_inv_per_end_date
             ]);

@@ -6,28 +6,7 @@
           style="width: 100%"
         >
           <tr>
-            <td style="width:10%" class="cl_custom_color">請求取引先コード</td>
-            <td style="width:15%"><input type="text" class="form-control" v-model="form.mes_lis_inv_pay_code"></td>
-            
-            <td style="width:10%" class="cl_custom_color">発注者</td>
-            <td  style="width:15%">
-            <select class="form-control">
-                <option value="">全て</option>
-
-              </select>
-            </td>
-            <td  style="width:10%" class="cl_custom_color">請求状況</td>
-            <td  style="width:15%" colspan="2">
-                <select class="form-control" v-model="form.send_datetime_status">
-                <option value="*">全て</option>
-                <option :value="item" v-for="(item,i) in send_datetime_status" :key="i">
-                  {{ item }}
-                </option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td style="width:10%" class="cl_custom_color">締日</td>
+          <td style="width:10%" class="cl_custom_color">締日</td>
             <td style="width:15%">
                 <div class="input-group">
                     <input type="date" class="form-control" v-model="form.mes_lis_inv_per_begin_date">
@@ -37,6 +16,32 @@
                     <input type="date" class="form-control" v-model="form.mes_lis_inv_per_end_date">
                 </div>
         </td>
+            <td style="width:10%" class="cl_custom_color">請求取引先コード</td>
+            <td style="width:15%"><input type="text" class="form-control topHeaderInputFieldBtn" v-model="form.mes_lis_inv_pay_code">
+            <button
+                
+                class="btn btn-primary active"
+              >
+                参照
+              </button>
+            </td>
+            
+            <td style="width:10%" class="cl_custom_color">請求書番号</td>
+            <td  style="width:15%">
+            <input type="text" class="form-control" v-model="form.mes_lis_inv_pay_id">
+            </td>
+            
+          </tr>
+          <tr>
+            <td  style="width:10%" class="cl_custom_color">請求状況</td>
+            <td  style="width:15%" colspan="2">
+                <select class="form-control" v-model="form.send_datetime_status">
+                <option value="*">全て</option>
+                <option :value="item" v-for="(item,i) in send_datetime_status" :key="i">
+                  {{ item }}
+                </option>
+              </select>
+            </td>
         <td colspan="4"></td>
           </tr>
         </table>
@@ -93,7 +98,7 @@
               <th>No</th>
               <th class="pointer_class" @click="sorting('mes_lis_inv_per_end_date')">締日 <span class="float-right" :class="iconSet('mes_lis_inv_per_end_date')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_inv_pay_code')">請求取引先コード <span class="float-right" :class="iconSet('mes_lis_inv_pay_code')"></span></th>
-              <th class="pointer_class" @click="sorting('mes_lis_buy_name')">発注者 <span class="float-right" :class="iconSet('mes_lis_buy_name')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_inv_pay_id')">請求書番号 <span class="float-right" :class="iconSet('mes_lis_inv_pay_id')"></span></th>
               <th class="pointer_class" @click="sorting('status')">請求状況 <span class="float-right" :class="iconSet('status')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_inv_lin_det_amo_requested_amount')">請求金額 <span class="float-right" :class="iconSet('mes_lis_inv_lin_det_amo_requested_amount')"></span></th>
             </tr>
@@ -129,7 +134,7 @@
                 <!-- <router-link :to="{ name: 'invoice_detail', params: { data_invoice_id: value.data_invoice_id }, }" class="btn btn-info">{{ value.mes_lis_inv_per_end_date }}</router-link> -->
               </td>
               <td>{{ value.mes_lis_inv_pay_code }}</td>
-              <td>{{ value.mes_lis_buy_name }}</td>
+              <td>{{ value.mes_lis_inv_pay_id }}</td>
               <td>{{ value.status }}</td>
               <td class="text-right">{{value.mes_lis_inv_lin_det_amo_requested_amount | priceFormat }}</td>
 
@@ -173,6 +178,11 @@
     </div>
             </td>
           </tr>
+          <tr>
+            <td class="cl_custom_color">請求書番号</td>
+            <td colspan="3"><input type="text" v-model="invoiceData.mes_lis_inv_pay_id" class="form-control" /></td>
+            
+          </tr>
 
         </table>
       </div>
@@ -193,6 +203,7 @@ export default {
       invoiceData:{
         adm_user_id: Globals.user_info_id,
         byr_buyer_id: null,
+        mes_lis_inv_pay_id:'',
         mes_lis_inv_pay_code:'',
         mes_lis_inv_per_begin_date:'',
         mes_lis_inv_per_end_date:'',
@@ -204,6 +215,7 @@ export default {
         adm_user_id: Globals.user_info_id,
         byr_buyer_id: null,
         mes_lis_inv_pay_code: '',
+        mes_lis_inv_pay_id: '',
         mes_lis_inv_per_begin_date:'',
         mes_lis_inv_per_end_date:'',
         send_datetime_status: "*",
@@ -294,6 +306,7 @@ export default {
     Fire.$on("LoadByrinvoice", () => {
       this.get_all_invoice_list();
     });
+    Fire.$emit("loadPageTitle", "請求データ一覧");
   },
   mounted() {
   },

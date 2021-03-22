@@ -483,7 +483,8 @@ export const routes = [
         name: 'invoice_list',
         meta: {
             breadcrumb: {
-                label: '請求一覧'
+                label: '請求トップ',
+                parent:'home'
             }
         },
 
