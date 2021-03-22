@@ -111,7 +111,7 @@
               <select
                 class="form-control"
                 v-model="form.fixedSpecial"
-              
+
               >
                 <option value="*">全て</option>
 
@@ -129,7 +129,7 @@
               <select
                 class="form-control"
                 v-model="form.situation"
-               
+
               >
                 <option value="*">全て</option>
                 <option :value="item" v-for="(item,i) in situationOptionList" :key="i">
@@ -144,7 +144,7 @@
               <select
                 class="form-control"
                 v-model="form.printingStatus"
-                
+
               >
                 <option value="*">全て</option>
                 <option :value="item" v-for="(item,i) in printingStatusOptionList" :key="i">
@@ -214,7 +214,7 @@
                 <!--<b-button
                   class="active"
                   variant="primary"
-                  v-on:click="order_download"
+                  v-on:click="order_details_download"
                 >
                   <b-icon
                     icon="download"
@@ -241,14 +241,14 @@
                   <div class="dropdown-menu dropdown-menu-right">
                     <button
                       class="dropdown-item"
-                      @click="order_download(1)"
+                      @click="order_details_download(1)"
                       type="button"
                     >
                       CSV
                     </button>
                     <button
                       class="dropdown-item"
-                      @click="order_download(2)"
+                      @click="order_details_download(2)"
                       type="button"
                     >
                       JCA
@@ -1147,7 +1147,7 @@ export default {
       this.edit_order_modal = true;
     },
     // order data download
-    order_download(downloadType = 1) {
+    order_details_download(downloadType = 1) {
       //downloadcsvshipment_confirm
       var _this = this;
       axios

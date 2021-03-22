@@ -67,7 +67,7 @@
           <td style="width: 10%;" class="cl_custom_color">部門</td>
           <td style="width: 15%;">
             <multiselect v-model="form.category_code" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="true" :select-label="''" :deselect-label="''" :selected-label="'選択中'" :preserve-search="true"  placeholder="部門"></multiselect>
-           
+
           </td>
           <td style="width: 10%;" class="cl_custom_color">温度区分</td>
           <td style="width: 15%">
@@ -429,41 +429,38 @@ export default {
       this.get_all_order();
 
     },
-    orderDownload() {
-      let formData = new FormData();
-      formData.append("scenario_id", 11);
-      formData.append("byr_buyer_id", this.$session.get("byr_buyer_id"));
-      axios({
-        method: "POST",
-        url: this.BASE_URL + "api/scenario_exec",
-        data: formData,
-        headers: { "Content-Type": "multipart/form-data" },
-      })
-        .then(({data})=> {
-          //handle success
-          this.init(data.status);
-          // const url = window.URL.createObjectURL(new Blob([response.data]));
-          const url = data.file_link;
-          const link = document.createElement("a");
-          link.href = url;
-
-          //レスポンスヘッダからファイル名を取得します
-          // const contentDisposition = response.headers["content-disposition"];
-          // let fileName = contentDisposition.substring(
-          //   contentDisposition.indexOf("filename=") + 9,
-          //   contentDisposition.length
-          // );
-          // //デコードするとスペースが"+"になるのでスペースへ置換します
-          // fileName = decodeURI(fileName).replace(/\+/g, " ");
-          let fileName = url.match(".+/(.+?)([?#;].*)?$")[1];
-          link.setAttribute("download", fileName);
-          document.body.appendChild(link);
-          link.click();
-          Fire.$emit("LoadByrorder");
+    orderDownload(downloadType = 1) {
+      //downloadcsvshipment_confirm
+      var _this = this;
+      axios
+        .post(this.BASE_URL + "api/downloadcsvshipment_confirm", {
+          data_order_id: 1,
+        //   order_info: this.order_info,
+          downloadType: downloadType,
         })
-        .catch(function (response) {
+        .then(({ data }) => {
+           this.init(data.status);
+           this.downloadFromUrl(data);
         });
     },
+    // orderDownload() {
+    //   let formData = new FormData();
+    //   formData.append("scenario_id", 11);
+    //   formData.append("byr_buyer_id", this.$session.get("byr_buyer_id"));
+    //   axios({
+    //     method: "POST",
+    //     url: this.BASE_URL + "api/scenario_exec",
+    //     data: formData,
+    //     headers: { "Content-Type": "multipart/form-data" },
+    //   })
+    //     .then(({data})=> {
+    //       //handle success
+    //       this.init(data.status);
+    //       this.downloadFromUrl(data);
+    //       Fire.$emit("LoadByrorder");
+    //     }).catch(function (response) {
+    //     });
+    // },
     check_byr_order_api() {
       let formData = new FormData();
       formData.append("up_file", this.file);

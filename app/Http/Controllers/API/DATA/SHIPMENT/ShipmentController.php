@@ -43,6 +43,7 @@ class ShipmentController extends Controller
     }
     public function downloadShipmentCsv(Request $request)
     {
+        // return $request->all();
         // downloadType=1 for Csv
         // downloadType=2 for Fixed length
         $data_order_id=$request->data_order_id;
