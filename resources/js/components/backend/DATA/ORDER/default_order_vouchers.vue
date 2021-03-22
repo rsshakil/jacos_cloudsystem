@@ -1,9 +1,10 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-12" style="padding: 10px">
+    <div class="col-12">
+      <div class="col-12" style="background: #d8e3f0;padding: 10px;margin-bottom:20px;">
         <table
-          class="table orderTopDetailTable table-bordered"
+          class="table orderDetailTable table-bordered"
           style="width: 100%"
         >
 
@@ -60,6 +61,8 @@
           </tr>
         </table>
       </div>
+      </div>
+      <div class="col-12">
       <div class="col-12" style="background: #d8e3f0; padding: 10px">
         <table
           class="table orderDetailTable table-bordered"
@@ -154,6 +157,7 @@
             </td>
           </tr>
         </table>
+      </div>
       </div>
 
       <div class="col-12" style="text-align: center">

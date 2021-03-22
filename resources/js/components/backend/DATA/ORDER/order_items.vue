@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="row">
-
-      <div class="col-12" style="padding: 10px">
-        <table class="table orderTopDetailTable table-bordered" style="width: 100%">
+    <div class="col-12">
+      <div class="col-12" style="background: #d8e3f0;padding: 10px;margin-bottom:20px;">
+        <table class="table orderDetailTable table-bordered" style="width: 100%">
           <tr>
             <td width="10%" class="cl_custom_color">受信日時</td>
             <td width="15%">{{order_item_lists.receive_datetime}}</td>
@@ -23,11 +23,10 @@
           </tr>
         </table>
       </div>
-      <div
-        class="col-12"
-        style="padding: 10px; margin-top: 20px"
-      >
-        <table class="table orderTopDetailTable table-bordered" style="width: 100%">
+      </div>
+       <div class="col-12">
+      <div class="col-12" style="background: #d8e3f0;padding: 10px;margin-bottom:20px;">
+        <table class="table orderDetailTable table-bordered" style="width: 100%">
           <tr>
             <td width="10%" class="cl_custom_color">発注日</td>
             <td width="15%">{{order_item_shipment_data_headTable.mes_lis_shi_tra_dat_order_date}}</td>
@@ -59,8 +58,10 @@
 
         </table>
       </div>
-      <div class="col-12" style="text-align: center">
-       <table class="table orderTopDetailTable table-bordered" style="width: 100%">
+      </div>
+      <div class="col-12">
+      <div class="col-12" style="background: #d8e3f0;padding: 10px;margin-bottom:20px;">
+       <table class="table orderDetailTable table-bordered" style="width: 100%">
           <tr>
 
             <td width="10%" class="cl_custom_color">出荷状況</td>
@@ -73,9 +74,10 @@
 
           </table>
       </div>
+      </div>
 
       <div class="col-12">
-      <table class="table orderTopDetailTable table-bordered" style="width: 100%">
+      <table class="table orderDetailTable table-bordered" style="width: 100%">
 
           <tr>
            <td class="cl_custom_color_extra">訂正納品日</td>

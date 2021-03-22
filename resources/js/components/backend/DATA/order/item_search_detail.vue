@@ -2,8 +2,9 @@
   <div>
     <div class="row">
 
-      <div class="col-12" style="padding: 10px">
-        <table class="table orderTopDetailTable table-bordered" style="width: 100%">
+      <div class="col-12">
+      <div class="col-12" style="background: #d8e3f0;padding: 10px;margin-bottom:20px;">
+        <table class="table orderDetailTable table-bordered" style="width: 100%">
           <tr>
             <td class="cl_custom_color">受信日時</td>
             <td>
@@ -72,12 +73,12 @@
           </tr>
         </table>
       </div>
-      <div
-        class="col-12"
-        style="padding: 10px; margin-bottom: 20px;margin-top: 20px;background:#DEE6F0"
+      </div>
+        <div class="col-12">
+      <div class="col-12" style="padding: 10px; margin-bottom: 20px;margin-top: 20px;background:#DEE6F0"
       >
       <p><router-link to="">【一括入力】</router-link>対象行のチェックボックス を選択後、『選択行に一括反映』をクリックすると、入力値を選択行に一括反映します。</p>
-        <table class="table orderTopDetailTable table-bordered" style="width: 100%">
+        <table class="table orderDetailTable table-bordered" style="width: 100%">
           <tr>
             <td class="cl_custom_color_active">ケース数</td>
             <td><input type="text" class="form-control" v-model="order_item_lists.mes_lis_shi_lin_qua_shi_num_of_order_units" /></td>
@@ -103,6 +104,7 @@
 
         </table>
         <button class="btn btn-primary" @click="updateOrderItemFormData" style="float:right;">選択行に一括反映 -></button>
+      </div>
       </div>
       <div class="col-12" style="text-align: center">
 
