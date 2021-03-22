@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\AllUsedFunction;
 use App\Http\Controllers\API\DATA\Data_Controller;
+use App\Models\BYR\byr_buyer;
 use App\Exports\ShipmentCSVExport;
 use App\Models\DATA\SHIPMENT\data_shipment;
 use App\Models\DATA\SHIPMENT\data_shipment_item;
@@ -17,9 +18,11 @@ use App\Traits\Csv;
 class ShipmentController extends Controller
 {
     private $all_functions;
+    private $data_controller;
     public function __construct()
     {
         $this->all_functions = new AllUsedFunction();
+        $this->data_controller = new Data_Controller();
     }
     public function shipmentConfirm(Request $request)
     {
@@ -44,8 +47,8 @@ class ShipmentController extends Controller
     public function downloadShipmentCsv(Request $request)
     {
         // return $request->all();
-        // downloadType=1 for Csv
-        // downloadType=2 for Fixed length
+        // return $request->all();
+        //ownloadType=2 for Fixed length
         $data_order_id=$request->data_order_id;
         $downloadType=$request->downloadType;
         $csv_data_count =0;
@@ -115,6 +118,11 @@ class ShipmentController extends Controller
     }
     public function shipmentUpdate(Request $request)
     {
+        // return $request->all();
+        $byr_buyer_id=$request->byr_buyer_id;
+        $buter_info=byr_buyer::select('setting_information')->where('byr_buyer_id',$byr_buyer_id)->first();
+        // return $buter_info;
+        $shipment_reason_code_array=json_decode($buter_info->setting_information,true)['shipments']['mes_lis_shi_lin_qua_sto_reason_code'];
         $file_name = time().'-'.$request->file('file')->getClientOriginalName();
         $path = $request->file('file')->storeAs(config('const.SHIPMENT_CSV_UPDATE_PATH'), $file_name);
         \Log::debug('save path:'.$path);
@@ -123,7 +131,7 @@ class ShipmentController extends Controller
         // フォーマット変換
 
         $dataArr = $this->all_functions->csvReader($received_path, 1);
-        $update_status=Data_Controller::shipmentUpdateArray($dataArr, $file_name);
+        return $update_status=$this->data_controller->shipmentUpdateArray($dataArr, $file_name,$shipment_reason_code_array);
         $ret = json_decode($update_status->getContent(), true);
         if ($ret['status']===$this->error) {
             unlink(storage_path().'/app/'.$path);

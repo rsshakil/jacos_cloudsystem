@@ -301,7 +301,7 @@ class AllUsedFunction extends Controller
             //     ->join('byr_buyers', 'byr_buyers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
             // $cmn_company_info->join('cmn_connects', 'cmn_connects.byr_buyer_id', '=', 'byr_buyers.byr_buyer_id')
             $cmn_company_info=$cmn_company_info->where('cmn_companies_users.adm_user_id', $adm_user_id)->first();
-            
+
             if (!empty($cmn_company_info)) {
                 $company_details = cmn_company::where('cmn_company_id',$cmn_company_info->cmn_company_id)->first();
                 $arr = array(
@@ -549,4 +549,8 @@ class AllUsedFunction extends Controller
         )->where('byr_buyer_id', $byr_buyer_id)->where('is_deleted', 0)->where('level', 1)->orderBy('category_code')->get();
         return $result;
     }
+    public function validateDate($date, $format = 'Y-m-d'){
+        $b = \DateTime::createFromFormat($format, $date);
+        return $b && $b->format($format) === $date;
+        }
 }
