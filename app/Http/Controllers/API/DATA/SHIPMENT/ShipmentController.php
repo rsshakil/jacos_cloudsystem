@@ -131,7 +131,7 @@ class ShipmentController extends Controller
         // フォーマット変換
 
         $dataArr = $this->all_functions->csvReader($received_path, 1);
-        return $update_status=$this->data_controller->shipmentUpdateArray($dataArr, $file_name,$shipment_reason_code_array);
+        $update_status=$this->data_controller->shipmentUpdateArray($dataArr, $file_name,$shipment_reason_code_array);
         $ret = json_decode($update_status->getContent(), true);
         if ($ret['status']===$this->error) {
             unlink(storage_path().'/app/'.$path);

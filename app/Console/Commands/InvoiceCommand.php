@@ -49,6 +49,7 @@ class InvoiceCommand extends Command
         $cmn_connect_info=cmn_connect::select('optional')->where('cmn_connect_id',1)->first();
         $optional=json_decode($cmn_connect_info->optional);
         $closing_date_array=$optional->invoice->closing_date;
+        asort($closing_date_array);
         $closing_date_count=count($closing_date_array);
         $start_date="00:00:00";
         $end_date="00:00:00";
