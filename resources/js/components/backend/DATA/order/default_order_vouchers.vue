@@ -776,6 +776,7 @@ export default {
   // props: ["param_data"],
   data() {
     return {
+        byr_buyer_id:null,
       rows: 100,
       currentPage: 1,
       today: new Date().toISOString().slice(0, 10),
@@ -1107,6 +1108,7 @@ export default {
           let file = e.target.files[0];
 
           formData.append("file", file);
+          formData.append("byr_buyer_id", _this.byr_buyer_id);
           axios.post(this.BASE_URL + "api/shipment_update", formData)
             .then(({ data }) => {
                 this.init(data.status);
@@ -1165,9 +1167,9 @@ export default {
 
   created() {
     // this.byr_session_check()
-
-    Fire.$emit("byr_has_selected", this.$session.get("byr_buyer_id"));
-    Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
+    this.byr_buyer_id=this.$session.get("byr_buyer_id");
+    Fire.$emit("byr_has_selected", this.byr_buyer_id);
+    Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
 
     this.param_data = this.$route.query;
     // console.log(this.param_data);
