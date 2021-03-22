@@ -217,7 +217,7 @@ export default {
     },
 
     totalAmountValOffset: function() {
-      return this.paymentdetailRghtTable.reduce(function (sumselling,val) {return  sumselling += val.mes_lis_pay_lin_det_amo_payable_amount_sum},0);
+      return this.paymentdetailRghtTable.reduce(function (sumselling,val) {return  sumselling += parseInt(val.mes_lis_pay_lin_det_amo_payable_amount_sum)},0);
 
     },
   },
