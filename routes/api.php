@@ -119,6 +119,8 @@ Route::post('get_all_cat_list', 'API\CMN\CmnCategoryController@get_all_cat_list'
 // Invoice
 Route::post('get_all_invoice_list', 'API\DATA\INVOICE\InvoiceController@get_all_invoice_list');
 Route::post('invoiceInsert', 'API\DATA\INVOICE\InvoiceController@invoiceInsert');
+Route::post('update_invoice_detail', 'API\DATA\INVOICE\InvoiceController@update_invoice_detail');
+Route::post('delete_invoice_detail', 'API\DATA\INVOICE\InvoiceController@delete_invoice_detail');
 Route::post('get_invoice_details_list', 'API\DATA\INVOICE\InvoiceController@invoiceDetailsList');
 Route::post('send_invoice_data', 'API\DATA\INVOICE\InvoiceController@sendInvoiceData');
 Route::post('update_invoice_decession_datetime', 'API\DATA\INVOICE\InvoiceController@decessionData');

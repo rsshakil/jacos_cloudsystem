@@ -10,6 +10,7 @@ use App\Models\BYR\byr_order_detail;
 use App\Models\DATA\INVOICE\data_invoice;
 use App\Models\DATA\INVOICE\data_invoice_pay;
 use App\Models\DATA\INVOICE\data_invoice_pay_detail;
+use App\Models\BYR\byr_buyer;
 use App\Http\Controllers\API\AllUsedFunction;
 use App\Http\Controllers\API\DATA\INVOICE\InvoiceDataController;
 use App\Exports\InvoiceCSVExport;
@@ -169,6 +170,33 @@ class InvoiceController extends Controller
             data_invoice_pay_detail::insert(['data_invoice_pay_id'=>$data_invoice_pay_id]);
         return response()->json(['success' => 1]);
     }
+    
+    public function update_invoice_detail(Request $request)
+    {
+        $updatedArray = array(
+        'mes_lis_inv_lin_det_transfer_of_ownership_date'=>$request->mes_lis_inv_lin_det_transfer_of_ownership_date,
+        'mes_lis_inv_lin_det_goo_major_category'=>$request->mes_lis_inv_lin_det_goo_major_category,
+        'mes_lis_inv_lin_tra_code'=>$request->mes_lis_inv_lin_tra_code,
+        'mes_lis_inv_lin_lin_trade_number_reference'=>$request->mes_lis_inv_lin_lin_trade_number_reference,
+        'mes_lis_inv_lin_det_pay_code'=>$request->mes_lis_inv_lin_det_pay_code,
+        'mes_lis_inv_lin_det_balance_carried_code'=>$request->mes_lis_inv_lin_det_balance_carried_code,
+        'mes_lis_inv_lin_det_amo_requested_amount'=>$request->mes_lis_inv_lin_det_amo_requested_amount
+        );
+        if($request->data_invoice_pay_detail_id!=''){
+            data_invoice_pay_detail::where(['data_invoice_pay_detail_id'=>$request->data_invoice_pay_detail_id])->update($updatedArray);
+            return response()->json(['success' => 1,'update_success'=>1]);
+        }else{
+            $data_invoice_id = data_invoice_pay::where('data_invoice_id',$request->data_invoice_id)->first();
+            $updatedArray['data_invoice_pay_id']=$data_invoice_id->data_invoice_pay_id;
+            data_invoice_pay_detail::insert($updatedArray);
+            return response()->json(['success' => 1,'insert_success'=>1]);
+        }
+    }
+    public function delete_invoice_detail(Request $request)
+    {
+        data_invoice_pay_detail::where('data_invoice_pay_detail_id',$request->data_invoice_pay_detail_id)->delete();
+        return response()->json(['success' => 1,'insert_success'=>1]);
+    }
     public function invoiceDetailsList(Request $request)
     {
         // return $request->all();
@@ -230,7 +258,9 @@ class InvoiceController extends Controller
         $result = $result->orderBy('dipd.'.$sort_by,$sort_type);
         $result=$result->paginate($per_page);
         $byr_buyer_category_list = $this->all_used_fun->get_allCategoryByByrId($byr_buyer_id);
-        return response()->json(['invoice_details_list' => $result,'byr_buyer_category_list'=>$byr_buyer_category_list]);
+        $buyer_settings = byr_buyer::select('setting_information')->where('byr_buyer_id', $byr_buyer_id)->first();
+        $buyer_settings = $buyer_settings->setting_information;
+        return response()->json(['invoice_details_list' => $result,'byr_buyer_category_list'=>$byr_buyer_category_list,'buyer_settings'=>$buyer_settings]);
     }
 
     public function sendInvoiceData(Request $request){
