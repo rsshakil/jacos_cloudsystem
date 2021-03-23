@@ -20,18 +20,18 @@
             <td class="cl_custom_color">請求取引先コード</td>
             <td><input type="text" class="form-control topHeaderInputFieldBtn" v-model="form.mes_lis_inv_pay_code">
             <button
-                
+
                 class="btn btn-primary active"
               >
                 参照
               </button>
             </td>
-            
+
             <td class="cl_custom_color">請求書番号</td>
             <td>
             <input type="text" class="form-control" v-model="form.mes_lis_inv_pay_id">
             </td>
-            
+
           </tr>
           <tr>
             <td class="cl_custom_color">請求状況</td>
@@ -106,17 +106,8 @@
           </thead>
           <tbody>
               <!-- {{ i=invoice_lists.from }} -->
-            <tr
-              v-for="(value, index) in invoice_lists.data"
-              :key="index"
-            >
-              <td>{{
-                invoice_lists.current_page *
-                      form.select_field_per_page_num -
-                    form.select_field_per_page_num +
-                    index +
-                    1
-               }}</td>
+            <tr v-for="(value, index) in invoice_lists.data" :key="index">
+              <td>{{ invoice_lists.current_page * form.select_field_per_page_num - form.select_field_per_page_num + index + 1 }}</td>
               <td>
                   <router-link
                   :to="{
@@ -139,6 +130,9 @@
               <td>{{ value.status }}</td>
               <td class="text-right">{{value.mes_lis_inv_lin_det_amo_requested_amount | priceFormat }}</td>
 
+            </tr>
+            <tr>
+                <td colspan="6" class="text-right">{{totalRequestedAmount | priceFormat }}</td>
             </tr>
             <tr v-if="invoice_lists.data && invoice_lists.data.length==0">
             <td class="text-center" colspan="6">データがありません</td>
@@ -182,7 +176,7 @@
           <tr>
             <td class="cl_custom_color">請求書番号</td>
             <td colspan="3"><input type="text" v-model="invoiceData.mes_lis_inv_pay_id" class="form-control" /></td>
-            
+
           </tr>
 
         </table>
@@ -197,6 +191,7 @@ export default {
   data() {
     return {
       invoice_lists: {},
+      invoice_data_lists:[],
       byr_buyer_lists: {},
       invoiceCreateModal:false,
       file: "",
@@ -242,6 +237,7 @@ export default {
         .then(({data}) => {
             this.init(data.status);
           this.invoice_lists = data.invoice_list;
+          this.invoice_data_lists = data.invoice_list.data;
           this.byr_buyer_lists = data.byr_buyer_list;
         });
     },
@@ -266,28 +262,28 @@ export default {
         _this.invoiceCreateModal = false;
         });
     },
-    check_byr_order_api() {
-      let formData = new FormData();
-      formData.append("up_file", this.file);
-      formData.append("email", "user@jacos.co.jp");
-      formData.append("password", "Qe75ymSr");
-      axios({
-        method: "POST",
-        url: this.BASE_URL + "api/job_exec/1",
-        data: formData,
-        headers: { "Content-Type": "multipart/form-data" },
-      })
-        .then(({data})=> {
-          this.init(data.status);
-          Fire.$emit("LoadByrorder");
-        })
-        .catch(function (response) {
-        });
-    },
-    onChangeFileUpload() {
-      this.file = this.$refs.file.files[0];
-      this.check_byr_order_api();
-    },
+    // check_byr_order_api() {
+    //   let formData = new FormData();
+    //   formData.append("up_file", this.file);
+    //   formData.append("email", "user@jacos.co.jp");
+    //   formData.append("password", "Qe75ymSr");
+    //   axios({
+    //     method: "POST",
+    //     url: this.BASE_URL + "api/job_exec/1",
+    //     data: formData,
+    //     headers: { "Content-Type": "multipart/form-data" },
+    //   })
+    //     .then(({data})=> {
+    //       this.init(data.status);
+    //       Fire.$emit("LoadByrorder");
+    //     })
+    //     .catch(function (response) {
+    //     });
+    // },
+    // onChangeFileUpload() {
+    //   this.file = this.$refs.file.files[0];
+    //   this.check_byr_order_api();
+    // },
 
     change(e) {
       const selectedCode = e.target.value;
@@ -310,6 +306,13 @@ export default {
     Fire.$emit("loadPageTitle", "請求データ一覧");
   },
   mounted() {
+  },
+   computed: {
+
+    totalRequestedAmount: function() {
+      return this.invoice_data_lists.reduce(function (sumAmout,val) {return  sumAmout += parseInt(val.mes_lis_inv_lin_det_amo_requested_amount)},0);
+
+    },
   },
 };
 </script>

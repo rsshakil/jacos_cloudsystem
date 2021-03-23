@@ -86,7 +86,8 @@ class InvoiceController extends Controller
         'dip.mes_lis_inv_pay_code','dip.mes_lis_inv_pay_name','dip.mes_lis_buy_code',
         'dip.mes_lis_inv_pay_id',
         'dip.mes_lis_buy_name',
-        'dip.status','dipd.mes_lis_inv_lin_det_amo_requested_amount'
+        'dip.status','dipd.mes_lis_inv_lin_det_amo_requested_amount',
+        DB::raw('sum(dipd.mes_lis_inv_lin_det_amo_requested_amount) as total_amount')
         )
         ->join('data_invoice_pays as dip','data_invoices.data_invoice_id','=','dip.data_invoice_id')
         ->join('data_invoice_pay_details as dipd','dip.data_invoice_pay_id','=','dipd.data_invoice_pay_id')
