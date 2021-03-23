@@ -192,8 +192,9 @@
                   <select class="mb-2 mr-sm-2 mb-sm-0 form-control">
                     <option>選択してください</option>
                   </select>
-                  <b-button class="active" variant="primary">印刷</b-button>
+                 
                 </b-form>-->
+                 <b-button class="active text-right pull-right" @click="addInvoiceDetail" variant="primary">新規伝票追加</b-button>
               </div>
           </div>
       </div>
@@ -222,12 +223,13 @@
               <th>請求</th>
               <th class="pointer_class" @click="sorting('mes_lis_inv_lin_det_transfer_of_ownership_date')">計上日 <span class="float-right" :class="iconSet('mes_lis_inv_lin_det_transfer_of_ownership_date')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_inv_lin_det_goo_major_category')">部門コード <span class="float-right" :class="iconSet('mes_lis_inv_lin_det_goo_major_category')"></span></th>
-              <th class="pointer_class" @click="sorting('mes_lis_inv_lin_tra_code')">納品先コード <span class="float-right" :class="iconSet('mes_lis_inv_lin_tra_code')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_inv_lin_tra_code')">納品先 <span class="float-right" :class="iconSet('mes_lis_inv_lin_tra_code')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_inv_lin_lin_trade_number_reference')">伝票番号 <span class="float-right" :class="iconSet('mes_lis_inv_lin_lin_trade_number_reference')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_inv_lin_det_pay_code')">請求内容 <span class="float-right" :class="iconSet('mes_lis_inv_lin_det_pay_code')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_inv_lin_det_balance_carried_code')">請求区分 <span class="float-right" :class="iconSet('mes_lis_inv_lin_det_balance_carried_code')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_inv_lin_det_amo_requested_amount')">請求金額 <span class="float-right" :class="iconSet('mes_lis_inv_lin_det_amo_requested_amount')"></span></th>
               <th class="pointer_class" @click="sorting('send_datetime')">送信日時 <span class="float-right" :class="iconSet('send_datetime')"></span></th>
+            <th>詳細</th>
             </tr>
           </thead>
           <tbody>
@@ -270,7 +272,7 @@
                 {{ value.mes_lis_inv_lin_det_goo_major_category }}
               </td>
               <td>
-                {{ value.mes_lis_inv_lin_tra_code }}
+                {{ value.mes_lis_inv_lin_tra_code }} {{value.mes_lis_inv_lin_tra_name}}
                 <!-- {{ value.mes_lis_inv_lin_tra_name }} -->
               </td>
               <td>{{ value.mes_lis_inv_lin_lin_trade_number_reference }}</td>
@@ -278,6 +280,7 @@
               <td>{{ value.mes_lis_inv_lin_det_balance_carried_code }}</td>
               <td class="text-right">{{ number_format(value.mes_lis_inv_lin_det_amo_requested_amount) }}</td>
               <td>{{ value.send_datetime }}</td>
+              <td><button @click="editInvoiceDetail(value)" class="btn btn-primary">Edit</button><button @click="deleteInvoiceDetail(value)" class="btn btn-danger">Delete</button></td>
             </tr>
             <tr v-if="invoice_detail_lists.data && invoice_detail_lists.data.length==0">
                 <td class="text-center" colspan="100%">データがありません</td>
@@ -338,6 +341,67 @@
           </div>
         </div>
       </div>
+      <b-modal
+      size="lg"
+      :hide-backdrop="true"
+      title="請求伝票追加"
+      ok-title="追加"
+      cancel-title="キャンセル"
+      @ok.prevent="update_invoice_detail()"
+      v-model="editInvoiceDetailModal"
+    >
+      <div class="panel-body add_item_body">
+        <form>
+          <p class="text-center">新規請求伝票を追加できます</p>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">計上日</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputPassword" v-model="invoiceDetail.mes_lis_inv_lin_det_transfer_of_ownership_date">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">部門コード</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputPassword" v-model="invoiceDetail.mes_lis_inv_lin_det_goo_major_category">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">納品先コード</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputPassword" v-model="invoiceDetail.mes_lis_inv_lin_tra_code">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">伝票番号</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputPassword" v-model="invoiceDetail.mes_lis_inv_lin_lin_trade_number_reference">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">請求内容</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputPassword" v-model="invoiceDetail.mes_lis_inv_lin_det_pay_code">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">請求区分</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputPassword" v-model="invoiceDetail.mes_lis_inv_lin_det_balance_carried_code">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">請求金額</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputPassword" v-model="invoiceDetail.mes_lis_inv_lin_det_amo_requested_amount">
+              </div>
+            </div>
+         
+        </form>
+      </div>
+      <!-- </div>
+        </div>
+      </div>-->
+    </b-modal>
   </div>
 </template>
 <script>
@@ -348,6 +412,7 @@ export default {
       invoice_detail_lists: {},
       byr_voucher_lists: {},
       byr_buyer_category_lists:[],
+      editInvoiceDetailModal:false,
       file: "",
       data_invoice_id: "",
       isCheckAll: false,
@@ -358,6 +423,16 @@ export default {
       null_selected_message:false,
       decision_datetime_status: ["未確定あり", "確定済"],
       send_datetime_status: ["未確定あり", "確定済"],
+      invoiceDetail:{
+        mes_lis_inv_lin_det_transfer_of_ownership_date:'',
+        mes_lis_inv_lin_det_transfer_of_ownership_date:'',
+        mes_lis_inv_lin_det_goo_major_category:'',
+        mes_lis_inv_lin_tra_code:'',
+        mes_lis_inv_lin_lin_trade_number_reference:'',
+        mes_lis_inv_lin_det_pay_code:'',
+        mes_lis_inv_lin_det_balance_carried_code:'',
+        mes_lis_inv_lin_det_amo_requested_amount:'',
+      },
       form: new Form({
         data_invoice_id: "",
         select_field_per_page_num: 10,
@@ -383,6 +458,15 @@ export default {
     }
   },
   methods: {
+    editInvoiceDetail(value){
+      this.editInvoiceDetailModal = true;
+      this.invoiceDetail = value;
+      // this.invoiceDetail.fill(value)
+    },
+    addInvoiceDetail(value){
+      this.editInvoiceDetailModal = true;
+      this.invoiceDetail={};
+    },
     //get Table data
     invoice_details(page = 1) {
         this.form.page=page;
