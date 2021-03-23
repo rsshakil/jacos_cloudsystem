@@ -233,18 +233,16 @@
                   <div class="dropdown-menu dropdown-menu-right">
                     <button
                       class="dropdown-item"
-                      @click="order_download(1)"
-                      type="button"
-                    >
+                      @click="receive_download(1)"
+                      type="button">
                       CSV
                     </button>
-                    <button
+                    <!-- <button
                       class="dropdown-item"
-                      @click="order_download(2)"
-                      type="button"
-                    >
+                      @click="receive_download(2)"
+                      type="button">
                       JCA
-                    </button>
+                    </button> -->
                   </div>
                 </div>
               </div>
@@ -752,6 +750,19 @@ export default {
     },
     searchByFormData() {
       Fire.$emit("LoadByrorderDetail",this.form.select_field_page_num);
+    },
+    receive_download(downloadType = 1) {
+      //downloadcsvshipment_confirm
+      var _this = this;
+      axios
+        .post(this.BASE_URL + "api/receive_download", {
+          data_receive_id: this.form.data_receive_id,
+          downloadType: downloadType,
+        })
+        .then(({ data }) => {
+           this.init(data.status);
+          this.downloadFromUrl(data);
+        });
     },
 
     get_all_receive_detail(page = 1) {

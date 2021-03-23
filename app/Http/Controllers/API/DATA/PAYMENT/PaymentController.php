@@ -270,12 +270,14 @@ class PaymentController extends Controller
     }
     public function paymentDownload(Request $request)
     {
-        $data_payment_id = $request->data_payment_id;
+        // return $request->all();
+        $data_payment_id=$request->data_payment_id?$request->data_payment_id:1;
         $downloadType = $request->downloadType;
+        $new_file_name ='';
         $csv_data_count = 0;
         if ($downloadType == 1) {
             // CSV Download
-            $new_file_name = $new_file_name = self::paymentFileName($data_payment_id, 'csv');
+            $new_file_name = self::paymentFileName($data_payment_id, 'csv');
             $download_file_url = \Config::get('app.url') . "storage/app" . config('const.PAYMENT_CSV_PATH') . "/" . $new_file_name;
 
             // get shipment data query

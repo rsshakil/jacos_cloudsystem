@@ -14,7 +14,7 @@
                     </div>
                     <input type="date" class="form-control" v-model="form.receive_date_to">
                 </div>
-            
+
           </td>
           <td class="cl_custom_color">請求取引先コード</td>
           <td colspan="3">
@@ -26,8 +26,8 @@
 <button class="btn btn-primary active">参照</button>
           </td>
 
-          
-          
+
+
         </tr>
         <tr>
         <td class="cl_custom_color">締日</td>
@@ -40,7 +40,7 @@
                     <input type="date" class="form-control" v-model="form.mes_lis_pay_per_end_date_from_to">
                 </div>
            </td>
-          
+
 
           <td class="cl_custom_color">支払日</td>
           <td>
@@ -56,7 +56,7 @@
           <td>
               <input type="date" class="form-control" v-model="form.check_datetime" />
           </td>
-          
+
         </tr>
       </table>
     </div>
@@ -72,7 +72,7 @@
 
     </div>
     <div class="col-12 text-center">
-      <button class="btn btn-outline-primary" type="button">
+      <button class="btn btn-outline-primary" type="button" @click="download(1)">
         <b-icon icon="download" animation="fade" font-scale="1.2"></b-icon>
         {{ myLang.download }}
       </button>
@@ -208,6 +208,18 @@ export default {
           this.getAllPayments();
 
       },
+      download(downloadType = 1) {
+      //downloadcsvshipment_confirm
+      var _this = this;
+      axios
+        .post(this.BASE_URL + "api/payment_download", {
+          downloadType: downloadType,
+        })
+        .then(({ data }) => {
+           this.init(data.status);
+          this.downloadFromUrl(data);
+        });
+    },
     searchPaymentItem(){
         this.form.submit_type="search"
         this.getAllPayments();

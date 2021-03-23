@@ -12,8 +12,8 @@ use App\Models\DATA\RCV\data_receive_item;
 use App\Models\CMN\cmn_companies_user;
 use App\Models\BYR\byr_buyer;
 use App\Models\BYR\byr_corrected_receive;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Pagination\Paginator;
+use App\Traits\Csv;
+use App\Http\Controllers\API\DATA\RECEIVE\DataController;
 
 class ReceiveController extends Controller
 {
@@ -262,7 +262,46 @@ class ReceiveController extends Controller
         return response()->json(['received_detail_list' => $result, 'byr_buyer_list' => $byr_buyer, 'buyer_settings' => $buyer_settings->setting_information,'order_info'=>$orderInfo]);
 
     }
+    public function receiveDownload(Request $request)
+    {
+        // return $request->all();
+        //ownloadType=2 for Fixed length
+        $data_receive_id=$request->data_receive_id;
+        $downloadType=$request->downloadType;
+        $csv_data_count =0;
+        if ($downloadType==1) {
+            // CSV Download
+            $new_file_name = $new_file_name = self::receiveFileName($data_receive_id, 'csv');
+            $download_file_url = \Config::get('app.url')."storage/app".config('const.RECEIVE_CSV_PATH')."/". $new_file_name;
 
+            // get shipment data query
+            $shipment_query = DataController::getReceiveData($request);
+            $csv_data_count = $shipment_query->count();
+            $shipment_data = $shipment_query->get()->toArray();
+
+            // CSV create
+            Csv::create(
+                config('const.RECEIVE_CSV_PATH')."/". $new_file_name,
+                $shipment_data,
+                DataController::receiveCsvHeading(),
+                'shift-jis'
+            );
+        }
+
+        return response()->json(['message' => 'Success','status'=>1,'new_file_name'=>$new_file_name, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
+    }
+    private static function receiveFileName($data_receive_id, $file_type="csv")
+    {
+        $file_name_info=data_receive::select('cmn_connects.partner_code', 'byr_buyers.super_code', 'cmn_companies.jcode')
+            ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'data_receives.cmn_connect_id')
+            ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
+            ->join('slr_sellers', 'slr_sellers.slr_seller_id', '=', 'cmn_connects.slr_seller_id')
+            ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'slr_sellers.cmn_company_id')
+            ->where('data_receives.data_receive_id', $data_receive_id)
+            ->first();
+        $file_name = $file_name_info->super_code.'-'."receive_".$file_name_info->super_code.'-'.$file_name_info->partner_code."-".$file_name_info->jcode.'_receive_'.date('YmdHis').'.'.$file_type;
+        return $file_name;
+    }
     public function orderReceiveItemDetailList(Request $request){
         // return $request->all();
         $adm_user_id = $request->adm_user_id;

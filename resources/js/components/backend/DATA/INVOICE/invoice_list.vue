@@ -57,7 +57,7 @@
         <h4 class="page_custom_title">{{ myLang.search_result }}</h4>
       </div>
         <div class="col-12 text-center">
-         <button class="btn btn-outline-primary" type="button">
+         <button class="btn btn-outline-primary" type="button" @click="invoice_download(1)">
         <b-icon icon="download" animation="fade" font-scale="1.2"></b-icon>
         {{ myLang.download }}
       </button>
@@ -247,6 +247,17 @@ export default {
           this.get_all_invoice_list();
 
       },
+      invoice_download(downloadType = 1) {
+      //downloadcsvshipment_confirm
+      var _this = this;
+      axios.post(this.BASE_URL + "api/download_invoice", {
+          downloadType: downloadType,
+        })
+        .then(({ data }) => {
+           this.init(data.status);
+           this.downloadFromUrl(data);
+        });
+    },
     insertInvoice() {
       var _this = this;
       axios

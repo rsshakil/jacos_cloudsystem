@@ -91,9 +91,10 @@ class DataController extends Controller
             'dppd.mes_lis_pay_lin_det_tax_tax_rate'
             )
         ->join('data_payment_pays as dpp','dpp.data_payment_id','=','data_payments.data_payment_id')
-        ->join('data_payment_pay_details as dppd','dppd.data_payment_pay_id','=','dpp.data_payment_pay_id')
-
-        ->where('data_payments.data_payment_id',$data_payment_id);
+        ->join('data_payment_pay_details as dppd','dppd.data_payment_pay_id','=','dpp.data_payment_pay_id');
+        if (array_key_exists("data_payment_id", $request_all)) {
+            $csv_data=$csv_data->where('data_payments.data_payment_id',$data_payment_id);
+        }
 
         // if (!(array_key_exists("downloadType", $request_all))) {
         //     $csv_data=$csv_data->where('dppd.decision_datetime','!=',null);
