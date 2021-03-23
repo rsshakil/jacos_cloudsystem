@@ -266,7 +266,7 @@ class ReceiveController extends Controller
     {
         // return $request->all();
         //ownloadType=2 for Fixed length
-        $data_receive_id=$request->data_receive_id;
+        $data_receive_id=$request->data_receive_id?$request->data_receive_id:1;
         $downloadType=$request->downloadType;
         $csv_data_count =0;
         if ($downloadType==1) {

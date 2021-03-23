@@ -17,9 +17,9 @@
                     </div>
                     <input type="date" class="form-control" v-model="form.receive_date_to">
                 </div>
-             
+
             </td>
-            
+
             <td class="cl_custom_color">
               {{ myLang.customer_code }}
             </td>
@@ -32,7 +32,7 @@
               <button class="btn btn-primary" style="float:left" type="button">
                 {{ myLang.refer }}
               </button>
-              
+
             </td>
            <td class="cl_custom_color">便</td>
             <td>
@@ -51,9 +51,9 @@
                     </div>
                     <input type="date" class="form-control" v-model="form.wnership_date_to">
                 </div>
-             
+
             </td>
-            
+
             <!-- <td>{{ myLang.shipment }}</td> -->
             <td class="cl_custom_color">部門</td>
             <td>
@@ -67,8 +67,8 @@
             </td>
           </tr>
           <tr>
-         
-            
+
+
             <td class="cl_custom_color">データ種別</td>
             <td>
               <select class="form-control">
@@ -88,7 +88,7 @@
               </select>
             </td>
           </tr>
-          
+
         </table>
       </div>
     </div>
@@ -102,7 +102,7 @@
 
     </div>
     <div class="col-12 text-center">
-         <button class="btn btn-outline-primary" type="button">
+         <button class="btn btn-outline-primary" type="button" @click="receive_download(1)">
         <b-icon icon="download" animation="fade" font-scale="1.2"></b-icon>
         {{ myLang.download }}
       </button>
@@ -275,6 +275,18 @@ export default {
           this.getAllReceivedItem();
 
       },
+      receive_download(downloadType = 1) {
+      //downloadcsvshipment_confirm
+      var _this = this;
+      axios
+        .post(this.BASE_URL + "api/receive_download", {
+          downloadType: downloadType,
+        })
+        .then(({ data }) => {
+           this.init(data.status);
+          this.downloadFromUrl(data);
+        });
+    },
     searchReceivedItem(){
         this.form.submit_type="search"
         this.getAllReceivedItem();
