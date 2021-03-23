@@ -1,47 +1,38 @@
 <?php
 
-namespace App\Http\Controllers\API\DATA\INVOICE;
+namespace App\Http\Controllers\API\DATA\RECEIVE;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\DATA\INVOICE\data_invoice;
+use App\Models\DATA\RCV\data_receive;
 
-class InvoiceDataController extends Controller
+class DataController extends Controller
 {
-    public static function get_invoice_data($request)
+    public static function getReceiveData($request)
     {
         // 対象データ取得
-        $data_invoice_id=$request->data_invoice_id;
-        $order_info=$request->order_info;
+        $data_receive_id=$request->data_receive_id;
         $request_all=$request->all();
 
-        $csv_data=data_invoice::select('data_invoices.*','data_invoice_pays.*','data_invoice_pay_details.*')
-        ->join('data_invoice_pays','data_invoice_pays.data_invoice_id','=','data_invoices.data_invoice_id')
-        ->join('data_invoice_pay_details','data_invoice_pay_details.data_invoice_pay_id','=','data_invoice_pays.data_invoice_pay_id');
-        // filtering
-        if (array_key_exists("data_invoice_id", $request_all)) {
-            $csv_data=$csv_data->where('data_invoices.data_invoice_id',$data_invoice_id);
+        $csv_data=data_receive::select('data_receives.*','drv.*','dri.*')
+        ->join('data_receive_vouchers as drv','drv.data_receive_id','=','data_receives.data_receive_id')
+        ->join('data_receive_items as dri','dri.data_receive_voucher_id','=','drv.data_receive_voucher_id');
+        if (array_key_exists("data_receive_id", $request_all)) {
+            $csv_data=$csv_data->where('data_receives.data_receive_id',$data_receive_id);
         }
 
-        // ->where('data_shipment_vouchers.mes_lis_shi_log_del_delivery_service_code', $order_info['mes_lis_shi_log_del_delivery_service_code'])
-        // ->where('data_shipment_vouchers.mes_lis_shi_par_sel_code', $order_info['mes_lis_shi_par_sel_code'])
-        // ->where('data_shipment_vouchers.mes_lis_shi_par_sel_name', $order_info['mes_lis_shi_par_sel_name'])
-        // ->where('data_shipment_vouchers.mes_lis_shi_tra_dat_delivery_date', $order_info['mes_lis_shi_tra_dat_delivery_date'])
-        // ->where('data_shipment_vouchers.mes_lis_shi_tra_goo_major_category', $order_info['mes_lis_shi_tra_goo_major_category'])
-        // ->where('data_shipment_vouchers.mes_lis_shi_tra_ins_temperature_code', $order_info['mes_lis_shi_tra_ins_temperature_code']);
-        // receive_datetime not found in shipment tables
-
-        if (!(array_key_exists("downloadType", $request_all))) {
-            $csv_data=$csv_data->where('data_invoice_pay_details.decision_datetime','!=',null);
-            $csv_data=$csv_data->where('data_invoice_pay_details.send_datetime','=',null);
-        }
-        $csv_data=$csv_data->groupBy('data_invoice_pay_details.data_invoice_pay_detail_id');
-        $csv_data=$csv_data->orderBy("data_invoices.data_invoice_id");
+        // if (!(array_key_exists("downloadType", $request_all))) {
+        //     $csv_data=$csv_data->where('dppd.decision_datetime','!=',null);
+        //     $csv_data=$csv_data->where('dppd.send_datetime','=',null);
+        // }
+        $csv_data=$csv_data->groupBy('drv.data_receive_voucher_id');
+        // $csv_data=$csv_data->orderBy("data_payments.data_payment_id");
         // 検索
         // $csv_data = $csv_data->limit(100000)->get()->toArray();
         return $csv_data;
     }
-    public static function invoiceCsvHeading(){
+
+    public static function receiveCsvHeading(){
         return [
             "送信者ＩＤ",
             "送信者ＩＤ発行元",

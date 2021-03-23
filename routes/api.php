@@ -106,6 +106,7 @@ Route::post('data_receive_list', 'API\DATA\RECEIVE\ReceiveController@orderReceiv
 Route::post('data_receive_detail_list', 'API\DATA\RECEIVE\ReceiveController@orderReceiveDetailList');
 Route::post('data_receive_item_detail_list', 'API\DATA\RECEIVE\ReceiveController@orderReceiveItemDetailList');
 Route::get('corrected_receive_list/{adm_user_id}', 'API\DATA\RECEIVE\ReceiveController@correctedReceiveList');
+Route::post('receive_download', 'API\DATA\RECEIVE\ReceiveController@receiveDownload');
 // receive end
 // Payment Start
 Route::post('get_payment_list', 'API\DATA\PAYMENT\PaymentController@getPaymentList');

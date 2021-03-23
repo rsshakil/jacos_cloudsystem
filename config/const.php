@@ -15,6 +15,7 @@ return [
     'TASKCTRL' => 'tools/taskctrl/taskctrlWrapper.sh',
 
     'SHIPMENT_CSV_PATH' => '/shipment_csv',
+    'RECEIVE_CSV_PATH' => '/receive_csv',
     'PAYMENT_CSV_PATH' => '/payment_downloaded_csv',
     'SHIPMENT_CSV_UPDATE_PATH' => '/shipment_updated_csv',
     // Fixed length file save path
