@@ -4,12 +4,12 @@
       <!-- <h4 class="top_title text-center" style="margin-top:10px;">{{myLang.order_receive_head}}</h4>-->
       <div class="col-12" style="background: #d8e3f0; padding: 10px">
         <table
-          class="table orderDetailTable table-bordered"
+          class="table orderDetailTable cmnWidthTable table-bordered"
           style="width: 100%"
         >
           <tr>
-            <td class="cl_custom_color" style="width: 10%">受信日</td>
-            <td style="width: 15%">
+            <td class="cl_custom_color">受信日</td>
+            <td>
              <div class="input-group">
                     <input type="date" class="form-control" v-model="form.receive_date_from">
                     <div class="input-group-prepend">
@@ -20,10 +20,10 @@
              
             </td>
             
-            <td class="cl_custom_color" style="width: 10%">
+            <td class="cl_custom_color">
               {{ myLang.customer_code }}
             </td>
-            <td style="width: 15%">
+            <td>
               <input
                 type="text"
                 class="form-control"
@@ -34,16 +34,16 @@
               </button>
               
             </td>
-           <td style="width: 10%;" class="cl_custom_color">便</td>
-            <td style="width: 15%">
+           <td class="cl_custom_color">便</td>
+            <td>
               <select class="form-control" v-model="form.delivery_service_code">
                 <option :value="0">全て</option>
               </select>
             </td>
           </tr>
           <tr>
-            <td style="width: 10%;" class="cl_custom_color">計上日</td>
-            <td style="width: 15%;">
+            <td class="cl_custom_color">計上日</td>
+            <td>
              <div class="input-group">
                     <input type="date" class="form-control" v-model="form.wnership_date_from">
                     <div class="input-group-prepend">
@@ -55,12 +55,12 @@
             </td>
             
             <!-- <td>{{ myLang.shipment }}</td> -->
-            <td style="width: 10%;"class="cl_custom_color">部門</td>
-            <td style="width: 15%; text-align: center">
+            <td class="cl_custom_color">部門</td>
+            <td>
                 <multiselect v-model="form.category_code" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="true" :select-label="''" :deselect-label="''" :selected-label="'選択中'" :preserve-search="true" placeholder="部門"></multiselect>
             </td>
-            <td class="cl_custom_color" style="width: 10%">配送温度区分</td>
-            <td style="width: 15%;">
+            <td class="cl_custom_color">配送温度区分</td>
+            <td>
               <select class="form-control" v-model="form.temperature_code">
                 <option :value="0">全て</option>
               </select>
@@ -69,20 +69,20 @@
           <tr>
          
             
-            <td style="width: 10%;"class="cl_custom_color">データ種別</td>
-            <td style="width: 15%; text-align: center">
+            <td class="cl_custom_color">データ種別</td>
+            <td>
               <select class="form-control">
                 <option :value="0" >全て</option>
               </select>
             </td>
-            <td style="width: 10%;" class="cl_custom_color">訂正状況</td>
-            <td style="width: 15%;">
+            <td  class="cl_custom_color">訂正状況</td>
+            <td>
               <select class="form-control">
                 <option :value="0">全て</option>
               </select>
             </td>
-            <td style="width: 10%;"class="cl_custom_color">参照状況</td>
-            <td style="width: 15%;">
+            <td class="cl_custom_color">参照状況</td>
+            <td>
               <select class="form-control" v-model="form.check_datetime">
                 <option :value="0">全て</option>
               </select>

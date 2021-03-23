@@ -3,12 +3,12 @@
     <div class="col-12">
     <div class="col-12" style="background: #d8e3f0; padding: 10px">
      <table
-          class="table orderDetailTable table-bordered"
+          class="table orderDetailTable cmnWidthTable table-bordered"
           style="width: 100%"
         >
           <tr>
-          <td style="width:10%" class="cl_custom_color">締日</td>
-            <td style="width:15%">
+          <td class="cl_custom_color">締日</td>
+            <td>
                 <div class="input-group">
                     <input type="date" class="form-control" v-model="form.mes_lis_inv_per_begin_date">
                     <div class="input-group-prepend">
@@ -17,8 +17,8 @@
                     <input type="date" class="form-control" v-model="form.mes_lis_inv_per_end_date">
                 </div>
         </td>
-            <td style="width:10%" class="cl_custom_color">請求取引先コード</td>
-            <td style="width:15%"><input type="text" class="form-control topHeaderInputFieldBtn" v-model="form.mes_lis_inv_pay_code">
+            <td class="cl_custom_color">請求取引先コード</td>
+            <td><input type="text" class="form-control topHeaderInputFieldBtn" v-model="form.mes_lis_inv_pay_code">
             <button
                 
                 class="btn btn-primary active"
@@ -27,15 +27,15 @@
               </button>
             </td>
             
-            <td style="width:10%" class="cl_custom_color">請求書番号</td>
-            <td  style="width:15%">
+            <td class="cl_custom_color">請求書番号</td>
+            <td>
             <input type="text" class="form-control" v-model="form.mes_lis_inv_pay_id">
             </td>
             
           </tr>
           <tr>
-            <td  style="width:10%" class="cl_custom_color">請求状況</td>
-            <td  style="width:15%" colspan="2">
+            <td class="cl_custom_color">請求状況</td>
+            <td colspan="5">
                 <select class="form-control" v-model="form.send_datetime_status">
                 <option value="*">全て</option>
                 <option :value="item" v-for="(item,i) in send_datetime_status" :key="i">
@@ -43,7 +43,6 @@
                 </option>
               </select>
             </td>
-        <td colspan="4"></td>
           </tr>
         </table>
     </div>

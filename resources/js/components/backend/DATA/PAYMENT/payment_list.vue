@@ -3,9 +3,9 @@
   <div class="col-12">
     <div class="col-12" style="background: #d8e3f0; padding: 10px">
       <!--<h4 class="top_title text-center" style="margin-top:10px;">{{myLang.payment_data}}</h4>-->
-      <table class="table orderDetailTable table-bordered" style="width: 100%">
+      <table class="table orderDetailTable payemntWidthTable table-bordered" style="width: 100%">
         <tr>
-          <td class="cl_custom_color" style="width: 12%">請求取引先コード</td>
+          <td class="cl_custom_color">請求取引先コード</td>
           <td>
             <input
               type="text"
@@ -14,8 +14,8 @@
             />
           </td>
 
-          <td class="cl_custom_color" style="width: 10%">受信日</td>
-          <td style="width: 10%" colspan="3">
+          <td class="cl_custom_color">受信日</td>
+          <td colspan="3">
           <div class="input-group">
                     <input type="date" class="form-control" v-model="form.receive_date_from">
                     <div class="input-group-prepend">
@@ -28,7 +28,7 @@
           
         </tr>
         <tr>
-          <td class="cl_custom_color" style="width: 10%">発注者</td>
+          <td class="cl_custom_color">発注者</td>
           <td>
             <input
               type="text"
@@ -37,8 +37,8 @@
             />
           </td>
 
-          <td class="cl_custom_color" style="width: 10%">受信日</td>
-          <td style="width: 10%">
+          <td class="cl_custom_color">受信日</td>
+          <td>
           <div class="input-group">
                     <input type="date" class="form-control" v-model="form.mes_lis_pay_per_end_date_from">
                     <div class="input-group-prepend">
@@ -47,7 +47,7 @@
                     <input type="date" class="form-control" v-model="form.mes_lis_pay_per_end_date_from_to">
                 </div>
            </td>
-          <td class="cl_custom_color" style="width: 10%">参照状況</td>
+          <td class="cl_custom_color">参照状況</td>
           <td>
               <input type="date" class="form-control" v-model="form.check_datetime" />
           </td>

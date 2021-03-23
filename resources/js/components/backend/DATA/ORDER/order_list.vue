@@ -2,16 +2,12 @@
   <div class="row" v-can="['byr_view', 'slr_view']">
   <div class="col-12">
     <div class="col-12" style="background: #d8e3f0; padding: 10px">
-      <table class="table orderDetailTable table-bordered" style="width: 100%">
+      <table class="table orderDetailTable cmnWidthTable table-bordered" style="width: 100%">
         <tr>
-          <td class="cl_custom_color" style="width: 10%">
+          <td class="cl_custom_color">
             {{ myLang.receive_date }}
           </td>
-
-
-
-          <td style="width: 15%">
-
+          <td>
 <div class="input-group">
                     <input type="date" class="form-control" v-model="form.receive_date_from">
                     <div class="input-group-prepend">
@@ -21,10 +17,10 @@
                 </div>
           </td>
 
-          <td class="cl_custom_color" style="width: 10%">
+          <td class="cl_custom_color">
             {{ myLang.customer_code }}
           </td>
-          <td style="width: 15%">
+          <td>
             <input
               type="text"
               class="form-control" v-model="form.mes_lis_ord_par_sel_code"
@@ -35,8 +31,8 @@
             </button>
           </td>
 
-          <td style="width: 10%;" class="cl_custom_color">便</td>
-          <td style="width: 15%; text-align: center">
+          <td class="cl_custom_color">便</td>
+          <td>
             <select class="form-control" v-model="form.delivery_service_code">
                 <option value="*">全て</option>
               <option
@@ -52,8 +48,8 @@
           </td>
         </tr>
         <tr>
-          <td style="width: 10%;" class="cl_custom_color">{{ myLang.delivery_date }}</td>
-          <td style="width: 15%;">
+          <td class="cl_custom_color">{{ myLang.delivery_date }}</td>
+          <td>
 
 <div class="input-group">
                     <input type="date" class="form-control" v-model="form.delivery_date_from">
@@ -65,13 +61,13 @@
           </td>
 
           <!-- <td>{{ myLang.shipment }}</td> -->
-          <td style="width: 10%;" class="cl_custom_color">部門</td>
-          <td style="width: 15%;">
+          <td class="cl_custom_color">部門</td>
+          <td>
             <multiselect v-model="form.category_code" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="true" :select-label="''" :deselect-label="''" :selected-label="'選択中'" :preserve-search="true"  placeholder="部門"></multiselect>
 
           </td>
-          <td style="width: 10%;" class="cl_custom_color">温度区分</td>
-          <td style="width: 15%">
+          <td class="cl_custom_color">温度区分</td>
+          <td>
             <select class="form-control" v-model="form.temperature">
             <option value="*">全て</option>
               <option
@@ -83,17 +79,17 @@
           </td>
         </tr>
         <tr>
-       <td style="width: 10%;" class="cl_custom_color">参照状況</td>
-          <td style="width: 15%;">
-            <select class="form-control" v-model="form.check_datetime" style="width: 300px">
+       <td class="cl_custom_color">参照状況</td>
+          <td>
+            <select class="form-control" v-model="form.check_datetime">
               <!--<option :value="0">{{ myLang.voucher_type }}</option>-->
               <option value="*">全て</option>
               <option value="1">未参照</option>
               <option value="2">参照済</option>
             </select>
           </td>
-          <td style="width: 10%;" class="cl_custom_color">印刷状況</td>
-          <td style="width: 15%; text-align: center">
+          <td class="cl_custom_color">印刷状況</td>
+          <td>
             <select class="form-control" v-model="form.decission_cnt">
               <option
                 v-for="(dcnt, i) in decission_cnt"
@@ -102,13 +98,11 @@
               >
                 {{ Object.values(dcnt)[0] }}
               </option>
-              <!-- <option v-for="(pc, j) in decission_cnt" :key="j" :value="pc.name">{{ pc.name }}</option> -->
             </select>
           </td>
           <!-- <td>{{ myLang.confirmation_status }}</td> -->
-          <td style="width: 10%;" class="cl_custom_color">確定状況</td>
-          <td style="width: 15%;">
-
+          <td class="cl_custom_color">確定状況</td>
+          <td>
             <select class="form-control" v-model="form.confirmation_status_data">
              <option
                 v-for="(dcnt, i) in confirmation_status_list"

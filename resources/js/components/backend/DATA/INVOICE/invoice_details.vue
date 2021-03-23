@@ -3,30 +3,30 @@
   <div class="col-12">
     <div class="col-12" style="background: #d8e3f0;padding: 10px;margin-bottom:20px;">
         <table
-          class="table orderDetailTable table-bordered"
+          class="table orderDetailTable cmnWidthTable table-bordered"
           style="width: 100%"
         >
           <tr>
-            <td style="width:10%" class="cl_custom_color">締日</td>
-            <td style="width:15%">{{ param_data.end_date }}</td>
-            <td style="width:10%" class="cl_custom_color">請求取引先</td>
-            <td style="width:15%" colspan="5">
+            <td class="cl_custom_color">締日</td>
+            <td>{{ param_data.end_date }}</td>
+            <td class="cl_custom_color">請求取引先</td>
+            <td colspan="5">
               {{ param_data.pay_code }}
               {{ param_data.pay_name }}
             </td>
           </tr>
           <tr>
-            <td style="width:10%" class="cl_custom_color">発注者</td>
-            <td style="width:15%">
+            <td class="cl_custom_color">発注者</td>
+            <td>
                 {{ param_data.buy_code }}
                 {{ param_data.buy_name }}
             </td>
-            <td style="width:10%" class="cl_custom_color">請求状況</td>
-            <td style="width:15%">
+            <td class="cl_custom_color">請求状況</td>
+            <td>
                 {{ param_data.status }}
             </td>
-            <td style="width:10%" class="cl_custom_color">請求金額</td>
-            <td style="width:15%" class="text-right">
+            <td class="cl_custom_color">請求金額</td>
+            <td class="text-right">
                 {{ number_format(param_data.requested_amount) }}
             </td>
           </tr>
@@ -37,12 +37,12 @@
       <div class="col-12">
       <div class="col-12" style="background: #d8e3f0; padding: 10px">
         <table
-          class="table orderDetailTable table-bordered"
+          class="table orderDetailTable cmnWidthTable table-bordered"
           style="width: 100%"
         >
           <tr>
-            <td style="width: 10%;" class="cl_custom_color">計上日</td>
-            <td style="width: 15%;">
+            <td class="cl_custom_color">計上日</td>
+            <td>
             <div class="input-group">
 
       <input type="date" class="form-control" v-model="form.from_date">
@@ -53,14 +53,14 @@
     </div>
             </td>
 
-           <td style="width: 10%;" class="cl_custom_color">部門</td>
-          <td style="width: 15%;">
+           <td class="cl_custom_color">部門</td>
+          <td>
             <multiselect v-model="form.category_code" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="true" :select-label="''" :deselect-label="''" :selected-label="'選択中'" :preserve-search="true"  placeholder="部門"></multiselect>
           </td>
 
-            <td style="width: 10%;" class="cl_custom_color">計上先</td>
+            <td class="cl_custom_color">計上先</td>
             <!-- @click="deliverySearchForm2" -->
-            <td style="width: 15%;">
+            <td>
               <input type="text" class="form-control topHeaderInputFieldBtn" v-model="form.mes_lis_inv_lin_tra_code" />
               <button class="btn btn-primary active" style="float:left;">
                 参照
@@ -68,12 +68,12 @@
             </td>
           </tr>
           <tr>
-           <td style="width: 10%;" class="cl_custom_color">伝票番号</td>
-            <td style="width: 15%;">
+           <td class="cl_custom_color">伝票番号</td>
+            <td>
               <input type="text" v-model="form.mes_lis_inv_lin_lin_trade_number_reference" class="form-control" />
             </td>
-            <td style="width: 10%;" class="cl_custom_color">確定状況</td>
-            <td style="width: 15%;">
+            <td class="cl_custom_color">確定状況</td>
+            <td>
               <select class="form-control" v-model="form.decision_datetime_status">
                 <option value="*">全て</option>
                 <option :value="item" v-for="(item,i) in decision_datetime_status" :key="i">
@@ -81,9 +81,9 @@
                 </option>
               </select>
             </td>
-            <td style="width: 10%;" class="cl_custom_color">送信状況</td>
+            <td class="cl_custom_color">送信状況</td>
             <!-- v-model="form.fixedSpecial"send_datetime_status -->
-            <td style="width: 15%;">
+            <td>
               <select class="form-control" v-model="form.send_datetime_status">
                 <option value="*">全て</option>
                 <option :value="item" v-for="(item,i) in send_datetime_status" :key="i">

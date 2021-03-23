@@ -34,10 +34,10 @@
     </div>
     <div class="col-12">
     <div class="col-12" style="background: #d8e3f0; padding: 10px">
-      <table class="table orderDetailTable table-bordered" style="width: 100%">
+      <table class="table orderDetailTable cmnWidthTable table-bordered" style="width: 100%">
           <tr>
-            <td style="width:10%" class="cl_custom_color">計上日</td>
-            <td style="width:15%"><div class="input-group">
+            <td class="cl_custom_color">計上日</td>
+            <td><div class="input-group">
 
       <input type="date" class="form-control" v-model="form.from_date">
       <div class="input-group-prepend">
@@ -45,23 +45,23 @@
       </div>
       <input type="date" class="form-control" v-model="form.to_date">
     </div></td>
-            <td style="width:10%" class="cl_custom_color">部門</td>
+            <td class="cl_custom_color">部門</td>
             <td colspan="3">
                                                         <multiselect v-model="form.category_code" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="true" :select-label="''" :deselect-label="''" :selected-label="'選択中'" :preserve-search="true" placeholder="部門"></multiselect>
             </td>
 
           </tr>
           <tr>
-            <td style="width:10%" class="cl_custom_color">納品先コード</td>
-            <td  style="width:15%"> <input type="text" class="form-control" v-model="form.mes_lis_pay_lin_tra_code" style="float:left;width:60%;margin-right:10px;">
+            <td class="cl_custom_color">納品先コード</td>
+            <td> <input type="text" class="form-control" v-model="form.mes_lis_pay_lin_tra_code" style="float:left;width:60%;margin-right:10px;">
              <button @click="showAllCustomerCode" class="btn btn-primary" style="float:left;width:35%;">
               {{ myLang.refer }}
             </button>
             </td>
-            <td style="width:10%" class="cl_custom_color">伝票番号</td>
-            <td style="width:15%"><input type="text" class="form-control" v-model="form.mes_lis_pay_lin_lin_trade_number_eference"></td>
-            <td style="width:10%" class="cl_custom_color">支払内容</td>
-            <td style="width:10%">
+            <td class="cl_custom_color">伝票番号</td>
+            <td><input type="text" class="form-control" v-model="form.mes_lis_pay_lin_lin_trade_number_eference"></td>
+            <td class="cl_custom_color">支払内容</td>
+            <td>
             <select class="form-control" v-model="form.mes_lis_inv_lin_det_pay_code">
             <option value="*">全て</option>
             <option v-for="(opt, i) in mes_lis_inv_lin_det_pay_code_list"
@@ -74,12 +74,12 @@
             </td>
           </tr>
           <tr>
-            <td style="width:10%" class="cl_custom_color">伝票区分</td>
-            <td style="width:15%"><select class="form-control" v-model="form.mes_lis_pay_lin_det_trade_type_code">
+            <td class="cl_custom_color">伝票区分</td>
+            <td><select class="form-control" v-model="form.mes_lis_pay_lin_det_trade_type_code">
             <option value="*">全て</option>
             </select></td>
-            <td style="width:10%" class="cl_custom_color">請求区分</td>
-            <td style="width:15%"><select class="form-control" v-model="form.mes_lis_pay_lin_det_balance_carried_code">
+            <td class="cl_custom_color">請求区分</td>
+            <td><select class="form-control" v-model="form.mes_lis_pay_lin_det_balance_carried_code">
             <option value="*">全て</option>
 
             <option v-for="(opt, i) in mes_lis_inv_lin_det_balance_carried_code_list"
@@ -89,8 +89,8 @@
                   {{ Object.values(opt)[0] }}
                 </option>
             </select></td>
-            <td style="width:10%" class="cl_custom_color">照合結果</td>
-            <td  style="width:15%">
+            <td class="cl_custom_color">照合結果</td>
+            <td>
             <select class="form-control" v-model="form.mes_lis_pay_lin_det_verification_result_code">
             <option value="*">全て</option>
             <option v-for="(opt, i) in mes_lis_pay_lin_det_verification_result_code_list"
