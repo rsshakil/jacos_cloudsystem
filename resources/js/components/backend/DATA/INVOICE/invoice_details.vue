@@ -584,6 +584,7 @@ export default {
     Fire.$on("LoadByrinvoiceDetails", (page=1) => {
       this.invoice_details(page);
     });
+    Fire.$emit('loadPageTitle','請求伝票一覧')
   },
   computed: {
 
