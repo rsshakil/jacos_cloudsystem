@@ -194,7 +194,7 @@
                   </select>
                  
                 </b-form>-->
-                 <b-button class="active text-right pull-right" @click="addInvoiceDetail" variant="primary">新規伝票追加</b-button>
+                 
               </div>
           </div>
       </div>
@@ -216,7 +216,7 @@
                     type="checkbox"
                   /> 全選択
                 </th>
-                <th colspan="9"></th>
+                <th class="text-right" colspan="9"><b-button class="active text-right pull-right" @click="addInvoiceDetail" variant="primary">新規伝票追加</b-button></th>
               </tr>
             <tr>
               <th>No</th>
@@ -353,46 +353,54 @@
       <div class="panel-body add_item_body">
         <form>
           <p class="text-center">新規請求伝票を追加できます</p>
+          <input type="hidden" v-model="invoiceDetail.data_invoice_id">
             <div class="form-group row">
               <label for="inputPassword" class="col-sm-2 col-form-label">計上日</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="inputPassword" v-model="invoiceDetail.mes_lis_inv_lin_det_transfer_of_ownership_date">
+                <input type="date" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_transfer_of_ownership_date">
               </div>
             </div>
             <div class="form-group row">
               <label for="inputPassword" class="col-sm-2 col-form-label">部門コード</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="inputPassword" v-model="invoiceDetail.mes_lis_inv_lin_det_goo_major_category">
+                <input type="text" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_goo_major_category">
               </div>
             </div>
             <div class="form-group row">
               <label for="inputPassword" class="col-sm-2 col-form-label">納品先コード</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="inputPassword" v-model="invoiceDetail.mes_lis_inv_lin_tra_code">
+                <input type="text" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_tra_code">
               </div>
             </div>
             <div class="form-group row">
               <label for="inputPassword" class="col-sm-2 col-form-label">伝票番号</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="inputPassword" v-model="invoiceDetail.mes_lis_inv_lin_lin_trade_number_reference">
+                <input type="text" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_lin_trade_number_reference">
               </div>
             </div>
             <div class="form-group row">
               <label for="inputPassword" class="col-sm-2 col-form-label">請求内容</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="inputPassword" v-model="invoiceDetail.mes_lis_inv_lin_det_pay_code">
+                <select class="form-control" v-model="invoiceDetail.mes_lis_inv_lin_det_pay_code">
+            <option value="*">全て</option>
+              <option
+                v-for="(temp, i) in mes_lis_inv_lin_det_pay_code_list"
+                :key="i" v-if="Object.keys(temp)[0]!='' " :value="Object.keys(temp)[0]">
+                {{ Object.values(temp)[0] }}
+              </option>
+            </select>
               </div>
             </div>
             <div class="form-group row">
               <label for="inputPassword" class="col-sm-2 col-form-label">請求区分</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="inputPassword" v-model="invoiceDetail.mes_lis_inv_lin_det_balance_carried_code">
+                <input type="text" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_balance_carried_code">
               </div>
             </div>
             <div class="form-group row">
               <label for="inputPassword" class="col-sm-2 col-form-label">請求金額</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="inputPassword" v-model="invoiceDetail.mes_lis_inv_lin_det_amo_requested_amount">
+                <input type="text" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_amo_requested_amount">
               </div>
             </div>
          
@@ -411,6 +419,8 @@ export default {
       param_data: [],
       invoice_detail_lists: {},
       byr_voucher_lists: {},
+      buyer_settings: {},
+      mes_lis_inv_lin_det_pay_code_list: [],
       byr_buyer_category_lists:[],
       editInvoiceDetailModal:false,
       file: "",
@@ -424,12 +434,13 @@ export default {
       decision_datetime_status: ["未確定あり", "確定済"],
       send_datetime_status: ["未確定あり", "確定済"],
       invoiceDetail:{
-        mes_lis_inv_lin_det_transfer_of_ownership_date:'',
+        data_invoice_pay_detail_id:'',
+        data_invoice_id:'',
         mes_lis_inv_lin_det_transfer_of_ownership_date:'',
         mes_lis_inv_lin_det_goo_major_category:'',
         mes_lis_inv_lin_tra_code:'',
         mes_lis_inv_lin_lin_trade_number_reference:'',
-        mes_lis_inv_lin_det_pay_code:'',
+        mes_lis_inv_lin_det_pay_code:'*',
         mes_lis_inv_lin_det_balance_carried_code:'',
         mes_lis_inv_lin_det_amo_requested_amount:'',
       },
@@ -463,9 +474,58 @@ export default {
       this.invoiceDetail = value;
       // this.invoiceDetail.fill(value)
     },
-    addInvoiceDetail(value){
+    addInvoiceDetail(){
       this.editInvoiceDetailModal = true;
-      this.invoiceDetail={};
+        this.invoiceDetail.data_invoice_pay_detail_id='';
+        this.invoiceDetail.mes_lis_inv_lin_det_transfer_of_ownership_date='';
+        this.invoiceDetail.mes_lis_inv_lin_det_goo_major_category='';
+        this.invoiceDetail.mes_lis_inv_lin_tra_code='';
+        this.invoiceDetail.mes_lis_inv_lin_lin_trade_number_reference='';
+        this.invoiceDetail.mes_lis_inv_lin_det_pay_code='*';
+        this.invoiceDetail.mes_lis_inv_lin_det_balance_carried_code='';
+        this.invoiceDetail.mes_lis_inv_lin_det_amo_requested_amount='';
+        this.invoiceDetail.data_invoice_id = this.form.data_invoice_id;
+    },
+    update_invoice_detail(){
+      axios.post(this.BASE_URL + "api/update_invoice_detail", this.invoiceDetail)
+        .then(({ data }) => {
+            this.editInvoiceDetailModal = false;
+
+           Fire.$emit("LoadByrinvoiceDetails",this.form.page);
+        });
+    },
+    deleteInvoiceDetail(value){
+var _this = this;
+      this.alert_icon = "warning";
+      this.alert_title = "";
+      this.alert_text = "Do you want to delete this invoice";
+      this.yes_btn = "はい";
+      this.cancel_btn = "キャンセル";
+      
+        this.confirm_sweet().then((result) => {
+          if (result.value) {
+            axios
+              .post(
+                this.BASE_URL + "api/delete_invoice_detail",value)
+              .then(({ data }) => {
+                _this.alert_icon = "success";
+                _this.alert_title = "";
+                _this.alert_text ="Delete success";
+                _this.sweet_normal_alert();
+                Fire.$emit("LoadByrinvoiceDetails",_this.form.page);
+              })
+              .catch(function (response) {
+
+              });
+          }
+        });
+     
+
+
+
+
+
+
     },
     //get Table data
     invoice_details(page = 1) {
@@ -475,6 +535,9 @@ export default {
             this.init(data.status);
             this.invoice_detail_lists = data.invoice_details_list;
                       this.byr_buyer_category_lists = data.byr_buyer_category_list;
+                      this.buyer_settings = JSON.parse(data.buyer_settings);
+                      
+          this.mes_lis_inv_lin_det_pay_code_list = this.buyer_settings.invoices.mes_lis_inv_lin_det_pay_code;
           this.byr_buyer_category_lists.unshift({category_code:'*',category_name:'全て'});
 
         });
@@ -663,6 +726,7 @@ export default {
     Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
     this.param_data = this.$route.query;
     this.form.data_invoice_id = this.param_data.data_invoice_id;
+    this.invoiceDetail.data_invoice_id = this.param_data.data_invoice_id;
     this.form.byr_buyer_id = this.$session.get("byr_buyer_id");
     this.invoice_details();
     Fire.$on("LoadByrinvoiceDetails", (page=1) => {
