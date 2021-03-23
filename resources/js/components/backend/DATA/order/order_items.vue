@@ -119,7 +119,7 @@
                  商品名：{{order_item_detail_list.mes_lis_shi_lin_ite_name}}<br>
                  規格：{{order_item_detail_list.mes_lis_shi_lin_ite_ite_spec}}<br>
                  産地：{{order_item_detail_list.mes_lis_shi_lin_fre_field_name}}<br></td>
-                <td>{{order_item_detail_list.mes_lis_shi_lin_fre_packing_quantity}}</td>
+                <td>{{order_item_detail_list.mes_lis_shi_lin_qua_unit_multiple}}</td>
                 <td>
                 <input type="text" :disabled="is_disabled(order_item_shipment_data_headTable.decision_datetime==null?true:false)" class="form-control" @keyup="ball_case_cal(order_item_detail_list,'ケース')" v-model="order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units">
                 {{order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units}}</td>

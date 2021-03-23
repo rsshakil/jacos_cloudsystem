@@ -5,17 +5,8 @@
       <!--<h4 class="top_title text-center" style="margin-top:10px;">{{myLang.payment_data}}</h4>-->
       <table class="table orderDetailTable payemntWidthTable table-bordered" style="width: 100%">
         <tr>
-          <td class="cl_custom_color">請求取引先コード</td>
+        <td class="cl_custom_color">受信日時</td>
           <td>
-            <input
-              type="text"
-              class="form-control"
-              v-model="form.mes_lis_pay_pay_code"
-            />
-          </td>
-
-          <td class="cl_custom_color">受信日</td>
-          <td colspan="3">
           <div class="input-group">
                     <input type="date" class="form-control" v-model="form.receive_date_from">
                     <div class="input-group-prepend">
@@ -25,19 +16,33 @@
                 </div>
             
           </td>
+          <td class="cl_custom_color">請求取引先コード</td>
+          <td colspan="3">
+            <input
+              type="text"
+              class="form-control topHeaderInputFieldBtn"
+              v-model="form.mes_lis_pay_pay_code"
+            />
+<button class="btn btn-primary active">参照</button>
+          </td>
+
+          
           
         </tr>
         <tr>
-          <td class="cl_custom_color">発注者</td>
+        <td class="cl_custom_color">締日</td>
           <td>
-            <input
-              type="text"
-              class="form-control"
-              v-model="form.mes_lis_buy_name"
-            />
-          </td>
+          <div class="input-group">
+                    <input type="date" class="form-control" v-model="form.mes_lis_pay_per_end_date_from">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">~</span>
+                    </div>
+                    <input type="date" class="form-control" v-model="form.mes_lis_pay_per_end_date_from_to">
+                </div>
+           </td>
+          
 
-          <td class="cl_custom_color">受信日</td>
+          <td class="cl_custom_color">支払日</td>
           <td>
           <div class="input-group">
                     <input type="date" class="form-control" v-model="form.mes_lis_pay_per_end_date_from">
@@ -51,6 +56,7 @@
           <td>
               <input type="date" class="form-control" v-model="form.check_datetime" />
           </td>
+          
         </tr>
       </table>
     </div>
