@@ -241,17 +241,7 @@ class ReceiveController extends Controller
         ->leftJoin('data_shipment_vouchers as dsv','dsv.mes_lis_shi_tra_trade_number','=','data_receive_vouchers.mes_lis_acc_tra_trade_number')
         ->where('dr.cmn_connect_id','=',$cmn_connect_id)
         ->where('data_receive_vouchers.data_receive_id','=',$data_receive_id)
-        // ->whereColumn([
-        //     ['data_receive_vouchers.mes_lis_acc_tra_dat_order_date', 'dsv.mes_lis_shi_tra_dat_order_date'],
-        //     ['data_receive_vouchers.mes_lis_acc_tra_trade_number', 'dsv.mes_lis_shi_tra_trade_number'],
-        // ])
-        //->whereColumn('data_receive_vouchers.mes_lis_acc_tra_dat_order_date','=','dsv.mes_lis_shi_tra_dat_order_date')
-        //->whereColumn('data_receive_vouchers.mes_lis_acc_tra_trade_number','=','dsv.mes_lis_shi_tra_trade_number')
         ->groupBy('data_receive_vouchers.mes_lis_acc_tra_trade_number')
-        // ->groupBy('data_receives.receive_datetime')
-        // ->groupBy('dr.sta_sen_identifier')
-        // ->groupBy('data_receive_vouchers.mes_lis_acc_par_sel_code')
-        // ->groupBy('data_receive_vouchers.mes_lis_acc_par_sel_name')
         ->orderBy($table_name.$sort_by,$sort_type)
         ->paginate($per_page);
 

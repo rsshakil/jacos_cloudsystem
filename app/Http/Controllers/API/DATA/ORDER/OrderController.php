@@ -27,7 +27,7 @@ class OrderController extends Controller
         $adm_user_id = $request->adm_user_id;
         $byr_buyer_id = $request->byr_buyer_id;
         $submit_type = $request->submit_type;
-        $per_page = $request->per_page?$request->per_page:20;
+        $per_page = $request->per_page?$request->per_page:10;
 
         $authUser = User::find($adm_user_id);
         $cmn_company_id = '';
@@ -58,7 +58,7 @@ class OrderController extends Controller
         $adm_user_id = $request->adm_user_id;
         $byr_buyer_id = $request->byr_buyer_id;
         $submit_type = $request->submit_type;
-        $per_page = $request->per_page?$request->per_page:20;
+        $per_page = $request->per_page?$request->per_page:10;
 
         $authUser = User::find($adm_user_id);
         $cmn_company_id = '';
@@ -174,6 +174,7 @@ class OrderController extends Controller
             'dor.receive_datetime',
             'dor.sta_sen_identifier',
             'dov.mes_lis_ord_tra_dat_delivery_date',
+            'dov.data_order_voucher_id',
             'dov.mes_lis_ord_tra_goo_major_category',
             'dov.mes_lis_ord_log_del_delivery_service_code',
             'dov.mes_lis_ord_tra_ins_temperature_code'
@@ -194,9 +195,11 @@ class OrderController extends Controller
             ->where('cmn_companies_users.adm_user_id', $user_id)->first();
             if ($slr_info) {
                 $slr_id = $slr_info->slr_seller_id;
-                $slr_order_info = cmn_connect::select(DB::raw('count(data_order_vouchers.data_order_id) as total_order'), 'byr_buyers.byr_buyer_id', 'cmn_companies.company_name as buyer_name')
+                // $slr_order_info = cmn_connect::select(DB::raw('count(data_order_vouchers.data_order_id) as total_order'), 'byr_buyers.byr_buyer_id', 'cmn_companies.company_name as buyer_name')
+                $slr_order_info = cmn_connect::select(DB::raw('count(data_order_items.data_order_voucher_id) as total_order'), 'byr_buyers.byr_buyer_id', 'cmn_companies.company_name as buyer_name')
                 ->leftJoin('data_orders', 'data_orders.cmn_connect_id', '=', 'cmn_connects.cmn_connect_id')
                 ->leftJoin('data_order_vouchers', 'data_order_vouchers.data_order_id', '=', 'data_orders.data_order_id')
+                ->leftJoin('data_order_items', 'data_order_items.data_order_voucher_id', '=', 'data_order_vouchers.data_order_voucher_id') //New Added
                 ->leftJoin('data_shipment_vouchers', 'data_shipment_vouchers.data_order_voucher_id', '=', 'data_order_vouchers.data_order_voucher_id')
                 ->leftJoin('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
                 ->leftJoin('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.cmn_company_id')

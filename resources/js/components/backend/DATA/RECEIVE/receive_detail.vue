@@ -8,10 +8,10 @@
         >
           <tr>
             <td class="cl_custom_color">受信日</td>
-            <td><span v-if="order_info && order_info.length"> {{ order_info.receive_datetime }}</span></td>
+            <td><span v-if="order_info && Object.keys(order_info).length"> {{ order_info.receive_datetime }}</span></td>
             <td class="cl_custom_color">取引先</td>
             <td colspan="5">
-            <span v-if="order_info && order_info.length">
+            <span v-if="order_info && Object.keys(order_info).length">
               {{ order_info.mes_lis_acc_par_sel_code}}
               {{ order_info.mes_lis_acc_par_sel_name }}
               </span>
@@ -19,12 +19,12 @@
           </tr>
           <tr>
             <td class="cl_custom_color">計上日</td>
-            <td><span v-if="order_info && order_info.length">{{ order_info.mes_lis_acc_tra_dat_transfer_of_ownership_date }}</span></td>
+            <td><span v-if="order_info && Object.keys(order_info).length">{{ order_info.mes_lis_acc_tra_dat_transfer_of_ownership_date }}</span></td>
             <td class="cl_custom_color">部門</td>
-            <td><span v-if="order_info && order_info.length">{{ order_info.mes_lis_acc_tra_goo_major_category }}</span></td>
+            <td><span v-if="order_info && Object.keys(order_info).length">{{ order_info.mes_lis_acc_tra_goo_major_category }}</span></td>
             <td class="cl_custom_color">便</td>
             <td>
-            <span v-if="order_info && order_info.length">
+            <span v-if="order_info && Object.keys(order_info).length">
               {{ order_info.mes_lis_acc_log_del_delivery_service_code }}
               {{
                 getbyrjsonValueBykeyName(
@@ -38,7 +38,7 @@
             </td>
             <td class="cl_custom_color">配送温度区分</td>
             <td>
-            <span v-if="order_info && order_info.length">
+            <span v-if="order_info && Object.keys(order_info).length">
               {{ order_info.mes_lis_acc_tra_ins_temperature_code }}
               {{
                 getbyrjsonValueBykeyName(
@@ -53,8 +53,7 @@
           </tr>
           <tr>
             <td class="cl_custom_color">データ種別</td>
-            <td colspan="7">
-            </td>
+            <td colspan="7">No field specified</td>
           </tr>
         </table>
       </div>
@@ -778,6 +777,8 @@ export default {
           this.mes_lis_ord_tra_ins_goods_classification_codeList = this.buyer_settings.orders.mes_lis_ord_tra_ins_goods_classification_code;
           this.mes_lis_ord_tra_ins_trade_type_codeList = this.buyer_settings.orders.mes_lis_ord_tra_ins_trade_type_code;
           this.order_info = data.order_info;
+        //   console.log(this.order_info)
+        //   console.log(Object.keys(order_info).length)
           this.loader.hide();
         });
     },

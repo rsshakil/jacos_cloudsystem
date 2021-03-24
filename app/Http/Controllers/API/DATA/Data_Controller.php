@@ -518,9 +518,9 @@ class Data_Controller extends Controller
             'data_shipment_item_details.mes_lis_shi_lin_pac_con_production_date',
             'data_shipment_item_details.mes_lis_shi_lin_pac_con_lot_number'
             )
-        ->join('data_shipment_vouchers','data_shipment_vouchers.data_shipment_id','=','data_shipments.data_shipment_id')
-        ->join('data_shipment_items','data_shipment_vouchers.data_shipment_voucher_id','=','data_shipment_items.data_shipment_voucher_id')
-        ->join('data_shipment_item_details','data_shipment_items.data_shipment_item_id','=','data_shipment_item_details.data_shipment_item_id');
+        ->leftJoin('data_shipment_vouchers','data_shipment_vouchers.data_shipment_id','=','data_shipments.data_shipment_id')
+        ->leftJoin('data_shipment_items','data_shipment_vouchers.data_shipment_voucher_id','=','data_shipment_items.data_shipment_voucher_id')
+        ->leftJoin('data_shipment_item_details','data_shipment_items.data_shipment_item_id','=','data_shipment_item_details.data_shipment_item_id');
 
 
         // filtering
@@ -540,6 +540,7 @@ class Data_Controller extends Controller
             $csv_data=$csv_data->where('data_shipment_vouchers.send_datetime','=',null);
         }
         $csv_data=$csv_data->groupBy('data_shipment_vouchers.data_shipment_voucher_id');
+        $csv_data=$csv_data->groupBy('data_shipment_items.data_shipment_item_id'); //New Added
         $csv_data=$csv_data->orderBy("data_shipments.data_shipment_id");
         // 検索
         // $csv_data = $csv_data->limit(100000)->get()->toArray();
