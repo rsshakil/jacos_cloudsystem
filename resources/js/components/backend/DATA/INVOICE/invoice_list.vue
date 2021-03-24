@@ -120,7 +120,7 @@
                       buy_code: value.mes_lis_buy_code,
                       buy_name: value.mes_lis_buy_name,
                       status: value.status,
-                      requested_amount: value.mes_lis_inv_lin_det_amo_requested_amount,
+                      requested_amount: value.total_amount,
                     },
                   }" class="">{{ value.mes_lis_inv_per_end_date }}</router-link>
                 <!-- <router-link :to="{ name: 'invoice_detail', params: { data_invoice_id: value.data_invoice_id }, }" class="btn btn-info">{{ value.mes_lis_inv_per_end_date }}</router-link> -->
@@ -128,11 +128,8 @@
               <td>{{ value.mes_lis_inv_pay_code }}</td>
               <td>{{ value.mes_lis_inv_pay_id }}</td>
               <td>{{ value.status }}</td>
-              <td class="text-right">{{value.mes_lis_inv_lin_det_amo_requested_amount | priceFormat }}</td>
+              <td class="text-right">{{value.total_amount | priceFormat }}</td>
 
-            </tr>
-            <tr>
-                <td colspan="6" class="text-right">{{totalRequestedAmount | priceFormat }}</td>
             </tr>
             <tr v-if="invoice_lists.data && invoice_lists.data.length==0">
             <td class="text-center" colspan="6">データがありません</td>
@@ -320,10 +317,10 @@ export default {
   },
    computed: {
 
-    totalRequestedAmount: function() {
-      return this.invoice_data_lists.reduce(function (sumAmout,val) {return  sumAmout += parseInt(val.mes_lis_inv_lin_det_amo_requested_amount)},0);
+    // totalRequestedAmount: function() {
+    //   return this.invoice_data_lists.reduce(function (sumAmout,val) {return  sumAmout += parseInt(val.mes_lis_inv_lin_det_amo_requested_amount)},0);
 
-    },
+    // },
   },
 };
 </script>

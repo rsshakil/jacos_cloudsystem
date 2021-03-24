@@ -79,11 +79,13 @@ class PaymentController extends Controller
             'dpp.check_datetime',
             'dpp.mes_lis_pay_per_end_date',
             'dppd.mes_lis_pay_lin_det_pay_out_date',
-            'dppd.mes_lis_pay_lin_det_amo_payable_amount'
+            'dppd.mes_lis_pay_lin_det_amo_payable_amount',
+            DB::raw('(dppd.mes_lis_pay_lin_det_amo_payable_amount+dppd.mes_lis_pay_lin_det_amo_tax) as total_amount')
         )
             ->join('data_payment_pays as dpp', 'data_payments.data_payment_id', '=', 'dpp.data_payment_id')
             ->join('data_payment_pay_details as dppd', 'dpp.data_payment_pay_id', '=', 'dppd.data_payment_pay_id')
             ->where($search_where)
+            ->where('dppd.mes_lis_pay_lin_det_pay_code','3003')
         // ->where('data_payments.cmn_connect_id','=',$cmn_connect_id)
             ->groupBy('data_payments.receive_datetime')
             ->groupBy('dpp.mes_lis_pay_pay_code')
@@ -114,11 +116,13 @@ class PaymentController extends Controller
             'dpp.check_datetime',
             'dpp.mes_lis_pay_per_end_date',
             'dppd.mes_lis_pay_lin_det_pay_out_date',
-            'dppd.mes_lis_pay_lin_det_amo_payable_amount'
+            'dppd.mes_lis_pay_lin_det_amo_payable_amount',
+            DB::raw('(dppd.mes_lis_pay_lin_det_amo_payable_amount+dppd.mes_lis_pay_lin_det_amo_tax) as total_amount')
         )
             ->join('data_payment_pays as dpp', 'data_payments.data_payment_id', '=', 'dpp.data_payment_id')
             ->join('data_payment_pay_details as dppd', 'dpp.data_payment_pay_id', '=', 'dppd.data_payment_pay_id')
             ->where('dpp.data_payment_id', $payment_id)
+            ->where('dppd.mes_lis_pay_lin_det_pay_code','3003')
         // ->where('data_payments.cmn_connect_id','=',$cmn_connect_id)
             ->groupBy('data_payments.receive_datetime')
             ->groupBy('dpp.mes_lis_pay_pay_code')

@@ -27,7 +27,7 @@
           <td>{{payment_detail_header.mes_lis_pay_lin_det_pay_out_date}}</td>
 
           <td class="cl_custom_color" >支払金額</td>
-          <td class="text-right">{{payment_detail_header.mes_lis_pay_lin_det_amo_payable_amount | priceFormat}}</td>
+          <td class="text-right">{{payment_detail_header.total_amount | priceFormat}}</td>
         </tr>
       </table>
     </div>
@@ -104,7 +104,7 @@
         </table>
         </div>
         <div class="col-6">
-    
+
         <h4 class="page_custom_title">相殺合計（相殺）</h4>
           <table
           class="table table-striped order_item_details_table table-bordered data_table"
