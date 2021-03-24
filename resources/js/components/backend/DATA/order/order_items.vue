@@ -124,7 +124,7 @@
                 <input type="text" :disabled="is_disabled(order_item_shipment_data_headTable.decision_datetime==null?true:false)" class="form-control" @keyup="ball_case_cal(order_item_detail_list,'ケース')" v-model="order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units">
                 {{order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units}}</td>
                 <td>
-                {{order_item_detail_list.mes_lis_shi_lin_qua_unit_of_measure}}  {{getbyrjsonValueBykeyName('mes_lis_ord_lin_qua_unit_of_measure',order_item_detail_list.mes_lis_shi_lin_qua_unit_of_measure,'orders')}}
+          <!--{{order_item_detail_list.mes_lis_shi_lin_qua_unit_of_measure}}  {{getbyrjsonValueBykeyName('mes_lis_ord_lin_qua_unit_of_measure',order_item_detail_list.mes_lis_shi_lin_qua_unit_of_measure,'orders')}}-->
                 </td>
                 <td>
                  <input type="text" :disabled="is_disabled(order_item_shipment_data_headTable.decision_datetime==null?true:false)" class="form-control" @keyup="ball_case_cal(order_item_detail_list,'バラ')" v-model="order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity">
