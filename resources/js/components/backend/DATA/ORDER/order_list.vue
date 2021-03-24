@@ -227,18 +227,19 @@
                     name: 'order_list_details',
                     query: {
                       data_order_id: order_list.data_order_id,
-                      delivery_date: order_list.mes_lis_ord_tra_dat_delivery_date.valueOf(),
-                      major_category:
-                        order_list.mes_lis_ord_tra_goo_major_category,
-                      delivery_service_code:
-                        order_list.mes_lis_ord_log_del_delivery_service_code,
-                      temperature_code:
-                        order_list.mes_lis_ord_tra_ins_temperature_code,
+                      data_order_voucher_id: order_list.data_order_voucher_id
                     },
                   }"
                   class=""
                   >{{ order_list.receive_datetime }}</router-link
                 >
+                <!-- delivery_date: order_list.mes_lis_ord_tra_dat_delivery_date.valueOf(),
+                      major_category:
+                        order_list.mes_lis_ord_tra_goo_major_category,
+                      delivery_service_code:
+                        order_list.mes_lis_ord_log_del_delivery_service_code,
+                      temperature_code:
+                        order_list.mes_lis_ord_tra_ins_temperature_code, -->
               </td>
               <td>
                 {{ order_list.mes_lis_ord_par_sel_code }}
@@ -370,8 +371,8 @@ export default {
         confirmation_status_data: "*",
         decisionDateTime:'*',
         submit_type: "page_load",
-        sort_by:'data_order_id ',
-        sort_type:"ASC",
+        sort_by:'receive_datetime ',
+        sort_type:"DESC",
       }),
     };
   },

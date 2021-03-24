@@ -243,8 +243,8 @@ export default {
         temperature_code: "01",
         check_datetime: null,
         category_code:{category_code:'*',category_name:'全て'},
-        sort_by:'data_receive_id ',
-        sort_type:"ASC",
+        sort_by:'receive_datetime ',
+        sort_type:"DESC",
         submit_type: "page_load",
       }),
     };
