@@ -87,7 +87,7 @@ class CreateDataShipmentVouchersTable extends Migration
             $table->string('mes_lis_shi_tra_fre_package_code', 2)->comment('パック区分');
             $table->string('mes_lis_shi_tra_fre_variable_measure_item_code', 2)->comment('不定貫区分');
             $table->string('mes_lis_shi_tra_tax_tax_type_code', 2)->comment('税区分');
-            $table->decimal('mes_lis_shi_tra_tax_tax_rate', 2, 1)->comment('税率');
+            $table->decimal('mes_lis_shi_tra_tax_tax_rate', 3, 1)->comment('税率');
             $table->string('mes_lis_shi_tra_not_text', 60)->comment('自由使用欄');
             $table->string('mes_lis_shi_tra_not_text_sbcs', 60)->comment('自由使用欄半角カナ');
             $table->integer('mes_lis_shi_tot_tot_net_price_total')->unsigned()->comment('原価金額合計');

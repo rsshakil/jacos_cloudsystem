@@ -13,7 +13,12 @@ trait Csv
         }
         $stream = fopen('php://temp', 'r+b');
         foreach ($data as $row) {
-            fputcsv($stream, $row);
+            // fputcsv($stream, $row, ',', '"');
+            $tmp = [];
+            foreach ($row as $val) {
+                $tmp[]= '"'.str_replace('"', '""', $val).'"';
+            }
+            fwrite($stream, implode(',', $tmp)."\n");
         }
         rewind($stream);
         if (strtolower($encode) == 'shift-jis') {
