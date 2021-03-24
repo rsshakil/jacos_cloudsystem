@@ -42,7 +42,7 @@
             </td>
           </tr>
           <tr>
-            <td class="cl_custom_color">計上日</td>
+            <td class="cl_custom_color">納品日</td>
             <td>
              <div class="input-group">
                     <input type="date" class="form-control" v-model="form.wnership_date_from">
@@ -149,9 +149,9 @@
           <thead>
             <tr>
               <th class="pointer_class">No</th>
-              <th class="pointer_class" @click="sorting('receive_datetime')">受注日時 <span class="float-right" :class="iconSet('receive_datetime')"></span></th>
+              <th class="pointer_class" @click="sorting('receive_datetime')">受信日時 <span class="float-right" :class="iconSet('receive_datetime')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_acc_par_sel_code')">取引先 <span class="float-right" :class="iconSet('mes_lis_acc_par_sel_code')"></span></th>
-              <th class="pointer_class" @click="sorting('mes_lis_acc_tra_dat_transfer_of_ownership_date')">計上日 <span class="float-right" :class="iconSet('mes_lis_acc_tra_dat_transfer_of_ownership_date')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_acc_tra_dat_transfer_of_ownership_date')">納品日 <span class="float-right" :class="iconSet('mes_lis_acc_tra_dat_transfer_of_ownership_date')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_acc_tra_goo_major_category')">部門 コード <span class="float-right" :class="iconSet('mes_lis_acc_tra_goo_major_category')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_acc_log_del_delivery_service_code')">便 <span class="float-right" :class="iconSet('mes_lis_acc_log_del_delivery_service_code')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_acc_tra_ins_temperature_code')">配送温度 区分 <span class="float-right" :class="iconSet('mes_lis_acc_tra_ins_temperature_code')"></span></th>
@@ -302,7 +302,7 @@ export default {
         // });
         Fire.$emit("byr_has_selected",this.byr_buyer_id);
         Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
-        Fire.$emit("loadPageTitle", "受領受信一覧");
+        Fire.$emit("loadPageTitle", "受領データ一覧");
   },
   mounted() {},
 };

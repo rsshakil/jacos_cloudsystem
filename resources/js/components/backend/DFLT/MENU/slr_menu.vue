@@ -76,13 +76,13 @@
               <li class="nav-item" v-can="['order_list']">
                 <router-link to="/order_list" class="nav-link">
                   <b-icon icon="receipt" font-scale="1.2"></b-icon>
-                  発注・出荷
+                 受注・出荷業務
                 </router-link>
               </li>
                <li class="nav-item" v-can="['order_receive']">
                 <router-link to="/order_receive" class="nav-link">
                   <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
-                  受領
+                 受領確認
                 </router-link>
               </li>
               <li class="nav-item" v-can="['voucher_setting']">
@@ -112,13 +112,13 @@
               <li class="nav-item" v-can="['invoice_list']">
                 <router-link to="/invoice_list" class="nav-link">
                   <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
-                  請求
+                  請求業務
                 </router-link>
               </li>
               <li class="nav-item" v-can="['payment_list']">
                 <router-link to="/payment_list" class="nav-link">
                   <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
-                 支払
+                支払確認
                 </router-link>
               </li>
 
