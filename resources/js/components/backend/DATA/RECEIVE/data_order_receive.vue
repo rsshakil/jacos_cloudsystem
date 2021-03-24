@@ -157,7 +157,6 @@
               <th class="pointer_class" @click="sorting('mes_lis_acc_tra_ins_temperature_code')">配送温度 区分 <span class="float-right" :class="iconSet('mes_lis_acc_tra_ins_temperature_code')"></span></th>
               <th class="pointer_class" >データ種別</th>
               <th class="pointer_class" >伝票枚数</th>
-              <th class="pointer_class" >訂正あり 伝票枚数</th>
               <th class="pointer_class" @click="sorting('check_datetime')">参照状況 <span class="float-right" :class="iconSet('check_datetime')"></span></th>
             </tr>
           </thead>
@@ -206,13 +205,12 @@
                     )
                   }}
               </td>
-              <td></td>
-              <td></td>
+              <td><span v-if="received_item.sta_doc_type=='Receiving Notification'">受領</span></td>
               <td></td>
               <td>{{ received_item.check_datetime }}</td>
             </tr>
             <tr v-if="received_item_list.data && received_item_list.data.length==0">
-                <td colspan="11">データがありません</td>
+                <td colspan="10">データがありません</td>
             </tr>
           </tbody>
         </table>

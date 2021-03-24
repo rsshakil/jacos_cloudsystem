@@ -117,7 +117,7 @@ class ReceiveController extends Controller
             $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
         // 検索
-        $result=data_receive::select('data_receives.data_receive_id','data_receives.receive_datetime','drv.mes_lis_acc_par_sel_code','drv.mes_lis_acc_par_sel_name',
+        $result=data_receive::select('data_receives.data_receive_id','data_receives.sta_doc_type','data_receives.receive_datetime','drv.mes_lis_acc_par_sel_code','drv.mes_lis_acc_par_sel_name',
         'drv.mes_lis_acc_tra_dat_transfer_of_ownership_date','drv.mes_lis_acc_tra_dat_delivery_date','drv.mes_lis_acc_tra_goo_major_category',
         'drv.mes_lis_acc_log_del_delivery_service_code','drv.mes_lis_acc_tra_ins_temperature_code','drv.check_datetime')
         ->join('data_receive_vouchers as drv','data_receives.data_receive_id','=','drv.data_receive_id')
