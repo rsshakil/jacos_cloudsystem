@@ -88,7 +88,7 @@
               <option value="2">参照済</option>
             </select>
           </td>
-          <td class="cl_custom_color">印刷状況</td>
+          <td class="cl_custom_color">確定状況</td>
           <td>
             <select class="form-control" v-model="form.decission_cnt">
               <option
@@ -101,11 +101,11 @@
             </select>
           </td>
           <!-- <td>{{ myLang.confirmation_status }}</td> -->
-          <td class="cl_custom_color">確定状況</td>
+          <td class="cl_custom_color">印刷状況</td>
           <td>
-            <select class="form-control" v-model="form.confirmation_status_data">
+            <select class="form-control" v-model="form.print_cnt">
              <option
-                v-for="(dcnt, i) in confirmation_status_list"
+                v-for="(dcnt, i) in print_cnt"
                 :key="i"
                 :value="Object.keys(dcnt)[0]"
               >
