@@ -213,8 +213,8 @@ export default {
         mes_lis_inv_per_end_date:'',
         send_datetime_status: "*",
         submit_type: "page_load",
-        sort_by:'data_invoice_id ',
-        sort_type:"ASC",
+        sort_by:'mes_lis_inv_per_end_date ',
+        sort_type:"DESC",
       }),
     };
   },

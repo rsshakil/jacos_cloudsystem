@@ -181,8 +181,8 @@ export default {
         mes_lis_pay_per_end_date_to: null,
         check_datetime: null,
         submit_type: "page_load",
-        sort_by:'data_payment_id ',
-        sort_type:"ASC",
+        sort_by:'receive_datetime ',
+        sort_type:"DESC",
 
       }),
     };
