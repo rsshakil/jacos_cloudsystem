@@ -206,7 +206,7 @@
                   }}
               </td>
               <td><span v-if="received_item.sta_doc_type=='Receiving Notification'">受領</span></td>
-              <td></td>
+              <td>{{ received_item.cnt }}</td>
               <td>{{ received_item.check_datetime }}</td>
             </tr>
             <tr v-if="received_item_list.data && received_item_list.data.length==0">

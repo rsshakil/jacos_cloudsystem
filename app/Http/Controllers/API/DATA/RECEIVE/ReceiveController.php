@@ -119,17 +119,17 @@ class ReceiveController extends Controller
         // 検索
         $result=data_receive::select('data_receives.data_receive_id','data_receives.sta_doc_type','data_receives.receive_datetime','drv.mes_lis_acc_par_sel_code','drv.mes_lis_acc_par_sel_name',
         'drv.mes_lis_acc_tra_dat_transfer_of_ownership_date','drv.mes_lis_acc_tra_dat_delivery_date','drv.mes_lis_acc_tra_goo_major_category',
-        'drv.mes_lis_acc_log_del_delivery_service_code','drv.mes_lis_acc_tra_ins_temperature_code','drv.check_datetime')
+        'drv.mes_lis_acc_log_del_delivery_service_code','drv.mes_lis_acc_tra_ins_temperature_code','drv.check_datetime',
+        \DB::raw('COUNT(drv.data_receive_voucher_id) AS cnt'),'drv.data_receive_voucher_id'
+        )
         ->join('data_receive_vouchers as drv','data_receives.data_receive_id','=','drv.data_receive_id')
         ->where('data_receives.cmn_connect_id','=',$cmn_connect_id)
+        // ->groupBy('drv.data_receive_voucher_id')
         ->groupBy('data_receives.receive_datetime')
-        ->groupBy('data_receives.sta_sen_identifier')
-        ->groupBy('drv.mes_lis_acc_par_sel_code')
-        ->groupBy('drv.mes_lis_acc_par_sel_name')
-        // ->groupBy('drv.mes_lis_acc_tra_dat_delivery_date')
-        // ->groupBy('drv.mes_lis_acc_tra_goo_major_category')
-        // ->groupBy('drv.mes_lis_acc_log_del_delivery_service_code')
-        // ->groupBy('drv.mes_lis_acc_tra_ins_temperature_code')
+        // ->groupBy('drv.mes_lis_acc_tra_trade_number')
+        // ->groupBy('data_receives.sta_sen_identifier')
+        // ->groupBy('drv.mes_lis_acc_par_sel_code')
+        // ->groupBy('drv.mes_lis_acc_par_sel_name')
         ->orderBy($table_name.$sort_by,$sort_type)
         ->paginate($per_page);
 

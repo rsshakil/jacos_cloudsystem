@@ -174,14 +174,14 @@ class OrderController extends Controller
         }
     }
         $result = $result->groupBy([
-            // 'dor.receive_datetime',
-            // 'dor.sta_sen_identifier',
-            // 'dov.mes_lis_ord_tra_dat_delivery_date',
+            'dor.receive_datetime',
+            'dor.sta_sen_identifier',
+            'dov.mes_lis_ord_tra_dat_delivery_date',
             'doi.data_order_voucher_id',
             // 'doi.data_order_item_id',
-            // 'dov.mes_lis_ord_tra_goo_major_category',
-            // 'dov.mes_lis_ord_log_del_delivery_service_code',
-            // 'dov.mes_lis_ord_tra_ins_temperature_code'
+            'dov.mes_lis_ord_tra_goo_major_category',
+            'dov.mes_lis_ord_log_del_delivery_service_code',
+            'dov.mes_lis_ord_tra_ins_temperature_code'
         ])
         // ->orderBy('dor.receive_datetime','DESC')
         ->orderBy($table_name.$sort_by,$sort_type)
