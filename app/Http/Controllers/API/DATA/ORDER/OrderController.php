@@ -58,7 +58,7 @@ class OrderController extends Controller
         $adm_user_id = $request->adm_user_id;
         $byr_buyer_id = $request->byr_buyer_id;
         $submit_type = $request->submit_type;
-        $per_page = $request->per_page?$request->per_page:20;
+        $per_page = $request->per_page?$request->per_page:10;
 
         $authUser = User::find($adm_user_id);
         $cmn_company_id = '';
@@ -179,6 +179,11 @@ class OrderController extends Controller
             'dov.mes_lis_ord_tra_ins_temperature_code'
         ])
         ->orderBy($table_name.$sort_by,$sort_type)
+        ->orderBy('dov.mes_lis_ord_par_sel_code')
+        ->orderBy('dov.mes_lis_ord_tra_dat_delivery_date')
+        ->orderBy('dov.mes_lis_ord_tra_goo_major_category')
+        ->orderBy('dov.mes_lis_ord_log_del_delivery_service_code')
+        ->orderBy('dov.mes_lis_ord_tra_ins_temperature_code')
         ->paginate($per_page);
         $buyer_settings = byr_buyer::select('setting_information')->where('byr_buyer_id', $byr_buyer_id)->first();
         $byr_buyer = $this->all_used_fun->get_company_list($cmn_company_id);

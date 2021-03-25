@@ -196,20 +196,10 @@
               <th class="pointer_class" @click="sorting('mes_lis_ord_tra_goo_major_category')">部門 コード <span class="float-right" :class="iconSet('mes_lis_ord_tra_goo_major_category')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_ord_log_del_delivery_service_code')">便 <span class="float-right" :class="iconSet('mes_lis_ord_log_del_delivery_service_code')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_ord_tra_ins_temperature_code')">温度区分 <span class="float-right" :class="iconSet('mes_lis_ord_tra_ins_temperature_code')"></span></th>
-              <th class="pointer_class" @click="sorting('data_order_voucher_id')">伝票 枚数 <span class="float-right" :class="iconSet('data_order_voucher_id')"></span></th>
-              <th class="pointer_class" @click="sorting('decision_datetime')">未確定 伝票枚数 <span class="float-right" :class="iconSet('decision_datetime')"></span></th>
-              <th class="pointer_class" @click="sorting('print_datetime')">未印刷 伝票枚数 <span class="float-right" :class="iconSet('print_datetime')"></span></th>
+              <th class="pointer_class">伝票 枚数</th>
+              <th class="pointer_class">未確定 伝票枚数</th>
+              <th class="pointer_class">未印刷 伝票枚数</th>
               <th class="pointer_class" @click="sorting('check_datetime')">参照状況 <span class="float-right" :class="iconSet('check_datetime')"></span></th>
-              <!-- <th style="cursor: pointer">{{ myLang.order_date_time }}</th>
-              <th style="cursor: pointer">{{ myLang.buyer_name }}</th>
-              <th style="cursor: pointer">{{ myLang.delivery_date }}</th>
-              <th style="cursor: pointer">{{ myLang.category_code }}</th>
-              <th style="cursor: pointer">{{ myLang.shipment }}</th>
-              <th style="cursor: pointer">{{ myLang.temperature }}</th>
-              <th style="cursor: pointer">{{ myLang.total_voucher_number }}</th>
-              <th style="cursor: pointer">{{ myLang.total_confirm_date }}</th>
-              <th style="cursor: pointer">{{ myLang.total_print_out_date }}</th>
-              <th style="cursor: pointer">{{ myLang.checked_date }}</th> -->
             </tr>
           </thead>
           <tbody>
@@ -348,7 +338,7 @@ export default {
       json_delivery_service_code: [],
       form: new Form({
         adm_user_id: Globals.user_info_id,
-        per_page:20,
+        per_page:10,
         page:1,
         byr_buyer_id: null,
         receive_date_from: null,
@@ -370,8 +360,8 @@ export default {
         confirmation_status_data: "*",
         decisionDateTime:'*',
         submit_type: "page_load",
-        sort_by:'data_order_id ',
-        sort_type:"ASC",
+        sort_by:'receive_datetime ',
+        sort_type:"DESC",
       }),
     };
   },
