@@ -170,9 +170,12 @@
               <router-link
                     :to="{
                       name: 'receive_detail',
-                      params: {
-                        data_receive_id:
-                          received_item.data_receive_id,
+                      query: {
+                        data_receive_id: received_item.data_receive_id,
+                          sel_name:received_item.mes_lis_acc_par_sel_name,
+                          sel_code:received_item.mes_lis_acc_par_sel_code,
+                          major_category:received_item.mes_lis_acc_tra_goo_major_category,
+                          delivery_service_code:received_item.mes_lis_acc_log_del_delivery_service_code,
                       },
                     }"
                     class=""

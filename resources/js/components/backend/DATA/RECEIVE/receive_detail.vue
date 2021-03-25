@@ -715,6 +715,10 @@ export default {
         adm_user_id: Globals.user_info_id,
         byr_buyer_id: null,
         data_receive_id:'',
+        sel_name:'',
+        sel_code:'',
+        major_category:'',
+        delivery_service_code:'',
         printingStatus: "*",
         situation: "*",
         fixedSpecial: "*",
@@ -796,7 +800,11 @@ export default {
 
     Fire.$emit("byr_has_selected", this.$session.get("byr_buyer_id"));
     Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
-    this.form.data_receive_id = this.$route.params.data_receive_id;
+    this.form.data_receive_id = this.$route.query.data_receive_id;
+    this.form.sel_name = this.$route.query.sel_name;
+    this.form.sel_code = this.$route.query.sel_code;
+    this.form.major_category = this.$route.query.major_category;
+    this.form.delivery_service_code = this.$route.query.delivery_service_code;
     this.form.byr_buyer_id=this.$session.get("byr_buyer_id");
     this.loader = Vue.$loading.show();
     this.get_all_receive_detail();

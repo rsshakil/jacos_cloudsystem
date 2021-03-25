@@ -27,7 +27,7 @@ class OrderController extends Controller
         $adm_user_id = $request->adm_user_id;
         $byr_buyer_id = $request->byr_buyer_id;
         $submit_type = $request->submit_type;
-        $per_page = $request->per_page?$request->per_page:10;
+        $per_page = $request->per_page?$request->per_page:20;
 
         $authUser = User::find($adm_user_id);
         $cmn_company_id = '';
@@ -82,7 +82,6 @@ class OrderController extends Controller
         $result = DB::table('data_orders AS dor')
         ->select(
             'dor.data_order_id',
-            'dov.data_order_voucher_id',
             'dor.receive_datetime',
             'dov.mes_lis_ord_par_sel_code',
             'dov.mes_lis_ord_par_sel_name',
@@ -91,13 +90,11 @@ class OrderController extends Controller
             'dov.mes_lis_ord_log_del_delivery_service_code',
             'dov.mes_lis_ord_tra_ins_temperature_code',
             DB::raw('COUNT(distinct dov.data_order_voucher_id) AS cnt'),
-            // DB::raw('COUNT(doi.data_order_voucher_id) AS cnt'),
             DB::raw('COUNT( isnull( dsv.decision_datetime) OR NULL) AS decision_cnt'),
             DB::raw('COUNT( isnull( dsv.print_datetime)  OR NULL) AS print_cnt'),
             'dov.check_datetime'
         )
         ->join('data_order_vouchers AS dov','dor.data_order_id','=','dov.data_order_id')
-        ->join('data_order_items AS doi','doi.data_order_voucher_id','=','dov.data_order_voucher_id')
         ->join('data_shipment_vouchers AS dsv','dsv.data_order_voucher_id','=','dov.data_order_voucher_id')
         ->where('dor.cmn_connect_id',$cmn_connect_id);
         if ($submit_type == "search") {
@@ -177,14 +174,16 @@ class OrderController extends Controller
             'dor.receive_datetime',
             'dor.sta_sen_identifier',
             'dov.mes_lis_ord_tra_dat_delivery_date',
-            'doi.data_order_voucher_id',
-            // 'doi.data_order_item_id',
             'dov.mes_lis_ord_tra_goo_major_category',
             'dov.mes_lis_ord_log_del_delivery_service_code',
             'dov.mes_lis_ord_tra_ins_temperature_code'
         ])
-        // ->orderBy('dor.receive_datetime','DESC')
         ->orderBy($table_name.$sort_by,$sort_type)
+        ->orderBy('dov.mes_lis_ord_par_sel_code')
+        ->orderBy('dov.mes_lis_ord_tra_dat_delivery_date')
+        ->orderBy('dov.mes_lis_ord_tra_goo_major_category')
+        ->orderBy('dov.mes_lis_ord_log_del_delivery_service_code')
+        ->orderBy('dov.mes_lis_ord_tra_ins_temperature_code')
         ->paginate($per_page);
         $buyer_settings = byr_buyer::select('setting_information')->where('byr_buyer_id', $byr_buyer_id)->first();
         $byr_buyer = $this->all_used_fun->get_company_list($cmn_company_id);
@@ -200,11 +199,9 @@ class OrderController extends Controller
             ->where('cmn_companies_users.adm_user_id', $user_id)->first();
             if ($slr_info) {
                 $slr_id = $slr_info->slr_seller_id;
-                // $slr_order_info = cmn_connect::select(DB::raw('count(data_order_vouchers.data_order_id) as total_order'), 'byr_buyers.byr_buyer_id', 'cmn_companies.company_name as buyer_name')
-                $slr_order_info = cmn_connect::select(DB::raw('count(data_order_items.data_order_voucher_id) as total_order'), 'byr_buyers.byr_buyer_id', 'cmn_companies.company_name as buyer_name')
+                $slr_order_info = cmn_connect::select(DB::raw('count(data_order_vouchers.data_order_id) as total_order'), 'byr_buyers.byr_buyer_id', 'cmn_companies.company_name as buyer_name')
                 ->leftJoin('data_orders', 'data_orders.cmn_connect_id', '=', 'cmn_connects.cmn_connect_id')
                 ->leftJoin('data_order_vouchers', 'data_order_vouchers.data_order_id', '=', 'data_orders.data_order_id')
-                ->leftJoin('data_order_items', 'data_order_items.data_order_voucher_id', '=', 'data_order_vouchers.data_order_voucher_id') //New Added
                 ->leftJoin('data_shipment_vouchers', 'data_shipment_vouchers.data_order_voucher_id', '=', 'data_order_vouchers.data_order_voucher_id')
                 ->leftJoin('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
                 ->leftJoin('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
@@ -220,7 +217,6 @@ class OrderController extends Controller
     {
         // return $request->all();
         $data_order_id = $request->data_order_id;
-        $data_order_voucher_id = $request->data_order_voucher_id;
         $delivery_date = $request->delivery_date;
         $delivery_service_code = $request->delivery_service_code;
         $major_category = $request->major_category;
@@ -246,17 +242,15 @@ class OrderController extends Controller
         ->join('data_shipment_vouchers as dsv', 'dsv.data_shipment_id', '=', 'ds.data_shipment_id')
         ->join('data_shipment_items as dsi', 'dsi.data_shipment_voucher_id', '=', 'dsv.data_shipment_voucher_id')
         ->join('data_orders as dor', 'dor.data_order_id', '=', 'ds.data_order_id')
-        ->where('dsv.data_order_voucher_id', $data_order_voucher_id)
-        // ->where('ds.data_order_id', $data_order_id)
-        // ->where('dsv.mes_lis_shi_tra_dat_delivery_date', $delivery_date)
-        // ->where('dsv.mes_lis_shi_tra_goo_major_category', $major_category)
-        // ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $delivery_service_code)
-        // ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $temperature_code)
-
+        ->where('ds.data_order_id', $data_order_id)
+        ->where('dsv.mes_lis_shi_tra_dat_delivery_date', $delivery_date)
+        ->where('dsv.mes_lis_shi_tra_goo_major_category', $major_category)
+        ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $delivery_service_code)
+        ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $temperature_code)
         ->groupBy('dsv.mes_lis_shi_tra_trade_number')
         ->first();
 
-        $result = DB::table('data_shipment_items as dsi')
+        $result = DB::table('data_shipments as ds')
             ->select(
                 'dor.receive_datetime',
                 'dsv.mes_lis_shi_par_sel_code',
@@ -278,16 +272,14 @@ class OrderController extends Controller
                 'dsv.print_datetime',
                 'dsv.send_datetime'
             )
-
-            ->leftJoin('data_shipment_vouchers as dsv', 'dsv.data_shipment_voucher_id', '=', 'dsi.data_shipment_voucher_id')
-            ->leftJoin('data_shipments as ds', 'ds.data_shipment_id', '=', 'dsv.data_shipment_id')
-            ->leftJoin('data_orders as dor', 'dor.data_order_id', '=', 'ds.data_order_id')
+            ->join('data_shipment_vouchers as dsv', 'dsv.data_shipment_id', '=', 'ds.data_shipment_id')
+            ->join('data_shipment_items as dsi', 'dsi.data_shipment_voucher_id', '=', 'dsv.data_shipment_voucher_id')
+            ->join('data_orders as dor', 'dor.data_order_id', '=', 'ds.data_order_id')
             // ->where('ds.data_order_id', $data_order_id);
-            ->where('dsv.data_order_voucher_id', $data_order_voucher_id);
-            // ->where('dsv.mes_lis_shi_tra_dat_delivery_date', $delivery_date)
-            // ->where('dsv.mes_lis_shi_tra_goo_major_category', $major_category)
-            // ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $delivery_service_code)
-            // ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $temperature_code);
+            ->where('dsv.mes_lis_shi_tra_dat_delivery_date', $delivery_date)
+            ->where('dsv.mes_lis_shi_tra_goo_major_category', $major_category)
+            ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $delivery_service_code)
+            ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $temperature_code);
                 if($form_search['mes_lis_shi_tra_trade_number']!=""){
                     $result = $result->where('dsv.mes_lis_shi_tra_trade_number', $form_search['mes_lis_shi_tra_trade_number']);
                 }
@@ -312,7 +304,6 @@ class OrderController extends Controller
                     }
                 }
                 $result = $result->orderBy('dsv.'.$sort_by,$sort_type);
-                // $result = $result->groupBy('dsi.data_shipment_voucher_id')
                 $result = $result->groupBy('dsv.mes_lis_shi_tra_trade_number')
                 ->paginate($per_page);
         /*coll setting*/

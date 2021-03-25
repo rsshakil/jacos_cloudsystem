@@ -393,12 +393,12 @@ export const routes = [
         meta: {
             breadcrumb: {
                 label: '受領トップ',
-                parent:'home'
+                parent: 'home'
             }
         },
     },
     {
-        path: '/order_receive/receive_detail/:data_receive_id',
+        path: '/order_receive/receive_detail',
         component: receive_detail,
         name: 'receive_detail',
         meta: {
@@ -448,7 +448,7 @@ export const routes = [
         meta: {
             breadcrumb: {
                 label: '支払受信一覧',
-                parent:'home'
+                parent: 'home'
             }
         }
 
@@ -486,7 +486,7 @@ export const routes = [
         meta: {
             breadcrumb: {
                 label: '請求トップ',
-                parent:'home'
+                parent: 'home'
             }
         },
 
