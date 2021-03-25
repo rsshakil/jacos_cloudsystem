@@ -123,9 +123,47 @@ class ReceiveController extends Controller
         \DB::raw('COUNT(drv.data_receive_voucher_id) AS cnt'),'drv.data_receive_voucher_id'
         )
         ->join('data_receive_vouchers as drv','data_receives.data_receive_id','=','drv.data_receive_id')
-        ->where('data_receives.cmn_connect_id','=',$cmn_connect_id)
+        ->where('data_receives.cmn_connect_id','=',$cmn_connect_id);
+        if ($submit_type == "search") {
+            // 条件指定検索
+            $receive_date_from = $request->receive_date_from; // 受信日時開始
+            $receive_date_to = $request->receive_date_to; // 受信日時終了
+            $delivery_date_from = $request->delivery_date_from; // 納品日開始
+            $delivery_date_to = $request->delivery_date_to; // 納品日終了
+            $delivery_service_code = $request->delivery_service_code; // 便
+            $temperature = $request->temperature; // 配送温度区分
+
+            // $check_datetime=$request->check_datetime;
+            $confirmation_status = $request->confirmation_status; // 参照
+            $decission_cnt = $request->decission_cnt; // 確定
+            $print_cnt = $request->print_cnt; // 印刷
+
+            if ($receive_date_from) {
+                $result =$result->where('data_receives.receive_datetime','>=',$receive_date_from);
+            }
+            if ($receive_date_to) {
+                $result =$result->where('data_receives.receive_datetime','<=',$receive_date_to); 
+            }
+            if ($delivery_date_from) {
+                $result =$result->where('drv.mes_lis_acc_tra_dat_delivery_date','>=',$delivery_date_from);
+            }
+            if ($delivery_date_to) {
+                $result =$result->where('drv.mes_lis_acc_tra_dat_delivery_date','<=',$delivery_date_to);
+            }
+            if ($delivery_service_code!='*') {
+                $result =$result->where('drv.mes_lis_acc_log_del_delivery_service_code',$delivery_service_code); 
+            }
+
+            if ($temperature!='*') {
+                $result =$result->where('drv.mes_lis_acc_tra_ins_temperature_code',$temperature);
+            }
+
+            if ($byr_category_code!='*') {
+                $result =$result->where('drv.mes_lis_acc_tra_goo_major_category',$byr_category_code); 
+            }
+        }
         // ->groupBy('drv.data_receive_voucher_id')
-        ->groupBy('data_receives.receive_datetime')
+        $result = $result->groupBy('data_receives.receive_datetime')
         // ->groupBy('drv.mes_lis_acc_tra_trade_number')
         // ->groupBy('data_receives.sta_sen_identifier')
         // ->groupBy('drv.mes_lis_acc_par_sel_code')
