@@ -272,7 +272,7 @@
               <td>{{ order_list.check_datetime }}</td>
             </tr>
           
-            <tr v-if="order_lists && !Object.keys(order_lists.data).length">
+            <tr v-if="order_lists.data && order_lists.data.length==0">
             <td colspan="11">データがありません</td>
             </tr>
           </tbody>
