@@ -59,7 +59,13 @@
           <tbody>
             <tr>
               <td>1</td>
-              <td>{{payment_detail_header.mes_lis_pay_pay_code}} {{payment_detail_header.mes_lis_pay_pay_name}}</td>
+              <td><router-link :to="{
+                      name: 'payment_item_detail',
+                      query: {
+                        data_payment_id:
+                          payment_detail_header.data_payment_id,
+                      },
+                    }">{{payment_detail_header.mes_lis_pay_pay_code}} {{payment_detail_header.mes_lis_pay_pay_name}}</router-link></td>
               <td><router-link :to="{
                       name: 'payment_item_detail',
                       query: {
