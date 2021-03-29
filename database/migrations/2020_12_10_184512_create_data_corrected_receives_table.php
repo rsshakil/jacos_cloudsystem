@@ -15,7 +15,7 @@ class CreateDataCorrectedReceivesTable extends Migration
     {
         Schema::create('data_corrected_receives', function (Blueprint $table) {
             $table->increments('data_corrected_receive_id')->unsigned()->comment('data_corrected_receive_id');
-            $table->integer('data_order_id')->unsigned()->comment('data_order_id');
+            $table->integer('data_receive_id')->unsigned()->comment('data_receive_id');
             $table->integer('cmn_connect_id')->unsigned()->comment('cmn_connect_id');
             $table->dateTime('upload_datetime')->nullable()->comment('アップロード日時');
             $table->string('upload_file_path', 200)->nullable()->comment('upload_file_path');
@@ -26,7 +26,7 @@ class CreateDataCorrectedReceivesTable extends Migration
             $table->string('sta_rec_identifier', 20)->comment('受信者ＩＤ');
             $table->string('sta_rec_ide_authority', 10)->comment('受信者ＩＤ発行元');
             $table->string('sta_doc_standard', 20)->comment('標準名称');
-            $table->string('sta_doc_type_ersion', 10)->comment('バージョン');
+            $table->string('sta_doc_type_version', 10)->comment('バージョン');
             $table->string('sta_doc_instance_identifier', 50)->comment('インスタンスＩＤ');
             $table->string('sta_doc_type', 30)->comment('メッセージ種');
             $table->dateTime('sta_doc_creation_date_and_time')->comment('作成日時');

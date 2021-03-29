@@ -6,16 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{__('messages.login_title')}}</title>
-    <link rel="shortcut icon" href="<?php echo(\Config::get('app.url') . '/public/backend/images/logo/favicon.ico');?>">
+    <link rel="shortcut icon" href="{{ Config::get('app.url') . 'public/backend/images/logo/favicon.ico' }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" href="{{Config::get('app.url').'/public/css/app.css'}}">
-    <link rel="stylesheet" href="{{Config::get('app.url').'/public/css/flag-icon.css'}}">
+    <link rel="stylesheet" href="{{Config::get('app.url').'public/css/app.css'}}">
+    <link rel="stylesheet" href="{{Config::get('app.url').'public/css/flag-icon.css'}}">
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
         integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous">
     </script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="{{Config::get('app.url').'/public/css/my_login_css.css'}}">
+    <link rel="stylesheet" href="{{Config::get('app.url').'public/css/my_login_css.css'}}">
 </head>
 
 <body>
