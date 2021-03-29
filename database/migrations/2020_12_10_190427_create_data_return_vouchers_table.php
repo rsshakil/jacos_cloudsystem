@@ -16,6 +16,7 @@ class CreateDataReturnVouchersTable extends Migration
         Schema::create('data_return_vouchers', function (Blueprint $table) {
             $table->increments('data_return_voucher_id')->unsigned()->comment('data_return_voucher_id');
             $table->integer('data_return_id')->unsigned()->comment('data_return_id');
+            $table->dateTime('check_datetime')->nullable()->comment('check_datetime');
             $table->string('mes_lis_ret_tra_trade_number', 10)->comment('取引番号（発注・返品）');
             $table->string('mes_lis_ret_tra_additional_trade_number', 10)->comment('取引付属番号');
             $table->string('mes_lis_ret_fre_shipment_number', 10)->default('')->comment('出荷者管理番号');

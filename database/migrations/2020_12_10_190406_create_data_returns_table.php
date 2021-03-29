@@ -15,7 +15,7 @@ class CreateDataReturnsTable extends Migration
     {
         Schema::create('data_returns', function (Blueprint $table) {
             $table->increments('data_return_id')->unsigned()->comment('data_return_id');
-            $table->integer('data_order_id')->unsigned()->comment('data_order_id');
+            // $table->integer('data_order_id')->unsigned()->comment('data_order_id');
             $table->integer('cmn_connect_id')->unsigned()->comment('cmn_connect_id');
             $table->dateTime('upload_datetime')->nullable()->comment('アップロード日時');
             $table->string('upload_file_path', 200)->nullable()->comment('upload_file_path');
