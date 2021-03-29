@@ -54,7 +54,11 @@
            </td>
           <td class="cl_custom_color">参照状況</td>
           <td>
-              <input type="date" class="form-control" v-model="form.check_datetime" />
+              <select class="form-control" v-model="form.check_datetime">
+              <option value="*">全て</option>
+              <option value="1">未参照</option>
+              <option value="2">参照済</option>
+            </select>
           </td>
 
         </tr>
@@ -179,7 +183,7 @@ export default {
         mes_lis_buy_name: null,
         mes_lis_pay_per_end_date_from: null,
         mes_lis_pay_per_end_date_to: null,
-        check_datetime: null,
+        check_datetime: '*',
         submit_type: "page_load",
         sort_by:'receive_datetime ',
         sort_type:"DESC",

@@ -27,7 +27,7 @@
             </td>
             <td class="cl_custom_color">請求金額</td>
             <td class="text-right">
-                {{ number_format(param_data.requested_amount) }}
+                {{ param_data.requested_amount | priceFormat }}
             </td>
           </tr>
         </table>
@@ -272,15 +272,24 @@
                 {{ value.mes_lis_inv_lin_det_goo_major_category }}
               </td>
               <td>
-                {{ value.mes_lis_inv_lin_tra_code }} {{value.mes_lis_inv_lin_tra_name}}
+                {{ value.mes_lis_inv_lin_tra_code }} {{value.mes_lis_inv_lin_tra_name_sbcs}}
                 <!-- {{ value.mes_lis_inv_lin_tra_name }} -->
               </td>
               <td>{{ value.mes_lis_inv_lin_lin_trade_number_reference }}</td>
-              <td>{{ value.mes_lis_inv_lin_det_pay_code }}</td>
+              <td>{{ value.mes_lis_inv_lin_det_pay_code }}
+              {{
+                getbyrjsonValueBykeyName(
+                  "mes_lis_inv_lin_det_pay_code",
+                  value.mes_lis_inv_lin_det_pay_code,
+                  "invoices",
+                  buyer_settings
+                )
+              }}
+              </td>
               <td>{{ value.mes_lis_inv_lin_det_balance_carried_code }}</td>
-              <td class="text-right">{{ number_format(value.mes_lis_inv_lin_det_amo_requested_amount) }}</td>
+              <td class="text-right">{{ value.mes_lis_inv_lin_det_amo_requested_amount | priceFormat }}</td>
               <td>{{ value.send_datetime }}</td>
-              <td><button @click="editInvoiceDetail(value)" class="btn btn-primary">Edit</button><button @click="deleteInvoiceDetail(value)" class="btn btn-danger">Delete</button></td>
+              <td><button @click="editInvoiceDetail(value)" class="btn btn-primary">変更</button><button @click="deleteInvoiceDetail(value)" class="btn btn-danger">削除</button></td>
             </tr>
             <tr v-if="invoice_detail_lists.data && invoice_detail_lists.data.length==0">
                 <td class="text-center" colspan="100%">データがありません</td>
