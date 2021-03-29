@@ -23,6 +23,7 @@ class ShipmentController extends Controller
     {
         $this->all_functions = new AllUsedFunction();
         $this->data_controller = new Data_Controller();
+        $this->all_functions->folder_create('app/'.config('const.SHIPMENT_CSV_PATH'));
     }
     public function shipmentConfirm(Request $request)
     {

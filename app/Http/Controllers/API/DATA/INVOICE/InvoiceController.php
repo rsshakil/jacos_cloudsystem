@@ -26,6 +26,7 @@ class InvoiceController extends Controller
         $this->request = new \Illuminate\Http\Request();
         $this->request->setMethod('POST');
         $this->all_used_fun = new AllUsedFunction();
+        $this->all_used_fun->folder_create('app/'.config('const.INVOICE_CSV_PATH'));
     }
     public function invoiceScheduler($start_date,$end_date){
         // $request = new \Illuminate\Http\Request();
@@ -170,7 +171,7 @@ class InvoiceController extends Controller
             data_invoice_pay_detail::insert(['data_invoice_pay_id'=>$data_invoice_pay_id]);
         return response()->json(['success' => 1]);
     }
-    
+
     public function update_invoice_detail(Request $request)
     {
         $updatedArray = array(
@@ -349,6 +350,7 @@ class InvoiceController extends Controller
     }
     private static function invoiceFileName($data_invoice_id, $file_type="csv")
     {
+
         $file_name_info=data_invoice::select('cmn_connects.partner_code', 'byr_buyers.super_code', 'cmn_companies.jcode')
             ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'data_invoices.cmn_connect_id')
             ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')

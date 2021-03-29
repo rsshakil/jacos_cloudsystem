@@ -21,6 +21,7 @@ class PaymentController extends Controller
     public function __construct()
     {
         $this->all_used_fun = new AllUsedFunction();
+        $this->all_used_fun->folder_create('app/'.config('const.PAYMENT_CSV_PATH'));
     }
 
     public function getPaymentList(Request $request)
@@ -274,6 +275,7 @@ class PaymentController extends Controller
     }
     public function paymentDownload(Request $request)
     {
+        // $this->all_used_fun->folder_create('app/'.config('const.PAYMENT_CSV_PATH'));
         // return $request->all();
         $data_payment_id=$request->data_payment_id?$request->data_payment_id:1;
         $downloadType = $request->downloadType;

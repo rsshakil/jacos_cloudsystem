@@ -57,7 +57,7 @@
         <h4 class="page_custom_title">{{ myLang.search_result }}</h4>
       </div>
         <div class="col-12 text-center">
-         <button class="btn btn-outline-primary" type="button" @click="invoice_download(1)">
+         <button class="btn btn-outline-primary" type="button" :disabled="is_disabled(invoice_lists_length>=1?true:false)" @click="invoice_download(1)">
         <b-icon icon="download" animation="fade" font-scale="1.2"></b-icon>
         {{ myLang.download }}
       </button>
@@ -188,6 +188,7 @@ export default {
   data() {
     return {
       invoice_lists: {},
+      invoice_lists_length:0,
       invoice_data_lists:[],
       byr_buyer_lists: {},
       invoiceCreateModal:false,
@@ -234,6 +235,7 @@ export default {
         .then(({data}) => {
             this.init(data.status);
           this.invoice_lists = data.invoice_list;
+          this.invoice_lists_length=this.invoice_lists.data.length;
           this.invoice_data_lists = data.invoice_list.data;
           this.byr_buyer_lists = data.byr_buyer_list;
         });
