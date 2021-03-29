@@ -102,7 +102,7 @@
 
     </div>
     <div class="col-12 text-center">
-         <button class="btn btn-outline-primary" type="button" @click="receive_download(1)">
+         <button class="btn btn-outline-primary" type="button" @click="receive_download(1)" :disabled="is_disabled(received_item_length>=1?true:false)">
         <b-icon icon="download" animation="fade" font-scale="1.2"></b-icon>
         {{ myLang.download }}
       </button>
@@ -226,6 +226,7 @@ export default {
   data() {
     return {
       received_item_list: {},
+      received_item_length: 0,
       byr_buyer_lists: {},
       byr_buyer_category_lists: [],
       byr_buyer_id:null,
@@ -263,6 +264,7 @@ export default {
             .then(({data}) => {
                 this.init(data.status);
                 this.received_item_list = data.received_item_list;
+                this.received_item_length = this.received_item_list.data.length;
                 this.byr_buyer_lists = data.byr_buyer_list;
                 this.byr_buyer_category_lists = data.byr_buyer_category_list;
                 this.byr_buyer_category_lists.unshift({category_code:'*',category_name:'全て'});

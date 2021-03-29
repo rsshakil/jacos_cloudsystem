@@ -553,4 +553,12 @@ class AllUsedFunction extends Controller
         $b = \DateTime::createFromFormat($format, $date);
         return $b && $b->format($format) === $date;
         }
+
+    public function folder_create($folder_name)
+    {
+        if (!file_exists(storage_path() . '/' . $folder_name)) {
+            mkdir(storage_path() . '/' . $folder_name, 0777, true);
+        }
+    }
 }
+

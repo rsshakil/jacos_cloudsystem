@@ -76,7 +76,7 @@
 
     </div>
     <div class="col-12 text-center">
-      <button class="btn btn-outline-primary" type="button" @click="download(1)">
+      <button class="btn btn-outline-primary" type="button" @click="download(1)" :disabled="is_disabled(payment_lists_length>=1?true:false)">
         <b-icon icon="download" animation="fade" font-scale="1.2"></b-icon>
         {{ myLang.download }}
       </button>
@@ -170,6 +170,7 @@ export default {
   data() {
     return {
       payment_lists: {},
+      payment_lists_length: 0,
       byr_buyer_lists: {},
       byr_buyer_id: null,
       form: new Form({
@@ -203,6 +204,7 @@ export default {
         .then(({ data }) => {
           this.init(data.status);
           this.payment_lists = data.payment_item_list;
+          this.payment_lists_length = this.payment_lists.data.length;
           this.byr_buyer_lists = data.byr_buyer_list;
         });
     },

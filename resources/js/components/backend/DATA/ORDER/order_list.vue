@@ -132,11 +132,7 @@
       <hr />
     </div>
     <div class="col-12 text-center">
-      <button
-        class="btn btn-outline-primary"
-        type="button"
-        @click="orderDownload()"
-      >
+      <button class="btn btn-outline-primary" type="button" @click="orderDownload()" :disabled="is_disabled(order_lists_length>=1?true:false)">
         <b-icon icon="download" animation="fade" font-scale="1.2"></b-icon>
         {{ myLang.download }}
       </button>
@@ -260,7 +256,7 @@
               <td>{{ order_list.print_cnt }}</td>
               <td>{{ order_list.check_datetime }}</td>
             </tr>
-          
+
             <tr v-if="order_lists.data && order_lists.data.length==0">
             <td colspan="11">データがありません</td>
             </tr>
@@ -323,6 +319,7 @@ export default {
       // receive_date:null,
       // today:new Date().toLocaleDateString(),
       order_lists: {},
+      order_lists_length: 0,
       order_customer_code_lists: {},
       byr_buyer_lists: {},
       byr_buyer_category_lists:[],
@@ -398,6 +395,7 @@ export default {
       this.form.post(this.BASE_URL + "api/get_order_list", this.form)
         .then(({ data }) => {
           this.order_lists = data.order_list;
+          this.order_lists_length = this.order_lists.data.length;
           this.byr_buyer_lists = data.byr_buyer_list;
           this.byr_buyer_category_lists = data.byr_buyer_category_list;
 

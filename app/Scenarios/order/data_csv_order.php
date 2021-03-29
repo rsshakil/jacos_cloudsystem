@@ -503,7 +503,8 @@ class data_csv_order
         // return $response;
     }
     public function file_save($receipt, $file_number){
-        $pdf_file_name=date('YmdHis').'_'.'_'.$file_number.'_receipt.pdf';
+        $pdf_file_name=date('YmdHis').'_'.$file_number.'_receipt.pdf';
+        $this->all_functions->folder_create(config('const.PDF_SAVE_PATH'));
         $response = new Response(
             $receipt->Output(storage_path(config('const.PDF_SAVE_PATH').$pdf_file_name), 'F'), 200, array('content-type' => 'application / pdf')
         );

@@ -23,6 +23,7 @@ class ReceiveController extends Controller
 
     public function __construct(){
         $this->all_used_fun = new AllUsedFunction();
+        $this->all_used_fun->folder_create('app/'.config('const.RECEIVE_CSV_PATH'));
     }
 
     public function orderReceiveList(Request $request){
@@ -142,7 +143,7 @@ class ReceiveController extends Controller
                 $result =$result->where('data_receives.receive_datetime','>=',$receive_date_from);
             }
             if ($receive_date_to) {
-                $result =$result->where('data_receives.receive_datetime','<=',$receive_date_to); 
+                $result =$result->where('data_receives.receive_datetime','<=',$receive_date_to);
             }
             if ($delivery_date_from) {
                 $result =$result->where('drv.mes_lis_acc_tra_dat_delivery_date','>=',$delivery_date_from);
@@ -151,7 +152,7 @@ class ReceiveController extends Controller
                 $result =$result->where('drv.mes_lis_acc_tra_dat_delivery_date','<=',$delivery_date_to);
             }
             if ($delivery_service_code!='*') {
-                $result =$result->where('drv.mes_lis_acc_log_del_delivery_service_code',$delivery_service_code); 
+                $result =$result->where('drv.mes_lis_acc_log_del_delivery_service_code',$delivery_service_code);
             }
 
             if ($temperature!='*') {
@@ -159,7 +160,7 @@ class ReceiveController extends Controller
             }
 
             if ($byr_category_code!='*') {
-                $result =$result->where('drv.mes_lis_acc_tra_goo_major_category',$byr_category_code); 
+                $result =$result->where('drv.mes_lis_acc_tra_goo_major_category',$byr_category_code);
             }
         }
         // ->groupBy('drv.data_receive_voucher_id')

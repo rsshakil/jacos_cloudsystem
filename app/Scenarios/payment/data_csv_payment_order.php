@@ -101,17 +101,7 @@ class data_csv_payment_order extends Model
                 ->where('mes_lis_pay_pay_id',$value[31])
                 ->where('mes_lis_pay_per_end_date',$value[37])
                 ->get()->count();
-                // $flight = data_payment_pay::firstOrCreate(
-                //     [
-                //         'mes_lis_buy_code' => $value[27],
-                //         'mes_lis_pay_pay_gln'=>$value[33],
-                //         'mes_lis_pay_pay_id'=>$value[31],
-                //         'mes_lis_pay_per_end_date'=>$value[37]
-                //     ],$data_payment_pay_array
-                // );
-                // $data_payment_pay_id = $flight->id;
-                // \Log::info("data_payment_pay_id".$data_payment_pay_id);
-                if (!$data_payment_count) {
+                if ($data_payment_count>0) {
                     $data_payment_pay_id = data_payment_pay::insertGetId($data_payment_pay_array);
                 }
 
