@@ -21,8 +21,8 @@ class InvoiceDataController extends Controller
         // filtering
         // if (!(array_key_exists("downloadType", $request_all))) {
         if ($request->page_title=='invoice_list') {
-            $csv_data=$csv_data->where('data_invoice_pay_details.decision_datetime','!=',null);
-            $csv_data=$csv_data->where('data_invoice_pay_details.send_datetime','=',null);
+            // $csv_data=$csv_data->where('dipd.decision_datetime','!=',null);
+            // $csv_data=$csv_data->where('dipd.send_datetime','=',null);
 
             $mes_lis_inv_pay_code=$request->mes_lis_inv_pay_code;
             $send_datetime_status=$request->send_datetime_status;

@@ -149,7 +149,7 @@
 
       <div class="col-12" style="text-align: center">
         <button
-          @click="searchByFormData"
+          @click="get_all_receive_detail"
           class="btn btn-primary active srchBtn"
           type="button"
         >
@@ -166,14 +166,14 @@
           <div class="col-5">
             <p>
               <span class="tableRowsInfo"
-                >{{ order_detail_lists.from }}〜{{
-                  order_detail_lists.to
+                >{{ receive_detail_lists.from }}〜{{
+                  receive_detail_lists.to
                 }}
-                件表示中／全：{{ order_detail_lists.total }}件</span
+                件表示中／全：{{ receive_detail_lists.total }}件</span
               >
               <span class="pagi">
                 <advanced-laravel-vue-paginate
-                  :data="order_detail_lists"
+                  :data="receive_detail_lists"
                   :onEachSide="2"
                   previousText="<"
                   nextText=">"
@@ -188,7 +188,7 @@
                   class="form-control selectPage"
                 >
                   <!--<option value="0">表示行数</option>
-                  <option v-for="n in order_detail_lists.last_page" :key="n"
+                  <option v-for="n in receive_detail_lists.last_page" :key="n"
                 :value="n">{{n}}</option>-->
                   <option value="10">10行</option>
                   <option value="20">20行</option>
@@ -230,10 +230,7 @@
                     ダウンロード
                   </button>
                   <div class="dropdown-menu dropdown-menu-right">
-                    <button
-                      class="dropdown-item"
-                      @click="receive_download(1)"
-                      type="button">
+                    <button class="dropdown-item" @click="receive_download(1)" type="button" :disabled="is_disabled(receive_details_length>=1?true:false)">
                       CSV
                     </button>
                     <!-- <button
@@ -280,12 +277,12 @@
             </thead>
             <tbody>
               <tr
-                v-for="(order_detail_list, index) in order_detail_lists.data"
+                v-for="(order_detail_list, index) in receive_detail_lists.data"
                 :key="index"
               >
                 <td>
                   {{
-                    order_detail_lists.current_page *
+                    receive_detail_lists.current_page *
                       form.select_field_per_page_num -
                     form.select_field_per_page_num +
                     index +
@@ -326,7 +323,7 @@
                 </td>
                 <td><span v-if="order_detail_list.mes_lis_acc_tot_tot_net_price_total>0">訂正あり</span><span v-else>訂正なし</span></td>
               </tr>
-              <tr v-if="order_detail_lists.data && order_detail_lists.data.length==0">
+              <tr v-if="receive_detail_lists.data && receive_detail_lists.data.length==0">
                 <td class="text-center" colspan="8">データがありません</td>
             </tr>
             </tbody>
@@ -676,7 +673,8 @@ export default {
       sortKey: "",
       reverse: true,
       order_by: "asc",
-      order_detail_lists: {},
+      receive_detail_lists: {},
+      receive_details_length: 0,
       order_info: {},
       order_date: "",
       order_detail_list: [],
@@ -719,16 +717,11 @@ export default {
         sel_code:'',
         major_category:'',
         delivery_service_code:'',
-        printingStatus: "*",
-        situation: "*",
-        fixedSpecial: "*",
-        deliveryDestnation: "",
-        deliveryCode: "",
-        deliveryDate: "",
-        deliveryName: "",
-        mes_lis_shi_tra_trade_number: "",
+        order_info:{},
         sort_by:'data_receive_voucher_id ',
         sort_type:"ASC",
+        page_title:'receive_details_list',
+        downloadType:1
       }),
       param_data: [],
       // buyer_settings:null,
@@ -751,17 +744,11 @@ export default {
         Fire.$emit("LoadByrorderDetail",this.form.select_field_page_num);
       }
     },
-    searchByFormData() {
-      Fire.$emit("LoadByrorderDetail",this.form.select_field_page_num);
-    },
     receive_download(downloadType = 1) {
       //downloadcsvshipment_confirm
-      var _this = this;
+      this.form.downloadType=downloadType;
       axios
-        .post(this.BASE_URL + "api/receive_download", {
-          data_receive_id: this.form.data_receive_id,
-          downloadType: downloadType,
-        })
+        .post(this.BASE_URL + "api/receive_download", this.form)
         .then(({ data }) => {
            this.init(data.status);
           this.downloadFromUrl(data);
@@ -775,14 +762,14 @@ export default {
         .post(this.BASE_URL + "api/data_receive_detail_list", this.form)
         .then(({ data }) => {
           this.init(data.status);
-          this.order_detail_lists = data.received_detail_list;
+          this.receive_detail_lists = data.received_detail_list;
+          this.receive_details_length = this.receive_detail_lists.data.length;
           this.byr_buyer_lists = data.byr_buyer_list;
           this.buyer_settings = JSON.parse(data.buyer_settings);
           this.mes_lis_ord_tra_ins_goods_classification_codeList = this.buyer_settings.orders.mes_lis_ord_tra_ins_goods_classification_code;
           this.mes_lis_ord_tra_ins_trade_type_codeList = this.buyer_settings.orders.mes_lis_ord_tra_ins_trade_type_code;
           this.order_info = data.order_info;
-        //   console.log(this.order_info)
-        //   console.log(Object.keys(order_info).length)
+          this.form.order_info = this.order_info;
           this.loader.hide();
         });
     },

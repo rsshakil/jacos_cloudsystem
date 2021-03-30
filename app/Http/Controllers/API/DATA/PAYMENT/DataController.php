@@ -92,9 +92,40 @@ class DataController extends Controller
             )
         ->join('data_payment_pays as dpp','dpp.data_payment_id','=','data_payments.data_payment_id')
         ->join('data_payment_pay_details as dppd','dppd.data_payment_pay_id','=','dpp.data_payment_pay_id');
-        if (array_key_exists("data_payment_id", $request_all)) {
+        if ($request->page_title=='payment_list') {
+            $mes_lis_pay_pay_code = $request->mes_lis_pay_pay_code; // 受信日時開始
+            $receive_date_from = $request->receive_date_from; // 受信日時開始
+            $receive_date_to = $request->receive_date_to; // 受信日時終了
+            $mes_lis_buy_name = $request->mes_lis_buy_name; // 納品日開始
+            $mes_lis_pay_per_end_date_from = $request->mes_lis_pay_per_end_date_from; // 納品日開始
+            $mes_lis_pay_per_end_date_to = $request->mes_lis_pay_per_end_date_to; // 納品日終了
+            $check_datetime = $request->check_datetime; // 便
+            if ($mes_lis_pay_pay_code !=null) {
+                $csv_data=$csv_data->where('dpp.mes_lis_pay_pay_code',$mes_lis_pay_pay_code);
+            }
+            if ($receive_date_from && $receive_date_to) {
+                $csv_data=$csv_data->whereBetween('data_payments.receive_datetime', [$receive_date_from, $receive_date_to]);
+            }
+            if ($mes_lis_pay_per_end_date_from && $mes_lis_pay_per_end_date_to) {
+                $csv_data=$csv_data->whereBetween('dpp.mes_lis_pay_per_end_date', [$mes_lis_pay_per_end_date_from, $mes_lis_pay_per_end_date_to]);
+            }
+            if ($mes_lis_buy_name !=null) {
+                $csv_data=$csv_data->where('dpp.mes_lis_buy_name',$mes_lis_buy_name);
+            }
+            if ($check_datetime!='*') {
+                if($check_datetime==1){
+                    $csv_data=$csv_data->whereNull('dpp.check_datetime');
+                }else{
+                    $csv_data=$csv_data->whereNotNull('dpp.check_datetime');
+                }
+            }
+        }else if($request->page_title=='payment_details_list'){
             $csv_data=$csv_data->where('data_payments.data_payment_id',$data_payment_id);
         }
+        // $csv_data=$csv_data->where('dppd.mes_lis_pay_lin_det_pay_code','3003');
+        // if (array_key_exists("data_payment_id", $request_all)) {
+        //     $csv_data=$csv_data->where('data_payments.data_payment_id',$data_payment_id);
+        // }
 
         // if (!(array_key_exists("downloadType", $request_all))) {
         //     $csv_data=$csv_data->where('dppd.decision_datetime','!=',null);

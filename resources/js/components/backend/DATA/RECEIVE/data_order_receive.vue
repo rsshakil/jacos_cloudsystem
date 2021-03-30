@@ -37,7 +37,7 @@
            <td class="cl_custom_color">便</td>
             <td>
               <select class="form-control" v-model="form.delivery_service_code">
-                <option :value="0">全て</option>
+                <option value="*">全て</option>
               </select>
             </td>
           </tr>
@@ -45,11 +45,11 @@
             <td class="cl_custom_color">納品日</td>
             <td>
              <div class="input-group">
-                    <input type="date" class="form-control" v-model="form.wnership_date_from">
+                    <input type="date" class="form-control" v-model="form.delivery_date_from">
                     <div class="input-group-prepend">
                         <span class="input-group-text">~</span>
                     </div>
-                    <input type="date" class="form-control" v-model="form.wnership_date_to">
+                    <input type="date" class="form-control" v-model="form.delivery_date_to">
                 </div>
 
             </td>
@@ -62,7 +62,7 @@
             <td class="cl_custom_color">配送温度区分</td>
             <td>
               <select class="form-control" v-model="form.temperature_code">
-                <option :value="0">全て</option>
+                <option value="*">全て</option>
               </select>
             </td>
           </tr>
@@ -72,19 +72,19 @@
             <td class="cl_custom_color">データ種別</td>
             <td>
               <select class="form-control">
-                <option :value="0" >全て</option>
+                <option value="*" >全て</option>
               </select>
             </td>
             <td  class="cl_custom_color">訂正状況</td>
             <td>
               <select class="form-control">
-                <option :value="0">全て</option>
+                <option value="*">全て</option>
               </select>
             </td>
             <td class="cl_custom_color">参照状況</td>
             <td>
               <select class="form-control" v-model="form.check_datetime">
-                <option :value="0">全て</option>
+                <option value="*">全て</option>
               </select>
             </td>
           </tr>
@@ -93,7 +93,7 @@
       </div>
     </div>
     <div class="col-12" style="text-align: center">
-      <button class="btn btn-primary active srchBtn" type="button" @click="searchReceivedItem">
+      <button class="btn btn-primary active srchBtn" type="button" @click="getAllReceivedItem">
         {{ myLang.search }}
       </button>
     </div>
@@ -238,16 +238,18 @@ export default {
         byr_buyer_id: null,
         receive_date_from: null,
         receive_date_to: null,
-        wnership_date_from: null,
-        wnership_date_to: null,
-        major_category: "01",
-        delivery_service_code: "01",
-        temperature_code: "01",
+        delivery_date_from: null,
+        delivery_date_to: null,
+        major_category: "*",
+        delivery_service_code: "*",
+        temperature_code: "*",
         check_datetime: null,
         category_code:{category_code:'*',category_name:'全て'},
         sort_by:'receive_datetime ',
         sort_type:"DESC",
-        submit_type: "page_load",
+        page_title:'receive_list',
+        downloadType:1
+
       }),
     };
   },
@@ -280,20 +282,14 @@ export default {
       },
       receive_download(downloadType = 1) {
       //downloadcsvshipment_confirm
-      var _this = this;
+      this.form.downloadType= downloadType,
       axios
-        .post(this.BASE_URL + "api/receive_download", {
-          downloadType: downloadType,
-        })
+        .post(this.BASE_URL + "api/receive_download", this.form)
         .then(({ data }) => {
            this.init(data.status);
           this.downloadFromUrl(data);
         });
     },
-    searchReceivedItem(){
-        this.form.submit_type="search"
-        this.getAllReceivedItem();
-    }
   },
 
   created() {

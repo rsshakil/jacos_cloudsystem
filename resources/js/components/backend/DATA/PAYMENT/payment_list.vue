@@ -66,7 +66,7 @@
     </div>
     </div>
     <div class="col-12" style="text-align: center">
-      <button class="btn btn-primary active srchBtn" type="button" @click="searchPaymentItem">
+      <button class="btn btn-primary active srchBtn" type="button" @click="getAllPayments">
         {{ myLang.search }}
       </button>
     </div>
@@ -141,7 +141,7 @@
                     :to="{
                       name: 'payment_detail',
                       query: {
-                        payment_id:
+                        data_payment_id:
                           payment.data_payment_id,
                       },
                     }"
@@ -185,9 +185,10 @@ export default {
         mes_lis_pay_per_end_date_from: null,
         mes_lis_pay_per_end_date_to: null,
         check_datetime: '*',
-        submit_type: "page_load",
+        page_title: "payment_list",
         sort_by:'receive_datetime ',
         sort_type:"DESC",
+        downloadType:1,
 
       }),
     };
@@ -216,19 +217,13 @@ export default {
       },
       download(downloadType = 1) {
       //downloadcsvshipment_confirm
-      var _this = this;
+      this.form.downloadType=downloadType;
       axios
-        .post(this.BASE_URL + "api/payment_download", {
-          downloadType: downloadType,
-        })
+        .post(this.BASE_URL + "api/payment_download", this.form)
         .then(({ data }) => {
            this.init(data.status);
           this.downloadFromUrl(data);
         });
-    },
-    searchPaymentItem(){
-        this.form.submit_type="search"
-        this.getAllPayments();
     },
   },
 

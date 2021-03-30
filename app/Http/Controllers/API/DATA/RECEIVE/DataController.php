@@ -25,10 +25,36 @@ class DataController extends Controller
         //     $csv_data=$csv_data->where('dppd.decision_datetime','!=',null);
         //     $csv_data=$csv_data->where('dppd.send_datetime','=',null);
         // }
+        if ($request->page_title=='receive_list') {
+            $receive_date_from = $request->receive_date_from; // 受信日時開始
+            $receive_date_to = $request->receive_date_to; // 受信日時終了
+            $delivery_date_from = $request->delivery_date_from; // 納品日開始
+            $delivery_date_to = $request->delivery_date_to; // 納品日終了
+            $delivery_service_code = $request->delivery_service_code; // 便
+            $temperature_code = $request->temperature_code; // 配送温度区分
+            $byr_category_code = $request->category_code['category_code']; // 印刷
+
+            if ($receive_date_from && $receive_date_to) {
+                $csv_data=$csv_data->whereBetween('data_receives.receive_datetime', [$receive_date_from, $receive_date_to]);
+            }
+            if ($delivery_date_from && $receive_date_to) {
+                $csv_data=$csv_data->whereBetween('drv.mes_lis_acc_tra_dat_delivery_date', [$delivery_date_from, $delivery_date_to]);
+            }
+            if ($delivery_service_code!='*') {
+                $csv_data=$csv_data->where('drv.mes_lis_acc_log_del_delivery_service_code',$delivery_service_code);
+            }
+
+            if ($temperature_code!='*') {
+                $csv_data=$csv_data->where('drv.mes_lis_acc_tra_ins_temperature_code',$temperature_code);
+            }
+
+            if ($byr_category_code!='*') {
+                $csv_data=$csv_data->where('drv.mes_lis_acc_tra_goo_major_category',$byr_category_code);
+            }
+        }else if($request->page_title=='receive_details_list'){
+
+        }
         $csv_data=$csv_data->groupBy('drv.data_receive_voucher_id');
-        // $csv_data=$csv_data->orderBy("data_payments.data_payment_id");
-        // 検索
-        // $csv_data = $csv_data->limit(100000)->get()->toArray();
         return $csv_data;
     }
 
