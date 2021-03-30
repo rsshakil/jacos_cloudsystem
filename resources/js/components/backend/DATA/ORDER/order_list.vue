@@ -128,8 +128,9 @@
     </div>
     <!-- </div> -->
     <!-- </div> -->
-    <div class="col-12">
-      <hr />
+    <div class="col-12 text-center page_c_title_bar text-sm-left mb-0">
+      <h4 class="page_custom_title">検索結果：一覧</h4>
+
     </div>
     <div class="col-12 text-center">
       <button class="btn btn-outline-primary" type="button" @click="orderDownload()" :disabled="is_disabled(order_lists_length>=1?true:false)">
