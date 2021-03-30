@@ -31,84 +31,26 @@ class ReceiveController extends Controller
         $adm_user_id = $request->adm_user_id;
         $byr_buyer_id = $request->byr_buyer_id;
         $per_page = $request->per_page == null ? 10 : $request->per_page;
-        $submit_type = $request->submit_type;
-        $byr_category_code = $request->category_code; // 印刷
+        // $byr_category_code = $request->category_code;
         $sort_by = $request->sort_by;
         $sort_type = $request->sort_type;
 
-        $byr_category_code = $byr_category_code['category_code'];
-        $search_where = '';
-        $having_var = '';
+        $receive_date_from = $request->receive_date_from; // 受信日時開始
+        $receive_date_to = $request->receive_date_to; // 受信日時終了
+        $delivery_date_from = $request->delivery_date_from; // 納品日開始
+        $delivery_date_to = $request->delivery_date_to; // 納品日終了
+        $delivery_service_code = $request->delivery_service_code; // 便
+        $temperature_code = $request->temperature_code; // 配送温度区分
+
+        $byr_category_code = $request->category_code['category_code']; // 印刷
+        // $having_var = '';
 
         $table_name='drv.';
         if ($sort_by=="data_receive_id" || $sort_by=="receive_datetime") {
             $table_name='data_receives.';
         }
 
-        if ($submit_type == "search") {
-            // 条件指定検索
-            $receive_date_from = $request->receive_date_from; // 受信日時開始
-            $receive_date_to = $request->receive_date_to; // 受信日時終了
-            $delivery_date_from = $request->delivery_date_from; // 納品日開始
-            $delivery_date_to = $request->delivery_date_to; // 納品日終了
-            $delivery_service_code = $request->delivery_service_code; // 便
-            $temperature = $request->temperature; // 配送温度区分
 
-            // $check_datetime=$request->check_datetime;
-            $confirmation_status = $request->confirmation_status; // 参照
-            $decission_cnt = $request->decission_cnt; // 確定
-            $print_cnt = $request->print_cnt; // 印刷
-
-            if ($receive_date_from) {
-                $search_where .= "AND dor.receive_datetime >= '" . $receive_date_from . "' ";
-            }
-            if ($receive_date_to) {
-                $search_where .= "AND dor.receive_datetime <= '" . $receive_date_to . "' ";
-            }
-            if ($delivery_date_from) {
-                $search_where .= "AND dov.mes_lis_ord_tra_dat_delivery_date >= '" . $delivery_date_from . "' ";
-            }
-            if ($delivery_date_to) {
-                $search_where .= "AND dov.mes_lis_ord_tra_dat_delivery_date <= '" . $delivery_date_to . "' ";
-            }
-            if ($delivery_service_code!='*') {
-                $search_where .= "AND dov.mes_lis_ord_log_del_delivery_service_code='" . $delivery_service_code . "' ";
-            }
-
-            if ($temperature!='*') {
-                $search_where .= "AND dov.mes_lis_ord_tra_ins_temperature_code='" . $temperature . "' ";
-            }
-
-            if ($byr_category_code!='*') {
-                $search_where .= "AND dov.mes_lis_ord_tra_goo_major_category='" . $byr_category_code . "' ";
-            }
-
-            // 参照
-            if ($confirmation_status) {
-                // TODO 参照条件作成
-            }
-            // 印刷
-            if ($print_cnt == "!0") {
-                $having_var = "HAVING print_cnt!=0 ";
-            } elseif ($print_cnt != "*") {
-                $having_var = "HAVING print_cnt='" . $print_cnt . "' ";
-            }
-
-            // 確定
-            if ($decission_cnt == "!0") {
-                if ($having_var) {
-                    $having_var .= "OR decision_cnt!=0";
-                } else {
-                    $having_var .= "HAVING decision_cnt!=0";
-                }
-            } elseif ($decission_cnt != "*") {
-                if ($having_var) {
-                    $having_var .= "OR decision_cnt='" . $decission_cnt . "'";
-                } else {
-                    $having_var .= "HAVING decision_cnt='" . $decission_cnt . "'";
-                }
-            }
-        }
         $authUser = User::find($adm_user_id);
         $cmn_company_id = '';
         $cmn_connect_id = '';
@@ -125,50 +67,25 @@ class ReceiveController extends Controller
         )
         ->join('data_receive_vouchers as drv','data_receives.data_receive_id','=','drv.data_receive_id')
         ->where('data_receives.cmn_connect_id','=',$cmn_connect_id);
-        if ($submit_type == "search") {
             // 条件指定検索
-            $receive_date_from = $request->receive_date_from; // 受信日時開始
-            $receive_date_to = $request->receive_date_to; // 受信日時終了
-            $delivery_date_from = $request->delivery_date_from; // 納品日開始
-            $delivery_date_to = $request->delivery_date_to; // 納品日終了
-            $delivery_service_code = $request->delivery_service_code; // 便
-            $temperature = $request->temperature; // 配送温度区分
+                if ($receive_date_from && $receive_date_to) {
+                    $result =$result->whereBetween('data_receives.receive_datetime', [$receive_date_from, $receive_date_to]);
+                }
+                if ($delivery_date_from && $receive_date_to) {
+                    $result =$result->whereBetween('drv.mes_lis_acc_tra_dat_delivery_date', [$delivery_date_from, $delivery_date_to]);
+                }
+                if ($delivery_service_code!='*') {
+                    $result =$result->where('drv.mes_lis_acc_log_del_delivery_service_code',$delivery_service_code);
+                }
 
-            // $check_datetime=$request->check_datetime;
-            $confirmation_status = $request->confirmation_status; // 参照
-            $decission_cnt = $request->decission_cnt; // 確定
-            $print_cnt = $request->print_cnt; // 印刷
+                if ($temperature_code!='*') {
+                    $result =$result->where('drv.mes_lis_acc_tra_ins_temperature_code',$temperature_code);
+                }
 
-            if ($receive_date_from) {
-                $result =$result->where('data_receives.receive_datetime','>=',$receive_date_from);
-            }
-            if ($receive_date_to) {
-                $result =$result->where('data_receives.receive_datetime','<=',$receive_date_to);
-            }
-            if ($delivery_date_from) {
-                $result =$result->where('drv.mes_lis_acc_tra_dat_delivery_date','>=',$delivery_date_from);
-            }
-            if ($delivery_date_to) {
-                $result =$result->where('drv.mes_lis_acc_tra_dat_delivery_date','<=',$delivery_date_to);
-            }
-            if ($delivery_service_code!='*') {
-                $result =$result->where('drv.mes_lis_acc_log_del_delivery_service_code',$delivery_service_code);
-            }
-
-            if ($temperature!='*') {
-                $result =$result->where('drv.mes_lis_acc_tra_ins_temperature_code',$temperature);
-            }
-
-            if ($byr_category_code!='*') {
-                $result =$result->where('drv.mes_lis_acc_tra_goo_major_category',$byr_category_code);
-            }
-        }
-        // ->groupBy('drv.data_receive_voucher_id')
+                if ($byr_category_code!='*') {
+                    $result =$result->where('drv.mes_lis_acc_tra_goo_major_category',$byr_category_code);
+                }
         $result = $result->groupBy('data_receives.receive_datetime')
-        // ->groupBy('drv.mes_lis_acc_tra_trade_number')
-        // ->groupBy('data_receives.sta_sen_identifier')
-        // ->groupBy('drv.mes_lis_acc_par_sel_code')
-        // ->groupBy('drv.mes_lis_acc_par_sel_name')
         ->orderBy($table_name.$sort_by,$sort_type)
         ->paginate($per_page);
 
@@ -186,6 +103,7 @@ class ReceiveController extends Controller
         $adm_user_id = $request->adm_user_id;
         $byr_buyer_id = $request->byr_buyer_id;
         $data_receive_id = $request->data_receive_id;
+        $delivery_code = $request->delivery_code;
         $sel_name = $request->par_sel_name;
         $sel_code = $request->sel_code;
         $major_category = $request->major_category;
@@ -199,7 +117,7 @@ class ReceiveController extends Controller
 
         $table_name='data_receive_vouchers.';
 
-        if ($submit_type == "search") {
+        // if ($submit_type == "search") {
             // 条件指定検索
             $receive_date_from = $request->receive_date_from; // 受信日時開始
             $receive_date_to = $request->receive_date_to; // 受信日時終了
@@ -207,11 +125,6 @@ class ReceiveController extends Controller
             $delivery_date_to = $request->delivery_date_to; // 納品日終了
             $delivery_service_code = $request->delivery_service_code; // 便
             $temperature = $request->temperature; // 配送温度区分
-
-            // $check_datetime=$request->check_datetime;
-            $confirmation_status = $request->confirmation_status; // 参照
-            $decission_cnt = $request->decission_cnt; // 確定
-            $print_cnt = $request->print_cnt; // 印刷
 
             if ($receive_date_from) {
                 $search_where .= "AND dor.receive_datetime >= '" . $receive_date_from . "' ";
@@ -234,31 +147,31 @@ class ReceiveController extends Controller
             }
 
             // 参照
-            if ($confirmation_status) {
-                // TODO 参照条件作成
-            }
-            // 印刷
-            if ($print_cnt == "!0") {
-                $having_var = "HAVING print_cnt!=0 ";
-            } elseif ($print_cnt != "*") {
-                $having_var = "HAVING print_cnt='" . $print_cnt . "' ";
-            }
+        //     if ($confirmation_status) {
+        //         // TODO 参照条件作成
+        //     }
+        //     // 印刷
+        //     if ($print_cnt == "!0") {
+        //         $having_var = "HAVING print_cnt!=0 ";
+        //     } elseif ($print_cnt != "*") {
+        //         $having_var = "HAVING print_cnt='" . $print_cnt . "' ";
+        //     }
 
-            // 確定
-            if ($decission_cnt == "!0") {
-                if ($having_var) {
-                    $having_var .= "OR decision_cnt!=0";
-                } else {
-                    $having_var .= "HAVING decision_cnt!=0";
-                }
-            } elseif ($decission_cnt != "*") {
-                if ($having_var) {
-                    $having_var .= "OR decision_cnt='" . $decission_cnt . "'";
-                } else {
-                    $having_var .= "HAVING decision_cnt='" . $decission_cnt . "'";
-                }
-            }
-        }
+        //     // 確定
+        //     if ($decission_cnt == "!0") {
+        //         if ($having_var) {
+        //             $having_var .= "OR decision_cnt!=0";
+        //         } else {
+        //             $having_var .= "HAVING decision_cnt!=0";
+        //         }
+        //     } elseif ($decission_cnt != "*") {
+        //         if ($having_var) {
+        //             $having_var .= "OR decision_cnt='" . $decission_cnt . "'";
+        //         } else {
+        //             $having_var .= "HAVING decision_cnt='" . $decission_cnt . "'";
+        //         }
+        //     }
+        // }
         $authUser = User::find($adm_user_id);
         $cmn_company_id = '';
         $cmn_connect_id = '';
@@ -325,14 +238,15 @@ class ReceiveController extends Controller
     }
     private static function receiveFileName($data_receive_id, $file_type="csv")
     {
-        $file_name_info=data_receive::select('cmn_connects.partner_code', 'byr_buyers.super_code', 'cmn_companies.jcode')
+        $file_name_info=data_receive::select('cmn_connects.partner_code', 'byr_buyers.super_code', 'cmn_companies.jcode','cmn_companies.company_name')
             ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'data_receives.cmn_connect_id')
             ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
             ->join('slr_sellers', 'slr_sellers.slr_seller_id', '=', 'cmn_connects.slr_seller_id')
             ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'slr_sellers.cmn_company_id')
             ->where('data_receives.data_receive_id', $data_receive_id)
             ->first();
-        $file_name = $file_name_info->super_code.'-'."receive_".$file_name_info->super_code.'-'.$file_name_info->partner_code."-".$file_name_info->jcode.'_receive_'.date('YmdHis').'.'.$file_type;
+            $file_name = '受注'.'_'.$file_name_info->company_name.'_'.date('YmdHis').'.'.$file_type;
+        // $file_name = $file_name_info->super_code.'-'."receive_".$file_name_info->super_code.'-'.$file_name_info->partner_code."-".$file_name_info->jcode.'_receive_'.date('YmdHis').'.'.$file_type;
         return $file_name;
     }
     public function orderReceiveItemDetailList(Request $request){

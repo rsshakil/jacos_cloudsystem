@@ -169,8 +169,9 @@ export default {
         mes_lis_pay_per_end_date_from: null,
         mes_lis_pay_per_end_date_to: null,
         check_datetime: null,
-        submit_type: "page_load",
-        payment_id:'',
+        data_payment_id:null,
+        page_title:'payment_details_list',
+        downloadType:1
       }),
     };
   },
@@ -193,13 +194,9 @@ export default {
         });
     },
     download(downloadType = 1) {
-      //downloadcsvshipment_confirm
-      var _this = this;
+      this.form.downloadType=downloadType;
       axios
-        .post(this.BASE_URL + "api/payment_download", {
-          data_payment_id: this.form.payment_id,
-          downloadType: downloadType,
-        })
+        .post(this.BASE_URL + "api/payment_download",this.form)
         .then(({ data }) => {
            this.init(data.status);
           this.downloadFromUrl(data);
@@ -211,7 +208,7 @@ export default {
   created() {
     this.byr_buyer_id = this.$session.get("byr_buyer_id");
     this.form.byr_buyer_id = this.byr_buyer_id;
-    this.form.payment_id = this.$route.query.payment_id
+    this.form.data_payment_id = this.$route.query.data_payment_id
     this.getAllPaymentDetails();
     Fire.$emit("byr_has_selected", this.byr_buyer_id);
     Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
