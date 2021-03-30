@@ -57,7 +57,6 @@ class OrderController extends Controller
         // return $request->all();
         $adm_user_id = $request->adm_user_id;
         $byr_buyer_id = $request->byr_buyer_id;
-        $submit_type = $request->submit_type;
         $per_page = $request->per_page?$request->per_page:10;
 
         $authUser = User::find($adm_user_id);
@@ -97,7 +96,7 @@ class OrderController extends Controller
         ->join('data_order_vouchers AS dov','dor.data_order_id','=','dov.data_order_id')
         ->join('data_shipment_vouchers AS dsv','dsv.data_order_voucher_id','=','dov.data_order_voucher_id')
         ->where('dor.cmn_connect_id',$cmn_connect_id);
-        if ($submit_type == "search") {
+        // if ($submit_type == "search") {
             // 条件指定検索
             $receive_date_from = $request->receive_date_from;
             $receive_date_to = $request->receive_date_to;
@@ -120,20 +119,11 @@ class OrderController extends Controller
 
             $byr_category_code = $byr_category_code['category_code'];
 
-
-
-
-        if ($receive_date_from) {
-            $result= $result->where('dor.receive_datetime','>=',$receive_date_from);
+        if ($receive_date_from && $receive_date_to) {
+            $result= $result->whereBetween('dor.receive_datetime', [$receive_date_from, $receive_date_to]);
         }
-        if ($receive_date_to) {
-            $result= $result->where('dor.receive_datetime','<=',$receive_date_to);
-        }
-        if ($delivery_date_from) {
-            $result= $result->where('dov.mes_lis_ord_tra_dat_delivery_date','>=',$delivery_date_from);
-        }
-        if ($delivery_date_to) {
-            $result= $result->where('dov.mes_lis_ord_tra_dat_delivery_date','<=',$delivery_date_to);
+        if ($delivery_date_from && $delivery_date_to) {
+            $result= $result->whereBetween('dov.mes_lis_ord_tra_dat_delivery_date', [$delivery_date_from, $delivery_date_to]);
         }
         if ($delivery_service_code!='*') {
             $result= $result->where('dov.mes_lis_ord_log_del_delivery_service_code',$delivery_service_code);
@@ -169,7 +159,7 @@ class OrderController extends Controller
         } elseif ($decission_cnt != "*") {
             $result= $result->having('decision_cnt','=',$decission_cnt);
         }
-    }
+    // }
         $result = $result->groupBy([
             'dor.receive_datetime',
             'dor.sta_sen_identifier',

@@ -122,7 +122,7 @@
     <br />
     <!-- <div class="row"> -->
     <div class="col-12" style="text-align: center">
-      <button class="btn btn-primary active srchBtn" type="button" @click="searchOrder()">
+      <button class="btn btn-primary active srchBtn" type="button" @click="get_all_order()">
         {{ myLang.search }}
       </button>
     </div>
@@ -336,16 +336,13 @@ export default {
       json_delivery_service_code: [],
       form: new Form({
         adm_user_id: Globals.user_info_id,
+        data_order_id: 1,
         per_page:10,
         page:1,
         byr_buyer_id: null,
         receive_date_from: null,
         receive_date_to: null,
         category_code:{category_code:'*',category_name:'全て'},
-        // receive_date_from:new Date().toISOString().slice(0, 10),
-        // receive_date_to:new Date().toISOString().slice(0, 10),
-        // delivery_date_from:new Date().toISOString().slice(0, 10),
-        // delivery_date_to:new Date().toISOString().slice(0, 10),
         delivery_date_from: null,
         delivery_date_to: null,
         check_datetime: '*',
@@ -357,9 +354,9 @@ export default {
         decission_cnt: "*",
         confirmation_status_data: "*",
         decisionDateTime:'*',
-        submit_type: "page_load",
         sort_by:'receive_datetime ',
         sort_type:"DESC",
+        downloadType: 1,
       }),
     };
   },
@@ -408,21 +405,11 @@ export default {
           this.loader.hide();
         });
     },
-    searchOrder() {
-      this.form.submit_type = "search";
-
-      this.get_all_order();
-
-    },
     orderDownload(downloadType = 1) {
       //downloadcsvshipment_confirm
-      var _this = this;
+      this.downloadType=downloadType
       axios
-        .post(this.BASE_URL + "api/downloadcsvshipment_confirm", {
-          data_order_id: 1,
-        //   order_info: this.order_info,
-          downloadType: downloadType,
-        })
+        .post(this.BASE_URL + "api/downloadcsvshipment_confirm",this.form)
         .then(({ data }) => {
            this.init(data.status);
            this.downloadFromUrl(data);
