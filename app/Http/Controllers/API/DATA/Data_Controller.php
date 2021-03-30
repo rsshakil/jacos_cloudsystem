@@ -246,8 +246,7 @@ class Data_Controller extends Controller
     public static function get_shipment_data($request)
     {
         // 対象データ取得
-        $data_order_id=$request->data_order_id;
-        $order_info=$request->order_info;
+
         $request_all=$request->all();
 
         $csv_data=data_shipment::select(
@@ -261,24 +260,9 @@ class Data_Controller extends Controller
             'data_shipments.sta_doc_instance_identifier',
             'data_shipments.sta_doc_type',
             'data_shipments.sta_doc_creation_date_and_time',
-            // 'data_shipments.sta_bus_scope_type',
-            // 'data_shipments.sta_bus_scope_instance_identifier',
-            // 'data_shipments.sta_bus_scope_identifier',
             'data_shipments.mes_ent_unique_creator_identification',
-            // 'data_shipments.mes_mes_sender_station_address',
-            // 'data_shipments.mes_mes_ultimate_receiver_station_address',
-            // 'data_shipments.mes_mes_immediate_receiver_station_addres',
-            // 'data_shipments.mes_mes_number_of_trading_documents',
-            // 'data_shipments.mes_mes_sys_key',
-            // 'data_shipments.mes_mes_sys_value',
-            // 'data_shipments.mes_lis_con_version',
-            // 'data_shipments.mes_lis_doc_version',
-            // 'data_shipments.mes_lis_ext_namespace',
-            // 'data_shipments.mes_lis_ext_version',
             'data_shipments.mes_lis_pay_code',
             'data_shipments.mes_lis_pay_gln',
-            // 'data_shipments.mes_lis_pay_name',
-            // 'data_shipments.mes_lis_pay_name_sbcs',
             'data_shipments.mes_lis_buy_code',
             'data_shipments.mes_lis_buy_gln',
             'data_shipments.mes_lis_buy_name',
@@ -299,9 +283,6 @@ class Data_Controller extends Controller
             'data_shipment_vouchers.mes_lis_shi_par_tra_gln',
             'data_shipment_vouchers.mes_lis_shi_par_tra_name',
             'data_shipment_vouchers.mes_lis_shi_par_tra_name_sbcs',
-            // 'data_shipment_vouchers.mes_lis_shi_par_dis_code',
-            // 'data_shipment_vouchers.mes_lis_shi_par_dis_name',
-            // 'data_shipment_vouchers.mes_lis_shi_par_dis_name_sbcs',
             'data_shipment_vouchers.mes_lis_shi_par_pay_code',
             'data_shipment_vouchers.mes_lis_shi_par_pay_gln',
             'data_shipment_vouchers.mes_lis_shi_par_pay_name',
@@ -520,18 +501,113 @@ class Data_Controller extends Controller
             )
         ->leftJoin('data_shipment_vouchers','data_shipment_vouchers.data_shipment_id','=','data_shipments.data_shipment_id')
         ->leftJoin('data_shipment_items','data_shipment_vouchers.data_shipment_voucher_id','=','data_shipment_items.data_shipment_voucher_id')
-        ->leftJoin('data_shipment_item_details','data_shipment_items.data_shipment_item_id','=','data_shipment_item_details.data_shipment_item_id');
+        ->leftJoin('data_shipment_item_details','data_shipment_items.data_shipment_item_id','=','data_shipment_item_details.data_shipment_item_id')
+        ->join('data_order_vouchers as dov','dov.data_order_voucher_id','=','data_shipment_vouchers.data_shipment_voucher_id')
+        ->join('data_orders as dor','dor.data_order_id','=','dov.data_order_id');
 
 
         // filtering
         if ((array_key_exists("order_info", $request_all))) {
-        $csv_data=$csv_data->where('data_shipments.data_order_id',$data_order_id)
-         ->where('data_shipment_vouchers.mes_lis_shi_log_del_delivery_service_code', $order_info['mes_lis_shi_log_del_delivery_service_code'])
-        ->where('data_shipment_vouchers.mes_lis_shi_par_sel_code', $order_info['mes_lis_shi_par_sel_code'])
-        ->where('data_shipment_vouchers.mes_lis_shi_par_sel_name', $order_info['mes_lis_shi_par_sel_name'])
-        ->where('data_shipment_vouchers.mes_lis_shi_tra_dat_delivery_date', $order_info['mes_lis_shi_tra_dat_delivery_date'])
-        ->where('data_shipment_vouchers.mes_lis_shi_tra_goo_major_category', $order_info['mes_lis_shi_tra_goo_major_category'])
-        ->where('data_shipment_vouchers.mes_lis_shi_tra_ins_temperature_code', $order_info['mes_lis_shi_tra_ins_temperature_code']);
+            $data_order_id=$request->data_order_id;
+            $order_info=$request->order_info;
+
+
+            $csv_data=$csv_data->where('data_shipments.data_order_id',$data_order_id)
+            ->where('data_shipment_vouchers.mes_lis_shi_log_del_delivery_service_code', $order_info['mes_lis_shi_log_del_delivery_service_code'])
+            ->where('data_shipment_vouchers.mes_lis_shi_par_sel_code', $order_info['mes_lis_shi_par_sel_code'])
+            ->where('data_shipment_vouchers.mes_lis_shi_par_sel_name', $order_info['mes_lis_shi_par_sel_name'])
+            ->where('data_shipment_vouchers.mes_lis_shi_tra_dat_delivery_date', $order_info['mes_lis_shi_tra_dat_delivery_date'])
+            ->where('data_shipment_vouchers.mes_lis_shi_tra_goo_major_category', $order_info['mes_lis_shi_tra_goo_major_category'])
+            ->where('data_shipment_vouchers.mes_lis_shi_tra_ins_temperature_code', $order_info['mes_lis_shi_tra_ins_temperature_code']);
+            if ((array_key_exists("form_search", $request_all))) {
+                $form_search = $request->form_search;
+            if($form_search['mes_lis_shi_tra_trade_number']!=""){
+                $csv_data=$csv_data->where('data_shipment_vouchers.mes_lis_shi_tra_trade_number', $form_search['mes_lis_shi_tra_trade_number']);
+            }
+            if($form_search['fixedSpecial']!="*"){
+                $csv_data=$csv_data->where('data_shipment_vouchers.mes_lis_shi_tra_ins_goods_classification_code', $form_search['fixedSpecial']);
+            }
+            if($form_search['printingStatus']!="*"){
+                if($form_search['printingStatus']=="未印刷あり"){
+                    $csv_data=$csv_data->whereNull('data_shipment_vouchers.print_datetime');
+                }
+                if($form_search['printingStatus']=="印刷済"){
+                    $csv_data=$csv_data->whereNotNull('data_shipment_vouchers.print_datetime');
+                }
+
+            }
+            if($form_search['situation']!="*"){
+                if($form_search['situation']=="未確定あり"){
+                    $csv_data=$csv_data->whereNull('data_shipment_vouchers.decision_datetime');
+                }
+                if($form_search['situation']=="確定済"){
+                    $csv_data=$csv_data->whereNotNull('data_shipment_vouchers.decision_datetime');
+                }
+            }
+        }
+        }else{
+            $receive_date_from = $request->receive_date_from;
+            $receive_date_to = $request->receive_date_to;
+            $delivery_date_from = $request->delivery_date_from;
+            $delivery_date_to = $request->delivery_date_to;
+            $receive_date_from = $receive_date_from!=null? date('Y-m-d 00:00:00',strtotime($receive_date_from)):$receive_date_from; // 受信日時開始
+            $receive_date_to = $receive_date_to!=null? date('Y-m-d 23:59:59',strtotime($receive_date_to)):$receive_date_to; // 受信日時終了
+            $delivery_date_from = $delivery_date_from!=null? date('Y-m-d 00:00:00',strtotime($delivery_date_from)):$delivery_date_from; // 納品日開始
+            $delivery_date_to =$delivery_date_to!=null? date('Y-m-d 23:59:59',strtotime($delivery_date_to)):$delivery_date_to;; // 納品日終了
+            $delivery_service_code = $request->delivery_service_code; // 便
+            $temperature = $request->temperature; // 配送温度区分
+            $check_datetime = $request->check_datetime;
+            // $check_datetime=$request->check_datetime;
+            $confirmation_status = $request->confirmation_status; // 参照
+            $decission_cnt = $request->decission_cnt; // 確定
+            $print_cnt = $request->print_cnt; // 印刷
+            $byr_category_code = $request->category_code; // 印刷
+            $mes_lis_ord_par_sel_code = $request->mes_lis_ord_par_sel_code; // 印刷
+
+
+            $byr_category_code = $byr_category_code['category_code'];
+
+
+            if ($receive_date_from && $receive_date_to) {
+                $csv_data=$csv_data->whereBetween('dor.receive_datetime', [$receive_date_from, $receive_date_to]);
+            }
+            if ($delivery_date_from && $delivery_date_to) {
+                $csv_data=$csv_data->whereBetween('dov.mes_lis_ord_tra_dat_delivery_date', [$delivery_date_from, $delivery_date_to]);
+            }
+            if ($delivery_service_code!='*') {
+                $csv_data=$csv_data->where('dov.mes_lis_ord_log_del_delivery_service_code',$delivery_service_code);
+            }
+            if ($mes_lis_ord_par_sel_code!='') {
+                $csv_data=$csv_data->where('dov.mes_lis_ord_par_sel_code',$mes_lis_ord_par_sel_code);
+            }
+
+            if ($temperature!='*') {
+                $csv_data=$csv_data->where('dov.mes_lis_ord_tra_ins_temperature_code',$temperature);
+            }
+
+            if ($byr_category_code!='*') {
+                $csv_data=$csv_data->where('dov.mes_lis_ord_tra_goo_major_category',$byr_category_code);
+            }
+
+            if ($check_datetime!='*') {
+                if($check_datetime==1){
+                    $csv_data=$csv_data->whereNull('dov.check_datetime');
+                }else{
+                    $csv_data=$csv_data->whereNotNull('dov.check_datetime');
+                }
+
+            }
+
+            if ($print_cnt == "!0") {
+                $csv_data=$csv_data->having('print_cnt','!=','0');
+            } elseif ($print_cnt != "*") {
+                $csv_data=$csv_data->having('print_cnt','=',$print_cnt);
+            }
+            if ($decission_cnt == "!0") {
+                $csv_data=$csv_data->having('decision_cnt','!=','0');
+            } elseif ($decission_cnt != "*") {
+                $csv_data=$csv_data->having('decision_cnt','=',$decission_cnt);
+            }
         }
         // receive_datetime not found in shipment tables
 

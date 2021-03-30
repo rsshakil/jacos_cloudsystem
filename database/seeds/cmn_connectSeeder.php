@@ -30,8 +30,8 @@ class cmn_connectSeeder extends Seeder
                     },
                     "invoice": {
                         "closing_date": [
-                            "10",
-                            "20",
+                            10,
+                            20,
                             "last"
                         ]
                     },
@@ -42,7 +42,7 @@ class cmn_connectSeeder extends Seeder
                         }
                     }
                 }
-                
+
                 ',
             ],[
                 'byr_buyer_id'=>1,
@@ -73,7 +73,7 @@ class cmn_connectSeeder extends Seeder
                         }
                     }
                 }
-                
+
                 ',
             ],[
                 'byr_buyer_id'=>1,
@@ -104,7 +104,7 @@ class cmn_connectSeeder extends Seeder
                         }
                     }
                 }
-                
+
                 ',
             ],[
                 'byr_buyer_id'=>1,
@@ -135,7 +135,7 @@ class cmn_connectSeeder extends Seeder
                         }
                     }
                 }
-                
+
                 ',
             ],
             [
@@ -167,7 +167,7 @@ class cmn_connectSeeder extends Seeder
                         }
                     }
                 }
-                
+
                 ',
             ],
             [
@@ -199,7 +199,7 @@ class cmn_connectSeeder extends Seeder
                         }
                     }
                 }
-                
+
                 ',
             ],
             [
@@ -231,7 +231,7 @@ class cmn_connectSeeder extends Seeder
                         }
                     }
                 }
-                
+
                 ',
             ],
             [
@@ -263,7 +263,7 @@ class cmn_connectSeeder extends Seeder
                         }
                     }
                 }
-                
+
                 ',
             ],
             [
@@ -295,7 +295,7 @@ class cmn_connectSeeder extends Seeder
                         }
                     }
                 }
-                
+
                 ',
             ],
             [
@@ -327,7 +327,7 @@ class cmn_connectSeeder extends Seeder
                         }
                     }
                 }
-                
+
                 ',
             ],
             [
@@ -359,7 +359,7 @@ class cmn_connectSeeder extends Seeder
                         }
                     }
                 }
-                
+
                 ',
             ],
             [
@@ -391,7 +391,7 @@ class cmn_connectSeeder extends Seeder
                         }
                     }
                 }
-                
+
                 ',
             ]
         );

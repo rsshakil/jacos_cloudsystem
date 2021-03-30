@@ -33,7 +33,7 @@
         </table>
       </div>
       </div>
-      
+
       <div class="col-12">
       <div class="col-12" style="background: #d8e3f0; padding: 10px">
         <table
@@ -170,7 +170,7 @@
                     ダウンロード
                   </button>
                   <div class="dropdown-menu dropdown-menu-right">
-                    <button class="dropdown-item" @click="invoice_download(1)" type="button"> CSV </button>
+                    <button class="dropdown-item" @click="invoice_download(1)" type="button" :disabled="is_disabled(invoice_detail_length>=1?true:false)"> CSV </button>
                     <!-- <button class="dropdown-item" @click="order_download(2)" type="button"> JCA </button> -->
                   </div>
                 </div>
@@ -192,9 +192,9 @@
                   <select class="mb-2 mr-sm-2 mb-sm-0 form-control">
                     <option>選択してください</option>
                   </select>
-                 
+
                 </b-form>-->
-                 
+
               </div>
           </div>
       </div>
@@ -412,7 +412,7 @@
                 <input type="text" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_amo_requested_amount">
               </div>
             </div>
-         
+
         </form>
       </div>
       <!-- </div>
@@ -427,6 +427,7 @@ export default {
     return {
       param_data: [],
       invoice_detail_lists: {},
+      invoice_detail_length: 0,
       byr_voucher_lists: {},
       buyer_settings: {},
       mes_lis_inv_lin_det_pay_code_list: [],
@@ -459,7 +460,6 @@ export default {
         page: 1,
         adm_user_id: Globals.user_info_id,
         byr_buyer_id: null,
-        submit_type: "page_load",
         from_date:'',
         to_date:'',
         mes_lis_inv_lin_tra_code:'',
@@ -469,6 +469,7 @@ export default {
         send_datetime_status:'*',
         sort_by:'data_invoice_pay_detail_id ',
         sort_type:"ASC",
+        page_title:'invoice_details_list'
       }),
     };
   },
@@ -510,7 +511,7 @@ var _this = this;
       this.alert_text = "Do you want to delete this invoice";
       this.yes_btn = "はい";
       this.cancel_btn = "キャンセル";
-      
+
         this.confirm_sweet().then((result) => {
           if (result.value) {
             axios
@@ -528,7 +529,7 @@ var _this = this;
               });
           }
         });
-     
+
 
 
 
@@ -543,11 +544,11 @@ var _this = this;
         .then(({ data }) => {
             this.init(data.status);
             this.invoice_detail_lists = data.invoice_details_list;
-                      this.byr_buyer_category_lists = data.byr_buyer_category_list;
-                      this.buyer_settings = JSON.parse(data.buyer_settings);
-                      
-          this.mes_lis_inv_lin_det_pay_code_list = this.buyer_settings.invoices.mes_lis_inv_lin_det_pay_code;
-          this.byr_buyer_category_lists.unshift({category_code:'*',category_name:'全て'});
+            this.invoice_detail_length = this.invoice_detail_lists.data.length;
+            this.byr_buyer_category_lists = data.byr_buyer_category_list;
+            this.buyer_settings = JSON.parse(data.buyer_settings);
+            this.mes_lis_inv_lin_det_pay_code_list = this.buyer_settings.invoices.mes_lis_inv_lin_det_pay_code;
+            this.byr_buyer_category_lists.unshift({category_code:'*',category_name:'全て'});
 
         });
     },
@@ -715,11 +716,8 @@ var _this = this;
     },
     invoice_download(downloadType = 1) {
       //downloadcsvshipment_confirm
-      var _this = this;
-      axios.post(this.BASE_URL + "api/download_invoice", {
-          data_invoice_id: this.form.data_invoice_id,
-          downloadType: downloadType,
-        })
+      this.form.downloadType=downloadType
+      axios.post(this.BASE_URL + "api/download_invoice",this.form)
         .then(({ data }) => {
            this.init(data.status);
            this.downloadFromUrl(data);

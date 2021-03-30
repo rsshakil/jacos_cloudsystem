@@ -101,7 +101,7 @@ class data_csv_payment_order extends Model
                 ->where('mes_lis_pay_pay_id',$value[31])
                 ->where('mes_lis_pay_per_end_date',$value[37])
                 ->get()->count();
-                if ($data_payment_count>0) {
+                if ($data_payment_count<=0) {
                     $data_payment_pay_id = data_payment_pay::insertGetId($data_payment_pay_array);
                 }
 

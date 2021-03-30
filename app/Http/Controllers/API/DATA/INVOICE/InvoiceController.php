@@ -285,6 +285,7 @@ class InvoiceController extends Controller
     public function downloadInvoice(Request $request){
         // downloadType=1 for Csv
         // downloadType=2 for Fixed length
+        // return $request->all();
         $data_invoice_id=$request->data_invoice_id?$request->data_invoice_id:1;
         $downloadType=$request->downloadType;
         $csv_data_count =0;

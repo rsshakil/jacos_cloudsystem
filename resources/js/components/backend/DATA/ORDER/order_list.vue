@@ -336,7 +336,7 @@ export default {
       json_delivery_service_code: [],
       form: new Form({
         adm_user_id: Globals.user_info_id,
-        data_order_id: 1,
+        data_order_id:null,
         per_page:10,
         page:1,
         byr_buyer_id: null,

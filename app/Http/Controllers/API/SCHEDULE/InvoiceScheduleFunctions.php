@@ -7,6 +7,21 @@ use App\Http\Controllers\Controller;
 class InvoiceScheduleFunctions extends Controller
 {
 
+    public function arra_sorting($closing_date_array){
+        $new_array=array();
+        $last_val=0;
+        foreach ($closing_date_array as $key => $value) {
+            if ($value!='last') {
+                $new_array[]=$value;
+                $last_val=1;
+            }
+        }
+        if ($last_val==1) {
+            $new_array[]='last';
+        }
+        return $new_array;
+    }
+
     public function closing_date($closing_day)
     {
         if ($closing_day == 'last') {

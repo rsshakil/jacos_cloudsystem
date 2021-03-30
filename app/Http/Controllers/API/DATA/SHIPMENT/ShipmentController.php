@@ -50,7 +50,7 @@ class ShipmentController extends Controller
         // return $request->all();
         // return $request->all();
         //ownloadType=2 for Fixed length
-        $data_order_id=$request->data_order_id;
+        $data_order_id=$request->data_order_id?$request->data_order_id:1;
         $downloadType=$request->downloadType;
         $csv_data_count =0;
         if ($downloadType==1) {

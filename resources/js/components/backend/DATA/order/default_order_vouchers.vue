@@ -162,7 +162,7 @@
 
       <div class="col-12" style="text-align: center">
         <button
-          @click="searchByFormData"
+          @click="get_all_byr_order_detail"
           class="btn btn-primary active srchBtn"
           type="button"
         >
@@ -243,18 +243,10 @@
                     ダウンロード
                   </button>
                   <div class="dropdown-menu dropdown-menu-right">
-                    <button
-                      class="dropdown-item"
-                      @click="order_details_download(1)"
-                      type="button"
-                    >
+                    <button class="dropdown-item" @click="order_details_download(1)" type="button" :disabled="is_disabled(order_detail_list_length>=1?true:false)">
                       CSV
                     </button>
-                    <button
-                      class="dropdown-item"
-                      @click="order_details_download(2)"
-                      type="button"
-                    >
+                    <button class="dropdown-item" @click="order_details_download(2)" type="button" :disabled="is_disabled(order_detail_list_length>=1?true:false)">
                       JCA
                     </button>
                   </div>
@@ -791,6 +783,7 @@ export default {
       order_info: {},
       order_date: "",
       order_detail_list: [],
+      order_detail_list_length:0,
       show_hide_col_list: [],
       expected_delivery_date: "",
       status: "",
@@ -859,9 +852,6 @@ export default {
         Fire.$emit("LoadByrorderDetail",this.select_field_page_num);
         // this.get_all_byr_order_detail(this.select_field_page_num);
       }
-    },
-    searchByFormData() {
-      Fire.$emit("LoadByrorderDetail",this.select_field_page_num);
     },
     checkAll() {
       this.isCheckAll = !this.isCheckAll;
@@ -1143,6 +1133,7 @@ export default {
           this.init(data.status);
           this.order_detail_lists = data.order_list_detail;
           this.order_info = data.order_info;
+          this.order_detail_list_length=this.order_detail_lists.data.length
           this.$session.set("order_info",this.order_info)
           this.loader.hide();
         });
@@ -1156,11 +1147,13 @@ export default {
     order_details_download(downloadType = 1) {
       //downloadcsvshipment_confirm
       var _this = this;
+    //   this.order_info["form_search"] = this.form;
       axios
         .post(this.BASE_URL + "api/downloadcsvshipment_confirm", {
           data_order_id: this.param_data.data_order_id,
           order_info: this.order_info,
           downloadType: downloadType,
+          form_search:this.form,
         })
         .then(({ data }) => {
            this.init(data.status);

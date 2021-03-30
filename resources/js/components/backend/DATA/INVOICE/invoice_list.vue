@@ -213,9 +213,10 @@ export default {
         mes_lis_inv_per_begin_date:'',
         mes_lis_inv_per_end_date:'',
         send_datetime_status: "*",
-        submit_type: "page_load",
         sort_by:'mes_lis_inv_per_end_date ',
         sort_type:"DESC",
+        page_title:'invoice_list',
+        downloadType:1
       }),
     };
   },
@@ -248,10 +249,8 @@ export default {
       },
       invoice_download(downloadType = 1) {
       //downloadcsvshipment_confirm
-      var _this = this;
-      axios.post(this.BASE_URL + "api/download_invoice", {
-          downloadType: downloadType,
-        })
+      this.form.downloadType=downloadType
+      axios.post(this.BASE_URL + "api/download_invoice", this.form)
         .then(({ data }) => {
            this.init(data.status);
            this.downloadFromUrl(data);

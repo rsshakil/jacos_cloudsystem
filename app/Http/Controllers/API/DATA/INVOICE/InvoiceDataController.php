@@ -15,27 +15,79 @@ class InvoiceDataController extends Controller
         $order_info=$request->order_info;
         $request_all=$request->all();
 
-        $csv_data=data_invoice::select('data_invoices.*','data_invoice_pays.*','data_invoice_pay_details.*')
-        ->join('data_invoice_pays','data_invoice_pays.data_invoice_id','=','data_invoices.data_invoice_id')
-        ->join('data_invoice_pay_details','data_invoice_pay_details.data_invoice_pay_id','=','data_invoice_pays.data_invoice_pay_id');
+        $csv_data=data_invoice::select('data_invoices.*','dip.*','dipd.*')
+        ->join('data_invoice_pays as dip','dip.data_invoice_id','=','data_invoices.data_invoice_id')
+        ->join('data_invoice_pay_details as dipd','dipd.data_invoice_pay_id','=','dip.data_invoice_pay_id');
         // filtering
-        if (array_key_exists("data_invoice_id", $request_all)) {
-            $csv_data=$csv_data->where('data_invoices.data_invoice_id',$data_invoice_id);
-        }
-
-        // ->where('data_shipment_vouchers.mes_lis_shi_log_del_delivery_service_code', $order_info['mes_lis_shi_log_del_delivery_service_code'])
-        // ->where('data_shipment_vouchers.mes_lis_shi_par_sel_code', $order_info['mes_lis_shi_par_sel_code'])
-        // ->where('data_shipment_vouchers.mes_lis_shi_par_sel_name', $order_info['mes_lis_shi_par_sel_name'])
-        // ->where('data_shipment_vouchers.mes_lis_shi_tra_dat_delivery_date', $order_info['mes_lis_shi_tra_dat_delivery_date'])
-        // ->where('data_shipment_vouchers.mes_lis_shi_tra_goo_major_category', $order_info['mes_lis_shi_tra_goo_major_category'])
-        // ->where('data_shipment_vouchers.mes_lis_shi_tra_ins_temperature_code', $order_info['mes_lis_shi_tra_ins_temperature_code']);
-        // receive_datetime not found in shipment tables
-
-        if (!(array_key_exists("downloadType", $request_all))) {
+        // if (!(array_key_exists("downloadType", $request_all))) {
+        if ($request->page_title=='invoice_list') {
             $csv_data=$csv_data->where('data_invoice_pay_details.decision_datetime','!=',null);
             $csv_data=$csv_data->where('data_invoice_pay_details.send_datetime','=',null);
+
+            $mes_lis_inv_pay_code=$request->mes_lis_inv_pay_code;
+            $send_datetime_status=$request->send_datetime_status;
+            $mes_lis_inv_pay_id=$request->mes_lis_inv_pay_id;
+            if ($mes_lis_inv_pay_code!=null) {
+                $csv_data=$csv_data->where('dip.mes_lis_inv_pay_code','=',$mes_lis_inv_pay_code);
+            }
+            if ($mes_lis_inv_pay_id!='') {
+                $csv_data=$csv_data->where('dip.mes_lis_inv_pay_id','=',$mes_lis_inv_pay_id);
+            }
+            // if ($mes_lis_inv_per_begin_date && $mes_lis_inv_per_end_date) {
+            //     $result=$result->whereBetween('dip.mes_lis_inv_per_end_date', [$mes_lis_inv_per_begin_date, $mes_lis_inv_per_end_date]);
+            // }
+            // will confirm
+            if ($send_datetime_status=='未請求'){
+                $csv_data=$csv_data->where('dipd.send_datetime','=',null);
+            }else if ($send_datetime_status=='請求済'){
+                $csv_data=$csv_data->where('dipd.send_datetime','!=',null);
+            }else if ($send_datetime_status=='再請求あり'){
+                $csv_data=$csv_data->where('dipd.send_datetime','!=',null);
+            }
+
+        }else if($request->page_title=='invoice_details_list'){
+            \Log::info("Mayeen");
+            $number_reference=$request->mes_lis_inv_lin_lin_trade_number_reference;
+            $decision_datetime_status=$request->decision_datetime_status;
+            $send_datetime_status=$request->send_datetime_status;
+            $mes_lis_inv_lin_tra_code=$request->mes_lis_inv_lin_tra_code;
+            $category_code = $request->category_code;
+            $category_code =$category_code['category_code'];
+            $from_date = $request->from_date;
+            $to_date = $request->to_date;
+            $csv_data=$csv_data->where('data_invoices.data_invoice_id',$data_invoice_id);
+            if ($decision_datetime_status=='未確定あり'){
+                $csv_data=$csv_data->where('dipd.decision_datetime','=',null);
+            }else if ($decision_datetime_status=='確定済'){
+                $csv_data=$csv_data->where('dipd.decision_datetime','!=',null);
+            }
+            if ($send_datetime_status=='未確定あり'){
+                $csv_data=$csv_data->where('dipd.send_datetime','=',null);
+            }else if ($send_datetime_status=='確定済'){
+                $csv_data=$csv_data->where('dipd.send_datetime','!=',null);
+            }
+
+            if($from_date!=''){
+                $csv_data=$csv_data->where('dipd.mes_lis_inv_lin_det_transfer_of_ownership_date','>=',$from_date);
+            }
+
+            if($to_date!=''){
+                $csv_data=$csv_data->where('dipd.mes_lis_inv_lin_det_transfer_of_ownership_date','<=',$to_date);
+            }
+
+            if($number_reference!=null){
+                $csv_data=$csv_data->where('dipd.mes_lis_inv_lin_lin_trade_number_reference','=',$number_reference);
+            }
+
+            if($category_code!='*'){
+                $csv_data=$csv_data->where('dipd.mes_lis_inv_lin_det_goo_major_category','=',$category_code);
+            }
+
+            if($mes_lis_inv_lin_tra_code!=''){
+                $csv_data=$csv_data->where('dipd.mes_lis_inv_lin_tra_code','=',$mes_lis_inv_lin_tra_code);
+            }
         }
-        $csv_data=$csv_data->groupBy('data_invoice_pay_details.data_invoice_pay_detail_id');
+        $csv_data=$csv_data->groupBy('dipd.data_invoice_pay_detail_id');
         $csv_data=$csv_data->orderBy("data_invoices.data_invoice_id");
         // 検索
         // $csv_data = $csv_data->limit(100000)->get()->toArray();
