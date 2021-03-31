@@ -23,8 +23,8 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                   <!--  {{ config('app.name', 'Laravel') }} -->
+                <a class="navbar-brand" href="{{Config::get('app.url')}}">
+                   {{-- {{ config('app.name', 'Laravel') }} --}}
                           <!-- Icon -->
     <div class="fadeIn first">
       <img style="height: 35px; width: 100px;" src="https://dhakajacos.com.bd/wp-content/uploads/2019/01/cropped-Jacos-main.png" id="icon" alt="User Icon" />
@@ -47,7 +47,7 @@
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">  {{__('messages.login_text')}}</a>
+                                <a class="nav-link" href="{{Config::get('app.url').'login'}}">  {{__('messages.login_text')}}</a>
                             </li>
                             @if (Route::has('register'))
                                 <!-- <li class="nav-item">
@@ -61,13 +61,13 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                    <a class="dropdown-item" href="{{Config::get('app.url').'logout'}}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    <form id="logout-form" action="{{Config::get('app.url').'logout'}}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
                                 </div>
