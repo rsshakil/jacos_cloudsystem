@@ -102,75 +102,25 @@ class ReceiveController extends Controller
         // return $request->all();
         $adm_user_id = $request->adm_user_id;
         $byr_buyer_id = $request->byr_buyer_id;
+
         $data_receive_id = $request->data_receive_id;
-        $delivery_code = $request->delivery_code;
+
         $sel_name = $request->par_sel_name;
         $sel_code = $request->sel_code;
         $major_category = $request->major_category;
         $delivery_service_code = $request->delivery_service_code;
+
         $per_page = $request->select_field_per_page_num == null ? 10 : $request->select_field_per_page_num;
         $sort_by = $request->sort_by;
         $sort_type = $request->sort_type;
-        $search_where = '';
-        $having_var = '';
+
+        $decesion_status=$request->decesion_status;
+        $voucher_class=$request->voucher_class;
+        $goods_classification_code=$request->goods_classification_code;
+        $trade_number=$request->trade_number;
 
         $table_name='data_receive_vouchers.';
 
-        // if ($submit_type == "search") {
-            // 条件指定検索
-            $receive_date_from = $request->receive_date_from; // 受信日時開始
-            $receive_date_to = $request->receive_date_to; // 受信日時終了
-            $delivery_date_from = $request->delivery_date_from; // 納品日開始
-            $delivery_date_to = $request->delivery_date_to; // 納品日終了
-            $delivery_service_code = $request->delivery_service_code; // 便
-            $temperature = $request->temperature; // 配送温度区分
-
-            if ($receive_date_from) {
-                $search_where .= "AND dor.receive_datetime >= '" . $receive_date_from . "' ";
-            }
-            if ($receive_date_to) {
-                $search_where .= "AND dor.receive_datetime <= '" . $receive_date_to . "' ";
-            }
-            if ($delivery_date_from) {
-                $search_where .= "AND dov.mes_lis_ord_tra_dat_delivery_date >= '" . $delivery_date_from . "' ";
-            }
-            if ($delivery_date_to) {
-                $search_where .= "AND dov.mes_lis_ord_tra_dat_delivery_date <= '" . $delivery_date_to . "' ";
-            }
-            if ($delivery_service_code!='*') {
-                $search_where .= "AND dov.mes_lis_ord_log_del_delivery_service_code='" . $delivery_service_code . "' ";
-            }
-
-            if ($temperature!='*') {
-                $search_where .= "AND dov.mes_lis_ord_tra_ins_temperature_code='" . $temperature . "' ";
-            }
-
-            // 参照
-        //     if ($confirmation_status) {
-        //         // TODO 参照条件作成
-        //     }
-        //     // 印刷
-        //     if ($print_cnt == "!0") {
-        //         $having_var = "HAVING print_cnt!=0 ";
-        //     } elseif ($print_cnt != "*") {
-        //         $having_var = "HAVING print_cnt='" . $print_cnt . "' ";
-        //     }
-
-        //     // 確定
-        //     if ($decission_cnt == "!0") {
-        //         if ($having_var) {
-        //             $having_var .= "OR decision_cnt!=0";
-        //         } else {
-        //             $having_var .= "HAVING decision_cnt!=0";
-        //         }
-        //     } elseif ($decission_cnt != "*") {
-        //         if ($having_var) {
-        //             $having_var .= "OR decision_cnt='" . $decission_cnt . "'";
-        //         } else {
-        //             $having_var .= "HAVING decision_cnt='" . $decission_cnt . "'";
-        //         }
-        //     }
-        // }
         $authUser = User::find($adm_user_id);
         $cmn_company_id = '';
         $cmn_connect_id = '';
@@ -196,7 +146,28 @@ class ReceiveController extends Controller
         ->leftJoin('data_shipment_vouchers as dsv','dsv.mes_lis_shi_tra_trade_number','=','data_receive_vouchers.mes_lis_acc_tra_trade_number')
         ->where('dr.cmn_connect_id','=',$cmn_connect_id)
         ->where('data_receive_vouchers.data_receive_id','=',$data_receive_id)
-        ->groupBy('data_receive_vouchers.mes_lis_acc_tra_trade_number')
+        // ->where('data_receive_vouchers.mes_lis_acc_par_sel_name',$sel_name)
+        ->where('data_receive_vouchers.mes_lis_acc_par_sel_code',$sel_code)
+        // ->where('dsv.mes_lis_shi_tra_goo_major_category','=',$major_category);
+        ->where('data_receive_vouchers.mes_lis_acc_log_del_delivery_service_code','=',$delivery_service_code);
+        if($decesion_status!="*"){
+            if($decesion_status=="未確定あり"){
+                $result = $result->whereNull('dsv.decision_datetime');
+            }
+            if($decesion_status=="確定済"){
+                $result = $result->whereNotNull('dsv.decision_datetime');
+            }
+        }
+        if($voucher_class!="*"){
+            $result = $result->where('data_receive_vouchers.mes_lis_acc_tra_ins_trade_type_code',$voucher_class);
+        }
+        if($goods_classification_code!="*"){
+            $result = $result->where('data_receive_vouchers.mes_lis_acc_tra_ins_goods_classification_code',$goods_classification_code);
+        }
+        if($trade_number!=null){
+            $result = $result->where('data_receive_vouchers.mes_lis_acc_tra_trade_number',$trade_number);
+        }
+        $result=$result->groupBy('data_receive_vouchers.mes_lis_acc_tra_trade_number')
         ->orderBy($table_name.$sort_by,$sort_type)
         ->paginate($per_page);
 

@@ -11,20 +11,12 @@ class DataController extends Controller
     public static function getReceiveData($request)
     {
         // 対象データ取得
-        $data_receive_id=$request->data_receive_id;
-        $request_all=$request->all();
-
         $csv_data=data_receive::select('data_receives.*','drv.*','dri.*')
         ->join('data_receive_vouchers as drv','drv.data_receive_id','=','data_receives.data_receive_id')
-        ->join('data_receive_items as dri','dri.data_receive_voucher_id','=','drv.data_receive_voucher_id');
-        if (array_key_exists("data_receive_id", $request_all)) {
-            $csv_data=$csv_data->where('data_receives.data_receive_id',$data_receive_id);
-        }
+        ->join('data_receive_items as dri','dri.data_receive_voucher_id','=','drv.data_receive_voucher_id')
+        ->leftJoin('data_shipment_vouchers as dsv','dsv.mes_lis_shi_tra_trade_number','=','drv.mes_lis_acc_tra_trade_number');
+        // ->where('data_receive_vouchers.data_receive_id','=',$data_receive_id);
 
-        // if (!(array_key_exists("downloadType", $request_all))) {
-        //     $csv_data=$csv_data->where('dppd.decision_datetime','!=',null);
-        //     $csv_data=$csv_data->where('dppd.send_datetime','=',null);
-        // }
         if ($request->page_title=='receive_list') {
             $receive_date_from = $request->receive_date_from; // 受信日時開始
             $receive_date_to = $request->receive_date_to; // 受信日時終了
@@ -52,9 +44,42 @@ class DataController extends Controller
                 $csv_data=$csv_data->where('drv.mes_lis_acc_tra_goo_major_category',$byr_category_code);
             }
         }else if($request->page_title=='receive_details_list'){
+            $sel_name = $request->par_sel_name;
+            $sel_code = $request->sel_code;
+            $major_category = $request->major_category;
+            $delivery_service_code = $request->delivery_service_code;
+            $data_receive_id=$request->data_receive_id;
 
+            $decesion_status=$request->decesion_status;
+            $voucher_class=$request->voucher_class;
+            $goods_classification_code=$request->goods_classification_code;
+            $trade_number=$request->trade_number;
+
+            // ->where('data_receive_vouchers.mes_lis_acc_par_sel_name',$sel_name)
+            $csv_data=$csv_data->where('data_receives.data_receive_id',$data_receive_id)
+            ->where('drv.mes_lis_acc_par_sel_code',$sel_code)
+            // ->where('dsv.mes_lis_shi_tra_goo_major_category','=',$major_category);
+            ->where('drv.mes_lis_acc_log_del_delivery_service_code','=',$delivery_service_code);
+            if($decesion_status!="*"){
+                if($decesion_status=="未確定あり"){
+                    $csv_data=$csv_data->whereNull('dsv.decision_datetime');
+                }
+                if($decesion_status=="確定済"){
+                    $csv_data=$csv_data->whereNotNull('dsv.decision_datetime');
+                }
+            }
+            if($voucher_class!="*"){
+                $csv_data=$csv_data->where('drv.mes_lis_acc_tra_ins_trade_type_code',$voucher_class);
+            }
+            if($goods_classification_code!="*"){
+                $csv_data=$csv_data->where('drv.mes_lis_acc_tra_ins_goods_classification_code',$goods_classification_code);
+            }
+            if($trade_number!=null){
+                $csv_data=$csv_data->where('drv.mes_lis_acc_tra_trade_number',$trade_number);
+            }
         }
-        $csv_data=$csv_data->groupBy('drv.data_receive_voucher_id');
+        $csv_data=$csv_data->groupBy('drv.mes_lis_acc_tra_trade_number');
+        // $csv_data=$csv_data->groupBy('drv.data_receive_voucher_id');
         return $csv_data;
     }
 

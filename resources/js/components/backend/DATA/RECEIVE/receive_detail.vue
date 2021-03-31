@@ -87,7 +87,7 @@
             <td>
               <input
                 type="text"
-                v-model="form.mes_lis_shi_tra_trade_number"
+                v-model="form.trade_number"
                 class="form-control"
               />
             </td>
@@ -97,7 +97,7 @@
             <td>
               <select
                 class="form-control"
-                v-model="form.fixedSpecial"
+                v-model="form.goods_classification_code"
                 style="width: 220px"
               >
                 <option value="*">全て</option>
@@ -115,16 +115,12 @@
             <td>
               <select
                 class="form-control"
-                v-model="form.fixedSpecial"
+                v-model="form.voucher_class"
                 style="width: 220px"
               >
                 <option value="*">全て</option>
 
-                <option
-                  v-for="(opt, i) in mes_lis_ord_tra_ins_trade_type_codeList"
-                  :key="i"
-                  :value="Object.keys(opt)[0]"
-                >
+                <option v-for="(opt, i) in mes_lis_ord_tra_ins_trade_type_codeList" :key="i" :value="Object.keys(opt)[0]">
                   {{ Object.values(opt)[0] }}
                 </option>
               </select>
@@ -133,7 +129,7 @@
             <td>
               <select
                 class="form-control"
-                v-model="form.situation"
+                v-model="form.decesion_status"
                 style="width: 220px"
               >
                 <option value="*">全て</option>
@@ -712,11 +708,18 @@ export default {
         select_field_per_page_num:10,
         adm_user_id: Globals.user_info_id,
         byr_buyer_id: null,
+
         data_receive_id:null,
         sel_name:'',
         sel_code:'',
         major_category:'',
         delivery_service_code:'',
+// Search
+        decesion_status:"*",
+        voucher_class:"*",
+        goods_classification_code:"*",
+        trade_number:null,
+
         order_info:{},
         sort_by:'data_receive_voucher_id ',
         sort_type:"ASC",
