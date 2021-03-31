@@ -153,7 +153,7 @@
             // evt.keyCode = 83; // d
             // evt.ctrlKey = true;
             // $(document).trigger(evt);
-                alert("This function is not available in Google Chrome. Click the star symbol at the end of the address-bar or hit Ctrl-D (Command+D for Macs) to create a bookmark.");
+                alert("この機能はGoogle Chromeでは使用できません。アドレスバーの最後にある星マークをクリックするか、Ctrl-D（Macの場合はCommand+D）を押してブックマークを作成してください。");
         }else if (window.sidebar) { // For Mozilla Firefox Bookmark
             window.sidebar.addPanel(bookmarkTitle, bookmarkUrl,"");
         } else if( window.external || document.all) { // For IE Favorite

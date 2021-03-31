@@ -109,7 +109,6 @@ class ReceiveController extends Controller
         $major_category = $request->major_category;
         $delivery_service_code = $request->delivery_service_code;
         $per_page = $request->select_field_per_page_num == null ? 10 : $request->select_field_per_page_num;
-        $submit_type = $request->submit_type;
         $sort_by = $request->sort_by;
         $sort_type = $request->sort_type;
         $search_where = '';
