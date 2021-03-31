@@ -49,11 +49,11 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{Config::get('app.url').'login'}}">  {{__('messages.login_text')}}</a>
                             </li>
-                            @if (Route::has('register'))
-                                <!-- <li class="nav-item">
-
-                                </li> -->
-                            @endif
+                            {{-- @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{Config::get('app.url').'register'}}">  {{__('messages.registar_text')}}</a>
+                                </li>
+                            @endif --}}
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
