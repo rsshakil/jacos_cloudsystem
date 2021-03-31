@@ -55,7 +55,7 @@
 
                         <!-- Icon -->
                         <div class="fadeIn first">
-                            <img src="<?php echo(Config::get('app.url').'public/dashboard/logo/cropped-Jacos-main.png') ?>"
+                            <img src="{{ Config::get('app.url').'public/dashboard/logo/cropped-Jacos-main.png' }}"
                                 id="icon" alt="User Icon" />
 
                         </div>
