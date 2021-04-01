@@ -529,7 +529,7 @@ this.getbuyerJsonSettingvalue();
 
       this.get_all_byr_order_item_detail();
     });
-
+    this.parent.query = this.$session.get('order_param_data');
   },
   computed: {
     total_selling_price: function() {

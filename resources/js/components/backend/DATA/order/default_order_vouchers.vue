@@ -1170,7 +1170,7 @@ export default {
 
     this.param_data = this.$route.query;
     // console.log(this.param_data);
-    // this.$session.set("order_param_data",this.param_data)
+  this.$session.set("order_param_data",this.param_data)
     this.loader = Vue.$loading.show();
     // this.data_order_id = this.$route.params.data_order_id;
     this.get_all_byr_order_detail();
