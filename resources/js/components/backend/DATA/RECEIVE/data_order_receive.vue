@@ -208,7 +208,10 @@
                     )
                   }}
               </td>
-              <td><span v-if="received_item.sta_doc_type=='Receiving Notification'">受領</span></td>
+              <td>
+              <span v-if="received_item.sta_doc_type=='Receiving Notification'">受領</span>
+              <span v-if="received_item.sta_doc_type=='Return Notification'">返品</span>
+              </td>
               <td>{{ received_item.cnt }}</td>
               <td>{{ received_item.check_datetime }}</td>
             </tr>
