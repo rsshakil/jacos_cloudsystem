@@ -8,6 +8,7 @@ return [
     // Order data
     'ORDER_DATA_PATH' => 'order/',
     'RECEIVE_DATA_PATH' => 'receives/',
+    'RETURN_DATA_PATH' => 'returns/',
     'PAYMENT_DATA_PATH' => 'payments/',
 
 

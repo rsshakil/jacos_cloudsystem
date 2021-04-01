@@ -172,7 +172,7 @@ class cmn_scenarioSeeder extends Seeder
                 'vector' => 'to_jacos',
                 'name' => 'DATA_RETURN_CSV_IMPORT',
                 'description' => 'DATA_RETURN_CSV_IMPORT',
-                'file_path' => 'Scenarios/DATA/RETURN/data_return_csv',
+                'file_path' => 'Scenarios/DATA/RTN/data_return_csv',
             ],
         );
         cmn_scenario::insert($scenarios);
