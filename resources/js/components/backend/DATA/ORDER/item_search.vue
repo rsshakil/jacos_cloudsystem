@@ -305,9 +305,9 @@ export default {
     Fire.$emit("byr_has_selected", this.$session.get("byr_buyer_id"));
     Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
     this.loader = Vue.$loading.show();
-
+this.$session.set("order_item_search_query",this.$route.query)
     this.order_info=this.$session.get("order_info");
-    console.log(this.order_info)
+  
     this.form.mes_lis_shi_log_del_delivery_service_code=this.order_info.mes_lis_shi_log_del_delivery_service_code
     this.form.mes_lis_shi_par_sel_code=this.order_info.mes_lis_shi_par_sel_code
     this.form.mes_lis_shi_par_sel_name=this.order_info.mes_lis_shi_par_sel_name
@@ -322,6 +322,7 @@ export default {
     Fire.$on("getItemSearchData", () => {
       this.getItemSearchData();
     });
+    this.parent.query = this.$session.get('order_param_data');
   },
   mounted() {
   },

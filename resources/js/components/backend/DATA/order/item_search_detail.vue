@@ -325,6 +325,7 @@ export default {
       {
         to: {
           name: 'item_search',
+          query:this.item_search_parent_query
         },
         label: '受注商品別一覧',
       },
@@ -355,6 +356,7 @@ export default {
 
       today: new Date().toISOString().slice(0, 10),
       orderListdetailQ:{},
+      item_search_parent_query:{},
       sortKey: "",
       reverse: true,
       order_by: "asc",
@@ -552,7 +554,8 @@ export default {
       this.get_all_byr_order_item_detail();
     });
     this.loader = Vue.$loading.show();
-
+    this.item_search_parent_query = this.$session.get('order_item_search_query');
+    this.orderListdetailQ = this.$session.get('order_param_data');
   },
   computed: {
     totalCostPriceVal: function() {
