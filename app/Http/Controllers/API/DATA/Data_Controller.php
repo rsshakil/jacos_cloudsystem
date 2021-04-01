@@ -519,6 +519,7 @@ class Data_Controller extends Controller
             ->where('data_shipment_vouchers.mes_lis_shi_tra_dat_delivery_date', $order_info['mes_lis_shi_tra_dat_delivery_date'])
             ->where('data_shipment_vouchers.mes_lis_shi_tra_goo_major_category', $order_info['mes_lis_shi_tra_goo_major_category'])
             ->where('data_shipment_vouchers.mes_lis_shi_tra_ins_temperature_code', $order_info['mes_lis_shi_tra_ins_temperature_code']);
+
             if ((array_key_exists("form_search", $request_all))) {
                 $form_search = $request->form_search;
             if($form_search['mes_lis_shi_tra_trade_number']!=""){
@@ -612,11 +613,12 @@ class Data_Controller extends Controller
         // receive_datetime not found in shipment tables
 
         if (!(array_key_exists("downloadType", $request_all))) {
-            $csv_data=$csv_data->where('data_shipment_vouchers.decision_datetime','!=',null);
-            $csv_data=$csv_data->where('data_shipment_vouchers.send_datetime','=',null);
+            \Log::info("Clicked");
+            $csv_data=$csv_data->whereNotNull('data_shipment_vouchers.decision_datetime');
+            $csv_data=$csv_data->whereNull('data_shipment_vouchers.send_datetime');
         }
         $csv_data=$csv_data->groupBy('data_shipment_vouchers.data_shipment_voucher_id');
-        $csv_data=$csv_data->groupBy('data_shipment_items.data_shipment_item_id'); //New Added
+        // $csv_data=$csv_data->groupBy('data_shipment_items.data_shipment_item_id'); //New Added
         $csv_data=$csv_data->orderBy("data_shipments.data_shipment_id");
         // 検索
         // $csv_data = $csv_data->limit(100000)->get()->toArray();

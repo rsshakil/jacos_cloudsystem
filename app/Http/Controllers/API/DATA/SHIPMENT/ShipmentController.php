@@ -27,6 +27,7 @@ class ShipmentController extends Controller
     }
     public function shipmentConfirm(Request $request)
     {
+        // return $request->all();
         $data_count=$request->data_count;
         $data_order_id=$request->data_order_id;
         $download_file_url='';
