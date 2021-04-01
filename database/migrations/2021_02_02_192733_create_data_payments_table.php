@@ -18,6 +18,7 @@ class CreateDataPaymentsTable extends Migration
             $table->integer('data_invoice_id')->unsigned()->comment('data_invoice_id');
             $table->integer('cmn_connect_id')->unsigned()->nullable()->comment('cmn_connect_id');
             $table->dateTime('receive_datetime')->nullable()->comment('receive_datetime');
+            $table->string('receive_file_path', 200)->nullable()->comment('receive_file_path');
             $table->string('sta_sen_identifier', 30)->comment('送信者ＩＤ');
             $table->string('sta_sen_ide_authority', 10)->comment('送信者ＩＤ発行元');
             $table->string('sta_rec_identifier', 20)->comment('受信者ＩＤ');

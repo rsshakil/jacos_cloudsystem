@@ -17,6 +17,7 @@ class CreateDataReceivesTable extends Migration
             $table->increments('data_receive_id')->unsigned()->comment('data_receive_id');
             $table->integer('cmn_connect_id')->unsigned()->comment('cmn_connect_id');
             $table->dateTime('receive_datetime')->nullable()->comment('受信日時');
+            $table->string('receive_file_path', 200)->nullable()->comment('receive_file_path');
             $table->string('sta_sen_identifier', 30)->comment('送信者ＩＤ');
             $table->string('sta_sen_ide_authority', 10)->comment('送信者ＩＤ発行元');
             $table->string('sta_rec_identifier', 20)->comment('受信者ＩＤ');

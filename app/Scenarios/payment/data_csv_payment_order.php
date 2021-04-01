@@ -77,6 +77,7 @@ class data_csv_payment_order extends Model
                 $data_payment_array['mes_lis_pay_name_sbcs']=$value[26];
 
                 $data_payment_array['receive_datetime']=$cur_date;
+                $data_payment_array['receive_file_path']=$file_name;
                 $data_payment_array['cmn_connect_id']=$cmn_connect_id;
 
                 $data_payment_id = data_payment::insertGetId($data_payment_array);

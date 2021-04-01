@@ -128,7 +128,7 @@ class cmn_scenarioSeeder extends Seeder
                 'byr_buyer_id' => 1,
                 'slr_seller_id' => 0,
                 'adm_role_id' => 5,
-                'class' => 'order',
+                'class' => 'receive',
                 'vector' => 'to_jacos',
                 'name' => 'DATA_RECEIVE_CSV_INSERTION',
                 'description' => 'DATA_RECEIVE_CSV_INSERTION',
@@ -163,6 +163,16 @@ class cmn_scenarioSeeder extends Seeder
                 'name' => 'DATA_INVOICE_SCHEDULER',
                 'description' => 'DATA_INVOICE_SCHEDULER',
                 'file_path' => 'Scenarios/DATA/INVOICE/data_invoice_scheduler',
+            ],
+            [
+                'byr_buyer_id' => 1,
+                'slr_seller_id' => 0,
+                'adm_role_id' => 5,
+                'class' => 'return',
+                'vector' => 'to_jacos',
+                'name' => 'DATA_RETURN_CSV_IMPORT',
+                'description' => 'DATA_RETURN_CSV_IMPORT',
+                'file_path' => 'Scenarios/DATA/RETURN/data_return_csv',
             ],
         );
         cmn_scenario::insert($scenarios);
