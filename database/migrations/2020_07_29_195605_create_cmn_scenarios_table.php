@@ -18,7 +18,7 @@ class CreateCmnScenariosTable extends Migration
             $table->integer('byr_buyer_id')->unsigned()->default(0)->comment('byr_buyer_id　0は共通');
             $table->integer('slr_seller_id')->unsigned()->default(0)->comment('slr_seller_id　0は共通');
             $table->integer('adm_role_id')->unsigned()->nullable()->comment('Admin Role');
-            $table->enum('class',['order','shipment','invoice','payment','inventory','other'])->comment('class');
+            $table->enum('class',['order','shipment','invoice','payment','receive','return','inventory','other'])->default('order')->comment('class');
             $table->enum('vector',['to_jacos','from_jacos','in_jacos','other'])->comment('処理方向');
             $table->string('name',50)->comment('シナリオ名');
             $table->string('description',200)->comment('説明');

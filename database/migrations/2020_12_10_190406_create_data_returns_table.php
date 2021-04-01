@@ -17,8 +17,8 @@ class CreateDataReturnsTable extends Migration
             $table->increments('data_return_id')->unsigned()->comment('data_return_id');
             // $table->integer('data_order_id')->unsigned()->comment('data_order_id');
             $table->integer('cmn_connect_id')->unsigned()->comment('cmn_connect_id');
-            $table->dateTime('upload_datetime')->nullable()->comment('アップロード日時');
-            $table->string('upload_file_path', 200)->nullable()->comment('upload_file_path');
+            $table->dateTime('receive_datetime')->nullable()->comment('受信日時');
+            $table->string('receive_file_path', 200)->nullable()->comment('receive_file_path');
             $table->dateTime('send_datetime')->nullable()->comment('送信日時');
             $table->string('send_file_path', 200)->nullable()->comment('送信ファイルパス');
             $table->string('sta_sen_identifier', 30)->comment('送信者ＩＤ');
