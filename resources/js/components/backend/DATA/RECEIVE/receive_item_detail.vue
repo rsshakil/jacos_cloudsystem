@@ -301,9 +301,20 @@
 </template>
 <script>
 export default {
+breadcrumb(){
+    return {
+    label: "受領伝票一覧",
+    parent: this.parentQ
+  }
 
+
+},
   data() {
     return {
+      parentQ:{
+        name: 'receive_detail',
+        query: {},
+      },
       sortKey: "",
       reverse: true,
       order_by: "asc",
@@ -409,7 +420,7 @@ beforeCreate: function() {
 
       this.get_all_receive_item_detail();
     });
-
+   this.parentQ.query = this.$session.get('order_receive_detail_query_param');
   },
   computed: {
 

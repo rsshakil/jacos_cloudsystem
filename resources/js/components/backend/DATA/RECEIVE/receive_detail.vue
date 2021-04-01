@@ -800,6 +800,7 @@ export default {
     Fire.$on("LoadByrorderDetail", (page=1) => {
       this.get_all_receive_detail(page);
     });
+    this.$session.set("order_receive_detail_query_param",this.$route.query);
   },
   mounted() {
   },
