@@ -258,8 +258,18 @@ paymentdetailTopTable.current_page *
 </template>
 <script>
 export default {
+breadcrumb(){
+    return {
+    label: "取引先別支払明細",
+    parent: this.parentQ
+  }
+},
   data() {
     return {
+      parentQ:{
+        name: 'payment_detail',
+        query: {},
+      },
       payment_detail_header: {},
       byr_buyer_id: null,
             order_customer_code_lists: {},
@@ -353,6 +363,7 @@ searchByFormData() {
     Fire.$emit("byr_has_selected", this.byr_buyer_id);
     Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
     Fire.$emit("loadPageTitle", "支払合計");
+    this.parentQ.query = this.$session.get('payment_detail_query_param');
   },
   computed: {
 
