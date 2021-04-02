@@ -59,7 +59,7 @@
             <td>
                 <multiselect v-model="form.category_code" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="true" :select-label="''" :deselect-label="''" :selected-label="'選択中'" :preserve-search="true" placeholder="部門"></multiselect>
             </td>
-            <td class="cl_custom_color">配送温度区分</td>
+            <td class="cl_custom_color">温度区分</td>
             <td>
               <select class="form-control" v-model="form.temperature_code">
                 <option value="*">全て</option>

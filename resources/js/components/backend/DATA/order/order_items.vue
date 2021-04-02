@@ -393,7 +393,7 @@ beforeCreate: function() {
           this.init(data.status);
           _this.alert_icon = "success";
       _this.alert_title = "";
-      _this.alert_text = "Shipment item data has been updated";
+      _this.alert_text = "出荷データを更新しました";
       _this.sweet_normal_alert();
           Fire.$emit("LoadByrorderItemDetail");
         })

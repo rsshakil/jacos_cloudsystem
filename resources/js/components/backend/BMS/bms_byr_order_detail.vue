@@ -879,7 +879,7 @@
                   data-sorting_type="asc"
                   data-column_name="name"
                   style="cursor: pointer;min-width:100px;">
-                  		配送温度区分
+                  		温度区分
                   <span id="name_icon"></span>
                 </th>
 

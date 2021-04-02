@@ -87,6 +87,7 @@
                 </select>
               </span>
             </p>
+            <button class="btn btn-primary " style="float:right;">出荷受領比較</button>
             <button @click="viewInvoicePopup" class="btn btn-primary " style="float:right;">新規請求</button>
       <div class="">
         <table

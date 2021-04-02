@@ -9,7 +9,7 @@ return [
     'delivery_date'=>"納品日",
     'category_code'=>"部門コード",
     'shipment'=>"便",
-    'temperature'=>"配送温度区分",
+    'temperature'=>"温度区分",
     'total_voucher_number'=>"伝票枚数",
     'total_confirm_date'=>"未確定伝票数",
     'total_print_out_date'=>"未印刷伝票数",
