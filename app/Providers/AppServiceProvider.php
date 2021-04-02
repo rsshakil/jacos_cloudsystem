@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,7 +16,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
-        $this->app['request']->server->set('HTTPS', $this->app->environment() != 'local');
+        // $this->app['request']->server->set('HTTPS', $this->app->environment() != 'local');
+        if(env('APP_ENV') !== 'local') {
+            URL::forceScheme('https');
+        }
     }
 
     /**
