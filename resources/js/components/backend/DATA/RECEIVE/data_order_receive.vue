@@ -24,11 +24,7 @@
               {{ myLang.customer_code }}
             </td>
             <td>
-              <input
-                type="text"
-                class="form-control"
-                style="float: left; width: 110px; margin-right: 15px"
-              />
+              <input type="text" v-model="form.sel_code" class="form-control" style="float: left; width: 110px; margin-right: 15px" />
               <button class="btn btn-primary" style="float:left" type="button">
                 {{ myLang.refer }}
               </button>
@@ -45,11 +41,11 @@
             <td class="cl_custom_color">納品日</td>
             <td>
              <div class="input-group">
-                    <input type="date" class="form-control" v-model="form.delivery_date_from">
+                    <input type="date" class="form-control" v-model="form.ownership_date_from">
                     <div class="input-group-prepend">
                         <span class="input-group-text">~</span>
                     </div>
-                    <input type="date" class="form-control" v-model="form.delivery_date_to">
+                    <input type="date" class="form-control" v-model="form.ownership_date_to">
                 </div>
 
             </td>
@@ -57,7 +53,11 @@
             <!-- <td>{{ myLang.shipment }}</td> -->
             <td class="cl_custom_color">部門</td>
             <td>
-                <multiselect v-model="form.category_code" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="true" :select-label="''" :deselect-label="''" :selected-label="'選択中'" :preserve-search="true" placeholder="部門"></multiselect>
+                <select class="form-control" v-model="form.major_category">
+                <option value="*">全て</option>
+                <option v-for="(dsc, i) in byr_buyer_category_lists" :key="i" :value="Object.keys(dsc)[0]"> </option>
+              </select>
+                <!-- <multiselect v-model="form.major_category" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="true" :select-label="''" :deselect-label="''" :selected-label="'選択中'" :preserve-search="true" placeholder="部門"></multiselect> -->
             </td>
             <td class="cl_custom_color">温度区分</td>
             <td>
@@ -71,21 +71,19 @@
 
             <td class="cl_custom_color">データ種別</td>
             <td>
-              <select class="form-control">
-                <option value="*" >全て</option>
+              <select class="form-control" v-model="form.sta_doc_type">
+                <option value="*">全て</option>
               </select>
             </td>
-            <td  class="cl_custom_color">訂正状況</td>
+            <!-- <td  class="cl_custom_color">訂正状況</td>
             <td>
               <select class="form-control">
                 <option value="*">全て</option>
               </select>
-            </td>
+            </td> -->
             <td class="cl_custom_color">参照状況</td>
             <td>
-              <select class="form-control" v-model="form.check_datetime">
-                <option value="*">全て</option>
-              </select>
+              <input type="date" class="form-control" v-model="form.check_datetime">
             </td>
           </tr>
 
@@ -241,13 +239,15 @@ export default {
         byr_buyer_id: null,
         receive_date_from: null,
         receive_date_to: null,
-        delivery_date_from: null,
-        delivery_date_to: null,
+        sel_code: null,
+        ownership_date_from: null,
+        ownership_date_to: null,
         major_category: "*",
         delivery_service_code: "*",
         temperature_code: "*",
+        sta_doc_type: "*",
         check_datetime: null,
-        category_code:{category_code:'*',category_name:'全て'},
+        // major_category:{category_code:'*',category_name:'全て'},
         sort_by:'receive_datetime ',
         sort_type:"DESC",
         page_title:'receive_list',

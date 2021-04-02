@@ -5,45 +5,110 @@ namespace App\Http\Controllers\API\DATA\RECEIVE;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DATA\RCV\data_receive;
+use App\Models\DATA\RTN\data_return;
+use App\Models\ADM\User;
+use App\Http\Controllers\API\AllUsedFunction;
 
 class DataController extends Controller
 {
+    // private $all_used_fun;
+    // public function __construct(){
+    //     $this->all_used_fun = new AllUsedFunction();
+    // }
     public static function getReceiveData($request)
     {
+        $all_used_fun = new AllUsedFunction();
         // 対象データ取得
-        $csv_data=data_receive::select('data_receives.*','drv.*','dri.*')
-        ->join('data_receive_vouchers as drv','drv.data_receive_id','=','data_receives.data_receive_id')
-        ->join('data_receive_items as dri','dri.data_receive_voucher_id','=','drv.data_receive_voucher_id')
-        ->leftJoin('data_shipment_vouchers as dsv','dsv.mes_lis_shi_tra_trade_number','=','drv.mes_lis_acc_tra_trade_number');
+
         // ->where('data_receive_vouchers.data_receive_id','=',$data_receive_id);
 
         if ($request->page_title=='receive_list') {
             $receive_date_from = $request->receive_date_from; // 受信日時開始
             $receive_date_to = $request->receive_date_to; // 受信日時終了
-            $delivery_date_from = $request->delivery_date_from; // 納品日開始
-            $delivery_date_to = $request->delivery_date_to; // 納品日終了
+            $ownership_date_from = $request->ownership_date_from; // 納品日開始
+            $ownership_date_to = $request->ownership_date_to; // 納品日終了
             $delivery_service_code = $request->delivery_service_code; // 便
             $temperature_code = $request->temperature_code; // 配送温度区分
-            $byr_category_code = $request->category_code['category_code']; // 印刷
+            $major_category = $request->major_category; // 印刷
+            $sel_code = $request->sel_code; // 印刷
+            $sta_doc_type = $request->sta_doc_type; // 印刷
+            $check_datetime = $request->check_datetime; // 印刷
+            $result1=data_receive::select('data_receives.data_receive_id','data_receives.sta_doc_type','data_receives.receive_datetime','drv.mes_lis_acc_par_sel_code','drv.mes_lis_acc_par_sel_name',
+        'drv.mes_lis_acc_tra_dat_transfer_of_ownership_date','drv.mes_lis_acc_tra_dat_delivery_date','drv.mes_lis_acc_tra_goo_major_category',
+        'drv.mes_lis_acc_log_del_delivery_service_code','drv.mes_lis_acc_tra_ins_temperature_code','drv.check_datetime',
+        \DB::raw('COUNT(drv.data_receive_voucher_id) AS cnt'),'drv.data_receive_voucher_id'
+        )
+        ->join('data_receive_vouchers as drv','data_receives.data_receive_id','=','drv.data_receive_id');
+        // ->where('data_receives.cmn_connect_id','=',$cmn_connect_id);
+            // 条件指定検索
+                if ($receive_date_from && $receive_date_to) {
+                    $result1 =$result1->whereBetween('data_receives.receive_datetime', [$receive_date_from, $receive_date_to]);
+                }
+                if ($ownership_date_from && $ownership_date_to) {
+                    $result1 =$result1->whereBetween('drv.mes_lis_acc_tra_dat_transfer_of_ownership_date', [$ownership_date_from, $ownership_date_to]);
+                }
+                if ($sel_code) {
+                    $result1 =$result1->where('drv.mes_lis_acc_par_sel_code', $sel_code);
+                }
+                if ($delivery_service_code!='*') {
+                    $result1 =$result1->where('drv.mes_lis_acc_log_del_delivery_service_code',$delivery_service_code);
+                }
+                if ($temperature_code!='*') {
+                    $result1 =$result1->where('drv.mes_lis_acc_tra_ins_temperature_code',$temperature_code);
+                }
+                if ($major_category!='*') {
+                    $result1 =$result1->where('drv.mes_lis_acc_tra_goo_major_category',$major_category);
+                }
+                if ($sta_doc_type!='*') {
+                    $result1 =$result1->where('data_receives.sta_doc_type',$sta_doc_type);
+                }
+                if ($check_datetime!=null) {
+                    $result1 =$result1->where('drv.check_datetime',$check_datetime);
+                }
+                $result1 =$result1->groupBy('drv.mes_lis_acc_tra_trade_number');
+        // $result1 = $result1->groupBy('data_receives.receive_datetime');
+        //union query
+        $result2= data_return::select(
+            'data_returns.data_return_id as data_receive_id',
+            'data_returns.sta_doc_type',
+            'data_returns.receive_datetime',
+            'drv.mes_lis_ret_par_sel_code as mes_lis_acc_par_sel_code',
+            'drv.mes_lis_ret_par_sel_name as mes_lis_acc_par_sel_name',
+        'drv.mes_lis_ret_tra_dat_transfer_of_ownership_date as mes_lis_acc_tra_dat_transfer_of_ownership_date',
+        \DB::raw('"" as mes_lis_acc_tra_dat_delivery_date'),
+        'drv.mes_lis_ret_tra_goo_major_category as mes_lis_acc_tra_goo_major_category',
+        \DB::raw('"" as mes_lis_acc_log_del_delivery_service_code'),
+        \DB::raw('"" as mes_lis_acc_tra_ins_temperature_code'),
+        'drv.check_datetime',
+        \DB::raw('COUNT(drv.data_return_voucher_id) AS cnt'),
+        'drv.data_return_voucher_id as data_receive_voucher_id')
+        ->join('data_return_vouchers as drv','data_returns.data_return_id','=','drv.data_return_id');
+        // ->where('data_returns.cmn_connect_id','=',$cmn_connect_id);
+            // 条件指定検索
+                if ($receive_date_from && $receive_date_to) {
+                    $result2 =$result2->whereBetween('data_returns.receive_datetime', [$receive_date_from, $receive_date_to]);
+                }
+                if ($ownership_date_from && $ownership_date_to) {
+                    $result2 =$result2->whereBetween('drv.mes_lis_ret_tra_dat_transfer_of_ownership_date', [$ownership_date_from, $ownership_date_to]);
+                }
+                if ($major_category!='*') {
+                    $result2 =$result2->where('drv.mes_lis_ret_tra_goo_major_category',$major_category);
+                }
+                if ($sta_doc_type!='*') {
+                    $result2 =$result2->where('data_returns.sta_doc_type',$sta_doc_type);
+                }
+                if ($check_datetime!=null) {
+                    $result2 =$result2->where('drv.check_datetime',$check_datetime);
+                }
+        // $result2 = $result2->groupBy('data_returns.receive_datetime');
+        $result2 =$result2->groupBy('drv.mes_lis_ret_tra_trade_number');
+        $result = $result1->union($result2);
 
-            if ($receive_date_from && $receive_date_to) {
-                $csv_data=$csv_data->whereBetween('data_receives.receive_datetime', [$receive_date_from, $receive_date_to]);
-            }
-            if ($delivery_date_from && $receive_date_to) {
-                $csv_data=$csv_data->whereBetween('drv.mes_lis_acc_tra_dat_delivery_date', [$delivery_date_from, $delivery_date_to]);
-            }
-            if ($delivery_service_code!='*') {
-                $csv_data=$csv_data->where('drv.mes_lis_acc_log_del_delivery_service_code',$delivery_service_code);
-            }
-
-            if ($temperature_code!='*') {
-                $csv_data=$csv_data->where('drv.mes_lis_acc_tra_ins_temperature_code',$temperature_code);
-            }
-
-            if ($byr_category_code!='*') {
-                $csv_data=$csv_data->where('drv.mes_lis_acc_tra_goo_major_category',$byr_category_code);
-            }
         }else if($request->page_title=='receive_details_list'){
+            $csv_data=data_receive::select('data_receives.*','drv.*','dri.*')
+            ->join('data_receive_vouchers as drv','drv.data_receive_id','=','data_receives.data_receive_id')
+            ->join('data_receive_items as dri','dri.data_receive_voucher_id','=','drv.data_receive_voucher_id')
+            ->leftJoin('data_shipment_vouchers as dsv','dsv.mes_lis_shi_tra_trade_number','=','drv.mes_lis_acc_tra_trade_number');
             $sel_name = $request->par_sel_name;
             $sel_code = $request->sel_code;
             $major_category = $request->major_category;
@@ -77,10 +142,11 @@ class DataController extends Controller
             if($trade_number!=null){
                 $csv_data=$csv_data->where('drv.mes_lis_acc_tra_trade_number',$trade_number);
             }
+            $result=$csv_data->groupBy('drv.mes_lis_acc_tra_trade_number');
         }
-        $csv_data=$csv_data->groupBy('drv.mes_lis_acc_tra_trade_number');
+
         // $csv_data=$csv_data->groupBy('drv.data_receive_voucher_id');
-        return $csv_data;
+        return $result;
     }
 
     public static function receiveCsvHeading(){
