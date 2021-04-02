@@ -13,7 +13,7 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('password.email') }}">
+                    <form method="POST" action="{{Config::get('app.url').'password/email'}}">
                         @csrf
 
                         <div class="form-group row">
