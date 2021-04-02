@@ -49,6 +49,12 @@ class ReceiveController extends Controller
         $sta_doc_type = $request->sta_doc_type; // 配送温度区分
         $check_datetime = $request->check_datetime; // 配送温度区分
 
+        $receive_date_from = $receive_date_from!=null? date('Y-m-d 00:00:00',strtotime($receive_date_from)):$receive_date_from; // 受信日時開始
+        $receive_date_to = $receive_date_to!=null? date('Y-m-d 23:59:59',strtotime($receive_date_to)):$receive_date_to; // 受信日時終了
+        $ownership_date_from = $ownership_date_from!=null? date('Y-m-d 00:00:00',strtotime($ownership_date_from)):$ownership_date_from; // 受信日時開始
+        $ownership_date_to = $ownership_date_to!=null? date('Y-m-d 23:59:59',strtotime($ownership_date_to)):$ownership_date_to; // 受信日時終了
+        $check_datetime = $check_datetime!=null? date('Y-m-d 00:00:00',strtotime($check_datetime)):$check_datetime; // 受信日時開始
+
         // $byr_category_code = $request->category_code['category_code']; // 印刷
         // $having_var = '';
 
