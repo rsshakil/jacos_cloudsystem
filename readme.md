@@ -18,7 +18,10 @@ composer install
 
 # make .env
 cp .env.example .env
+# change APP_ENV in .env
+APP_ENV=prod
 # edit .env
+Change you DB info
 # database info
 
 composer update
