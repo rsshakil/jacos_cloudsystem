@@ -17,6 +17,9 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
         // $this->app['request']->server->set('HTTPS', $this->app->environment() != 'local');
+        // \Log::info(env('APP_URL', null));
+        \Log::info("Config ".\Config::get('app.env'));
+        // env('MY_VALUE', 'default_value');
         if(\App::environment() !== 'local') {
             URL::forceScheme('https');
             \Log::info('https');
