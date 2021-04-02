@@ -126,12 +126,18 @@ class DataController extends Controller
             // ->where('dsv.mes_lis_shi_tra_goo_major_category','=',$major_category);
             ->where('drv.mes_lis_acc_log_del_delivery_service_code','=',$delivery_service_code);
             if($decesion_status!="*"){
-                if($decesion_status=="未確定あり"){
-                    $csv_data=$csv_data->whereNull('dsv.decision_datetime');
+                if($decesion_status=="訂正あり"){
+                    $csv_data=$csv_data->where('drv.mes_lis_acc_tot_tot_net_price_total','>',0);
                 }
-                if($decesion_status=="確定済"){
-                    $csv_data=$csv_data->whereNotNull('dsv.decision_datetime');
+                if($decesion_status=="訂正なし"){
+                    $csv_data=$csv_data->where('drv.mes_lis_acc_tot_tot_net_price_total',0);
                 }
+            }
+            if($request->mes_lis_acc_par_shi_code!=''){
+                $csv_data=$csv_data->where('drv.mes_lis_acc_par_shi_code',$request->mes_lis_acc_par_shi_code);
+            }
+            if($request->mes_lis_acc_par_rec_code!=''){
+                $csv_data=$csv_data->where('drv.mes_lis_acc_par_rec_code',$request->mes_lis_acc_par_rec_code);
             }
             if($voucher_class!="*"){
                 $csv_data=$csv_data->where('drv.mes_lis_acc_tra_ins_trade_type_code',$voucher_class);

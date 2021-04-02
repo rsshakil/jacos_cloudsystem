@@ -211,7 +211,7 @@ class ReceiveController extends Controller
             $result = $result->where('data_receive_vouchers.mes_lis_acc_par_shi_code',$request->mes_lis_acc_par_shi_code);
         }
         if($request->mes_lis_acc_par_rec_code!=''){
-            $result = $result->where('data_receive_vouchers.mes_lis_acc_par_shi_code',$request->mes_lis_acc_par_rec_code);
+            $result = $result->where('data_receive_vouchers.mes_lis_acc_par_rec_code',$request->mes_lis_acc_par_rec_code);
         }
         if($voucher_class!="*"){
             $result = $result->where('data_receive_vouchers.mes_lis_acc_tra_ins_trade_type_code',$voucher_class);
