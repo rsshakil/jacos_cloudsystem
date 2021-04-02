@@ -40,12 +40,16 @@ class ReceiveController extends Controller
 
         $receive_date_from = $request->receive_date_from; // 受信日時開始
         $receive_date_to = $request->receive_date_to; // 受信日時終了
-        $delivery_date_from = $request->delivery_date_from; // 納品日開始
-        $delivery_date_to = $request->delivery_date_to; // 納品日終了
+        $ownership_date_from = $request->ownership_date_from; // 納品日開始
+        $ownership_date_to = $request->ownership_date_to; // 納品日終了
+        $sel_code = $request->sel_code;
         $delivery_service_code = $request->delivery_service_code; // 便
         $temperature_code = $request->temperature_code; // 配送温度区分
+        $major_category = $request->major_category; // 配送温度区分
+        $sta_doc_type = $request->sta_doc_type; // 配送温度区分
+        $check_datetime = $request->check_datetime; // 配送温度区分
 
-        $byr_category_code = $request->category_code['category_code']; // 印刷
+        // $byr_category_code = $request->category_code['category_code']; // 印刷
         // $having_var = '';
 
         $table_name='drv.';
@@ -75,19 +79,26 @@ class ReceiveController extends Controller
                 if ($receive_date_from && $receive_date_to) {
                     $result1 =$result1->whereBetween('data_receives.receive_datetime', [$receive_date_from, $receive_date_to]);
                 }
-                if ($delivery_date_from && $receive_date_to) {
-                    $result1 =$result1->whereBetween('drv.mes_lis_acc_tra_dat_delivery_date', [$delivery_date_from, $delivery_date_to]);
+                if ($ownership_date_from && $ownership_date_to) {
+                    $result1 =$result1->whereBetween('drv.mes_lis_acc_tra_dat_transfer_of_ownership_date', [$ownership_date_from, $ownership_date_to]);
+                }
+                if ($sel_code) {
+                    $result1 =$result1->where('drv.mes_lis_acc_par_sel_code', $sel_code);
                 }
                 if ($delivery_service_code!='*') {
                     $result1 =$result1->where('drv.mes_lis_acc_log_del_delivery_service_code',$delivery_service_code);
                 }
-
                 if ($temperature_code!='*') {
                     $result1 =$result1->where('drv.mes_lis_acc_tra_ins_temperature_code',$temperature_code);
                 }
-
-                if ($byr_category_code!='*') {
-                    $result1 =$result1->where('drv.mes_lis_acc_tra_goo_major_category',$byr_category_code);
+                if ($major_category!='*') {
+                    $result1 =$result1->where('drv.mes_lis_acc_tra_goo_major_category',$major_category);
+                }
+                if ($sta_doc_type!='*') {
+                    $result1 =$result1->where('data_receives.sta_doc_type',$sta_doc_type);
+                }
+                if ($check_datetime!=null) {
+                    $result1 =$result1->where('drv.check_datetime',$check_datetime);
                 }
         $result1 = $result1->groupBy('data_receives.receive_datetime')
         ->orderBy($table_name.$sort_by,$sort_type);
@@ -112,10 +123,17 @@ class ReceiveController extends Controller
                 if ($receive_date_from && $receive_date_to) {
                     $result2 =$result2->whereBetween('data_returns.receive_datetime', [$receive_date_from, $receive_date_to]);
                 }
-                
-             
-                if ($byr_category_code!='*') {
-                    $result2 =$result2->where('drv.mes_lis_ret_tra_goo_major_category',$byr_category_code);
+                if ($ownership_date_from && $ownership_date_to) {
+                    $result2 =$result2->whereBetween('drv.mes_lis_ret_tra_dat_transfer_of_ownership_date', [$ownership_date_from, $ownership_date_to]);
+                }
+                if ($major_category!='*') {
+                    $result2 =$result2->where('drv.mes_lis_ret_tra_goo_major_category',$major_category);
+                }
+                if ($sta_doc_type!='*') {
+                    $result2 =$result2->where('data_returns.sta_doc_type',$sta_doc_type);
+                }
+                if ($check_datetime!=null) {
+                    $result2 =$result2->where('drv.check_datetime',$check_datetime);
                 }
         $result2 = $result2->groupBy('data_returns.receive_datetime')
         ->orderBy($table_name2.$sort_by,$sort_type);
