@@ -182,12 +182,18 @@ class ReceiveController extends Controller
         // ->where('dsv.mes_lis_shi_tra_goo_major_category','=',$major_category);
         ->where('data_receive_vouchers.mes_lis_acc_log_del_delivery_service_code','=',$delivery_service_code);
         if($decesion_status!="*"){
-            if($decesion_status=="未確定あり"){
-                $result = $result->whereNull('dsv.decision_datetime');
+            if($decesion_status=="訂正あり"){
+                $result = $result->where('data_receive_vouchers.mes_lis_acc_tot_tot_net_price_total','>',0);
             }
-            if($decesion_status=="確定済"){
-                $result = $result->whereNotNull('dsv.decision_datetime');
+            if($decesion_status=="訂正なし"){
+                $result = $result->where('data_receive_vouchers.mes_lis_acc_tot_tot_net_price_total',0);
             }
+        }
+        if($request->mes_lis_acc_par_shi_code!=''){
+            $result = $result->where('data_receive_vouchers.mes_lis_acc_par_shi_code',$request->mes_lis_acc_par_shi_code);
+        }
+        if($request->mes_lis_acc_par_rec_code!=''){
+            $result = $result->where('data_receive_vouchers.mes_lis_acc_par_shi_code',$request->mes_lis_acc_par_rec_code);
         }
         if($voucher_class!="*"){
             $result = $result->where('data_receive_vouchers.mes_lis_acc_tra_ins_trade_type_code',$voucher_class);

@@ -65,7 +65,7 @@
           <tr>
             <td class="cl_custom_color">直接納品先コード</td>
             <td>
-              <input type="text" class="form-control topHeaderInputFieldBtn" />
+              <input type="text" v-model="form.mes_lis_acc_par_shi_code" class="form-control topHeaderInputFieldBtn" />
               <button
                 @click="deliverySearchForm1"
                 class="btn btn-primary active"
@@ -75,7 +75,7 @@
             </td>
             <td class="cl_custom_color">最終納品先コード</td>
             <td>
-              <input type="text" class="form-control topHeaderInputFieldBtn" />
+              <input type="text" v-model="form.mes_lis_acc_par_rec_code" class="form-control topHeaderInputFieldBtn" />
               <button
                 @click="deliverySearchForm2"
                 class="btn btn-primary active"
@@ -129,9 +129,7 @@
             <td>
               <select
                 class="form-control"
-                v-model="form.decesion_status"
-                style="width: 220px"
-              >
+                v-model="form.decesion_status">
                 <option value="*">全て</option>
                 <option :value="item" v-for="(item,i) in receiveOptionList" :key="i">
                   {{ item }}
@@ -695,7 +693,7 @@ export default {
       situationOptionList: ["未確定あり", "確定済"],
       printingStatusOptionList: ["未印刷あり", "印刷済"],
       deliveryDestnationOptionList: ["店舗", "物流センター"],
-      receiveOptionList: ["受領内容", "訂正あり"],
+      receiveOptionList: ["訂正あり", "訂正なし"],
       mes_lis_ord_tra_ins_goods_classification_codeList: [],
       mes_lis_ord_tra_ins_trade_type_codeList: [],
       date_null: false,
@@ -719,7 +717,8 @@ export default {
         voucher_class:"*",
         goods_classification_code:"*",
         trade_number:null,
-
+        mes_lis_acc_par_shi_code:'',
+        mes_lis_acc_par_rec_code:'',
         order_info:{},
         sort_by:'data_receive_voucher_id ',
         sort_type:"ASC",
