@@ -25,7 +25,7 @@
             <td class="cl_custom_color">便</td>
             <td>
             <span v-if="order_info && Object.keys(order_info).length">
-              {{ order_info.mes_lis_acc_log_del_delivery_service_code }}
+             
               {{
                 getbyrjsonValueBykeyName(
                   "mes_lis_ord_log_del_delivery_service_code",
@@ -53,7 +53,7 @@
           </tr>
           <tr>
             <td class="cl_custom_color">データ種別</td>
-            <td colspan="7">No field specified</td>
+            <td colspan="7"><span v-if="order_info && Object.keys(order_info).length">{{order_info.sta_doc_type}}</span></td>
           </tr>
         </table>
       </div>
