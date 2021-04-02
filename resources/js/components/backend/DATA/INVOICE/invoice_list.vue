@@ -87,7 +87,7 @@
                 </select>
               </span>
             </p>
-            <button class="btn btn-primary " style="float:right;">出荷受領比較</button>
+            <button @click="viewInvoiceDataListPopup" class="btn btn-primary " style="float:right;">出荷受領比較</button>
             <button @click="viewInvoicePopup" class="btn btn-primary " style="float:right;">新規請求</button>
       <div class="">
         <table
@@ -181,6 +181,119 @@
       </div>
     </b-modal>
 
+<b-modal
+      size="lg"
+      :hide-backdrop="true"
+      title="出荷・受領比較"
+      cancel-title="閉じる"
+      v-model="invoiceDatalistModal"
+      :hide-footer="true"
+    >
+      <div class="panel-body">
+      <div class="row">
+        <div class="col-6">
+          <p style="margin:0">出荷データと受領データで差異が発生している伝票のみ表示されています。</p>
+          <p style="margin:0">確認]ボタンを押すと、伝票明細が確認できます。</p>
+          <p style="margin:0">黄色の項目は差異が発生している項目です。</p>
+        </div>
+        <div class="col-6">
+        <h4>ダウンロードを押すと、比較データがダウンロードされます</h4>
+           <button class="btn btn-outline-primary" style="float:right;margin-bottom:15px;" type="button" :disabled="is_disabled(invoice_lists_length>=1?true:false)" @click="invoice_download(1)">
+        <b-icon icon="download" animation="fade" font-scale="1.2"></b-icon>
+        {{ myLang.download }}
+      </button>
+        </div>
+      </div>
+      <table
+            class="table table-striped table-bordered order_item_details_table"
+            style="overflow-x: scroll"
+          >
+          <thead>
+
+            <tr>
+              <th>取引先コード</th>
+              <th>伝票番号</th>
+              <th>直接納品先</th>
+              <th>出荷計上日</th>
+              <th>受領計上日</th>
+              <th>出荷原価金額合計</th>
+              <th>受領原価金額合計</th>
+              <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><b-icon icon="exclamation-circle-fill" @click="invoiceDetailItemListPopup" variant="secondary"></b-icon></td>
+          </tr>
+          </tbody>
+
+        </table>
+        <div class="col-12 text-center">
+        <button class="btn btn-primary" style="text-align:center" @click="closeModal1">閉じる</button>
+      </div>
+      </div>
+    </b-modal>
+
+<b-modal
+      size="lg"
+      :hide-backdrop="true"
+      title="出荷・受領比較（明細）"
+      cancel-title="閉じる"
+      v-model="invoiceitemDatalistModal"
+      :hide-footer="true"
+    >
+      <div class="panel-body">
+      <div class="row">
+        <div class="col-6">
+          <p style="margin:0">差異が発生している伝票の明細が表示されています。</p>
+          <p style="margin:0">確認]黄色の項目は差異が発生している項目です。</p>
+        </div>
+        <div class="col-6">
+       
+        </div>
+      </div>
+      <table
+            class="table table-striped table-bordered order_item_details_table"
+            style="overflow-x: scroll"
+          >
+          <thead>
+
+            <tr>
+              <th>NO</th>
+              <th>商品コード</th>
+              <th>商品名</th>
+              <th>出荷数量（バラ）</th>
+              <th>受領数量（バラ）</th>
+              <th>出荷原価金額</th>
+              <th>受領原価金額</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          </tbody>
+
+        </table>
+        <div class="col-12 text-center">
+          <button class="btn btn-primary" style="text-align:center" @click="closeModal2">閉じる</button>
+        </div>
+      </div>
+    </b-modal>
+
 
   </div>
 </template>
@@ -193,6 +306,8 @@ export default {
       invoice_data_lists:[],
       byr_buyer_lists: {},
       invoiceCreateModal:false,
+      invoiceDatalistModal:false,
+      invoiceitemDatalistModal:false,
       file: "",
       selected_byr: "0",
       invoiceData:{
@@ -229,6 +344,19 @@ export default {
   methods: {
     viewInvoicePopup(){
       this.invoiceCreateModal = true;
+    },
+    viewInvoiceDataListPopup(){
+      this.invoiceDatalistModal = true;
+    },
+    invoiceDetailItemListPopup(){
+      this.invoiceDatalistModal = false;
+      this.invoiceitemDatalistModal = true;
+    },
+    closeModal2(){
+      this.invoiceitemDatalistModal = false;
+    },
+    closeModal1(){
+       this.invoiceDatalistModal = false;
     },
     //get Table data
     get_all_invoice_list(page = 1) {
