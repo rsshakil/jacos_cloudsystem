@@ -36,7 +36,7 @@
               }}
               </span>
             </td>
-            <td class="cl_custom_color">配送温度区分</td>
+            <td class="cl_custom_color">温度区分</td>
             <td>
             <span v-if="order_info && Object.keys(order_info).length">
               {{ order_info.mes_lis_acc_tra_ins_temperature_code }}

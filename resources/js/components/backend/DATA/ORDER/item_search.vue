@@ -38,7 +38,7 @@
             </span>
             </td>
             
-            <td style="width:10%" class="cl_custom_color">配送温度区分</td>
+            <td style="width:10%" class="cl_custom_color">温度区分</td>
             <td style="width:15%"><span v-if="order_info && Object.keys(this.order_info).length">{{ order_info.mes_lis_shi_tra_ins_temperature_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_info.mes_lis_shi_tra_ins_temperature_code,'orders')}}</span></td>
           </tr>
         </table>

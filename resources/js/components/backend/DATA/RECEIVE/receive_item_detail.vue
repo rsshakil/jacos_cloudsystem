@@ -17,7 +17,7 @@
             <td><span v-if="order_item_lists && Object.keys(order_item_lists).length">{{order_item_lists.mes_lis_acc_tra_goo_major_category}}</span></td>
             <td class="cl_custom_color">便</td>
             <td> <span v-if="order_item_lists && Object.keys(order_item_lists).length">{{order_item_lists.mes_lis_acc_log_del_delivery_service_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_log_del_delivery_service_code',order_item_lists.mes_lis_acc_log_del_delivery_service_code,'orders',buyer_settings)}}</span></td>
-            <td class="cl_custom_color">配送温度区分</td>
+            <td class="cl_custom_color">温度区分</td>
             <td><span v-if="order_item_lists && Object.keys(order_item_lists).length">{{order_item_lists.mes_lis_acc_tra_ins_temperature_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_item_lists.mes_lis_acc_tra_ins_temperature_code,'orders',buyer_settings)}}</span></td>
           </tr>
         </table>

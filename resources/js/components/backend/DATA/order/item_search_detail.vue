@@ -39,7 +39,7 @@
             {{ order_item_lists.mes_lis_shi_log_del_delivery_service_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_log_del_delivery_service_code',order_item_lists.mes_lis_shi_log_del_delivery_service_code,'orders')}}
             </span>
             </td>
-            <td class="cl_custom_color">配送温度区分</td>
+            <td class="cl_custom_color">温度区分</td>
             <td><span v-if="order_item_lists && order_item_lists.length!=0">{{ order_item_lists.mes_lis_shi_tra_ins_temperature_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_item_lists.mes_lis_shi_tra_ins_temperature_code,'orders')}}</span></td>
           </tr>
           <tr>
