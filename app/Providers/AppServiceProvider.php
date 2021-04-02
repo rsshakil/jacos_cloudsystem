@@ -15,6 +15,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
+        $this->app['request']->server->set('HTTPS', true);
     }
 
     /**
@@ -32,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
                 $sql = preg_replace("/\?/", $query->bindings[$i], $sql, 1);
             }
 
-            \Log::debug("SQL", ["time" => sprintf("%.2f ms", $query->time), "sql" => $sql]);                                                                
+            \Log::debug("SQL", ["time" => sprintf("%.2f ms", $query->time), "sql" => $sql]);
         });
     }
 }

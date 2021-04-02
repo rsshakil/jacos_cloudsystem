@@ -7,7 +7,7 @@
                 <div class="card-header">{{ __('messages.reset_password') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{Config::get('app.url').'password/update'}}">
+                    <form method="POST" action="{{ route('password.update') }}">
                         @csrf
 
                         <input type="hidden" name="token" value="{{ $token }}">
