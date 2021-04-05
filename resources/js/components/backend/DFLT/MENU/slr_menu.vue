@@ -82,7 +82,7 @@
                <li class="nav-item" v-can="['order_receive']">
                 <router-link to="/order_receive" class="nav-link">
                   <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
-                 受領・返品確認
+                 受領確認
                 </router-link>
               </li>
               <li class="nav-item" v-can="['voucher_setting']">

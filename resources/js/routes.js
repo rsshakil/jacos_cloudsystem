@@ -392,7 +392,7 @@ export const routes = [
         name: 'order_receive',
         meta: {
             breadcrumb: {
-                label: '受領・返品トップ',
+                label: '受領トップ',
                 parent: 'home'
             }
         },
