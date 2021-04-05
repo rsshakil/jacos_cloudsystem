@@ -53,7 +53,11 @@
           </tr>
           <tr>
             <td class="cl_custom_color">データ種別</td>
-            <td colspan="7"><span v-if="order_info && Object.keys(order_info).length">{{order_info.sta_doc_type}}</span></td>
+            <td colspan="7"><span v-if="order_info && Object.keys(order_info).length">
+           
+            <span v-if="order_info.sta_doc_type=='Receiving Notification'">受領</span>
+              <span v-if="order_info.sta_doc_type=='Return Notification'">返品</span>
+            </span></td>
           </tr>
         </table>
       </div>

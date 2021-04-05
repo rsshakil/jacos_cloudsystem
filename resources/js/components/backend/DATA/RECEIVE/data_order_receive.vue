@@ -304,7 +304,7 @@ export default {
         // });
         Fire.$emit("byr_has_selected",this.byr_buyer_id);
         Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
-        Fire.$emit("loadPageTitle", "受領データ一覧");
+        Fire.$emit("loadPageTitle", "受領・返品データ一覧");
   },
   mounted() {},
 };
