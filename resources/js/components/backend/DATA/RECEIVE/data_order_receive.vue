@@ -152,7 +152,7 @@
               <th class="pointer_class" @click="sorting('mes_lis_acc_tra_dat_transfer_of_ownership_date')">納品日 <span class="float-right" :class="iconSet('mes_lis_acc_tra_dat_transfer_of_ownership_date')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_acc_tra_goo_major_category')">部門 コード <span class="float-right" :class="iconSet('mes_lis_acc_tra_goo_major_category')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_acc_log_del_delivery_service_code')">便 <span class="float-right" :class="iconSet('mes_lis_acc_log_del_delivery_service_code')"></span></th>
-              <th class="pointer_class" @click="sorting('mes_lis_acc_tra_ins_temperature_code')">配送温度 区分 <span class="float-right" :class="iconSet('mes_lis_acc_tra_ins_temperature_code')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_acc_tra_ins_temperature_code')">温度区分 <span class="float-right" :class="iconSet('mes_lis_acc_tra_ins_temperature_code')"></span></th>
               <th class="pointer_class" >データ種別</th>
               <th class="pointer_class" >伝票枚数</th>
               <th class="pointer_class" @click="sorting('check_datetime')">参照状況 <span class="float-right" :class="iconSet('check_datetime')"></span></th>
@@ -184,7 +184,7 @@
               <td>{{ received_item.mes_lis_acc_par_sel_code }} {{ received_item.mes_lis_acc_par_sel_name }}</td>
               <td>{{ received_item.mes_lis_acc_tra_dat_transfer_of_ownership_date }}</td>
               <td>{{ received_item.mes_lis_acc_tra_goo_major_category }}</td>
-              <td>{{ received_item.mes_lis_acc_log_del_delivery_service_code }}
+              <td>
               {{
                 getbyrjsonValueBykeyName(
                   "mes_lis_ord_log_del_delivery_service_code",
