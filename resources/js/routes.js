@@ -447,7 +447,7 @@ export const routes = [
         name: 'payment_list',
         meta: {
             breadcrumb: {
-                label: '支払受信一覧',
+                label: '支払トップ',
                 parent: 'home'
             }
         }
