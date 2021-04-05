@@ -105,8 +105,15 @@ Route::get('get_all_master_item/{adm_user_id}', 'API\DATA\ORDER\OrderItemControl
 Route::post('data_receive_list', 'API\DATA\RECEIVE\ReceiveController@orderReceiveList');
 Route::post('data_receive_detail_list', 'API\DATA\RECEIVE\ReceiveController@orderReceiveDetailList');
 Route::post('data_receive_item_detail_list', 'API\DATA\RECEIVE\ReceiveController@orderReceiveItemDetailList');
-Route::get('corrected_receive_list/{adm_user_id}', 'API\DATA\RECEIVE\ReceiveController@correctedReceiveList');
 Route::post('receive_download', 'API\DATA\RECEIVE\ReceiveController@receiveDownload');
+// return
+Route::post('data_return_list', 'API\DATA\RTN\ReturnController@returnList');
+Route::post('data_return_detail_list', 'API\DATA\RTN\ReturnController@returnDetailList');
+Route::post('data_return_item_detail_list', 'API\DATA\RTN\ReturnController@returnItemDetailList');
+Route::post('return_download', 'API\DATA\RTN\ReturnController@returnDownload');
+
+Route::get('corrected_receive_list/{adm_user_id}', 'API\DATA\RECEIVE\ReceiveController@correctedReceiveList');
+
 // receive end
 // Payment Start
 Route::post('get_payment_list', 'API\DATA\PAYMENT\PaymentController@getPaymentList');

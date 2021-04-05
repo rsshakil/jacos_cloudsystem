@@ -40,6 +40,10 @@ import item_category from './components/backend/BYR/item_category.vue'
 import data_order_receive from './components/backend/DATA/RECEIVE/data_order_receive.vue'
 import receive_detail from './components/backend/DATA/RECEIVE/receive_detail.vue'
 import receive_item_detail from './components/backend/DATA/RECEIVE/receive_item_detail.vue'
+
+import data_return_list from './components/backend/DATA/RETURN/data_return_list.vue'
+import return_detail from './components/backend/DATA/RETURN/return_detail.vue'
+import return_item_detail from './components/backend/DATA/RETURN/return_item_detail.vue'
 import order_corrected_receive from './components/backend/DATA/CRTRCV/order_corrected_receive.vue'
 import return_item_list from './components/backend/DATA/RETURN/return_item_list.vue'
 import payment_list from './components/backend/DATA/PAYMENT/payment_list.vue'
@@ -419,6 +423,43 @@ export const routes = [
             }
         },
     },
+    //return list
+
+    {
+        path: '/return_list',
+        component: data_return_list,
+        name: 'return_list',
+        meta: {
+            breadcrumb: {
+                label: '返品トップ',
+                parent: 'home'
+            }
+        },
+    },
+    {
+        path: '/return_list/return_detail',
+        component: return_detail,
+        name: 'return_detail',
+        meta: {
+            breadcrumb: {
+                label: '受領伝票一覧',
+                parent: 'return_list'
+            }
+        },
+    },
+    {
+        path: '/return_list/return_detail/return_item_detail/:data_return_voucher_id',
+        component: return_item_detail,
+        name: 'return_item_detail',
+        meta: {
+            breadcrumb: {
+                label: '受領伝票一覧',
+                parent: 'return_detail'
+            }
+        },
+    },
+
+//return list end
     {
         path: '/order_corrected_receive',
         component: order_corrected_receive,

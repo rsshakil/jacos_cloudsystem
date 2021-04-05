@@ -85,6 +85,12 @@
                  受領確認
                 </router-link>
               </li>
+              <li class="nav-item" v-can="['return_list']">
+                <router-link to="/return_list" class="nav-link">
+                  <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
+                 返品確認
+                </router-link>
+              </li>
               <li class="nav-item" v-can="['voucher_setting']">
                 <router-link to="/voucher_setting" class="nav-link">
                   <b-icon icon="tools" font-scale="1.2"></b-icon>
