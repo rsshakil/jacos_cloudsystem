@@ -188,6 +188,7 @@
       cancel-title="閉じる"
       v-model="invoiceDatalistModal"
       :hide-footer="true"
+      :draggable="true"
     >
       <div class="panel-body">
       <div class="row">
@@ -248,6 +249,7 @@
       cancel-title="閉じる"
       v-model="invoiceitemDatalistModal"
       :hide-footer="true"
+      :draggable="true"
     >
       <div class="panel-body">
       <div class="row">
@@ -349,7 +351,6 @@ export default {
       this.invoiceDatalistModal = true;
     },
     invoiceDetailItemListPopup(){
-      this.invoiceDatalistModal = false;
       this.invoiceitemDatalistModal = true;
     },
     closeModal2(){
