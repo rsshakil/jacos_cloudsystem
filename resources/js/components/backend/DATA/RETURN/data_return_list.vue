@@ -30,12 +30,7 @@
               </button>
 
             </td>
-           <td class="cl_custom_color">便</td>
-            <td>
-              <select class="form-control" v-model="form.delivery_service_code">
-                <option value="*">全て</option>
-              </select>
-            </td>
+           
           </tr>
           <tr>
             <td class="cl_custom_color">納品日</td>
@@ -59,23 +54,18 @@
               </select>
                 <!-- <multiselect v-model="form.major_category" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="true" :select-label="''" :deselect-label="''" :selected-label="'選択中'" :preserve-search="true" placeholder="部門"></multiselect> -->
             </td>
-            <td class="cl_custom_color">温度区分</td>
-            <td>
-              <select class="form-control" v-model="form.temperature_code">
-                <option value="*">全て</option>
-              </select>
-            </td>
+           
           </tr>
           <tr>
 
 
-            <td class="cl_custom_color">データ種別</td>
+           <!--   <td class="cl_custom_color">データ種別</td>
             <td>
               <select class="form-control" v-model="form.sta_doc_type">
                 <option value="*">全て</option>
               </select>
             </td>
-            <!-- <td  class="cl_custom_color">訂正状況</td>
+           <td  class="cl_custom_color">訂正状況</td>
             <td>
               <select class="form-control">
                 <option value="*">全て</option>
@@ -153,7 +143,7 @@
               <th class="pointer_class" @click="sorting('mes_lis_ret_tra_goo_major_category')">部門 コード <span class="float-right" :class="iconSet('mes_lis_ret_tra_goo_major_category')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_ret_log_del_delivery_service_code')">便 <span class="float-right" :class="iconSet('mes_lis_ret_log_del_delivery_service_code')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_ret_tra_ins_temperature_code')">温度区分 <span class="float-right" :class="iconSet('mes_lis_ret_tra_ins_temperature_code')"></span></th>
-              <th class="pointer_class" >データ種別</th>
+            
               <th class="pointer_class" >伝票枚数</th>
               <th class="pointer_class" @click="sorting('check_datetime')">参照状況 <span class="float-right" :class="iconSet('check_datetime')"></span></th>
             </tr>
@@ -206,10 +196,7 @@
                     )
                   }}
               </td>
-              <td>
-              <span v-if="received_item.sta_doc_type=='Receiving Notification'">受領</span>
-              <span v-if="received_item.sta_doc_type=='Return Notification'">返品</span>
-              </td>
+             
               <td>{{ received_item.cnt }}</td>
               <td>{{ received_item.check_datetime }}</td>
             </tr>
@@ -304,7 +291,7 @@ export default {
         // });
         Fire.$emit("byr_has_selected",this.byr_buyer_id);
         Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
-        Fire.$emit("loadPageTitle", "受領データ一覧");
+        Fire.$emit("loadPageTitle", "返品データ一覧");
   },
   mounted() {},
 };

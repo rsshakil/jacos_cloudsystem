@@ -1177,6 +1177,7 @@ export default {
     Fire.$on("LoadByrorderDetail", (page=1) => {
       this.get_all_byr_order_detail(page);
     });
+    Fire.$emit("loadPageTitle", "受注伝票一覧");
   },
   mounted() {
   },

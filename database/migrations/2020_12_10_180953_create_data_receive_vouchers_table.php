@@ -17,6 +17,7 @@ class CreateDataReceiveVouchersTable extends Migration
             $table->increments('data_receive_voucher_id')->unsigned()->comment('data_receive_voucher_id');
             $table->integer('data_receive_id')->unsigned()->comment('data_receive_id');
             $table->dateTime('check_datetime')->nullable()->comment('確認日時');
+            $table->dateTime('update_datetime')->nullable()->comment('訂正更新日時');
             $table->string('mes_lis_acc_tra_trade_number', 10)->comment('取引番号（発注・返品）');
             $table->string('mes_lis_acc_tra_additional_trade_number', 10)->comment('取引付属番号');
             $table->string('mes_lis_acc_fre_shipment_number', 11)->default('')->comment('出荷者管理番号');

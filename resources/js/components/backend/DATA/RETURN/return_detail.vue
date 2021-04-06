@@ -10,7 +10,7 @@
             <td class="cl_custom_color">受信日</td>
             <td><span v-if="order_info && Object.keys(order_info).length"> {{ order_info.receive_datetime }}</span></td>
             <td class="cl_custom_color">取引先</td>
-            <td colspan="5">
+            <td colspan="3">
             <span v-if="order_info && Object.keys(order_info).length">
               {{ order_info.mes_lis_ret_par_sel_code}}
               {{ order_info.mes_lis_ret_par_sel_name }}
@@ -22,20 +22,7 @@
             <td><span v-if="order_info && Object.keys(order_info).length">{{ order_info.mes_lis_ret_tra_dat_transfer_of_ownership_date }}</span></td>
             <td class="cl_custom_color">部門</td>
             <td><span v-if="order_info && Object.keys(order_info).length">{{ order_info.mes_lis_ret_tra_goo_major_category }}</span></td>
-            <td class="cl_custom_color">便</td>
-            <td>
-            <span v-if="order_info && Object.keys(order_info).length">
-             
-              {{
-                getbyrjsonValueBykeyName(
-                  "mes_lis_ord_log_del_delivery_service_code",
-                  order_info.mes_lis_ret_log_del_delivery_service_code,
-                  "orders",
-                  buyer_settings
-                )
-              }}
-              </span>
-            </td>
+       
             <td class="cl_custom_color">温度区分</td>
             <td>
             <span v-if="order_info && Object.keys(order_info).length">
@@ -51,12 +38,7 @@
               </span>
             </td>
           </tr>
-          <tr>
-            <td class="cl_custom_color">データ種別</td>
-            <td colspan="7"><span v-if="order_info && Object.keys(order_info).length">
-              <span v-if="order_info.sta_doc_type=='Return Notification'">返品</span>
-            </span></td>
-          </tr>
+         
         </table>
       </div>
       <div class="col-12" style="background: #d8e3f0; padding: 10px">
@@ -127,17 +109,7 @@
                 </option>
               </select>
             </td>
-            <td class="cl_custom_color">受領内容</td>
-            <td>
-              <select
-                class="form-control"
-                v-model="form.decesion_status">
-                <option value="*">全て</option>
-                <option :value="item" v-for="(item,i) in receiveOptionList" :key="i">
-                  {{ item }}
-                </option>
-              </select>
-            </td>
+            
           </tr>
 
         </table>
@@ -264,11 +236,9 @@
                 <th class="pointer_class" @click="sorting('mes_lis_ret_par_shi_code')">直接納品先 <span class="float-right" :class="iconSet('mes_lis_ret_par_shi_code')"></span></th>
                 <th class="pointer_class" @click="sorting('mes_lis_ret_par_rec_code')">最終納品先 <span class="float-right" :class="iconSet('mes_lis_ret_par_rec_code')"></span></th>
                 <th class="pointer_class" @click="sorting('mes_lis_ret_tra_trade_number')">伝票番号 <span class="float-right" :class="iconSet('mes_lis_ret_tra_trade_number')"></span></th>
-                <th class="pointer_class" @click="sorting('mes_lis_ret_tra_ins_goods_classification_code')">定／特 <span class="float-right" :class="iconSet('mes_lis_ret_tra_ins_goods_classification_code')"></span></th>
                 <th class="pointer_class" @click="sorting('mes_lis_ret_tra_ins_trade_type_code')">伝票区分 <span class="float-right" :class="iconSet('mes_lis_ret_tra_ins_trade_type_code')"></span></th>
                 <th class="pointer_class" @click="sorting('mes_lis_ret_tot_tot_net_price_total')">原価金額合計 <span class="float-right" :class="iconSet('mes_lis_ret_tot_tot_net_price_total')"></span></th>
-                <th class="pointer_class" >受領内容</th>
-                <!-- <th class="pointer_class" @click="sorting('mes_lis_acc_tot_tot_net_price_total')">受領内容 <span class="float-right" :class="iconSet('mes_lis_acc_tot_tot_net_price_total')"></span></th> -->
+                
               </tr>
             </thead>
             <tbody>
@@ -310,17 +280,23 @@
                     }}</router-link
                   >
                 </td>
-                <td>{{order_detail_list.mes_lis_ret_tra_ins_goods_classification_code}}</td>
                 <td>
                   {{order_detail_list.mes_lis_ret_tra_ins_trade_type_code}}
+                   {{
+                getbyrjsonValueBykeyName(
+                  "mes_lis_ret_tra_ins_trade_type_code",
+                  order_detail_list.mes_lis_ret_tra_ins_trade_type_code,
+                  "returns",
+                  buyer_settings
+                )
+              }}
                 </td>
                 <td class="text-right">
                   {{ order_detail_list.mes_lis_ret_tot_tot_net_price_total | priceFormat}}
                 </td>
-                <td><span v-if="order_detail_list.mes_lis_ret_tot_tot_net_price_total>0">訂正あり</span><span v-else>訂正なし</span></td>
               </tr>
               <tr v-if="receive_detail_lists.data && receive_detail_lists.data.length==0">
-                <td class="text-center" colspan="8">データがありません</td>
+                <td class="text-center" colspan="6">データがありません</td>
             </tr>
             </tbody>
           </table>
@@ -802,6 +778,7 @@ export default {
       this.get_all_receive_detail(page);
     });
     this.$session.set("order_receive_detail_query_param",this.$route.query);
+    Fire.$emit("loadPageTitle", "返品伝票一覧");
   },
   mounted() {
   },

@@ -207,10 +207,10 @@ class ReceiveController extends Controller
         ->where('data_receive_vouchers.mes_lis_acc_log_del_delivery_service_code','=',$delivery_service_code);
         if($decesion_status!="*"){
             if($decesion_status=="訂正あり"){
-                $result = $result->where('data_receive_vouchers.mes_lis_acc_tot_tot_net_price_total','>',0);
+                $result = $result->where('data_receive_vouchers.mes_lis_acc_tot_tot_net_price_total','=','data_receive_vouchers.mes_lis_shi_tot_tot_net_price_total');
             }
             if($decesion_status=="訂正なし"){
-                $result = $result->where('data_receive_vouchers.mes_lis_acc_tot_tot_net_price_total',0);
+                $result = $result->where('data_receive_vouchers.mes_lis_acc_tot_tot_net_price_total','!=','data_receive_vouchers.mes_lis_shi_tot_tot_net_price_total');
             }
         }
         if($request->mes_lis_acc_par_shi_code!=''){

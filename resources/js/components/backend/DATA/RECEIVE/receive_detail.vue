@@ -51,14 +51,7 @@
               </span>
             </td>
           </tr>
-          <tr>
-            <td class="cl_custom_color">データ種別</td>
-            <td colspan="7"><span v-if="order_info && Object.keys(order_info).length">
-           
-            <span v-if="order_info.sta_doc_type=='Receiving Notification'">受領</span>
-              <span v-if="order_info.sta_doc_type=='Return Notification'">返品</span>
-            </span></td>
-          </tr>
+          
         </table>
       </div>
       <div class="col-12" style="background: #d8e3f0; padding: 10px">
@@ -129,7 +122,7 @@
                 </option>
               </select>
             </td>
-            <td class="cl_custom_color">受領内容</td>
+            <td class="cl_custom_color">出荷比較</td>
             <td>
               <select
                 class="form-control"
@@ -269,7 +262,8 @@
                 <th class="pointer_class" @click="sorting('mes_lis_acc_tra_ins_goods_classification_code')">定／特 <span class="float-right" :class="iconSet('mes_lis_acc_tra_ins_goods_classification_code')"></span></th>
                 <th class="pointer_class" @click="sorting('mes_lis_acc_tra_ins_trade_type_code')">伝票区分 <span class="float-right" :class="iconSet('mes_lis_acc_tra_ins_trade_type_code')"></span></th>
                 <th class="pointer_class" @click="sorting('mes_lis_acc_tot_tot_net_price_total')">原価金額合計 <span class="float-right" :class="iconSet('mes_lis_acc_tot_tot_net_price_total')"></span></th>
-                <th class="pointer_class" >受領内容</th>
+                <th class="pointer_class" >出荷比較</th>
+                <th class="pointer_class" >受領訂正日時</th>
                 <!-- <th class="pointer_class" @click="sorting('mes_lis_acc_tot_tot_net_price_total')">受領内容 <span class="float-right" :class="iconSet('mes_lis_acc_tot_tot_net_price_total')"></span></th> -->
               </tr>
             </thead>
@@ -312,17 +306,39 @@
                     }}</router-link
                   >
                 </td>
-                <td>{{order_detail_list.mes_lis_acc_tra_ins_goods_classification_code}}</td>
+                <td>{{order_detail_list.mes_lis_acc_tra_ins_goods_classification_code}}
+                 {{
+                getbyrjsonValueBykeyName(
+                  "mes_lis_ord_tra_ins_goods_classification_code",
+                  order_detail_list.mes_lis_acc_tra_ins_goods_classification_code,
+                  "orders",
+                  buyer_settings
+                )
+              }}
+                </td>
                 <td>
                   {{order_detail_list.mes_lis_acc_tra_ins_trade_type_code}}
+                  {{
+                getbyrjsonValueBykeyName(
+                  "mes_lis_acc_tra_ins_trade_type_code",
+                  order_detail_list.mes_lis_acc_tra_ins_trade_type_code,
+                  "receives",
+                  buyer_settings
+                )
+              }}
                 </td>
                 <td class="text-right">
                   {{ order_detail_list.mes_lis_acc_tot_tot_net_price_total | priceFormat}}
                 </td>
-                <td><span v-if="order_detail_list.mes_lis_acc_tot_tot_net_price_total>0">訂正あり</span><span v-else>訂正なし</span></td>
+                <td><span v-if="order_detail_list.mes_lis_acc_tot_tot_net_price_total==order_detail_list.mes_lis_shi_tot_tot_net_price_total">差分あり</span><span v-else>差分なし</span></td>
+
+                <td>
+                  {{order_detail_list.update_datetime}}
+                </td>
+
               </tr>
               <tr v-if="receive_detail_lists.data && receive_detail_lists.data.length==0">
-                <td class="text-center" colspan="8">データがありません</td>
+                <td class="text-center" colspan="9">データがありません</td>
             </tr>
             </tbody>
           </table>
