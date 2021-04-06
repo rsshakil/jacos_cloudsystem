@@ -107,6 +107,7 @@ class data_csv_receive_order extends Model
             }
 
             if ($trade_number !=$value[31].'-'.$value[32]) {
+                $data_receive_voucher_array['update_datetime']=date('Y-m-d H:i:s');
                 $data_receive_voucher_array['mes_lis_acc_tra_trade_number']=$value[31];
                 $data_receive_voucher_array['mes_lis_acc_tra_additional_trade_number']=$value[32];
                 $data_receive_voucher_array['mes_lis_acc_fre_shipment_number']=$value[33]; //New Added

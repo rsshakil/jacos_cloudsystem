@@ -87,8 +87,10 @@
                 </select>
               </span>
             </p>
-            <button @click="viewInvoiceDataListPopup" class="btn btn-primary " style="float:right;">出荷受領比較</button>
             <button @click="viewInvoicePopup" class="btn btn-primary " style="float:right;">新規請求</button>
+            
+            <button @click="viewInvoiceDataListPopup" class="btn btn-primary " style="float:right;margin-right:10px;">出荷受領比較</button>
+            <button class="btn btn-primary " style="float:right;margin-right:10px;">締め処理実行</button>
       <div class="">
         <table
             class="table table-striped table-bordered order_item_details_table"
@@ -194,11 +196,11 @@
       <div class="row">
         <div class="col-6">
           <p style="margin:0">出荷データと受領データで差異が発生している伝票のみ表示されています。</p>
-          <p style="margin:0">確認]ボタンを押すと、伝票明細が確認できます。</p>
+          <p style="margin:0">[確認]ボタンを押すと、伝票明細が確認できます。</p>
           <p style="margin:0">黄色の項目は差異が発生している項目です。</p>
         </div>
         <div class="col-6">
-        <h4>ダウンロードを押すと、比較データがダウンロードされます</h4>
+        <h6>ダウンロードを押すと、比較データがダウンロードされます</h6>
            <button class="btn btn-outline-primary" style="float:right;margin-bottom:15px;" type="button" :disabled="is_disabled(invoice_lists_length>=1?true:false)" @click="invoice_download(1)">
         <b-icon icon="download" animation="fade" font-scale="1.2"></b-icon>
         {{ myLang.download }}
@@ -219,7 +221,7 @@
               <th>受領計上日</th>
               <th>出荷原価金額合計</th>
               <th>受領原価金額合計</th>
-              <th></th>
+              <th>明細比較</th>
           </tr>
           </thead>
           <tbody>
@@ -231,7 +233,7 @@
             <td></td>
             <td></td>
             <td></td>
-            <td><b-icon icon="exclamation-circle-fill" @click="invoiceDetailItemListPopup" variant="secondary"></b-icon></td>
+            <td><button @click="invoiceDetailItemListPopup" class="btn btn-primary">確認</button></td>
           </tr>
           </tbody>
 

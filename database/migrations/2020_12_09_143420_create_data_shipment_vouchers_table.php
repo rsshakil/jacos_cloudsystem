@@ -21,6 +21,7 @@ class CreateDataShipmentVouchersTable extends Migration
             $table->dateTime('decision_datetime')->nullable()->comment('確定日時');
             $table->dateTime('print_datetime')->nullable()->comment('印刷日時');
             $table->dateTime('send_datetime')->nullable()->comment('送信日時');
+            $table->dateTime('invoice_datetime')->nullable()->comment('請求日時');
             $table->enum('status', ['完納','一部未納','未納','その他'])->default('完納')->comment('完納/一部未納/未納/その他');
             $table->string('mes_lis_shi_tra_trade_number', 10)->comment('取引番号（発注・返品）');
             $table->string('mes_lis_shi_tra_additional_trade_number', 10)->comment('取引付属番号');
