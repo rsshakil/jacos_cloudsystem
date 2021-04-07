@@ -88,7 +88,7 @@
               </span>
             </p>
             <button @click="viewInvoicePopup" class="btn btn-primary " style="float:right;">新規請求</button>
-            
+
             <button @click="viewInvoiceDataListPopup" class="btn btn-primary " style="float:right;margin-right:10px;">出荷受領比較</button>
             <button class="btn btn-primary" @click="runInvoiceSchedular" style="float:right;margin-right:10px;">締め処理実行</button>
       <div class="">
@@ -260,7 +260,7 @@
           <p style="margin:0">確認]黄色の項目は差異が発生している項目です。</p>
         </div>
         <div class="col-6">
-       
+
         </div>
       </div>
       <table
