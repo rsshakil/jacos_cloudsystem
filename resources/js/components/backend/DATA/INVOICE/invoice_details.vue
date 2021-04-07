@@ -554,6 +554,7 @@ export default {
       editInvoiceDetailModal:false,
       invoiceDatalistModal:false,
       invoiceitemDatalistModal:false,
+      invoice_lists_length:0,
       file: "",
       data_invoice_id: "",
       isCheckAll: false,
@@ -612,22 +613,33 @@ export default {
     closeModal1(){
        this.invoiceDatalistModal = false;
     },
-    editInvoiceDetail(value){
+    editInvoiceDetail(valuess){
       this.editInvoiceDetailModal = true;
-      this.invoiceDetail = value;
+      this.invoiceDetail = valuess;
       // this.invoiceDetail.fill(value)
     },
     addInvoiceDetail(){
       this.editInvoiceDetailModal = true;
-        this.invoiceDetail.data_invoice_pay_detail_id='';
-        this.invoiceDetail.mes_lis_inv_lin_det_transfer_of_ownership_date='';
-        this.invoiceDetail.mes_lis_inv_lin_det_goo_major_category='';
-        this.invoiceDetail.mes_lis_inv_lin_tra_code='';
-        this.invoiceDetail.mes_lis_inv_lin_lin_trade_number_reference='';
-        this.invoiceDetail.mes_lis_inv_lin_det_pay_code='*';
-        this.invoiceDetail.mes_lis_inv_lin_det_balance_carried_code='';
-        this.invoiceDetail.mes_lis_inv_lin_det_amo_requested_amount='';
-        this.invoiceDetail.data_invoice_id = this.form.data_invoice_id;
+        // this.invoiceDetail.data_invoice_pay_detail_id='';
+        // this.invoiceDetail.mes_lis_inv_lin_det_transfer_of_ownership_date='';
+        // this.invoiceDetail.mes_lis_inv_lin_det_goo_major_category='';
+        // this.invoiceDetail.mes_lis_inv_lin_tra_code='';
+        // this.invoiceDetail.mes_lis_inv_lin_lin_trade_number_reference='';
+        // this.invoiceDetail.mes_lis_inv_lin_det_pay_code='*';
+        // this.invoiceDetail.mes_lis_inv_lin_det_balance_carried_code='';
+        // this.invoiceDetail.mes_lis_inv_lin_det_amo_requested_amount='';
+        // this.invoiceDetail.data_invoice_id = this.form.data_invoice_id;
+        this.invoiceDetail = {
+          data_invoice_pay_detail_id:'',
+        data_invoice_id:'',
+        mes_lis_inv_lin_det_transfer_of_ownership_date:'',
+        mes_lis_inv_lin_det_goo_major_category:'',
+        mes_lis_inv_lin_tra_code:'',
+        mes_lis_inv_lin_lin_trade_number_reference:'',
+        mes_lis_inv_lin_det_pay_code:'*',
+        mes_lis_inv_lin_det_balance_carried_code:'',
+        mes_lis_inv_lin_det_amo_requested_amount:'',
+        };
     },
     update_invoice_detail(){
       axios.post(this.BASE_URL + "api/update_invoice_detail", this.invoiceDetail)
@@ -678,6 +690,7 @@ var _this = this;
             this.init(data.status);
             this.invoice_detail_lists = data.invoice_details_list;
             this.invoice_detail_length = this.invoice_detail_lists.data.length;
+            this.invoice_lists_length = this.invoice_detail_lists.data.length;
             this.byr_buyer_category_lists = data.byr_buyer_category_list;
             this.buyer_settings = JSON.parse(data.buyer_settings);
             this.mes_lis_inv_lin_det_pay_code_list = this.buyer_settings.invoices.mes_lis_inv_lin_det_pay_code;
