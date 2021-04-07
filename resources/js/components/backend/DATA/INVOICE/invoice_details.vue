@@ -465,14 +465,17 @@
           </tr>
           </thead>
           <tbody>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+          <tr v-for="(value,index) in popup1DataList">
+            <td>{{value.mes_lis_shi_par_sel_code}}</td>
+            <td>{{value.mes_lis_shi_tra_trade_number}}</td>
+            <td>{{value.mes_lis_shi_par_shi_code}} {{value.mes_lis_shi_par_shi_name}}</td>
+            <td>
+              <span v-if="value.mes_lis_shi_tra_dat_revised_delivery_date!=null">{{value.mes_lis_shi_tra_dat_revised_delivery_date}}</span>
+              <span v-if="value.mes_lis_shi_tra_dat_delivery_date!=null">{{value.mes_lis_shi_tra_dat_delivery_date}}</span>
+            </td>
+            <td>{{value.mes_lis_acc_tra_dat_transfer_of_ownership_date}}</td>
+            <td>{{value.mes_lis_shi_tot_tot_net_price_total}}</td>
+            <td>{{value.mes_lis_acc_tot_tot_net_price_total}}</td>
             <td><button @click="invoiceDetailItemListPopup" class="btn btn-primary">確認</button></td>
           </tr>
           </tbody>
@@ -561,6 +564,7 @@ export default {
       selected: [],
       null_selected: [],
       not_null_selected: [],
+      popup1DataList: [],
       date_null:false,
       null_selected_message:false,
       decision_datetime_status: ["未確定あり", "確定済"],
@@ -603,6 +607,12 @@ export default {
   methods: {
     viewInvoiceDataListPopup(){
       this.invoiceDatalistModal = true;
+      axios.post(this.BASE_URL + "api/get_invoice_popup1_details_list", this.form)
+        .then(({ data }) => {
+            this.init(data.status);
+            this.popup1DataList = data.voucherList;
+            //console.log(data.voucherList);
+        });
     },
     invoiceDetailItemListPopup(){
       this.invoiceitemDatalistModal = true;
