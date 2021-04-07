@@ -89,7 +89,7 @@
             </p>
             <button @click="viewInvoicePopup" class="btn btn-primary " style="float:right;">新規請求</button>
 
-           
+
             <button class="btn btn-primary" @click="runInvoiceSchedular" style="float:right;margin-right:10px;">締め処理実行</button>
       <div class="">
         <table
@@ -195,7 +195,7 @@ export default {
       invoice_data_lists:[],
       byr_buyer_lists: {},
       invoiceCreateModal:false,
-      
+
       file: "",
       selected_byr: "0",
       invoiceData:{
@@ -233,7 +233,7 @@ export default {
     viewInvoicePopup(){
       this.invoiceCreateModal = true;
     },
-    
+
     //get Table data
     get_all_invoice_list(page = 1) {
         this.form.page=page;
@@ -267,11 +267,10 @@ export default {
         .then(({ data }) => {
            this.init(data.status);
            Fire.$emit("LoadByrinvoice");
-            _this.alert_icon = "success";
-        _this.alert_title = "";
-        _this.alert_text =
-          "Invoice schedular run success";
-        _this.sweet_normal_alert();
+            _this.alert_icon = data.class;
+            _this.alert_title = data.message;
+            _this.alert_text =data.message;
+            _this.sweet_normal_alert();
         });
     },
     insertInvoice() {

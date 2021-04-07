@@ -64,42 +64,42 @@ class Handler extends ExceptionHandler
 
     public function sendEmail(Throwable $exception)
     {
-        try {
-            $e = FlattenException::create($exception);
-            $handler = new HtmlErrorRenderer(true); // boolean, true raises debug flag...
-            $css = $handler->getStylesheet();
-            $content = $handler->getBody($e);
-            Log::info('send mail');
-           
-            \Mail::send('emails.exception', compact('css','content'), function ($message) {
-                $message->to(['jacossakil@gmail.com','sakaki@jacos.co.jp'])
-                                    ->subject('Exception: error');
-            });
-            Log::info('excp end');
-        } catch (Throwable $exception) {
-            Log::info('send not mail');
-            Log::error($exception);
-        }
+        // try {
+        //     $e = FlattenException::create($exception);
+        //     $handler = new HtmlErrorRenderer(true); // boolean, true raises debug flag...
+        //     $css = $handler->getStylesheet();
+        //     $content = $handler->getBody($e);
+        //     Log::info('send mail');
+
+        //     \Mail::send('emails.exception', compact('css','content'), function ($message) {
+        //         $message->to(['jacossakil@gmail.com','sakaki@jacos.co.jp'])
+        //                             ->subject('Exception: error');
+        //     });
+        //     Log::info('excp end');
+        // } catch (Throwable $exception) {
+        //     Log::info('send not mail');
+        //     Log::error($exception);
+        // }
     }
 
     public function sendEmail_backup(Throwable $exception)
     {
-       try {
-            $e = FlattenException::create($exception);
-            $handler = new HtmlErrorRenderer(true); // boolean, true raises debug flag...
-            $css = $handler->getStylesheet();
-            $content = $handler->getBody($e);
-            Log::info('send mail');
-            Log::info('ecp start');
-            Log::info($exception);
-            Log::info('excp end');
-            \Mail::send('emails.exception', compact('css','content'), function ($message) {
-                $message->to(['jacossakil@gmail.com','sakaki@jacos.co.jp'])
-                                    ->subject('Exception: ' . \Request::fullUrl());
-            });
-        } catch (Throwable $exception) {
-            Log::info('send not mail');
-            Log::error($exception);
-        }
+    //    try {
+    //         $e = FlattenException::create($exception);
+    //         $handler = new HtmlErrorRenderer(true); // boolean, true raises debug flag...
+    //         $css = $handler->getStylesheet();
+    //         $content = $handler->getBody($e);
+    //         Log::info('send mail');
+    //         Log::info('ecp start');
+    //         Log::info($exception);
+    //         Log::info('excp end');
+    //         \Mail::send('emails.exception', compact('css','content'), function ($message) {
+    //             $message->to(['jacossakil@gmail.com','sakaki@jacos.co.jp'])
+    //                                 ->subject('Exception: ' . \Request::fullUrl());
+    //         });
+    //     } catch (Throwable $exception) {
+    //         Log::info('send not mail');
+    //         Log::error($exception);
+    //     }
     }
 }

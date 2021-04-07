@@ -13,6 +13,7 @@ class InvoiceScheduleFunctions extends Controller
         foreach ($closing_date_array as $key => $value) {
             if ($value!='last') {
                 $new_array[]=$value;
+            }else{
                 $last_val=1;
             }
         }
