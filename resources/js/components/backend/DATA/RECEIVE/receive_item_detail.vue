@@ -60,7 +60,7 @@
             <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_acc_tra_tax_tax_type_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_tax_tax_type_code',order_item_shipment_data_headTable.mes_lis_acc_tra_tax_tax_type_code,'orders',buyer_settings)}} {{order_item_shipment_data_headTable.mes_lis_acc_tra_tax_tax_rate}} %</span></td>
             <td class="cl_custom_color">実納品日 </td>
             <td colspan="3">
-            <input class="form-control" type="date" v-model="order_item_shipment_data_headTable.mes_lis_acc_tra_dat_revised_delivery_date_to_receiver"></td>
+            <span>{{order_item_shipment_data_headTable.mes_lis_acc_tra_dat_revised_delivery_date_to_receiver}}</span></td>
           </tr>
 
         </table>
@@ -303,7 +303,7 @@
 export default {
 breadcrumb(){
     return {
-    label: "受領伝票一覧",
+    label: "受領伝票明細",
     parent: this.parentQ
   }
 
@@ -421,6 +421,7 @@ beforeCreate: function() {
       this.get_all_receive_item_detail();
     });
    this.parentQ.query = this.$session.get('order_receive_detail_query_param');
+   Fire.$emit("loadPageTitle", "受領伝票明細");
   },
   computed: {
 

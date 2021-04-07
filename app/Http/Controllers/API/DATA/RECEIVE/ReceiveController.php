@@ -143,7 +143,7 @@ class ReceiveController extends Controller
                 }
         $result2 = $result2->groupBy('data_returns.receive_datetime')
         ->orderBy($table_name2.$sort_by,$sort_type);
-        $result = $result1->union($result2)->paginate($per_page);
+        $result = $result1->paginate($per_page);
         // $result = new Paginator($result, 2);
         $buyer_settings = byr_buyer::select('setting_information')->where('byr_buyer_id', $byr_buyer_id)->first();
         $byr_buyer = $this->all_used_fun->get_company_list($cmn_company_id);

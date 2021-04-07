@@ -418,7 +418,7 @@ export const routes = [
         name: 'receive_item_detail',
         meta: {
             breadcrumb: {
-                label: '受領伝票一覧',
+                label: '受領伝票明細',
                 parent: 'receive_detail'
             }
         },
