@@ -10,7 +10,7 @@
             <td class="cl_custom_color">受信日</td>
             <td><span v-if="order_info && Object.keys(order_info).length"> {{ order_info.receive_datetime }}</span></td>
             <td class="cl_custom_color">取引先</td>
-            <td colspan="3">
+            <td>
             <span v-if="order_info && Object.keys(order_info).length">
               {{ order_info.mes_lis_ret_par_sel_code}}
               {{ order_info.mes_lis_ret_par_sel_name }}
@@ -23,20 +23,7 @@
             <td class="cl_custom_color">部門</td>
             <td><span v-if="order_info && Object.keys(order_info).length">{{ order_info.mes_lis_ret_tra_goo_major_category }}</span></td>
        
-            <td class="cl_custom_color">温度区分</td>
-            <td>
-            <span v-if="order_info && Object.keys(order_info).length">
-              {{ order_info.mes_lis_ret_tra_ins_temperature_code }}
-              {{
-                getbyrjsonValueBykeyName(
-                  "mes_lis_ord_tra_ins_temperature_code",
-                  order_info.mes_lis_ret_tra_ins_temperature_code,
-                  "orders",
-                  buyer_settings
-                )
-              }}
-              </span>
-            </td>
+            
           </tr>
          
         </table>
@@ -77,24 +64,7 @@
             </td>
           </tr>
           <tr>
-            <td class="cl_custom_color">定／特</td>
-            <td>
-              <select
-                class="form-control"
-                v-model="form.goods_classification_code"
-                style="width: 220px"
-              >
-                <option value="*">全て</option>
-
-                <option
-                  v-for="(opt, i) in mes_lis_ord_tra_ins_goods_classification_codeList"
-                  :key="i"
-                  :value="Object.keys(opt)[0]"
-                >
-                  {{ Object.values(opt)[0] }}
-                </option>
-              </select>
-            </td>
+            
             <td class="cl_custom_color">伝票区分</td>
             <td>
               <select
@@ -257,13 +227,13 @@
                 </td>
 
                 <td>
-                {{ order_detail_list.mes_lis_ret_par_shi_code }}
-                {{ order_detail_list.mes_lis_ret_par_shi_name }}
+                {{ order_detail_list.mes_lis_ret_par_return_receive_from_code }}
+                {{ order_detail_list.mes_lis_ret_par_return_receive_from_name }}
 
                 </td>
                 <td>
-                  {{ order_detail_list.mes_lis_ret_par_rec_code}}
-                  {{ order_detail_list.mes_lis_ret_par_rec_name }}
+                  {{ order_detail_list.mes_lis_ret_par_return_from_code}}
+                  {{ order_detail_list.mes_lis_ret_par_return_from_name }}
                 </td>
                 <td>
                   <router-link
@@ -747,7 +717,8 @@ export default {
           this.byr_buyer_lists = data.byr_buyer_list;
           this.buyer_settings = JSON.parse(data.buyer_settings);
           this.mes_lis_ord_tra_ins_goods_classification_codeList = this.buyer_settings.orders.mes_lis_ord_tra_ins_goods_classification_code;
-          this.mes_lis_ord_tra_ins_trade_type_codeList = this.buyer_settings.orders.mes_lis_ord_tra_ins_trade_type_code;
+          //this.mes_lis_ord_tra_ins_trade_type_codeList = this.buyer_settings.orders.mes_lis_ord_tra_ins_trade_type_code;
+          this.mes_lis_ord_tra_ins_trade_type_codeList = this.buyer_settings.returns.mes_lis_ret_tra_ins_trade_type_code;
           this.order_info = data.order_info;
           this.form.order_info = this.order_info;
           this.loader.hide();

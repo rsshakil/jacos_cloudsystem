@@ -8,18 +8,14 @@
             <td class="cl_custom_color">受信日時</td>
             <td><span v-if="order_item_lists && Object.keys(order_item_lists).length">{{order_item_lists.receive_datetime}}</span></td>
             <td class="cl_custom_color">取引先</td>
-            <td colspan="5"><span v-if="order_item_lists && Object.keys(order_item_lists).length">{{order_item_lists.mes_lis_ret_par_sel_code}} {{order_item_lists.mes_lis_acc_par_sel_name}}</span></td>
+            <td><span v-if="order_item_lists && Object.keys(order_item_lists).length">{{order_item_lists.mes_lis_ret_par_sel_code}} {{order_item_lists.mes_lis_acc_par_sel_name}}</span></td>
           </tr>
           <tr>
             <td class="cl_custom_color">納品日</td>
             <td><span v-if="order_item_lists && Object.keys(order_item_lists).length">{{order_item_lists.mes_lis_ret_tra_dat_transfer_of_ownership_date}}</span></td>
             <td class="cl_custom_color">部門</td>
             <td><span v-if="order_item_lists && Object.keys(order_item_lists).length">{{order_item_lists.mes_lis_ret_tra_goo_major_category}}</span></td>
-            <td class="cl_custom_color">便</td>
-            <td> <span v-if="order_item_lists && Object.keys(order_item_lists).length">{{getbyrjsonValueBykeyName('mes_lis_ord_log_del_delivery_service_code',order_item_lists.mes_lis_ret_log_del_delivery_service_code,'orders',buyer_settings)}}</span></td>
-            <td class="cl_custom_color">温度区分</td>
-            <td><span v-if="order_item_lists && Object.keys(order_item_lists).length">{{order_item_lists.mes_lis_acc_tra_ins_temperature_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_item_lists.mes_lis_ret_tra_ins_temperature_code,'orders',buyer_settings)}}</span></td>
-          </tr>
+            </tr>
         </table>
       </div>
       <div
@@ -29,27 +25,22 @@
         <table class="table orderTopDetailTable table-bordered" style="width: 100%">
           <tr>
             <td class="cl_custom_color">直接納品先</td>
-            <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_ret_par_shi_code}} {{order_item_shipment_data_headTable.mes_lis_ret_par_shi_name}}</span></td>
+            <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_ret_par_return_receive_from_code}} {{order_item_shipment_data_headTable.mes_lis_ret_par_return_receive_from_name}}</span></td>
             <td class="cl_custom_color">最終納品先</td>
-            <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_ret_par_rec_code}} {{order_item_shipment_data_headTable.mes_lis_ret_par_rec_name}}</span></td>
+            <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_ret_par_return_from_code}} {{order_item_shipment_data_headTable.mes_lis_ret_par_return_from_name}}</span></td>
             <td class="cl_custom_color">伝票番号</td>
             <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_ret_tra_trade_number}}</span></td>
           </tr>
           <tr>
-            <td class="cl_custom_color">定／特</td>
-            <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_ret_tra_ins_goods_classification_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_goods_classification_code',order_item_shipment_data_headTable.mes_lis_ret_tra_ins_goods_classification_code,'orders',buyer_settings)}}</span></td>
-            <td class="cl_custom_color">不定貴区分</td>
+             <td class="cl_custom_color">不定貴区分</td>
             <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_ret_tra_fre_variable_measure_item_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_fre_variable_measure_item_code',order_item_shipment_data_headTable.mes_lis_ret_tra_fre_variable_measure_item_code,'orders',buyer_settings)}}</span></td>
             <td class="cl_custom_color">発注者</td>
             <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_buy_name}}</span></td>
           </tr>
           <tr>
-            <td class="cl_custom_color">発注日</td>
-            <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_ret_tra_dat_order_date}}</span></td>
-            <td class="cl_custom_color">伝票区分</td>
+           <td class="cl_custom_color">伝票区分</td>
             <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_ret_tra_ins_trade_type_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_trade_type_code',order_item_shipment_data_headTable.mes_lis_ret_tra_ins_trade_type_code,'orders',buyer_settings)}}</span></td>
-            <td class="cl_custom_color">受領内容</td>
-            <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.status='訂正なし'}}</span></td>
+            
           </tr>
           <tr>
             <td class="cl_custom_color">備考</td>
@@ -58,10 +49,7 @@
           <tr>
             <td class="cl_custom_color">税区分・税率</td>
             <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_ret_tra_tax_tax_type_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_tax_tax_type_code',order_item_shipment_data_headTable.mes_lis_ret_tra_tax_tax_type_code,'orders',buyer_settings)}} {{order_item_shipment_data_headTable.mes_lis_ret_tra_tax_tax_rate}} %</span></td>
-            <td class="cl_custom_color">実納品日 </td>
-            <td colspan="3">
-            <input class="form-control" type="date" v-model="order_item_shipment_data_headTable.mes_lis_ret_tra_dat_revised_delivery_date_to_receiver"></td>
-          </tr>
+             </tr>
 
         </table>
       </div>
@@ -90,7 +78,6 @@
                 <th>原価全額</th>
                 <th>売単価</th>
                 <th>売価金額</th>
-                <th>訂正理由</th>
               </tr>
 
             </thead>
@@ -99,12 +86,12 @@
               <tr v-for="(order_item_detail_list, index) in order_item_detail_lists" :key="index">
                 <td>{{index+1}}</td>
                 <td style="text-align:left;">
-                商品コード：{{order_item_detail_list.mes_lis_ret_lin_ite_order_item_code}}<br>
-                 JANコード： {{order_item_detail_list.mes_lis_ret_lin_ite_gtin.slice(1)}}<br>
+                商品コード：{{order_item_detail_list.mes_lis_ret_lin_ite_order_item_code.slice(1)}}<br>
+                 JANコード： {{order_item_detail_list.mes_lis_ret_lin_ite_order_item_code}}<br>
                  商品名：{{order_item_detail_list.mes_lis_ret_lin_ite_name}}<br>
                  規格：{{order_item_detail_list.mes_lis_ret_lin_ite_ite_spec}}<br>
                  産地：{{order_item_detail_list.mes_lis_ret_lin_fre_field_name}}<br></td>
-                <td>{{order_item_detail_list.mes_lis_ret_lin_fre_packing_quantity}}</td>
+                <td></td>
                 <td>
                 {{order_item_detail_list.mes_lis_ret_lin_qua_rec_num_of_order_units}}
                 <!--
@@ -141,14 +128,7 @@
                 <td class="text-right"><!--{{order_item_detail_list.mes_lis_ret_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_ret_lin_qua_shi_quantity}}-->
                 {{order_item_detail_list.mes_lis_ret_lin_amo_item_selling_price | priceFormat}}
                 </td>
-                <td><!--{{order_item_detail_list.mes_lis_ret_lin_qua_rec_reason_code}} {{getbyrjsonValueBykeyName('mes_lis_ret_lin_qua_rec_reason_code',order_item_detail_list.mes_lis_ret_lin_qua_rec_reason_code,'receives',buyer_settings)}}
-                <select v-model="order_item_detail_list.mes_lis_ret_lin_qua_rec_reason_code" class="form-control ">
-                <option v-for="item in mes_lis_ret_lin_qua_rec_reason_codeList" :value="Object.keys(item)[0]">{{Object.values(item)[0]}}</option>
-                </select>-->
-                <!--<input type="hidden" v-model="totalCostPrice += order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity">
-                <input type="hidden" v-model="totalSellingPrice += order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity">-->
-                {{order_item_detail_list.mes_lis_ret_lin_qua_rec_reason_code}}
-                </td>
+               
               </tr>
               <tr v-if="order_item_detail_lists && order_item_detail_lists.length==0">
                 <td class="text-center" colspan="12">データがありません</td>
@@ -164,10 +144,10 @@
               <th></th>
               <th></th>
               <th style="background:#538ED3;color:#fff;text-align:center;">原価全額<br>合計</th>
-              <th style="text-align:right;">{{totalCostPriceVal | priceFormat}}</th>
+              <th style="text-align:right;"><span>{{order_item_detail_lists[0].mes_lis_ret_tot_tot_net_price_total | priceFormat}}</span></th>
               <th style="background:#538ED3;color:#fff;text-align:center;">売価全額<br>合計</th>
-              <th style="text-align:right;">{{totalSellingPriceVal | priceFormat}}</th>
-              <th></th>
+              <th style="text-align:right;">{{order_item_detail_lists[0].mes_lis_ret_tot_tot_selling_price_total | priceFormat}}</th>
+             
               </tr>
             </tfoot>
 
@@ -303,7 +283,7 @@
 export default {
 breadcrumb(){
     return {
-    label: "受領伝票一覧",
+    label: "返品伝票明細",
     parent: this.parentQ
   }
 
@@ -312,7 +292,7 @@ breadcrumb(){
   data() {
     return {
       parentQ:{
-        name: 'receive_detail',
+        name: 'return_detail',
         query: {},
       },
       sortKey: "",
@@ -421,6 +401,7 @@ beforeCreate: function() {
       this.get_all_receive_item_detail();
     });
    this.parentQ.query = this.$session.get('order_receive_detail_query_param');
+   Fire.$emit("loadPageTitle", "返品伝票明細");
   },
   computed: {
 
