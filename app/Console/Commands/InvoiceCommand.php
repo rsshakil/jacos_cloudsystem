@@ -15,7 +15,7 @@ class InvoiceCommand extends Command
      * @var string
      */
     // protected $signature = 'invoice:scheduler {--start_date=00-00-00} {--end_date=00-00-00}';
-    protected $signature = 'invoice:scheduler';
+    protected $signature = 'invoice:scheduler {agr=0}';
 
     /**
      * The console command description.
@@ -45,6 +45,9 @@ class InvoiceCommand extends Command
      */
     public function handle()
     {
+        $new_date = $this->argument('agr');
+        \Log::info($new_date);
+        // $this->comment($new_date);
         \Log::info("----Starting----");
         $today=date('y-m-d');
         $cmn_connect_info=cmn_connect::select('optional')->where('cmn_connect_id',1)->first();
