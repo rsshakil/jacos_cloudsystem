@@ -16,6 +16,7 @@ use App\Http\Controllers\API\DATA\INVOICE\InvoiceDataController;
 use App\Exports\InvoiceCSVExport;
 use App\Traits\Csv;
 use DB;
+use PhpParser\Node\Stmt\TryCatch;
 
 class InvoiceController extends Controller
 {
@@ -198,11 +199,15 @@ class InvoiceController extends Controller
         data_invoice_pay_detail::where('data_invoice_pay_detail_id',$request->data_invoice_pay_detail_id)->delete();
         return response()->json(['success' => 1,'insert_success'=>1]);
     }
-    
+
     public function execInvoiceSchedular(Request $request)
     {
-        \Artisan::call('invoice:scheduler');
-        return response()->json(['success' => 1,'insert_success'=>1]);
+        try {
+            \Artisan::call('invoice:scheduler 1');
+        } catch (\Throwable $th) {
+            return response()->json(['message' => "Error",'status'=>0]);
+        }
+        return response()->json(['message' => "Success",'status'=>1]);
     }
 
     public function invoiceDetailsList(Request $request)

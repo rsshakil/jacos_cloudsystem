@@ -261,17 +261,10 @@
         </div>
         <div class="col-6">
 
+rgin:0">確認]黄色の項目は差異が発生している項目です。</p>
         </div>
-      </div>
-      <table
-            class="table table-striped table-bordered order_item_details_table"
-            style="overflow-x: scroll"
-          >
-          <thead>
+        <div class="col-6">
 
-            <tr>
-              <th>NO</th>
-              <th>商品コード</th>
               <th>商品名</th>
               <th>出荷数量（バラ）</th>
               <th>受領数量（バラ）</th>
