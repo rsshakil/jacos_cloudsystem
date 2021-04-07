@@ -144,9 +144,9 @@
               <th></th>
               <th></th>
               <th style="background:#538ED3;color:#fff;text-align:center;">原価全額<br>合計</th>
-              <th style="text-align:right;"><span>{{order_item_detail_lists[0].mes_lis_ret_tot_tot_net_price_total | priceFormat}}</span></th>
+              <th style="text-align:right;"><span>{{order_item_shipment_data_headTable.mes_lis_ret_tot_tot_net_price_total | priceFormat}}</span></th>
               <th style="background:#538ED3;color:#fff;text-align:center;">売価全額<br>合計</th>
-              <th style="text-align:right;">{{order_item_detail_lists[0].mes_lis_ret_tot_tot_selling_price_total | priceFormat}}</th>
+              <th style="text-align:right;">{{order_item_shipment_data_headTable.mes_lis_ret_tot_tot_selling_price_total | priceFormat}}</th>
              
               </tr>
             </tfoot>
