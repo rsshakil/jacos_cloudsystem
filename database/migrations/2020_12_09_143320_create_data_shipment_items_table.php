@@ -24,7 +24,7 @@ class CreateDataShipmentItemsTable extends Migration
             $table->string('mes_lis_shi_lin_goo_minor_category', 10)->comment('商品分類（小）');
             $table->string('mes_lis_shi_lin_goo_detailed_category', 10)->comment('商品分類（細）');
             $table->date('mes_lis_shi_lin_ite_scheduled_date')->comment('配達予定日');
-            $table->string('mes_lis_shi_lin_ite_deadline_date', 8)->comment('納品期限');
+            $table->date('mes_lis_shi_lin_ite_deadline_date')->comment('納品期限');
             $table->string('mes_lis_shi_lin_ite_center_delivery_instruction_code', 2)->comment('センター納品詳細指示');
             $table->string('mes_lis_shi_lin_fre_interim_price_code', 2)->default('')->comment('仮伝フラグ');
             $table->string('mes_lis_shi_lin_ite_maker_code', 13)->comment('メーカーコード');
@@ -66,7 +66,7 @@ class CreateDataShipmentItemsTable extends Migration
             $table->decimal('mes_lis_shi_lin_amo_item_net_price_unit_price', 13, 2)->comment('原単価');
             $table->integer('mes_lis_shi_lin_amo_item_selling_price')->comment('売価金額');
             $table->integer('mes_lis_shi_lin_amo_item_selling_price_unit_price')->comment('売単価');
-            $table->string('mes_lis_shi_lin_amo_item_tax', 10)->comment('税額');
+            $table->integer('mes_lis_shi_lin_amo_item_tax')->comment('税額');
             $table->string('mes_lis_shi_lin_qua_unit_multiple', 4)->comment('発注単位');
             $table->string('mes_lis_shi_lin_qua_unit_of_measure', 2)->comment('発注単位コード');
             $table->string('mes_lis_shi_lin_qua_package_indicator', 2)->comment('発注荷姿コード');
@@ -77,11 +77,11 @@ class CreateDataShipmentItemsTable extends Migration
             $table->decimal('mes_lis_shi_lin_qua_sto_quantity', 9, 1)->default(0)->comment('欠品数量(バラ数)');
             $table->integer('mes_lis_shi_lin_qua_sto_num_of_order_units')->default(0)->comment('欠品数量(発注単位数)');
             $table->string('mes_lis_shi_lin_qua_sto_reason_code', 5)->default('')->comment('欠品区分');
-            $table->decimal('mes_lis_shi_lin_fre_unit_weight', 7, 3)->default(0)->comment('取引単位重量');
+            $table->decimal('mes_lis_shi_lin_fre_unit_weight', 10, 3)->default(0)->comment('取引単位重量');
             $table->string('mes_lis_shi_lin_fre_unit_weight_code', 2)->comment('単価登録単位');
-            $table->decimal('mes_lis_shi_lin_fre_item_weight', 7, 3)->default(0)->comment('商品重量');
-            $table->decimal('mes_lis_shi_lin_fre_order_weight', 7, 3)->default(0)->comment('発注重量');
-            $table->decimal('mes_lis_shi_lin_fre_shipment_weight', 7, 3)->comment('出荷重量');
+            $table->decimal('mes_lis_shi_lin_fre_item_weight', 10, 3)->default(0)->comment('商品重量');
+            $table->decimal('mes_lis_shi_lin_fre_order_weight', 10, 3)->default(0)->comment('発注重量');
+            $table->decimal('mes_lis_shi_lin_fre_shipment_weight', 10, 3)->comment('出荷重量');
             $table->smallInteger('deleted')->unsigned()->default(1)->comment('削除フラグ');
             $table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
             $table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');

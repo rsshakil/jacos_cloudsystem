@@ -94,9 +94,9 @@ class CreateDataShipmentVouchersTable extends Migration
             $table->integer('mes_lis_shi_tot_tot_net_price_total')->unsigned()->comment('原価金額合計');
             $table->integer('mes_lis_shi_tot_tot_selling_price_total')->unsigned()->comment('売価金額合計');
             $table->integer('mes_lis_shi_tot_tot_tax_total')->unsigned()->comment('税額合計金額');
-            $table->string('mes_lis_shi_tot_tot_item_total', 6)->comment('数量合計');
-            $table->string('mes_lis_shi_tot_tot_unit_total', 6)->comment('発注単位数量合計');
-            $table->string('mes_lis_shi_tot_fre_unit_weight_total', 14)->comment('重量合計');
+            $table->integer('mes_lis_shi_tot_tot_item_total')->comment('数量合計');
+            $table->integer('mes_lis_shi_tot_tot_unit_total')->comment('発注単位数量合計');
+            $table->decimal('mes_lis_shi_tot_fre_unit_weight_total', 13, 3)->comment('重量合計');
             $table->smallInteger('deleted')->unsigned()->default(1)->comment('削除フラグ');
             $table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
             $table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');

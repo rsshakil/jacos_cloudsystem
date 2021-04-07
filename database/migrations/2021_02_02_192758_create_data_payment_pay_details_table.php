@@ -37,7 +37,7 @@ class CreateDataPaymentPayDetailsTable extends Migration
             $table->string('mes_lis_pay_lin_det_amo_pay_plus_minus', 10)->comment('支払金額符号');
             $table->string('mes_lis_pay_lin_det_amo_optional_amount', 20)->comment('金額(小売自由使用)');
             $table->string('mes_lis_pay_lin_det_amo_opt_plus_minus', 10)->comment('金額符号(小売自由使用)');
-            $table->string('mes_lis_pay_lin_det_amo_tax', 13)->comment('税額合計金額');
+            $table->integer('mes_lis_pay_lin_det_amo_tax')->comment('税額合計金額');
             $table->string('mes_lis_pay_lin_det_trade_type_code', 13)->comment('処理種別');
             $table->string('mes_lis_pay_lin_det_balance_carried_code', 13)->comment('請求区分');
             $table->string('mes_lis_pay_lin_det_creditor_unsettled_code', 13)->comment('未払買掛区分');
@@ -48,10 +48,10 @@ class CreateDataPaymentPayDetailsTable extends Migration
             $table->string('mes_lis_pay_lin_det_det_meaning_sbcs', 20)->comment('支払内容（個別名称カナ）');
             $table->string('mes_lis_pay_lin_det_payment_method_code', 13)->comment('支払方法区分');
             $table->string('mes_lis_pay_lin_det_tax_tax_type_code', 13)->comment('税区分');
-            $table->decimal('mes_lis_pay_lin_det_tax_tax_rate', 2,1)->comment('税率');
+            $table->decimal('mes_lis_pay_lin_det_tax_tax_rate', 3, 1)->comment('税率');
             $table->smallInteger('deleted')->unsigned()->default(1)->comment('削除フラグ');
             $table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
-			$table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
+            $table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
         });
     }
 

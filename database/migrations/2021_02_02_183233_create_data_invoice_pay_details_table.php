@@ -39,10 +39,10 @@ class CreateDataInvoicePayDetailsTable extends Migration
             $table->string('mes_lis_inv_lin_det_credit_or_unsettlement', 13)->nullable()->comment('未払買掛区分');
             $table->string('mes_lis_inv_lin_det_pay_code', 13)->nullable()->comment('支払内容');
             $table->string('mes_lis_inv_lin_det_tax_tax_type_code', 13)->nullable()->comment('税区分');
-            $table->decimal('mes_lis_inv_lin_det_tax_tax_rate', 2,1)->nullable()->comment('税率');
+            $table->decimal('mes_lis_inv_lin_det_tax_tax_rate', 3, 1)->nullable()->comment('税率');
             $table->smallInteger('deleted')->unsigned()->default(1)->comment('削除フラグ');
             $table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
-			$table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
+            $table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');
         });
     }
 
