@@ -34,23 +34,18 @@
           <tr>
              <td class="cl_custom_color">不定貴区分</td>
             <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_ret_tra_fre_variable_measure_item_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_fre_variable_measure_item_code',order_item_shipment_data_headTable.mes_lis_ret_tra_fre_variable_measure_item_code,'orders',buyer_settings)}}</span></td>
-            <td class="cl_custom_color">発注者</td>
-            <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_buy_name}}</span></td>
-          </tr>
-          <tr>
-           <td class="cl_custom_color">伝票区分</td>
+            <td class="cl_custom_color">伝票区分</td>
             <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_ret_tra_ins_trade_type_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_trade_type_code',order_item_shipment_data_headTable.mes_lis_ret_tra_ins_trade_type_code,'orders',buyer_settings)}}</span></td>
-            
-          </tr>
+              <td class="cl_custom_color">税区分・税率</td>
+            <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_ret_tra_tax_tax_type_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_tax_tax_type_code',order_item_shipment_data_headTable.mes_lis_ret_tra_tax_tax_type_code,'orders',buyer_settings)}} {{order_item_shipment_data_headTable.mes_lis_ret_tra_tax_tax_rate}} %</span></td>
+          
+            </tr>
+         
           <tr>
             <td class="cl_custom_color">備考</td>
             <td colspan="5"><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_ret_tra_not_text}}</span></td>
           </tr>
-          <tr>
-            <td class="cl_custom_color">税区分・税率</td>
-            <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_ret_tra_tax_tax_type_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_tax_tax_type_code',order_item_shipment_data_headTable.mes_lis_ret_tra_tax_tax_type_code,'orders',buyer_settings)}} {{order_item_shipment_data_headTable.mes_lis_ret_tra_tax_tax_rate}} %</span></td>
-             </tr>
-
+         
         </table>
       </div>
       <div class="col-12" style="text-align: center">
@@ -94,38 +89,32 @@
                 <td></td>
                 <td>
                 {{order_item_detail_list.mes_lis_ret_lin_qua_rec_num_of_order_units}}
-                <!--
-                <input type="text" class="form-control" @keyup="ball_case_cal(order_item_detail_list,'ケース')" v-model="order_item_detail_list.mes_lis_ret_lin_qua_shi_num_of_order_units">
-                {{order_item_detail_list.mes_lis_ret_lin_qua_ord_num_of_order_units}}
-                --></td>
+               </td>
                 <td>
-               <!-- {{order_item_detail_list.mes_lis_ret_lin_qua_unit_of_measure}}  {{getbyrjsonValueBykeyName('mes_lis_ord_lin_qua_unit_of_measure',order_item_detail_list.mes_lis_ret_lin_qua_unit_of_measure,'orders',buyer_settings)}}-->
+               
                {{order_item_detail_list.mes_lis_ret_lin_qua_package_indicator}}
                 </td>
                 <td>
-                 <!--<input type="text" class="form-control" @keyup="ball_case_cal(order_item_detail_list,'バラ')" v-model="order_item_detail_list.mes_lis_ret_lin_qua_shi_quantity">
-                {{order_item_detail_list.mes_lis_ret_lin_qua_ord_quantity}}-->
-                {{order_item_detail_list.mes_lis_ret_lin_qua_rec_quantity}}
+                
+                {{order_item_detail_list.mes_lis_ret_lin_qua_quantity}}
 
                 </td>
 
-                <td><!--{{order_item_detail_list.mes_lis_ret_lin_fre_item_weight * order_item_detail_list.mes_lis_ret_lin_qua_shi_quantity}}-->
-                {{order_item_detail_list.mes_lis_ret_lin_fre_received_weight}}
+                <td>
+                {{order_item_detail_list.mes_lis_ret_lin_fre_return_weight}}
                 </td>
                 <td class="text-right">
-                <!-- <input type="text" class="form-control" v-model="order_item_detail_list.mes_lis_ret_lin_amo_item_net_price_unit_price">
-                {{order_item_detail_list.mes_lis_ord_lin_amo_item_net_price_unit_price}}-->
+                
                 {{order_item_detail_list.mes_lis_ret_lin_amo_item_net_price_unit_price | priceFormat}}
                 </td>
-                <td class="text-right"> <!--{{ order_item_detail_list.mes_lis_ret_lin_amo_item_net_price_unit_price * order_item_detail_list.mes_lis_ret_lin_qua_shi_quantity}}-->
+                <td class="text-right">
                 {{order_item_detail_list.mes_lis_ret_lin_amo_item_net_price | priceFormat}}
                 </td>
                 <td class="text-right">
-                 <!--<input type="text" class="form-control" v-model="order_item_detail_list.mes_lis_ret_lin_amo_item_selling_price_unit_price">
-                {{order_item_detail_list.mes_lis_ord_lin_amo_item_selling_price_unit_price}}-->
+                
                 {{order_item_detail_list.mes_lis_ret_lin_amo_item_selling_price_unit_price | priceFormat}}
                 </td>
-                <td class="text-right"><!--{{order_item_detail_list.mes_lis_ret_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_ret_lin_qua_shi_quantity}}-->
+                <td class="text-right">
                 {{order_item_detail_list.mes_lis_ret_lin_amo_item_selling_price | priceFormat}}
                 </td>
                
