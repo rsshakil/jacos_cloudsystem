@@ -96,7 +96,7 @@ class ReturnController extends Controller
             $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
         // 検索
-        
+
         //union query
         $result2=data_return::select(
             'data_returns.data_return_id',
@@ -190,9 +190,9 @@ class ReturnController extends Controller
         ->join('data_returns as dr','dr.data_return_id','=','data_return_vouchers.data_return_id')
         ->leftJoin('data_shipment_vouchers as dsv','dsv.mes_lis_shi_tra_trade_number','=','data_return_vouchers.mes_lis_ret_tra_trade_number')
         ->where('dr.cmn_connect_id','=',$cmn_connect_id)
-        ->where('data_return_vouchers.data_return_id','=',$data_return_id)
+        ->where('data_return_vouchers.data_return_id','=',$data_return_id);
         // ->where('data_return_vouchers.mes_lis_acc_par_sel_name',$sel_name)
-        ->where('data_return_vouchers.mes_lis_ret_par_sel_code',$sel_code);
+        // ->where('data_return_vouchers.mes_lis_ret_par_sel_code',$sel_code);
         if($decesion_status!="*"){
             if($decesion_status=="訂正あり"){
                 $result = $result->where('data_return_vouchers.mes_lis_ret_tot_tot_net_price_total','>',0);
@@ -201,10 +201,10 @@ class ReturnController extends Controller
                 $result = $result->where('data_return_vouchers.mes_lis_ret_tot_tot_net_price_total',0);
             }
         }
-        if($request->mes_lis_acc_par_shi_code!=''){
+        if($request->mes_lis_acc_par_shi_code!=null){
             $result = $result->where('data_return_vouchers.mes_lis_ret_par_shi_code',$request->mes_lis_acc_par_shi_code);
         }
-        if($request->mes_lis_acc_par_rec_code!=''){
+        if($request->mes_lis_acc_par_rec_code!=null){
             $result = $result->where('data_return_vouchers.mes_lis_ret_par_rec_code',$request->mes_lis_acc_par_rec_code);
         }
         if($voucher_class!="*"){
@@ -236,7 +236,7 @@ class ReturnController extends Controller
         $csv_data_count =0;
         if ($downloadType==1) {
             // CSV Download
-            $new_file_name = $new_file_name = self::receiveFileName($data_return_id, 'csv');
+            $new_file_name = $new_file_name = self::returnFileName($data_return_id, 'csv');
             $download_file_url = \Config::get('app.url')."storage/app".config('const.RECEIVE_CSV_PATH')."/". $new_file_name;
 
             // get shipment data query
@@ -257,7 +257,7 @@ class ReturnController extends Controller
     }
     private static function returnFileName($data_receive_id, $file_type="csv")
     {
-        $file_name_info=data_receive::select('cmn_connects.partner_code', 'byr_buyers.super_code', 'cmn_companies.jcode','cmn_companies.company_name')
+        $file_name_info=data_return::select('cmn_connects.partner_code', 'byr_buyers.super_code', 'cmn_companies.jcode','cmn_companies.company_name')
             ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'data_returns.cmn_connect_id')
             ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
             ->join('slr_sellers', 'slr_sellers.slr_seller_id', '=', 'cmn_connects.slr_seller_id')
