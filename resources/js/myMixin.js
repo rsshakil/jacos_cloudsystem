@@ -242,7 +242,8 @@ export default {
             Swal.fire({
                 icon: this.alert_icon,
                 title: this.alert_title,
-                text: this.alert_text
+                text: this.alert_text,
+                confirmButtonText: "完了"
             });
         },
         sweet_advance_alert() {

@@ -997,8 +997,10 @@ export default {
       } else {
         this.alert_icon = "warning";
         this.alert_title = "";
+        this.
         this.alert_text =
           "対象となる伝票がありません、再度確認して実行してください。";
+          this.confirmButtonText = '完了';
         this.sweet_normal_alert();
       }
     },
@@ -1045,6 +1047,7 @@ export default {
       } else {
         this.null_selected_message = false;
         this.alert_text = "対象となる伝票がありません、再度確認して実行してください。";
+        this.confirmButtonText = '完了';
         this.sweet_normal_alert();
       }
     },
@@ -1084,6 +1087,7 @@ export default {
             });
           } else {
             _this.alert_text = "対象となる伝票がありません、再度確認して実行してください。";
+            _this.confirmButtonText = '完了';
             _this.sweet_normal_alert();
           }
         });
@@ -1091,8 +1095,8 @@ export default {
     shipmentUpdate(e) {
       var _this = this;
       this.alert_icon = "warning";
-      this.alert_title = "Update?";
-      this.alert_text = "Will you update your data?";
+      this.alert_title = "出荷データアップロード";
+      this.alert_text = "アップロードファイルで更新してよろしいでしょうか？";
     //   this.alert_text = _this.selectedNum + "件の伝票を送信しますがよろしいでしょうか。";
       this.yes_btn = "はい";
       this.cancel_btn = "キャンセル";
@@ -1111,8 +1115,9 @@ export default {
                 }else{
                     _this.alert_icon = "success";
                 }
-              _this.alert_title = "Update Info";
-              _this.alert_text = data.message;
+              _this.alert_title = "";
+              _this.confirmButtonText = '完了';
+              _this.alert_text = '出荷データアップロード';
               _this.sweet_normal_alert();
               e.target.value = '';
             });
