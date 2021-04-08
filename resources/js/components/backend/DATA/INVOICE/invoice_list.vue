@@ -262,16 +262,25 @@ export default {
         });
     },
       runInvoiceSchedular() {
-        var _this = this;
-      axios.post(this.BASE_URL + "api/exec_invoice_schedular", this.form)
-        .then(({ data }) => {
-           this.init(data.status);
-           Fire.$emit("LoadByrinvoice");
-            _this.alert_icon = data.class;
-            _this.alert_title = data.message;
-            _this.alert_text =data.message;
-            _this.sweet_normal_alert();
-        });
+            var _this = this;
+            this.alert_icon = "warning";
+            this.alert_title = "";
+            this.alert_text = "締め処理を実行しますが、よろしいでしょうか？";
+            this.yes_btn = "はい";
+            this.cancel_btn = "キャンセル";
+            this.confirm_sweet().then((result) => {
+                if (result.value) {
+                    axios.post(this.BASE_URL + "api/exec_invoice_schedular", this.form)
+                    .then(({ data }) => {
+                    this.init(data.status);
+                    Fire.$emit("LoadByrinvoice");
+                        _this.alert_icon = data.class;
+                        _this.alert_title = "完了";
+                        _this.alert_text =data.message;
+                        _this.sweet_normal_alert();
+                    });
+                }
+            })
     },
     insertInvoice() {
       var _this = this;

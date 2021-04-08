@@ -205,9 +205,9 @@ class InvoiceController extends Controller
         try {
             \Artisan::call('invoice:scheduler 1');
         } catch (\Throwable $th) {
-            return response()->json(['message' => "Error",'status'=>0,'class'=>'error']);
+            return response()->json(['message' => "エラー",'status'=>0,'class'=>'error']);
         }
-        return response()->json(['message' => "Success",'status'=>1,'class'=>'success']);
+        return response()->json(['message' => "締め処理実行",'status'=>1,'class'=>'success']);
     }
 
     public function invoiceDetailsList(Request $request)

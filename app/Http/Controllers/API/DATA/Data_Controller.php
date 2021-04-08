@@ -613,7 +613,7 @@ class Data_Controller extends Controller
         // receive_datetime not found in shipment tables
 
         if (!(array_key_exists("downloadType", $request_all))) {
-            \Log::info("Clicked");
+            // \Log::info("Clicked");
             $csv_data=$csv_data->whereNotNull('data_shipment_vouchers.decision_datetime');
             $csv_data=$csv_data->whereNull('data_shipment_vouchers.send_datetime');
         }

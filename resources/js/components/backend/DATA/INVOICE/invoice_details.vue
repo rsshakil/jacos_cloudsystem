@@ -630,15 +630,6 @@ export default {
     },
     addInvoiceDetail(){
       this.editInvoiceDetailModal = true;
-        // this.invoiceDetail.data_invoice_pay_detail_id='';
-        // this.invoiceDetail.mes_lis_inv_lin_det_transfer_of_ownership_date='';
-        // this.invoiceDetail.mes_lis_inv_lin_det_goo_major_category='';
-        // this.invoiceDetail.mes_lis_inv_lin_tra_code='';
-        // this.invoiceDetail.mes_lis_inv_lin_lin_trade_number_reference='';
-        // this.invoiceDetail.mes_lis_inv_lin_det_pay_code='*';
-        // this.invoiceDetail.mes_lis_inv_lin_det_balance_carried_code='';
-        // this.invoiceDetail.mes_lis_inv_lin_det_amo_requested_amount='';
-        // this.invoiceDetail.data_invoice_id = this.form.data_invoice_id;
         this.invoiceDetail = {
           data_invoice_pay_detail_id:'',
         data_invoice_id:'',
@@ -733,9 +724,6 @@ var _this = this;
         }
       }
 
-        // console.log(this.form.select_field_per_page_num);
-        // console.log(this.null_selected);
-        // console.log(this.not_null_selected);
       if (this.null_selected.length <= this.form.select_field_per_page_num && this.null_selected.length != 0) {
         this.date_null = false;
         this.selected = this.null_selected;
