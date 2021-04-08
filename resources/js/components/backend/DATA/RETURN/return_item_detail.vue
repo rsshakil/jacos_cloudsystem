@@ -82,7 +82,7 @@
                 <td>{{index+1}}</td>
                 <td style="text-align:left;">
                 商品コード：{{order_item_detail_list.mes_lis_ret_lin_ite_order_item_code.slice(1)}}<br>
-                 JANコード： {{order_item_detail_list.mes_lis_ret_lin_ite_order_item_code}}<br>
+                 JANコード： {{order_item_detail_list.mes_lis_ret_lin_ite_order_item_code.slice(1)}}<br>
                  商品名：{{order_item_detail_list.mes_lis_ret_lin_ite_name}}<br>
                  規格：{{order_item_detail_list.mes_lis_ret_lin_ite_ite_spec}}<br>
                  産地：{{order_item_detail_list.mes_lis_ret_lin_fre_field_name}}<br></td>
