@@ -48,10 +48,12 @@
             <!-- <td>{{ myLang.shipment }}</td> -->
             <td class="cl_custom_color">部門</td>
             <td>
-                <select class="form-control" v-model="form.major_category">
+                <!--<select class="form-control" v-model="form.major_category">
                 <option value="*">全て</option>
                 <option v-for="(dsc, i) in byr_buyer_category_lists" :key="i" :value="Object.keys(dsc)[0]"> </option>
-              </select>
+              </select>-->
+               <multiselect v-model="form.major_category" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="true" :select-label="''" :deselect-label="''" :selected-label="'選択中'" :preserve-search="true"  placeholder="部門"></multiselect>
+
                 <!-- <multiselect v-model="form.major_category" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="true" :select-label="''" :deselect-label="''" :selected-label="'選択中'" :preserve-search="true" placeholder="部門"></multiselect> -->
             </td>
            
