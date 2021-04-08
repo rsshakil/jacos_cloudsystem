@@ -59,22 +59,27 @@ class InvoiceCommand extends Command
         $closing_date_count=count($closing_date_array);
         $start_date=null;
         $end_date=null;
-        // \Log::info($closing_date_array);
+        // \Log::info($arg);
         foreach ($closing_date_array as $key => $closing_day) {
             if ($arg==1) {
                 $end_date = $today;
                 if ($closing_date_count>1) {
                     if ($key!=0) {
+                        // \Log::info($arg);
                         $first_date=$this->all_used_fun->closing_date($closing_date_array[$key-1]);
                         $last_date=$this->all_used_fun->closing_date($closing_date_array[$key]);
 
                         $startDatedt = strtotime($first_date);
                         $endDatedt = strtotime($last_date);
-                        $usrDatedt = strtotime($end_date);
-                        if( $usrDatedt >= $startDatedt && $usrDatedt <= $endDatedt)
+                        $compareDate = strtotime($end_date);
+
+                        if( $compareDate >= $startDatedt && $compareDate <= $endDatedt)
                         {
                             $start_date = date('y-m-d', strtotime("+1 day", strtotime($first_date)));
                         }
+                        // else if(){
+
+                        // }
                     }
                 }else{
                     $closing_date=$this->all_used_fun->closing_date($closing_day);
@@ -102,6 +107,31 @@ class InvoiceCommand extends Command
                     }else{
                         $start_date=$this->all_used_fun->start_date($closing_date,1);
                     }
+                }
+            }
+        }
+        if ($arg==1 && $start_date==null) {
+            $array_first_date=$this->all_used_fun->closing_date( $closing_date_array[array_key_first($closing_date_array)]);
+            $array_end_date=$this->all_used_fun->closing_date(end($closing_date_array));
+            if ($array_first_date!=date('y-m-01')) {
+                $last_date=strtotime($array_first_date);
+
+                $startDatedt = strtotime(date('y-m-01'));
+                $endDatedt = strtotime($array_first_date);
+                $compareDate = strtotime($today);
+
+                if( $compareDate >= $startDatedt && $compareDate <= $endDatedt){
+                    $start_date = date('y-m-01');
+                }
+            }
+            $end_of_the_month=$this->all_used_fun->closing_date('last');
+            if ($array_end_date!=$end_of_the_month) {
+                $startDatedt = strtotime($array_end_date);
+                $endDatedt = strtotime($end_of_the_month); //month end day
+                $compareDate = strtotime($today);
+
+                if( $compareDate >= $startDatedt && $compareDate <= $endDatedt){
+                    $start_date = $array_end_date;
                 }
             }
         }
