@@ -265,7 +265,7 @@ class OrderController extends Controller
             ->join('data_shipment_vouchers as dsv', 'dsv.data_shipment_id', '=', 'ds.data_shipment_id')
             ->join('data_shipment_items as dsi', 'dsi.data_shipment_voucher_id', '=', 'dsv.data_shipment_voucher_id')
             ->join('data_orders as dor', 'dor.data_order_id', '=', 'ds.data_order_id')
-            // ->where('ds.data_order_id', $data_order_id);
+            ->where('ds.data_order_id', $data_order_id)
             ->where('dsv.mes_lis_shi_tra_dat_delivery_date', $delivery_date)
             ->where('dsv.mes_lis_shi_tra_goo_major_category', $major_category)
             ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $delivery_service_code)

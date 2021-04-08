@@ -502,7 +502,7 @@
           <p style="margin:0">差異が発生している伝票の明細が表示されています。</p>
           <p style="margin:0">黄色の項目は差異が発生している項目です。</p>
         </div>
-       
+
       </div>
       <table
             class="table table-striped table-bordered order_item_details_table"

@@ -377,37 +377,36 @@ class InvoiceController extends Controller
     }
 
     public function invoicePopup1DetailsList(Request $request){
-        $result = DB::select("
-        SELECT
-dsv.mes_lis_shi_par_sel_code,
-dsv.mes_lis_shi_tra_trade_number,
-dsv.mes_lis_shi_par_shi_code,
-dsv.mes_lis_shi_par_shi_name,
-case when dsv.mes_lis_shi_tra_dat_revised_delivery_date IS NULL then
-dsv.mes_lis_shi_tra_dat_delivery_date
-else
-dsv.mes_lis_shi_tra_dat_revised_delivery_date
-END AS shipment_delivery_date,
-drv.mes_lis_acc_tra_dat_transfer_of_ownership_date,
-dsv.mes_lis_shi_tot_tot_net_price_total,
-drv.mes_lis_acc_tot_tot_net_price_total
-FROM
-data_shipment_vouchers AS dsv
-INNER JOIN data_receive_vouchers AS drv ON dsv.mes_lis_shi_tra_trade_number = drv.mes_lis_acc_tra_trade_number
-INNER JOIN data_receives AS dr ON dr.data_receive_id=drv.data_receive_id
-WHERE dr.cmn_connect_id=1
-AND (
-dsv.mes_lis_shi_tot_tot_net_price_total != drv.mes_lis_acc_tot_tot_net_price_total
-OR
-(
-case when dsv.mes_lis_shi_tra_dat_revised_delivery_date IS NULL then
-dsv.mes_lis_shi_tra_dat_delivery_date
-else
-dsv.mes_lis_shi_tra_dat_revised_delivery_date
-END
-)
- != drv.mes_lis_acc_tra_dat_transfer_of_ownership_date
-)
+        $result = DB::select("SELECT
+            dsv.mes_lis_shi_par_sel_code,
+            dsv.mes_lis_shi_tra_trade_number,
+            dsv.mes_lis_shi_par_shi_code,
+            dsv.mes_lis_shi_par_shi_name,
+            case when dsv.mes_lis_shi_tra_dat_revised_delivery_date IS NULL then
+            dsv.mes_lis_shi_tra_dat_delivery_date
+            else
+            dsv.mes_lis_shi_tra_dat_revised_delivery_date
+            END AS shipment_delivery_date,
+            drv.mes_lis_acc_tra_dat_transfer_of_ownership_date,
+            dsv.mes_lis_shi_tot_tot_net_price_total,
+            drv.mes_lis_acc_tot_tot_net_price_total
+            FROM
+            data_shipment_vouchers AS dsv
+            INNER JOIN data_receive_vouchers AS drv ON dsv.mes_lis_shi_tra_trade_number = drv.mes_lis_acc_tra_trade_number
+            INNER JOIN data_receives AS dr ON dr.data_receive_id=drv.data_receive_id
+            WHERE dr.cmn_connect_id=1
+            AND (
+            dsv.mes_lis_shi_tot_tot_net_price_total != drv.mes_lis_acc_tot_tot_net_price_total
+            OR
+            (
+            case when dsv.mes_lis_shi_tra_dat_revised_delivery_date IS NULL then
+            dsv.mes_lis_shi_tra_dat_delivery_date
+            else
+            dsv.mes_lis_shi_tra_dat_revised_delivery_date
+            END
+            )
+            != drv.mes_lis_acc_tra_dat_transfer_of_ownership_date
+            )
         ");
         return response()->json(['voucherList'=>$result]);
     }
