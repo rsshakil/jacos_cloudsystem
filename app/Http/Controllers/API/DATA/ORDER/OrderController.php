@@ -324,4 +324,65 @@ class OrderController extends Controller
         /*coll setting*/
         return response()->json(['order_list_detail' => $result, 'slected_list' => $slected_list]);
     }
+
+    public function get_voucher_detail_popup1(Request $request){
+        $result = DB::select("SELECT
+        dsv.mes_lis_shi_par_shi_code,
+        dsv.mes_lis_shi_par_shi_name,
+        dsv.mes_lis_shi_log_del_route_code
+        from `data_shipments` as `ds`
+        inner join `data_shipment_vouchers` as `dsv` on `dsv`.`data_shipment_id` = `ds`.`data_shipment_id`
+        WHERE
+        ds.cmn_connect_id = 1 and
+        `ds`.`data_order_id` = 1 AND
+        `dsv`.`mes_lis_shi_tra_dat_delivery_date` = '".$request->delivery_date."' AND
+        `dsv`.`mes_lis_shi_tra_goo_major_category` = '".$request->major_category."' AND
+        `dsv`.`mes_lis_shi_log_del_delivery_service_code` = '".$request->delivery_service_code."' AND
+        `dsv`.`mes_lis_shi_tra_ins_temperature_code` = '".$request->temperature_code."'
+        group by `dsv`.`mes_lis_shi_par_shi_code`
+        order by `dsv`.`mes_lis_shi_par_shi_code` ASC");
+        return response()->json(['popUpList' => $result]);
+
+    }
+
+    public function get_voucher_detail_popup2(Request $request){
+        $result = DB::select("SELECT
+        dsv.mes_lis_shi_par_rec_code,
+        dsv.mes_lis_shi_par_rec_name,
+        dsv.mes_lis_shi_log_del_route_code
+        from `data_shipments` as `ds`
+        inner join `data_shipment_vouchers` as `dsv` on `dsv`.`data_shipment_id` = `ds`.`data_shipment_id`
+        WHERE
+        ds.cmn_connect_id = 1 and
+        `ds`.`data_order_id` = 3 AND
+        `dsv`.`mes_lis_shi_tra_dat_delivery_date` = '".$request->delivery_date."' AND
+        `dsv`.`mes_lis_shi_tra_goo_major_category` = '".$request->major_category."' AND
+        `dsv`.`mes_lis_shi_log_del_delivery_service_code` = '".$request->delivery_service_code."' AND
+        `dsv`.`mes_lis_shi_tra_ins_temperature_code` = '".$request->temperature_code."'
+        group by `dsv`.`mes_lis_shi_par_rec_code`
+        order by `dsv`.`mes_lis_shi_par_rec_code` ASC");
+        return response()->json(['popUpList' => $result]);
+
+    }
+
+    public function get_voucher_detail_popup3(Request $request){
+        $result = DB::select("SELECT
+        dsi.mes_lis_shi_lin_ite_order_item_code,
+        dsi.mes_lis_shi_lin_ite_name,
+        dsi.mes_lis_shi_lin_ite_ite_spec
+        from `data_shipments` as `ds`
+        inner join `data_shipment_vouchers` as `dsv` on `dsv`.`data_shipment_id` = `ds`.`data_shipment_id`
+        INNER JOIN data_shipment_items AS dsi ON dsi.data_shipment_voucher_id= dsv.data_shipment_voucher_id
+        WHERE
+        ds.cmn_connect_id = 1 and
+        `ds`.`data_order_id` = 3 AND
+        `dsv`.`mes_lis_shi_tra_dat_delivery_date` = '".$request->delivery_date."' AND
+        `dsv`.`mes_lis_shi_tra_goo_major_category` = '".$request->major_category."' AND
+        `dsv`.`mes_lis_shi_log_del_delivery_service_code` = '".$request->delivery_service_code."' AND
+        `dsv`.`mes_lis_shi_tra_ins_temperature_code` = '".$request->temperature_code."'
+        group by `dsi`.`mes_lis_shi_lin_ite_order_item_code`
+        order by `dsi`.`mes_lis_shi_lin_ite_order_item_code` ASC");
+        return response()->json(['popUpList' => $result]);
+
+    }
 }

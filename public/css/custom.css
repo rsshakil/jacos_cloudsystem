@@ -259,13 +259,17 @@
     top: 0;
     font-size: 36px;
     cursor: pointer;
-    color:red;
 }
 
 .custominvoicejsnslect {
     margin-bottom: 15px;
+    width: 91.5%;
 }
-
+.popupListTable tr th {
+    background: #538ED3;
+    color: #fff;
+    text-align: center;
+}
 .customselectFields {
     position: relative;
 }

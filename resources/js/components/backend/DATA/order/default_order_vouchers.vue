@@ -565,9 +565,30 @@
     >
       <div class="panel-body">
         <table
-          class="table orderTopDetailTable table-bordered"
+          class="table orderTopDetailTable popupListTable table-bordered"
           style="width: 100%"
         >
+        <tr>
+          <th>NO</th>
+          <th>納品先コード</th>
+          <th>納品先名</th>
+          <th>納品経路</th>
+        </tr>
+        <tr v-for="(valueItm,index) in order_search_modal1List">
+        <td>{{index+1}}</td>
+          <td>{{valueItm.mes_lis_shi_par_shi_code}}</td>
+          <td>{{valueItm.mes_lis_shi_par_shi_name}}</td>
+          <td>{{valueItm.mes_lis_shi_log_del_route_code}}
+          {{
+                getbyrjsonValueBykeyName(
+                  "mes_lis_ord_log_del_route_code",
+                  valueItm.mes_lis_shi_log_del_route_code,
+                  "orders"
+                )
+              }}
+          </td>
+        </tr>
+        <!--
           <tr>
             <td class="cl_custom_color">納品先コード</td>
             <td>
@@ -609,7 +630,7 @@
                 v-model="form.deliveryDate"
               />
             </td>
-          </tr>
+          </tr>-->
         </table>
       </div>
     </b-modal>
@@ -624,9 +645,31 @@
     >
       <div class="panel-body">
         <table
-          class="table orderTopDetailTable table-bordered"
+          class="table orderTopDetailTable popupListTable table-bordered"
           style="width: 100%"
         >
+<tr>
+          <th>NO</th>
+          <th>納品先コード</th>
+          <th>納品先名</th>
+          <th>納品経路</th>
+        </tr>
+        <tr v-for="(valueItm,index) in order_search_modal2List">
+        <td>{{index+1}}</td>
+          <td>{{valueItm.mes_lis_shi_par_shi_code}}</td>
+          <td>{{valueItm.mes_lis_shi_par_shi_name}}</td>
+          <td>{{valueItm.mes_lis_shi_log_del_route_code}}
+          {{
+                getbyrjsonValueBykeyName(
+                  "mes_lis_ord_log_del_route_code",
+                  valueItm.mes_lis_shi_log_del_route_code,
+                  "orders"
+                )
+              }}
+          </td>
+        </tr>
+
+        <!--
           <tr>
             <td class="cl_custom_color">納品先コード</td>
             <td>
@@ -666,7 +709,7 @@
                 v-model="form.deliveryDate"
               />
             </td>
-          </tr>
+          </tr>-->
         </table>
       </div>
     </b-modal>
@@ -681,9 +724,32 @@
     >
       <div class="panel-body">
         <table
-          class="table orderTopDetailTable table-bordered"
+          class="table orderTopDetailTable popupListTable table-bordered"
           style="width: 100%"
         >
+
+<tr>
+          <th>NO</th>
+          <th>納品先コード</th>
+          <th>納品先名</th>
+          <th>納品経路</th>
+        </tr>
+        <tr v-for="(valueItm,index) in order_search_modal3List">
+        <td>{{index+1}}</td>
+          <td>{{valueItm.mes_lis_shi_par_shi_code}}</td>
+          <td>{{valueItm.mes_lis_shi_par_shi_name}}</td>
+          <td>{{valueItm.mes_lis_shi_log_del_route_code}}
+          {{
+                getbyrjsonValueBykeyName(
+                  "mes_lis_ord_log_del_route_code",
+                  valueItm.mes_lis_shi_log_del_route_code,
+                  "orders"
+                )
+              }}
+          </td>
+        </tr>
+
+        <!--
           <tr>
             <td class="cl_custom_color">商品コード（発注用）</td>
             <td>
@@ -755,7 +821,7 @@
                 </option>
               </select>
             </td>
-          </tr>
+          </tr>-->
         </table>
       </div>
     </b-modal>
@@ -792,6 +858,9 @@ export default {
       order_search_modal1: false,
       order_search_modal2: false,
       order_search_modal3: false,
+      order_search_modal1List: [],
+      order_search_modal2List: [],
+      order_search_modal3List: [],
       selected: [],
       selectedNum: 0,
       select_field_page_num: 0,
@@ -834,13 +903,27 @@ export default {
       },
     deliverySearchForm1() {
       this.order_search_modal1 = true;
-      
+      axios.post(this.BASE_URL + "api/get_voucher_detail_popup1", this.$route.query)
+        .then(({ data }) => {
+            console.log(data);
+            this.order_search_modal1List = data.popUpList;
+        });
     },
     deliverySearchForm2() {
       this.order_search_modal2 = true;
+      axios.post(this.BASE_URL + "api/get_voucher_detail_popup2", this.$route.query)
+        .then(({ data }) => {
+            console.log(data);
+            this.order_search_modal2List = data.popUpList;
+        });
     },
     deliverySearchForm3() {
       this.order_search_modal3 = true;
+      axios.post(this.BASE_URL + "api/get_voucher_detail_popup3", this.$route.query)
+        .then(({ data }) => {
+            console.log(data);
+            this.order_search_modal3List = data.popUpList;
+        });
     },
     selectNumPage() {
       if (this.select_field_page_num != 0) {
