@@ -248,6 +248,7 @@ class Data_Controller extends Controller
         // 対象データ取得
 
         $request_all=$request->all();
+        \Log::info($request_all);
 
         $csv_data=data_shipment::select(
             // data_shipments
@@ -617,7 +618,9 @@ class Data_Controller extends Controller
             $csv_data=$csv_data->whereNotNull('data_shipment_vouchers.decision_datetime');
             $csv_data=$csv_data->whereNull('data_shipment_vouchers.send_datetime');
         }
-        $csv_data=$csv_data->groupBy('data_shipment_vouchers.data_shipment_voucher_id');
+        // \Log::info("My Query");
+        // $csv_data=$csv_data->groupBy('data_shipment_vouchers.mes_lis_shi_tra_trade_number');
+        // $csv_data=$csv_data->groupBy('data_shipment_vouchers.data_shipment_voucher_id');
         // $csv_data=$csv_data->groupBy('data_shipment_items.data_shipment_item_id'); //New Added
         $csv_data=$csv_data->orderBy("data_shipments.data_shipment_id");
         // 検索

@@ -29,18 +29,7 @@ class InvoiceController extends Controller
         $this->all_used_fun = new AllUsedFunction();
         $this->all_used_fun->folder_create('app/'.config('const.INVOICE_CSV_PATH'));
     }
-    public function invoiceScheduler($start_date,$end_date){
-        // $request = new \Illuminate\Http\Request();
-        // $request->setMethod('POST');
-        $request=$this->request;
-        $request->request->add(['scenario_id' => 15]);
-        $request->request->add(['data_order_id' => 1]);
-        $request->request->add(['email' => 'user@jacos.co.jp']);
-        $request->request->add(['password' => 'Qe75ymSr']);
-        $request->request->add(['start_date' => $start_date]);
-        $request->request->add(['end_date' => $end_date]);
-        // return $request->all();
-        // \Log::info($request->all());
+    public function invoiceScheduler($request){
         $cs = new CmnScenarioController();
         return $ret = $cs->exec($request);
         \Log::debug($ret->getContent());
@@ -202,8 +191,10 @@ class InvoiceController extends Controller
 
     public function execInvoiceSchedular(Request $request)
     {
+        $adm_user_id=$request->adm_user_id;
+        $byr_buyer_id=$request->byr_buyer_id;
         try {
-            \Artisan::call('invoice:scheduler 1');
+            \Artisan::call('invoice:scheduler 1 '.$adm_user_id.' '.$byr_buyer_id);
         } catch (\Throwable $th) {
             return response()->json(['message' => "エラー",'status'=>0,'class'=>'error']);
         }

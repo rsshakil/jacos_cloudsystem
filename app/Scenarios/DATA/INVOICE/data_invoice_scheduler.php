@@ -25,14 +25,14 @@ class data_invoice_scheduler
     {
         // \Log::info($request->all());
         // return $request->all();
-        $data_order_id=$request->data_order_id;
+        // $data_order_id=$request->data_order_id;
         $start_date=$request->start_date;
         $end_date=$request->end_date;
 
         $data_invoice_array=array();
         $data_invoice_pay_array=array();
         $data_invoice_pay_details_array=array();
-        $shipment_datas=self::shipmentQuery($data_order_id,$start_date,$end_date);
+        $shipment_datas=self::shipmentQuery($request);
         // \Log::info("Hi");
         // \Log::info(count($shipment_datas));
         // return 0;
@@ -134,7 +134,13 @@ class data_invoice_scheduler
 
         return ['message' => "success", 'status' => '1'];
     }
-    public static function shipmentQuery($data_order_id,$start_date,$end_date){
+    public static function shipmentQuery($request){
+        // \Log::info($request->all());
+        // $request_all=$request->all();
+        $cmn_connect_id=$request->cmn_connect_id;
+        $start_date=$request->start_date;
+        $end_date=$request->end_date;
+
         $start_date = $start_date!=null? date('Y-m-d 00:00:00',strtotime($start_date)):$start_date;
         $end_date = $end_date!=null? date('Y-m-d 23:59:59',strtotime($end_date)):$end_date;
         // \Log::info($start_date);
@@ -181,7 +187,7 @@ class data_invoice_scheduler
         ->leftJoin('data_shipment_vouchers','data_shipment_vouchers.data_shipment_id','data_shipments.data_shipment_id')
         ->leftJoin('data_shipment_items','data_shipment_items.data_shipment_voucher_id','data_shipment_vouchers.data_shipment_voucher_id')
         ->leftJoin('data_shipment_item_details','data_shipment_item_details.data_shipment_item_id','data_shipment_items.data_shipment_item_id')
-        ->where('data_shipments.data_order_id',$data_order_id)
+        ->where('data_shipments.cmn_connect_id',$cmn_connect_id)
         ->whereNotNull('data_shipment_vouchers.send_datetime')
         ->whereNull('data_shipment_vouchers.invoice_datetime')
         ->groupBy('data_shipment_vouchers.data_shipment_voucher_id')
