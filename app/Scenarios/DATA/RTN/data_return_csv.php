@@ -96,7 +96,8 @@ class data_return_csv
                 $rtn_flg =false;
             }
 
-            if ($trade_number !=$value[31].'-'.$value[32]) {
+            if (!data_return_voucher::where('mes_lis_ret_tra_trade_number',$value[31])
+            ->where('mes_lis_ret_tra_dat_transfer_of_ownership_date',$value[59])->exists()) {
                 $data_return_voucher_array['mes_lis_ret_tra_trade_number']=$value[31];
                 $data_return_voucher_array['mes_lis_ret_tra_additional_trade_number']=$value[32];
                 $data_return_voucher_array['mes_lis_ret_fre_shipment_number']=$value[33];
