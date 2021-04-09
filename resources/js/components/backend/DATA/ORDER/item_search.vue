@@ -331,6 +331,7 @@ this.form.temperature_code=this.$route.query.temperature_code;
       this.getItemSearchData();
     });
     this.parent.query = this.$session.get('order_param_data');
+    Fire.$emit("loadPageTitle", "受注商品別一覧");
   },
   mounted() {
   },
