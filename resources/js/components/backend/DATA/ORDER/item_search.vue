@@ -263,6 +263,10 @@ export default {
             receive_datetime:null,
             select_field_per_page_num:10,
             data_order_id:null,
+            delivery_date:'',
+            major_category:'',
+            delivery_service_code:'',
+            temperature_code:'',
             page:1,
             sort_by:'data_shipment_voucher_id',
             sort_type:"ASC",
@@ -318,6 +322,10 @@ this.$session.set("order_item_search_query",this.$route.query)
     this.form.receive_datetime=this.order_info.receive_datetime
 
     this.form.data_order_id=this.$route.query.data_order_id;
+this.form.major_category=this.$route.query.major_category;
+this.form.delivery_service_code=this.$route.query.delivery_service_code;
+this.form.delivery_date=this.$route.query.delivery_date;
+this.form.temperature_code=this.$route.query.temperature_code;
     this.getItemSearchData();
     Fire.$on("getItemSearchData", () => {
       this.getItemSearchData();

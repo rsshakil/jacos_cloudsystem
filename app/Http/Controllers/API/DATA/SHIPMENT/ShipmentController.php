@@ -209,6 +209,12 @@ class ShipmentController extends Controller
         $mes_lis_shi_tra_ins_temperature_code = $request->mes_lis_shi_tra_ins_temperature_code;
         $mes_lis_shi_tra_trade_number = $request->mes_lis_shi_tra_trade_number;
         $receive_datetime = $request->receive_datetime;
+        //$url_q = $request->url_q;
+
+        $major_category = $request->major_category;
+        $delivery_service_code = $request->delivery_service_code;
+        $delivery_date = $request->delivery_date;
+        $temperature_code = $request->temperature_code;
 
         $result = DB::table('data_shipment_items as dsi')
             ->select(
@@ -220,13 +226,13 @@ class ShipmentController extends Controller
             )
             ->leftJoin('data_shipment_vouchers as dsv', 'dsv.data_shipment_voucher_id', '=', 'dsi.data_shipment_voucher_id')
             ->join('data_shipments as ds', 'ds.data_shipment_id', '=', 'dsv.data_shipment_id')
-            ->where('ds.data_order_id', $data_order_id);
-            // ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $mes_lis_shi_log_del_delivery_service_code)
+            ->where('ds.data_order_id', $data_order_id)
+            ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $delivery_service_code)
             // ->where('dsv.mes_lis_shi_par_sel_code', $mes_lis_shi_par_sel_code)
             // ->where('dsv.mes_lis_shi_par_sel_name', $mes_lis_shi_par_sel_name)
-            // ->where('dsv.mes_lis_shi_tra_dat_delivery_date', $mes_lis_shi_tra_dat_delivery_date)
-            // ->where('dsv.mes_lis_shi_tra_goo_major_category', $mes_lis_shi_tra_goo_major_category)
-            // ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $mes_lis_shi_tra_ins_temperature_code)
+            ->where('dsv.mes_lis_shi_tra_dat_delivery_date', $delivery_date)
+            ->where('dsv.mes_lis_shi_tra_goo_major_category', $major_category)
+            ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $temperature_code);
             // ->where('dsv.mes_lis_shi_tra_trade_number', $mes_lis_shi_tra_trade_number);
             // ->where('ds.receive_datetime', $receive_datetime);
 

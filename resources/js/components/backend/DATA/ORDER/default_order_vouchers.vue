@@ -255,7 +255,7 @@
               <div class="col-3">
                 <p class="mb-0">商品別の更新はこちら</p>
                 <router-link
-                :to="{name: 'item_search',query:{data_order_id:param_data.data_order_id}}" class="active btn btn-primary">
+                :to="{name: 'item_search',query:item_search_q}" class="active btn btn-primary">
                   商品別登録
                 </router-link
                 >
@@ -891,6 +891,7 @@ export default {
         sort_type:"ASC",
       }),
       param_data: [],
+      item_search_q: [],
       // buyer_settings:null,
     };
   },
@@ -1258,6 +1259,7 @@ export default {
     Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
 
     this.param_data = this.$route.query;
+    this.item_search_q = this.$route.query;
     // console.log(this.param_data);
   this.$session.set("order_param_data",this.param_data)
     this.loader = Vue.$loading.show();
