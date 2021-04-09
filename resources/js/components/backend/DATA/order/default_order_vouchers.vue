@@ -574,7 +574,7 @@
           <th>納品先名</th>
           <th>納品経路</th>
         </tr>
-        <tr v-for="(valueItm,index) in order_search_modal1List">
+        <tr v-for="(valueItm,index) in order_search_modal1List" :key="index">
         <td>{{index+1}}</td>
           <td>{{valueItm.mes_lis_shi_par_shi_code}}</td>
           <td>{{valueItm.mes_lis_shi_par_shi_name}}</td>
@@ -654,7 +654,7 @@
           <th>納品先名</th>
           <th>納品経路</th>
         </tr>
-        <tr v-for="(valueItm,index) in order_search_modal2List">
+        <tr v-for="(valueItm,index) in order_search_modal2List" :key="index">
         <td>{{index+1}}</td>
           <td>{{valueItm.mes_lis_shi_par_shi_code}}</td>
           <td>{{valueItm.mes_lis_shi_par_shi_name}}</td>
@@ -734,7 +734,7 @@
           <th>納品先名</th>
           <th>納品経路</th>
         </tr>
-        <tr v-for="(valueItm,index) in order_search_modal3List">
+        <tr v-for="(valueItm,index) in order_search_modal3List" :key="index">
         <td>{{index+1}}</td>
           <td>{{valueItm.mes_lis_shi_par_shi_code}}</td>
           <td>{{valueItm.mes_lis_shi_par_shi_name}}</td>

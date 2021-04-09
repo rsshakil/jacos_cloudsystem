@@ -14,6 +14,8 @@ class InvoiceDataController extends Controller
         $data_invoice_id=$request->data_invoice_id;
         $order_info=$request->order_info;
         $request_all=$request->all();
+        $sort_by = $request->sort_by;
+        $sort_type = $request->sort_type;
 
         $csv_data=data_invoice::select('data_invoices.*','dip.*','dipd.*')
         ->join('data_invoice_pays as dip','dip.data_invoice_id','=','data_invoices.data_invoice_id')
@@ -21,6 +23,15 @@ class InvoiceDataController extends Controller
         // filtering
         // if (!(array_key_exists("downloadType", $request_all))) {
         if ($request->page_title=='invoice_list') {
+
+            $table_name='data_invoices.';
+            if ($sort_by=="data_invoice_id") {
+                $table_name='data_invoices.';
+            }else if($sort_by=="mes_lis_inv_lin_det_amo_requested_amount"){
+                $table_name='dipd.';
+            }else{
+                $table_name='dip.';
+            }
             // $csv_data=$csv_data->where('dipd.decision_datetime','!=',null);
             // $csv_data=$csv_data->where('dipd.send_datetime','=',null);
 
@@ -44,9 +55,10 @@ class InvoiceDataController extends Controller
             }else if ($send_datetime_status=='再請求あり'){
                 $csv_data=$csv_data->where('dipd.send_datetime','!=',null);
             }
+            $csv_data=$csv_data->orderBy($table_name.$sort_by,$sort_type);
 
         }else if($request->page_title=='invoice_details_list'){
-            \Log::info("Mayeen");
+            // \Log::info("Mayeen");
             $number_reference=$request->mes_lis_inv_lin_lin_trade_number_reference;
             $decision_datetime_status=$request->decision_datetime_status;
             $send_datetime_status=$request->send_datetime_status;
@@ -86,9 +98,10 @@ class InvoiceDataController extends Controller
             if($mes_lis_inv_lin_tra_code!=''){
                 $csv_data=$csv_data->where('dipd.mes_lis_inv_lin_tra_code','=',$mes_lis_inv_lin_tra_code);
             }
+            $csv_data=$csv_data->orderBy('dipd.'.$sort_by,$sort_type);
         }
         $csv_data=$csv_data->groupBy('dipd.data_invoice_pay_detail_id');
-        $csv_data=$csv_data->orderBy("data_invoices.data_invoice_id");
+        // $csv_data=$csv_data->orderBy("data_invoices.data_invoice_id");
         // 検索
         // $csv_data = $csv_data->limit(100000)->get()->toArray();
         return $csv_data;

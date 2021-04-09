@@ -13,6 +13,8 @@ class DataController extends Controller
         // 対象データ取得
         $data_payment_id=$request->data_payment_id;
         $request_all=$request->all();
+        $sort_by = $request->sort_by;
+        $sort_type = $request->sort_type;
 
         $csv_data=data_payment::select(
             // data_payments
@@ -92,7 +94,15 @@ class DataController extends Controller
             )
         ->join('data_payment_pays as dpp','dpp.data_payment_id','=','data_payments.data_payment_id')
         ->join('data_payment_pay_details as dppd','dppd.data_payment_pay_id','=','dpp.data_payment_pay_id');
-        if ($request->page_title=='payment_list') {
+            if ($request->page_title=='payment_list') {
+                $table_name = 'dpp.';
+            if ($sort_by == "receive_datetime" || $sort_by == "data_payment_id") {
+                $table_name = 'data_payments.';
+            } else if ($sort_by == "mes_lis_pay_pay_code" || $sort_by == "mes_lis_buy_name" || $sort_by == "mes_lis_pay_per_end_date" || $sort_by == "check_datetime") {
+                $table_name = 'dpp.';
+            } else if ($sort_by == "mes_lis_pay_lin_det_pay_out_date" || $sort_by == "mes_lis_pay_lin_det_amo_payable_amount") {
+                $table_name = 'dppd.';
+            }
             $mes_lis_pay_pay_code = $request->mes_lis_pay_pay_code; // 受信日時開始
             $receive_date_from = $request->receive_date_from; // 受信日時開始
             $receive_date_to = $request->receive_date_to; // 受信日時終了
@@ -119,6 +129,7 @@ class DataController extends Controller
                     $csv_data=$csv_data->whereNotNull('dpp.check_datetime');
                 }
             }
+            $csv_data=$csv_data->orderBy($table_name . $sort_by, $sort_type);
         }else if($request->page_title=='payment_details_list'){
             $csv_data=$csv_data->where('data_payments.data_payment_id',$data_payment_id);
         }
@@ -132,7 +143,6 @@ class DataController extends Controller
         //     $csv_data=$csv_data->where('dppd.send_datetime','=',null);
         // }
         $csv_data=$csv_data->groupBy('dppd.data_payment_pay_detail_id');
-        $csv_data=$csv_data->orderBy("data_payments.data_payment_id");
         // 検索
         // $csv_data = $csv_data->limit(100000)->get()->toArray();
         return $csv_data;

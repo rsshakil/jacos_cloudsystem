@@ -248,7 +248,11 @@ class Data_Controller extends Controller
         // 対象データ取得
 
         $request_all=$request->all();
-        \Log::info($request_all);
+        $sort_by=$request->form_search['sort_by'];
+        $sort_type=$request->form_search['sort_type'];
+        // \Log::info($sort_by);
+        // \Log::info($sort_type);
+        // \Log::info($request_all);
 
         $csv_data=data_shipment::select(
             // data_shipments
@@ -269,241 +273,241 @@ class Data_Controller extends Controller
             'data_shipments.mes_lis_buy_name',
             'data_shipments.mes_lis_buy_name_sbcs',
             // data_shipment_vouchers
-            'data_shipment_vouchers.mes_lis_shi_tra_trade_number',
-            'data_shipment_vouchers.mes_lis_shi_tra_additional_trade_number',
-            'data_shipment_vouchers.mes_lis_shi_fre_shipment_number',
-            'data_shipment_vouchers.mes_lis_shi_par_shi_code',
-            'data_shipment_vouchers.mes_lis_shi_par_shi_gln',
-            'data_shipment_vouchers.mes_lis_shi_par_shi_name',
-            'data_shipment_vouchers.mes_lis_shi_par_shi_name_sbcs',
-            'data_shipment_vouchers.mes_lis_shi_par_rec_code',
-            'data_shipment_vouchers.mes_lis_shi_par_rec_gln',
-            'data_shipment_vouchers.mes_lis_shi_par_rec_name',
-            'data_shipment_vouchers.mes_lis_shi_par_rec_name_sbcs',
-            'data_shipment_vouchers.mes_lis_shi_par_tra_code',
-            'data_shipment_vouchers.mes_lis_shi_par_tra_gln',
-            'data_shipment_vouchers.mes_lis_shi_par_tra_name',
-            'data_shipment_vouchers.mes_lis_shi_par_tra_name_sbcs',
-            'data_shipment_vouchers.mes_lis_shi_par_pay_code',
-            'data_shipment_vouchers.mes_lis_shi_par_pay_gln',
-            'data_shipment_vouchers.mes_lis_shi_par_pay_name',
-            'data_shipment_vouchers.mes_lis_shi_par_pay_name_sbcs',
-            'data_shipment_vouchers.mes_lis_shi_par_sel_code',
-            'data_shipment_vouchers.mes_lis_shi_par_sel_gln',
-            'data_shipment_vouchers.mes_lis_shi_par_sel_name',
-            'data_shipment_vouchers.mes_lis_shi_par_sel_name_sbcs',
-            'data_shipment_vouchers.mes_lis_shi_par_sel_branch_number',
-            'data_shipment_vouchers.mes_lis_shi_par_sel_ship_location_code',
-            'data_shipment_vouchers.mes_lis_shi_log_shi_gln',
-            'data_shipment_vouchers.mes_lis_shi_log_del_route_code',
-            'data_shipment_vouchers.mes_lis_shi_log_del_delivery_service_code',
-            'data_shipment_vouchers.mes_lis_shi_log_del_stock_transfer_code',
-            'data_shipment_vouchers.mes_lis_shi_log_del_delivery_code',
-            'data_shipment_vouchers.mes_lis_shi_log_del_delivery_time',
-            'data_shipment_vouchers.mes_lis_shi_log_del_transportation_code',
-            'data_shipment_vouchers.mes_lis_shi_log_log_barcode_print',
-            'data_shipment_vouchers.mes_lis_shi_log_log_category_name_print1',
-            'data_shipment_vouchers.mes_lis_shi_log_log_category_name_print2',
-            'data_shipment_vouchers.mes_lis_shi_log_log_receiver_abbr_name',
-            'data_shipment_vouchers.mes_lis_shi_log_log_text',
-            'data_shipment_vouchers.mes_lis_shi_log_log_text_sbcs',
-            'data_shipment_vouchers.mes_lis_shi_log_maker_code_for_receiving',
-            'data_shipment_vouchers.mes_lis_shi_log_delivery_slip_number',
-            'data_shipment_vouchers.mes_lis_shi_tra_goo_major_category',
-            'data_shipment_vouchers.mes_lis_shi_tra_goo_sub_major_category',
+            'dsv.mes_lis_shi_tra_trade_number',
+            'dsv.mes_lis_shi_tra_additional_trade_number',
+            'dsv.mes_lis_shi_fre_shipment_number',
+            'dsv.mes_lis_shi_par_shi_code',
+            'dsv.mes_lis_shi_par_shi_gln',
+            'dsv.mes_lis_shi_par_shi_name',
+            'dsv.mes_lis_shi_par_shi_name_sbcs',
+            'dsv.mes_lis_shi_par_rec_code',
+            'dsv.mes_lis_shi_par_rec_gln',
+            'dsv.mes_lis_shi_par_rec_name',
+            'dsv.mes_lis_shi_par_rec_name_sbcs',
+            'dsv.mes_lis_shi_par_tra_code',
+            'dsv.mes_lis_shi_par_tra_gln',
+            'dsv.mes_lis_shi_par_tra_name',
+            'dsv.mes_lis_shi_par_tra_name_sbcs',
+            'dsv.mes_lis_shi_par_pay_code',
+            'dsv.mes_lis_shi_par_pay_gln',
+            'dsv.mes_lis_shi_par_pay_name',
+            'dsv.mes_lis_shi_par_pay_name_sbcs',
+            'dsv.mes_lis_shi_par_sel_code',
+            'dsv.mes_lis_shi_par_sel_gln',
+            'dsv.mes_lis_shi_par_sel_name',
+            'dsv.mes_lis_shi_par_sel_name_sbcs',
+            'dsv.mes_lis_shi_par_sel_branch_number',
+            'dsv.mes_lis_shi_par_sel_ship_location_code',
+            'dsv.mes_lis_shi_log_shi_gln',
+            'dsv.mes_lis_shi_log_del_route_code',
+            'dsv.mes_lis_shi_log_del_delivery_service_code',
+            'dsv.mes_lis_shi_log_del_stock_transfer_code',
+            'dsv.mes_lis_shi_log_del_delivery_code',
+            'dsv.mes_lis_shi_log_del_delivery_time',
+            'dsv.mes_lis_shi_log_del_transportation_code',
+            'dsv.mes_lis_shi_log_log_barcode_print',
+            'dsv.mes_lis_shi_log_log_category_name_print1',
+            'dsv.mes_lis_shi_log_log_category_name_print2',
+            'dsv.mes_lis_shi_log_log_receiver_abbr_name',
+            'dsv.mes_lis_shi_log_log_text',
+            'dsv.mes_lis_shi_log_log_text_sbcs',
+            'dsv.mes_lis_shi_log_maker_code_for_receiving',
+            'dsv.mes_lis_shi_log_delivery_slip_number',
+            'dsv.mes_lis_shi_tra_goo_major_category',
+            'dsv.mes_lis_shi_tra_goo_sub_major_category',
             \DB::raw('CASE
-            WHEN data_shipment_vouchers.mes_lis_shi_tra_dat_order_date="0000-00-00"
+            WHEN dsv.mes_lis_shi_tra_dat_order_date="0000-00-00"
             THEN ""
-            ELSE data_shipment_vouchers.mes_lis_shi_tra_dat_order_date  END'),
+            ELSE dsv.mes_lis_shi_tra_dat_order_date  END'),
             \DB::raw('CASE
-            WHEN data_shipment_vouchers.mes_lis_shi_tra_dat_delivery_date="0000-00-00"
+            WHEN dsv.mes_lis_shi_tra_dat_delivery_date="0000-00-00"
             THEN ""
-            ELSE data_shipment_vouchers.mes_lis_shi_tra_dat_delivery_date  END'),
+            ELSE dsv.mes_lis_shi_tra_dat_delivery_date  END'),
             \DB::raw('CASE
-            WHEN data_shipment_vouchers.mes_lis_shi_tra_dat_delivery_date_to_receiver="0000-00-00"
+            WHEN dsv.mes_lis_shi_tra_dat_delivery_date_to_receiver="0000-00-00"
             THEN ""
-            ELSE data_shipment_vouchers.mes_lis_shi_tra_dat_delivery_date_to_receiver  END'),
+            ELSE dsv.mes_lis_shi_tra_dat_delivery_date_to_receiver  END'),
             \DB::raw('CASE
-            WHEN data_shipment_vouchers.mes_lis_shi_tra_dat_revised_delivery_date="0000-00-00"
+            WHEN dsv.mes_lis_shi_tra_dat_revised_delivery_date="0000-00-00"
             THEN ""
-            ELSE data_shipment_vouchers.mes_lis_shi_tra_dat_revised_delivery_date  END'),
+            ELSE dsv.mes_lis_shi_tra_dat_revised_delivery_date  END'),
             \DB::raw('CASE
-            WHEN data_shipment_vouchers.mes_lis_shi_tra_dat_transfer_of_ownership_date="0000-00-00"
+            WHEN dsv.mes_lis_shi_tra_dat_transfer_of_ownership_date="0000-00-00"
             THEN ""
-            ELSE data_shipment_vouchers.mes_lis_shi_tra_dat_transfer_of_ownership_date  END'),
+            ELSE dsv.mes_lis_shi_tra_dat_transfer_of_ownership_date  END'),
             \DB::raw('CASE
-            WHEN data_shipment_vouchers.mes_lis_shi_tra_dat_campaign_start_date="0000-00-00"
+            WHEN dsv.mes_lis_shi_tra_dat_campaign_start_date="0000-00-00"
             THEN ""
-            ELSE data_shipment_vouchers.mes_lis_shi_tra_dat_campaign_start_date  END'),
+            ELSE dsv.mes_lis_shi_tra_dat_campaign_start_date  END'),
             \DB::raw('CASE
-            WHEN data_shipment_vouchers.mes_lis_shi_tra_dat_campaign_end_date="0000-00-00"
+            WHEN dsv.mes_lis_shi_tra_dat_campaign_end_date="0000-00-00"
             THEN ""
-            ELSE data_shipment_vouchers.mes_lis_shi_tra_dat_campaign_end_date  END'),
+            ELSE dsv.mes_lis_shi_tra_dat_campaign_end_date  END'),
 
-            'data_shipment_vouchers.mes_lis_shi_tra_ins_goods_classification_code',
-            'data_shipment_vouchers.mes_lis_shi_tra_ins_order_classification_code',
-            'data_shipment_vouchers.mes_lis_shi_tra_ins_ship_notification_request_code',
+            'dsv.mes_lis_shi_tra_ins_goods_classification_code',
+            'dsv.mes_lis_shi_tra_ins_order_classification_code',
+            'dsv.mes_lis_shi_tra_ins_ship_notification_request_code',
 
             \DB::raw('CASE
-            WHEN data_shipment_vouchers.mes_lis_shi_tra_ins_eos_code=null
+            WHEN dsv.mes_lis_shi_tra_ins_eos_code=null
             THEN "01"
-            WHEN data_shipment_vouchers.mes_lis_shi_tra_ins_eos_code=""
+            WHEN dsv.mes_lis_shi_tra_ins_eos_code=""
             THEN "01"
-            ELSE data_shipment_vouchers.mes_lis_shi_tra_ins_eos_code  END'),
+            ELSE dsv.mes_lis_shi_tra_ins_eos_code  END'),
 
             // 'data_shipment_vouchers.mes_lis_shi_tra_ins_eos_code',
-            'data_shipment_vouchers.mes_lis_shi_tra_ins_private_brand_code',
-            'data_shipment_vouchers.mes_lis_shi_tra_ins_temperature_code',
-            'data_shipment_vouchers.mes_lis_shi_tra_ins_liquor_code',
-            'data_shipment_vouchers.mes_lis_shi_tra_ins_trade_type_code',
-            'data_shipment_vouchers.mes_lis_shi_tra_ins_paper_form_less_code',
-            'data_shipment_vouchers.mes_lis_shi_tra_fre_trade_number_request_code',
-            'data_shipment_vouchers.mes_lis_shi_tra_fre_package_code',
-            'data_shipment_vouchers.mes_lis_shi_tra_fre_variable_measure_item_code',
-            'data_shipment_vouchers.mes_lis_shi_tra_tax_tax_type_code',
-            'data_shipment_vouchers.mes_lis_shi_tra_tax_tax_rate',
-            'data_shipment_vouchers.mes_lis_shi_tra_not_text',
-            'data_shipment_vouchers.mes_lis_shi_tra_not_text_sbcs',
-            'data_shipment_vouchers.mes_lis_shi_tot_tot_net_price_total',
-            'data_shipment_vouchers.mes_lis_shi_tot_tot_selling_price_total',
-            'data_shipment_vouchers.mes_lis_shi_tot_tot_tax_total',
-            'data_shipment_vouchers.mes_lis_shi_tot_tot_item_total',
-            'data_shipment_vouchers.mes_lis_shi_tot_tot_unit_total',
+            'dsv.mes_lis_shi_tra_ins_private_brand_code',
+            'dsv.mes_lis_shi_tra_ins_temperature_code',
+            'dsv.mes_lis_shi_tra_ins_liquor_code',
+            'dsv.mes_lis_shi_tra_ins_trade_type_code',
+            'dsv.mes_lis_shi_tra_ins_paper_form_less_code',
+            'dsv.mes_lis_shi_tra_fre_trade_number_request_code',
+            'dsv.mes_lis_shi_tra_fre_package_code',
+            'dsv.mes_lis_shi_tra_fre_variable_measure_item_code',
+            'dsv.mes_lis_shi_tra_tax_tax_type_code',
+            'dsv.mes_lis_shi_tra_tax_tax_rate',
+            'dsv.mes_lis_shi_tra_not_text',
+            'dsv.mes_lis_shi_tra_not_text_sbcs',
+            'dsv.mes_lis_shi_tot_tot_net_price_total',
+            'dsv.mes_lis_shi_tot_tot_selling_price_total',
+            'dsv.mes_lis_shi_tot_tot_tax_total',
+            'dsv.mes_lis_shi_tot_tot_item_total',
+            'dsv.mes_lis_shi_tot_tot_unit_total',
             \DB::raw('CASE
-            WHEN data_shipment_vouchers.mes_lis_shi_tot_fre_unit_weight_total=null
+            WHEN dsv.mes_lis_shi_tot_fre_unit_weight_total=null
             THEN "0"
-            WHEN data_shipment_vouchers.mes_lis_shi_tot_fre_unit_weight_total=""
+            WHEN dsv.mes_lis_shi_tot_fre_unit_weight_total=""
             THEN "0"
-            ELSE data_shipment_vouchers.mes_lis_shi_tot_fre_unit_weight_total  END'),
+            ELSE dsv.mes_lis_shi_tot_fre_unit_weight_total  END'),
 
             // data_shipment_items
-            'data_shipment_items.mes_lis_shi_lin_lin_line_number',
-            'data_shipment_items.mes_lis_shi_lin_lin_additional_line_number',
-            'data_shipment_items.mes_lis_shi_lin_fre_trade_number',
-            'data_shipment_items.mes_lis_shi_lin_fre_line_number',
-            'data_shipment_items.mes_lis_shi_lin_fre_shipment_line_number',
-            'data_shipment_items.mes_lis_shi_lin_goo_minor_category',
-            'data_shipment_items.mes_lis_shi_lin_goo_detailed_category',
+            'dsi.mes_lis_shi_lin_lin_line_number',
+            'dsi.mes_lis_shi_lin_lin_additional_line_number',
+            'dsi.mes_lis_shi_lin_fre_trade_number',
+            'dsi.mes_lis_shi_lin_fre_line_number',
+            'dsi.mes_lis_shi_lin_fre_shipment_line_number',
+            'dsi.mes_lis_shi_lin_goo_minor_category',
+            'dsi.mes_lis_shi_lin_goo_detailed_category',
             \DB::raw('CASE
-            WHEN data_shipment_items.mes_lis_shi_lin_ite_scheduled_date="0000-00-00"
+            WHEN dsi.mes_lis_shi_lin_ite_scheduled_date="0000-00-00"
             THEN ""
-            ELSE data_shipment_items.mes_lis_shi_lin_ite_scheduled_date  END'),
-            'data_shipment_items.mes_lis_shi_lin_ite_deadline_date',
-            'data_shipment_items.mes_lis_shi_lin_ite_center_delivery_instruction_code',
-            'data_shipment_items.mes_lis_shi_lin_fre_interim_price_code',
-            'data_shipment_items.mes_lis_shi_lin_ite_maker_code',
-            'data_shipment_items.mes_lis_shi_lin_ite_gtin',
-            'data_shipment_items.mes_lis_shi_lin_ite_order_item_code',
-            'data_shipment_items.mes_lis_shi_lin_ite_ord_code_type',
-            'data_shipment_items.mes_lis_shi_lin_ite_supplier_item_code',
-            'data_shipment_items.mes_lis_shi_lin_ite_name',
-            'data_shipment_items.mes_lis_shi_lin_ite_name_sbcs',
-            'data_shipment_items.mes_lis_shi_lin_fre_shipment_item_code',
-            'data_shipment_items.mes_lis_shi_lin_ite_ite_spec',
-            'data_shipment_items.mes_lis_shi_lin_ite_ite_spec_sbcs',
-            'data_shipment_items.mes_lis_shi_lin_ite_col_color_code',
-            'data_shipment_items.mes_lis_shi_lin_ite_col_description',
-            'data_shipment_items.mes_lis_shi_lin_ite_col_description_sbcs',
-            'data_shipment_items.mes_lis_shi_lin_ite_siz_size_code',
-            'data_shipment_items.mes_lis_shi_lin_ite_siz_description',
-            'data_shipment_items.mes_lis_shi_lin_ite_siz_description_sbcs',
-            'data_shipment_items.mes_lis_shi_lin_fre_packing_quantity',
-            'data_shipment_items.mes_lis_shi_lin_fre_prefecture_code',
-            'data_shipment_items.mes_lis_shi_lin_fre_country_code',
-            'data_shipment_items.mes_lis_shi_lin_fre_field_name',
-            'data_shipment_items.mes_lis_shi_lin_fre_water_area_code',
-            'data_shipment_items.mes_lis_shi_lin_fre_water_area_name',
-            'data_shipment_items.mes_lis_shi_lin_fre_area_of_origin',
-            'data_shipment_items.mes_lis_shi_lin_fre_item_grade',
-            'data_shipment_items.mes_lis_shi_lin_fre_item_class',
-            'data_shipment_items.mes_lis_shi_lin_fre_brand',
-            'data_shipment_items.mes_lis_shi_lin_fre_item_pr',
-            'data_shipment_items.mes_lis_shi_lin_fre_bio_code',
-            'data_shipment_items.mes_lis_shi_lin_fre_breed_code',
-            'data_shipment_items.mes_lis_shi_lin_fre_cultivation_code',
-            'data_shipment_items.mes_lis_shi_lin_fre_defrost_code',
-            'data_shipment_items.mes_lis_shi_lin_fre_item_preservation_code',
-            'data_shipment_items.mes_lis_shi_lin_fre_item_shape_code',
-            'data_shipment_items.mes_lis_shi_lin_fre_use',
-            'data_shipment_items.mes_lis_shi_lin_sta_statutory_classification_code',
-            'data_shipment_items.mes_lis_shi_lin_amo_item_net_price',
-            'data_shipment_items.mes_lis_shi_lin_amo_item_net_price_unit_price',
-            'data_shipment_items.mes_lis_shi_lin_amo_item_selling_price',
-            'data_shipment_items.mes_lis_shi_lin_amo_item_selling_price_unit_price',
-            'data_shipment_items.mes_lis_shi_lin_amo_item_tax',
-            'data_shipment_items.mes_lis_shi_lin_qua_unit_multiple',
-            'data_shipment_items.mes_lis_shi_lin_qua_unit_of_measure',
-            'data_shipment_items.mes_lis_shi_lin_qua_package_indicator',
-            'data_shipment_items.mes_lis_shi_lin_qua_ord_quantity',
-            'data_shipment_items.mes_lis_shi_lin_qua_ord_num_of_order_units',
-            'data_shipment_items.mes_lis_shi_lin_qua_shi_quantity',
-            'data_shipment_items.mes_lis_shi_lin_qua_shi_num_of_order_units',
-            'data_shipment_items.mes_lis_shi_lin_qua_sto_quantity',
+            ELSE dsi.mes_lis_shi_lin_ite_scheduled_date  END'),
+            'dsi.mes_lis_shi_lin_ite_deadline_date',
+            'dsi.mes_lis_shi_lin_ite_center_delivery_instruction_code',
+            'dsi.mes_lis_shi_lin_fre_interim_price_code',
+            'dsi.mes_lis_shi_lin_ite_maker_code',
+            'dsi.mes_lis_shi_lin_ite_gtin',
+            'dsi.mes_lis_shi_lin_ite_order_item_code',
+            'dsi.mes_lis_shi_lin_ite_ord_code_type',
+            'dsi.mes_lis_shi_lin_ite_supplier_item_code',
+            'dsi.mes_lis_shi_lin_ite_name',
+            'dsi.mes_lis_shi_lin_ite_name_sbcs',
+            'dsi.mes_lis_shi_lin_fre_shipment_item_code',
+            'dsi.mes_lis_shi_lin_ite_ite_spec',
+            'dsi.mes_lis_shi_lin_ite_ite_spec_sbcs',
+            'dsi.mes_lis_shi_lin_ite_col_color_code',
+            'dsi.mes_lis_shi_lin_ite_col_description',
+            'dsi.mes_lis_shi_lin_ite_col_description_sbcs',
+            'dsi.mes_lis_shi_lin_ite_siz_size_code',
+            'dsi.mes_lis_shi_lin_ite_siz_description',
+            'dsi.mes_lis_shi_lin_ite_siz_description_sbcs',
+            'dsi.mes_lis_shi_lin_fre_packing_quantity',
+            'dsi.mes_lis_shi_lin_fre_prefecture_code',
+            'dsi.mes_lis_shi_lin_fre_country_code',
+            'dsi.mes_lis_shi_lin_fre_field_name',
+            'dsi.mes_lis_shi_lin_fre_water_area_code',
+            'dsi.mes_lis_shi_lin_fre_water_area_name',
+            'dsi.mes_lis_shi_lin_fre_area_of_origin',
+            'dsi.mes_lis_shi_lin_fre_item_grade',
+            'dsi.mes_lis_shi_lin_fre_item_class',
+            'dsi.mes_lis_shi_lin_fre_brand',
+            'dsi.mes_lis_shi_lin_fre_item_pr',
+            'dsi.mes_lis_shi_lin_fre_bio_code',
+            'dsi.mes_lis_shi_lin_fre_breed_code',
+            'dsi.mes_lis_shi_lin_fre_cultivation_code',
+            'dsi.mes_lis_shi_lin_fre_defrost_code',
+            'dsi.mes_lis_shi_lin_fre_item_preservation_code',
+            'dsi.mes_lis_shi_lin_fre_item_shape_code',
+            'dsi.mes_lis_shi_lin_fre_use',
+            'dsi.mes_lis_shi_lin_sta_statutory_classification_code',
+            'dsi.mes_lis_shi_lin_amo_item_net_price',
+            'dsi.mes_lis_shi_lin_amo_item_net_price_unit_price',
+            'dsi.mes_lis_shi_lin_amo_item_selling_price',
+            'dsi.mes_lis_shi_lin_amo_item_selling_price_unit_price',
+            'dsi.mes_lis_shi_lin_amo_item_tax',
+            'dsi.mes_lis_shi_lin_qua_unit_multiple',
+            'dsi.mes_lis_shi_lin_qua_unit_of_measure',
+            'dsi.mes_lis_shi_lin_qua_package_indicator',
+            'dsi.mes_lis_shi_lin_qua_ord_quantity',
+            'dsi.mes_lis_shi_lin_qua_ord_num_of_order_units',
+            'dsi.mes_lis_shi_lin_qua_shi_quantity',
+            'dsi.mes_lis_shi_lin_qua_shi_num_of_order_units',
+            'dsi.mes_lis_shi_lin_qua_sto_quantity',
             \DB::raw('CASE
-            WHEN data_shipment_items.mes_lis_shi_lin_qua_sto_num_of_order_units=null
+            WHEN dsi.mes_lis_shi_lin_qua_sto_num_of_order_units=null
             THEN "0"
-            WHEN data_shipment_items.mes_lis_shi_lin_qua_sto_num_of_order_units=""
+            WHEN dsi.mes_lis_shi_lin_qua_sto_num_of_order_units=""
             THEN "0"
-            ELSE data_shipment_items.mes_lis_shi_lin_qua_sto_num_of_order_units  END'),
-            'data_shipment_items.mes_lis_shi_lin_qua_sto_reason_code',
+            ELSE dsi.mes_lis_shi_lin_qua_sto_num_of_order_units  END'),
+            'dsi.mes_lis_shi_lin_qua_sto_reason_code',
             \DB::raw('CASE
-            WHEN data_shipment_items.mes_lis_shi_lin_fre_unit_weight=null
+            WHEN dsi.mes_lis_shi_lin_fre_unit_weight=null
             THEN "0"
-            WHEN data_shipment_items.mes_lis_shi_lin_fre_unit_weight=""
+            WHEN dsi.mes_lis_shi_lin_fre_unit_weight=""
             THEN "0"
-            ELSE data_shipment_items.mes_lis_shi_lin_fre_unit_weight  END'),
+            ELSE dsi.mes_lis_shi_lin_fre_unit_weight  END'),
             // 'data_shipment_items.mes_lis_shi_lin_fre_unit_weight_code',
             \DB::raw('CASE
-            WHEN data_shipment_items.mes_lis_shi_lin_fre_unit_weight_code=null
+            WHEN dsi.mes_lis_shi_lin_fre_unit_weight_code=null
             THEN "0"
-            WHEN data_shipment_items.mes_lis_shi_lin_fre_unit_weight_code=""
+            WHEN dsi.mes_lis_shi_lin_fre_unit_weight_code=""
             THEN "0"
-            ELSE data_shipment_items.mes_lis_shi_lin_fre_unit_weight_code  END'),
+            ELSE dsi.mes_lis_shi_lin_fre_unit_weight_code  END'),
             \DB::raw('CASE
-            WHEN data_shipment_items.mes_lis_shi_lin_fre_item_weight=null
+            WHEN dsi.mes_lis_shi_lin_fre_item_weight=null
             THEN "0"
-            WHEN data_shipment_items.mes_lis_shi_lin_fre_item_weight=""
+            WHEN dsi.mes_lis_shi_lin_fre_item_weight=""
             THEN "0"
-            ELSE data_shipment_items.mes_lis_shi_lin_fre_item_weight  END'),
+            ELSE dsi.mes_lis_shi_lin_fre_item_weight  END'),
             \DB::raw('CASE
-            WHEN data_shipment_items.mes_lis_shi_lin_fre_order_weight=null
+            WHEN dsi.mes_lis_shi_lin_fre_order_weight=null
             THEN "0"
-            WHEN data_shipment_items.mes_lis_shi_lin_fre_order_weight=""
+            WHEN dsi.mes_lis_shi_lin_fre_order_weight=""
             THEN "0"
-            ELSE data_shipment_items.mes_lis_shi_lin_fre_order_weight  END'),
+            ELSE dsi.mes_lis_shi_lin_fre_order_weight  END'),
             \DB::raw('CASE
-            WHEN data_shipment_items.mes_lis_shi_lin_fre_shipment_weight=null
+            WHEN dsi.mes_lis_shi_lin_fre_shipment_weight=null
             THEN "0"
-            WHEN data_shipment_items.mes_lis_shi_lin_fre_shipment_weight=""
+            WHEN dsi.mes_lis_shi_lin_fre_shipment_weight=""
             THEN "0"
-            ELSE data_shipment_items.mes_lis_shi_lin_fre_shipment_weight  END'),
+            ELSE dsi.mes_lis_shi_lin_fre_shipment_weight  END'),
             // data_shipment_item_details
             \DB::raw('CASE
-            WHEN data_shipment_item_details.mes_lis_shi_lin_pac_itf_code=null
+            WHEN dsid.mes_lis_shi_lin_pac_itf_code=null
             THEN "0"
-            WHEN data_shipment_item_details.mes_lis_shi_lin_pac_itf_code=""
+            WHEN dsid.mes_lis_shi_lin_pac_itf_code=""
             THEN "0"
-            ELSE data_shipment_item_details.mes_lis_shi_lin_pac_itf_code  END'),
+            ELSE dsid.mes_lis_shi_lin_pac_itf_code  END'),
             \DB::raw('CASE
-            WHEN data_shipment_item_details.mes_lis_shi_lin_pac_package_indicator=null
+            WHEN dsid.mes_lis_shi_lin_pac_package_indicator=null
             THEN "00"
-            WHEN data_shipment_item_details.mes_lis_shi_lin_pac_package_indicator=""
+            WHEN dsid.mes_lis_shi_lin_pac_package_indicator=""
             THEN "00"
-            ELSE data_shipment_item_details.mes_lis_shi_lin_pac_package_indicator  END'),
+            ELSE dsid.mes_lis_shi_lin_pac_package_indicator  END'),
             \DB::raw('CASE
-            WHEN data_shipment_item_details.mes_lis_shi_lin_pac_number_of_packages=null
+            WHEN dsid.mes_lis_shi_lin_pac_number_of_packages=null
             THEN "0"
-            WHEN data_shipment_item_details.mes_lis_shi_lin_pac_number_of_packages=""
+            WHEN dsid.mes_lis_shi_lin_pac_number_of_packages=""
             THEN "0"
-            ELSE data_shipment_item_details.mes_lis_shi_lin_pac_number_of_packages  END'),
-            'data_shipment_item_details.mes_lis_shi_lin_pac_con_sell_by_date',
-            'data_shipment_item_details.mes_lis_shi_lin_pac_con_production_date',
-            'data_shipment_item_details.mes_lis_shi_lin_pac_con_lot_number'
+            ELSE dsid.mes_lis_shi_lin_pac_number_of_packages  END'),
+            'dsid.mes_lis_shi_lin_pac_con_sell_by_date',
+            'dsid.mes_lis_shi_lin_pac_con_production_date',
+            'dsid.mes_lis_shi_lin_pac_con_lot_number'
             )
-        ->leftJoin('data_shipment_vouchers','data_shipment_vouchers.data_shipment_id','=','data_shipments.data_shipment_id')
-        ->leftJoin('data_shipment_items','data_shipment_vouchers.data_shipment_voucher_id','=','data_shipment_items.data_shipment_voucher_id')
-        ->leftJoin('data_shipment_item_details','data_shipment_items.data_shipment_item_id','=','data_shipment_item_details.data_shipment_item_id')
-        ->join('data_order_vouchers as dov','dov.data_order_voucher_id','=','data_shipment_vouchers.data_shipment_voucher_id')
+        ->leftJoin('data_shipment_vouchers as dsv','dsv.data_shipment_id','=','data_shipments.data_shipment_id')
+        ->leftJoin('data_shipment_items as dsi','dsv.data_shipment_voucher_id','=','dsi.data_shipment_voucher_id')
+        ->leftJoin('data_shipment_item_details as dsid','dsi.data_shipment_item_id','=','dsid.data_shipment_item_id')
+        ->join('data_order_vouchers as dov','dov.data_order_voucher_id','=','dsv.data_shipment_voucher_id')
         ->join('data_orders as dor','dor.data_order_id','=','dov.data_order_id');
 
 
@@ -514,39 +518,40 @@ class Data_Controller extends Controller
 
 
             $csv_data=$csv_data->where('data_shipments.data_order_id',$data_order_id)
-            ->where('data_shipment_vouchers.mes_lis_shi_log_del_delivery_service_code', $order_info['mes_lis_shi_log_del_delivery_service_code'])
-            ->where('data_shipment_vouchers.mes_lis_shi_par_sel_code', $order_info['mes_lis_shi_par_sel_code'])
-            ->where('data_shipment_vouchers.mes_lis_shi_par_sel_name', $order_info['mes_lis_shi_par_sel_name'])
-            ->where('data_shipment_vouchers.mes_lis_shi_tra_dat_delivery_date', $order_info['mes_lis_shi_tra_dat_delivery_date'])
-            ->where('data_shipment_vouchers.mes_lis_shi_tra_goo_major_category', $order_info['mes_lis_shi_tra_goo_major_category'])
-            ->where('data_shipment_vouchers.mes_lis_shi_tra_ins_temperature_code', $order_info['mes_lis_shi_tra_ins_temperature_code']);
+            ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $order_info['mes_lis_shi_log_del_delivery_service_code'])
+            ->where('dsv.mes_lis_shi_par_sel_code', $order_info['mes_lis_shi_par_sel_code'])
+            ->where('dsv.mes_lis_shi_par_sel_name', $order_info['mes_lis_shi_par_sel_name'])
+            ->where('dsv.mes_lis_shi_tra_dat_delivery_date', $order_info['mes_lis_shi_tra_dat_delivery_date'])
+            ->where('dsv.mes_lis_shi_tra_goo_major_category', $order_info['mes_lis_shi_tra_goo_major_category'])
+            ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $order_info['mes_lis_shi_tra_ins_temperature_code']);
 
             if ((array_key_exists("form_search", $request_all))) {
                 $form_search = $request->form_search;
             if($form_search['mes_lis_shi_tra_trade_number']!=""){
-                $csv_data=$csv_data->where('data_shipment_vouchers.mes_lis_shi_tra_trade_number', $form_search['mes_lis_shi_tra_trade_number']);
+                $csv_data=$csv_data->where('dsv.mes_lis_shi_tra_trade_number', $form_search['mes_lis_shi_tra_trade_number']);
             }
             if($form_search['fixedSpecial']!="*"){
-                $csv_data=$csv_data->where('data_shipment_vouchers.mes_lis_shi_tra_ins_goods_classification_code', $form_search['fixedSpecial']);
+                $csv_data=$csv_data->where('dsv.mes_lis_shi_tra_ins_goods_classification_code', $form_search['fixedSpecial']);
             }
             if($form_search['printingStatus']!="*"){
                 if($form_search['printingStatus']=="未印刷あり"){
-                    $csv_data=$csv_data->whereNull('data_shipment_vouchers.print_datetime');
+                    $csv_data=$csv_data->whereNull('dsv.print_datetime');
                 }
                 if($form_search['printingStatus']=="印刷済"){
-                    $csv_data=$csv_data->whereNotNull('data_shipment_vouchers.print_datetime');
+                    $csv_data=$csv_data->whereNotNull('dsv.print_datetime');
                 }
 
             }
             if($form_search['situation']!="*"){
                 if($form_search['situation']=="未確定あり"){
-                    $csv_data=$csv_data->whereNull('data_shipment_vouchers.decision_datetime');
+                    $csv_data=$csv_data->whereNull('dsv.decision_datetime');
                 }
                 if($form_search['situation']=="確定済"){
-                    $csv_data=$csv_data->whereNotNull('data_shipment_vouchers.decision_datetime');
+                    $csv_data=$csv_data->whereNotNull('dsv.decision_datetime');
                 }
             }
         }
+
         }else{
             $receive_date_from = $request->receive_date_from;
             $receive_date_to = $request->receive_date_to;
@@ -610,19 +615,20 @@ class Data_Controller extends Controller
             } elseif ($decission_cnt != "*") {
                 $csv_data=$csv_data->having('decision_cnt','=',$decission_cnt);
             }
+            $csv_data=$csv_data->groupBy('dsv.mes_lis_shi_tra_trade_number');
         }
         // receive_datetime not found in shipment tables
 
         if (!(array_key_exists("downloadType", $request_all))) {
             // \Log::info("Clicked");
-            $csv_data=$csv_data->whereNotNull('data_shipment_vouchers.decision_datetime');
-            $csv_data=$csv_data->whereNull('data_shipment_vouchers.send_datetime');
+            $csv_data=$csv_data->whereNotNull('dsv.decision_datetime');
+            $csv_data=$csv_data->whereNull('dsv.send_datetime');
         }
         // \Log::info("My Query");
-        // $csv_data=$csv_data->groupBy('data_shipment_vouchers.mes_lis_shi_tra_trade_number');
-        // $csv_data=$csv_data->groupBy('data_shipment_vouchers.data_shipment_voucher_id');
-        // $csv_data=$csv_data->groupBy('data_shipment_items.data_shipment_item_id'); //New Added
-        $csv_data=$csv_data->orderBy("data_shipments.data_shipment_id");
+        // $csv_data=$csv_data->groupBy('dsv.mes_lis_shi_tra_trade_number');
+        // $csv_data=$csv_data->groupBy('dsv.data_shipment_voucher_id');
+        // $csv_data=$csv_data->groupBy('dsi.data_shipment_item_id'); //New Added
+        $csv_data=$csv_data->orderBy('dsv.'.$sort_by,$sort_type);
         // 検索
         // $csv_data = $csv_data->limit(100000)->get()->toArray();
         return $csv_data;
