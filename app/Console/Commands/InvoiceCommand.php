@@ -6,6 +6,8 @@ use Illuminate\Console\Command;
 use App\Http\Controllers\API\DATA\INVOICE\InvoiceController;
 use App\Models\CMN\cmn_connect;
 use App\Http\Controllers\API\SCHEDULE\InvoiceScheduleFunctions;
+use App\Models\ADM\User;
+use App\Http\Controllers\API\AllUsedFunction;
 
 class InvoiceCommand extends Command
 {
@@ -15,7 +17,8 @@ class InvoiceCommand extends Command
      * @var string
      */
     // protected $signature = 'invoice:scheduler {--start_date=00-00-00} {--end_date=00-00-00}';
-    protected $signature = 'invoice:scheduler {arg=0}';
+    // protected $signature = 'invoice:scheduler {arg=0} {data_order_id=null}';
+    protected $signature = 'invoice:scheduler {arg=0} {adm_user_id=0} {byr_buyer_id=0}';
 
     /**
      * The console command description.
@@ -31,11 +34,13 @@ class InvoiceCommand extends Command
      */
     private $all_used_fun;
     private $invoice;
+    private $global_functions;
     public function __construct()
     {
         parent::__construct();
         $this->all_used_fun = new InvoiceScheduleFunctions();
         $this->invoice=new InvoiceController();
+        $this->global_functions=new AllUsedFunction();
     }
 
     /**
@@ -46,15 +51,35 @@ class InvoiceCommand extends Command
     public function handle()
     {
         $arg = $this->argument('arg');
-        \Log::info($arg);
-        // $this->comment($new_date);
+        $adm_user_id = $this->argument('adm_user_id');
+        $byr_buyer_id = $this->argument('byr_buyer_id');
+
+        $cmn_connect_id = '';
+        if ($arg!=0 && $adm_user_id!=0 && $byr_buyer_id!=0) {
+            $authUser = User::find($adm_user_id);
+            if (!$authUser->hasRole(config('const.adm_role_name'))) {
+                $cmn_company_info=$this->global_functions->get_user_info($adm_user_id,$byr_buyer_id);
+                $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+            }
+            $this->invoiceSchedulerCode($arg,$cmn_connect_id);
+        }else{
+            $cmn_connects=cmn_connect::select('cmn_connect_id')->get();
+            foreach ($cmn_connects as $key => $cmn_connect) {
+                $this->invoiceSchedulerCode($arg,$cmn_connect->cmn_connect_id);
+            }
+        }
+
+
+        // Matched
+    }
+    public function invoiceSchedulerCode($arg,$cmn_connect_id){
         \Log::info("----Starting----");
         $today=date('y-m-d');
-        $cmn_connect_info=cmn_connect::select('optional')->where('cmn_connect_id',1)->first();
+        $cmn_connect_info=cmn_connect::select('optional')->where('cmn_connect_id',$cmn_connect_id)->first();
         $optional=json_decode($cmn_connect_info->optional);
         $closing_date_array=$optional->invoice->closing_date;
         sort($closing_date_array);
-        // $this->comment("closing_date_array ".$closing_date_array);
+
         $closing_date_array=$this->all_used_fun->arra_sorting($closing_date_array);
         $closing_date_count=count($closing_date_array);
         $start_date=null;
@@ -140,9 +165,18 @@ class InvoiceCommand extends Command
         $this->comment("Start Date: ".$start_date);
         $this->comment("End Date: ".$end_date);
         if ($start_date!=null && $end_date!=null) {
-            $this->invoice->invoiceScheduler($start_date,$end_date);
+            $request = new \Illuminate\Http\Request();
+            $request->setMethod('POST');
+            // $request=$this->request;
+            $request->request->add(['scenario_id' => 15]);
+            $request->request->add(['cmn_connect_id' => $cmn_connect_id]);
+            $request->request->add(['email' => 'user@jacos.co.jp']);
+            $request->request->add(['password' => 'Qe75ymSr']);
+            $request->request->add(['start_date' => $start_date]);
+            $request->request->add(['end_date' => $end_date]);
+            $this->invoice->invoiceScheduler($request);
+            // $this->invoice->invoiceScheduler($start_date,$end_date);
             $this->comment("Done");
         }
-        // Matched
     }
 }
