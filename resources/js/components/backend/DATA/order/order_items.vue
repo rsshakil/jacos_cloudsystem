@@ -532,6 +532,7 @@ this.getbuyerJsonSettingvalue();
       this.get_all_byr_order_item_detail();
     });
     this.parent.query = this.$session.get('order_param_data');
+    Fire.$emit("loadPageTitle", "受注伝票明細");
   },
   computed: {
     total_selling_price: function() {

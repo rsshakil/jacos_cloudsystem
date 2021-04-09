@@ -442,7 +442,7 @@ export const routes = [
         name: 'return_detail',
         meta: {
             breadcrumb: {
-                label: '受領伝票一覧',
+                label: '返品伝票一覧',
                 parent: 'return_list'
             }
         },

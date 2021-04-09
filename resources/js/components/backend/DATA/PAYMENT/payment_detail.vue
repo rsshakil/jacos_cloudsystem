@@ -218,7 +218,7 @@ export default {
   computed: {
 
     totalAmountVal: function() {
-      return this.pdtableleft.reduce(function (sumselling,val) {return  sumselling = (val.sumation_type=='1'?sumselling+val.amount:sumselling-val.amount)},0);
+      return this.pdtableleft.reduce(function (sumselling,val) {return  sumselling = (val.sumation_type=='1'?sumselling+parseFloat(val.amount):sumselling-parseFloat(val.amount))},0);
 
     },
 
