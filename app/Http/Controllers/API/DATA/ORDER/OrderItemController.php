@@ -34,23 +34,12 @@ class OrderItemController extends Controller
         SELECT data_shipment_items.*,data_shipment_vouchers.*,data_order_vouchers.*,data_order_items.* FROM data_shipment_items
         inner join data_shipment_vouchers on data_shipment_vouchers.data_shipment_voucher_id=data_shipment_items.data_shipment_voucher_id
         inner join data_shipments on data_shipments.data_shipment_id=data_shipment_vouchers.data_shipment_id
-        inner join data_orders on data_orders.data_order_id=data_shipments.data_order_id
-        inner join data_order_vouchers on data_order_vouchers.data_order_id=data_orders.data_order_id
-        inner join data_order_items on data_order_items.data_order_voucher_id=data_shipment_vouchers.data_order_voucher_id
+        inner join data_order_vouchers on data_order_vouchers.data_order_id=data_shipments.data_order_id AND data_order_vouchers.mes_lis_ord_tra_trade_number = data_shipment_vouchers.mes_lis_shi_tra_trade_number
+        inner join data_order_items on data_order_items.data_order_voucher_id=data_order_vouchers.data_order_voucher_id AND data_order_items.mes_lis_ord_lin_lin_line_number = data_shipment_items.mes_lis_shi_lin_lin_line_number
         where data_shipment_items.data_shipment_voucher_id = '$data_shipment_voucher_id'
-        group by data_shipment_items.mes_lis_shi_lin_ite_order_item_code
+        order by data_shipment_items.mes_lis_shi_lin_lin_line_number
         ");
         $slected_list = array();
-        $result_data = cmn_tbl_col_setting::where('url_slug', 'order_item_list_detail')->first();
-        if ($result_data) {
-            $header_list = json_decode($result_data->content_setting);
-            foreach ($header_list as $header) {
-                if ($header->header_status == true) {
-                    $slected_list[] = $header->header_field;
-                }
-            }
-        }
-        /*coll setting*/
         return response()->json(['order_item_list_detail' => $result, 'orderItem' => $orderItem, 'slected_list' => $slected_list]);
     }
     public function shipmentItemDetailSearch($item_code)
