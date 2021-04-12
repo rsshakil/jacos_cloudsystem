@@ -260,7 +260,9 @@
     font-size: 36px;
     cursor: pointer;
 }
-
+.error_found{
+    border: 1px solid red !important;
+}
 .custominvoicejsnslect {
     margin-bottom: 15px;
     width: 91.5%;
