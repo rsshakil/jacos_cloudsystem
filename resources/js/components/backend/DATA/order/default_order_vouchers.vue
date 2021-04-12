@@ -71,7 +71,7 @@
           <tr>
             <td style="width:10%" class="cl_custom_color">直接納品先コード</td>
             <td style="width:15%">
-              <input type="text" class="form-control topHeaderInputFieldBtn" />
+              <input type="text" v-model="form.searchCode1" class="form-control topHeaderInputFieldBtn" />
               <button
                 @click="deliverySearchForm1"
                 class="btn btn-primary active"
@@ -81,7 +81,7 @@
             </td>
             <td style="width:10%" class="cl_custom_color">最終納品先コード</td>
             <td style="width:15%">
-              <input type="text" class="form-control topHeaderInputFieldBtn" />
+              <input type="text" v-model="form.searchCode2" class="form-control topHeaderInputFieldBtn" />
               <button
                 @click="deliverySearchForm2"
                 class="btn btn-primary active"
@@ -101,7 +101,7 @@
           <tr>
             <td style="width:10%" class="cl_custom_color">商品コード</td>
             <td style="width:15%">
-              <input type="text" class="form-control topHeaderInputFieldBtn" />
+              <input type="text" v-model="form.searchCode3" class="form-control topHeaderInputFieldBtn" />
               <button
                 @click="deliverySearchForm3"
                 class="btn btn-primary active"
@@ -574,7 +574,7 @@
           <th>納品先名</th>
           <th>納品経路</th>
         </tr>
-        <tr v-for="(valueItm,index) in order_search_modal1List" :key="index">
+        <tr v-for="(valueItm,index) in order_search_modal1List" :key="index" @click="setRowscodeIntoForm1(valueItm.mes_lis_shi_par_shi_code)">
         <td>{{index+1}}</td>
           <td>{{valueItm.mes_lis_shi_par_shi_code}}</td>
           <td>{{valueItm.mes_lis_shi_par_shi_name}}</td>
@@ -654,7 +654,7 @@
           <th>納品先名</th>
           <th>納品経路</th>
         </tr>
-        <tr v-for="(valueItm,index) in order_search_modal2List" :key="index">
+        <tr v-for="(valueItm,index) in order_search_modal2List" :key="index" @click="setRowscodeIntoForm2(valueItm.mes_lis_shi_par_shi_code)">
         <td>{{index+1}}</td>
           <td>{{valueItm.mes_lis_shi_par_shi_code}}</td>
           <td>{{valueItm.mes_lis_shi_par_shi_name}}</td>
@@ -734,7 +734,7 @@
           <th>納品先名</th>
           <th>納品経路</th>
         </tr>
-        <tr v-for="(valueItm,index) in order_search_modal3List" :key="index">
+        <tr v-for="(valueItm,index) in order_search_modal3List" :key="index" @click="setRowscodeIntoForm1(valueItm.mes_lis_shi_par_shi_code)">
         <td>{{index+1}}</td>
           <td>{{valueItm.mes_lis_shi_par_shi_code}}</td>
           <td>{{valueItm.mes_lis_shi_par_shi_name}}</td>
@@ -891,6 +891,9 @@ export default {
         sort_type:"ASC",
         adm_user_id: Globals.user_info_id,
         byr_buyer_id:null,
+        searchCode1:'',
+        searchCode2:'',
+        searchCode3:'',
       }),
       param_data: [],
       item_search_q: [],
@@ -903,6 +906,18 @@ export default {
           this.form.sort_type=this.form.sort_type=="ASC"?"DESC":"ASC";
           this.get_all_byr_order_detail();
 
+      },
+      setRowscodeIntoForm1(valCode){
+        this.form.searchCode1 = valCode;
+        this.order_search_modal1=false;
+      },
+      setRowscodeIntoForm2(valCode){
+        this.form.searchCode2 = valCode;
+        this.order_search_modal2 = false;
+      },
+      setRowscodeIntoForm3(valCode){
+        this.form.searchCode3 = valCode;
+        this.order_search_modal3 = false;
       },
     deliverySearchForm1() {
       this.order_search_modal1 = true;
