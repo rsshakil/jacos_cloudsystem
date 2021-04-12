@@ -889,6 +889,8 @@ export default {
         mes_lis_shi_tra_trade_number: "",
         sort_by:'data_shipment_voucher_id',
         sort_type:"ASC",
+        adm_user_id: Globals.user_info_id,
+        byr_buyer_id:null,
       }),
       param_data: [],
       item_search_q: [],
@@ -1243,6 +1245,8 @@ export default {
           data_order_id: this.param_data.data_order_id,
           order_info: this.order_info,
           downloadType: downloadType,
+          byr_buyer_id: this.byr_buyer_id,
+          adm_user_id: Globals.user_info_id,
           form_search:this.form,
         })
         .then(({ data }) => {
@@ -1255,6 +1259,7 @@ export default {
   created() {
     // this.byr_session_check()
     this.byr_buyer_id=this.$session.get("byr_buyer_id");
+    this.form.byr_buyer_id=this.byr_buyer_id;
     Fire.$emit("byr_has_selected", this.byr_buyer_id);
     Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
 

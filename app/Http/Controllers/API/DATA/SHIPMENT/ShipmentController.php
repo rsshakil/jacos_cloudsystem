@@ -35,7 +35,7 @@ class ShipmentController extends Controller
         $csv_data_count = Data_Controller::get_shipment_data($request)->get()->count();
         if (!$data_count) {
             $dateTime = date('Y-m-d H:i:s');
-            $new_file_name = self::shipmentFileName($data_order_id, 'csv');
+            $new_file_name = self::shipmentFileName($request, 'csv');
             data_shipment::where('data_order_id', $data_order_id)->update(['mes_mes_number_of_trading_documents'=>$csv_data_count]);
             $download_file_url = \Config::get('app.url')."storage/app".config('const.SHIPMENT_CSV_PATH')."/". $new_file_name;
             (new ShipmentCSVExport($request))->store(config('const.SHIPMENT_CSV_PATH').'/'.$new_file_name);
@@ -52,11 +52,12 @@ class ShipmentController extends Controller
         // return $request->all();
         //ownloadType=2 for Fixed length
         $data_order_id=$request->data_order_id?$request->data_order_id:1;
+        // \Log::info("Download ".$data_order_id);
         $downloadType=$request->downloadType;
         $csv_data_count =0;
         if ($downloadType==1) {
             // CSV Download
-            $new_file_name = $new_file_name = self::shipmentFileName($data_order_id, 'csv');
+            $new_file_name = $new_file_name = self::shipmentFileName($request, 'csv');
             $download_file_url = \Config::get('app.url')."storage/app".config('const.SHIPMENT_CSV_PATH')."/". $new_file_name;
 
             // get shipment data query
@@ -80,7 +81,7 @@ class ShipmentController extends Controller
             $request->request->add(['data_order_id' => 1]);
             $request->request->add(['email' => 'user@jacos.co.jp']);
             $request->request->add(['password' => 'Qe75ymSr']);
-            $new_file_name = self::shipmentFileName($data_order_id, 'txt');
+            $new_file_name = self::shipmentFileName($request, 'txt');
             $download_file_url = \Config::get('app.url')."storage/".config('const.FIXED_LENGTH_FILE_PATH')."/". $new_file_name;
             $request->request->add(['file_name' => $new_file_name]);
             // $request->request->remove('downloadType');
@@ -100,16 +101,25 @@ class ShipmentController extends Controller
 
         return response()->json(['message' => 'Success','status'=>1,'new_file_name'=>$new_file_name, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
     }
-    private static function shipmentFileName($data_order_id, $file_type="csv")
+    private static function shipmentFileName($request, $file_type="csv")
     {
-        $file_name_info=data_shipment::select('cmn_connects.partner_code', 'byr_buyers.super_code', 'cmn_companies.jcode','cmn_companies.company_name')
-            ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'data_shipments.cmn_connect_id')
-            ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
-            ->join('slr_sellers', 'slr_sellers.slr_seller_id', '=', 'cmn_connects.slr_seller_id')
-            ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'slr_sellers.cmn_company_id')
-            ->where('data_shipments.data_order_id', $data_order_id)
+        $adm_user_id=$request->adm_user_id;
+        $byr_buyer_id=$request->byr_buyer_id;
+        // \Log::info("File Name".$data_order_id);
+        // $file_name_info=data_shipment::select('cmn_connects.partner_code', 'byr_buyers.super_code', 'cmn_companies.jcode','cmn_companies.company_name')
+        //     ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'data_shipments.cmn_connect_id')
+        //     ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
+        //     ->join('slr_sellers', 'slr_sellers.slr_seller_id', '=', 'cmn_connects.slr_seller_id')
+        //     ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'slr_sellers.cmn_company_id')
+        //     ->where('data_shipments.data_order_id', $data_order_id)
+        //     ->first();
+            $file_name_info=byr_buyer::select('cmn_companies.company_name')
+            ->join('cmn_companies','cmn_companies.cmn_company_id','=','byr_buyers.cmn_company_id')
+            ->where('byr_buyers.byr_buyer_id',$byr_buyer_id)
             ->first();
+            // \Log::info($file_name_info);
             $file_name = '受注'.'_'.$file_name_info->company_name.'_'.date('YmdHis').'.'.$file_type;
+            // \Log::info($file_name);
         // $file_name = $file_name_info->super_code.'-'."shipment_".$file_name_info->super_code.'-'.$file_name_info->partner_code."-".$file_name_info->jcode.'_shipment_'.date('YmdHis').'.'.$file_type;
         return $file_name;
     }

@@ -248,8 +248,9 @@ class Data_Controller extends Controller
         // 対象データ取得
 
         $request_all=$request->all();
-        $sort_by=$request->form_search['sort_by'];
-        $sort_type=$request->form_search['sort_type'];
+        // \Log::info($request_all);
+        $sort_by=$request->sort_by?$request->sort_by:$request->form_search['sort_by'];
+        $sort_type=$request->sort_type?$request->sort_type:$request->form_search['sort_type'];
         // \Log::info($sort_by);
         // \Log::info($sort_type);
         // \Log::info($request_all);
@@ -628,7 +629,8 @@ class Data_Controller extends Controller
         // $csv_data=$csv_data->groupBy('dsv.mes_lis_shi_tra_trade_number');
         // $csv_data=$csv_data->groupBy('dsv.data_shipment_voucher_id');
         // $csv_data=$csv_data->groupBy('dsi.data_shipment_item_id'); //New Added
-        $csv_data=$csv_data->orderBy('dsv.'.$sort_by,$sort_type);
+        // $csv_data=$csv_data->orderBy('dsv.'.$sort_by,$sort_type);
+        $csv_data=$csv_data->orderBy('dsi.mes_lis_shi_lin_lin_line_number',"ASC");
         // 検索
         // $csv_data = $csv_data->limit(100000)->get()->toArray();
         return $csv_data;
