@@ -209,7 +209,8 @@ class ReceiveController extends Controller
         $csv_data_count =0;
         if ($downloadType==1) {
             // CSV Download
-            $new_file_name = $new_file_name = self::receiveFileName($data_receive_id, 'csv');
+            $new_file_name =$this->all_used_fun->downloadFileName($request, 'csv');
+            //  self::receiveFileName($data_receive_id, 'csv');
             $download_file_url = \Config::get('app.url')."storage/app".config('const.RECEIVE_CSV_PATH')."/". $new_file_name;
 
             // get shipment data query
@@ -228,19 +229,19 @@ class ReceiveController extends Controller
 
         return response()->json(['message' => 'Success','status'=>1,'new_file_name'=>$new_file_name, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
     }
-    private static function receiveFileName($data_receive_id, $file_type="csv")
-    {
-        $file_name_info=data_receive::select('cmn_connects.partner_code', 'byr_buyers.super_code', 'cmn_companies.jcode','cmn_companies.company_name')
-            ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'data_receives.cmn_connect_id')
-            ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
-            ->join('slr_sellers', 'slr_sellers.slr_seller_id', '=', 'cmn_connects.slr_seller_id')
-            ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'slr_sellers.cmn_company_id')
-            ->where('data_receives.data_receive_id', $data_receive_id)
-            ->first();
-            $file_name = '受注'.'_'.$file_name_info->company_name.'_'.date('YmdHis').'.'.$file_type;
-        // $file_name = $file_name_info->super_code.'-'."receive_".$file_name_info->super_code.'-'.$file_name_info->partner_code."-".$file_name_info->jcode.'_receive_'.date('YmdHis').'.'.$file_type;
-        return $file_name;
-    }
+    // private static function receiveFileName($data_receive_id, $file_type="csv")
+    // {
+    //     $file_name_info=data_receive::select('cmn_connects.partner_code', 'byr_buyers.super_code', 'cmn_companies.jcode','cmn_companies.company_name')
+    //         ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'data_receives.cmn_connect_id')
+    //         ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
+    //         ->join('slr_sellers', 'slr_sellers.slr_seller_id', '=', 'cmn_connects.slr_seller_id')
+    //         ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'slr_sellers.cmn_company_id')
+    //         ->where('data_receives.data_receive_id', $data_receive_id)
+    //         ->first();
+    //         $file_name = '受注'.'_'.$file_name_info->company_name.'_'.date('YmdHis').'.'.$file_type;
+    //     // $file_name = $file_name_info->super_code.'-'."receive_".$file_name_info->super_code.'-'.$file_name_info->partner_code."-".$file_name_info->jcode.'_receive_'.date('YmdHis').'.'.$file_type;
+    //     return $file_name;
+    // }
     public function orderReceiveItemDetailList(Request $request){
         // return $request->all();
         $adm_user_id = $request->adm_user_id;

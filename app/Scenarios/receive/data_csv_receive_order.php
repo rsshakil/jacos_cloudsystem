@@ -11,7 +11,7 @@ use App\Models\DATA\CRCV\data_corrected_receive;
 use App\Models\DATA\CRCV\data_corrected_receive_voucher;
 use App\Models\DATA\CRCV\data_corrected_receive_item;
 use App\Http\Controllers\API\AllUsedFunction;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class data_csv_receive_order extends Model
 {
@@ -43,7 +43,8 @@ class data_csv_receive_order extends Model
         $cur_date=date('y-m-d h:i:s');
         $rcv_flg = true;
         $trade_number = '';
-
+        DB::beginTransaction();
+        try {
         foreach ($dataArr as $key => $value) {
             if (count($value) === 1) {
                 // 空であればcontinue
@@ -347,6 +348,13 @@ class data_csv_receive_order extends Model
             $data_receive_voucher_array=array();
             $data_receive_item_array=array();
         }
-        return ['message' => "success", 'status' => '1'];
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return ['message' => $e, 'status' => 0];
+            // something went wrong
+        }
+
+        return ['message' => "success", 'status' => 1];
     }
 }

@@ -63,7 +63,6 @@ class data_csv_order
         $order_flg = true;
         $trade_number = '';
         DB::beginTransaction();
-        // DB::transaction(function () {
         try {
             foreach ($dataArr as $key => $value) {
                 if (count($value) === 1) {
@@ -430,6 +429,7 @@ class data_csv_order
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
+            return ['message' => $e, 'status' => 0];
             // something went wrong
         }
     // });
@@ -439,20 +439,20 @@ class data_csv_order
             $this->fax_number=$optional->order->fax->number;
             $this->attachment_paths_all=$this->pdfGenerate($data_order_id);
 
-        // foreach ($this->attachment_paths_all as $key => $value) {
-        //     \Log::info('send mail for fax:[to:'.config('const.PDF_SEND_MAIL').',subject:'.$this->fax_number.']');
-        //     $this->attachment_paths=$value;
-        //     Mail::send([],[] ,function($message) { $message->to(config('const.PDF_SEND_MAIL'))
-        //         ->subject($this->fax_number);
-        //         \Log::info('attach file:'.$this->attachment_paths);
-        //         $message->attach($this->attachment_paths)
-        //         // foreach($this->attachment_paths as $filePath){
-        //         //     $message->attach($filePath);
-        //         // }
-        //         ->setBody(''); });
-        // }
+        foreach ($this->attachment_paths_all as $key => $value) {
+            \Log::info('send mail for fax:[to:'.config('const.PDF_SEND_MAIL').',subject:'.$this->fax_number.']');
+            $this->attachment_paths=$value;
+            Mail::send([],[] ,function($message) { $message->to(config('const.PDF_SEND_MAIL'))
+                ->subject($this->fax_number);
+                \Log::info('attach file:'.$this->attachment_paths);
+                $message->attach($this->attachment_paths)
+                // foreach($this->attachment_paths as $filePath){
+                //     $message->attach($filePath);
+                // }
+                ->setBody(''); });
         }
-        return ['message' => "success", 'status' => '1'];
+        }
+        return ['message' => "success", 'status' => 1];
     }
     public function pdfGenerate($data_order_id)
     {

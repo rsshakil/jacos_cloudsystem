@@ -37,7 +37,7 @@
             {{ order_info.mes_lis_shi_tra_goo_major_category }}
             </span>
             </td>
-            
+
             <td style="width:10%" class="cl_custom_color">温度区分</td>
             <td style="width:15%"><span v-if="order_info && Object.keys(this.order_info).length">{{ order_info.mes_lis_shi_tra_ins_temperature_code }} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_info.mes_lis_shi_tra_ins_temperature_code,'orders')}}</span></td>
           </tr>
@@ -268,7 +268,7 @@ export default {
             delivery_service_code:'',
             temperature_code:'',
             page:1,
-            sort_by:'data_shipment_voucher_id',
+            sort_by:'mes_lis_shi_lin_ite_order_item_code ',
             sort_type:"ASC",
         }),
     };
@@ -311,7 +311,7 @@ export default {
     this.loader = Vue.$loading.show();
 this.$session.set("order_item_search_query",this.$route.query)
     this.order_info=this.$session.get("order_info");
-  
+
     this.form.mes_lis_shi_log_del_delivery_service_code=this.order_info.mes_lis_shi_log_del_delivery_service_code
     this.form.mes_lis_shi_par_sel_code=this.order_info.mes_lis_shi_par_sel_code
     this.form.mes_lis_shi_par_sel_name=this.order_info.mes_lis_shi_par_sel_name

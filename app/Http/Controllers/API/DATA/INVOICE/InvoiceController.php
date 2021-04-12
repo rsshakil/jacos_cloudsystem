@@ -274,7 +274,8 @@ class InvoiceController extends Controller
         $csv_data_count = InvoiceDataController::get_invoice_data($request)->get()->count();
         if (!$data_count) {
             $dateTime = date('Y-m-d H:i:s');
-            $new_file_name = self::invoiceFileName($data_invoice_id,'csv');
+            $new_file_name = $this->all_used_fun->downloadFileName($request, 'csv');
+            // self::invoiceFileName($data_invoice_id,'csv');
             data_invoice::where('data_invoice_id',$data_invoice_id)->update(['mes_mes_number_of_trading_documents'=>$csv_data_count]);
             $download_file_url = \Config::get('app.url')."storage/app".config('const.INVOICE_CSV_PATH')."/". $new_file_name;
             (new InvoiceCSVExport($request))->store(config('const.INVOICE_CSV_PATH').'/'.$new_file_name);
@@ -350,22 +351,22 @@ class InvoiceController extends Controller
                 data_invoice_pay_detail::where('data_invoice_pay_detail_id', $id)->update(['decision_datetime' => $dateTime]);
             }
         }
-        return response()->json(['success' => '1','status'=>1]);
+        return response()->json(['message' => 'success','status'=>1]);
     }
-    private static function invoiceFileName($data_invoice_id, $file_type="csv")
-    {
+    // private static function invoiceFileName($data_invoice_id, $file_type="csv")
+    // {
 
-        $file_name_info=data_invoice::select('cmn_connects.partner_code', 'byr_buyers.super_code', 'cmn_companies.jcode','cmn_companies.company_name')
-            ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'data_invoices.cmn_connect_id')
-            ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
-            ->join('slr_sellers', 'slr_sellers.slr_seller_id', '=', 'cmn_connects.slr_seller_id')
-            ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'slr_sellers.cmn_company_id')
-            ->where('data_invoices.data_invoice_id', $data_invoice_id)
-            ->first();
-            $file_name = '受注'.'_'.$file_name_info->company_name.'_'.date('YmdHis').'.'.$file_type;
-        // $file_name = $file_name_info->super_code.'-'."invoice_".$file_name_info->super_code.'-'.$file_name_info->partner_code."-".$file_name_info->jcode.'_invoice_'.date('YmdHis').'.'.$file_type;
-        return $file_name;
-    }
+    //     $file_name_info=data_invoice::select('cmn_connects.partner_code', 'byr_buyers.super_code', 'cmn_companies.jcode','cmn_companies.company_name')
+    //         ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'data_invoices.cmn_connect_id')
+    //         ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
+    //         ->join('slr_sellers', 'slr_sellers.slr_seller_id', '=', 'cmn_connects.slr_seller_id')
+    //         ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'slr_sellers.cmn_company_id')
+    //         ->where('data_invoices.data_invoice_id', $data_invoice_id)
+    //         ->first();
+    //         $file_name = '受注'.'_'.$file_name_info->company_name.'_'.date('YmdHis').'.'.$file_type;
+    //     // $file_name = $file_name_info->super_code.'-'."invoice_".$file_name_info->super_code.'-'.$file_name_info->partner_code."-".$file_name_info->jcode.'_invoice_'.date('YmdHis').'.'.$file_type;
+    //     return $file_name;
+    // }
 
     public function invoicePopup1DetailsList(Request $request){
         $result = DB::select("SELECT

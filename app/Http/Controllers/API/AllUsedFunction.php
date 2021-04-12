@@ -560,5 +560,27 @@ class AllUsedFunction extends Controller
             mkdir(storage_path() . '/' . $folder_name, 0777, true);
         }
     }
+    public function downloadFileName($request, $file_type="csv")
+    {
+        $adm_user_id=$request->adm_user_id;
+        $byr_buyer_id=$request->byr_buyer_id;
+        // \Log::info("File Name".$data_order_id);
+        // $file_name_info=data_shipment::select('cmn_connects.partner_code', 'byr_buyers.super_code', 'cmn_companies.jcode','cmn_companies.company_name')
+        //     ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'data_shipments.cmn_connect_id')
+        //     ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
+        //     ->join('slr_sellers', 'slr_sellers.slr_seller_id', '=', 'cmn_connects.slr_seller_id')
+        //     ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'slr_sellers.cmn_company_id')
+        //     ->where('data_shipments.data_order_id', $data_order_id)
+        //     ->first();
+            $file_name_info=byr_buyer::select('cmn_companies.company_name')
+            ->join('cmn_companies','cmn_companies.cmn_company_id','=','byr_buyers.cmn_company_id')
+            ->where('byr_buyers.byr_buyer_id',$byr_buyer_id)
+            ->first();
+            // \Log::info($file_name_info);
+            $file_name = '受注'.'_'.$file_name_info->company_name.'_'.date('YmdHis').'.'.$file_type;
+            // \Log::info($file_name);
+        // $file_name = $file_name_info->super_code.'-'."shipment_".$file_name_info->super_code.'-'.$file_name_info->partner_code."-".$file_name_info->jcode.'_shipment_'.date('YmdHis').'.'.$file_type;
+        return $file_name;
+    }
 }
 
