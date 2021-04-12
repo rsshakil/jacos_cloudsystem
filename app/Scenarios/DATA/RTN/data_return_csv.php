@@ -7,7 +7,7 @@ use App\Models\DATA\RTN\data_return;
 use App\Models\DATA\RTN\data_return_voucher;
 use App\Models\DATA\RTN\data_return_item;
 use App\Http\Controllers\API\AllUsedFunction;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class data_return_csv
 {
@@ -40,6 +40,8 @@ class data_return_csv
         $cur_date=date('y-m-d h:i:s');
         $rtn_flg = true;
         $trade_number = '';
+        DB::beginTransaction();
+        try {
         foreach ($dataArr as $key => $value) {
             if (count($value) === 1) {
                 // 空であればcontinue
@@ -217,6 +219,12 @@ class data_return_csv
             $data_return_voucher_array=array();
             $data_return_item_array=array();
         }
-        return ['message' => "success", 'status' => '1'];
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return ['message' => $e, 'status' => 0];
+            // something went wrong
+        }
+        return ['message' => "success", 'status' => 1];
     }
 }

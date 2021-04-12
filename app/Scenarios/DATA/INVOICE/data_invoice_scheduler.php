@@ -9,7 +9,7 @@ use App\Http\Controllers\API\AllUsedFunction;
 use App\Models\DATA\INVOICE\data_invoice;
 use App\Models\DATA\INVOICE\data_invoice_pay;
 use App\Models\DATA\INVOICE\data_invoice_pay_detail;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class data_invoice_scheduler
 {
@@ -38,6 +38,8 @@ class data_invoice_scheduler
         // return 0;
         $datashipment=true;
         $data_invoice_pay_id=1;
+        DB::beginTransaction();
+        try {
         foreach ($shipment_datas as $key => $shipment_data) {
             if ($datashipment) {
                 $data_invoice_array['cmn_connect_id']=$shipment_data['cmn_connect_id'];
@@ -130,6 +132,12 @@ class data_invoice_scheduler
                 $data_invoice_array=array();
                 $data_invoice_pay_array=array();
                 $data_invoice_pay_details_array=array();
+        }
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return ['message' => $e, 'status' => 0];
+            // something went wrong
         }
 
         return ['message' => "success", 'status' => '1'];

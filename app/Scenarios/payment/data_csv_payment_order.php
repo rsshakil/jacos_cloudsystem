@@ -8,7 +8,7 @@ use App\Models\DATA\PAYMENT\data_payment;
 use App\Models\DATA\PAYMENT\data_payment_pay;
 use App\Models\DATA\PAYMENT\data_payment_pay_detail;
 use App\Http\Controllers\API\AllUsedFunction;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class data_csv_payment_order extends Model
 {
@@ -42,6 +42,8 @@ class data_csv_payment_order extends Model
         $payment_flg = true;
         // $trade_number = '';
  $cur_date=date('y-m-d h:i:s');
+DB::beginTransaction();
+        try {
         foreach ($dataArr as $key => $value) {
             if (count($value) === 1) {
                 // 空であればcontinue
@@ -151,6 +153,12 @@ class data_csv_payment_order extends Model
             $data_payment_pay_array=array();
             $data_payment_details_array=array();
         }
-        return ['message' => "success", 'status' => '1'];
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return ['message' => $e, 'status' => 0];
+            // something went wrong
+        }
+        return ['message' => "success", 'status' => 1];
     }
 }
