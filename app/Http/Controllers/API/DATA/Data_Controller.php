@@ -257,253 +257,253 @@ class Data_Controller extends Controller
 
         $csv_data=data_shipment::select(
             // data_shipments
-            'data_shipments.sta_sen_identifier',
-            'data_shipments.sta_sen_ide_authority',
-            'data_shipments.sta_rec_identifier',
-            'data_shipments.sta_rec_ide_authority',
-            'data_shipments.sta_doc_standard',
-            'data_shipments.sta_doc_type_version',
-            'data_shipments.sta_doc_instance_identifier',
-            'data_shipments.sta_doc_type',
-            'data_shipments.sta_doc_creation_date_and_time',
-            'data_shipments.mes_ent_unique_creator_identification',
-            'data_shipments.mes_lis_pay_code',
-            'data_shipments.mes_lis_pay_gln',
-            'data_shipments.mes_lis_buy_code',
-            'data_shipments.mes_lis_buy_gln',
-            'data_shipments.mes_lis_buy_name',
-            'data_shipments.mes_lis_buy_name_sbcs',
+            'data_shipments.sta_sen_identifier', //0
+            'data_shipments.sta_sen_ide_authority', //1
+            'data_shipments.sta_rec_identifier', //2
+            'data_shipments.sta_rec_ide_authority', //3
+            'data_shipments.sta_doc_standard', //4
+            'data_shipments.sta_doc_type_version', //5
+            'data_shipments.sta_doc_instance_identifier', //6
+            'data_shipments.sta_doc_type', //7
+            'data_shipments.sta_doc_creation_date_and_time', //8
+            'data_shipments.mes_ent_unique_creator_identification', //9
+            'data_shipments.mes_lis_pay_code', //10
+            'data_shipments.mes_lis_pay_gln', //11
+            'data_shipments.mes_lis_buy_code', //12
+            'data_shipments.mes_lis_buy_gln', //13
+            'data_shipments.mes_lis_buy_name', //14
+            'data_shipments.mes_lis_buy_name_sbcs', //15
             // data_shipment_vouchers
-            'dsv.mes_lis_shi_tra_trade_number',
-            'dsv.mes_lis_shi_tra_additional_trade_number',
-            'dsv.mes_lis_shi_fre_shipment_number',
-            'dsv.mes_lis_shi_par_shi_code',
-            'dsv.mes_lis_shi_par_shi_gln',
-            'dsv.mes_lis_shi_par_shi_name',
-            'dsv.mes_lis_shi_par_shi_name_sbcs',
-            'dsv.mes_lis_shi_par_rec_code',
-            'dsv.mes_lis_shi_par_rec_gln',
-            'dsv.mes_lis_shi_par_rec_name',
-            'dsv.mes_lis_shi_par_rec_name_sbcs',
-            'dsv.mes_lis_shi_par_tra_code',
-            'dsv.mes_lis_shi_par_tra_gln',
-            'dsv.mes_lis_shi_par_tra_name',
-            'dsv.mes_lis_shi_par_tra_name_sbcs',
-            'dsv.mes_lis_shi_par_pay_code',
-            'dsv.mes_lis_shi_par_pay_gln',
-            'dsv.mes_lis_shi_par_pay_name',
-            'dsv.mes_lis_shi_par_pay_name_sbcs',
-            'dsv.mes_lis_shi_par_sel_code',
-            'dsv.mes_lis_shi_par_sel_gln',
-            'dsv.mes_lis_shi_par_sel_name',
-            'dsv.mes_lis_shi_par_sel_name_sbcs',
-            'dsv.mes_lis_shi_par_sel_branch_number',
-            'dsv.mes_lis_shi_par_sel_ship_location_code',
-            'dsv.mes_lis_shi_log_shi_gln',
-            'dsv.mes_lis_shi_log_del_route_code',
-            'dsv.mes_lis_shi_log_del_delivery_service_code',
-            'dsv.mes_lis_shi_log_del_stock_transfer_code',
-            'dsv.mes_lis_shi_log_del_delivery_code',
-            'dsv.mes_lis_shi_log_del_delivery_time',
-            'dsv.mes_lis_shi_log_del_transportation_code',
-            'dsv.mes_lis_shi_log_log_barcode_print',
-            'dsv.mes_lis_shi_log_log_category_name_print1',
-            'dsv.mes_lis_shi_log_log_category_name_print2',
-            'dsv.mes_lis_shi_log_log_receiver_abbr_name',
-            'dsv.mes_lis_shi_log_log_text',
-            'dsv.mes_lis_shi_log_log_text_sbcs',
-            'dsv.mes_lis_shi_log_maker_code_for_receiving',
-            'dsv.mes_lis_shi_log_delivery_slip_number',
-            'dsv.mes_lis_shi_tra_goo_major_category',
-            'dsv.mes_lis_shi_tra_goo_sub_major_category',
+            'dsv.mes_lis_shi_tra_trade_number', //16
+            'dsv.mes_lis_shi_tra_additional_trade_number', //17
+            'dsv.mes_lis_shi_fre_shipment_number', //18
+            'dsv.mes_lis_shi_par_shi_code', //19
+            'dsv.mes_lis_shi_par_shi_gln', //20
+            'dsv.mes_lis_shi_par_shi_name', //21
+            'dsv.mes_lis_shi_par_shi_name_sbcs', //22
+            'dsv.mes_lis_shi_par_rec_code', //23
+            'dsv.mes_lis_shi_par_rec_gln', //24
+            'dsv.mes_lis_shi_par_rec_name', //25
+            'dsv.mes_lis_shi_par_rec_name_sbcs', //26
+            'dsv.mes_lis_shi_par_tra_code', //27
+            'dsv.mes_lis_shi_par_tra_gln', //28
+            'dsv.mes_lis_shi_par_tra_name', //29
+            'dsv.mes_lis_shi_par_tra_name_sbcs', //30
+            'dsv.mes_lis_shi_par_pay_code', //31
+            'dsv.mes_lis_shi_par_pay_gln', //32
+            'dsv.mes_lis_shi_par_pay_name', //33
+            'dsv.mes_lis_shi_par_pay_name_sbcs', //34
+            'dsv.mes_lis_shi_par_sel_code', //35
+            'dsv.mes_lis_shi_par_sel_gln', //36
+            'dsv.mes_lis_shi_par_sel_name', //37
+            'dsv.mes_lis_shi_par_sel_name_sbcs', //38
+            'dsv.mes_lis_shi_par_sel_branch_number', //39
+            'dsv.mes_lis_shi_par_sel_ship_location_code', //40
+            'dsv.mes_lis_shi_log_shi_gln', //41
+            'dsv.mes_lis_shi_log_del_route_code', //42
+            'dsv.mes_lis_shi_log_del_delivery_service_code', //43
+            'dsv.mes_lis_shi_log_del_stock_transfer_code', //44
+            'dsv.mes_lis_shi_log_del_delivery_code', //45
+            'dsv.mes_lis_shi_log_del_delivery_time', //46
+            'dsv.mes_lis_shi_log_del_transportation_code', //47
+            'dsv.mes_lis_shi_log_log_barcode_print', //48
+            'dsv.mes_lis_shi_log_log_category_name_print1', //49
+            'dsv.mes_lis_shi_log_log_category_name_print2', //50
+            'dsv.mes_lis_shi_log_log_receiver_abbr_name', //51
+            'dsv.mes_lis_shi_log_log_text', //52
+            'dsv.mes_lis_shi_log_log_text_sbcs', //53
+            'dsv.mes_lis_shi_log_maker_code_for_receiving', //54
+            'dsv.mes_lis_shi_log_delivery_slip_number', //55
+            'dsv.mes_lis_shi_tra_goo_major_category', //56
+            'dsv.mes_lis_shi_tra_goo_sub_major_category', //57
             \DB::raw('CASE
             WHEN dsv.mes_lis_shi_tra_dat_order_date="0000-00-00"
             THEN ""
-            ELSE dsv.mes_lis_shi_tra_dat_order_date  END'),
+            ELSE dsv.mes_lis_shi_tra_dat_order_date  END'), //58
             \DB::raw('CASE
             WHEN dsv.mes_lis_shi_tra_dat_delivery_date="0000-00-00"
             THEN ""
-            ELSE dsv.mes_lis_shi_tra_dat_delivery_date  END'),
+            ELSE dsv.mes_lis_shi_tra_dat_delivery_date  END'), //59
             \DB::raw('CASE
             WHEN dsv.mes_lis_shi_tra_dat_delivery_date_to_receiver="0000-00-00"
             THEN ""
-            ELSE dsv.mes_lis_shi_tra_dat_delivery_date_to_receiver  END'),
+            ELSE dsv.mes_lis_shi_tra_dat_delivery_date_to_receiver  END'), //60
             \DB::raw('CASE
             WHEN dsv.mes_lis_shi_tra_dat_revised_delivery_date="0000-00-00"
             THEN ""
-            ELSE dsv.mes_lis_shi_tra_dat_revised_delivery_date  END'),
+            ELSE dsv.mes_lis_shi_tra_dat_revised_delivery_date  END'), //61
             \DB::raw('CASE
             WHEN dsv.mes_lis_shi_tra_dat_transfer_of_ownership_date="0000-00-00"
             THEN ""
-            ELSE dsv.mes_lis_shi_tra_dat_transfer_of_ownership_date  END'),
+            ELSE dsv.mes_lis_shi_tra_dat_transfer_of_ownership_date  END'), //62
             \DB::raw('CASE
             WHEN dsv.mes_lis_shi_tra_dat_campaign_start_date="0000-00-00"
             THEN ""
-            ELSE dsv.mes_lis_shi_tra_dat_campaign_start_date  END'),
+            ELSE dsv.mes_lis_shi_tra_dat_campaign_start_date  END'), //63
             \DB::raw('CASE
             WHEN dsv.mes_lis_shi_tra_dat_campaign_end_date="0000-00-00"
             THEN ""
-            ELSE dsv.mes_lis_shi_tra_dat_campaign_end_date  END'),
+            ELSE dsv.mes_lis_shi_tra_dat_campaign_end_date  END'), //64
 
-            'dsv.mes_lis_shi_tra_ins_goods_classification_code',
-            'dsv.mes_lis_shi_tra_ins_order_classification_code',
-            'dsv.mes_lis_shi_tra_ins_ship_notification_request_code',
+            'dsv.mes_lis_shi_tra_ins_goods_classification_code', //65
+            'dsv.mes_lis_shi_tra_ins_order_classification_code', //66
+            'dsv.mes_lis_shi_tra_ins_ship_notification_request_code', //67
 
             \DB::raw('CASE
             WHEN dsv.mes_lis_shi_tra_ins_eos_code=null
             THEN "01"
             WHEN dsv.mes_lis_shi_tra_ins_eos_code=""
             THEN "01"
-            ELSE dsv.mes_lis_shi_tra_ins_eos_code  END'),
+            ELSE dsv.mes_lis_shi_tra_ins_eos_code  END'), //68
 
             // 'data_shipment_vouchers.mes_lis_shi_tra_ins_eos_code',
-            'dsv.mes_lis_shi_tra_ins_private_brand_code',
-            'dsv.mes_lis_shi_tra_ins_temperature_code',
-            'dsv.mes_lis_shi_tra_ins_liquor_code',
-            'dsv.mes_lis_shi_tra_ins_trade_type_code',
-            'dsv.mes_lis_shi_tra_ins_paper_form_less_code',
-            'dsv.mes_lis_shi_tra_fre_trade_number_request_code',
-            'dsv.mes_lis_shi_tra_fre_package_code',
-            'dsv.mes_lis_shi_tra_fre_variable_measure_item_code',
-            'dsv.mes_lis_shi_tra_tax_tax_type_code',
-            'dsv.mes_lis_shi_tra_tax_tax_rate',
-            'dsv.mes_lis_shi_tra_not_text',
-            'dsv.mes_lis_shi_tra_not_text_sbcs',
-            'dsv.mes_lis_shi_tot_tot_net_price_total',
-            'dsv.mes_lis_shi_tot_tot_selling_price_total',
-            'dsv.mes_lis_shi_tot_tot_tax_total',
-            'dsv.mes_lis_shi_tot_tot_item_total',
-            'dsv.mes_lis_shi_tot_tot_unit_total',
+            'dsv.mes_lis_shi_tra_ins_private_brand_code', //69
+            'dsv.mes_lis_shi_tra_ins_temperature_code', //70
+            'dsv.mes_lis_shi_tra_ins_liquor_code', //71
+            'dsv.mes_lis_shi_tra_ins_trade_type_code', //72
+            'dsv.mes_lis_shi_tra_ins_paper_form_less_code', //73
+            'dsv.mes_lis_shi_tra_fre_trade_number_request_code', //74
+            'dsv.mes_lis_shi_tra_fre_package_code', //75
+            'dsv.mes_lis_shi_tra_fre_variable_measure_item_code', //76
+            'dsv.mes_lis_shi_tra_tax_tax_type_code', //77
+            'dsv.mes_lis_shi_tra_tax_tax_rate', //78
+            'dsv.mes_lis_shi_tra_not_text', //79
+            'dsv.mes_lis_shi_tra_not_text_sbcs', //80
+            'dsv.mes_lis_shi_tot_tot_net_price_total', //81
+            'dsv.mes_lis_shi_tot_tot_selling_price_total', //82
+            'dsv.mes_lis_shi_tot_tot_tax_total', //83
+            'dsv.mes_lis_shi_tot_tot_item_total', //84
+            'dsv.mes_lis_shi_tot_tot_unit_total', //85
             \DB::raw('CASE
             WHEN dsv.mes_lis_shi_tot_fre_unit_weight_total=null
             THEN "0"
             WHEN dsv.mes_lis_shi_tot_fre_unit_weight_total=""
             THEN "0"
-            ELSE dsv.mes_lis_shi_tot_fre_unit_weight_total  END'),
+            ELSE dsv.mes_lis_shi_tot_fre_unit_weight_total  END'), //86
 
             // data_shipment_items
-            'dsi.mes_lis_shi_lin_lin_line_number',
-            'dsi.mes_lis_shi_lin_lin_additional_line_number',
-            'dsi.mes_lis_shi_lin_fre_trade_number',
-            'dsi.mes_lis_shi_lin_fre_line_number',
-            'dsi.mes_lis_shi_lin_fre_shipment_line_number',
-            'dsi.mes_lis_shi_lin_goo_minor_category',
-            'dsi.mes_lis_shi_lin_goo_detailed_category',
+            'dsi.mes_lis_shi_lin_lin_line_number', //87
+            'dsi.mes_lis_shi_lin_lin_additional_line_number', //88
+            'dsi.mes_lis_shi_lin_fre_trade_number', //89
+            'dsi.mes_lis_shi_lin_fre_line_number', //90
+            'dsi.mes_lis_shi_lin_fre_shipment_line_number', //91
+            'dsi.mes_lis_shi_lin_goo_minor_category', //92
+            'dsi.mes_lis_shi_lin_goo_detailed_category', //93
             \DB::raw('CASE
             WHEN dsi.mes_lis_shi_lin_ite_scheduled_date="0000-00-00"
             THEN ""
-            ELSE dsi.mes_lis_shi_lin_ite_scheduled_date  END'),
-            'dsi.mes_lis_shi_lin_ite_deadline_date',
-            'dsi.mes_lis_shi_lin_ite_center_delivery_instruction_code',
-            'dsi.mes_lis_shi_lin_fre_interim_price_code',
-            'dsi.mes_lis_shi_lin_ite_maker_code',
-            'dsi.mes_lis_shi_lin_ite_gtin',
-            'dsi.mes_lis_shi_lin_ite_order_item_code',
-            'dsi.mes_lis_shi_lin_ite_ord_code_type',
-            'dsi.mes_lis_shi_lin_ite_supplier_item_code',
-            'dsi.mes_lis_shi_lin_ite_name',
-            'dsi.mes_lis_shi_lin_ite_name_sbcs',
-            'dsi.mes_lis_shi_lin_fre_shipment_item_code',
-            'dsi.mes_lis_shi_lin_ite_ite_spec',
-            'dsi.mes_lis_shi_lin_ite_ite_spec_sbcs',
-            'dsi.mes_lis_shi_lin_ite_col_color_code',
-            'dsi.mes_lis_shi_lin_ite_col_description',
-            'dsi.mes_lis_shi_lin_ite_col_description_sbcs',
-            'dsi.mes_lis_shi_lin_ite_siz_size_code',
-            'dsi.mes_lis_shi_lin_ite_siz_description',
-            'dsi.mes_lis_shi_lin_ite_siz_description_sbcs',
-            'dsi.mes_lis_shi_lin_fre_packing_quantity',
-            'dsi.mes_lis_shi_lin_fre_prefecture_code',
-            'dsi.mes_lis_shi_lin_fre_country_code',
-            'dsi.mes_lis_shi_lin_fre_field_name',
-            'dsi.mes_lis_shi_lin_fre_water_area_code',
-            'dsi.mes_lis_shi_lin_fre_water_area_name',
-            'dsi.mes_lis_shi_lin_fre_area_of_origin',
-            'dsi.mes_lis_shi_lin_fre_item_grade',
-            'dsi.mes_lis_shi_lin_fre_item_class',
-            'dsi.mes_lis_shi_lin_fre_brand',
-            'dsi.mes_lis_shi_lin_fre_item_pr',
-            'dsi.mes_lis_shi_lin_fre_bio_code',
-            'dsi.mes_lis_shi_lin_fre_breed_code',
-            'dsi.mes_lis_shi_lin_fre_cultivation_code',
-            'dsi.mes_lis_shi_lin_fre_defrost_code',
-            'dsi.mes_lis_shi_lin_fre_item_preservation_code',
-            'dsi.mes_lis_shi_lin_fre_item_shape_code',
-            'dsi.mes_lis_shi_lin_fre_use',
-            'dsi.mes_lis_shi_lin_sta_statutory_classification_code',
-            'dsi.mes_lis_shi_lin_amo_item_net_price',
-            'dsi.mes_lis_shi_lin_amo_item_net_price_unit_price',
-            'dsi.mes_lis_shi_lin_amo_item_selling_price',
-            'dsi.mes_lis_shi_lin_amo_item_selling_price_unit_price',
-            'dsi.mes_lis_shi_lin_amo_item_tax',
-            'dsi.mes_lis_shi_lin_qua_unit_multiple',
-            'dsi.mes_lis_shi_lin_qua_unit_of_measure',
-            'dsi.mes_lis_shi_lin_qua_package_indicator',
-            'dsi.mes_lis_shi_lin_qua_ord_quantity',
-            'dsi.mes_lis_shi_lin_qua_ord_num_of_order_units',
-            'dsi.mes_lis_shi_lin_qua_shi_quantity',
-            'dsi.mes_lis_shi_lin_qua_shi_num_of_order_units',
-            'dsi.mes_lis_shi_lin_qua_sto_quantity',
+            ELSE dsi.mes_lis_shi_lin_ite_scheduled_date  END'), //94
+            'dsi.mes_lis_shi_lin_ite_deadline_date', //95
+            'dsi.mes_lis_shi_lin_ite_center_delivery_instruction_code', //96
+            'dsi.mes_lis_shi_lin_fre_interim_price_code', //97
+            'dsi.mes_lis_shi_lin_ite_maker_code', //98
+            'dsi.mes_lis_shi_lin_ite_gtin', //99
+            'dsi.mes_lis_shi_lin_ite_order_item_code', //100
+            'dsi.mes_lis_shi_lin_ite_ord_code_type', //101
+            'dsi.mes_lis_shi_lin_ite_supplier_item_code', //102
+            'dsi.mes_lis_shi_lin_ite_name', //103
+            'dsi.mes_lis_shi_lin_ite_name_sbcs', //104
+            'dsi.mes_lis_shi_lin_fre_shipment_item_code', //105
+            'dsi.mes_lis_shi_lin_ite_ite_spec', //106
+            'dsi.mes_lis_shi_lin_ite_ite_spec_sbcs', //107
+            'dsi.mes_lis_shi_lin_ite_col_color_code', //108
+            'dsi.mes_lis_shi_lin_ite_col_description', //109
+            'dsi.mes_lis_shi_lin_ite_col_description_sbcs', //110
+            'dsi.mes_lis_shi_lin_ite_siz_size_code', //111
+            'dsi.mes_lis_shi_lin_ite_siz_description', //112
+            'dsi.mes_lis_shi_lin_ite_siz_description_sbcs', //113
+            'dsi.mes_lis_shi_lin_fre_packing_quantity', //114
+            'dsi.mes_lis_shi_lin_fre_prefecture_code', //115
+            'dsi.mes_lis_shi_lin_fre_country_code', //116
+            'dsi.mes_lis_shi_lin_fre_field_name', //117
+            'dsi.mes_lis_shi_lin_fre_water_area_code', //118
+            'dsi.mes_lis_shi_lin_fre_water_area_name', //119
+            'dsi.mes_lis_shi_lin_fre_area_of_origin', //120
+            'dsi.mes_lis_shi_lin_fre_item_grade', //121
+            'dsi.mes_lis_shi_lin_fre_item_class', //122
+            'dsi.mes_lis_shi_lin_fre_brand', //123
+            'dsi.mes_lis_shi_lin_fre_item_pr', //124
+            'dsi.mes_lis_shi_lin_fre_bio_code', //125
+            'dsi.mes_lis_shi_lin_fre_breed_code', //126
+            'dsi.mes_lis_shi_lin_fre_cultivation_code', //127
+            'dsi.mes_lis_shi_lin_fre_defrost_code', //128
+            'dsi.mes_lis_shi_lin_fre_item_preservation_code', //129
+            'dsi.mes_lis_shi_lin_fre_item_shape_code', //130
+            'dsi.mes_lis_shi_lin_fre_use', //131
+            'dsi.mes_lis_shi_lin_sta_statutory_classification_code', //132
+            'dsi.mes_lis_shi_lin_amo_item_net_price', //133
+            'dsi.mes_lis_shi_lin_amo_item_net_price_unit_price', //134
+            'dsi.mes_lis_shi_lin_amo_item_selling_price', //135
+            'dsi.mes_lis_shi_lin_amo_item_selling_price_unit_price', //136
+            'dsi.mes_lis_shi_lin_amo_item_tax', //137
+            'dsi.mes_lis_shi_lin_qua_unit_multiple', //138
+            'dsi.mes_lis_shi_lin_qua_unit_of_measure', //139
+            'dsi.mes_lis_shi_lin_qua_package_indicator', //140
+            'dsi.mes_lis_shi_lin_qua_ord_quantity', //141
+            'dsi.mes_lis_shi_lin_qua_ord_num_of_order_units', // 142
+            'dsi.mes_lis_shi_lin_qua_shi_quantity', //143
+            'dsi.mes_lis_shi_lin_qua_shi_num_of_order_units', // 144
+            'dsi.mes_lis_shi_lin_qua_sto_quantity', //145
             \DB::raw('CASE
             WHEN dsi.mes_lis_shi_lin_qua_sto_num_of_order_units=null
             THEN "0"
             WHEN dsi.mes_lis_shi_lin_qua_sto_num_of_order_units=""
             THEN "0"
-            ELSE dsi.mes_lis_shi_lin_qua_sto_num_of_order_units  END'),
-            'dsi.mes_lis_shi_lin_qua_sto_reason_code',
+            ELSE dsi.mes_lis_shi_lin_qua_sto_num_of_order_units  END'), //146
+            'dsi.mes_lis_shi_lin_qua_sto_reason_code', //147
             \DB::raw('CASE
             WHEN dsi.mes_lis_shi_lin_fre_unit_weight=null
             THEN "0"
             WHEN dsi.mes_lis_shi_lin_fre_unit_weight=""
             THEN "0"
-            ELSE dsi.mes_lis_shi_lin_fre_unit_weight  END'),
+            ELSE dsi.mes_lis_shi_lin_fre_unit_weight  END'), //148
             // 'data_shipment_items.mes_lis_shi_lin_fre_unit_weight_code',
             \DB::raw('CASE
             WHEN dsi.mes_lis_shi_lin_fre_unit_weight_code=null
             THEN "0"
             WHEN dsi.mes_lis_shi_lin_fre_unit_weight_code=""
             THEN "0"
-            ELSE dsi.mes_lis_shi_lin_fre_unit_weight_code  END'),
+            ELSE dsi.mes_lis_shi_lin_fre_unit_weight_code  END'), //149
             \DB::raw('CASE
             WHEN dsi.mes_lis_shi_lin_fre_item_weight=null
             THEN "0"
             WHEN dsi.mes_lis_shi_lin_fre_item_weight=""
             THEN "0"
-            ELSE dsi.mes_lis_shi_lin_fre_item_weight  END'),
+            ELSE dsi.mes_lis_shi_lin_fre_item_weight  END'), //150
             \DB::raw('CASE
             WHEN dsi.mes_lis_shi_lin_fre_order_weight=null
             THEN "0"
             WHEN dsi.mes_lis_shi_lin_fre_order_weight=""
             THEN "0"
-            ELSE dsi.mes_lis_shi_lin_fre_order_weight  END'),
+            ELSE dsi.mes_lis_shi_lin_fre_order_weight  END'), //151
             \DB::raw('CASE
             WHEN dsi.mes_lis_shi_lin_fre_shipment_weight=null
             THEN "0"
             WHEN dsi.mes_lis_shi_lin_fre_shipment_weight=""
             THEN "0"
-            ELSE dsi.mes_lis_shi_lin_fre_shipment_weight  END'),
+            ELSE dsi.mes_lis_shi_lin_fre_shipment_weight  END'), //152
             // data_shipment_item_details
             \DB::raw('CASE
             WHEN dsid.mes_lis_shi_lin_pac_itf_code=null
             THEN "0"
             WHEN dsid.mes_lis_shi_lin_pac_itf_code=""
             THEN "0"
-            ELSE dsid.mes_lis_shi_lin_pac_itf_code  END'),
+            ELSE dsid.mes_lis_shi_lin_pac_itf_code  END'), //153
             \DB::raw('CASE
             WHEN dsid.mes_lis_shi_lin_pac_package_indicator=null
             THEN "00"
             WHEN dsid.mes_lis_shi_lin_pac_package_indicator=""
             THEN "00"
-            ELSE dsid.mes_lis_shi_lin_pac_package_indicator  END'),
+            ELSE dsid.mes_lis_shi_lin_pac_package_indicator  END'), //154
             \DB::raw('CASE
             WHEN dsid.mes_lis_shi_lin_pac_number_of_packages=null
             THEN "0"
             WHEN dsid.mes_lis_shi_lin_pac_number_of_packages=""
             THEN "0"
-            ELSE dsid.mes_lis_shi_lin_pac_number_of_packages  END'),
-            'dsid.mes_lis_shi_lin_pac_con_sell_by_date',
-            'dsid.mes_lis_shi_lin_pac_con_production_date',
-            'dsid.mes_lis_shi_lin_pac_con_lot_number'
+            ELSE dsid.mes_lis_shi_lin_pac_number_of_packages  END'), //155
+            'dsid.mes_lis_shi_lin_pac_con_sell_by_date', //156
+            'dsid.mes_lis_shi_lin_pac_con_production_date', //157
+            'dsid.mes_lis_shi_lin_pac_con_lot_number' //158
             )
         ->leftJoin('data_shipment_vouchers as dsv','dsv.data_shipment_id','=','data_shipments.data_shipment_id')
         ->leftJoin('data_shipment_items as dsi','dsv.data_shipment_voucher_id','=','dsi.data_shipment_voucher_id')
@@ -819,56 +819,19 @@ class Data_Controller extends Controller
         ];
     }
     public function shipmentUpdateArray($data_array,$file_name="",$shipment_reason_code_array=[]){
+            $net_price_total=0;
+            $selling_price_total=0;
+            $tax_total=0;
+            $item_total=0;
+            $unit_total=0;
+
             foreach ($data_array as $key => $value) {
                 $shipment_array=array();
                 $shipment_voucher_array=array();
                 $shipment_item_array=array();
 
-                $revised_delivery_date=$value[61];
-                $shi_quantity=$value[143];
-                $order_units=$value[144];
-                $reason_code=$value[147];
-
-                if ($revised_delivery_date!=null) {
-                    $date_validate=$this->all_functions->validateDate($revised_delivery_date);
-                    if (!$date_validate) {
-                        return response()->json(['message'=>"Error",'status'=>0]);
-                    }
-                }
-                if ($shi_quantity!=null) {
-                    if (!is_numeric($shi_quantity)) {
-                        return response()->json(['message'=>"Error",'status'=>0]);
-                    }
-                }
-                if ($order_units!=null) {
-
-                    $shipment_reason_code_array;
-                    if (!is_numeric($order_units)) {
-                        return response()->json(['message'=>"Error",'status'=>0]);
-                    }
-                }
-                if ($reason_code!=null) {
-                    $reason_status=0;
-                    foreach ($shipment_reason_code_array as $key => $code_val) {
-                        if(array_key_exists($reason_code, $code_val)) {
-                            $reason_status=1;
-                        }
-                    }
-                    if ($reason_status==0) {
-                        return response()->json(['message'=>"Error",'status'=>0]);
-                    }
-                }else{
-                    return response()->json(['message'=>"Error",'status'=>0]);
-                }
-
                 $shipment_array['upload_datetime']=date('y-m-d H:i:s');
                 $shipment_array['upload_file_path']=$file_name;
-
-                $shipment_voucher_array['mes_lis_shi_tra_dat_revised_delivery_date']=$value[61];
-
-                $shipment_item_array['mes_lis_shi_lin_qua_shi_quantity']=$value[143];
-                $shipment_item_array['mes_lis_shi_lin_qua_shi_num_of_order_units']=$value[144];
-                $shipment_item_array['mes_lis_shi_lin_qua_sto_reason_code']=$value[147];
 
                 $data_shipment_voucher_query=data_shipment_voucher::where('mes_lis_shi_tra_trade_number',$value[16])
                 ->where('mes_lis_shi_tra_dat_delivery_date_to_receiver',$value[60]);
@@ -882,18 +845,122 @@ class Data_Controller extends Controller
                 if (strtotime($value[61])>strtotime($data_shipment_voucher_info->mes_lis_shi_tra_dat_revised_delivery_date)) {
                     return response()->json(['status'=>0,'message'=>'Error']);
                 }
+
                 $data_shipment_id=$data_shipment_voucher_info->data_shipment_id;
+                data_shipment::where('data_shipment_id',$data_shipment_id)->update($shipment_array);
+
+                $data_shipment_voucher_id=$data_shipment_voucher_info->data_shipment_voucher_id;
+
+                foreach ($data_array as $key => $custom) {
+                    if ($value[16]==$data_shipment_voucher_info->mes_lis_shi_tra_trade_number && $value[60]==$data_shipment_voucher_info->mes_lis_shi_tra_dat_delivery_date_to_receiver) {
+                        $net_price_total+=$value[133];
+                        $selling_price_total+=$value[135];
+                        $tax_total+=$value[137];
+                        $item_total+=$value[143];
+                        $unit_total+=$value[144];
+                    }
+                }
+
+                $shipment_voucher_array['mes_lis_shi_tot_tot_net_price_total']=$net_price_total;
+                $shipment_voucher_array['mes_lis_shi_tot_tot_selling_price_total']=$selling_price_total;
+                $shipment_voucher_array['mes_lis_shi_tot_tot_tax_total']=$tax_total;
+                $shipment_voucher_array['mes_lis_shi_tot_tot_item_total']=$item_total;
+                $shipment_voucher_array['mes_lis_shi_tot_tot_unit_total']=$unit_total;
 
                 $data_shipment_voucher_query->update($shipment_voucher_array);
 
-                data_shipment::where('data_shipment_id',$data_shipment_id)->update($shipment_array);
 
-                $all_voucher=$data_shipment_voucher_query->get();
-                foreach ($all_voucher as $key1 => $voucher) {
+                $all_vouchers=$data_shipment_voucher_query->get();
+
+
+                $shipment_item_array['mes_lis_shi_lin_amo_item_net_price']=$value[143] * $value[134];
+                $shipment_item_array['mes_lis_shi_lin_amo_item_selling_price']=$value[143] * $value[136];
+                $shipment_item_array['mes_lis_shi_lin_amo_item_tax']=$value[133] * $value[78]/100;
+                $shipment_item_array['mes_lis_shi_lin_qua_sto_quantity']=$value[141]-$value[143];
+                $shipment_item_array['mes_lis_shi_lin_qua_sto_num_of_order_units']=$value[142] - $value[144];
+
+                foreach ($all_vouchers as $key1 => $voucher) {
                     $data_shipment_voucher_id=$voucher->data_shipment_voucher_id;
                     data_shipment_item::where('data_shipment_voucher_id',$data_shipment_voucher_id)
                     ->where('mes_lis_shi_lin_lin_line_number',$value[87])->update($shipment_item_array);
                 }
+
+
+                // $revised_delivery_date=$value[61];
+                // $shi_quantity=$value[143];
+                // $order_units=$value[144];
+                // $reason_code=$value[147];
+
+                // if ($revised_delivery_date!=null) {
+                //     $date_validate=$this->all_functions->validateDate($revised_delivery_date);
+                //     if (!$date_validate) {
+                //         return response()->json(['message'=>"Error",'status'=>0]);
+                //     }
+                // }
+                // if ($shi_quantity!=null) {
+                //     if (!is_numeric($shi_quantity)) {
+                //         return response()->json(['message'=>"Error",'status'=>0]);
+                //     }
+                // }
+                // if ($order_units!=null) {
+
+                //     $shipment_reason_code_array;
+                //     if (!is_numeric($order_units)) {
+                //         return response()->json(['message'=>"Error",'status'=>0]);
+                //     }
+                // }
+                // if ($reason_code!=null) {
+                //     $reason_status=0;
+                //     foreach ($shipment_reason_code_array as $key => $code_val) {
+                //         if(array_key_exists($reason_code, $code_val)) {
+                //             $reason_status=1;
+                //         }
+                //     }
+                //     if ($reason_status==0) {
+                //         return response()->json(['message'=>"Error",'status'=>0]);
+                //     }
+                // }else{
+                //     return response()->json(['message'=>"Error",'status'=>0]);
+                // }
+
+                // $shipment_array['upload_datetime']=date('y-m-d H:i:s');
+                // $shipment_array['upload_file_path']=$file_name;
+
+                // $shipment_voucher_array['mes_lis_shi_tra_dat_revised_delivery_date']=$value[61];
+
+                // $shipment_item_array['mes_lis_shi_lin_qua_shi_quantity']=$value[143];
+                // $shipment_item_array['mes_lis_shi_lin_qua_shi_num_of_order_units']=$value[144];
+                // $shipment_item_array['mes_lis_shi_lin_qua_sto_reason_code']=$value[147];
+
+                // $data_shipment_voucher_query=data_shipment_voucher::where('mes_lis_shi_tra_trade_number',$value[16])
+                // ->where('mes_lis_shi_tra_dat_delivery_date_to_receiver',$value[60]);
+
+                // $data_shipment_voucher_info=$data_shipment_voucher_query->first();
+
+                // if (empty($data_shipment_voucher_info)) {
+                //     return response()->json(['status'=>0,'message'=>'Error']);
+                // }
+                // // datetime loimit
+                // if (strtotime($value[61])>strtotime($data_shipment_voucher_info->mes_lis_shi_tra_dat_revised_delivery_date)) {
+                //     return response()->json(['status'=>0,'message'=>'Error']);
+                // }
+                // $data_shipment_id=$data_shipment_voucher_info->data_shipment_id;
+
+                // $data_shipment_voucher_query->update($shipment_voucher_array);
+
+                // data_shipment::where('data_shipment_id',$data_shipment_id)->update($shipment_array);
+
+                // $all_voucher=$data_shipment_voucher_query->get();
+                // foreach ($all_voucher as $key1 => $voucher) {
+                //     $data_shipment_voucher_id=$voucher->data_shipment_voucher_id;
+                //     data_shipment_item::where('data_shipment_voucher_id',$data_shipment_voucher_id)
+                //     ->where('mes_lis_shi_lin_lin_line_number',$value[87])->update($shipment_item_array);
+                // }
+                $net_price_total=0;
+                $selling_price_total=0;
+                $tax_total=0;
+                $item_total=0;
+                $unit_total=0;
             }
         return response()->json(['message'=>"Success",'status'=>1]);
 
