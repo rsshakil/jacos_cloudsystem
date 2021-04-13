@@ -163,8 +163,17 @@ class ShipmentController extends Controller
         $total_cost_price = $request->total_cost_price;
         $updated_date = $request->updated_date;
         $status = $request->order_status;
-        data_shipment_voucher::where('data_shipment_voucher_id', $items[0]['data_shipment_voucher_id'])->update(['mes_lis_shi_tra_dat_revised_delivery_date'=>$updated_date,'status'=>$status]);
+$mes_lis_shi_tot_tot_net_price_total_sum=0;
+$mes_lis_shi_tot_tot_selling_price_total_sum=0;
+$mes_lis_shi_tot_tot_tax_total_sum=0;
+$mes_lis_shi_tot_tot_item_total_sum=0;
+$mes_lis_shi_tot_tot_unit_total_sum=0;
         foreach ($items as $item) {
+            $mes_lis_shi_tot_tot_net_price_total_sum +=$item['mes_lis_shi_lin_amo_item_net_price'];
+            $mes_lis_shi_tot_tot_selling_price_total_sum +=$item['mes_lis_shi_lin_amo_item_selling_price'];
+            $mes_lis_shi_tot_tot_tax_total_sum +=$item['mes_lis_shi_lin_amo_item_tax'];
+            $mes_lis_shi_tot_tot_item_total_sum +=$item['mes_lis_shi_lin_qua_shi_quantity'];
+            $mes_lis_shi_tot_tot_unit_total_sum +=$item['mes_lis_shi_lin_qua_shi_num_of_order_units'];
             data_shipment_item::where('data_shipment_item_id', $item['data_shipment_item_id'])->update([
                // 'mes_lis_shi_tra_dat_revised_delivery_date'=>$item->mes_lis_shi_tra_dat_revised_delivery_date,
                 // 'mes_lis_shi_tot_tot_net_price_total'=>$item->mes_lis_shi_tot_tot_net_price_total,
@@ -175,16 +184,27 @@ class ShipmentController extends Controller
                 // 'mes_lis_shi_tot_fre_unit_weight_total'=>$item->mes_lis_shi_tot_fre_unit_weight_total,
 
                 'mes_lis_shi_lin_qua_shi_quantity'=>$item['mes_lis_shi_lin_qua_shi_quantity'],
-                'mes_lis_shi_lin_qua_shi_num_of_order_units'=>$item['mes_lis_shi_lin_qua_shi_num_of_order_units'],
-                'mes_lis_shi_lin_qua_sto_quantity'=>$item['mes_lis_shi_lin_qua_sto_quantity'],
-                'mes_lis_shi_lin_qua_sto_num_of_order_units'=>$item['mes_lis_shi_lin_qua_sto_num_of_order_units'],
+                'mes_lis_shi_lin_qua_sto_quantity'=>$item['mes_lis_shi_lin_qua_ord_quantity']-$item['mes_lis_shi_lin_qua_shi_quantity'],
+                'mes_lis_shi_lin_qua_sto_num_of_order_units'=>$item['mes_lis_shi_lin_qua_ord_num_of_order_units']-$item['mes_lis_shi_lin_qua_shi_num_of_order_units'],
                 'mes_lis_shi_lin_qua_sto_reason_code'=>$item['mes_lis_shi_lin_qua_sto_reason_code'],
-                'mes_lis_shi_lin_amo_item_net_price'=>$total_cost_price,
+               // 'mes_lis_shi_lin_amo_item_net_price'=>$total_cost_price,
+                'mes_lis_shi_lin_amo_item_net_price'=>$item['mes_lis_shi_lin_qua_shi_quantity']*$item['mes_lis_shi_lin_amo_item_net_price_unit_price'],
                 'mes_lis_shi_lin_amo_item_net_price_unit_price'=>$item['mes_lis_shi_lin_amo_item_net_price_unit_price'],
-                'mes_lis_shi_lin_amo_item_selling_price'=>$total_selling_price,
+                //'mes_lis_shi_lin_amo_item_selling_price'=>$total_selling_price,
+                'mes_lis_shi_lin_amo_item_selling_price'=>$item['mes_lis_shi_lin_qua_shi_quantity']*$item['mes_lis_shi_lin_amo_item_selling_price_unit_price'],
+                'mes_lis_shi_lin_amo_item_tax'=>($item['mes_lis_shi_lin_amo_item_net_price']*$item['mes_lis_shi_tra_tax_tax_rate'])/100,
                 'mes_lis_shi_lin_amo_item_selling_price_unit_price'=>$item['mes_lis_shi_lin_amo_item_selling_price_unit_price'],
             ]);
         }
+        data_shipment_voucher::where('data_shipment_voucher_id', $items[0]['data_shipment_voucher_id'])->update([
+            'mes_lis_shi_tra_dat_revised_delivery_date'=>$updated_date,
+            'mes_lis_shi_tot_tot_net_price_total'=>$mes_lis_shi_tot_tot_net_price_total_sum,
+            'mes_lis_shi_tot_tot_selling_price_total'=>$mes_lis_shi_tot_tot_selling_price_total_sum,
+            'mes_lis_shi_tot_tot_tax_total'=>$mes_lis_shi_tot_tot_tax_total_sum,
+            'mes_lis_shi_tot_tot_item_total'=>$mes_lis_shi_tot_tot_item_total_sum,
+            'mes_lis_shi_tot_tot_unit_total'=>$mes_lis_shi_tot_tot_unit_total_sum,
+            'status'=>$status
+            ]);
 
         return response()->json(['success' => '1']);
     }
