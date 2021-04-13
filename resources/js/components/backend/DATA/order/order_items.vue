@@ -146,11 +146,13 @@
                 <span v-if="order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity>0">{{order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity | priceFormat }}</span>
                 <span v-else>0</span>
                 </td>
-                <td>{{order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code}} {{getbyrjsonValueBykeyName('mes_lis_shi_lin_qua_sto_reason_code',order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code,'shipments')}}
-                <select :disabled="is_disabled(order_item_shipment_data_headTable.decision_datetime==null?true:false)" v-model="order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code" class="form-control" :class="[order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units==0 && order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code=='00' ? 'error_found' :'',order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units==order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units && order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code=='00'?'error_found':'']">
+                <td>
+                <span v-if="order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units!=order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units && order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code=='00'" style="color:red;font-size:12px">欠品のため欠品理由が必要です。</span>
+                <span v-if="order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units==order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units && order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code!='00'" style="color:red;font-size:12px">完納のため欠品理由は不正です。</span>
+                <select :disabled="is_disabled(order_item_shipment_data_headTable.decision_datetime==null?true:false)" v-model="order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code" class="form-control" :class="[order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units!=order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units && order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code=='00' ? 'error_found' :'',order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units==order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units && order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code!='00'?'error_found':'']">
                 <option v-for="(item,i) in mes_lis_shi_lin_qua_sto_reason_codeList" :value="Object.keys(item)[0]" :key="i">{{Object.values(item)[0]}}</option>
                 </select>
-                <span v-if="(order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units==0 && order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code=='00')||(order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units==order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units && order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code=='00')" style="color:red;font-size:12px">Invalid! Choose another option.</span>
+                {{order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code}} {{getbyrjsonValueBykeyName('mes_lis_shi_lin_qua_sto_reason_code',order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code,'shipments')}}
                 <!--<input type="hidden" v-model="totalCostPrice += order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity">
                 <input type="hidden" v-model="totalSellingPrice += order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity">-->
                 </td>
@@ -396,19 +398,19 @@ beforeCreate: function() {
        var isValidate = 1;
        this.order_item_detail_lists.forEach(function (value,index) {
           
-          if(value.mes_lis_shi_lin_qua_shi_num_of_order_units==0 && value.mes_lis_shi_lin_qua_sto_reason_code=='00'){
+          if(value.mes_lis_shi_lin_qua_shi_num_of_order_units!=value.mes_lis_shi_lin_qua_ord_num_of_order_units && value.mes_lis_shi_lin_qua_sto_reason_code=='00'){
             
             _this.alert_icon = "error";
             _this.alert_title = "";
-            _this.alert_text = "Invalid! error code";
+            _this.alert_text = "入力データが不正です。入力値を確認してください。";
             _this.sweet_normal_alert();
             isValidate = 0;
             return isValidate;
           }
-          if((value.mes_lis_shi_lin_qua_shi_num_of_order_units==value.mes_lis_shi_lin_qua_ord_num_of_order_units) && value.mes_lis_shi_lin_qua_sto_reason_code=='00'){
+          if((value.mes_lis_shi_lin_qua_shi_num_of_order_units==value.mes_lis_shi_lin_qua_ord_num_of_order_units) && value.mes_lis_shi_lin_qua_sto_reason_code!='00'){
             _this.alert_icon = "error";
             _this.alert_title = "";
-            _this.alert_text = "Invalid! error code";
+            _this.alert_text = "入力データが不正です。入力値を確認してください。";
             _this.sweet_normal_alert();
              isValidate = 0;
             return isValidate;
@@ -420,18 +422,18 @@ beforeCreate: function() {
       var _this = this;
        this.order_item_detail_lists.forEach(function (value,index) {
           
-          if(value.mes_lis_shi_lin_qua_shi_num_of_order_units==0 && value.mes_lis_shi_lin_qua_sto_reason_code=='00'){
+          if(value.mes_lis_shi_lin_qua_shi_num_of_order_units!=value.mes_lis_shi_lin_qua_ord_num_of_order_units && value.mes_lis_shi_lin_qua_sto_reason_code=='00'){
             
             _this.alert_icon = "error";
             _this.alert_title = "";
-            _this.alert_text = "Invalid! error code";
+            _this.alert_text = "入力データが不正です。入力値を確認してください。";
             _this.sweet_normal_alert();
             return false;
           }
-          if((value.mes_lis_shi_lin_qua_shi_num_of_order_units==value.mes_lis_shi_lin_qua_ord_num_of_order_units) && value.mes_lis_shi_lin_qua_sto_reason_code=='00'){
+          if((value.mes_lis_shi_lin_qua_shi_num_of_order_units==value.mes_lis_shi_lin_qua_ord_num_of_order_units) && value.mes_lis_shi_lin_qua_sto_reason_code!='00'){
             _this.alert_icon = "error";
             _this.alert_title = "";
-            _this.alert_text = "Invalid! error code";
+            _this.alert_text = "入力データが不正です。入力値を確認してください。";
             _this.sweet_normal_alert();
             return false;
           }
