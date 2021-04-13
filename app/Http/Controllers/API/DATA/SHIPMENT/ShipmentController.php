@@ -78,7 +78,7 @@ class ShipmentController extends Controller
             // $request->setMethod('POST');
             // $request=$this->request;
             $request->request->add(['scenario_id' => 6]);
-            $request->request->add(['data_order_id' => 1]);
+            $request->request->add(['data_order_id' => $data_order_id]);
             $request->request->add(['email' => 'user@jacos.co.jp']);
             $request->request->add(['password' => 'Qe75ymSr']);
             $new_file_name =$this->all_functions->downloadFileName($request, 'txt');
