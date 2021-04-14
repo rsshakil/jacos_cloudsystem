@@ -325,7 +325,21 @@ class OrderController extends Controller
         return response()->json(['order_list_detail' => $result, 'slected_list' => $slected_list]);
     }
 
+    public function getCmnConnectId($adm_user_id,$byr_buyer_id){
+        $authUser = User::find($adm_user_id);
+        $cmn_company_id = '';
+        $cmn_connect_id = '';
+        if (!$authUser->hasRole(config('const.adm_role_name'))) {
+            $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
+            $cmn_company_id = $cmn_company_info['cmn_company_id'];
+            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+        }
+        return $cmn_connect_id;
+    }
     public function get_voucher_detail_popup1(Request $request){
+        $cmn_connect_id = $this->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
+        
+
         $result = DB::select("SELECT
         dsv.mes_lis_shi_par_shi_code,
         dsv.mes_lis_shi_par_shi_name,
@@ -333,8 +347,8 @@ class OrderController extends Controller
         from `data_shipments` as `ds`
         inner join `data_shipment_vouchers` as `dsv` on `dsv`.`data_shipment_id` = `ds`.`data_shipment_id`
         WHERE
-        ds.cmn_connect_id = 1 and
-        `ds`.`data_order_id` = 1 AND
+        ds.cmn_connect_id = $cmn_connect_id and
+        `ds`.`data_order_id` = $request->data_order_id AND
         `dsv`.`mes_lis_shi_tra_dat_delivery_date` = '".$request->delivery_date."' AND
         `dsv`.`mes_lis_shi_tra_goo_major_category` = '".$request->major_category."' AND
         `dsv`.`mes_lis_shi_log_del_delivery_service_code` = '".$request->delivery_service_code."' AND
@@ -346,6 +360,8 @@ class OrderController extends Controller
     }
 
     public function get_voucher_detail_popup2(Request $request){
+        $cmn_connect_id = $this->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
+        
         $result = DB::select("SELECT
         dsv.mes_lis_shi_par_rec_code,
         dsv.mes_lis_shi_par_rec_name,
@@ -353,8 +369,8 @@ class OrderController extends Controller
         from `data_shipments` as `ds`
         inner join `data_shipment_vouchers` as `dsv` on `dsv`.`data_shipment_id` = `ds`.`data_shipment_id`
         WHERE
-        ds.cmn_connect_id = 1 and
-        `ds`.`data_order_id` = 3 AND
+        ds.cmn_connect_id = $cmn_connect_id and
+        `ds`.`data_order_id` = $request->data_order_id AND
         `dsv`.`mes_lis_shi_tra_dat_delivery_date` = '".$request->delivery_date."' AND
         `dsv`.`mes_lis_shi_tra_goo_major_category` = '".$request->major_category."' AND
         `dsv`.`mes_lis_shi_log_del_delivery_service_code` = '".$request->delivery_service_code."' AND
@@ -366,6 +382,8 @@ class OrderController extends Controller
     }
 
     public function get_voucher_detail_popup3(Request $request){
+        $cmn_connect_id = $this->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
+        
         $result = DB::select("SELECT
         dsi.mes_lis_shi_lin_ite_order_item_code,
         dsi.mes_lis_shi_lin_ite_name,
@@ -374,8 +392,8 @@ class OrderController extends Controller
         inner join `data_shipment_vouchers` as `dsv` on `dsv`.`data_shipment_id` = `ds`.`data_shipment_id`
         INNER JOIN data_shipment_items AS dsi ON dsi.data_shipment_voucher_id= dsv.data_shipment_voucher_id
         WHERE
-        ds.cmn_connect_id = 1 and
-        `ds`.`data_order_id` = 3 AND
+        ds.cmn_connect_id = $cmn_connect_id and
+        `ds`.`data_order_id` = $request->data_order_id AND
         `dsv`.`mes_lis_shi_tra_dat_delivery_date` = '".$request->delivery_date."' AND
         `dsv`.`mes_lis_shi_tra_goo_major_category` = '".$request->major_category."' AND
         `dsv`.`mes_lis_shi_log_del_delivery_service_code` = '".$request->delivery_service_code."' AND

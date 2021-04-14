@@ -654,10 +654,10 @@
           <th>納品先名</th>
           <th>納品経路</th>
         </tr>
-        <tr v-for="(valueItm,index) in order_search_modal2List" :key="index" @click="setRowscodeIntoForm2(valueItm.mes_lis_shi_par_shi_code)">
+        <tr v-for="(valueItm,index) in order_search_modal2List" :key="index" @click="setRowscodeIntoForm2(valueItm.mes_lis_shi_par_rec_code)">
         <td>{{index+1}}</td>
-          <td>{{valueItm.mes_lis_shi_par_shi_code}}</td>
-          <td>{{valueItm.mes_lis_shi_par_shi_name}}</td>
+          <td>{{valueItm.mes_lis_shi_par_rec_code}}</td>
+          <td>{{valueItm.mes_lis_shi_par_rec_name}}</td>
           <td>{{valueItm.mes_lis_shi_log_del_route_code}}
           {{
                 getbyrjsonValueBykeyName(
@@ -734,18 +734,12 @@
           <th>納品先名</th>
           <th>納品経路</th>
         </tr>
-        <tr v-for="(valueItm,index) in order_search_modal3List" :key="index" @click="setRowscodeIntoForm1(valueItm.mes_lis_shi_par_shi_code)">
+        <tr v-for="(valueItm,index) in order_search_modal3List" :key="index" @click="setRowscodeIntoForm3(valueItm.mes_lis_shi_lin_ite_order_item_code)">
         <td>{{index+1}}</td>
-          <td>{{valueItm.mes_lis_shi_par_shi_code}}</td>
-          <td>{{valueItm.mes_lis_shi_par_shi_name}}</td>
-          <td>{{valueItm.mes_lis_shi_log_del_route_code}}
-          {{
-                getbyrjsonValueBykeyName(
-                  "mes_lis_ord_log_del_route_code",
-                  valueItm.mes_lis_shi_log_del_route_code,
-                  "orders"
-                )
-              }}
+          <td>{{valueItm.mes_lis_shi_lin_ite_order_item_code}}</td>
+          <td>{{valueItm.mes_lis_shi_lin_ite_name}}</td>
+          <td>{{valueItm.mes_lis_shi_lin_ite_ite_spec}}
+         
           </td>
         </tr>
 
@@ -921,6 +915,8 @@ export default {
       },
     deliverySearchForm1() {
       this.order_search_modal1 = true;
+      this.$route.query.adm_user_id = Globals.user_info_id;
+      this.$route.query.byr_buyer_id = this.byr_buyer_id;
       axios.post(this.BASE_URL + "api/get_voucher_detail_popup1", this.$route.query)
         .then(({ data }) => {
             console.log(data);
@@ -929,6 +925,8 @@ export default {
     },
     deliverySearchForm2() {
       this.order_search_modal2 = true;
+       this.$route.query.adm_user_id = Globals.user_info_id;
+       this.$route.query.byr_buyer_id = this.byr_buyer_id;
       axios.post(this.BASE_URL + "api/get_voucher_detail_popup2", this.$route.query)
         .then(({ data }) => {
             console.log(data);
@@ -937,6 +935,8 @@ export default {
     },
     deliverySearchForm3() {
       this.order_search_modal3 = true;
+       this.$route.query.adm_user_id = Globals.user_info_id;
+       this.$route.query.byr_buyer_id = this.byr_buyer_id;
       axios.post(this.BASE_URL + "api/get_voucher_detail_popup3", this.$route.query)
         .then(({ data }) => {
             console.log(data);
