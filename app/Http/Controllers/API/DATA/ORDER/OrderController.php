@@ -6,12 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CMN\cmn_companies_user;
 use App\Models\CMN\cmn_connect;
-use DB;
+use Illuminate\Support\Facades\DB;
 use App\Models\ADM\User;
 use App\Models\BYR\byr_buyer;
 use App\Http\Controllers\API\AllUsedFunction;
 use App\Models\DATA\ORD\data_order_voucher;
 use App\Models\CMN\cmn_tbl_col_setting;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {

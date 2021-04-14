@@ -15,6 +15,7 @@ use App\Scenarios\Common;
 use setasign\Fpdi\Tcpdf\Fpdi;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 require_once base_path('vendor/tecnickcom/tcpdf/tcpdf.php');
 use Symfony\Component\HttpFoundation\Response;
@@ -43,7 +44,7 @@ class data_csv_order
     public function exec($request, $sc)
     {
         // return $chunks->all();
-        \Log::debug(get_class() . ' exec start  ---------------');
+        Log::debug(get_class() . ' exec start  ---------------');
         if (!array_key_exists('up_file', $request->all())) {
             // return response()->json(['message' => "error", 'status' => '0']);
             return ['message' => "error", 'status' => '0'];
@@ -52,7 +53,7 @@ class data_csv_order
         $file_name = time() . '-' . $request->file('up_file')->getClientOriginalName();
         // return response()->json(['file_name'=>$file_name,'status'=>0]);
         $path = $request->file('up_file')->storeAs(config('const.ORDER_DATA_PATH') . date('Y-m'), $file_name);
-        \Log::debug('save path:' . $path);
+        Log::debug('save path:' . $path);
 
         $received_path = storage_path() . '/app//' . config('const.ORDER_DATA_PATH') . date('Y-m') . '/' . $file_name;
         // フォーマット変換
@@ -440,11 +441,11 @@ class data_csv_order
             $this->attachment_paths_all=$this->pdfGenerate($data_order_id);
 
         foreach ($this->attachment_paths_all as $key => $value) {
-            \Log::info('send mail for fax:[to:'.config('const.PDF_SEND_MAIL').',subject:'.$this->fax_number.']');
+            Log::info('send mail for fax:[to:'.config('const.PDF_SEND_MAIL').',subject:'.$this->fax_number.']');
             $this->attachment_paths=$value;
             Mail::send([],[] ,function($message) { $message->to(config('const.PDF_SEND_MAIL'))
                 ->subject($this->fax_number);
-                \Log::info('attach file:'.$this->attachment_paths);
+                Log::info('attach file:'.$this->attachment_paths);
                 $message->attach($this->attachment_paths)
                 // foreach($this->attachment_paths as $filePath){
                 //     $message->attach($filePath);
