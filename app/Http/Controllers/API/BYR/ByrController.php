@@ -177,8 +177,8 @@ class ByrController extends Controller
     }
     public function buyerJsonSetting($byr_buyer_id){
         $buyer_settings = byr_buyer::select('setting_information')->where('byr_buyer_id', $byr_buyer_id)->first();
-
-        return response()->json([ 'buyer_settings' => $buyer_settings->setting_information]);
+        $result = json_decode($buyer_settings->setting_information);
+        return response()->json([ 'buyer_settings' =>json_decode($buyer_settings->setting_information) ]);
     }
     public function getByrByOrderId(Request $request)
     {
