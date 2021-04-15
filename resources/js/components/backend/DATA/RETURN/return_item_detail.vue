@@ -381,6 +381,7 @@ beforeCreate: function() {
     this.form.byr_buyer_id = this.$session.get('byr_buyer_id');
     Fire.$emit('byr_has_selected',this.$session.get('byr_buyer_id'));
     Fire.$emit('permission_check_for_buyer',this.$session.get('byr_buyer_id'));
+    this.getbuyerJsonSettingvalue();
     this.loader = Vue.$loading.show();
     this.data_return_voucher_id = this.$route.params.data_return_voucher_id;
     this.form.data_return_voucher_id = this.$route.params.data_return_voucher_id;

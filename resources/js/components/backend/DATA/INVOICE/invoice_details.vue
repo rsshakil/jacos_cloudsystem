@@ -878,6 +878,7 @@ var _this = this;
     this.param_data = this.$route.query;
     this.form.data_invoice_id = this.param_data.data_invoice_id;
     this.invoiceDetail.data_invoice_id = this.param_data.data_invoice_id;
+this.getbuyerJsonSettingvalue();
     this.form.byr_buyer_id = this.$session.get("byr_buyer_id");
     this.invoice_details();
     Fire.$on("LoadByrinvoiceDetails", (page=1) => {

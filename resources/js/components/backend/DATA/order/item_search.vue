@@ -320,7 +320,7 @@ this.$session.set("order_item_search_query",this.$route.query)
     this.form.mes_lis_shi_tra_ins_temperature_code=this.order_info.mes_lis_shi_tra_ins_temperature_code
     this.form.mes_lis_shi_tra_trade_number=this.order_info.mes_lis_shi_tra_trade_number
     this.form.receive_datetime=this.order_info.receive_datetime
-
+this.getbuyerJsonSettingvalue();
     this.form.data_order_id=this.$route.query.data_order_id;
 this.form.major_category=this.$route.query.major_category;
 this.form.delivery_service_code=this.$route.query.delivery_service_code;

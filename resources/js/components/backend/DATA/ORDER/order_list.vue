@@ -469,6 +469,7 @@ export default {
 
   created() {
     // this.byr_session_check()
+    this.getbuyerJsonSettingvalue();
     this.form.byr_buyer_id = this.$session.get("byr_buyer_id");
     // this.today= new Date().toISOString().slice(0, 10);
 

@@ -355,7 +355,8 @@ searchByFormData() {
   created() {
     this.byr_buyer_id = this.$session.get("byr_buyer_id");
     this.form.byr_buyer_id = this.$session.get("byr_buyer_id");
-    this.form.payment_id = this.$route.query.data_payment_id
+    this.form.payment_id = this.$route.query.data_payment_id;
+    this.getbuyerJsonSettingvalue();
     this.getAllPaymentDetails();
     Fire.$on("LoadPaymentItemDetail", (page=1) => {
       this.getAllPaymentDetails(page);

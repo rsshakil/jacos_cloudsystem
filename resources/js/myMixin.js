@@ -344,7 +344,7 @@ export default {
         //     this.$router.push('/home')
         // }
         this.byr_buyer_id = this.$session.get('byr_buyer_id');
-        //this.getbuyerJsonSettingvalue();
+        
         // this.user_data = this.app._data;
 
         // this.global_user_id = Globals.user_info_id;

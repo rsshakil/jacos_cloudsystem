@@ -809,6 +809,7 @@ export default {
     this.form.byr_buyer_id=this.$session.get("byr_buyer_id");
     Fire.$emit("byr_has_selected", this.form.byr_buyer_id);
     Fire.$emit("permission_check_for_buyer", this.form.byr_buyer_id);
+    this.getbuyerJsonSettingvalue();
     this.form.data_receive_id = this.$route.query.data_receive_id;
     this.form.sel_name = this.$route.query.sel_name;
     this.form.sel_code = this.$route.query.sel_code;

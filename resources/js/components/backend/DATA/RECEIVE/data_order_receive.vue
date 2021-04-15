@@ -295,6 +295,7 @@ export default {
   created() {
         this.byr_buyer_id=this.$session.get("byr_buyer_id");
         this.form.byr_buyer_id=this.byr_buyer_id;
+        this.getbuyerJsonSettingvalue();
         this.getAllReceivedItem();
         // Fire.$on("LoadAllReceiveItem", () => {
         //   this.getAllReceivedItem();

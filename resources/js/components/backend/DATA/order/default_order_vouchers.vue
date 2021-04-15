@@ -1279,7 +1279,7 @@ export default {
     this.form.byr_buyer_id=this.byr_buyer_id;
     Fire.$emit("byr_has_selected", this.byr_buyer_id);
     Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
-
+this.getbuyerJsonSettingvalue();
     this.param_data = this.$route.query;
     this.item_search_q = this.$route.query;
     // console.log(this.param_data);
