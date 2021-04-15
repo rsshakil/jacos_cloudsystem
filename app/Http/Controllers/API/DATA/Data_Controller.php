@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API\DATA;
 
-use DB;
+// use DB;
 use Session;
 use App\Http\Controllers\Controller;
 use App\Models\DATA\ORD\data_order;
@@ -11,6 +11,7 @@ use App\Models\DATA\SHIPMENT\data_shipment_voucher;
 use App\Models\DATA\SHIPMENT\data_shipment_item;
 use App\Http\Controllers\API\AllUsedFunction;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class Data_Controller extends Controller
 {
@@ -319,31 +320,31 @@ class Data_Controller extends Controller
             'dsv.mes_lis_shi_log_delivery_slip_number', //55
             'dsv.mes_lis_shi_tra_goo_major_category', //56
             'dsv.mes_lis_shi_tra_goo_sub_major_category', //57
-            \DB::raw('CASE
+            DB::raw('CASE
             WHEN dsv.mes_lis_shi_tra_dat_order_date="0000-00-00"
             THEN ""
             ELSE dsv.mes_lis_shi_tra_dat_order_date  END'), //58
-            \DB::raw('CASE
+            DB::raw('CASE
             WHEN dsv.mes_lis_shi_tra_dat_delivery_date="0000-00-00"
             THEN ""
             ELSE dsv.mes_lis_shi_tra_dat_delivery_date  END'), //59
-            \DB::raw('CASE
+            DB::raw('CASE
             WHEN dsv.mes_lis_shi_tra_dat_delivery_date_to_receiver="0000-00-00"
             THEN ""
             ELSE dsv.mes_lis_shi_tra_dat_delivery_date_to_receiver  END'), //60
-            \DB::raw('CASE
+            DB::raw('CASE
             WHEN dsv.mes_lis_shi_tra_dat_revised_delivery_date="0000-00-00"
             THEN ""
             ELSE dsv.mes_lis_shi_tra_dat_revised_delivery_date  END'), //61
-            \DB::raw('CASE
+            DB::raw('CASE
             WHEN dsv.mes_lis_shi_tra_dat_transfer_of_ownership_date="0000-00-00"
             THEN ""
             ELSE dsv.mes_lis_shi_tra_dat_transfer_of_ownership_date  END'), //62
-            \DB::raw('CASE
+            DB::raw('CASE
             WHEN dsv.mes_lis_shi_tra_dat_campaign_start_date="0000-00-00"
             THEN ""
             ELSE dsv.mes_lis_shi_tra_dat_campaign_start_date  END'), //63
-            \DB::raw('CASE
+            DB::raw('CASE
             WHEN dsv.mes_lis_shi_tra_dat_campaign_end_date="0000-00-00"
             THEN ""
             ELSE dsv.mes_lis_shi_tra_dat_campaign_end_date  END'), //64
@@ -352,7 +353,7 @@ class Data_Controller extends Controller
             'dsv.mes_lis_shi_tra_ins_order_classification_code', //66
             'dsv.mes_lis_shi_tra_ins_ship_notification_request_code', //67
 
-            \DB::raw('CASE
+            DB::raw('CASE
             WHEN dsv.mes_lis_shi_tra_ins_eos_code=null
             THEN "01"
             WHEN dsv.mes_lis_shi_tra_ins_eos_code=""
@@ -377,7 +378,7 @@ class Data_Controller extends Controller
             'dsv.mes_lis_shi_tot_tot_tax_total', //83
             'dsv.mes_lis_shi_tot_tot_item_total', //84
             'dsv.mes_lis_shi_tot_tot_unit_total', //85
-            \DB::raw('CASE
+            DB::raw('CASE
             WHEN dsv.mes_lis_shi_tot_fre_unit_weight_total=null
             THEN "0"
             WHEN dsv.mes_lis_shi_tot_fre_unit_weight_total=""
@@ -392,7 +393,7 @@ class Data_Controller extends Controller
             'dsi.mes_lis_shi_lin_fre_shipment_line_number', //91
             'dsi.mes_lis_shi_lin_goo_minor_category', //92
             'dsi.mes_lis_shi_lin_goo_detailed_category', //93
-            \DB::raw('CASE
+            DB::raw('CASE
             WHEN dsi.mes_lis_shi_lin_ite_scheduled_date="0000-00-00"
             THEN ""
             ELSE dsi.mes_lis_shi_lin_ite_scheduled_date  END'), //94
@@ -447,58 +448,58 @@ class Data_Controller extends Controller
             'dsi.mes_lis_shi_lin_qua_shi_quantity', //143
             'dsi.mes_lis_shi_lin_qua_shi_num_of_order_units', // 144
             'dsi.mes_lis_shi_lin_qua_sto_quantity', //145
-            \DB::raw('CASE
+            DB::raw('CASE
             WHEN dsi.mes_lis_shi_lin_qua_sto_num_of_order_units=null
             THEN "0"
             WHEN dsi.mes_lis_shi_lin_qua_sto_num_of_order_units=""
             THEN "0"
             ELSE dsi.mes_lis_shi_lin_qua_sto_num_of_order_units  END'), //146
             'dsi.mes_lis_shi_lin_qua_sto_reason_code', //147
-            \DB::raw('CASE
+            DB::raw('CASE
             WHEN dsi.mes_lis_shi_lin_fre_unit_weight=null
             THEN "0"
             WHEN dsi.mes_lis_shi_lin_fre_unit_weight=""
             THEN "0"
             ELSE dsi.mes_lis_shi_lin_fre_unit_weight  END'), //148
             // 'data_shipment_items.mes_lis_shi_lin_fre_unit_weight_code',
-            \DB::raw('CASE
+            DB::raw('CASE
             WHEN dsi.mes_lis_shi_lin_fre_unit_weight_code=null
             THEN "0"
             WHEN dsi.mes_lis_shi_lin_fre_unit_weight_code=""
             THEN "0"
             ELSE dsi.mes_lis_shi_lin_fre_unit_weight_code  END'), //149
-            \DB::raw('CASE
+            DB::raw('CASE
             WHEN dsi.mes_lis_shi_lin_fre_item_weight=null
             THEN "0"
             WHEN dsi.mes_lis_shi_lin_fre_item_weight=""
             THEN "0"
             ELSE dsi.mes_lis_shi_lin_fre_item_weight  END'), //150
-            \DB::raw('CASE
+            DB::raw('CASE
             WHEN dsi.mes_lis_shi_lin_fre_order_weight=null
             THEN "0"
             WHEN dsi.mes_lis_shi_lin_fre_order_weight=""
             THEN "0"
             ELSE dsi.mes_lis_shi_lin_fre_order_weight  END'), //151
-            \DB::raw('CASE
+            DB::raw('CASE
             WHEN dsi.mes_lis_shi_lin_fre_shipment_weight=null
             THEN "0"
             WHEN dsi.mes_lis_shi_lin_fre_shipment_weight=""
             THEN "0"
             ELSE dsi.mes_lis_shi_lin_fre_shipment_weight  END'), //152
             // data_shipment_item_details
-            \DB::raw('CASE
+            DB::raw('CASE
             WHEN dsid.mes_lis_shi_lin_pac_itf_code=null
             THEN "0"
             WHEN dsid.mes_lis_shi_lin_pac_itf_code=""
             THEN "0"
             ELSE dsid.mes_lis_shi_lin_pac_itf_code  END'), //153
-            \DB::raw('CASE
+            DB::raw('CASE
             WHEN dsid.mes_lis_shi_lin_pac_package_indicator=null
             THEN "00"
             WHEN dsid.mes_lis_shi_lin_pac_package_indicator=""
             THEN "00"
             ELSE dsid.mes_lis_shi_lin_pac_package_indicator  END'), //154
-            \DB::raw('CASE
+            DB::raw('CASE
             WHEN dsid.mes_lis_shi_lin_pac_number_of_packages=null
             THEN "0"
             WHEN dsid.mes_lis_shi_lin_pac_number_of_packages=""
@@ -820,16 +821,16 @@ class Data_Controller extends Controller
             '製造番号'
         ];
     }
-    public function shipmentUpdateArray($data_array, $file_name="", $shipment_reason_code_array=[])
+    public function shipmentUpdateArray($data_array, $file_name="", $reason_code_list=[])
     {
-        \log::debug('shipmentUpdateArray start');
+        log::debug('shipmentUpdateArray start');
         // buyer_settings
-        $buyer_settings = byr_buyer::select('setting_information')->where('byr_buyer_id', Session::get('byr_buyer_id'))->first();
+        // $buyer_settings = byr_buyer::select('setting_information')->where('byr_buyer_id', Session::get('byr_buyer_id'))->first();
 
-        $byr_setting = json_decode($buyer_settings->setting_information, true);
-        // \log::info($byr_setting);
-        $reason_code_list = $byr_setting['shipments']['mes_lis_shi_lin_qua_sto_reason_code'];
-        
+        // $byr_setting = json_decode($buyer_settings->setting_information, true);
+        // // \log::info($byr_setting);
+        // $reason_code_list = $byr_setting['shipments']['mes_lis_shi_lin_qua_sto_reason_code'];
+
         $net_price_total=0;
         $selling_price_total=0;
         $tax_total=0;
@@ -846,7 +847,7 @@ class Data_Controller extends Controller
                 if ($trade_number !== $value[16]) {
                     if ($trade_number !== '') {
                         // voucher 更新
-                        $dsv_query->update($shipment_voucher_array);
+                        // $dsv_query->update($shipment_voucher_array);
                         // 値初期化
                         $net_price_total = 0;       // 原価金額合計
                         $selling_price_total = 0;   // 売価金額合計
@@ -860,8 +861,8 @@ class Data_Controller extends Controller
                     $data_shipment_voucher_info=$dsv_query->first();
                     if (empty($data_shipment_voucher_info)) {
                         // 取得無しエラー
-                        \Log::error('Can not get data_shipment_voucher information:'.$dsv_query->toSql());
-                        return response()->json(['status'=>0,'message'=>'Error']);
+                        Log::error('Can not get data_shipment_voucher information:'.$dsv_query->toSql());
+                        return response()->json(['status'=>0,'message'=>'Can not get data_shipment_voucher information']);
                     }
                 }
 
@@ -874,10 +875,10 @@ class Data_Controller extends Controller
                 $data_shipment_item_info=$dsi_query->first();
                 if (empty($data_shipment_item_info)) {
                     // 取得無しエラー
-                    \Log::error('Can not get data_shipment_items information:'.$dsi_query->toSql());
-                    return response()->json(['status'=>0,'message'=>'Error']);
+                    Log::error('Can not get data_shipment_items information:'.$dsi_query->toSql());
+                    return response()->json(['status'=>0,'message'=>'Can not get data_shipment_items information']);
                 }
-    
+
                 // data set from db
                 $net_price_unit_price = $data_shipment_item_info->mes_lis_shi_lin_amo_item_net_price_unit_price;            // 原単価
                 $selling_price_unit_price = $data_shipment_item_info->mes_lis_shi_lin_amo_item_selling_price_unit_price;    // 売単価
@@ -896,29 +897,29 @@ class Data_Controller extends Controller
                 // -- number check
                 if (!is_numeric($shi_num_of_order_units)) {
                     // 数値以外
-                    \Log::error('not number:[shi_num_of_order_units]:'.$shi_num_of_order_units);
-                    return response()->json(['status'=>0,'message'=>'Error']);
+                    Log::error('not number:[shi_num_of_order_units]:'.$shi_num_of_order_units);
+                    return response()->json(['status'=>0,'message'=>'not number:[shi_num_of_order_units]:'.$shi_num_of_order_units]);
                 }
                 // -- max check
                 if ((0 > $shi_num_of_order_units) && ($shi_num_of_order_units > $ord_num_of_order_units)) {
                     // しきい値
-                    \Log::error('not between number:'.'[ord_num_of_order_units]:'.$ord_num_of_order_units.' [shi_num_of_order_units]:'.$shi_num_of_order_units);
-                    return response()->json(['status'=>0,'message'=>'Error']);
+                    Log::error('not between number:'.'[ord_num_of_order_units]:'.$ord_num_of_order_units.' [shi_num_of_order_units]:'.$shi_num_of_order_units);
+                    return response()->json(['status'=>0,'message'=>'not between number:'.'[ord_num_of_order_units]:'.$ord_num_of_order_units.' [shi_num_of_order_units]:'.$shi_num_of_order_units]);
                 }
 
                 // - sto_reason_code
                 // -- json data check
                 if (!array_key_exists($sto_reason_code, $reason_code_list)) {
                     //
-                    \Log::error('not correct reason_code:'.'[sto_reason_code]:'.$sto_reason_code);
-                    return response()->json(['status'=>0,'message'=>'Error']);
+                    Log::error('not correct reason_code:'.'[sto_reason_code]:'.$sto_reason_code);
+                    return response()->json(['status'=>0,'message'=>'not correct reason_code:'.'[sto_reason_code]:'.$sto_reason_code]);
                 }
 
                 // - mes_lis_shi_tra_dat_revised_delivery_date
                 if ((!empty($revised_delivery_date))&&(preg_match('/\A[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}\z/', $revised_delivery_date) === false)) {
                     //
-                    \Log::error('not correct revised_delivery_date:'.'[revised_delivery_date]:'.$revised_delivery_date);
-                    return response()->json(['status'=>0,'message'=>'Error']);
+                    Log::error('not correct revised_delivery_date:'.'[revised_delivery_date]:'.$revised_delivery_date);
+                    return response()->json(['status'=>0,'message'=>'not correct revised_delivery_date:'.'[revised_delivery_date]:'.$revised_delivery_date]);
                 }
 
                 $shi_quantity = $unit_multiple * $shi_num_of_order_units;                       // 出荷数量(バラ)
@@ -955,7 +956,7 @@ class Data_Controller extends Controller
                 $shipment_voucher_array['mes_lis_shi_tot_tot_unit_total']=$unit_total;
             }
 
-            
+
 
             // voucher 更新
             $dsv_query->update($shipment_voucher_array);
@@ -966,16 +967,16 @@ class Data_Controller extends Controller
             $shipment_array['upload_file_path']=$file_name;
             $data_shipment_id=$data_shipment_voucher_info->data_shipment_id;
             data_shipment::where('data_shipment_id', $data_shipment_id)->update($shipment_array);
-        
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
-            \log::error($e);
+            log::error($e);
             return response()->json(['message' => $e, 'status' => 0]);
             // something went wrong
         }
 
-        \log::debug('shipmentUpdateArray end');
+        log::debug('shipmentUpdateArray end');
         return response()->json(['message'=>"Success",'status'=>1]);
     }
 }

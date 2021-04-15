@@ -739,7 +739,7 @@
           <td>{{valueItm.mes_lis_shi_lin_ite_order_item_code}}</td>
           <td>{{valueItm.mes_lis_shi_lin_ite_name}}</td>
           <td>{{valueItm.mes_lis_shi_lin_ite_ite_spec}}
-         
+
           </td>
         </tr>
 
@@ -1214,12 +1214,14 @@ export default {
                 this.init(data.status);
                 if (data.status==0) {
                     _this.alert_icon = "error";
+                    _this.alert_title = "Error";
                 }else{
                     _this.alert_icon = "success";
+                    _this.alert_title = "Success";
                 }
-              _this.alert_title = "";
               _this.confirmButtonText = '完了';
-              _this.alert_text = '出荷データアップロード';
+              _this.alert_text = data.message;
+            //   '出荷データアップロード';
               _this.sweet_normal_alert();
               e.target.value = '';
             });
