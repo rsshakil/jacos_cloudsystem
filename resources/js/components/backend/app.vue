@@ -82,22 +82,22 @@ data(){
 },
 methods:{
     changePasswordModal(user_id,user_name){
-        this.init_user();
+        // this.init_user();
         // this.fieldsEmpty();
         // this.password_modal_title='Change the password for '+user_name;
         this.passwordModalShow=true;
         this.user_update_id=user_id;
     },
-    init_user(){
-        // this.loading=true;
-       axios.post(this.BASE_URL+'user').then(({data})=>{
-            // console.log(data);
-            this.user=data;
-            // this.allBuyerInfoBySaller(this.user.id)
-            // this.loading=false;
-            // this.initiated=true;
-        })
-    },
+    // init_user(){
+    //     // this.loading=true;
+    //    axios.post(this.BASE_URL+'user').then(({data})=>{
+    //         // console.log(data);
+    //         this.user=data;
+    //         // this.allBuyerInfoBySaller(this.user.id)
+    //         // this.loading=false;
+    //         // this.initiated=true;
+    //     })
+    // },
 },
 created(){
 }

@@ -12,7 +12,8 @@ use App\Models\DATA\SHIPMENT\data_shipment;
 use App\Models\DATA\SHIPMENT\data_shipment_item;
 use App\Models\DATA\SHIPMENT\data_shipment_voucher;
 use App\Http\Controllers\API\CMN\CmnScenarioController;
-use DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use App\Traits\Csv;
 
 class ShipmentController extends Controller
@@ -138,7 +139,7 @@ class ShipmentController extends Controller
         $shipment_reason_code_array=json_decode($buter_info->setting_information,true)['shipments']['mes_lis_shi_lin_qua_sto_reason_code'];
         $file_name = time().'-'.$request->file('file')->getClientOriginalName();
         $path = $request->file('file')->storeAs(config('const.SHIPMENT_CSV_UPDATE_PATH'), $file_name);
-        \Log::debug('save path:'.$path);
+        Log::debug('save path:'.$path);
 
         $received_path = storage_path().'/app//'.config('const.SHIPMENT_CSV_UPDATE_PATH').'/'.$file_name;
         // フォーマット変換
