@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\API\DATA;
 
+use DB;
+use Session;
 use App\Http\Controllers\Controller;
 use App\Models\DATA\ORD\data_order;
 use App\Models\DATA\SHIPMENT\data_shipment;
@@ -505,12 +507,12 @@ class Data_Controller extends Controller
             'dsid.mes_lis_shi_lin_pac_con_sell_by_date', //156
             'dsid.mes_lis_shi_lin_pac_con_production_date', //157
             'dsid.mes_lis_shi_lin_pac_con_lot_number' //158
-            )
-        ->leftJoin('data_shipment_vouchers as dsv','dsv.data_shipment_id','=','data_shipments.data_shipment_id')
-        ->leftJoin('data_shipment_items as dsi','dsv.data_shipment_voucher_id','=','dsi.data_shipment_voucher_id')
-        ->leftJoin('data_shipment_item_details as dsid','dsi.data_shipment_item_id','=','dsid.data_shipment_item_id')
-        ->join('data_order_vouchers as dov','dov.data_order_voucher_id','=','dsv.data_shipment_voucher_id')
-        ->join('data_orders as dor','dor.data_order_id','=','dov.data_order_id');
+        )
+        ->leftJoin('data_shipment_vouchers as dsv', 'dsv.data_shipment_id', '=', 'data_shipments.data_shipment_id')
+        ->leftJoin('data_shipment_items as dsi', 'dsv.data_shipment_voucher_id', '=', 'dsi.data_shipment_voucher_id')
+        ->leftJoin('data_shipment_item_details as dsid', 'dsi.data_shipment_item_id', '=', 'dsid.data_shipment_item_id')
+        ->join('data_order_vouchers as dov', 'dov.data_order_voucher_id', '=', 'dsv.data_shipment_voucher_id')
+        ->join('data_orders as dor', 'dor.data_order_id', '=', 'dov.data_order_id');
 
 
         // filtering
@@ -519,7 +521,7 @@ class Data_Controller extends Controller
             $order_info=$request->order_info;
 
 
-            $csv_data=$csv_data->where('data_shipments.data_order_id',$data_order_id)
+            $csv_data=$csv_data->where('data_shipments.data_order_id', $data_order_id)
             ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $order_info['mes_lis_shi_log_del_delivery_service_code'])
             ->where('dsv.mes_lis_shi_par_sel_code', $order_info['mes_lis_shi_par_sel_code'])
             ->where('dsv.mes_lis_shi_par_sel_name', $order_info['mes_lis_shi_par_sel_name'])
@@ -529,40 +531,39 @@ class Data_Controller extends Controller
 
             if ((array_key_exists("form_search", $request_all))) {
                 $form_search = $request->form_search;
-            if($form_search['mes_lis_shi_tra_trade_number']!=""){
-                $csv_data=$csv_data->where('dsv.mes_lis_shi_tra_trade_number', $form_search['mes_lis_shi_tra_trade_number']);
-            }
-            if($form_search['fixedSpecial']!="*"){
-                $csv_data=$csv_data->where('dsv.mes_lis_shi_tra_ins_goods_classification_code', $form_search['fixedSpecial']);
-            }
-            if($form_search['printingStatus']!="*"){
-                if($form_search['printingStatus']=="未印刷あり"){
-                    $csv_data=$csv_data->whereNull('dsv.print_datetime');
+                if ($form_search['mes_lis_shi_tra_trade_number']!="") {
+                    $csv_data=$csv_data->where('dsv.mes_lis_shi_tra_trade_number', $form_search['mes_lis_shi_tra_trade_number']);
                 }
-                if($form_search['printingStatus']=="印刷済"){
-                    $csv_data=$csv_data->whereNotNull('dsv.print_datetime');
+                if ($form_search['fixedSpecial']!="*") {
+                    $csv_data=$csv_data->where('dsv.mes_lis_shi_tra_ins_goods_classification_code', $form_search['fixedSpecial']);
                 }
-
+                if ($form_search['printingStatus']!="*") {
+                    if ($form_search['printingStatus']=="未印刷あり") {
+                        $csv_data=$csv_data->whereNull('dsv.print_datetime');
+                    }
+                    if ($form_search['printingStatus']=="印刷済") {
+                        $csv_data=$csv_data->whereNotNull('dsv.print_datetime');
+                    }
+                }
+                if ($form_search['situation']!="*") {
+                    if ($form_search['situation']=="未確定あり") {
+                        $csv_data=$csv_data->whereNull('dsv.decision_datetime');
+                    }
+                    if ($form_search['situation']=="確定済") {
+                        $csv_data=$csv_data->whereNotNull('dsv.decision_datetime');
+                    }
+                }
             }
-            if($form_search['situation']!="*"){
-                if($form_search['situation']=="未確定あり"){
-                    $csv_data=$csv_data->whereNull('dsv.decision_datetime');
-                }
-                if($form_search['situation']=="確定済"){
-                    $csv_data=$csv_data->whereNotNull('dsv.decision_datetime');
-                }
-            }
-        }
-
-        }else{
+        } else {
             $receive_date_from = $request->receive_date_from;
             $receive_date_to = $request->receive_date_to;
             $delivery_date_from = $request->delivery_date_from;
             $delivery_date_to = $request->delivery_date_to;
-            $receive_date_from = $receive_date_from!=null? date('Y-m-d 00:00:00',strtotime($receive_date_from)):$receive_date_from; // 受信日時開始
-            $receive_date_to = $receive_date_to!=null? date('Y-m-d 23:59:59',strtotime($receive_date_to)):$receive_date_to; // 受信日時終了
-            $delivery_date_from = $delivery_date_from!=null? date('Y-m-d 00:00:00',strtotime($delivery_date_from)):$delivery_date_from; // 納品日開始
-            $delivery_date_to =$delivery_date_to!=null? date('Y-m-d 23:59:59',strtotime($delivery_date_to)):$delivery_date_to;; // 納品日終了
+            $receive_date_from = $receive_date_from!=null? date('Y-m-d 00:00:00', strtotime($receive_date_from)):$receive_date_from; // 受信日時開始
+            $receive_date_to = $receive_date_to!=null? date('Y-m-d 23:59:59', strtotime($receive_date_to)):$receive_date_to; // 受信日時終了
+            $delivery_date_from = $delivery_date_from!=null? date('Y-m-d 00:00:00', strtotime($delivery_date_from)):$delivery_date_from; // 納品日開始
+            $delivery_date_to =$delivery_date_to!=null? date('Y-m-d 23:59:59', strtotime($delivery_date_to)):$delivery_date_to;
+            ; // 納品日終了
             $delivery_service_code = $request->delivery_service_code; // 便
             $temperature = $request->temperature; // 配送温度区分
             $check_datetime = $request->check_datetime;
@@ -584,38 +585,37 @@ class Data_Controller extends Controller
                 $csv_data=$csv_data->whereBetween('dov.mes_lis_ord_tra_dat_delivery_date', [$delivery_date_from, $delivery_date_to]);
             }
             if ($delivery_service_code!='*') {
-                $csv_data=$csv_data->where('dov.mes_lis_ord_log_del_delivery_service_code',$delivery_service_code);
+                $csv_data=$csv_data->where('dov.mes_lis_ord_log_del_delivery_service_code', $delivery_service_code);
             }
             if ($mes_lis_ord_par_sel_code!='') {
-                $csv_data=$csv_data->where('dov.mes_lis_ord_par_sel_code',$mes_lis_ord_par_sel_code);
+                $csv_data=$csv_data->where('dov.mes_lis_ord_par_sel_code', $mes_lis_ord_par_sel_code);
             }
 
             if ($temperature!='*') {
-                $csv_data=$csv_data->where('dov.mes_lis_ord_tra_ins_temperature_code',$temperature);
+                $csv_data=$csv_data->where('dov.mes_lis_ord_tra_ins_temperature_code', $temperature);
             }
 
             if ($byr_category_code!='*') {
-                $csv_data=$csv_data->where('dov.mes_lis_ord_tra_goo_major_category',$byr_category_code);
+                $csv_data=$csv_data->where('dov.mes_lis_ord_tra_goo_major_category', $byr_category_code);
             }
 
             if ($check_datetime!='*') {
-                if($check_datetime==1){
+                if ($check_datetime==1) {
                     $csv_data=$csv_data->whereNull('dov.check_datetime');
-                }else{
+                } else {
                     $csv_data=$csv_data->whereNotNull('dov.check_datetime');
                 }
-
             }
 
             if ($print_cnt == "!0") {
-                $csv_data=$csv_data->having('print_cnt','!=','0');
+                $csv_data=$csv_data->having('print_cnt', '!=', '0');
             } elseif ($print_cnt != "*") {
-                $csv_data=$csv_data->having('print_cnt','=',$print_cnt);
+                $csv_data=$csv_data->having('print_cnt', '=', $print_cnt);
             }
             if ($decission_cnt == "!0") {
-                $csv_data=$csv_data->having('decision_cnt','!=','0');
+                $csv_data=$csv_data->having('decision_cnt', '!=', '0');
             } elseif ($decission_cnt != "*") {
-                $csv_data=$csv_data->having('decision_cnt','=',$decission_cnt);
+                $csv_data=$csv_data->having('decision_cnt', '=', $decission_cnt);
             }
             $csv_data=$csv_data->groupBy('dsv.mes_lis_shi_tra_trade_number');
         }
@@ -631,14 +631,15 @@ class Data_Controller extends Controller
         // $csv_data=$csv_data->groupBy('dsv.data_shipment_voucher_id');
         // $csv_data=$csv_data->groupBy('dsi.data_shipment_item_id'); //New Added
         // $csv_data=$csv_data->orderBy('dsv.'.$sort_by,$sort_type);
-        $csv_data=$csv_data->orderBy('dsv.mes_lis_shi_tra_trade_number',"ASC");
-        $csv_data=$csv_data->orderBy('dsi.mes_lis_shi_lin_lin_line_number',"ASC");
+        $csv_data=$csv_data->orderBy('dsv.mes_lis_shi_tra_trade_number', "ASC");
+        $csv_data=$csv_data->orderBy('dsi.mes_lis_shi_lin_lin_line_number', "ASC");
         // 検索
         // $csv_data = $csv_data->limit(100000)->get()->toArray();
         return $csv_data;
     }
 
-    public static function shipmentCsvHeading(){
+    public static function shipmentCsvHeading()
+    {
         return [
             '送信者ＩＤ',
             '送信者ID発行元',
@@ -819,154 +820,162 @@ class Data_Controller extends Controller
             '製造番号'
         ];
     }
-    public function shipmentUpdateArray($data_array,$file_name="",$shipment_reason_code_array=[]){
-            $net_price_total=0;
-            $selling_price_total=0;
-            $tax_total=0;
-            $item_total=0;
-            $unit_total=0;
+    public function shipmentUpdateArray($data_array, $file_name="", $shipment_reason_code_array=[])
+    {
+        \log::debug('shipmentUpdateArray start');
+        // buyer_settings
+        $buyer_settings = byr_buyer::select('setting_information')->where('byr_buyer_id', Session::get('byr_buyer_id'))->first();
 
+        $byr_setting = json_decode($buyer_settings->setting_information, true);
+        // \log::info($byr_setting);
+        $reason_code_list = $byr_setting['shipments']['mes_lis_shi_lin_qua_sto_reason_code'];
+        
+        $net_price_total=0;
+        $selling_price_total=0;
+        $tax_total=0;
+        $item_total=0;
+        $unit_total=0;
+
+        $trade_number='';
+        DB::beginTransaction();
+        try {
             foreach ($data_array as $key => $value) {
-                $shipment_array=array();
-                $shipment_voucher_array=array();
                 $shipment_item_array=array();
 
-                $shipment_array['upload_datetime']=date('y-m-d H:i:s');
-                $shipment_array['upload_file_path']=$file_name;
-
-                $data_shipment_voucher_query=data_shipment_voucher::where('mes_lis_shi_tra_trade_number',$value[16])
-                ->where('mes_lis_shi_tra_dat_delivery_date_to_receiver',$value[60]);
-
-                $data_shipment_voucher_info=$data_shipment_voucher_query->first();
-
-                if (empty($data_shipment_voucher_info)) {
-                    return response()->json(['status'=>0,'message'=>'Error']);
-                }
-                // datetime loimit
-                if (strtotime($value[61])>strtotime($data_shipment_voucher_info->mes_lis_shi_tra_dat_revised_delivery_date)) {
-                    return response()->json(['status'=>0,'message'=>'Error']);
-                }
-
-                $data_shipment_id=$data_shipment_voucher_info->data_shipment_id;
-                data_shipment::where('data_shipment_id',$data_shipment_id)->update($shipment_array);
-
-                $data_shipment_voucher_id=$data_shipment_voucher_info->data_shipment_voucher_id;
-
-                foreach ($data_array as $key => $custom) {
-                    if ($value[16]==$data_shipment_voucher_info->mes_lis_shi_tra_trade_number && $value[60]==$data_shipment_voucher_info->mes_lis_shi_tra_dat_delivery_date_to_receiver) {
-                        $net_price_total+=$value[133];
-                        $selling_price_total+=$value[135];
-                        $tax_total+=$value[137];
-                        $item_total+=$value[143];
-                        $unit_total+=$value[144];
+                // data_shipment_voucher情報取得
+                if ($trade_number !== $value[16]) {
+                    if ($trade_number !== '') {
+                        // voucher 更新
+                        $dsv_query->update($shipment_voucher_array);
+                        // 値初期化
+                        $net_price_total = 0;       // 原価金額合計
+                        $selling_price_total = 0;   // 売価金額合計
+                        $tax_total = 0;             // 税額合計
+                        $item_total = 0;            // 数量合計
+                        $unit_total = 0;            // 発注単位数量合計
+                    }
+                    $trade_number = $value[16];
+                    $dsv_query=data_shipment_voucher::where('mes_lis_shi_tra_trade_number', $trade_number)
+                        ->where('mes_lis_shi_tra_dat_delivery_date_to_receiver', $value[60]);
+                    $data_shipment_voucher_info=$dsv_query->first();
+                    if (empty($data_shipment_voucher_info)) {
+                        // 取得無しエラー
+                        \Log::error('Can not get data_shipment_voucher information:'.$dsv_query->toSql());
+                        return response()->json(['status'=>0,'message'=>'Error']);
                     }
                 }
 
+                // line number
+                $line_number = $value[87];
+
+                // data_shipment_item情報取得
+                $dsi_query = data_shipment_item::where('data_shipment_voucher_id', $data_shipment_voucher_info->data_shipment_voucher_id)
+                    ->where('mes_lis_shi_lin_lin_line_number', $line_number);
+                $data_shipment_item_info=$dsi_query->first();
+                if (empty($data_shipment_item_info)) {
+                    // 取得無しエラー
+                    \Log::error('Can not get data_shipment_items information:'.$dsi_query->toSql());
+                    return response()->json(['status'=>0,'message'=>'Error']);
+                }
+    
+                // data set from db
+                $net_price_unit_price = $data_shipment_item_info->mes_lis_shi_lin_amo_item_net_price_unit_price;            // 原単価
+                $selling_price_unit_price = $data_shipment_item_info->mes_lis_shi_lin_amo_item_selling_price_unit_price;    // 売単価
+                $ord_quantity = $data_shipment_item_info->mes_lis_shi_lin_qua_ord_quantity;                                 // 発注数量(バラ)
+                $ord_num_of_order_units = $data_shipment_item_info->mes_lis_shi_lin_qua_ord_num_of_order_units;             // 発注数量(単位)
+                $unit_multiple = $data_shipment_item_info->mes_lis_shi_lin_qua_unit_multiple;                               // 発注単位
+                $tax_rate = $data_shipment_voucher_info->mes_lis_shi_tra_tax_tax_rate;
+
+                // data set from csv
+                $revised_delivery_date = $value[61];                                                                // 訂正後直接納品先納品日
+                $shi_num_of_order_units = $value[144];                                                              // 出荷数量(単位)
+                $sto_reason_code = $value[147];                                                                     // 欠品理由
+
+                // data check validation
+                // - shi_num_of_order_units
+                // -- number check
+                if (!is_numeric($shi_num_of_order_units)) {
+                    // 数値以外
+                    \Log::error('not number:[shi_num_of_order_units]:'.$shi_num_of_order_units);
+                    return response()->json(['status'=>0,'message'=>'Error']);
+                }
+                // -- max check
+                if ((0 > $shi_num_of_order_units) && ($shi_num_of_order_units > $ord_num_of_order_units)) {
+                    // しきい値
+                    \Log::error('not between number:'.'[ord_num_of_order_units]:'.$ord_num_of_order_units.' [shi_num_of_order_units]:'.$shi_num_of_order_units);
+                    return response()->json(['status'=>0,'message'=>'Error']);
+                }
+
+                // - sto_reason_code
+                // -- json data check
+                if (!array_key_exists($sto_reason_code, $reason_code_list)) {
+                    //
+                    \Log::error('not correct reason_code:'.'[sto_reason_code]:'.$sto_reason_code);
+                    return response()->json(['status'=>0,'message'=>'Error']);
+                }
+
+                // - mes_lis_shi_tra_dat_revised_delivery_date
+                if ((!empty($revised_delivery_date))&&(preg_match('/\A[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}\z/', $revised_delivery_date) === false)) {
+                    //
+                    \Log::error('not correct revised_delivery_date:'.'[revised_delivery_date]:'.$revised_delivery_date);
+                    return response()->json(['status'=>0,'message'=>'Error']);
+                }
+
+                $shi_quantity = $unit_multiple * $shi_num_of_order_units;                       // 出荷数量(バラ)
+                $sto_quantity = $ord_quantity - $shi_quantity;                                  // 欠品数量(バラ)
+                $sto_num_of_order_units = $ord_num_of_order_units - $shi_num_of_order_units;    // 欠品数量(単位)
+                $net_price = $shi_quantity * $net_price_unit_price;                             // 原価金額
+                $selling_price = $shi_quantity * $selling_price_unit_price;                     // 売価金額
+                $tax = $net_price * $tax_rate / 100;                                            // 税額
+
+                $net_price_total += $net_price;             // 原価金額合計
+                $selling_price_total += $selling_price;     // 売価金額合計
+                $tax_total += $tax;                         // 税額合計
+                $item_total += $shi_quantity;               // 数量合計
+                $unit_total += $shi_num_of_order_units;     // 発注単位数量合計
+
+                $shipment_item_array['mes_lis_shi_lin_amo_item_net_price']=$net_price;
+                $shipment_item_array['mes_lis_shi_lin_amo_item_selling_price']=$selling_price;
+                $shipment_item_array['mes_lis_shi_lin_amo_item_tax']=$tax;
+                $shipment_item_array['mes_lis_shi_lin_qua_shi_quantity']=$shi_quantity;
+                $shipment_item_array['mes_lis_shi_lin_qua_shi_num_of_order_units']=$shi_num_of_order_units;
+                $shipment_item_array['mes_lis_shi_lin_qua_sto_quantity']=$sto_quantity;
+                $shipment_item_array['mes_lis_shi_lin_qua_sto_num_of_order_units']=$sto_num_of_order_units;
+                $shipment_item_array['mes_lis_shi_lin_qua_sto_reason_code']=$sto_num_of_order_units;
+
+                // data_shipment_items update
+                $dsi_query->update($shipment_item_array);
+
+                // update shipment_vouchers
+                $shipment_voucher_array['mes_lis_shi_tra_dat_revised_delivery_date']=$revised_delivery_date;
                 $shipment_voucher_array['mes_lis_shi_tot_tot_net_price_total']=$net_price_total;
                 $shipment_voucher_array['mes_lis_shi_tot_tot_selling_price_total']=$selling_price_total;
                 $shipment_voucher_array['mes_lis_shi_tot_tot_tax_total']=$tax_total;
                 $shipment_voucher_array['mes_lis_shi_tot_tot_item_total']=$item_total;
                 $shipment_voucher_array['mes_lis_shi_tot_tot_unit_total']=$unit_total;
-
-                $data_shipment_voucher_query->update($shipment_voucher_array);
-
-
-                $all_vouchers=$data_shipment_voucher_query->get();
-
-
-                $shipment_item_array['mes_lis_shi_lin_amo_item_net_price']=$value[143] * $value[134];
-                $shipment_item_array['mes_lis_shi_lin_amo_item_selling_price']=$value[143] * $value[136];
-                $shipment_item_array['mes_lis_shi_lin_amo_item_tax']=$value[133] * $value[78]/100;
-                $shipment_item_array['mes_lis_shi_lin_qua_sto_quantity']=$value[141]-$value[143];
-                $shipment_item_array['mes_lis_shi_lin_qua_sto_num_of_order_units']=$value[142] - $value[144];
-
-                foreach ($all_vouchers as $key1 => $voucher) {
-                    $data_shipment_voucher_id=$voucher->data_shipment_voucher_id;
-                    Log::info($data_shipment_voucher_id);
-                    data_shipment_item::where('data_shipment_voucher_id',$data_shipment_voucher_id)
-                    ->where('mes_lis_shi_lin_lin_line_number',$value[87])->update($shipment_item_array);
-                }
-
-
-                // $revised_delivery_date=$value[61];
-                // $shi_quantity=$value[143];
-                // $order_units=$value[144];
-                // $reason_code=$value[147];
-
-                // if ($revised_delivery_date!=null) {
-                //     $date_validate=$this->all_functions->validateDate($revised_delivery_date);
-                //     if (!$date_validate) {
-                //         return response()->json(['message'=>"Error",'status'=>0]);
-                //     }
-                // }
-                // if ($shi_quantity!=null) {
-                //     if (!is_numeric($shi_quantity)) {
-                //         return response()->json(['message'=>"Error",'status'=>0]);
-                //     }
-                // }
-                // if ($order_units!=null) {
-
-                //     $shipment_reason_code_array;
-                //     if (!is_numeric($order_units)) {
-                //         return response()->json(['message'=>"Error",'status'=>0]);
-                //     }
-                // }
-                // if ($reason_code!=null) {
-                //     $reason_status=0;
-                //     foreach ($shipment_reason_code_array as $key => $code_val) {
-                //         if(array_key_exists($reason_code, $code_val)) {
-                //             $reason_status=1;
-                //         }
-                //     }
-                //     if ($reason_status==0) {
-                //         return response()->json(['message'=>"Error",'status'=>0]);
-                //     }
-                // }else{
-                //     return response()->json(['message'=>"Error",'status'=>0]);
-                // }
-
-                // $shipment_array['upload_datetime']=date('y-m-d H:i:s');
-                // $shipment_array['upload_file_path']=$file_name;
-
-                // $shipment_voucher_array['mes_lis_shi_tra_dat_revised_delivery_date']=$value[61];
-
-                // $shipment_item_array['mes_lis_shi_lin_qua_shi_quantity']=$value[143];
-                // $shipment_item_array['mes_lis_shi_lin_qua_shi_num_of_order_units']=$value[144];
-                // $shipment_item_array['mes_lis_shi_lin_qua_sto_reason_code']=$value[147];
-
-                // $data_shipment_voucher_query=data_shipment_voucher::where('mes_lis_shi_tra_trade_number',$value[16])
-                // ->where('mes_lis_shi_tra_dat_delivery_date_to_receiver',$value[60]);
-
-                // $data_shipment_voucher_info=$data_shipment_voucher_query->first();
-
-                // if (empty($data_shipment_voucher_info)) {
-                //     return response()->json(['status'=>0,'message'=>'Error']);
-                // }
-                // // datetime loimit
-                // if (strtotime($value[61])>strtotime($data_shipment_voucher_info->mes_lis_shi_tra_dat_revised_delivery_date)) {
-                //     return response()->json(['status'=>0,'message'=>'Error']);
-                // }
-                // $data_shipment_id=$data_shipment_voucher_info->data_shipment_id;
-
-                // $data_shipment_voucher_query->update($shipment_voucher_array);
-
-                // data_shipment::where('data_shipment_id',$data_shipment_id)->update($shipment_array);
-
-                // $all_voucher=$data_shipment_voucher_query->get();
-                // foreach ($all_voucher as $key1 => $voucher) {
-                //     $data_shipment_voucher_id=$voucher->data_shipment_voucher_id;
-                //     data_shipment_item::where('data_shipment_voucher_id',$data_shipment_voucher_id)
-                //     ->where('mes_lis_shi_lin_lin_line_number',$value[87])->update($shipment_item_array);
-                // }
-                $net_price_total=0;
-                $selling_price_total=0;
-                $tax_total=0;
-                $item_total=0;
-                $unit_total=0;
             }
+
+            
+
+            // voucher 更新
+            $dsv_query->update($shipment_voucher_array);
+
+
+            // udpate shipments
+            $shipment_array['upload_datetime']=date('y-m-d H:i:s');
+            $shipment_array['upload_file_path']=$file_name;
+            $data_shipment_id=$data_shipment_voucher_info->data_shipment_id;
+            data_shipment::where('data_shipment_id', $data_shipment_id)->update($shipment_array);
+        
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            \log::error($e);
+            return response()->json(['message' => $e, 'status' => 0]);
+            // something went wrong
+        }
+
+        \log::debug('shipmentUpdateArray end');
         return response()->json(['message'=>"Success",'status'=>1]);
-
     }
-
-
 }

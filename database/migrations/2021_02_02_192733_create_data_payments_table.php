@@ -40,6 +40,7 @@ class CreateDataPaymentsTable extends Migration
             $table->string('mes_mes_sys_value', 20)->comment('システム情報値');
             $table->string('mes_lis_con_version', 20)->comment('バージョン番号');
             $table->string('mes_lis_doc_version', 20)->comment('バージョン番号');
+            $table->string('mes_lis_ext_namespace', 80)->comment('名前空間');
             $table->string('mes_lis_ext_version', 20)->comment('バージョン');
             $table->string('mes_lis_pay_code', 13)->comment('支払法人コード');
             $table->string('mes_lis_pay_gln', 13)->comment('支払法人GLN');
