@@ -1,11 +1,11 @@
 <template>
 <div>
-    
+
                 <byr_slr_list_with_order></byr_slr_list_with_order>
                 <blog_view></blog_view>
 
 
-           
+
 </div>
 </template>
 
@@ -25,14 +25,14 @@ import page_header_default from './page_header_default'
             }
         },
         methods:{
-           
+
         },
           created() {
                 Fire.$emit('buyer_session_destroy');
                  Fire.$emit("loadPageTitle", "得意先一覧");
             },
         mounted() {
-            this.init();
+            // this.init();
         }
     }
 </script>

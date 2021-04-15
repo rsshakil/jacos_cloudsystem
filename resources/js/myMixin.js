@@ -54,11 +54,10 @@ export default {
 
         // Database created and updated datetime conversion
         getbuyerJsonSettingvalue() {
-          
             axios.get(this.BASE_URL + "api/buyerJsonSetting/" + this.byr_buyer_id)
                 .then(({ data }) => {
                     this.init(data.status);
-                    this.buyer_settings = data.buyer_settings;
+                    this.buyer_settings = JSON.parse(data.buyer_settings);
                     this.mes_lis_shi_lin_qua_sto_reason_codeList = this.buyer_settings.shipments.mes_lis_shi_lin_qua_sto_reason_code;
                     this.ordersJson = this.buyer_settings.orders;
                     this.shipmentsJson = this.buyer_settings.shipments;
@@ -67,22 +66,71 @@ export default {
                     this.returnsJson = this.buyer_settings.returns;
                     this.invoicesJson = this.buyer_settings.invoices;
                     this.paymentsJson = this.buyer_settings.payments;
+
+                    // this.buyer_settings= this.buyer_settings.orders;
                 });
         },
         getbyrjsonValueBykeyName(arrName, arrKey, orderType = "orders", buyer_settings = []) {
             if (buyer_settings.length > 0) {
                 this.buyer_settings = buyer_settings;
             }
+            var buyer_settings_length = Object.keys(this.buyer_settings).length;
+            if (buyer_settings_length == 0) {
+                this.getbuyerJsonSettingvalue();
+
+            }
+            /*
+            var expected_result = '';
+
+            switch(orderType){
+                case 'orders':
+                        expected_result = this.ordersJson[arrName][arrKey];
+                        break;
+                case 'shipments':
+                        expected_result = this.shipmentsJson[arrName][arrKey];
+                        break;
+                case 'receives':
+                        expected_result = this.receivesJson[arrName][arrKey];
+                        break;
+                case 'corrected_receives':
+                        expected_result = this.corrected_receivesJson[arrName][arrKey];
+                        break;
+                case 'returns':
+                        expected_result = this.returnsJson[arrName][arrKey];
+                        break;
+                case 'invoices':
+                        expected_result = this.invoicesJson[arrName][arrKey];
+                        break;
+                case 'payments':
+                        expected_result = this.paymentsJson[arrName][arrKey];
+                        break;
+                default:
+                        expected_result ='';
+                        break;
+            }
+            return expected_result;
+            */
+
             if (arrKey != '') {
                 var newarr = [];
                 var buyer_settings_length_check = Object.keys(this.buyer_settings).length;
                 if (buyer_settings_length_check > 0) {
-                    var values = this.buyer_settings[orderType][arrName][arrKey];
-                    return values;
-                }
+                    var values = this.buyer_settings[orderType][arrName].map(function(o) {
+                        var parsedobj = JSON.parse(JSON.stringify(o));
+                        if (typeof(parsedobj[arrKey]) !== 'undefined' || parsedobj[arrKey] !== null) {
+                            newarr[Object.keys(parsedobj)[0]] = Object.values(parsedobj)[0];
+                        }
+                        return newarr;
+                    });
+
+                    //console.log(values)
+                    return values[0][arrKey];
                 } else {
-                    return '';
+                    // console.log('Object not found yet');
                 }
+            } else {
+                return '';
+            }
 
         },
         formatDate(date_string) {
@@ -249,6 +297,7 @@ export default {
             }
         },
         init(status = 1) {
+            console.log(status);
             if (status == 2) {
                 window.location.reload();
             }
@@ -344,7 +393,7 @@ export default {
         //     this.$router.push('/home')
         // }
         this.byr_buyer_id = this.$session.get('byr_buyer_id');
-        
+        //this.getbuyerJsonSettingvalue();
         // this.user_data = this.app._data;
 
         // this.global_user_id = Globals.user_info_id;

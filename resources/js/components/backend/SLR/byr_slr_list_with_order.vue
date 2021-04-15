@@ -49,7 +49,7 @@ export default {
   created() {
   },
   mounted() {
-    this.init();
+    // this.init();
     this.loadData();
   },
 };

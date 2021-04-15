@@ -17,7 +17,7 @@ use Auth;
 class User extends Authenticatable
 {
     use Notifiable,HasRoles;
-    
+
 
     /**
      * The attributes that are mass assignable.
@@ -46,8 +46,8 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
     protected $table = 'adm_users';
-    // public function getFirstNameAttribute() 
-    public function getImageAttribute() 
+    // public function getFirstNameAttribute()
+    public function getImageAttribute()
     {
         $user_id= Auth::user()->id;
         $user_details = adm_user_details::where('user_id', $user_id)->first();
@@ -55,10 +55,10 @@ class User extends Authenticatable
             $image_name = $user_details->image;
         } else {
             $image_name = null;
-        }        
+        }
         return $image_name;
     }
-    // For check permission like can in vue 
+    // For check permission like can in vue
     public function getAllPermissionsAttribute() {
         $permissions = [];
           foreach (Permission::all() as $permission) {
@@ -68,7 +68,7 @@ class User extends Authenticatable
           }
         return $permissions;
     }
-    // For check roles like canrole in vue 
+    // For check roles like canrole in vue
     public function getAllRolesAttribute() {
         $roles = [];
           foreach (Role::all() as $role) {
@@ -79,7 +79,7 @@ class User extends Authenticatable
         return $roles;
     }
 
-    public function getCompanyIdAttribute() 
+    public function getCompanyIdAttribute()
     {
         $user_id= Auth::user()->id;
         $company_info = cmn_companies_user::where('adm_user_id', $user_id)->first();
@@ -87,7 +87,7 @@ class User extends Authenticatable
             $cmn_company_id = $company_info->cmn_company_id;
         } else {
           $cmn_company_id = null;
-        }        
+        }
         return $cmn_company_id;
     }
 
@@ -102,7 +102,7 @@ class User extends Authenticatable
       }
     }
 
-    public function getByrSlrIdAttribute() 
+    public function getByrSlrIdAttribute()
     {
         $cmn_company_id= $this->getCompanyIdAttribute();
         $user_type= $this->getUserTypeAttribute();

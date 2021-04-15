@@ -1,7 +1,7 @@
 <template>
 <div>
 <!--bloog section-->
-        
+
 
 <!--user blog-->
   <!--<b-row v-can="['slr_view']">
@@ -84,7 +84,7 @@
     });
   },
         mounted() {
-            this.init();
+            // this.init();
         }
     }
 </script>

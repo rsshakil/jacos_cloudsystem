@@ -3,7 +3,7 @@
 <div class="row" v-if="page_slug_url!='selected_buyer'">
            <div class="col-12 text-center page_c_title_bar text-sm-left mb-0">
             <h4 class="page_custom_title"> <span v-html="page_heading"></span></h4>
-       
+
         </div>
     </div>
 </div>
@@ -20,7 +20,7 @@
             }
         },
         methods:{
-          
+
         },
           created() {
              this.page_slug_url =  this.$route.name;
@@ -48,7 +48,7 @@
         });
   },
         mounted() {
-            this.init();
+            // this.init();
         }
     }
 </script>
