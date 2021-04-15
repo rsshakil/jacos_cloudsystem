@@ -8,6 +8,7 @@ use App\Models\DATA\SHIPMENT\data_shipment;
 use App\Models\DATA\SHIPMENT\data_shipment_voucher;
 use App\Models\DATA\SHIPMENT\data_shipment_item;
 use App\Http\Controllers\API\AllUsedFunction;
+use Illuminate\Support\Facades\Log;
 
 class Data_Controller extends Controller
 {
@@ -881,6 +882,7 @@ class Data_Controller extends Controller
 
                 foreach ($all_vouchers as $key1 => $voucher) {
                     $data_shipment_voucher_id=$voucher->data_shipment_voucher_id;
+                    Log::info($data_shipment_voucher_id);
                     data_shipment_item::where('data_shipment_voucher_id',$data_shipment_voucher_id)
                     ->where('mes_lis_shi_lin_lin_line_number',$value[87])->update($shipment_item_array);
                 }

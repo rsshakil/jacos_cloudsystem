@@ -176,67 +176,67 @@ export default {
 
             });
         },
-        display_table_col_setting() {
-            // console.log(this.$route.name);
-            if (this.$route.name == 'order_list_details') {
-                this.$root.$emit(
-                    "bv::show::modal",
-                    "table_col_setting",
-                    "#table_colShowHide"
-                );
-                axios
-                    .get(this.BASE_URL + "api/tblecolsetting/" + this.$route.name)
-                    .then(data => {
-                        this.init(data.status);
-                        // console.log(data);
-                        this.table_col_setting_list = data.data.result;
-                        this.table_col_arry = data.data.arrs;
-                        this.selected_columns = data.data.selected_columns;
-                        this.col_lists = data.data.col_lists;
-                    });
-            } else {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Table column setting',
-                    text: 'Table column setting not found for this page'
-                });
-            }
-        },
+        // display_table_col_setting() {
+        //     // console.log(this.$route.name);
+        //     if (this.$route.name == 'order_list_details') {
+        //         this.$root.$emit(
+        //             "bv::show::modal",
+        //             "table_col_setting",
+        //             "#table_colShowHide"
+        //         );
+        //         axios
+        //             .get(this.BASE_URL + "api/tblecolsetting/" + this.$route.name)
+        //             .then(data => {
+        //                 this.init(data.status);
+        //                 // console.log(data);
+        //                 this.table_col_setting_list = data.data.result;
+        //                 this.table_col_arry = data.data.arrs;
+        //                 this.selected_columns = data.data.selected_columns;
+        //                 this.col_lists = data.data.col_lists;
+        //             });
+        //     } else {
+        //         Swal.fire({
+        //             icon: 'warning',
+        //             title: 'Table column setting',
+        //             text: 'Table column setting not found for this page'
+        //         });
+        //     }
+        // },
 
-        update_col_setting() {
-            // console.log("update col setting");
+        // update_col_setting() {
+        //     // console.log("update col setting");
 
-            var post_data = {
-                url_slug: this.$route.name,
-                user_id: Globals.user_info_id,
-                content_setting: this.selected_columns,
-                setting_list: this.table_col_arry,
-            };
-            axios.put(
-                    this.BASE_URL + "api/tblecolsetting/" + this.$route.name,
-                    post_data
-                )
-                .then(data => {
-                    this.$root.$emit(
-                        "bv::hide::modal",
-                        "table_col_setting",
-                        "#table_colShowHide"
-                    );
-                    Fire.$emit('LoadByrorderDetail');
-                    // window.location.reload();
-                });
-        },
-        handleChange: function(col_setting) {
-            if (col_setting.header_status === true) {
-                this.selected_columns.push(col_setting.header_field);
-            } else {
-                for (var i = 0; i < this.selected_columns.length; i++) {
-                    if (this.selected_columns[i] == col_setting.header_field) {
-                        this.selected_columns.splice(i, 1)
-                    }
-                }
-            }
-        },
+        //     var post_data = {
+        //         url_slug: this.$route.name,
+        //         user_id: Globals.user_info_id,
+        //         content_setting: this.selected_columns,
+        //         setting_list: this.table_col_arry,
+        //     };
+        //     axios.put(
+        //             this.BASE_URL + "api/tblecolsetting/" + this.$route.name,
+        //             post_data
+        //         )
+        //         .then(data => {
+        //             this.$root.$emit(
+        //                 "bv::hide::modal",
+        //                 "table_col_setting",
+        //                 "#table_colShowHide"
+        //             );
+        //             Fire.$emit('LoadByrorderDetail');
+        //             // window.location.reload();
+        //         });
+        // },
+        // handleChange: function(col_setting) {
+        //     if (col_setting.header_status === true) {
+        //         this.selected_columns.push(col_setting.header_field);
+        //     } else {
+        //         for (var i = 0; i < this.selected_columns.length; i++) {
+        //             if (this.selected_columns[i] == col_setting.header_field) {
+        //                 this.selected_columns.splice(i, 1)
+        //             }
+        //         }
+        //     }
+        // },
 
         sweet_normal_alert() {
             Swal.fire({
