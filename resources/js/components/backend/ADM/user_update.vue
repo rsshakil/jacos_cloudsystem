@@ -131,7 +131,7 @@ export default {
   methods: {
     //get Table data
     loadUserDetailsData() {
-        this.init();
+        // this.init();
       axios.get(this.BASE_URL+"api/user_details/"+this.user_id)
         .then(({ data }) => {
             this.init(data.status);
