@@ -95,9 +95,9 @@
             <option value="*">全て</option>
             <option v-for="(opt, i) in mes_lis_pay_lin_det_verification_result_code_list"
                   :key="i"
-                  :value="Object.keys(opt)[0]"
+                  :value="opt"
                 >
-                  {{ Object.values(opt)[0] }}
+                  {{ opt }}
                 </option>
             </select>
             </td>
