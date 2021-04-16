@@ -217,6 +217,9 @@ class OrderController extends Controller
         $form_search = $request->form_search;
         $sort_by=$form_search['sort_by'];
         $sort_type=$form_search['sort_type'];
+        $searchCode1=$form_search['searchCode1'];
+        $searchCode2=$form_search['searchCode2'];
+        $searchCode3=$form_search['searchCode3'];
 
         data_order_voucher::where('data_order_id',$data_order_id)->where('mes_lis_ord_tra_goo_major_category',$major_category)->where('mes_lis_ord_log_del_delivery_service_code',$delivery_service_code)->where('mes_lis_ord_tra_dat_delivery_date',$delivery_date)->whereNull('check_datetime')->update(['check_datetime'=>date('Y-m-d H:i:s')]);
         $order_info = DB::table('data_shipments as ds')
@@ -293,6 +296,15 @@ class OrderController extends Controller
                     if($form_search['situation']=="確定済"){
                         $result = $result->whereNotNull('dsv.decision_datetime');
                     }
+                }
+                if($searchCode1!=''){
+                    $result = $result->where('dsv.mes_lis_shi_par_shi_code',$searchCode1);
+                }
+                if($searchCode2!=''){
+                    $result = $result->where('dsv.mes_lis_shi_par_rec_code',$searchCode2);
+                }
+                if($searchCode3!=''){
+                    $result = $result->where('dsi.mes_lis_shi_lin_ite_order_item_code',$searchCode3);
                 }
                 $result = $result->orderBy('dsv.'.$sort_by,$sort_type);
                 $result = $result->groupBy('dsv.mes_lis_shi_tra_trade_number')
