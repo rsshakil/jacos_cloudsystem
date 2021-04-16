@@ -54,7 +54,7 @@ export default {
 
         // Database created and updated datetime conversion
         getbuyerJsonSettingvalue() {
-          
+
             axios.get(this.BASE_URL + "api/buyerJsonSetting/" + this.byr_buyer_id)
                 .then(({ data }) => {
                     this.init(data.status);
@@ -80,9 +80,9 @@ export default {
                     var values = this.buyer_settings[orderType][arrName][arrKey];
                     return values;
                 }
-                } else {
-                    return '';
-                }
+            } else {
+                return '';
+            }
 
         },
         formatDate(date_string) {
@@ -194,7 +194,7 @@ export default {
             Swal.fire({
                 icon: this.alert_icon,
                 title: this.alert_title,
-                text: this.alert_text,
+                html: this.alert_text,
                 confirmButtonText: "完了"
             });
         },
@@ -202,7 +202,7 @@ export default {
             Swal.fire({
                 icon: this.alert_icon,
                 title: this.alert_title,
-                text: this.alert_text,
+                html: this.alert_text,
                 footer: this.alert_footer
             });
         },
@@ -213,7 +213,7 @@ export default {
             var status = Swal.fire({
                 icon: this.alert_icon,
                 title: this.alert_title,
-                text: this.alert_text,
+                html: this.alert_text,
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
@@ -225,7 +225,7 @@ export default {
             var status = Swal.fire({
                 icon: this.alert_icon,
                 title: this.alert_title,
-                text: this.alert_text,
+                html: this.alert_text,
                 showCancelButton: true,
                 cancelButtonText: this.cancel_btn,
                 confirmButtonColor: "#3085d6",
@@ -249,7 +249,7 @@ export default {
             }
         },
         init(status = 1) {
-          
+
             if (status == 2) {
                 window.location.reload();
             }

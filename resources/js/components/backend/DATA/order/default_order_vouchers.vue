@@ -1214,10 +1214,10 @@ export default {
                 this.init(data.status);
                 if (data.status==0) {
                     _this.alert_icon = "error";
-                    _this.alert_title = "Error";
+                    _this.alert_title = "エラー";
                 }else{
                     _this.alert_icon = "success";
-                    _this.alert_title = "Success";
+                    _this.alert_title = "完了";
                 }
               _this.confirmButtonText = '完了';
               _this.alert_text = data.message;

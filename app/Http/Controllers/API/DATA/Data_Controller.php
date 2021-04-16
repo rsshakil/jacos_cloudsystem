@@ -1010,6 +1010,6 @@ class Data_Controller extends Controller
         }
 
         log::debug('shipmentUpdateArray end');
-        return response()->json(['message'=>"Success",'status'=>1]);
+        return response()->json(['message'=>"出荷データアップロード",'status'=>1]);
     }
 }

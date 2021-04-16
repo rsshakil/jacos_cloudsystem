@@ -434,11 +434,13 @@ class data_csv_order
             // something went wrong
         }
     // });
+    // Mail
         $cmn_connect_options=cmn_connect::select('optional')->where('cmn_connect_id',$cmn_connect_id)->first();
         $optional=json_decode($cmn_connect_options->optional);
         if ($optional->order->fax->exec) {
             $this->fax_number=$optional->order->fax->number;
             $this->attachment_paths_all=$this->pdfGenerate($data_order_id);
+            Log::info($this->attachment_paths_all);
 
         foreach ($this->attachment_paths_all as $key => $value) {
             Log::info('send mail for fax:[to:'.config('const.PDF_SEND_MAIL').',subject:'.$this->fax_number.']');
@@ -453,6 +455,8 @@ class data_csv_order
                 ->setBody(''); });
         }
         }
+
+        // Mail
         return ['message' => "success", 'status' => 1];
     }
     public function pdfGenerate($data_order_id)
@@ -461,6 +465,7 @@ class data_csv_order
         $page=0;
         $receipt=$this->fdfRet();
         $pdf_datas = $this->pdfDAta($data_order_id);
+        Log::info(count($pdf_datas));
         $x = 0;
         $y = 0;
         $i = 0;
@@ -470,11 +475,19 @@ class data_csv_order
         $same_rec_code=1;
         foreach ($pdf_datas as $pdf_data) {
             if (!($i > count($pdf_datas))) {
-                if ($page % $page_limit==0 && $page!=0) {
-                    $pdf_file_path = $this->file_save($receipt,$file_number);
-                    array_push($pdf_file_paths,$pdf_file_path);
-                    $receipt=$this->fdfRet();
-                    $file_number+=1;
+                if ($page!=0 && ($page % $page_limit)==0) {
+                    // Log::info("i: ".($i));
+                    // Log::info("page%: ".($page % $page_limit));
+                    // Log::info("page: ".$page);
+                    // Log::info("page_limit: ".$page_limit);
+                    // Log::info("file_number: ".$file_number);
+                    if (!(($file_number*$page_limit)>$page)) {
+                        $pdf_file_path = $this->file_save($receipt,$file_number);
+                        array_push($pdf_file_paths,$pdf_file_path);
+                        $receipt=$this->fdfRet();
+                        $file_number+=1;
+                    }
+
                 }
 
                 if (isset($pdf_datas[$i])) {
@@ -511,6 +524,7 @@ class data_csv_order
         // return $response;
     }
     public function file_save($receipt, $file_number){
+        // Log::debug(dd($receipt));
         $pdf_file_name=date('YmdHis').'_'.$file_number.'_receipt.pdf';
         $this->all_functions->folder_create(config('const.PDF_SAVE_PATH'));
         $response = new Response(
@@ -518,6 +532,9 @@ class data_csv_order
         );
         // $pdf_file_path = \Config::get('app.url').'storage/'.config('const.PDF_SAVE_PATH').$pdf_file_name;
         $pdf_file_path = storage_path(config('const.PDF_SAVE_PATH').$pdf_file_name);
+        // $receipt = new Fpdi();
+        // $pagecount = $receipt->setSourceFile($pdf_file_path);
+        // Log::info("Counted".$pagecount);
         return $pdf_file_path;
     }
     public function headerData($receipt,$pdf_data,$x,$y){
