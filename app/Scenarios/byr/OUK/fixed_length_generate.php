@@ -27,7 +27,7 @@ class fixed_length_generate
         $data=[];
         foreach ($order_data as $key => $val) {
             // file head
-            $do = date('ymd', strtotime($val['mes_lis_shi_tra_dat_order_date'])); //datetime to date string wich length is 6
+            // $do = date('ymd', strtotime($val['mes_lis_shi_tra_dat_order_date'])); //datetime to date string wich length is 6
 
             // 取引先コード取得
             // 桁あふれ桁少ないのを対応
@@ -35,7 +35,8 @@ class fixed_length_generate
 
             $file_head = 'A00'; //default value wich length is 3
             $file_head.= date('ymdHis', strtotime($val['sta_doc_creation_date_and_time'])); //datetime to date time string wich length is 6+6
-            $file_head.= $do;  //length is 6
+            // $file_head.= $do;  //length is 6
+            $file_head.= date('ymd', strtotime($val['sta_doc_creation_date_and_time'])); //datetime to date string wich length is 6;  //length is 6
             $file_head.= '82105578'; //default value wich length is 8
             $file_head.= $tori_code."HI"; //add HI with sel code wich length is 8
             $file_head.= '82105578'; //default value wich length is 8
@@ -54,16 +55,23 @@ class fixed_length_generate
             $voucher_head .= str_pad($val['mes_lis_shi_par_rec_code'], 6, '0', STR_PAD_LEFT); //0 added before string until length is 6
             $voucher_head .= str_pad($val['mes_lis_shi_tra_goo_major_category'], 4, '0', STR_PAD_LEFT); //0 added before string until length is 4
             $voucher_head .='50'; //default value wich length is 2
-            $voucher_head .= $do; //length is 6
-            $voucher_head .= date('ymd', strtotime($val['mes_lis_shi_tra_dat_delivery_date'])); //datetime to date string wich length is 6
+            // $voucher_head .= $do; //length is 6
+            // $voucher_head .= $do; //length is 6 mes_lis_ord_tra_dat_order_date
+            $voucher_head.= date('ymd', strtotime($val['mes_lis_shi_tra_dat_order_date'])); //datetime to date string wich length is 6;  //length is 6
+            $voucher_head .= date('ymd', strtotime($val['mes_lis_shi_tra_dat_delivery_date_to_receiver'])); //datetime to date string wich length is 6
             $voucher_head .= $tori_code; //0 added before string until length is 6
             $voucher_head .= '00'; //default value wich length is 2
             $voucher_head .= substr($val['mes_lis_shi_log_del_delivery_service_code'], -1); //substring from service_code (right) which length is 1
             $voucher_head .= $this->all_functions->mb_str_pad($val['mes_lis_shi_par_rec_name_sbcs'], 6); //space padding added after string until length is 6
             $voucher_head .= str_repeat(" ", 6); //6 space padding added with vouche string until length is 6
             $voucher_head .= $this->all_functions->mb_str_pad($val['mes_lis_shi_par_sel_name_sbcs'], 22); //space padding added after string until length is 22
-            $voucher_head .= substr($val['mes_lis_shi_tra_ins_goods_classification_code'], -1); //substring from service_code (right) which length is 1
-            $voucher_head .= $this->all_functions->mb_str_pad($val['mes_lis_shi_log_del_route_code'], 1); //space padding added after string until length is 1
+            // $voucher_head .= substr($val['mes_lis_shi_tra_ins_goods_classification_code'], -1); //substring from service_code (right) which length is 1
+            // \Log::debug("Classification code: ". (($val['mes_lis_shi_tra_ins_goods_classification_code']=='01')?0: (($val['mes_lis_shi_tra_ins_goods_classification_code']=='03')?1:$val['mes_lis_shi_tra_ins_goods_classification_code'])));
+            $voucher_head .= (($val['mes_lis_shi_tra_ins_goods_classification_code']=='01')?0: (($val['mes_lis_shi_tra_ins_goods_classification_code']=='03')?1:' ')); //if classification_code=01 then 0 else 03 then 1 else space
+            // $voucher_head .= substr($val['mes_lis_shi_tra_ins_goods_classification_code'], -1); //substring from service_code (right) which length is 1
+            // \Log::debug("Route code: ". ($val['mes_lis_shi_log_del_route_code']=='02'?1:' '));
+            $voucher_head .= ($val['mes_lis_shi_log_del_route_code']=='02'?1:' '); //space padding added after string until length is 1 if route code!=02 else 1
+            // $voucher_head .= $this->all_functions->mb_str_pad($val['mes_lis_shi_log_del_route_code'], 1); //space padding added after string until length is 1
             $voucher_head .= str_pad($val['mes_lis_shi_par_shi_code'], 6, '0', STR_PAD_LEFT); //0 added before string until length is 6
             $voucher_head .= $this->all_functions->mb_str_pad($val['mes_lis_shi_par_shi_name_sbcs'], 22); //space padding added after string until length is 22
             $voucher_head .= str_repeat(" ", 16); //Sixteen space added which length is 16
@@ -73,7 +81,9 @@ class fixed_length_generate
             $items = 'D01'; //default value wich length is 3
             $items.= str_pad($val['mes_lis_shi_lin_lin_line_number'], 2, '0', STR_PAD_LEFT); //0 added before the string until length is 2
             $items.= $this->all_functions->mb_str_pad($val['mes_lis_shi_lin_ite_order_item_code'], 13); //space padding added after string until length is 13
-            $items.= str_pad($val['mes_lis_shi_lin_fre_packing_quantity'], 4, '0', STR_PAD_LEFT); //0 added before the string until length is 4
+            // $items.= str_pad($val['mes_lis_shi_lin_fre_packing_quantity'], 4, '0', STR_PAD_LEFT); //0 added before the string until length is 4
+            // \Log::debug("unit_multiple: ". str_pad($val['mes_lis_shi_lin_qua_unit_multiple'], 4, '0', STR_PAD_LEFT));
+            $items.= str_pad($val['mes_lis_shi_lin_qua_unit_multiple'], 4, '0', STR_PAD_LEFT); //0 added before the string until length is 4
             $items.= str_pad($val['mes_lis_shi_lin_qua_ord_num_of_order_units'], 4, '0', STR_PAD_LEFT); //0 added before the string until length is 4
             $items.= str_repeat(" ", 3); //Space added until length is 3
             $items.= str_pad(str_replace(".", "", $val['mes_lis_shi_lin_qua_ord_quantity']), 6, '0', STR_PAD_LEFT); //Remove dot from decimal value and added 0 before string until the length is 6
