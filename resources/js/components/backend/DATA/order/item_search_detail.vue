@@ -548,7 +548,6 @@ export default {
     Fire.$emit('permission_check_for_buyer',this.$session.get('byr_buyer_id'));
 this.getbuyerJsonSettingvalue();
     this.item_id = this.$route.params.item_id;
-    this.getbuyerJsonSettingvalue();
     this.get_all_byr_order_item_detail();
     Fire.$on("LoadByrorderItemDetail", () => {
       this.get_all_byr_order_item_detail();
