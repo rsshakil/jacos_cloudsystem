@@ -46,10 +46,17 @@ class DataController extends Controller
                 $table_name='data_receives.';
                 // $table_name2='data_returns.';
             }
-            $result1=data_receive::select('data_receives.data_receive_id','data_receives.sta_doc_type','data_receives.receive_datetime','drv.mes_lis_acc_par_sel_code','drv.mes_lis_acc_par_sel_name',
-            'drv.mes_lis_acc_tra_dat_transfer_of_ownership_date','drv.mes_lis_acc_tra_dat_delivery_date','drv.mes_lis_acc_tra_goo_major_category',
-            'drv.mes_lis_acc_log_del_delivery_service_code','drv.mes_lis_acc_tra_ins_temperature_code','drv.check_datetime',
-            \DB::raw('COUNT(drv.data_receive_voucher_id) AS cnt'),'drv.data_receive_voucher_id')
+            $result1=data_receive::select('data_receives.data_receive_id',
+            'data_receives.sta_doc_type','data_receives.receive_datetime',
+            'drv.mes_lis_acc_par_sel_code',
+            'drv.mes_lis_acc_par_sel_name',
+            'drv.mes_lis_acc_tra_dat_transfer_of_ownership_date',
+            'drv.mes_lis_acc_tra_dat_delivery_date',
+            'drv.mes_lis_acc_tra_goo_major_category',
+            'drv.mes_lis_acc_log_del_delivery_service_code',
+            'drv.mes_lis_acc_tra_ins_temperature_code','drv.check_datetime',
+            \DB::raw('COUNT(*) AS cnt'),
+            'drv.data_receive_voucher_id')
             ->join('data_receive_vouchers as drv','data_receives.data_receive_id','=','drv.data_receive_id');
         // ->where('data_receives.cmn_connect_id','=',$cmn_connect_id);
             // 条件指定検索
@@ -77,7 +84,20 @@ class DataController extends Controller
                 if ($check_datetime!=null) {
                     $result1 =$result1->where('drv.check_datetime',$check_datetime);
                 }
-                $result =$result1->groupBy('drv.mes_lis_acc_tra_trade_number')
+                $result =$result1->groupBy([
+                    'data_receives.receive_datetime',
+'drv.mes_lis_acc_par_sel_code',
+'drv.mes_lis_acc_tra_dat_transfer_of_ownership_date',
+'drv.mes_lis_acc_tra_goo_major_category',
+'drv.mes_lis_acc_log_del_delivery_service_code',
+'drv.mes_lis_acc_tra_ins_temperature_code'
+                ])
+                ->orderBy('data_receives.receive_datetime','DESC')
+        ->orderBy('drv.mes_lis_acc_par_sel_code')
+        ->orderBy('drv.mes_lis_acc_tra_dat_transfer_of_ownership_date')
+        ->orderBy('drv.mes_lis_acc_tra_goo_major_category')
+        ->orderBy('drv.mes_lis_acc_log_del_delivery_service_code')
+        ->orderBy('drv.mes_lis_acc_tra_ins_temperature_code')
                 ->orderBy($table_name.$sort_by,$sort_type);
 
 
