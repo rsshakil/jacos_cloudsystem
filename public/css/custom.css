@@ -211,11 +211,11 @@
 }
 
 .topHeaderInputFieldBtn {
-    width: 120px;
+    width: 68%;
     float: left;
-    margin-right: 10px;
+    margin-right: 5px;
 }
-
+.order_item_details_table tbody tr:hover {background-color:#f5f5f5;}
 .srchBtn {
     padding-left: 50px;
     padding-right: 50px;
