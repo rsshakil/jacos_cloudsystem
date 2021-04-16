@@ -95,7 +95,7 @@
             <td class="cl_custom_color_active">欠品理由</td>
             <td colspan="5">
               <select class="form-control" v-model="order_item_lists.mes_lis_shi_lin_qua_sto_reason_code">
-                <option v-for="(item,i) in mes_lis_shi_lin_qua_sto_reason_codeList" :key="i" :value="Object.keys(item)[0]">{{Object.values(item)[0]}}</option>
+                <option v-for="(item,i) in mes_lis_shi_lin_qua_sto_reason_codeList" :key="i" :value="item">{{item}}</option>
               </select>
             </td>
 
@@ -175,7 +175,7 @@
 
                 {{order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code}} {{getbyrjsonValueBykeyName('mes_lis_shi_lin_qua_sto_reason_code',order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code,'shipments')}}
                 <select v-model="order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code" class="form-control ">
-                <option v-for="(item,i) in mes_lis_shi_lin_qua_sto_reason_codeList" :value="Object.keys(item)[0]" :key="i">{{Object.values(item)[0]}}</option>
+                <option v-for="(item,i) in mes_lis_shi_lin_qua_sto_reason_codeList" :value="item" :key="i">{{item}}</option>
                 </select>
 
 

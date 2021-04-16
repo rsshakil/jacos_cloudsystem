@@ -66,9 +66,9 @@
             <option value="*">全て</option>
             <option v-for="(opt, i) in mes_lis_inv_lin_det_pay_code_list"
                   :key="i"
-                  :value="Object.keys(opt)[0]"
+                  :value="opt"
                 >
-                  {{ Object.values(opt)[0] }}
+                  {{ opt }}
                 </option>
             </select>
             </td>
@@ -84,9 +84,9 @@
 
             <option v-for="(opt, i) in mes_lis_inv_lin_det_balance_carried_code_list"
                   :key="i"
-                  :value="Object.keys(opt)[0]"
+                  :value="opt"
                 >
-                  {{ Object.values(opt)[0] }}
+                  {{ opt }}
                 </option>
             </select></td>
             <td class="cl_custom_color">照合結果</td>

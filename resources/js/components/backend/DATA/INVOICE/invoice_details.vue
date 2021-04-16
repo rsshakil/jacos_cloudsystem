@@ -396,8 +396,8 @@
             <option value="*">全て</option>
               <option
                 v-for="(temp, i) in mes_lis_inv_lin_det_pay_code_list"
-                :key="i" v-if="Object.keys(temp)[0]!='' " :value="Object.keys(temp)[0]">
-                {{ Object.values(temp)[0] }}
+                :key="i" v-if="temp!='' " :value="temp">
+                {{ temp }}
               </option>
             </select>
               </div>

@@ -39,9 +39,9 @@
                 v-for="(dsc, i) in json_delivery_service_code"
                 :key="i"
 
-                :value="Object.keys(dsc)[0]"
+                :value="dsc"
               >
-                {{ Object.values(dsc)[0] }}
+                {{ dsc}}
               </option>
             </select>
 
@@ -72,8 +72,8 @@
             <option value="*">全て</option>
               <option
                 v-for="(temp, i) in json_temperature_code"
-                :key="i" v-if="Object.keys(temp)[0]!='' " :value="Object.keys(temp)[0]">
-                {{ Object.values(temp)[0] }}
+                :key="i" v-if="temp!='' " :value="temp">
+                {{ temp }}
               </option>
             </select>
           </td>
@@ -401,6 +401,7 @@ export default {
           this.buyer_settings = JSON.parse(data.buyer_settings);
           this.json_temperature_code = this.buyer_settings.orders.mes_lis_ord_tra_ins_temperature_code;
           this.json_delivery_service_code = this.buyer_settings.orders.mes_lis_ord_log_del_delivery_service_code;
+          
         //   }
           this.byr_buyer_category_lists.unshift({category_code:'*',category_name:'全て'});
           this.loader.hide();
