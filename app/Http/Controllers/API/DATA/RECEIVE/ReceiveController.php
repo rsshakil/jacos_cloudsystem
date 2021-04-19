@@ -13,7 +13,8 @@ use App\Models\BYR\byr_buyer;
 use App\Models\BYR\byr_corrected_receive;
 use App\Traits\Csv;
 use App\Http\Controllers\API\DATA\RECEIVE\DataController;
-use DB;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ReceiveController extends Controller
 {
@@ -71,7 +72,7 @@ class ReceiveController extends Controller
             $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
         // 検索
-        $result1=data_receive::select(
+        $result=data_receive::select(
         'data_receives.data_receive_id',
         'data_receives.sta_doc_type',
         'data_receives.receive_datetime',
@@ -82,57 +83,57 @@ class ReceiveController extends Controller
         'drv.mes_lis_acc_tra_goo_major_category',
         'drv.mes_lis_acc_log_del_delivery_service_code',
         'drv.mes_lis_acc_tra_ins_temperature_code','drv.check_datetime',
-        \DB::raw('COUNT(*) AS cnt'),
+        DB::raw('COUNT(*) AS cnt'),
         'drv.data_receive_voucher_id'
         )
         ->join('data_receive_vouchers as drv','data_receives.data_receive_id','=','drv.data_receive_id')
         ->where('data_receives.cmn_connect_id','=',$cmn_connect_id);
             // 条件指定検索
                 if ($receive_date_from && $receive_date_to) {
-                    $result1 =$result1->whereBetween('data_receives.receive_datetime', [$receive_date_from, $receive_date_to]);
+                    $result =$result->whereBetween('data_receives.receive_datetime', [$receive_date_from, $receive_date_to]);
                 }
                 if ($ownership_date_from && $ownership_date_to) {
-                    $result1 =$result1->whereBetween('drv.mes_lis_acc_tra_dat_transfer_of_ownership_date', [$ownership_date_from, $ownership_date_to]);
+                    $result =$result->whereBetween('drv.mes_lis_acc_tra_dat_transfer_of_ownership_date', [$ownership_date_from, $ownership_date_to]);
                 }
                 if ($sel_code) {
-                    $result1 =$result1->where('drv.mes_lis_acc_par_sel_code', $sel_code);
+                    $result =$result->where('drv.mes_lis_acc_par_sel_code', $sel_code);
                 }
                 if ($delivery_service_code!='*') {
-                    $result1 =$result1->where('drv.mes_lis_acc_log_del_delivery_service_code',$delivery_service_code);
+                    $result =$result->where('drv.mes_lis_acc_log_del_delivery_service_code',$delivery_service_code);
                 }
                 if ($temperature_code!='*') {
-                    $result1 =$result1->where('drv.mes_lis_acc_tra_ins_temperature_code',$temperature_code);
+                    $result =$result->where('drv.mes_lis_acc_tra_ins_temperature_code',$temperature_code);
                 }
                 if ($major_category!='*') {
-                    $result1 =$result1->where('drv.mes_lis_acc_tra_goo_major_category',$major_category);
+                    $result =$result->where('drv.mes_lis_acc_tra_goo_major_category',$major_category);
                 }
                 if ($sta_doc_type!='*') {
-                    $result1 =$result1->where('data_receives.sta_doc_type',$sta_doc_type);
+                    $result =$result->where('data_receives.sta_doc_type',$sta_doc_type);
                 }
                 if ($check_datetime!='*') {
                     if($check_datetime==1){
-                        $result1= $result1->whereNull('drv.check_datetime');
+                        $result= $result->whereNull('drv.check_datetime');
                     }else{
-                        $result1= $result1->whereNotNull('drv.check_datetime');
+                        $result= $result->whereNotNull('drv.check_datetime');
                     }
-        
+
                 }
-               
-        $result1 = $result1->groupBy(['data_receives.receive_datetime',
-'drv.mes_lis_acc_par_sel_code',
-'drv.mes_lis_acc_tra_dat_transfer_of_ownership_date',
-'drv.mes_lis_acc_tra_goo_major_category',
-'drv.mes_lis_acc_log_del_delivery_service_code',
-'drv.mes_lis_acc_tra_ins_temperature_code'
+
+        $result = $result->groupBy(['data_receives.receive_datetime',
+        'drv.mes_lis_acc_par_sel_code',
+        'drv.mes_lis_acc_tra_dat_transfer_of_ownership_date',
+        'drv.mes_lis_acc_tra_goo_major_category',
+        'drv.mes_lis_acc_log_del_delivery_service_code',
+        'drv.mes_lis_acc_tra_ins_temperature_code'
         ])
-        ->orderBy('data_receives.receive_datetime','DESC')
         ->orderBy('drv.mes_lis_acc_par_sel_code')
         ->orderBy('drv.mes_lis_acc_tra_dat_transfer_of_ownership_date')
-        ->orderBy('drv.mes_lis_acc_tra_goo_major_category')
         ->orderBy('drv.mes_lis_acc_log_del_delivery_service_code')
         ->orderBy('drv.mes_lis_acc_tra_ins_temperature_code')
-        ->orderBy($table_name.$sort_by,$sort_type);
-        $result = $result1->paginate($per_page);
+        ->orderBy('data_receives.receive_datetime','DESC')
+        ->orderBy($table_name.$sort_by,$sort_type)
+        ->orderBy('drv.mes_lis_acc_tra_goo_major_category')
+        ->paginate($per_page);
         // $result = new Paginator($result, 2);
         $buyer_settings = byr_buyer::select('setting_information')->where('byr_buyer_id', $byr_buyer_id)->first();
         $byr_buyer = $this->all_used_fun->get_company_list($cmn_company_id);
