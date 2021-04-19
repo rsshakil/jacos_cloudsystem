@@ -977,15 +977,37 @@ class Data_Controller extends Controller
                     return response()->json(['status'=>0,'message'=>'対象データがありません。<br>[伝票番号]'.$trade_number.'<br>[明細番号]'.$line_number]);
                 }
 
+                // status check
+                $status = 1;
+                $minou_cnt = 0;
+                $ichibu_cnt =0;
                 foreach ($data_shipment_item_info as $ival) {
                     $net_price_total += $ival->mes_lis_shi_lin_amo_item_net_price;           // 原価金額合計
                     $selling_price_total += $ival->mes_lis_shi_lin_amo_item_selling_price;   // 売価金額合計
                     $tax_total += $ival->mes_lis_shi_lin_amo_item_tax;                       // 税額合計
                     $item_total += $ival->mes_lis_shi_lin_qua_shi_quantity;                  // 数量合計
                     $unit_total += $ival->mes_lis_shi_lin_qua_shi_num_of_order_units;        // 発注単位数量合計
+
+                    // status check
+                    if ($ival->mes_lis_shi_lin_qua_shi_num_of_order_units == 0) {
+                        // 未納
+                        $minou_cnt++;
+                    } elseif ($ival->mes_lis_shi_lin_qua_shi_num_of_order_units < $ival->mes_lis_shi_lin_qua_ord_num_of_order_units) {
+                        // 一部未納
+                        $ichibu_cnt++;
+                    }
+                }
+                if (count($data_shipment_item_info) === $minou_cnt) {
+                    // 未納
+                    $status = 3;
+                } elseif ($ichibu_cnt > 0) {
+                    // 一部未納
+                    $status = 2;
                 }
 
+
                 // update shipment_vouchers
+                $shipment_voucher_array['status']=$status;
                 if (isset($voucher_info['revised_delivery_date'])) {
                     $shipment_voucher_array['mes_lis_shi_tra_dat_revised_delivery_date']=$voucher_info['revised_delivery_date'];
                 }
