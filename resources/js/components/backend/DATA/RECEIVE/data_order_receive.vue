@@ -306,7 +306,7 @@ export default {
         delivery_service_code: "*",
         temperature_code: "*",
         sta_doc_type: "*",
-        check_datetime: null,
+        check_datetime: '*',
         // major_category:{category_code:'*',category_name:'全て'},
         sort_by:'receive_datetime ',
         sort_type:"DESC",
