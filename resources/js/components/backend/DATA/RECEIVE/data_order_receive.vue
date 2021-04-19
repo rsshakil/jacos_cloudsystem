@@ -25,15 +25,23 @@
             </td>
             <td>
               <input type="text" v-model="form.sel_code" class="form-control" style="float: left; width: 110px; margin-right: 15px" />
-              <button class="btn btn-primary" style="float:left" type="button">
-                {{ myLang.refer }}
-              </button>
+              <button @click="showAllCustomerCode" class="btn btn-primary" style="float:left;">
+              {{ myLang.refer }}
+            </button>
 
             </td>
            <td class="cl_custom_color">便</td>
             <td>
               <select class="form-control" v-model="form.delivery_service_code">
                 <option value="*">全て</option>
+                <option
+                v-for="(dsc, i) in json_delivery_service_codeList"
+                :key="i"
+
+                :value="dsc"
+              >
+                {{ dsc}}
+              </option>
               </select>
             </td>
           </tr>
@@ -63,6 +71,11 @@
             <td>
               <select class="form-control" v-model="form.temperature_code">
                 <option value="*">全て</option>
+                <option
+                v-for="(temp, i) in json_temperature_codeList"
+                :key="i" v-if="temp!='' " :value="temp">
+                {{ temp }}
+              </option>
               </select>
             </td>
           </tr>
@@ -83,7 +96,11 @@
             </td> -->
             <td class="cl_custom_color">参照状況</td>
             <td>
-              <input type="date" class="form-control" v-model="form.check_datetime">
+              <select class="form-control" v-model="form.check_datetime">
+              <option value="*">全て</option>
+              <option value="1">未参照</option>
+              <option value="2">参照済</option>
+            </select>
             </td>
           </tr>
 
@@ -217,6 +234,49 @@
         </table>
       </div>
     </div>
+    <b-modal
+      size="lg"
+      :hide-backdrop="true"
+      title="取引先コード一覧"
+      cancel-title="閉じる"
+      v-model="showAllCustomerCodeListModal"
+      :hide-footer="true"
+    >
+      <div class="panel-body add_item_body">
+
+          <div class="row">
+  <table class="table table-striped order_item_details_table table-bordered data_table">
+          <thead>
+            <tr>
+              <th style="cursor: pointer">No</th>
+              <th>取引先コード</th>
+              <th>取引先名</th>
+              <th>請求先コード</th>
+              <th>請求取引先名</th>
+              <th>取引先形態区分</th>
+
+            </tr>
+          </thead>
+          <tbody>
+          <tr v-for="(value,index) in order_customer_code_lists" @click="onRowClicked(value)" :key="index">
+          <td>{{index+1}}</td>
+          <td>{{value.mes_lis_acc_par_sel_code}}</td>
+          <td>{{value.mes_lis_acc_par_sel_name}}</td>
+          <td>{{value.mes_lis_acc_par_pay_code}}</td>
+          <td>{{value.mes_lis_acc_par_pay_name}}</td>
+
+          <td></td>
+          </tr>
+          </tbody>
+          </table>
+
+
+
+
+
+          </div>
+      </div>
+    </b-modal>
   </div>
 </template>
 <script>
@@ -227,6 +287,9 @@ export default {
       received_item_length: 0,
       byr_buyer_lists: {},
       byr_buyer_category_lists: [],
+      order_customer_code_lists: {},
+      showAllCustomerCodeListModal:false,
+
       byr_buyer_id:null,
       buyer_settings:[],
       form: new Form({
@@ -259,6 +322,20 @@ export default {
             }
         },
   methods: {
+    onRowClicked (item) {
+        this.form.sel_code = item.mes_lis_acc_par_sel_code;
+       this.showAllCustomerCodeListModal = false;
+    },
+    //get Table data
+    showAllCustomerCode(){
+     let loaders = Vue.$loading.show();
+      this.showAllCustomerCodeListModal = true;
+      this.form.post(this.BASE_URL + "api/get_receive_customer_code_list", this.form)
+        .then(({ data }) => {
+          this.order_customer_code_lists = data.order_customer_code_lists;
+         loaders.hide();
+        });
+    },
     //get Table data
     getAllReceivedItem(page = 1) {
         this.form.page=page;

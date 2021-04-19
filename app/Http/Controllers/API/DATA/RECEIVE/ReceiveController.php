@@ -13,6 +13,7 @@ use App\Models\BYR\byr_buyer;
 use App\Models\BYR\byr_corrected_receive;
 use App\Traits\Csv;
 use App\Http\Controllers\API\DATA\RECEIVE\DataController;
+use DB;
 
 class ReceiveController extends Controller
 {
@@ -49,7 +50,7 @@ class ReceiveController extends Controller
         $receive_date_to = $receive_date_to!=null? date('Y-m-d 23:59:59',strtotime($receive_date_to)):$receive_date_to; // 受信日時終了
         $ownership_date_from = $ownership_date_from!=null? date('Y-m-d 00:00:00',strtotime($ownership_date_from)):$ownership_date_from; // 受信日時開始
         $ownership_date_to = $ownership_date_to!=null? date('Y-m-d 23:59:59',strtotime($ownership_date_to)):$ownership_date_to; // 受信日時終了
-        $check_datetime = $check_datetime!=null? date('Y-m-d 00:00:00',strtotime($check_datetime)):$check_datetime; // 受信日時開始
+        //$check_datetime = $check_datetime!=null? date('Y-m-d 00:00:00',strtotime($check_datetime)):$check_datetime; // 受信日時開始
 
         // $byr_category_code = $request->category_code['category_code']; // 印刷
         // $having_var = '';
@@ -108,9 +109,15 @@ class ReceiveController extends Controller
                 if ($sta_doc_type!='*') {
                     $result1 =$result1->where('data_receives.sta_doc_type',$sta_doc_type);
                 }
-                if ($check_datetime!=null) {
-                    $result1 =$result1->where('drv.check_datetime',$check_datetime);
+                if ($check_datetime!='*') {
+                    if($check_datetime==1){
+                        $result1= $result1->whereNull('drv.check_datetime');
+                    }else{
+                        $result1= $result1->whereNotNull('drv.check_datetime');
+                    }
+        
                 }
+               
         $result1 = $result1->groupBy(['data_receives.receive_datetime',
 'drv.mes_lis_acc_par_sel_code',
 'drv.mes_lis_acc_tra_dat_transfer_of_ownership_date',
@@ -332,5 +339,37 @@ class ReceiveController extends Controller
         $byr_buyer =$this->all_used_fun->get_company_list($cmn_company_id);
 
         return response()->json(['corrected_list' => $result,'byr_buyer_list'=>$byr_buyer]);
+    }
+
+    public function get_receive_customer_code_list(Request $request)
+    {
+        // return $request->all();
+        $adm_user_id = $request->adm_user_id;
+        $byr_buyer_id = $request->byr_buyer_id;
+        $submit_type = $request->submit_type;
+        $per_page = $request->per_page?$request->per_page:20;
+
+        $authUser = User::find($adm_user_id);
+        $cmn_company_id = '';
+        $cmn_connect_id = '';
+        if (!$authUser->hasRole(config('const.adm_role_name'))) {
+            $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
+            $cmn_company_id = $cmn_company_info['cmn_company_id'];
+            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+        }
+        $result = DB::select("SELECT
+        drv.mes_lis_acc_par_sel_code,
+        drv.mes_lis_acc_par_sel_name,
+        drv.mes_lis_acc_par_pay_code,
+        drv.mes_lis_acc_par_pay_name
+        FROM
+       data_receives AS dr
+       INNER JOIN data_receive_vouchers AS drv ON dr.data_receive_id=drv.data_receive_id
+       WHERE dr.cmn_connect_id='".$cmn_connect_id."'
+       GROUP BY
+        drv.mes_lis_acc_par_sel_code,
+        drv.mes_lis_acc_par_pay_code");
+        return response()->json(['order_customer_code_lists' => $result]);
+
     }
 }

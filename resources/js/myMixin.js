@@ -17,6 +17,8 @@ export default {
             col_lists: [],
             buyer_info_for_saller: [],
             mes_lis_shi_lin_qua_sto_reason_codeList: [],
+            json_temperature_codeList:[],
+json_delivery_service_codeList:[],
             filter_select_box: false,
             buyers: [],
             selected_buyer: [],
@@ -60,6 +62,8 @@ export default {
                     this.init(data.status);
                     this.buyer_settings = data.buyer_settings;
                     this.mes_lis_shi_lin_qua_sto_reason_codeList = this.buyer_settings.shipments.mes_lis_shi_lin_qua_sto_reason_code;
+                    this.json_temperature_codeList = this.buyer_settings.orders.mes_lis_ord_tra_ins_temperature_code;
+                    this.json_delivery_service_codeList = this.buyer_settings.orders.mes_lis_ord_log_del_delivery_service_code;
                     this.ordersJson = this.buyer_settings.orders;
                     this.shipmentsJson = this.buyer_settings.shipments;
                     this.receivesJson = this.buyer_settings.receives;

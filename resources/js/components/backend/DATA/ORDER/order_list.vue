@@ -36,7 +36,7 @@
             <select class="form-control" v-model="form.delivery_service_code">
                 <option value="*">全て</option>
               <option
-                v-for="(dsc, i) in json_delivery_service_code"
+                v-for="(dsc, i) in json_delivery_service_codeList"
                 :key="i"
 
                 :value="dsc"
@@ -71,7 +71,7 @@
             <select class="form-control" v-model="form.temperature">
             <option value="*">全て</option>
               <option
-                v-for="(temp, i) in json_temperature_code"
+                v-for="(temp, i) in json_temperature_codeList"
                 :key="i" v-if="temp!='' " :value="temp">
                 {{ temp }}
               </option>
@@ -82,7 +82,6 @@
        <td class="cl_custom_color">参照状況</td>
           <td>
             <select class="form-control" v-model="form.check_datetime">
-              <!--<option :value="0">{{ myLang.voucher_type }}</option>-->
               <option value="*">全て</option>
               <option value="1">未参照</option>
               <option value="2">参照済</option>
@@ -332,9 +331,6 @@ export default {
       print_cnt: [{ "*": "全て" }, { "!0": "未印刷あり" }, { 0: "印刷済" }],
       decission_cnt: [{ "*": "全て" }, { "!0": "未確定あり" }, { 0: "確定済" }],
       confirmation_status_list: [{ "*": "全て" }, { "!0": "未確定あり" }, { 0: "確定済" }],
-      buyer_settings: null,
-      json_temperature_code: [],
-      json_delivery_service_code: [],
       form: new Form({
         adm_user_id: Globals.user_info_id,
         data_order_id:null,
@@ -396,13 +392,6 @@ export default {
           this.order_lists_length = this.order_lists.data.length;
           this.byr_buyer_lists = data.byr_buyer_list;
           this.byr_buyer_category_lists = data.byr_buyer_category_list;
-
-        //   if ((data.buyer_settings)!=null) {
-          this.buyer_settings = JSON.parse(data.buyer_settings);
-          this.json_temperature_code = this.buyer_settings.orders.mes_lis_ord_tra_ins_temperature_code;
-          this.json_delivery_service_code = this.buyer_settings.orders.mes_lis_ord_log_del_delivery_service_code;
-          
-        //   }
           this.byr_buyer_category_lists.unshift({category_code:'*',category_name:'全て'});
           this.loader.hide();
         });

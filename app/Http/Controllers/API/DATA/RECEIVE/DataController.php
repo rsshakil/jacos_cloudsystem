@@ -39,7 +39,7 @@ class DataController extends Controller
             $receive_date_to = $receive_date_to!=null? date('Y-m-d 23:59:59',strtotime($receive_date_to)):$receive_date_to; // 受信日時終了
             $ownership_date_from = $ownership_date_from!=null? date('Y-m-d 00:00:00',strtotime($ownership_date_from)):$ownership_date_from; // 受信日時開始
             $ownership_date_to = $ownership_date_to!=null? date('Y-m-d 23:59:59',strtotime($ownership_date_to)):$ownership_date_to; // 受信日時終了
-            $check_datetime = $check_datetime!=null? date('Y-m-d 00:00:00',strtotime($check_datetime)):$check_datetime; // 受信日時開始
+           // $check_datetime = $check_datetime!=null? date('Y-m-d 00:00:00',strtotime($check_datetime)):$check_datetime; // 受信日時開始
 
             $table_name='drv.';
             if ($sort_by=="data_receive_id" || $sort_by=="receive_datetime") {
@@ -81,8 +81,13 @@ class DataController extends Controller
                 if ($sta_doc_type!='*') {
                     $result1 =$result1->where('data_receives.sta_doc_type',$sta_doc_type);
                 }
-                if ($check_datetime!=null) {
-                    $result1 =$result1->where('drv.check_datetime',$check_datetime);
+                if ($check_datetime!='*') {
+                    if($check_datetime==1){
+                        $result1= $result1->whereNull('drv.check_datetime');
+                    }else{
+                        $result1= $result1->whereNotNull('drv.check_datetime');
+                    }
+        
                 }
                 $result =$result1->groupBy([
                     'data_receives.receive_datetime',
