@@ -28,11 +28,11 @@ class ReceiveController extends Controller
     }
 
     public function orderReceiveList(Request $request){
-        // return $request->all();
+
+        $per_page = $request->per_page == null ? 10 : $request->per_page;
+
         $adm_user_id = $request->adm_user_id;
         $byr_buyer_id = $request->byr_buyer_id;
-        $per_page = $request->per_page == null ? 10 : $request->per_page;
-        // $byr_category_code = $request->category_code;
         $sort_by = $request->sort_by;
         $sort_type = $request->sort_type;
 
@@ -193,7 +193,7 @@ class ReceiveController extends Controller
         ->where('data_receive_vouchers.data_receive_id','=',$data_receive_id)
         // ->where('data_receive_vouchers.mes_lis_acc_par_sel_name',$sel_name)
         ->where('data_receive_vouchers.mes_lis_acc_par_sel_code',$sel_code)
-        // ->where('dsv.mes_lis_shi_tra_goo_major_category','=',$major_category);
+        ->where('data_receive_vouchers.mes_lis_acc_tra_goo_major_category',$major_category)
         ->where('data_receive_vouchers.mes_lis_acc_log_del_delivery_service_code','=',$delivery_service_code);
         if($decesion_status!="*"){
             if($decesion_status=="訂正あり"){
