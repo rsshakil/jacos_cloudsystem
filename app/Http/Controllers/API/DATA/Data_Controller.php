@@ -1000,7 +1000,7 @@ class Data_Controller extends Controller
                 if (count($data_shipment_item_info) === $minou_cnt) {
                     // 未納
                     $status = 3;
-                } elseif ($ichibu_cnt > 0) {
+                } elseif (($minou_cnt > 0)||($ichibu_cnt > 0)) {
                     // 一部未納
                     $status = 2;
                 }
