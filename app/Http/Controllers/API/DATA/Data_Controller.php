@@ -824,18 +824,8 @@ class Data_Controller extends Controller
     public function shipmentUpdateArray($data_array, $file_name="", $reason_code_list=[])
     {
         log::debug('shipmentUpdateArray start');
-        // buyer_settings
-        // $buyer_settings = byr_buyer::select('setting_information')->where('byr_buyer_id', Session::get('byr_buyer_id'))->first();
 
-        // $byr_setting = json_decode($buyer_settings->setting_information, true);
-        // // \log::info($byr_setting);
-        // $reason_code_list = $byr_setting['shipments']['mes_lis_shi_lin_qua_sto_reason_code'];
-
-        $net_price_total=0;
-        $selling_price_total=0;
-        $tax_total=0;
-        $item_total=0;
-        $unit_total=0;
+        $update_voucher_arr = [];
 
         $trade_number='';
         DB::beginTransaction();
@@ -848,16 +838,6 @@ class Data_Controller extends Controller
 
                 // data_shipment_voucher情報取得
                 if ($trade_number !== $value[16]) {
-                    if ($trade_number !== '') {
-                        // voucher 更新
-                        // $dsv_query->update($shipment_voucher_array);
-                        // 値初期化
-                        $net_price_total = 0;       // 原価金額合計
-                        $selling_price_total = 0;   // 売価金額合計
-                        $tax_total = 0;             // 税額合計
-                        $item_total = 0;            // 数量合計
-                        $unit_total = 0;            // 発注単位数量合計
-                    }
                     $trade_number = $value[16];     // 伝票番号
                     $order_date = $value[58];       // 発注日
                     $dsv_query=data_shipment_voucher::where('mes_lis_shi_tra_trade_number', $trade_number)
@@ -866,8 +846,9 @@ class Data_Controller extends Controller
                     if (empty($data_shipment_voucher_info)) {
                         // 取得無しエラー
                         Log::error('Can not get data_shipment_voucher information:'.$dsv_query->toSql());
-                        return response()->json(['status'=>0,'message'=>'対象データがありません。[伝票番号]'.$trade_number.' [発注日]'.$order_date]);
+                        return response()->json(['status'=>0,'message'=>'対象伝票データがありません。<br>[伝票番号]'.$trade_number.'<br>[発注日]'.$order_date]);
                     }
+                    $update_voucher_arr[]['shipment_voucher_id'] = $data_shipment_voucher_info->data_shipment_voucher_id;
                 }
 
                 // decision_datetime check
@@ -884,7 +865,7 @@ class Data_Controller extends Controller
                 if (empty($data_shipment_item_info)) {
                     // 取得無しエラー
                     Log::error('Can not get data_shipment_items information:'.$dsi_query->toSql());
-                    return response()->json(['status'=>0,'message'=>'対象データがありません。[伝票番号]'.$trade_number.' [明細番号]'.$line_number]);
+                    return response()->json(['status'=>0,'message'=>'対象明細データがありません。<br>[伝票番号]'.$trade_number.'<br>[明細番号]'.$line_number]);
                 }
 
                 // data set from db
@@ -906,13 +887,13 @@ class Data_Controller extends Controller
                 if (!is_numeric($shi_num_of_order_units)) {
                     // 数値以外
                     Log::error('not number:[shi_num_of_order_units]:'.$shi_num_of_order_units);
-                    return response()->json(['status'=>0,'message'=>'対象データ不正です。:[出荷数量(単位)]:'.$shi_num_of_order_units.' [伝票番号]'.$trade_number.' [明細番号]'.$line_number]);
+                    return response()->json(['status'=>0,'message'=>'対象データ不正です。<br>[出荷数量(単位)]:'.$shi_num_of_order_units.'<br>[伝票番号]'.$trade_number.'<br>[明細番号]'.$line_number]);
                 }
                 // -- max check
                 if ((0 > $shi_num_of_order_units) || ($shi_num_of_order_units > $ord_num_of_order_units)) {
                     // しきい値
                     Log::error('not between number:'.'[ord_num_of_order_units]:'.$ord_num_of_order_units.' [shi_num_of_order_units]:'.$shi_num_of_order_units);
-                    return response()->json(['status'=>0,'message'=>'対象データが許容外です。:[出荷数量(単位)]:'.$shi_num_of_order_units.' [発注数量(単位)]'.$ord_num_of_order_units.' [伝票番号]'.$trade_number.' [明細番号]'.$line_number]);
+                    return response()->json(['status'=>0,'message'=>'対象データが許容外です。<br>[出荷数量(単位)]:'.$shi_num_of_order_units.'<br>[発注数量(単位)]'.$ord_num_of_order_units.'<br>[伝票番号]'.$trade_number.'<br>[明細番号]'.$line_number]);
                 }
 
 
@@ -921,18 +902,18 @@ class Data_Controller extends Controller
                 if (!array_key_exists($sto_reason_code, $reason_code_list)) {
                     //
                     Log::error('not correct reason_code:[sto_reason_code]:'.$sto_reason_code);
-                    return response()->json(['status'=>0,'message'=>'対象データ不正です。<br>:[欠品理由]:'.$sto_reason_code.' [伝票番号]'.$trade_number.' [明細番号]'.$line_number]);
+                    return response()->json(['status'=>0,'message'=>'対象データ不正です。<br>[欠品理由]:'.$sto_reason_code.'<br>[伝票番号]'.$trade_number.'<br>[明細番号]'.$line_number]);
                 }
 
                 // -- shi_num_of_order_units check
                 if (($ord_num_of_order_units != $shi_num_of_order_units) && ($sto_reason_code == '00')) {
                     // 欠品理由無し
                     Log::error('not reason_code:'.'[sto_reason_code]:'.$sto_reason_code);
-                    return response()->json(['status'=>0,'message'=>'欠品理由が選択されていません。:[欠品理由]:'.$sto_reason_code.' [伝票番号]'.$trade_number.' [明細番号]'.$line_number]);
+                    return response()->json(['status'=>0,'message'=>'欠品理由が選択されていません。<br>[欠品理由]:'.$sto_reason_code.'<br>[伝票番号]'.$trade_number.'<br>[明細番号]'.$line_number]);
                 } elseif (($ord_num_of_order_units == $shi_num_of_order_units) && ($sto_reason_code != '00')) {
                     // 欠品理由不正
                     Log::error('not reason_code:'.'[sto_reason_code]:'.$sto_reason_code);
-                    return response()->json(['status'=>0,'message'=>'欠品理由が不正です。:[欠品理由]:'.$sto_reason_code.' [伝票番号]'.$trade_number.' [明細番号]'.$line_number]);
+                    return response()->json(['status'=>0,'message'=>'欠品理由が不正です。<br>[欠品理由]:'.$sto_reason_code.'<br>[伝票番号]'.$trade_number.'<br>[明細番号]'.$line_number]);
                 }
 
                 // - mes_lis_shi_tra_dat_revised_delivery_date
@@ -945,14 +926,17 @@ class Data_Controller extends Controller
                         ((count($date_temp) === 3)&&(!checkdate($date_temp[1], $date_temp[2], $date_temp[0])))) {
                         // date check
                         Log::error('not correct revised_delivery_date:'.'[revised_delivery_date]:'.$revised_delivery_date);
-                        return response()->json(['status'=>0,'message'=>'対象データ不正です。:[訂正後直接納品先納品日]:'.$revised_delivery_date.' [伝票番号]'.$trade_number.' [明細番号]'.$line_number]);
+                        return response()->json(['status'=>0,'message'=>'対象データ不正です。<br>[訂正後直接納品先納品日]:'.$revised_delivery_date.'<br>[伝票番号]'.$trade_number.'<br>[明細番号]'.$line_number]);
                     }
                     // -- order_date check
                     if (strtotime($revised_delivery_date) < strtotime($order_date)) {
                         // 発注日より過去は指定できない
                         Log::error('can not use revised_delivery_date before order date:'.'[revised_delivery_date]:'.$revised_delivery_date);
-                        return response()->json(['status'=>0,'message'=>'発注日より過去は指定できません。:[訂正後直接納品先納品日]:'.$revised_delivery_date.' [発注日]'.$order_date.' [伝票番号]'.$trade_number.' [明細番号]'.$line_number]);
+                        return response()->json(['status'=>0,'message'=>'発注日より過去は指定できません。<br>[訂正後直接納品先納品日]:'.$revised_delivery_date.'<br>[発注日]'.$order_date.'<br>[伝票番号]'.$trade_number.'<br>[明細番号]'.$line_number]);
                     }
+
+                    // 追加
+                    $update_voucher_arr[count($update_voucher_arr)-1]['revised_delivery_date'] = $revised_delivery_date;
                 }
 
                 $shi_quantity = $unit_multiple * $shi_num_of_order_units;                       // 出荷数量(バラ)
@@ -962,11 +946,6 @@ class Data_Controller extends Controller
                 $selling_price = $shi_quantity * $selling_price_unit_price;                     // 売価金額
                 $tax = $net_price * $tax_rate / 100;                                            // 税額
 
-                $net_price_total += $net_price;             // 原価金額合計
-                $selling_price_total += $selling_price;     // 売価金額合計
-                $tax_total += $tax;                         // 税額合計
-                $item_total += $shi_quantity;               // 数量合計
-                $unit_total += $shi_num_of_order_units;     // 発注単位数量合計
 
                 $shipment_item_array['mes_lis_shi_lin_amo_item_net_price']=$net_price;
                 $shipment_item_array['mes_lis_shi_lin_amo_item_selling_price']=$selling_price;
@@ -979,14 +958,52 @@ class Data_Controller extends Controller
 
                 // data_shipment_items update
                 $dsi_query->update($shipment_item_array);
+            }
+
+            // voucher re calc
+            $net_price_total=0;
+            $selling_price_total=0;
+            $tax_total=0;
+            $item_total=0;
+            $unit_total=0;
+    
+            foreach ($update_voucher_arr as $voucher_info) {
+                // data_shipment_item情報取得
+                $dsi_query = data_shipment_item::where('data_shipment_voucher_id', $voucher_info['shipment_voucher_id']);
+                $data_shipment_item_info=$dsi_query->get();
+                if (empty($data_shipment_item_info)) {
+                    // 取得無しエラー
+                    Log::error('Can not get data_shipment_items information:'.$dsi_query->toSql());
+                    return response()->json(['status'=>0,'message'=>'対象データがありません。<br>[伝票番号]'.$trade_number.'<br>[明細番号]'.$line_number]);
+                }
+
+                foreach ($data_shipment_item_info as $ival) {
+                    $net_price_total += $ival->mes_lis_shi_lin_amo_item_net_price;           // 原価金額合計
+                    $selling_price_total += $ival->mes_lis_shi_lin_amo_item_selling_price;   // 売価金額合計
+                    $tax_total += $ival->mes_lis_shi_lin_amo_item_tax;                       // 税額合計
+                    $item_total += $ival->mes_lis_shi_lin_qua_shi_quantity;                  // 数量合計
+                    $unit_total += $ival->mes_lis_shi_lin_qua_shi_num_of_order_units;        // 発注単位数量合計
+                }
 
                 // update shipment_vouchers
-                $shipment_voucher_array['mes_lis_shi_tra_dat_revised_delivery_date']=$revised_delivery_date;
+                if (isset($voucher_info['revised_delivery_date'])) {
+                    $shipment_voucher_array['mes_lis_shi_tra_dat_revised_delivery_date']=$voucher_info['revised_delivery_date'];
+                }
                 $shipment_voucher_array['mes_lis_shi_tot_tot_net_price_total']=$net_price_total;
                 $shipment_voucher_array['mes_lis_shi_tot_tot_selling_price_total']=$selling_price_total;
                 $shipment_voucher_array['mes_lis_shi_tot_tot_tax_total']=$tax_total;
                 $shipment_voucher_array['mes_lis_shi_tot_tot_item_total']=$item_total;
                 $shipment_voucher_array['mes_lis_shi_tot_tot_unit_total']=$unit_total;
+
+                // voucher 更新
+                data_shipment_voucher::where('data_shipment_voucher_id', $voucher_info['shipment_voucher_id'])->update($shipment_voucher_array);
+
+                // 値初期化
+                $net_price_total = 0;       // 原価金額合計
+                $selling_price_total = 0;   // 売価金額合計
+                $tax_total = 0;             // 税額合計
+                $item_total = 0;            // 数量合計
+                $unit_total = 0;            // 発注単位数量合計
             }
 
 
