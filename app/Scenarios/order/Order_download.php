@@ -2,7 +2,6 @@
 
 namespace App\Scenarios\order;
 
-use Auth;
 use App\Scenarios\Common;
 use App\Http\Controllers\API\CMN\CmnScenarioController;
 use App\Http\Controllers\API\DATA\Data_Controller;
@@ -12,6 +11,9 @@ use App\Models\CMN\cmn_connect;
 use App\Models\CMN\cmn_category;
 use App\Models\DATA\ORD\data_order;
 use App\Traits\Csv;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class Order_download extends Model
 {
@@ -25,7 +27,7 @@ class Order_download extends Model
     //
     public function exec($request, $sc)
     {
-        \Log::debug(get_class().' exec start  ---------------');
+        Log::debug(get_class().' exec start  ---------------');
 
         // ダウンロード形式取得
         // cmn_connectsより[order_download]のjob_idを取得
@@ -33,7 +35,7 @@ class Order_download extends Model
         // job_id指定の場合はjob_id実行
         // ダウンロードデータ取得
 
-        \Log::debug($request->all());
+        Log::debug($request->all());
         // セッション確認
         if ($request->session()->has('byr_buyer_id')) {
             // セッションよりbyr_buyer_id
@@ -57,22 +59,22 @@ class Order_download extends Model
         ->first();
         if (!$cc) {
             // 追加情報取得エラー
-            \Log::error('Can not get [optional]');
+            Log::error('Can not get [optional]');
             return ['status'=>1, 'message' => 'Can not get [optional]'];
         }
-        \Log::debug($cc->optional);
+        Log::debug($cc->optional);
 
         // ダウンロード形式
         if ($cc->optional) {
             // ダウンロード形式指定
-            \Log::debug(json_decode($cc->optional, true));
+            Log::debug(json_decode($cc->optional, true));
             // シナリオID取得
             $cmn_scenario_id = json_decode($cc->optional, false)->order->download;
-            \Log::debug('download format scenario:'.$cmn_scenario_id);
+            Log::debug('download format scenario:'.$cmn_scenario_id);
 
             // 実行中シナリオチェック(無限ループ回避)
             if ($cmn_scenario_id === $request->scenario_id) {
-                \Log::error('Can not use same scenario:'.$cmn_scenario_id);
+                Log::error('Can not use same scenario:'.$cmn_scenario_id);
                 return ['status'=>1, 'message' => 'Can not use same scenario:'.$cmn_scenario_id];
             }
 
@@ -84,12 +86,12 @@ class Order_download extends Model
             // シナリオ実行
             $cs = new CmnScenarioController();
             $ret = $cs->exec($req2);
-            \Log::debug($ret->getContent());
+            Log::debug($ret->getContent());
             // \Log::debug($ret->getContent());
             $ret = json_decode($ret->getContent(), true);
             if (1 === $ret['status']) {
                 // sceanario exec error
-                \Log::error($ret['message']);
+                Log::error($ret['message']);
                 return $ret;
             }
             $fileName = $ret['file_name'];
@@ -113,9 +115,9 @@ class Order_download extends Model
             ];
         }
 
-        \Log::debug($filePath);
+        Log::debug($filePath);
         // \Log::debug(file_get_contents($filePath));
-        \Log::debug(get_class().' exec end    ---------------');
+        Log::debug(get_class().' exec end    ---------------');
         // return response()->streamDownload(function () {
         //     file_get_contents('C:\\mylog.log');
         // }, 200, $headers);

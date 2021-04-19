@@ -12,6 +12,7 @@ use App\Models\DATA\CRCV\data_corrected_receive_voucher;
 use App\Models\DATA\CRCV\data_corrected_receive_item;
 use App\Http\Controllers\API\AllUsedFunction;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class data_csv_receive_order extends Model
 {
@@ -24,7 +25,7 @@ class data_csv_receive_order extends Model
 
     public function exec($request, $sc)
     {
-        \Log::debug(get_class().' exec start  ---------------');
+        Log::debug(get_class().' exec start  ---------------');
         if (!array_key_exists('up_file',$request->all())) {
             // return response()->json(['message' => "error", 'status' => '0']);
             return ['message' => "error", 'status' => '0'];
@@ -33,7 +34,7 @@ class data_csv_receive_order extends Model
         $file_name = time().'-'.$request->file('up_file')->getClientOriginalName();
         // return response()->json(['file_name'=>$file_name,'status'=>0]);
         $path = $request->file('up_file')->storeAs(config('const.RECEIVE_DATA_PATH').date('Y-m'), $file_name);
-        \Log::debug('save path:'.$path);
+        Log::debug('save path:'.$path);
 
         $received_path = storage_path().'/app//'.config('const.RECEIVE_DATA_PATH').date('Y-m').'/'.$file_name;
         // フォーマット変換
@@ -46,6 +47,12 @@ class data_csv_receive_order extends Model
         DB::beginTransaction();
         try {
         foreach ($dataArr as $key => $value) {
+            $exists_voucher = data_receive_voucher::where('mes_lis_acc_tra_dat_order_date', '=', $value[76])
+                ->where('mes_lis_acc_tra_trade_number', '=', $value[31])
+                ->first();
+            $exists_item = data_receive_item::where('mes_lis_acc_lin_lin_line_number', '=', $value[106])
+                ->first();
+
             if (count($value) === 1) {
                 // 空であればcontinue
                 continue;
@@ -89,7 +96,13 @@ class data_csv_receive_order extends Model
                 $data_receive_array['receive_file_path']=$file_name;
                 $data_receive_array['cmn_connect_id']=$cmn_connect_id;
 
-                $data_receive_id = data_receive::insertGetId($data_receive_array);
+
+                if ($exists_voucher) {
+                    $data_receive_id = $exists_voucher->data_receive_id;
+                    data_receive::where('data_receive_id',$data_receive_id)->update($data_receive_array);
+                }else{
+                    $data_receive_id = data_receive::insertGetId($data_receive_array);
+                }
                 // Corrected receive
                 // unset($data_receive_array["receive_datetime"]);
                 // $data_receive_array['data_receive_id']=$data_receive_id;
@@ -186,7 +199,16 @@ class data_csv_receive_order extends Model
                 $data_receive_voucher_array['mes_lis_acc_tot_fre_unit_weight_total']=$value[105];
 
                 $data_receive_voucher_array['data_receive_id']=$data_receive_id;
-                $data_receive_voucher_id = data_receive_voucher::insertGetId($data_receive_voucher_array);
+
+                if ($exists_voucher) {
+                    $data_receive_voucher_id = $exists_voucher->data_receive_voucher_id;
+                    $data_receive_voucher_array['update_datetime']=$cur_date;
+                    data_receive_voucher::where('data_receive_voucher_id',$data_receive_voucher_id)->update($data_receive_voucher_array);
+                }else{
+                    $data_receive_voucher_id = data_receive_voucher::insertGetId($data_receive_voucher_array);
+                }
+
+                // $data_receive_voucher_id = data_receive_voucher::insertGetId($data_receive_voucher_array);
 
                 // $data_cor_receive_voucher_array['data_corrected_receive_id'] = $data_cor_receive_id;
                 // $data_cor_receive_voucher_array['mes_lis_cor_tra_trade_number']=$value[31];
@@ -338,9 +360,15 @@ class data_csv_receive_order extends Model
             $data_receive_item_array['mes_lis_acc_lin_fre_shipment_weight']=$value[170]; //New Added
             $data_receive_item_array['mes_lis_acc_lin_fre_received_weight']=$value[171]; //New Added
             // 172 done
+            if ($exists_item) {
+                // \Log::info($exists_item);
+                $data_receive_item_id = $exists_item->data_receive_item_id;
+                data_receive_item::where('data_receive_item_id',$data_receive_item_id)->update($data_receive_item_array);
+            }else{
+                $data_receive_item_array['data_receive_voucher_id']=$data_receive_voucher_id;
+                data_receive_item::insert($data_receive_item_array);
+            }
 
-            $data_receive_item_array['data_receive_voucher_id']=$data_receive_voucher_id;
-            data_receive_item::insert($data_receive_item_array);
 
 
             // format
