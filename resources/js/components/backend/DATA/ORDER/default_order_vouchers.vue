@@ -1093,6 +1093,7 @@ export default {
       this.updateBuyerDecissionDateTime();
     },
     updateDatetimeDecessionfield() {
+
       if (this.null_selected.length > 0) {
         this.alert_text =
           this.selected.length + "件の伝票を確定しますがよろしいでしょうか。";
@@ -1100,7 +1101,6 @@ export default {
       } else {
         this.alert_icon = "warning";
         this.alert_title = "";
-        this.
         this.alert_text =
           "対象となる伝票がありません、再度確認して実行してください。";
           this.confirmButtonText = '完了';
