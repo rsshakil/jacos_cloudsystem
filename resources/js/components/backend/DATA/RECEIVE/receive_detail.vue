@@ -111,7 +111,7 @@
                 <option
                   v-for="(opt, i) in mes_lis_ord_tra_ins_goods_classification_codeList"
                   :key="i"
-                  :value="opt"
+                  :value="i"
                 >
                   {{ opt }}
                 </option>
@@ -125,7 +125,7 @@
               >
                 <option value="*">全て</option>
 
-                <option v-for="(opt, i) in mes_lis_ord_tra_ins_trade_type_codeList" :key="i" :value="opt">
+                <option v-for="(opt, i) in mes_lis_ord_tra_ins_trade_type_codeList" :key="i" :value="i">
                   {{ opt }}
                 </option>
               </select>
