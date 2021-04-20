@@ -373,4 +373,84 @@ class ReceiveController extends Controller
         return response()->json(['order_customer_code_lists' => $result]);
 
     }
+    public function getCmnConnectId($adm_user_id,$byr_buyer_id){
+        $authUser = User::find($adm_user_id);
+        $cmn_company_id = '';
+        $cmn_connect_id = '';
+        if (!$authUser->hasRole(config('const.adm_role_name'))) {
+            $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
+            $cmn_company_id = $cmn_company_info['cmn_company_id'];
+            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+        }
+        return $cmn_connect_id;
+    }
+    public function get_voucher_detail_popup1_receive(Request $request){
+        $cmn_connect_id = $this->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
+        
+//AND `drv`.`mes_lis_shi_tra_dat_delivery_date` = '".$request->delivery_date."' AND
+//`drv`.`mes_lis_shi_tra_ins_temperature_code` = '".$request->temperature_code."'
+        $result = DB::select("SELECT
+        drv.mes_lis_acc_par_shi_code,
+        drv.mes_lis_acc_par_shi_name,
+        drv.mes_lis_acc_log_del_route_code
+        from `data_receives` as `dr`
+        inner join `data_receive_vouchers` as `drv` on `drv`.`data_receive_id` = `dr`.`data_receive_id`
+        WHERE
+        dr.cmn_connect_id = $cmn_connect_id and
+        `dr`.`data_receive_id` = $request->data_receive_id AND
+        `drv`.`mes_lis_acc_tra_goo_major_category` = '".$request->major_category."' AND
+        `drv`.`mes_lis_acc_log_del_delivery_service_code` = '".$request->delivery_service_code."' 
+        
+        group by `drv`.`mes_lis_acc_par_shi_code`
+        order by `drv`.`mes_lis_acc_par_shi_code` ASC");
+        return response()->json(['popUpList' => $result]);
+
+    }
+
+    public function get_voucher_detail_popup2_receive(Request $request){
+        $cmn_connect_id = $this->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
+        //      AND  `dsv`.`mes_lis_shi_tra_dat_delivery_date` = '".$request->delivery_date."' AND
+        //`dsv`.`mes_lis_shi_tra_ins_temperature_code` = '".$request->temperature_code."'
+
+        $result = DB::select("SELECT
+        drv.mes_lis_acc_par_rec_code,
+        drv.mes_lis_acc_par_rec_name,
+        drv.mes_lis_acc_log_del_route_code
+        from `data_receives` as `dr`
+        inner join `data_receive_vouchers` as `drv` on `drv`.`data_receive_id` = `dr`.`data_receive_id`
+        WHERE
+        dr.cmn_connect_id = $cmn_connect_id and
+        `dr`.`data_receive_id` = $request->data_receive_id AND
+        `drv`.`mes_lis_acc_tra_goo_major_category` = '".$request->major_category."' AND
+        `drv`.`mes_lis_acc_log_del_delivery_service_code` = '".$request->delivery_service_code."' 
+        group by `drv`.`mes_lis_acc_par_rec_code`
+        order by `drv`.`mes_lis_acc_par_rec_code` ASC");
+        return response()->json(['popUpList' => $result]);
+
+    }
+
+    public function get_voucher_detail_popup3_receive(Request $request){
+        $cmn_connect_id = $this->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
+        /*
+               AND `dsv`.`mes_lis_shi_tra_dat_delivery_date` = '".$request->delivery_date."' AND
+        `dsv`.`mes_lis_shi_tra_ins_temperature_code` = '".$request->temperature_code."'
+
+        */
+        $result = DB::select("SELECT
+        dri.mes_lis_acc_lin_ite_order_item_code,
+        dri.mes_lis_acc_lin_ite_name,
+        dri.mes_lis_acc_lin_ite_ite_spec
+        from `data_receives` as `dr`
+        inner join `data_receive_vouchers` as `drv` on `drv`.`data_receive_id` = `dr`.`data_receive_id`
+        INNER JOIN data_receive_items AS dri ON dri.data_receive_voucher_id= drv.data_receive_voucher_id
+        WHERE
+        dr.cmn_connect_id = $cmn_connect_id and
+        `dr`.`data_receive_id` = $request->data_receive_id AND
+        `drv`.`mes_lis_acc_tra_goo_major_category` = '".$request->major_category."' AND
+        `drv`.`mes_lis_acc_log_del_delivery_service_code` = '".$request->delivery_service_code."' 
+        group by `dri`.`mes_lis_acc_lin_ite_order_item_code`
+        order by `dri`.`mes_lis_acc_lin_ite_order_item_code` ASC");
+        return response()->json(['popUpList' => $result]);
+
+    }
 }
