@@ -10,10 +10,11 @@ use App\Models\CMN\cmn_company;
 use App\Models\CMN\cmn_connect;
 use App\Models\SLR\slr_seller;
 use App\Models\CMN\cmn_category;
-use Auth;
-use DB;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class AllUsedFunction extends Controller
 {
@@ -156,7 +157,7 @@ class AllUsedFunction extends Controller
             $data = array_map('str_getcsv', file($baseUrl));
         }
         $csv_data = array_slice($data, $take_header);
-        \Log::debug('----- CSV file read completed from this url: (' . $baseUrl . ')-----');
+        Log::debug('----- CSV file read completed from this url: (' . $baseUrl . ')-----');
         return $csv_data;
     }
 
@@ -278,7 +279,7 @@ class AllUsedFunction extends Controller
     public function get_user_info($adm_user_id = 0, $selected_byr_buyer_id=0)
     {
         $arr = array('cmn_company_id' => 0, 'byr_buyer_id' => 0, 'cmn_connect_id' => 0);
-        \Log::info($adm_user_id);
+        Log::info($adm_user_id);
         // return $adm_user_id;
         if ($adm_user_id != 0) {
             $company_type_info = cmn_companies_user::select('cmn_companies_users.cmn_company_id', 'cmn_companies.company_type')
@@ -516,8 +517,8 @@ class AllUsedFunction extends Controller
         if (!empty($connect_info)) {
             $cmn_connect_id = $connect_info->cmn_connect_id;
         }
-        \log::info($super_code);
-        \log::info($partner_code);
+        log::info($super_code);
+        log::info($partner_code);
         return $cmn_connect_id;
     }
 
@@ -562,21 +563,14 @@ class AllUsedFunction extends Controller
     }
     public function downloadFileName($request, $file_type="csv")
     {
+        // Log::info($request);
         $adm_user_id=$request->adm_user_id;
         $byr_buyer_id=$request->byr_buyer_id;
-        // \Log::info("File Name".$data_order_id);
-        // $file_name_info=data_shipment::select('cmn_connects.partner_code', 'byr_buyers.super_code', 'cmn_companies.jcode','cmn_companies.company_name')
-        //     ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'data_shipments.cmn_connect_id')
-        //     ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
-        //     ->join('slr_sellers', 'slr_sellers.slr_seller_id', '=', 'cmn_connects.slr_seller_id')
-        //     ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'slr_sellers.cmn_company_id')
-        //     ->where('data_shipments.data_order_id', $data_order_id)
-        //     ->first();
             $file_name_info=byr_buyer::select('cmn_companies.company_name')
             ->join('cmn_companies','cmn_companies.cmn_company_id','=','byr_buyers.cmn_company_id')
             ->where('byr_buyers.byr_buyer_id',$byr_buyer_id)
             ->first();
-            // \Log::info($file_name_info);
+            // Log::info($file_name_info);
             $file_name = '受注'.'_'.$file_name_info->company_name.'_'.date('YmdHis').'.'.$file_type;
             // \Log::info($file_name);
         // $file_name = $file_name_info->super_code.'-'."shipment_".$file_name_info->super_code.'-'.$file_name_info->partner_code."-".$file_name_info->jcode.'_shipment_'.date('YmdHis').'.'.$file_type;

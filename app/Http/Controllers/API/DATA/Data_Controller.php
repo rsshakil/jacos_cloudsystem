@@ -253,8 +253,8 @@ class Data_Controller extends Controller
 
         $request_all=$request->all();
         // \Log::info($request_all);
-        $sort_by=$request->sort_by?$request->sort_by:$request->form_search['sort_by'];
-        $sort_type=$request->sort_type?$request->sort_type:$request->form_search['sort_type'];
+        // $sort_by=$request->sort_by?$request->sort_by:$request->form_search['sort_by'];
+        // $sort_type=$request->sort_type?$request->sort_type:$request->form_search['sort_type'];
         // \Log::info($sort_by);
         // \Log::info($sort_type);
         // \Log::info($request_all);
@@ -966,7 +966,7 @@ class Data_Controller extends Controller
             $tax_total=0;
             $item_total=0;
             $unit_total=0;
-    
+
             foreach ($update_voucher_arr as $voucher_info) {
                 // data_shipment_item情報取得
                 $dsi_query = data_shipment_item::where('data_shipment_voucher_id', $voucher_info['shipment_voucher_id']);

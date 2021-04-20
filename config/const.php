@@ -27,8 +27,8 @@ return [
     'MIGMIX_FONT_PATH' => 'app/fonts/migmix-2p-regular.ttf',
     'BLANK_PDF_PATH' => 'app/order_pdf/demo/blank.pdf',
     'PDF_SAVE_PATH' => 'app/order_pdf/created/',
-    // 'PDF_SEND_MAIL' => 'mayeennbd@gmail.com',
-    'PDF_SEND_MAIL' => 'fax849653@ecofax.jp',
+    'PDF_SEND_MAIL' => 'mayeennbd@gmail.com',
+    // 'PDF_SEND_MAIL' => 'fax849653@ecofax.jp',
     'INVOICE_SCHEDULE_TIME' => '12:00',
 
     'INVOICE_SCHEDULE_START_TIME' => '14:00',

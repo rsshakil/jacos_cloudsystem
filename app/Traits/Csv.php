@@ -24,10 +24,10 @@ trait Csv
         if (strtolower($encode) == 'shift-jis') {
             // shift-jis
             $csv = mb_convert_encoding(stream_get_contents($stream), $encode, 'UTF-8');
-            \Log::debug($csv);
+            // \Log::debug($csv);
 
             $csv = str_replace("\n", "\r\n", $csv);
-            \Log::debug($csv);
+            // \Log::debug($csv);
         } else {
             // utf-8
             if ($bom) {
@@ -50,7 +50,7 @@ trait Csv
         $csv_file_path = storage_path($filePath);
         $result = fopen($csv_file_path, 'w');
         if ($result === false) {
-            throw new Exception('ファイルの書き込みに失敗しました。');
+            throw new \Exception('ファイルの書き込みに失敗しました。');
         }
         if ($bom) {
             // BOM をつける

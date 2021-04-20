@@ -3,7 +3,9 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class EnsureTokenIsValid
 {
@@ -17,7 +19,7 @@ class EnsureTokenIsValid
     public function handle($request, Closure $next)
     {
         // \Log::debug(print_r($next));
-        \Log::debug($request);
+        // \Log::debug($request);
         // if ($request->user_id) {
         //     return response()->json(['status'=>"aaa"]);
         // }
