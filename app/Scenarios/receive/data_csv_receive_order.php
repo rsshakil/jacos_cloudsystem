@@ -47,11 +47,12 @@ class data_csv_receive_order extends Model
         DB::beginTransaction();
         try {
         foreach ($dataArr as $key => $value) {
-            $exists_voucher = data_receive_voucher::where('mes_lis_acc_tra_dat_order_date', '=', $value[76])
-                ->where('mes_lis_acc_tra_trade_number', '=', $value[31])
+            $exists_voucher = data_receive_voucher::join('data_receives','data_receives.data_receive_id','=','data_receive_vouchers.data_receive_id')
+                ->where('data_receive_vouchers.mes_lis_acc_tra_dat_order_date', '=', $value[76])
+                ->where('data_receive_vouchers.mes_lis_acc_tra_trade_number', '=', $value[31])
+                ->where('data_receives.cmn_connect_id', '=', $cmn_connect_id)
                 ->first();
-            $exists_item = data_receive_item::where('mes_lis_acc_lin_lin_line_number', '=', $value[106])
-                ->first();
+                $exists_item = data_receive_item::where('mes_lis_acc_lin_lin_line_number', '=', $value[106]);
 
             if (count($value) === 1) {
                 // 空であればcontinue
@@ -103,25 +104,11 @@ class data_csv_receive_order extends Model
                 }else{
                     $data_receive_id = data_receive::insertGetId($data_receive_array);
                 }
-                // Corrected receive
-                // unset($data_receive_array["receive_datetime"]);
-                // $data_receive_array['data_receive_id']=$data_receive_id;
-                // $data_receive_array['upload_datetime']=$cur_date;
-                // $data_receive_array['upload_file_path']=$file_name;
-                // $data_receive_array['send_datetime'] = '';
-                // $data_receive_array['send_file_path'] = '';
-                // $data_receive_array['sta_sen_identifier'] = $value[2];
-                // $data_receive_array['sta_sen_ide_authority'] = $value[3];
-                // $data_receive_array['sta_rec_identifier'] = $value[0];
-                // $data_receive_array['sta_rec_ide_authority'] = $value[1];
-                // $data_receive_array['sta_doc_type'] = 'Receive Notification';
-                // $data_cor_receive_id = data_corrected_receive::insertGetId($data_receive_array);
 
                 $rcv_flg =false;
             }
 
             if ($trade_number !=$value[31].'-'.$value[32]) {
-                //$data_receive_voucher_array['update_datetime']=date('Y-m-d H:i:s');
                 $data_receive_voucher_array['mes_lis_acc_tra_trade_number']=$value[31];
                 $data_receive_voucher_array['mes_lis_acc_tra_additional_trade_number']=$value[32];
                 $data_receive_voucher_array['mes_lis_acc_fre_shipment_number']=$value[33]; //New Added
@@ -208,90 +195,6 @@ class data_csv_receive_order extends Model
                     $data_receive_voucher_id = data_receive_voucher::insertGetId($data_receive_voucher_array);
                 }
 
-                // $data_receive_voucher_id = data_receive_voucher::insertGetId($data_receive_voucher_array);
-
-                // $data_cor_receive_voucher_array['data_corrected_receive_id'] = $data_cor_receive_id;
-                // $data_cor_receive_voucher_array['mes_lis_cor_tra_trade_number']=$value[31];
-                // $data_cor_receive_voucher_array['mes_lis_cor_tra_additional_trade_number']=$value[32];
-                // $data_cor_receive_voucher_array['mes_lis_cor_fre_shipment_number']=$value[33]; //New Added
-                // $data_cor_receive_voucher_array['mes_lis_cor_par_shi_code']=$value[34];
-                // $data_cor_receive_voucher_array['mes_lis_cor_par_shi_gln']=$value[35];
-                // $data_cor_receive_voucher_array['mes_lis_cor_par_shi_name']=$value[36];
-                // $data_cor_receive_voucher_array['mes_lis_cor_par_shi_name_sbcs']=$value[37];
-                // $data_cor_receive_voucher_array['mes_lis_cor_par_rec_code']=$value[38];
-                // $data_cor_receive_voucher_array['mes_lis_cor_par_rec_gln']=$value[39];
-                // $data_cor_receive_voucher_array['mes_lis_cor_par_rec_name']=$value[40];
-                // $data_cor_receive_voucher_array['mes_lis_cor_par_rec_name_sbcs']=$value[41];
-                // $data_cor_receive_voucher_array['mes_lis_cor_par_tra_code']=$value[42];
-                // $data_cor_receive_voucher_array['mes_lis_cor_par_tra_gln']=$value[43];
-                // $data_cor_receive_voucher_array['mes_lis_cor_par_tra_name']=$value[44];
-                // $data_cor_receive_voucher_array['mes_lis_cor_par_tra_name_sbcs']=$value[45];
-                // // $data_cor_receive_voucher_array['mes_lis_cor_par_dis_code']=$value[46];
-                // // $data_cor_receive_voucher_array['mes_lis_cor_par_dis_name']=$value[47];
-                // // $data_cor_receive_voucher_array['mes_lis_cor_par_dis_name_sbcs']=$value[48];
-                // $data_cor_receive_voucher_array['mes_lis_cor_par_pay_code']=$value[49];
-                // $data_cor_receive_voucher_array['mes_lis_cor_par_pay_gln']=$value[50];
-                // $data_cor_receive_voucher_array['mes_lis_cor_par_pay_name']=$value[51];
-                // $data_cor_receive_voucher_array['mes_lis_cor_par_pay_name_sbcs']=$value[52];
-                // $data_cor_receive_voucher_array['mes_lis_cor_par_sel_code']=$value[53];
-                // $data_cor_receive_voucher_array['mes_lis_cor_par_sel_gln']=$value[54];
-                // $data_cor_receive_voucher_array['mes_lis_cor_par_sel_name']=$value[55];
-                // $data_cor_receive_voucher_array['mes_lis_cor_par_sel_name_sbcs']=$value[56];
-                // $data_cor_receive_voucher_array['mes_lis_cor_par_sel_branch_number']=$value[57];
-                // $data_cor_receive_voucher_array['mes_lis_cor_par_sel_ship_location_code']=$value[58];
-                // // $data_cor_receive_voucher_array['mes_lis_cor_log_shi_gln']=$value[59];
-                // // $data_cor_receive_voucher_array['mes_lis_cor_log_del_route_code']=$value[60];
-                // // $data_cor_receive_voucher_array['mes_lis_cor_log_del_delivery_service_code']=$value[61];
-                // // $data_cor_receive_voucher_array['mes_lis_cor_log_del_stock_transfer_code']=$value[62];
-                // // $data_cor_receive_voucher_array['mes_lis_cor_log_del_delivery_code']=$value[63];
-                // // $data_cor_receive_voucher_array['mes_lis_cor_log_del_delivery_time']=$value[64];
-                // // $data_cor_receive_voucher_array['mes_lis_cor_log_del_transportation_code']=$value[65];
-                // // $data_cor_receive_voucher_array['mes_lis_cor_log_log_barcode_print']=$value[66];
-                // // $data_cor_receive_voucher_array['mes_lis_cor_log_log_category_name_print1']=$value[67];
-                // // $data_cor_receive_voucher_array['mes_lis_cor_log_log_category_name_print2']=$value[68];
-                // // $data_cor_receive_voucher_array['mes_lis_cor_log_log_receiver_abbr_name']=$value[69];
-                // // $data_cor_receive_voucher_array['mes_lis_cor_log_log_text']=$value[70];
-                // // $data_cor_receive_voucher_array['mes_lis_cor_log_log_text_sbcs']=$value[71];
-                // // $data_cor_receive_voucher_array['mes_lis_cor_log_maker_code_for_receiving']=$value[72]; //New Added
-                // // $data_cor_receive_voucher_array['mes_lis_cor_log_delivery_slip_number']=$value[73]; //New Added
-                // $data_cor_receive_voucher_array['mes_lis_cor_tra_goo_major_category']=$value[74];
-                // $data_cor_receive_voucher_array['mes_lis_cor_tra_goo_sub_major_category']=$value[75];
-                // // $data_cor_receive_voucher_array['mes_lis_cor_tra_dat_order_date']=$value[76];
-                // // $data_cor_receive_voucher_array['mes_lis_cor_tra_dat_delivery_date']=$value[77];
-                // // $data_cor_receive_voucher_array['mes_lis_cor_tra_dat_delivery_date_to_receiver']=$value[78];
-                // // $data_cor_receive_voucher_array['mes_lis_cor_tra_dat_revised_delivery_date']=$value[79]; //New Added
-                // // $data_cor_receive_voucher_array['mes_lis_cor_tra_dat_revised_delivery_date_to_receiver']=$value[80]; //New Added
-                // $data_cor_receive_voucher_array['mes_lis_cor_tra_dat_transfer_of_ownership_date']=$value[81];
-                // // $data_cor_receive_voucher_array['mes_lis_cor_tra_dat_campaign_start_date']=$value[82];
-                // // $data_cor_receive_voucher_array['mes_lis_cor_tra_dat_campaign_end_date']=$value[83];
-                // $data_cor_receive_voucher_array['mes_lis_cor_tra_ins_goods_classification_code']=$value[84];
-                // $data_cor_receive_voucher_array['mes_lis_cor_tra_ins_order_classification_code']=$value[85];
-                // $data_cor_receive_voucher_array['mes_lis_cor_tra_ins_ship_notification_request_code']=$value[86];
-                // $data_cor_receive_voucher_array['mes_lis_cor_tra_ins_eos_code']=$value[87]; //New Added
-                // $data_cor_receive_voucher_array['mes_lis_cor_tra_ins_private_brand_code']=$value[88];
-                // $data_cor_receive_voucher_array['mes_lis_cor_tra_ins_temperature_code']=$value[89];
-                // $data_cor_receive_voucher_array['mes_lis_cor_tra_ins_liquor_code']=$value[90];
-                // $data_cor_receive_voucher_array['mes_lis_cor_tra_ins_trade_type_code']=$value[91];
-                // $data_cor_receive_voucher_array['mes_lis_cor_tra_ins_paper_form_less_code']=$value[92];
-                // $data_cor_receive_voucher_array['mes_lis_cor_tra_ins_delivery_fee_exemption_code']=''; //New Added
-                // $data_cor_receive_voucher_array['mes_lis_cor_tra_fre_trade_number_request_code']=$value[93];
-                // $data_cor_receive_voucher_array['mes_lis_cor_tra_fre_package_code']=$value[94];
-                // $data_cor_receive_voucher_array['mes_lis_cor_tra_fre_variable_measure_item_code']=$value[95];
-                // $data_cor_receive_voucher_array['mes_lis_cor_tra_tax_tax_type_code']=$value[96];
-                // $data_cor_receive_voucher_array['mes_lis_cor_tra_tax_tax_rate']=$value[97];
-                // $data_cor_receive_voucher_array['mes_lis_cor_tra_not_text']=$value[98];
-                // $data_cor_receive_voucher_array['mes_lis_cor_tra_not_text_sbcs']=$value[99];
-                // $data_cor_receive_voucher_array['mes_lis_cor_tot_tot_net_price_total']=$value[100];
-                // $data_cor_receive_voucher_array['mes_lis_cor_tot_tot_selling_price_total']=$value[101];
-                // $data_cor_receive_voucher_array['mes_lis_cor_tot_tot_tax_total']=$value[102];
-                // $data_cor_receive_voucher_array['mes_lis_cor_tot_tot_item_total']=$value[103];
-                // $data_cor_receive_voucher_array['mes_lis_cor_tot_tot_unit_total']=$value[104];
-                // $data_cor_receive_voucher_array['mes_lis_cor_tot_fre_unit_weight_total']=$value[105];
-
-                // $data_cor_receive_voucher_id = data_corrected_receive_voucher::insertGetId($data_cor_receive_voucher_array);
-
-                // $trade_number = $value[31] . '-' . $value[32];
-
             }
             $data_receive_item_array['mes_lis_acc_lin_lin_line_number']=$value[106];
             $data_receive_item_array['mes_lis_acc_lin_lin_additional_line_number']=$value[107];
@@ -360,6 +263,9 @@ class data_csv_receive_order extends Model
             $data_receive_item_array['mes_lis_acc_lin_fre_shipment_weight']=$value[170]; //New Added
             $data_receive_item_array['mes_lis_acc_lin_fre_received_weight']=$value[171]; //New Added
             // 172 done
+
+            $exists_item=$exists_item->where('data_receive_voucher_id', '=', $data_receive_voucher_id)
+                ->first();
             if ($exists_item) {
                 // \Log::info($exists_item);
                 $data_receive_item_id = $exists_item->data_receive_item_id;
@@ -368,9 +274,6 @@ class data_csv_receive_order extends Model
                 $data_receive_item_array['data_receive_voucher_id']=$data_receive_voucher_id;
                 data_receive_item::insert($data_receive_item_array);
             }
-
-
-
             // format
             $data_receive_array=array();
             $data_receive_voucher_array=array();
