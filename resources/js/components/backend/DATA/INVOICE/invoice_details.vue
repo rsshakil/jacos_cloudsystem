@@ -217,7 +217,7 @@
                   /> 全選択
                 </th>
                 <th class="text-right" colspan="9">
-                 <button @click="viewInvoiceDataListPopup" class="btn btn-primary " style="float:right;margin-right:10px;">出荷受領比較</button>
+                 <button @click="invoiceCompareData" class="btn btn-primary " style="float:right;margin-right:10px;">出荷受領比較</button>
                 <b-button class="active text-right pull-right" @click="addInvoiceDetail" variant="primary">新規伝票追加</b-button></th>
               </tr>
             <tr>
@@ -428,7 +428,7 @@
       :hide-backdrop="true"
       title="出荷・受領比較"
       cancel-title="閉じる"
-      v-model="invoiceDatalistModal"
+      v-model="invoiceCompareModal"
       :hide-footer="true"
       :draggable="true"
     >
@@ -465,7 +465,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(value,index) in popup1DataList">
+          <tr v-for="(value,index) in compareDataList" :key="index">
             <td>{{value.mes_lis_shi_par_sel_code}}</td>
             <td>{{value.mes_lis_shi_tra_trade_number}}</td>
             <td>{{value.mes_lis_shi_par_shi_code}} {{value.mes_lis_shi_par_shi_name}}</td>
@@ -476,7 +476,7 @@
             <td>{{value.mes_lis_acc_tra_dat_transfer_of_ownership_date}}</td>
             <td>{{value.mes_lis_shi_tot_tot_net_price_total}}</td>
             <td>{{value.mes_lis_acc_tot_tot_net_price_total}}</td>
-            <td><button @click="invoiceDetailItemListPopup" class="btn btn-primary">確認</button></td>
+            <td><button @click="comparedItemList" class="btn btn-primary">確認</button></td>
           </tr>
           </tbody>
 
@@ -555,7 +555,7 @@ export default {
       mes_lis_inv_lin_det_pay_code_list: [],
       byr_buyer_category_lists:[],
       editInvoiceDetailModal:false,
-      invoiceDatalistModal:false,
+      invoiceCompareModal:false,
       invoiceitemDatalistModal:false,
       invoice_lists_length:0,
       file: "",
@@ -564,7 +564,7 @@ export default {
       selected: [],
       null_selected: [],
       not_null_selected: [],
-      popup1DataList: [],
+      compareDataList: [],
       date_null:false,
       null_selected_message:false,
       decision_datetime_status: ["未確定あり", "確定済"],
@@ -605,23 +605,23 @@ export default {
     }
   },
   methods: {
-    viewInvoiceDataListPopup(){
-      this.invoiceDatalistModal = true;
-      axios.post(this.BASE_URL + "api/get_invoice_popup1_details_list", this.form)
+    invoiceCompareData(){
+      this.invoiceCompareModal = true;
+      axios.post(this.BASE_URL + "api/invoice_compare_data", this.form)
         .then(({ data }) => {
             this.init(data.status);
-            this.popup1DataList = data.voucherList;
+            this.compareDataList = data.voucherList;
             //console.log(data.voucherList);
         });
     },
-    invoiceDetailItemListPopup(){
+    comparedItemList(){
       this.invoiceitemDatalistModal = true;
     },
     closeModal2(){
       this.invoiceitemDatalistModal = false;
     },
     closeModal1(){
-       this.invoiceDatalistModal = false;
+       this.invoiceCompareModal = false;
     },
     editInvoiceDetail(valuess){
       this.editInvoiceDetailModal = true;

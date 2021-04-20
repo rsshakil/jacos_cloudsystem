@@ -11,7 +11,8 @@ use App\Models\DATA\PAYMENT\data_payment;
 use App\Models\DATA\PAYMENT\data_payment_pay;
 use App\Models\DATA\PAYMENT\data_payment_pay_detail;
 use App\Traits\Csv;
-use DB;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
@@ -297,7 +298,7 @@ class PaymentController extends Controller
             // CSV Download
             $new_file_name = $this->all_used_fun->downloadFileName($request, 'csv');
             // self::paymentFileName($data_payment_id, 'csv');
-            $download_file_url = \Config::get('app.url') . "storage/app" . config('const.PAYMENT_CSV_PATH') . "/" . $new_file_name;
+            $download_file_url = Config::get('app.url') . "storage/app" . config('const.PAYMENT_CSV_PATH') . "/" . $new_file_name;
 
             // get shipment data query
             $payment_query = DataController::getPaymentData($request);

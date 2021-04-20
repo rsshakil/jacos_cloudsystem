@@ -10,7 +10,7 @@ use App\Models\BYR\byr_buyer;
 use App\Models\BYR\byr_item;
 use App\Models\ADM\User;
 use App\Models\CMN\cmn_companies_user;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class OrderItemController extends Controller
 {
@@ -22,7 +22,7 @@ class OrderItemController extends Controller
     }
     public function orderItemDetails($data_shipment_voucher_id)
     {
-        $orderItem = collect(\DB::select("
+        $orderItem = collect(DB::select("
         SELECT data_shipment_vouchers.*,data_orders.* FROM data_order_items
         inner join data_order_vouchers on data_order_vouchers.data_order_voucher_id=data_order_items.data_order_voucher_id
         inner join data_shipment_vouchers on data_shipment_vouchers.data_order_voucher_id=data_order_items.data_order_voucher_id

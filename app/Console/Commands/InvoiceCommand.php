@@ -8,6 +8,7 @@ use App\Models\CMN\cmn_connect;
 use App\Http\Controllers\API\SCHEDULE\InvoiceScheduleFunctions;
 use App\Models\ADM\User;
 use App\Http\Controllers\API\AllUsedFunction;
+use Illuminate\Support\Facades\Log;
 
 class InvoiceCommand extends Command
 {
@@ -65,6 +66,9 @@ class InvoiceCommand extends Command
         }else{
             $cmn_connects=cmn_connect::select('cmn_connect_id')->get();
             foreach ($cmn_connects as $key => $cmn_connect) {
+                // if ($key==1) {
+                //     break;
+                // }
                 $this->invoiceSchedulerCode($arg,$cmn_connect->cmn_connect_id);
             }
         }
@@ -73,7 +77,7 @@ class InvoiceCommand extends Command
         // Matched
     }
     public function invoiceSchedulerCode($arg,$cmn_connect_id){
-        \Log::info("----Starting----");
+        Log::info("----Starting----");
         $today=date('y-m-d');
         $cmn_connect_info=cmn_connect::select('optional')->where('cmn_connect_id',$cmn_connect_id)->first();
         $optional=json_decode($cmn_connect_info->optional);
@@ -86,6 +90,7 @@ class InvoiceCommand extends Command
         $end_date=null;
         // \Log::info($arg);
         foreach ($closing_date_array as $key => $closing_day) {
+            // ======Menual=====
             if ($arg==1) {
                 $end_date = $today;
                 if ($closing_date_count>1) {
@@ -98,8 +103,9 @@ class InvoiceCommand extends Command
                         $endDatedt = strtotime($last_date);
                         $compareDate = strtotime($end_date);
 
-                        if( $compareDate >= $startDatedt && $compareDate <= $endDatedt)
+                        if( $compareDate > $startDatedt && $compareDate <= $endDatedt)
                         {
+                            // $this->comment($first_date);
                             $start_date = date('y-m-d', strtotime("+1 day", strtotime($first_date)));
                         }
                         // else if(){
@@ -117,7 +123,9 @@ class InvoiceCommand extends Command
                     }
                 }
 
-            }else{
+            }
+            // ======Menual=====
+            else{
                 $closing_date= $this->all_used_fun->closing_date($closing_day);
                 if ($closing_date==$today) {
                     $end_date=$closing_date;
@@ -162,6 +170,7 @@ class InvoiceCommand extends Command
         }
         // Matched
         $this->comment("Invoice Running.....");
+        $this->comment("cmn_connect: ".$cmn_connect_id);
         $this->comment("Start Date: ".$start_date);
         $this->comment("End Date: ".$end_date);
         if ($start_date!=null && $end_date!=null) {

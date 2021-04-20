@@ -15,7 +15,10 @@ use App\Http\Controllers\API\AllUsedFunction;
 use App\Http\Controllers\API\DATA\INVOICE\InvoiceDataController;
 use App\Exports\InvoiceCSVExport;
 use App\Traits\Csv;
-use DB;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Config;
 use PhpParser\Node\Stmt\TryCatch;
 
 class InvoiceController extends Controller
@@ -32,11 +35,11 @@ class InvoiceController extends Controller
     public function invoiceScheduler($request){
         $cs = new CmnScenarioController();
         return $ret = $cs->exec($request);
-        \Log::debug($ret->getContent());
+        Log::debug($ret->getContent());
         $ret = json_decode($ret->getContent(), true);
         if (1 === $ret['status']) {
             // sceanario exec error
-            \Log::error($ret['message']);
+            Log::error($ret['message']);
             return $ret;
         }
         return response()->json($ret);
@@ -194,7 +197,7 @@ class InvoiceController extends Controller
         $adm_user_id=$request->adm_user_id;
         $byr_buyer_id=$request->byr_buyer_id;
         try {
-            \Artisan::call('invoice:scheduler 1 '.$adm_user_id.' '.$byr_buyer_id);
+            Artisan::call('invoice:scheduler 1 '.$adm_user_id.' '.$byr_buyer_id);
         } catch (\Throwable $th) {
             return response()->json(['message' => "エラー",'status'=>0,'class'=>'error']);
         }
@@ -277,7 +280,7 @@ class InvoiceController extends Controller
             $new_file_name = $this->all_used_fun->downloadFileName($request, 'csv');
             // self::invoiceFileName($data_invoice_id,'csv');
             data_invoice::where('data_invoice_id',$data_invoice_id)->update(['mes_mes_number_of_trading_documents'=>$csv_data_count]);
-            $download_file_url = \Config::get('app.url')."storage/app".config('const.INVOICE_CSV_PATH')."/". $new_file_name;
+            $download_file_url = Config::get('app.url')."storage/app".config('const.INVOICE_CSV_PATH')."/". $new_file_name;
             (new InvoiceCSVExport($request))->store(config('const.INVOICE_CSV_PATH').'/'.$new_file_name);
             data_invoice_pay_detail::where('decision_datetime','!=',null)
             ->where('send_datetime','=',null)
@@ -295,8 +298,8 @@ class InvoiceController extends Controller
         $csv_data_count =0;
         if ($downloadType==1) {
             // CSV Download
-            $new_file_name = $new_file_name = self::invoiceFileName($data_invoice_id, 'csv');
-            $download_file_url = \Config::get('app.url')."storage/app".config('const.INVOICE_CSV_PATH')."/". $new_file_name;
+            $new_file_name = $this->all_used_fun->downloadFileName($request, 'csv');
+            $download_file_url = Config::get('app.url')."storage/app".config('const.INVOICE_CSV_PATH')."/". $new_file_name;
 
             // get shipment data query
             $invoice_query = InvoiceDataController::get_invoice_data($request);
@@ -368,7 +371,16 @@ class InvoiceController extends Controller
     //     return $file_name;
     // }
 
-    public function invoicePopup1DetailsList(Request $request){
+    public function invoiceCompareData(Request $request){
+        // return $request->all();
+        $adm_user_id=$request->adm_user_id;
+        $byr_buyer_id=$request->byr_buyer_id;
+        $cmn_connect_id =null;
+        $authUser = User::find($adm_user_id);
+            if (!$authUser->hasRole(config('const.adm_role_name'))) {
+                $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
+                $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+            }
         $result = DB::select("SELECT
             dsv.mes_lis_shi_par_sel_code,
             dsv.mes_lis_shi_tra_trade_number,
@@ -386,7 +398,7 @@ class InvoiceController extends Controller
             data_shipment_vouchers AS dsv
             INNER JOIN data_receive_vouchers AS drv ON dsv.mes_lis_shi_tra_trade_number = drv.mes_lis_acc_tra_trade_number
             INNER JOIN data_receives AS dr ON dr.data_receive_id=drv.data_receive_id
-            WHERE dr.cmn_connect_id=1
+            WHERE dr.cmn_connect_id=$cmn_connect_id
             AND (
             dsv.mes_lis_shi_tot_tot_net_price_total != drv.mes_lis_acc_tot_tot_net_price_total
             OR

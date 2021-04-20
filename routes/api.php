@@ -132,7 +132,7 @@ Route::post('exec_invoice_schedular', 'API\DATA\INVOICE\InvoiceController@execIn
 Route::post('update_invoice_detail', 'API\DATA\INVOICE\InvoiceController@update_invoice_detail');
 Route::post('delete_invoice_detail', 'API\DATA\INVOICE\InvoiceController@delete_invoice_detail');
 Route::post('get_invoice_details_list', 'API\DATA\INVOICE\InvoiceController@invoiceDetailsList');
-Route::post('get_invoice_popup1_details_list', 'API\DATA\INVOICE\InvoiceController@invoicePopup1DetailsList');
+Route::post('invoice_compare_data', 'API\DATA\INVOICE\InvoiceController@invoiceCompareData');
 Route::post('send_invoice_data', 'API\DATA\INVOICE\InvoiceController@sendInvoiceData');
 Route::post('update_invoice_decession_datetime', 'API\DATA\INVOICE\InvoiceController@decessionData');
 Route::post('download_invoice', 'API\DATA\INVOICE\InvoiceController@downloadInvoice');

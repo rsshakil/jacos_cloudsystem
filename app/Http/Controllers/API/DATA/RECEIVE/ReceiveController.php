@@ -15,6 +15,7 @@ use App\Traits\Csv;
 use App\Http\Controllers\API\DATA\RECEIVE\DataController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Config;
 
 class ReceiveController extends Controller
 {
@@ -240,7 +241,7 @@ class ReceiveController extends Controller
             // CSV Download
             $new_file_name =$this->all_used_fun->downloadFileName($request, 'csv');
             //  self::receiveFileName($data_receive_id, 'csv');
-            $download_file_url = \Config::get('app.url')."storage/app".config('const.RECEIVE_CSV_PATH')."/". $new_file_name;
+            $download_file_url = Config::get('app.url')."storage/app".config('const.RECEIVE_CSV_PATH')."/". $new_file_name;
 
             // get shipment data query
             $shipment_query = DataController::getReceiveData($request);
