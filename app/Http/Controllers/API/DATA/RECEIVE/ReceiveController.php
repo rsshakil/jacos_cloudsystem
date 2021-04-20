@@ -189,6 +189,7 @@ class ReceiveController extends Controller
         // 検索
         $result=data_receive_voucher::select('data_receive_vouchers.*','dsv.mes_lis_shi_tra_dat_order_date','dsv.mes_lis_shi_tra_trade_number','dsv.mes_lis_shi_tot_tot_net_price_total','dr.cmn_connect_id')
         ->join('data_receives as dr','dr.data_receive_id','=','data_receive_vouchers.data_receive_id')
+        ->join('data_receive_items','data_receive_items.data_receive_voucher_id','=','data_receive_vouchers.data_receive_voucher_id')
         ->leftJoin('data_shipment_vouchers as dsv','dsv.mes_lis_shi_tra_trade_number','=','data_receive_vouchers.mes_lis_acc_tra_trade_number')
         ->where('dr.cmn_connect_id','=',$cmn_connect_id)
         ->where('data_receive_vouchers.data_receive_id','=',$data_receive_id)
@@ -204,12 +205,17 @@ class ReceiveController extends Controller
                 $result = $result->where('data_receive_vouchers.mes_lis_acc_tot_tot_net_price_total','!=','data_receive_vouchers.mes_lis_shi_tot_tot_net_price_total');
             }
         }
-        if($request->mes_lis_acc_par_shi_code!=''){
-            $result = $result->where('data_receive_vouchers.mes_lis_acc_par_shi_code',$request->mes_lis_acc_par_shi_code);
+      
+        if($request->searchCode1!=''){
+            $result = $result->where('data_receive_vouchers.mes_lis_acc_par_shi_code',$request->searchCode1);
         }
-        if($request->mes_lis_acc_par_rec_code!=''){
-            $result = $result->where('data_receive_vouchers.mes_lis_acc_par_rec_code',$request->mes_lis_acc_par_rec_code);
+        if($request->searchCode2!=''){
+            $result = $result->where('data_receive_vouchers.mes_lis_acc_par_rec_code',$request->searchCode2);
         }
+        if($request->searchCode3!=''){
+            $result = $result->where('data_receive_items.mes_lis_acc_lin_ite_order_item_code',$request->searchCode3);
+        }
+
         if($voucher_class!="*"){
             $result = $result->where('data_receive_vouchers.mes_lis_acc_tra_ins_trade_type_code',$voucher_class);
         }
