@@ -10,6 +10,7 @@ use App\Models\DATA\INVOICE\data_invoice;
 use App\Models\DATA\INVOICE\data_invoice_pay;
 use App\Models\DATA\INVOICE\data_invoice_pay_detail;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class data_invoice_scheduler
 {
@@ -33,7 +34,7 @@ class data_invoice_scheduler
         $data_invoice_pay_array=array();
         $data_invoice_pay_details_array=array();
         $shipment_datas=self::shipmentQuery($request);
-        // \Log::info("Hi");
+        // Log::info($shipment_datas);
         // \Log::info(count($shipment_datas));
         // return 0;
         $datashipment=true;

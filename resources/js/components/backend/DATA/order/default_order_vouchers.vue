@@ -1117,8 +1117,8 @@ export default {
       if (this.selectedNum > 0) {
         this.confirm_sweet().then((result) => {
           if (result.value) {
-            axios
-              .post(
+              this.loader = Vue.$loading.show();
+            axios.post(
                 this.BASE_URL + "api/update_shipment_detail_bycurrentdatetime",
                 { update_id: this.selected, date_null: this.date_null }
               )
@@ -1173,7 +1173,7 @@ export default {
             _this.alert_text = csv_data_count + "件の伝票を送信しますがよろしいでしょうか。";
             this.confirm_sweet().then((result) => {
               if (result.value) {
-
+                  this.loader = Vue.$loading.show();
                 axios.post(this.BASE_URL + "api/shipment_confirm", {
                     data_order_id: this.param_data.data_order_id,
                     byr_buyer_id:this.byr_buyer_id,
@@ -1209,6 +1209,7 @@ export default {
       this.cancel_btn = "キャンセル";
       this.confirm_sweet().then((result) => {
         if (result.value) {
+            this.loader = Vue.$loading.show();
           const formData = new FormData();
           let file = e.target.files[0];
 
@@ -1223,6 +1224,7 @@ export default {
                 }else{
                     _this.alert_icon = "success";
                     _this.alert_title = "完了";
+                    _this.get_all_byr_order_detail()
                 }
               _this.confirmButtonText = '完了';
               _this.alert_text = data.message;

@@ -40,6 +40,42 @@ class DataController extends Controller
                 $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
             }
         // Log::info($byr_buyer_id);
+        $result=data_receive::select(
+            'data_receives.sta_sen_identifier', //0
+            'data_receives.sta_sen_ide_authority', //1
+            'data_receives.sta_rec_identifier', //2
+            'data_receives.sta_rec_ide_authority', //3
+            'data_receives.sta_doc_standard', //4
+            'data_receives.sta_doc_type_version', //5
+            'data_receives.sta_doc_instance_identifier', //6
+            'data_receives.sta_doc_type', //7
+            'data_receives.sta_doc_creation_date_and_time', //8
+            'data_receives.sta_bus_scope_type', //9
+            'data_receives.sta_bus_scope_instance_identifier', //10
+            'data_receives.sta_bus_scope_identifier', //11
+            'data_receives.mes_ent_unique_creator_identification', //12
+            'data_receives.mes_mes_sender_station_address', //13
+            'data_receives.mes_mes_ultimate_receiver_station_address', //14
+            'data_receives.mes_mes_immediate_receiver_station_addres', //15
+            'data_receives.mes_mes_number_of_trading_documents', //16
+            'data_receives.mes_mes_sys_key', //17
+            'data_receives.mes_mes_sys_value', //18
+            'data_receives.mes_lis_con_version', //19
+            'data_receives.mes_lis_doc_version', //20
+            'data_receives.mes_lis_ext_namespace', //21
+            'data_receives.mes_lis_ext_version', //22
+            'data_receives.mes_lis_pay_code', //23
+            'data_receives.mes_lis_pay_gln', //24
+            'data_receives.mes_lis_pay_name', //25
+            'data_receives.mes_lis_pay_name_sbcs', //26
+            'data_receives.mes_lis_buy_code', //27
+            'data_receives.mes_lis_buy_gln', //28
+            'data_receives.mes_lis_buy_name', //29
+            'data_receives.mes_lis_buy_name_sbcs', //30
+            'drv.*',
+            )
+            ->leftJoin('data_receive_vouchers as drv','data_receives.data_receive_id','=','drv.data_receive_id')
+            ->where('data_receives.cmn_connect_id','=',$cmn_connect_id);
         if ($request->page_title=='receive_list') {
             $receive_date_from = $request->receive_date_from; // 受信日時開始
             $receive_date_to = $request->receive_date_to; // 受信日時終了
@@ -65,23 +101,9 @@ class DataController extends Controller
                 // $table_name2='data_returns.';
             }
 
-            $result=data_receive::select(
-                'data_receives.data_receive_id',
-                'data_receives.sta_doc_type',
-                'data_receives.receive_datetime',
-                'drv.mes_lis_acc_par_sel_code',
-                'drv.mes_lis_acc_par_sel_name',
-                'drv.mes_lis_acc_tra_dat_transfer_of_ownership_date',
-                'drv.mes_lis_acc_tra_dat_delivery_date',
-                'drv.mes_lis_acc_tra_goo_major_category',
-                'drv.mes_lis_acc_log_del_delivery_service_code',
-                'drv.mes_lis_acc_tra_ins_temperature_code','drv.check_datetime',
-                DB::raw('COUNT(*) AS cnt'),
-                'drv.data_receive_voucher_id'
-                )
-                ->leftJoin('data_receive_vouchers as drv','data_receives.data_receive_id','=','drv.data_receive_id')
+
                 // ->leftJoin('data_receive_items as dri','dri.data_receive_voucher_id','=','drv.data_receive_voucher_id')
-                ->where('data_receives.cmn_connect_id','=',$cmn_connect_id);
+                // $result=$result->where('data_receives.cmn_connect_id','=',$cmn_connect_id);
                     // 条件指定検索
                         if ($receive_date_from && $receive_date_to) {
                             $result =$result->whereBetween('data_receives.receive_datetime', [$receive_date_from, $receive_date_to]);
@@ -113,17 +135,9 @@ class DataController extends Controller
 
                         }
 
-                $result = $result
-                ->groupBy(
+                $result = $result->groupBy(
                     [
-                        // 'drv.data_receive_voucher_id',
                         'drv.mes_lis_acc_tra_trade_number'
-                        // 'data_receives.receive_datetime',
-                        // 'drv.mes_lis_acc_par_sel_code',
-                        // 'drv.mes_lis_acc_tra_dat_transfer_of_ownership_date',
-                        // 'drv.mes_lis_acc_tra_goo_major_category',
-                        // 'drv.mes_lis_acc_log_del_delivery_service_code',
-                        // 'drv.mes_lis_acc_tra_ins_temperature_code'
                     ]
                 )
                 ->orderBy('drv.mes_lis_acc_par_sel_code')
@@ -146,40 +160,36 @@ class DataController extends Controller
             $voucher_class=$request->voucher_class;
             $goods_classification_code=$request->goods_classification_code;
             $trade_number=$request->trade_number;
-            $table_name='data_receive_vouchers.';
-            $result=data_receive_voucher::select('data_receive_vouchers.*','dsv.mes_lis_shi_tra_dat_order_date','dsv.mes_lis_shi_tra_trade_number','dsv.mes_lis_shi_tot_tot_net_price_total','dr.cmn_connect_id')
-        ->join('data_receives as dr','dr.data_receive_id','=','data_receive_vouchers.data_receive_id')
-        ->leftJoin('data_shipment_vouchers as dsv','dsv.mes_lis_shi_tra_trade_number','=','data_receive_vouchers.mes_lis_acc_tra_trade_number')
-        ->where('dr.cmn_connect_id','=',$cmn_connect_id)
-        ->where('data_receive_vouchers.data_receive_id','=',$data_receive_id)
+            $table_name='drv.';
+        $result=$result->where('drv.data_receive_id','=',$data_receive_id)
         // ->where('data_receive_vouchers.mes_lis_acc_par_sel_name',$sel_name)
-        ->where('data_receive_vouchers.mes_lis_acc_par_sel_code',$sel_code)
-        ->where('data_receive_vouchers.mes_lis_acc_tra_goo_major_category',$major_category)
-        ->where('data_receive_vouchers.mes_lis_acc_log_del_delivery_service_code','=',$delivery_service_code);
+        ->where('drv.mes_lis_acc_par_sel_code',$sel_code)
+        ->where('drv.mes_lis_acc_tra_goo_major_category',$major_category)
+        ->where('drv.mes_lis_acc_log_del_delivery_service_code','=',$delivery_service_code);
         if($decesion_status!="*"){
             if($decesion_status=="訂正あり"){
-                $result = $result->where('data_receive_vouchers.mes_lis_acc_tot_tot_net_price_total','=','data_receive_vouchers.mes_lis_shi_tot_tot_net_price_total');
+                $result = $result->where('drv.mes_lis_acc_tot_tot_net_price_total','=','data_receive_vouchers.mes_lis_shi_tot_tot_net_price_total');
             }
             if($decesion_status=="訂正なし"){
-                $result = $result->where('data_receive_vouchers.mes_lis_acc_tot_tot_net_price_total','!=','data_receive_vouchers.mes_lis_shi_tot_tot_net_price_total');
+                $result = $result->where('drv.mes_lis_acc_tot_tot_net_price_total','!=','data_receive_vouchers.mes_lis_shi_tot_tot_net_price_total');
             }
         }
         if($request->mes_lis_acc_par_shi_code!=''){
-            $result = $result->where('data_receive_vouchers.mes_lis_acc_par_shi_code',$request->mes_lis_acc_par_shi_code);
+            $result = $result->where('drv.mes_lis_acc_par_shi_code',$request->mes_lis_acc_par_shi_code);
         }
         if($request->mes_lis_acc_par_rec_code!=''){
-            $result = $result->where('data_receive_vouchers.mes_lis_acc_par_rec_code',$request->mes_lis_acc_par_rec_code);
+            $result = $result->where('drv.mes_lis_acc_par_rec_code',$request->mes_lis_acc_par_rec_code);
         }
         if($voucher_class!="*"){
-            $result = $result->where('data_receive_vouchers.mes_lis_acc_tra_ins_trade_type_code',$voucher_class);
+            $result = $result->where('drv.mes_lis_acc_tra_ins_trade_type_code',$voucher_class);
         }
         if($goods_classification_code!="*"){
-            $result = $result->where('data_receive_vouchers.mes_lis_acc_tra_ins_goods_classification_code',$goods_classification_code);
+            $result = $result->where('drv.mes_lis_acc_tra_ins_goods_classification_code',$goods_classification_code);
         }
         if($trade_number!=null){
-            $result = $result->where('data_receive_vouchers.mes_lis_acc_tra_trade_number',$trade_number);
+            $result = $result->where('drv.mes_lis_acc_tra_trade_number',$trade_number);
         }
-        $result=$result->groupBy('data_receive_vouchers.mes_lis_acc_tra_trade_number')
+        $result=$result->groupBy('drv.mes_lis_acc_tra_trade_number')
         ->orderBy($table_name.$sort_by,$sort_type);
         }
 
