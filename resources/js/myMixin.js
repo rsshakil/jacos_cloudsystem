@@ -19,6 +19,9 @@ export default {
             mes_lis_shi_lin_qua_sto_reason_codeList: [],
             json_temperature_codeList:[],
 json_delivery_service_codeList:[],
+mes_lis_ord_tra_ins_goods_classification_codeList: [],
+      mes_lis_ord_tra_ins_trade_type_codeList: [],
+buyer_category_list:[],
             filter_select_box: false,
             buyers: [],
             selected_buyer: [],
@@ -64,6 +67,9 @@ json_delivery_service_codeList:[],
                     this.mes_lis_shi_lin_qua_sto_reason_codeList = this.buyer_settings.shipments.mes_lis_shi_lin_qua_sto_reason_code;
                     this.json_temperature_codeList = this.buyer_settings.orders.mes_lis_ord_tra_ins_temperature_code;
                     this.json_delivery_service_codeList = this.buyer_settings.orders.mes_lis_ord_log_del_delivery_service_code;
+                    this.mes_lis_ord_tra_ins_goods_classification_codeList = this.buyer_settings.orders.mes_lis_ord_tra_ins_goods_classification_code;
+          this.mes_lis_ord_tra_ins_trade_type_codeList = this.buyer_settings.returns.mes_lis_ret_tra_ins_trade_type_code;
+          console.log(this.mes_lis_ord_tra_ins_trade_type_codeList);
                     this.ordersJson = this.buyer_settings.orders;
                     this.shipmentsJson = this.buyer_settings.shipments;
                     this.receivesJson = this.buyer_settings.receives;
@@ -71,6 +77,7 @@ json_delivery_service_codeList:[],
                     this.returnsJson = this.buyer_settings.returns;
                     this.invoicesJson = this.buyer_settings.invoices;
                     this.paymentsJson = this.buyer_settings.payments;
+                    this.buyer_category_list = data.buyer_category_list;
                 });
         },
         getbyrjsonValueBykeyName(arrName, arrKey, orderType = "orders", buyer_settings = []) {
@@ -340,6 +347,9 @@ json_delivery_service_codeList:[],
         priceFormat(str) {
             if (!str) return ''
             return str.toString().replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        },
+        customArrReverse(str){
+            return str.slice().reverse();
         },
     },
     created() {
