@@ -64,13 +64,21 @@
             </td>
           </tr>
           <tr>
-            
-            <td class="cl_custom_color">伝票区分</td>
+            <td class="cl_custom_color">商品コード</td>
             <td>
+              <input type="text" v-model="form.searchCode3" class="form-control topHeaderInputFieldBtn" />
+              <button
+                @click="deliverySearchForm3"
+                class="btn btn-primary active"
+              >
+                参照
+              </button>
+            </td>
+            <td class="cl_custom_color">伝票区分</td>
+            <td colspan="3">
               <select
                 class="form-control"
                 v-model="form.voucher_class"
-                style="width: 220px"
               >
                 <option value="*">全て</option>
 
