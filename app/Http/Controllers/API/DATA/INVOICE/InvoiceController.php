@@ -265,9 +265,7 @@ class InvoiceController extends Controller
         $result = $result->orderBy('dipd.'.$sort_by,$sort_type);
         $result=$result->paginate($per_page);
         $byr_buyer_category_list = $this->all_used_fun->get_allCategoryByByrId($byr_buyer_id);
-        $buyer_settings = byr_buyer::select('setting_information')->where('byr_buyer_id', $byr_buyer_id)->first();
-        $buyer_settings = $buyer_settings->setting_information;
-        return response()->json(['invoice_details_list' => $result,'byr_buyer_category_list'=>$byr_buyer_category_list,'buyer_settings'=>$buyer_settings]);
+        return response()->json(['invoice_details_list' => $result,'byr_buyer_category_list'=>$byr_buyer_category_list]);
     }
 
     public function sendInvoiceData(Request $request){

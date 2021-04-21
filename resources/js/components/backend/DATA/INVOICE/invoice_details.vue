@@ -283,9 +283,7 @@
                 getbyrjsonValueBykeyName(
                   "mes_lis_inv_lin_det_pay_code",
                   value.mes_lis_inv_lin_det_pay_code,
-                  "invoices",
-                  buyer_settings
-                )
+                  "invoices" )
               }}
               </td>
               <td>
@@ -293,9 +291,7 @@
                 getbyrjsonValueBykeyName(
                   "mes_lis_inv_lin_det_balance_carried_code",
                   value.mes_lis_inv_lin_det_balance_carried_code,
-                  "invoices",
-                  buyer_settings
-                )
+                  "invoices")
               }}
               </td>
               <td class="text-right">{{ value.mes_lis_inv_lin_det_amo_requested_amount | priceFormat }}</td>
@@ -397,7 +393,7 @@
             <option value="*">全て</option>
               <option
                 v-for="(temp, i) in mes_lis_inv_lin_det_pay_code_list"
-                :key="i" v-if="temp!='' " :value="temp">
+                :key="i" v-if="temp!='' " :value="i">
                 {{ temp }}
               </option>
             </select>
@@ -406,7 +402,14 @@
             <div class="form-group row">
               <label for="inputPassword" class="col-sm-2 col-form-label">請求区分</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_balance_carried_code">
+                <select class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_balance_carried_code">
+                <option value="*">全て</option>
+              <option
+                v-for="(temp, i) in mes_lis_inv_lin_det_balance_carried_codeList"
+                :key="i" v-if="temp!='' " :value="i">
+                {{ temp }}
+              </option>
+            </select>
               </div>
             </div>
             <div class="form-group row">
@@ -549,8 +552,6 @@ export default {
       invoice_detail_lists: {},
       invoice_detail_length: 0,
       byr_voucher_lists: {},
-      buyer_settings: {},
-      mes_lis_inv_lin_det_pay_code_list: [],
       byr_buyer_category_lists:[],
       editInvoiceDetailModal:false,
       invoiceCompareModal:false,
@@ -576,7 +577,7 @@ export default {
         mes_lis_inv_lin_tra_code:'',
         mes_lis_inv_lin_lin_trade_number_reference:'',
         mes_lis_inv_lin_det_pay_code:'*',
-        mes_lis_inv_lin_det_balance_carried_code:'',
+        mes_lis_inv_lin_det_balance_carried_code:'*',
         mes_lis_inv_lin_det_amo_requested_amount:'',
       },
       form: new Form({
@@ -636,13 +637,13 @@ export default {
       this.editInvoiceDetailModal = true;
         this.invoiceDetail = {
           data_invoice_pay_detail_id:'',
-        data_invoice_id:'',
+        data_invoice_id:this.$route.query.data_invoice_id,
         mes_lis_inv_lin_det_transfer_of_ownership_date:'',
         mes_lis_inv_lin_det_goo_major_category:'',
         mes_lis_inv_lin_tra_code:'',
         mes_lis_inv_lin_lin_trade_number_reference:'',
         mes_lis_inv_lin_det_pay_code:'*',
-        mes_lis_inv_lin_det_balance_carried_code:'',
+        mes_lis_inv_lin_det_balance_carried_code:'*',
         mes_lis_inv_lin_det_amo_requested_amount:'',
         };
     },
@@ -697,8 +698,6 @@ var _this = this;
             this.invoice_detail_length = this.invoice_detail_lists.data.length;
             this.invoice_lists_length = this.invoice_detail_lists.data.length;
             this.byr_buyer_category_lists = data.byr_buyer_category_list;
-            this.buyer_settings = JSON.parse(data.buyer_settings);
-            this.mes_lis_inv_lin_det_pay_code_list = this.buyer_settings.invoices.mes_lis_inv_lin_det_pay_code;
             this.byr_buyer_category_lists.unshift({category_code:'*',category_name:'全て'});
 
         });
@@ -885,6 +884,7 @@ var _this = this;
     this.form.data_invoice_id = this.param_data.data_invoice_id;
     this.invoiceDetail.data_invoice_id = this.param_data.data_invoice_id;
 this.getbuyerJsonSettingvalue();
+
     this.form.byr_buyer_id = this.$session.get("byr_buyer_id");
     this.invoice_details();
     Fire.$on("LoadByrinvoiceDetails", (page=1) => {
