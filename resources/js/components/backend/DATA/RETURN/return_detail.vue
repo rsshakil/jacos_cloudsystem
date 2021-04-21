@@ -264,8 +264,7 @@
                 getbyrjsonValueBykeyName(
                   "mes_lis_ret_tra_ins_trade_type_code",
                   order_detail_list.mes_lis_ret_tra_ins_trade_type_code,
-                  "returns",
-                  buyer_settings
+                  "returns"
                 )
               }}
                 </td>
@@ -690,7 +689,6 @@ export default {
       show_hide_col_list: [],
       expected_delivery_date: "",
       status: "",
-       buyer_settings:[],
         byr_buyer_lists: {},
       // byr_order_id: "",
       edit_order_modal: false,
@@ -746,7 +744,6 @@ searchCode3:'',
         downloadType:1
       }),
       param_data: [],
-      // buyer_settings:null,
     };
   },
   methods: {
