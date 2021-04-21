@@ -182,6 +182,9 @@ Route::post('/get_voucher_detail_popup3', 'API\DATA\ORDER\OrderController@get_vo
 Route::post('/get_voucher_detail_popup1_receive', 'API\DATA\RECEIVE\ReceiveController@get_voucher_detail_popup1_receive');
 Route::post('/get_voucher_detail_popup2_receive', 'API\DATA\RECEIVE\ReceiveController@get_voucher_detail_popup2_receive');
 Route::post('/get_voucher_detail_popup3_receive', 'API\DATA\RECEIVE\ReceiveController@get_voucher_detail_popup3_receive');
+Route::post('/get_voucher_detail_popup1_return', 'API\DATA\RTN\ReturnController@get_voucher_detail_popup1_return');
+Route::post('/get_voucher_detail_popup2_return', 'API\DATA\RTN\ReturnController@get_voucher_detail_popup2_return');
+Route::post('/get_voucher_detail_popup3_return', 'API\DATA\RTN\ReturnController@get_voucher_detail_popup3_return');
 Route::get('/order_item_details/{data_shipment_voucher_id}', 'API\DATA\ORDER\OrderItemController@orderItemDetails');
 Route::get('/shipment_item_detail_search/{item_code}', 'API\DATA\ORDER\OrderItemController@shipmentItemDetailSearch');
 Route::get('slr_job_list_all', 'API\CMN\CmnJobController@index');

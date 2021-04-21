@@ -196,6 +196,7 @@ class ReturnController extends Controller
         // 検索
         $result=data_return_voucher::select('data_return_vouchers.*','dsv.mes_lis_shi_tra_dat_order_date','dsv.mes_lis_shi_tra_trade_number','dsv.mes_lis_shi_tot_tot_net_price_total','dr.cmn_connect_id')
         ->join('data_returns as dr','dr.data_return_id','=','data_return_vouchers.data_return_id')
+        ->join('data_return_items','data_return_items.data_return_voucher_id','=','data_return_vouchers.data_return_voucher_id')
         ->leftJoin('data_shipment_vouchers as dsv','dsv.mes_lis_shi_tra_trade_number','=','data_return_vouchers.mes_lis_ret_tra_trade_number')
         ->where('dr.cmn_connect_id','=',$cmn_connect_id)
         ->where('data_return_vouchers.data_return_id','=',$data_return_id);
@@ -209,11 +210,14 @@ class ReturnController extends Controller
                 $result = $result->where('data_return_vouchers.mes_lis_ret_tot_tot_net_price_total',0);
             }
         }
-        if($request->mes_lis_acc_par_shi_code!=null){
-            $result = $result->where('data_return_vouchers.mes_lis_ret_par_shi_code',$request->mes_lis_acc_par_shi_code);
+        if($request->searchCode1!=''){
+            $result = $result->where('data_return_vouchers.mes_lis_ret_par_return_receive_from_code',$request->searchCode1);
         }
-        if($request->mes_lis_acc_par_rec_code!=null){
-            $result = $result->where('data_return_vouchers.mes_lis_ret_par_rec_code',$request->mes_lis_acc_par_rec_code);
+        if($request->searchCode2!=''){
+            $result = $result->where('data_return_vouchers.mes_lis_ret_par_return_from_code',$request->searchCode2);
+        }
+        if($request->searchCode3!=''){
+            $result = $result->where('data_return_items.mes_lis_ret_lin_ite_order_item_code',$request->searchCode3);
         }
         if($voucher_class!="*"){
             $result = $result->where('data_return_vouchers.mes_lis_ret_tra_ins_trade_type_code',$voucher_class);
@@ -227,12 +231,9 @@ class ReturnController extends Controller
         $result=$result->groupBy('data_return_vouchers.mes_lis_ret_tra_trade_number')
         ->orderBy($table_name.$sort_by,$sort_type)
         ->paginate($per_page);
-
-        // $result = new Paginator($result, 2);
-        $buyer_settings = byr_buyer::select('setting_information')->where('byr_buyer_id', $byr_buyer_id)->first();
         $byr_buyer = $this->all_used_fun->get_company_list($cmn_company_id);
 
-        return response()->json(['retrun_detail_list' => $result, 'byr_buyer_list' => $byr_buyer, 'buyer_settings' => $buyer_settings->setting_information,'order_info'=>$orderInfo]);
+        return response()->json(['retrun_detail_list' => $result, 'byr_buyer_list' => $byr_buyer,'order_info'=>$orderInfo]);
 
     }
     public function returnDownload(Request $request)
@@ -342,5 +343,74 @@ class ReturnController extends Controller
         return response()->json(['order_customer_code_lists' => $result]);
     }
 
+    public function get_voucher_detail_popup1_return(Request $request){
+        $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
+        
+//AND `drv`.`mes_lis_shi_tra_dat_delivery_date` = '".$request->delivery_date."' AND
+//`drv`.`mes_lis_shi_tra_ins_temperature_code` = '".$request->temperature_code."'
+//AND `drv`.`mes_lis_ret_log_del_delivery_service_code` = '".$request->delivery_service_code."' 
+        $result = DB::select("SELECT
+        drv.mes_lis_ret_par_return_receive_from_code,
+        drv.mes_lis_ret_par_return_receive_from_name,
+        drv.mes_lis_ret_tra_ins_trade_type_code
+        from `data_returns` as `dr`
+        inner join `data_return_vouchers` as `drv` on `drv`.`data_return_id` = `dr`.`data_return_id`
+        WHERE
+        dr.cmn_connect_id = $cmn_connect_id and
+        `dr`.`data_return_id` = $request->data_return_id AND
+        `drv`.`mes_lis_ret_tra_goo_major_category` = '".$request->major_category."' 
+        
+        group by `drv`.`mes_lis_ret_par_return_receive_from_code`
+        order by `drv`.`mes_lis_ret_par_return_receive_from_code` ASC");
+        return response()->json(['popUpList' => $result]);
+
+    }
+
+    public function get_voucher_detail_popup2_return(Request $request){
+        $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
+        //      AND  `dsv`.`mes_lis_shi_tra_dat_delivery_date` = '".$request->delivery_date."' AND
+        //`dsv`.`mes_lis_shi_tra_ins_temperature_code` = '".$request->temperature_code."'
+        //AND `drv`.`mes_lis_ret_log_del_delivery_service_code` = '".$request->delivery_service_code."' 
+
+        $result = DB::select("SELECT
+        drv.mes_lis_ret_par_return_from_code,
+        drv.mes_lis_ret_par_return_from_name,
+        drv.mes_lis_ret_tra_ins_trade_type_code
+        from `data_returns` as `dr`
+        inner join `data_return_vouchers` as `drv` on `drv`.`data_return_id` = `dr`.`data_return_id`
+        WHERE
+        dr.cmn_connect_id = $cmn_connect_id and
+        `dr`.`data_return_id` = $request->data_return_id AND
+        `drv`.`mes_lis_ret_tra_goo_major_category` = '".$request->major_category."' 
+        group by `drv`.`mes_lis_ret_par_return_from_code`
+        order by `drv`.`mes_lis_ret_par_return_from_code` ASC");
+        return response()->json(['popUpList' => $result]);
+
+    }
+
+    public function get_voucher_detail_popup3_return(Request $request){
+        $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
+        /*
+               AND `dsv`.`mes_lis_shi_tra_dat_delivery_date` = '".$request->delivery_date."' AND
+        `dsv`.`mes_lis_shi_tra_ins_temperature_code` = '".$request->temperature_code."'
+AND
+        `drv`.`mes_lis_ret_log_del_delivery_service_code` = '".$request->delivery_service_code."' 
+        */
+        $result = DB::select("SELECT
+        dri.mes_lis_ret_lin_ite_order_item_code,
+        dri.mes_lis_ret_lin_ite_name,
+        dri.mes_lis_ret_lin_ite_ite_spec
+        from `data_returns` as `dr`
+        inner join `data_return_vouchers` as `drv` on `drv`.`data_return_id` = `dr`.`data_return_id`
+        INNER JOIN data_return_items AS dri ON dri.data_return_voucher_id= drv.data_return_voucher_id
+        WHERE
+        dr.cmn_connect_id = $cmn_connect_id and
+        `dr`.`data_return_id` = $request->data_return_id AND
+        `drv`.`mes_lis_ret_tra_goo_major_category` = '".$request->major_category."' 
+        group by `dri`.`mes_lis_ret_lin_ite_order_item_code`
+        order by `dri`.`mes_lis_ret_lin_ite_order_item_code` ASC");
+        return response()->json(['popUpList' => $result]);
+
+    }
 
 }
