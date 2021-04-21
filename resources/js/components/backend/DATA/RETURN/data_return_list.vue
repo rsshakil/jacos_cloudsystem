@@ -74,7 +74,7 @@
               </select>
             </td> -->
             <td class="cl_custom_color">参照状況</td>
-            <td>
+            <td colspan="3">
               <select class="form-control" v-model="form.check_datetime">
               <option value="*">全て</option>
               <option value="1">未参照</option>
