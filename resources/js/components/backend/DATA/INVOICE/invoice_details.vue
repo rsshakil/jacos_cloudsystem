@@ -288,7 +288,16 @@
                 )
               }}
               </td>
-              <td>{{ value.mes_lis_inv_lin_det_balance_carried_code }}</td>
+              <td>
+                  {{
+                getbyrjsonValueBykeyName(
+                  "mes_lis_inv_lin_det_balance_carried_code",
+                  value.mes_lis_inv_lin_det_balance_carried_code,
+                  "invoices",
+                  buyer_settings
+                )
+              }}
+              </td>
               <td class="text-right">{{ value.mes_lis_inv_lin_det_amo_requested_amount | priceFormat }}</td>
               <td>{{ value.send_datetime }}</td>
               <td><button @click="editInvoiceDetail(value)" class="btn btn-primary">変更</button><button @click="deleteInvoiceDetail(value)" class="btn btn-danger">削除</button></td>
@@ -308,7 +317,7 @@
     <div class="col-12">
         <div class="row">
           <div class="col-6">
-            <div class="pcontent">
+            <!-- <div class="pcontent">
               <p>
                 ファイルを選択し「アップロード」ボタンをクリックすると、確定済みデータとしてアップロードされます。
               </p>
@@ -329,15 +338,7 @@
                 class="btn btn-primary active"
                 style="display: none"
               />
-              <!-- <button class="btn btn-primary active" type="button">
-                <b-icon
-                  icon="upload"
-                  animation="fade"
-                  font-scale="1.2"
-                ></b-icon>
-                アップロード
-              </button>-->
-            </div>
+            </div> -->
           </div>
           <div class="col-6 text-right">
             <button class="btn btn-lg btn-primary active" @click="updateDatetimeDecessionfield">
@@ -469,20 +470,17 @@
             <td>{{value.mes_lis_shi_par_sel_code}}</td>
             <td>{{value.mes_lis_shi_tra_trade_number}}</td>
             <td>{{value.mes_lis_shi_par_shi_code}} {{value.mes_lis_shi_par_shi_name}}</td>
-            <td>
-              <span v-if="value.mes_lis_shi_tra_dat_revised_delivery_date!=null">{{value.mes_lis_shi_tra_dat_revised_delivery_date}}</span>
-              <span v-if="value.mes_lis_shi_tra_dat_delivery_date!=null">{{value.mes_lis_shi_tra_dat_delivery_date}}</span>
-            </td>
-            <td>{{value.mes_lis_acc_tra_dat_transfer_of_ownership_date}}</td>
-            <td>{{value.mes_lis_shi_tot_tot_net_price_total}}</td>
-            <td>{{value.mes_lis_acc_tot_tot_net_price_total}}</td>
-            <td><button @click="comparedItemList" class="btn btn-primary">確認</button></td>
+            <td :class="sameCheck(value.shipment_delivery_date,value.mes_lis_acc_tra_dat_transfer_of_ownership_date)">{{ value.shipment_delivery_date }}</td>
+            <td :class="sameCheck(value.shipment_delivery_date,value.mes_lis_acc_tra_dat_transfer_of_ownership_date)">{{value.mes_lis_acc_tra_dat_transfer_of_ownership_date}}</td>
+            <td :class="sameCheck(value.mes_lis_shi_tot_tot_net_price_total,value.mes_lis_acc_tot_tot_net_price_total)">{{value.mes_lis_shi_tot_tot_net_price_total}}</td>
+            <td :class="sameCheck(value.mes_lis_shi_tot_tot_net_price_total,value.mes_lis_acc_tot_tot_net_price_total)">{{value.mes_lis_acc_tot_tot_net_price_total}}</td>
+            <td><button @click="comparedItemList(value)" class="btn btn-primary">確認</button></td>
           </tr>
           </tbody>
 
         </table>
         <div class="col-12 text-center">
-        <button class="btn btn-primary" style="text-align:center" @click="closeModal1">閉じる</button>
+        <button class="btn btn-primary" style="text-align:center" @click="closeInvoiceCompare">閉じる</button>
       </div>
       </div>
     </b-modal>
@@ -511,7 +509,7 @@
           <thead>
 
             <tr>
-              <th>NO</th>
+              <th>行番号</th>
               <th>商品コード</th>
               <th>商品名</th>
               <th>出荷数量（バラ）</th>
@@ -521,20 +519,20 @@
           </tr>
           </thead>
           <tbody>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+          <tr v-for="(value,index) in compare_item_list" :key="index">
+            <td>{{ value.mes_lis_shi_lin_lin_line_number }}</td>
+            <td>{{ value.mes_lis_shi_lin_ite_order_item_code }}</td>
+            <td>{{ value.mes_lis_shi_lin_ite_name }}</td>
+            <td :class="sameCheck(value.mes_lis_shi_lin_qua_shi_quantity,value.mes_lis_acc_lin_qua_rec_quantity)">{{ value.mes_lis_shi_lin_qua_shi_quantity }}</td>
+            <td :class="sameCheck(value.mes_lis_shi_lin_qua_shi_quantity,value.mes_lis_acc_lin_qua_rec_quantity)">{{ value.mes_lis_acc_lin_qua_rec_quantity }}</td>
+            <td :class="sameCheck(value.mes_lis_shi_lin_amo_item_net_price,value.mes_lis_acc_lin_amo_item_net_price)">{{ value.mes_lis_shi_lin_amo_item_net_price }}</td>
+            <td :class="sameCheck(value.mes_lis_shi_lin_amo_item_net_price,value.mes_lis_acc_lin_amo_item_net_price)">{{ value.mes_lis_acc_lin_amo_item_net_price }}</td>
           </tr>
           </tbody>
 
         </table>
         <div class="col-12 text-center">
-          <button class="btn btn-primary" style="text-align:center" @click="closeModal2">閉じる</button>
+          <button class="btn btn-primary" style="text-align:center" @click="closeComparedItemList">閉じる</button>
         </div>
       </div>
     </b-modal>
@@ -565,6 +563,7 @@ export default {
       null_selected: [],
       not_null_selected: [],
       compareDataList: [],
+      compare_item_list: [],
       date_null:false,
       null_selected_message:false,
       decision_datetime_status: ["未確定あり", "確定済"],
@@ -614,13 +613,18 @@ export default {
             //console.log(data.voucherList);
         });
     },
-    comparedItemList(){
+    comparedItemList(value){
       this.invoiceitemDatalistModal = true;
+      axios.post(this.BASE_URL + "api/invoice_compare_item", value)
+        .then(({ data }) => {
+            this.init(data.status);
+            this.compare_item_list = data.compareItemList;
+        });
     },
-    closeModal2(){
+    closeComparedItemList(){
       this.invoiceitemDatalistModal = false;
     },
-    closeModal1(){
+    closeInvoiceCompare(){
        this.invoiceCompareModal = false;
     },
     editInvoiceDetail(valuess){
@@ -867,8 +871,10 @@ var _this = this;
            this.downloadFromUrl(data);
         });
     },
-    invoiceUpdate(){
-
+    sameCheck(value1,value2){
+        if(value1!=value2){
+            return 'same_yellow';
+        }
     }
   },
 
@@ -893,3 +899,8 @@ this.getbuyerJsonSettingvalue();
   },
 };
 </script>
+<style>
+.same_yellow{
+    background: yellow;
+}
+</style>

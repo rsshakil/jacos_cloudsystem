@@ -121,7 +121,7 @@ class data_invoice_scheduler
                 $data_invoice_pay_details_array['mes_lis_inv_lin_det_amo_requested_amount']=$shipment_data['mes_lis_shi_tot_tot_net_price_total'];
                 $data_invoice_pay_details_array['mes_lis_inv_lin_det_amo_req_plus_minus']='+';
                 $data_invoice_pay_details_array['mes_lis_inv_lin_det_amo_tax']=$shipment_data['mes_lis_shi_tot_tot_tax_total'];
-                $data_invoice_pay_details_array['mes_lis_inv_lin_det_balance_carried_code']=''; //Not confirmed
+                $data_invoice_pay_details_array['mes_lis_inv_lin_det_balance_carried_code']='50'; //Not confirmed
                 $data_invoice_pay_details_array['mes_lis_inv_lin_det_credit_or_unsettlement']='';
                 $data_invoice_pay_details_array['mes_lis_inv_lin_det_pay_code']='1001'; //schedule: 1001
                 $data_invoice_pay_details_array['mes_lis_inv_lin_det_tax_tax_type_code']='';
