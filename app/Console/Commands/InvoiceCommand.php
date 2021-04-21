@@ -105,8 +105,9 @@ class InvoiceCommand extends Command
 
                         if( $compareDate > $startDatedt && $compareDate <= $endDatedt)
                         {
-                            // $this->comment($first_date);
-                            $start_date = date('y-m-d', strtotime("+1 day", strtotime($first_date)));
+                            $this->comment($first_date);
+                            $start_date = $first_date;
+                            // $start_date = date('y-m-d', strtotime("+1 day", strtotime($first_date)));
                         }
                         // else if(){
 
