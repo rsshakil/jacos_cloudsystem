@@ -24,20 +24,7 @@ class OrderController extends Controller
     }
     public function get_order_customer_code_list(Request $request)
     {
-        // return $request->all();
-        $adm_user_id = $request->adm_user_id;
-        $byr_buyer_id = $request->byr_buyer_id;
-        $submit_type = $request->submit_type;
-        $per_page = $request->per_page?$request->per_page:20;
-
-        $authUser = User::find($adm_user_id);
-        $cmn_company_id = '';
-        $cmn_connect_id = '';
-        if (!$authUser->hasRole(config('const.adm_role_name'))) {
-            $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
-            $cmn_company_id = $cmn_company_info['cmn_company_id'];
-            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
-        }
+        $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
         $result = DB::select("SELECT
         dov.mes_lis_ord_par_sel_code,
         dov.mes_lis_ord_par_sel_name,
@@ -337,19 +324,8 @@ class OrderController extends Controller
         return response()->json(['order_list_detail' => $result, 'slected_list' => $slected_list]);
     }
 
-    public function getCmnConnectId($adm_user_id,$byr_buyer_id){
-        $authUser = User::find($adm_user_id);
-        $cmn_company_id = '';
-        $cmn_connect_id = '';
-        if (!$authUser->hasRole(config('const.adm_role_name'))) {
-            $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
-            $cmn_company_id = $cmn_company_info['cmn_company_id'];
-            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
-        }
-        return $cmn_connect_id;
-    }
     public function get_voucher_detail_popup1(Request $request){
-        $cmn_connect_id = $this->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
+        $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
         
 
         $result = DB::select("SELECT
@@ -372,7 +348,7 @@ class OrderController extends Controller
     }
 
     public function get_voucher_detail_popup2(Request $request){
-        $cmn_connect_id = $this->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
+        $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
         
         $result = DB::select("SELECT
         dsv.mes_lis_shi_par_rec_code,
@@ -394,7 +370,7 @@ class OrderController extends Controller
     }
 
     public function get_voucher_detail_popup3(Request $request){
-        $cmn_connect_id = $this->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
+        $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
         
         $result = DB::select("SELECT
         dsi.mes_lis_shi_lin_ite_order_item_code,

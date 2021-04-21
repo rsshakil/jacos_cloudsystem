@@ -81,6 +81,7 @@ Route::get('/get_scenario_list', 'API\CMN\CmnScenarioController@get_scenario_lis
 Route::get('/slr_management/{adm_user_id}', 'API\SLR\SlrController@slr_management');
 Route::post('/get_order_list', 'API\DATA\ORDER\OrderController@orderList');
 Route::post('/get_order_customer_code_list', 'API\DATA\ORDER\OrderController@get_order_customer_code_list');
+Route::post('/get_return_customer_code_list', 'API\DATA\RTN\ReturnController@get_return_customer_code_list');
 Route::post('/get_receive_customer_code_list', 'API\DATA\RECEIVE\ReceiveController@get_receive_customer_code_list');
 Route::get('/buyerJsonSetting/{byr_buyer_id}', 'API\BYR\ByrController@buyerJsonSetting');
 Route::get('/get_all_company_list/{adm_user_id}', 'API\BYR\ByrController@get_all_company_list');

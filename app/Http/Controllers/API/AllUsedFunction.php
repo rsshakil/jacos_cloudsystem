@@ -576,5 +576,17 @@ class AllUsedFunction extends Controller
         // $file_name = $file_name_info->super_code.'-'."shipment_".$file_name_info->super_code.'-'.$file_name_info->partner_code."-".$file_name_info->jcode.'_shipment_'.date('YmdHis').'.'.$file_type;
         return $file_name;
     }
+
+    public function getCmnConnectId($adm_user_id,$byr_buyer_id){
+        $authUser = User::find($adm_user_id);
+        $cmn_company_id = '';
+        $cmn_connect_id = '';
+        if (!$authUser->hasRole(config('const.adm_role_name'))) {
+            $cmn_company_info=$this->get_user_info($adm_user_id,$byr_buyer_id);
+            $cmn_company_id = $cmn_company_info['cmn_company_id'];
+            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+        }
+        return $cmn_connect_id;
+    }
 }
 

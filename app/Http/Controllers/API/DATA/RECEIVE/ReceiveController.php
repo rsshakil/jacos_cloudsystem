@@ -351,20 +351,7 @@ class ReceiveController extends Controller
 
     public function get_receive_customer_code_list(Request $request)
     {
-        // return $request->all();
-        $adm_user_id = $request->adm_user_id;
-        $byr_buyer_id = $request->byr_buyer_id;
-        $submit_type = $request->submit_type;
-        $per_page = $request->per_page?$request->per_page:20;
-
-        $authUser = User::find($adm_user_id);
-        $cmn_company_id = '';
-        $cmn_connect_id = '';
-        if (!$authUser->hasRole(config('const.adm_role_name'))) {
-            $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
-            $cmn_company_id = $cmn_company_info['cmn_company_id'];
-            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
-        }
+        $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
         $result = DB::select("SELECT
         drv.mes_lis_acc_par_sel_code,
         drv.mes_lis_acc_par_sel_name,
@@ -380,19 +367,9 @@ class ReceiveController extends Controller
         return response()->json(['order_customer_code_lists' => $result]);
 
     }
-    public function getCmnConnectId($adm_user_id,$byr_buyer_id){
-        $authUser = User::find($adm_user_id);
-        $cmn_company_id = '';
-        $cmn_connect_id = '';
-        if (!$authUser->hasRole(config('const.adm_role_name'))) {
-            $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
-            $cmn_company_id = $cmn_company_info['cmn_company_id'];
-            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
-        }
-        return $cmn_connect_id;
-    }
+   
     public function get_voucher_detail_popup1_receive(Request $request){
-        $cmn_connect_id = $this->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
+        $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
         
 //AND `drv`.`mes_lis_shi_tra_dat_delivery_date` = '".$request->delivery_date."' AND
 //`drv`.`mes_lis_shi_tra_ins_temperature_code` = '".$request->temperature_code."'
@@ -415,7 +392,7 @@ class ReceiveController extends Controller
     }
 
     public function get_voucher_detail_popup2_receive(Request $request){
-        $cmn_connect_id = $this->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
+        $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
         //      AND  `dsv`.`mes_lis_shi_tra_dat_delivery_date` = '".$request->delivery_date."' AND
         //`dsv`.`mes_lis_shi_tra_ins_temperature_code` = '".$request->temperature_code."'
 
@@ -437,7 +414,7 @@ class ReceiveController extends Controller
     }
 
     public function get_voucher_detail_popup3_receive(Request $request){
-        $cmn_connect_id = $this->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
+        $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
         /*
                AND `dsv`.`mes_lis_shi_tra_dat_delivery_date` = '".$request->delivery_date."' AND
         `dsv`.`mes_lis_shi_tra_ins_temperature_code` = '".$request->temperature_code."'

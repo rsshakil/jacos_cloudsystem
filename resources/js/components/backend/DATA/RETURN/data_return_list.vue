@@ -25,7 +25,7 @@
             </td>
             <td>
               <input type="text" v-model="form.sel_code" class="form-control" style="float: left; width: 110px; margin-right: 15px" />
-              <button class="btn btn-primary" style="float:left" type="button">
+              <button class="btn btn-primary" @click="showAllCustomerCode" style="float:left" type="button">
                 {{ myLang.refer }}
               </button>
 
@@ -75,7 +75,11 @@
             </td> -->
             <td class="cl_custom_color">参照状況</td>
             <td>
-              <input type="date" class="form-control" v-model="form.check_datetime">
+              <select class="form-control" v-model="form.check_datetime">
+              <option value="*">全て</option>
+              <option value="1">未参照</option>
+              <option value="2">参照済</option>
+            </select>
             </td>
           </tr>
 
@@ -186,6 +190,49 @@
         </table>
       </div>
     </div>
+    <b-modal
+      size="lg"
+      :hide-backdrop="true"
+      title="取引先コード一覧"
+      cancel-title="閉じる"
+      v-model="showAllCustomerCodeListModal"
+      :hide-footer="true"
+    >
+      <div class="panel-body add_item_body">
+
+          <div class="row">
+  <table class="table table-striped order_item_details_table table-bordered data_table">
+          <thead>
+            <tr>
+              <th style="cursor: pointer">No</th>
+              <th>取引先コード</th>
+              <th>取引先名</th>
+              <th>請求先コード</th>
+              <th>請求取引先名</th>
+              <th>取引先形態区分</th>
+
+            </tr>
+          </thead>
+          <tbody>
+          <tr v-for="(value,index) in order_customer_code_lists" @click="onRowClicked(value)" :key="index">
+          <td>{{index+1}}</td>
+          <td>{{value.mes_lis_ret_par_sel_code}}</td>
+          <td>{{value.mes_lis_ret_par_sel_name}}</td>
+          <td>{{value.mes_lis_ret_par_pay_code}}</td>
+          <td>{{value.mes_lis_ret_par_pay_name}}</td>
+
+          <td></td>
+          </tr>
+          </tbody>
+          </table>
+
+
+
+
+
+          </div>
+      </div>
+    </b-modal>
   </div>
 </template>
 <script>
@@ -196,6 +243,8 @@ export default {
       received_item_length: 0,
       byr_buyer_lists: {},
       byr_buyer_category_lists: [],
+      order_customer_code_lists: {},
+      showAllCustomerCodeListModal:false,
       byr_buyer_id:null,
       buyer_settings:[],
       form: new Form({
@@ -205,14 +254,14 @@ export default {
         byr_buyer_id: null,
         receive_date_from: null,
         receive_date_to: null,
-        sel_code: null,
+        sel_code: '',
         ownership_date_from: null,
         ownership_date_to: null,
         major_category: "*",
         delivery_service_code: "*",
         temperature_code: "*",
         sta_doc_type: "*",
-        check_datetime: null,
+        check_datetime: '*',
         // major_category:{category_code:'*',category_name:'全て'},
         sort_by:'receive_datetime ',
         sort_type:"DESC",
@@ -228,6 +277,20 @@ export default {
             }
         },
   methods: {
+    onRowClicked (item) {
+      this.form.sel_code = item.mes_lis_ret_par_sel_code;
+      this.showAllCustomerCodeListModal = false;
+    },
+    //get Table data
+    showAllCustomerCode(){
+     let loaders = Vue.$loading.show();
+      this.showAllCustomerCodeListModal = true;
+      this.form.post(this.BASE_URL + "api/get_return_customer_code_list", this.form)
+        .then(({ data }) => {
+          this.order_customer_code_lists = data.order_customer_code_lists;
+         loaders.hide();
+        });
+    },
     //get Table data
     getAllReturnList(page = 1) {
         this.form.page=page;

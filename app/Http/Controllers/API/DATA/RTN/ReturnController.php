@@ -14,6 +14,7 @@ use App\Models\CMN\cmn_companies_user;
 use App\Models\BYR\byr_buyer;
 use App\Models\BYR\byr_corrected_receive;
 use App\Traits\Csv;
+use DB;
 class ReturnController extends Controller
 {
     private $all_used_fun;
@@ -75,8 +76,7 @@ class ReturnController extends Controller
         $receive_date_to = $receive_date_to!=null? date('Y-m-d 23:59:59',strtotime($receive_date_to)):$receive_date_to; // 受信日時終了
         $ownership_date_from = $ownership_date_from!=null? date('Y-m-d 00:00:00',strtotime($ownership_date_from)):$ownership_date_from; // 受信日時開始
         $ownership_date_to = $ownership_date_to!=null? date('Y-m-d 23:59:59',strtotime($ownership_date_to)):$ownership_date_to; // 受信日時終了
-        $check_datetime = $check_datetime!=null? date('Y-m-d 00:00:00',strtotime($check_datetime)):$check_datetime; // 受信日時開始
-
+       
         // $byr_category_code = $request->category_code['category_code']; // 印刷
         // $having_var = '';
 
@@ -125,11 +125,19 @@ class ReturnController extends Controller
                 if ($major_category!='*') {
                     $result2 =$result2->where('drv.mes_lis_ret_tra_goo_major_category',$major_category);
                 }
+                if ($request->sel_code!='') {
+                    $result2 =$result2->where('drv.mes_lis_ret_par_sel_code',$request->sel_code);
+                }
                 if ($sta_doc_type!='*') {
                     $result2 =$result2->where('data_returns.sta_doc_type',$sta_doc_type);
                 }
-                if ($check_datetime!=null) {
-                    $result2 =$result2->where('drv.check_datetime',$check_datetime);
+                if ($check_datetime!='*') {
+                    if($check_datetime==1){
+                        $result2= $result2->whereNull('drv.check_datetime');
+                    }else{
+                        $result2= $result2->whereNotNull('drv.check_datetime');
+                    }
+
                 }
         $result2 = $result2->groupBy('data_returns.receive_datetime')
         ->orderBy($table_name2.$sort_by,$sort_type);
@@ -314,6 +322,24 @@ class ReturnController extends Controller
 
         return response()->json(['return_item_detail_list' => $result, 'byr_buyer_list' => $byr_buyer, 'buyer_settings' => $buyer_settings->setting_information,'order_info'=>$orderInfo]);
 
+    }
+
+    public function get_return_customer_code_list(Request $request){
+        
+        $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
+        $result = DB::select("SELECT
+        drv.mes_lis_ret_par_sel_code,
+        drv.mes_lis_ret_par_sel_name,
+        drv.mes_lis_ret_par_pay_code,
+        drv.mes_lis_ret_par_pay_name
+        FROM
+       data_returns AS dr
+       INNER JOIN data_return_vouchers AS drv ON dr.data_return_id=drv.data_return_id
+       WHERE dr.cmn_connect_id='".$cmn_connect_id."'
+       GROUP BY
+        drv.mes_lis_ret_par_sel_code,
+        drv.mes_lis_ret_par_pay_code");
+        return response()->json(['order_customer_code_lists' => $result]);
     }
 
 
