@@ -381,7 +381,9 @@ class InvoiceController extends Controller
                 $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
                 $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
             }
-        $result = DB::select("SELECT
+        $result = DB::select(" SELECT
+            dsv.data_shipment_voucher_id,
+            drv.data_receive_voucher_id,
             dsv.mes_lis_shi_par_sel_code,
             dsv.mes_lis_shi_tra_trade_number,
             dsv.mes_lis_shi_par_shi_code,
@@ -396,9 +398,12 @@ class InvoiceController extends Controller
             drv.mes_lis_acc_tot_tot_net_price_total
             FROM
             data_shipment_vouchers AS dsv
+            INNER JOIN data_shipments AS ds ON ds.data_shipment_id=dsv.data_shipment_id
             INNER JOIN data_receive_vouchers AS drv ON dsv.mes_lis_shi_tra_trade_number = drv.mes_lis_acc_tra_trade_number
             INNER JOIN data_receives AS dr ON dr.data_receive_id=drv.data_receive_id
-            WHERE dr.cmn_connect_id=$cmn_connect_id
+            WHERE
+            dr.cmn_connect_id=$cmn_connect_id
+            AND ds.cmn_connect_id = $cmn_connect_id
             AND (
             dsv.mes_lis_shi_tot_tot_net_price_total != drv.mes_lis_acc_tot_tot_net_price_total
             OR
