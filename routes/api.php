@@ -1,7 +1,8 @@
 <?php
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 Route::get('is-auth', function () {
-    $auth = \Auth::user();
+    $auth = Auth::user();
     // \Log::info($auth);
     return $auth;
     // return response()->json(['user'=>$auth]);
@@ -86,7 +87,7 @@ Route::get('/buyerJsonSetting/{byr_buyer_id}', 'API\BYR\ByrController@buyerJsonS
 Route::get('/get_all_company_list/{adm_user_id}', 'API\BYR\ByrController@get_all_company_list');
 // Shipment
 Route::post('update_shipment_detail_bycurrentdatetime', 'API\DATA\SHIPMENT\ShipmentController@decessionData');
-Route::post('/shipment_confirm', 'API\DATA\SHIPMENT\ShipmentController@shipmentConfirm');
+Route::post('/send_shipment_data', 'API\DATA\SHIPMENT\ShipmentController@sendShipmentData');
 Route::post('/downloadcsvshipment_confirm', 'API\DATA\SHIPMENT\ShipmentController@downloadShipmentCsv');
 Route::post('/update_shipment_item_details', 'API\DATA\SHIPMENT\ShipmentController@update_shipment_item_details');
 Route::post('/update_shipment_item_detail_form_data', 'API\DATA\SHIPMENT\ShipmentController@update_shipment_item_detail_form_data');

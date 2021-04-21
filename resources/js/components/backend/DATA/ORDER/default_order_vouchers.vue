@@ -430,7 +430,7 @@
             </button>
             <button
               class="btn btn-lg btn-danger active"
-              @click="shipmentConfirm"
+              @click="sendShipmentData"
             >
               確定データ送信
             </button>
@@ -1154,13 +1154,13 @@ export default {
         this.sweet_normal_alert();
       }
     },
-    shipmentConfirm() {
+    sendShipmentData() {
       var _this = this;
       this.alert_icon = "warning";
       this.alert_title = "";
       this.yes_btn = "はい";
       this.cancel_btn = "キャンセル";
-      axios.post(this.BASE_URL + "api/shipment_confirm", {
+      axios.post(this.BASE_URL + "api/send_shipment_data", {
           data_order_id: this.param_data.data_order_id,
           byr_buyer_id:this.byr_buyer_id,
           adm_user_id:this.adm_user_id,
@@ -1174,7 +1174,7 @@ export default {
             this.confirm_sweet().then((result) => {
               if (result.value) {
                   this.loader = Vue.$loading.show();
-                axios.post(this.BASE_URL + "api/shipment_confirm", {
+                axios.post(this.BASE_URL + "api/send_shipment_data", {
                     data_order_id: this.param_data.data_order_id,
                     byr_buyer_id:this.byr_buyer_id,
                     adm_user_id:this.adm_user_id,

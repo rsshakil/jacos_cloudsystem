@@ -12,6 +12,7 @@ use App\Models\DATA\SHIPMENT\data_shipment_item;
 use App\Http\Controllers\API\AllUsedFunction;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use App\Models\ADM\User;
 
 class Data_Controller extends Controller
 {
@@ -252,13 +253,18 @@ class Data_Controller extends Controller
         // 対象データ取得
 
         $request_all=$request->all();
+        $all_used_fun = new AllUsedFunction();
         // \Log::info($request_all);
         // $sort_by=$request->sort_by?$request->sort_by:$request->form_search['sort_by'];
         // $sort_type=$request->sort_type?$request->sort_type:$request->form_search['sort_type'];
-        // \Log::info($sort_by);
-        // \Log::info($sort_type);
-        // \Log::info($request_all);
-
+        $adm_user_id=$request->adm_user_id;
+        $byr_buyer_id=$request->byr_buyer_id;
+        $authUser = User::find($adm_user_id);
+            $cmn_connect_id = '';
+            if (!$authUser->hasRole(config('const.adm_role_name'))) {
+                $cmn_company_info=$all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
+                $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+            }
         $csv_data=data_shipment::select(
             // data_shipments
             'data_shipments.sta_sen_identifier', //0
@@ -513,7 +519,8 @@ class Data_Controller extends Controller
         ->leftJoin('data_shipment_items as dsi', 'dsv.data_shipment_voucher_id', '=', 'dsi.data_shipment_voucher_id')
         ->leftJoin('data_shipment_item_details as dsid', 'dsi.data_shipment_item_id', '=', 'dsid.data_shipment_item_id')
         ->join('data_order_vouchers as dov', 'dov.data_order_voucher_id', '=', 'dsv.data_shipment_voucher_id')
-        ->join('data_orders as dor', 'dor.data_order_id', '=', 'dov.data_order_id');
+        ->join('data_orders as dor', 'dor.data_order_id', '=', 'dov.data_order_id')
+        ->where('data_shipments.cmn_connect_id',$cmn_connect_id);
 
 
         // filtering
@@ -564,7 +571,7 @@ class Data_Controller extends Controller
             $receive_date_to = $receive_date_to!=null? date('Y-m-d 23:59:59', strtotime($receive_date_to)):$receive_date_to; // 受信日時終了
             $delivery_date_from = $delivery_date_from!=null? date('Y-m-d 00:00:00', strtotime($delivery_date_from)):$delivery_date_from; // 納品日開始
             $delivery_date_to =$delivery_date_to!=null? date('Y-m-d 23:59:59', strtotime($delivery_date_to)):$delivery_date_to;
-            ; // 納品日終了
+            // 納品日終了
             $delivery_service_code = $request->delivery_service_code; // 便
             $temperature = $request->temperature; // 配送温度区分
             $check_datetime = $request->check_datetime;
