@@ -475,8 +475,8 @@
             <td>{{value.mes_lis_shi_par_shi_code}} {{value.mes_lis_shi_par_shi_name}}</td>
             <td :class="sameCheck(value.shipment_delivery_date,value.mes_lis_acc_tra_dat_transfer_of_ownership_date)">{{ value.shipment_delivery_date }}</td>
             <td :class="sameCheck(value.shipment_delivery_date,value.mes_lis_acc_tra_dat_transfer_of_ownership_date)">{{value.mes_lis_acc_tra_dat_transfer_of_ownership_date}}</td>
-            <td :class="sameCheck(value.mes_lis_shi_tot_tot_net_price_total,value.mes_lis_acc_tot_tot_net_price_total)">{{value.mes_lis_shi_tot_tot_net_price_total}}</td>
-            <td :class="sameCheck(value.mes_lis_shi_tot_tot_net_price_total,value.mes_lis_acc_tot_tot_net_price_total)">{{value.mes_lis_acc_tot_tot_net_price_total}}</td>
+            <td class="text-rigth" :class="sameCheck(value.mes_lis_shi_tot_tot_net_price_total,value.mes_lis_acc_tot_tot_net_price_total)">{{value.mes_lis_shi_tot_tot_net_price_total | priceFormat}}</td>
+            <td class="text-rigth" :class="sameCheck(value.mes_lis_shi_tot_tot_net_price_total,value.mes_lis_acc_tot_tot_net_price_total)">{{value.mes_lis_acc_tot_tot_net_price_total | priceFormat}}</td>
             <td><button @click="comparedItemList(value)" class="btn btn-primary">確認</button></td>
           </tr>
           </tbody>
@@ -515,10 +515,10 @@
               <th>行番号</th>
               <th>商品コード</th>
               <th>商品名</th>
-              <th>出荷数量（バラ）</th>
-              <th>受領数量（バラ）</th>
-              <th>出荷原価金額</th>
-              <th>受領原価金額</th>
+              <th class="text-rigth">出荷数量（バラ）</th>
+              <th class="text-rigth">受領数量（バラ）</th>
+              <th class="text-rigth">出荷原価金額</th>
+              <th class="text-rigth">受領原価金額</th>
           </tr>
           </thead>
           <tbody>
@@ -526,10 +526,10 @@
             <td>{{ value.mes_lis_shi_lin_lin_line_number }}</td>
             <td>{{ value.mes_lis_shi_lin_ite_order_item_code }}</td>
             <td>{{ value.mes_lis_shi_lin_ite_name }}</td>
-            <td :class="sameCheck(value.mes_lis_shi_lin_qua_shi_quantity,value.mes_lis_acc_lin_qua_rec_quantity)">{{ value.mes_lis_shi_lin_qua_shi_quantity }}</td>
-            <td :class="sameCheck(value.mes_lis_shi_lin_qua_shi_quantity,value.mes_lis_acc_lin_qua_rec_quantity)">{{ value.mes_lis_acc_lin_qua_rec_quantity }}</td>
-            <td :class="sameCheck(value.mes_lis_shi_lin_amo_item_net_price,value.mes_lis_acc_lin_amo_item_net_price)">{{ value.mes_lis_shi_lin_amo_item_net_price }}</td>
-            <td :class="sameCheck(value.mes_lis_shi_lin_amo_item_net_price,value.mes_lis_acc_lin_amo_item_net_price)">{{ value.mes_lis_acc_lin_amo_item_net_price }}</td>
+            <td class="text-rigth" :class="sameCheck(value.mes_lis_shi_lin_qua_shi_quantity,value.mes_lis_acc_lin_qua_rec_quantity)">{{ value.mes_lis_shi_lin_qua_shi_quantity }}</td>
+            <td class="text-rigth" :class="sameCheck(value.mes_lis_shi_lin_qua_shi_quantity,value.mes_lis_acc_lin_qua_rec_quantity)">{{ value.mes_lis_acc_lin_qua_rec_quantity }}</td>
+            <td class="text-rigth" :class="sameCheck(value.mes_lis_shi_lin_amo_item_net_price,value.mes_lis_acc_lin_amo_item_net_price)">{{ value.mes_lis_shi_lin_amo_item_net_price | priceFormat }}</td>
+            <td class="text-rigth" :class="sameCheck(value.mes_lis_shi_lin_amo_item_net_price,value.mes_lis_acc_lin_amo_item_net_price)">{{ value.mes_lis_acc_lin_amo_item_net_price | priceFormat }}</td>
           </tr>
           </tbody>
 
