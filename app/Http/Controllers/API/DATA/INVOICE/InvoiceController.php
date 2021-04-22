@@ -215,13 +215,23 @@ class InvoiceController extends Controller
         $decision_datetime_status=$request->decision_datetime_status;
         $send_datetime_status=$request->send_datetime_status;
         $mes_lis_inv_lin_tra_code=$request->mes_lis_inv_lin_tra_code;
-        $byr_buyer_id = $request->byr_buyer_id;
         $category_code = $request->category_code;
         $category_code =$category_code['category_code'];
         $from_date = $request->from_date;
         $to_date = $request->to_date;
         $sort_by = $request->sort_by;
         $sort_type = $request->sort_type;
+
+        $param_data = $request->param_data;
+        $adm_user_id=$request->adm_user_id;
+        $byr_buyer_id=$request->byr_buyer_id;
+        $authUser = User::find($adm_user_id);
+
+        $cmn_connect_id = '';
+        if (!$authUser->hasRole(config('const.adm_role_name'))) {
+            $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
+            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+        }
 
         $result=data_invoice::select('data_invoices.data_invoice_id','dipd.data_invoice_pay_detail_id','dip.mes_lis_inv_per_end_date',
         'dipd.mes_lis_inv_lin_det_transfer_of_ownership_date','dipd.mes_lis_inv_lin_tra_code',
@@ -231,7 +241,8 @@ class InvoiceController extends Controller
         )
         ->join('data_invoice_pays as dip','data_invoices.data_invoice_id','=','dip.data_invoice_id')
         ->join('data_invoice_pay_details as dipd','dip.data_invoice_pay_id','=','dipd.data_invoice_pay_id')
-        ->where('data_invoices.data_invoice_id','=',$data_invoice_id);
+        ->where('data_invoices.data_invoice_id','=',$data_invoice_id)
+        ->where('data_invoices.cmn_connect_id','=',$cmn_connect_id);
         if ($decision_datetime_status=='未確定あり'){
             $result=$result->where('dipd.decision_datetime','=',null);
         }else if ($decision_datetime_status=='確定済'){
@@ -262,6 +273,12 @@ class InvoiceController extends Controller
         if($mes_lis_inv_lin_tra_code!=''){
             $result=$result->where('dipd.mes_lis_inv_lin_tra_code','=',$mes_lis_inv_lin_tra_code);
         }
+        $result=$result->where('dip.mes_lis_inv_per_end_date',$param_data['end_date'])
+            ->where('dip.mes_lis_inv_pay_code',$param_data['pay_code'])
+            // ->where('dip.mes_lis_inv_pay_name',$param_data['pay_name'])
+            // ->where('dip.mes_lis_buy_code',$param_data['buy_code'])
+            // ->where('dip.mes_lis_buy_name',$param_data['buy_name'])
+            ->where('dip.status',$param_data['status']);
         $result = $result->orderBy('dipd.'.$sort_by,$sort_type);
         $result=$result->paginate($per_page);
         $byr_buyer_category_list = $this->all_used_fun->get_allCategoryByByrId($byr_buyer_id);
@@ -269,10 +286,22 @@ class InvoiceController extends Controller
     }
 
     public function sendInvoiceData(Request $request){
+        // return $request->all();
         $data_count=$request->data_count;
         $data_invoice_id=$request->data_invoice_id;
+        $param_data=$request->param_data;
         $download_file_url='';
-        $csv_data_count = InvoiceDataController::get_invoice_data($request)->get()->count();
+        $csv_data_count ='';
+        $adm_user_id=$request->adm_user_id;
+        $byr_buyer_id=$request->byr_buyer_id;
+        $authUser = User::find($adm_user_id);
+
+        $cmn_connect_id = '';
+        if (!$authUser->hasRole(config('const.adm_role_name'))) {
+            $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
+            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+        }
+        // $csv_data_count = InvoiceDataController::get_invoice_data($request)->get()->count();
         if (!$data_count) {
             $dateTime = date('Y-m-d H:i:s');
             $new_file_name = $this->all_used_fun->downloadFileName($request, 'csv');
@@ -283,6 +312,20 @@ class InvoiceController extends Controller
             data_invoice_pay_detail::where('decision_datetime','!=',null)
             ->where('send_datetime','=',null)
             ->update(['send_datetime'=>$dateTime]);
+        }else{
+            $csv_data_count = data_invoice::join('data_invoice_pays as dip','dip.data_invoice_id','=','data_invoices.data_invoice_id')
+            ->join('data_invoice_pay_details as dipd','dipd.data_invoice_pay_id','=','dip.data_invoice_pay_id')
+            ->where('data_invoices.cmn_connect_id',$cmn_connect_id)
+            ->where('data_invoices.data_invoice_id',$data_invoice_id)
+            ->whereNotNull('dipd.decision_datetime')
+            ->whereNull('dipd.send_datetime')
+            ->where('dip.mes_lis_inv_per_end_date',$param_data['end_date'])
+            ->where('dip.mes_lis_inv_pay_code',$param_data['pay_code'])
+            // ->where('dip.mes_lis_inv_pay_name',$param_data['pay_name'])
+            // ->where('dip.mes_lis_buy_code',$param_data['buy_code'])
+            // ->where('dip.mes_lis_buy_name',$param_data['buy_name'])
+            ->where('dip.status',$param_data['status'])
+            ->get()->count();
         }
 
         return response()->json(['message' => 'Success','status'=>1, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
@@ -349,7 +392,13 @@ class InvoiceController extends Controller
         $data_invoice_pay_detail_ids = $request->update_id;
         if ($data_invoice_pay_detail_ids) {
             foreach ($data_invoice_pay_detail_ids as $id) {
-                data_invoice_pay_detail::where('data_invoice_pay_detail_id', $id)->update(['decision_datetime' => $dateTime]);
+                if (!$date_null) {
+                    data_invoice_pay_detail::where('data_invoice_pay_detail_id', $id)->update(['decision_datetime' => $dateTime]);
+                }else{
+                    data_invoice_pay_detail::where('data_invoice_pay_detail_id', $id)
+                ->whereNull('send_datetime')
+                ->update(['decision_datetime' => $dateTime]);
+                }
             }
         }
         return response()->json(['message' => 'success','status'=>1]);

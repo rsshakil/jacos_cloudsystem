@@ -12,8 +12,8 @@ class InvoiceDataController extends Controller
     {
         // 対象データ取得
         $data_invoice_id=$request->data_invoice_id;
-        $order_info=$request->order_info;
-        $request_all=$request->all();
+        // $order_info=$request->order_info;
+        // $request_all=$request->all();
         $sort_by = $request->sort_by;
         $sort_type = $request->sort_type;
 
@@ -67,6 +67,7 @@ class InvoiceDataController extends Controller
             $category_code =$category_code['category_code'];
             $from_date = $request->from_date;
             $to_date = $request->to_date;
+            $param_data = $request->param_data;
             $csv_data=$csv_data->where('data_invoices.data_invoice_id',$data_invoice_id);
             if ($decision_datetime_status=='未確定あり'){
                 $csv_data=$csv_data->where('dipd.decision_datetime','=',null);
@@ -99,6 +100,12 @@ class InvoiceDataController extends Controller
                 $csv_data=$csv_data->where('dipd.mes_lis_inv_lin_tra_code','=',$mes_lis_inv_lin_tra_code);
             }
             $csv_data=$csv_data->orderBy('dipd.'.$sort_by,$sort_type);
+            $csv_data=$csv_data->where('dip.mes_lis_inv_per_end_date',$param_data['end_date'])
+            ->where('dip.mes_lis_inv_pay_code',$param_data['pay_code'])
+            // ->where('dip.mes_lis_inv_pay_name',$param_data['pay_name'])
+            // ->where('dip.mes_lis_buy_code',$param_data['buy_code'])
+            // ->where('dip.mes_lis_buy_name',$param_data['buy_name'])
+            ->where('dip.status',$param_data['status']);
         }
         $csv_data=$csv_data->groupBy('dipd.data_invoice_pay_detail_id');
         // $csv_data=$csv_data->orderBy("data_invoices.data_invoice_id");

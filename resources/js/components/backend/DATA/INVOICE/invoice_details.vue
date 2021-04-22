@@ -247,16 +247,7 @@
               <!-- <td>{{ value.mes_lis_inv_per_end_date }}</td> -->
               <td>
                   <span v-if="value.decision_datetime != null">
-                    <b-button
-                      pill
-                      variant="info"
-                      @click="
-                        decissionDateUpdate(
-                          value.data_invoice_pay_detail_id
-                        )
-                      "
-                      >済</b-button
-                    >
+                    <b-button pill variant="info" @click="decissionDateUpdate(value.data_invoice_pay_detail_id)" :disabled="is_disabled(!value.send_datetime)">済</b-button>
                   </span>
                   <span v-else>
                     <input
@@ -580,12 +571,16 @@ export default {
         mes_lis_inv_lin_det_balance_carried_code:'*',
         mes_lis_inv_lin_det_amo_requested_amount:'',
       },
+      byr_buyer_id:null,
+      adm_user_id: Globals.user_info_id,
       form: new Form({
-        data_invoice_id: "",
+        data_invoice_id: null,
         select_field_per_page_num: 10,
         page: 1,
         adm_user_id: Globals.user_info_id,
         byr_buyer_id: null,
+        data_count: false,
+        param_data:[],
         from_date:'',
         to_date:'',
         mes_lis_inv_lin_tra_code:'',
@@ -829,21 +824,16 @@ var _this = this;
       this.alert_title = "";
       this.yes_btn = "はい";
       this.cancel_btn = "キャンセル";
-      axios.post(this.BASE_URL + "api/send_invoice_data", {
-          data_invoice_id: this.form.data_invoice_id,
-        //   order_info: this.order_info,
-          data_count: true,
-        }).then(({ data }) => {
+      this.form.data_count=true;
+      axios.post(this.BASE_URL + "api/send_invoice_data", this.form).then(({ data }) => {
             this.init(data.status);
           let csv_data_count = data.csv_data_count;
           if (csv_data_count > 0) {
             _this.alert_text = csv_data_count + "件の伝票を送信しますがよろしいでしょうか。";
             this.confirm_sweet().then((result) => {
               if (result.value) {
-                axios.post(this.BASE_URL + "api/send_invoice_data", {
-                    data_invoice_id: this.form.data_invoice_id,
-                    data_count: false,
-                  })
+                  this.form.data_count=false;
+                axios.post(this.BASE_URL + "api/send_invoice_data", this.form)
                   .then(({ data }) => {
                       this.init(data.status);
                     _this.alert_icon = "success";
@@ -878,14 +868,16 @@ var _this = this;
   },
 
   created() {
-    Fire.$emit("byr_has_selected", this.$session.get("byr_buyer_id"));
-    Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
+      this.byr_buyer_id=this.$session.get("byr_buyer_id")
+    Fire.$emit("byr_has_selected", this.byr_buyer_id);
+    Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
     this.param_data = this.$route.query;
+    this.form.param_data = this.param_data;
     this.form.data_invoice_id = this.param_data.data_invoice_id;
     this.invoiceDetail.data_invoice_id = this.param_data.data_invoice_id;
 this.getbuyerJsonSettingvalue();
 
-    this.form.byr_buyer_id = this.$session.get("byr_buyer_id");
+    this.form.byr_buyer_id = this.byr_buyer_id;
     this.invoice_details();
     Fire.$on("LoadByrinvoiceDetails", (page=1) => {
       this.invoice_details(page);

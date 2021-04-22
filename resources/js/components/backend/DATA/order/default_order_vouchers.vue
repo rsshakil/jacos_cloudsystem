@@ -1221,6 +1221,7 @@ export default {
                 if (data.status==0) {
                     _this.alert_icon = "error";
                     _this.alert_title = "エラー";
+                    this.loader.hide();
                 }else{
                     _this.alert_icon = "success";
                     _this.alert_title = "完了";
