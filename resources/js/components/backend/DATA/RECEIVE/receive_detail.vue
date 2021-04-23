@@ -25,7 +25,7 @@
             <td class="cl_custom_color">便</td>
             <td>
             <span v-if="order_info && Object.keys(order_info).length">
-             
+
               {{
                 getbyrjsonValueBykeyName(
                   "mes_lis_ord_log_del_delivery_service_code",
@@ -51,7 +51,7 @@
               </span>
             </td>
           </tr>
-          
+
         </table>
       </div>
       <div class="col-12" style="background: #d8e3f0; padding: 10px">
@@ -130,7 +130,7 @@
                 </option>
               </select>
             </td>
-            
+
           </tr>
           <tr>
           <td class="cl_custom_color" style="width:10%">出荷比較</td>
@@ -804,6 +804,7 @@ export default {
         sel_code:'',
         major_category:'',
         delivery_service_code:'',
+        ownership_date:'',
 // Search
 searchCode1:'',
 searchCode2:'',
@@ -924,6 +925,7 @@ searchCode3:'',
     this.form.sel_code = this.$route.query.sel_code;
     this.form.major_category = this.$route.query.major_category;
     this.form.delivery_service_code = this.$route.query.delivery_service_code;
+    this.form.ownership_date = this.$route.query.ownership_date;
     this.loader = Vue.$loading.show();
     this.get_all_receive_detail();
     Fire.$on("LoadByrorderDetail", (page=1) => {

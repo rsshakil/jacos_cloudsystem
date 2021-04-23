@@ -84,7 +84,8 @@ class ReceiveController extends Controller
         'drv.mes_lis_acc_tra_goo_major_category',
         'drv.mes_lis_acc_log_del_delivery_service_code',
         'drv.mes_lis_acc_tra_ins_temperature_code','drv.check_datetime',
-        DB::raw('COUNT(*) AS cnt'),
+        DB::raw('COUNT(distinct drv.data_receive_voucher_id) AS cnt'),
+        // DB::raw('COUNT(*) AS cnt'),
         'drv.data_receive_voucher_id'
         )
         ->join('data_receive_vouchers as drv','data_receives.data_receive_id','=','drv.data_receive_id')
@@ -120,12 +121,14 @@ class ReceiveController extends Controller
 
                 }
 
-        $result = $result->groupBy(['data_receives.receive_datetime',
-        'drv.mes_lis_acc_par_sel_code',
-        'drv.mes_lis_acc_tra_dat_transfer_of_ownership_date',
-        'drv.mes_lis_acc_tra_goo_major_category',
-        'drv.mes_lis_acc_log_del_delivery_service_code',
-        'drv.mes_lis_acc_tra_ins_temperature_code'
+        $result = $result->groupBy([
+            'data_receives.receive_datetime',
+            'drv.mes_lis_acc_par_sel_code',
+            'drv.mes_lis_acc_tra_dat_transfer_of_ownership_date',
+            'drv.mes_lis_acc_tra_goo_major_category',
+            'drv.mes_lis_acc_log_del_delivery_service_code',
+            'drv.mes_lis_acc_tra_ins_temperature_code',
+        // 'drv.mes_lis_acc_tra_trade_number'
         ])
         ->orderBy('drv.mes_lis_acc_par_sel_code')
         ->orderBy('drv.mes_lis_acc_tra_dat_transfer_of_ownership_date')
@@ -155,6 +158,7 @@ class ReceiveController extends Controller
         $sel_code = $request->sel_code;
         $major_category = $request->major_category;
         $delivery_service_code = $request->delivery_service_code;
+        $ownership_date = $request->ownership_date;
 
         $per_page = $request->select_field_per_page_num == null ? 10 : $request->select_field_per_page_num;
         $sort_by = $request->sort_by;
@@ -196,7 +200,8 @@ class ReceiveController extends Controller
         // ->where('data_receive_vouchers.mes_lis_acc_par_sel_name',$sel_name)
         ->where('data_receive_vouchers.mes_lis_acc_par_sel_code',$sel_code)
         ->where('data_receive_vouchers.mes_lis_acc_tra_goo_major_category',$major_category)
-        ->where('data_receive_vouchers.mes_lis_acc_log_del_delivery_service_code','=',$delivery_service_code);
+        ->where('data_receive_vouchers.mes_lis_acc_log_del_delivery_service_code','=',$delivery_service_code)
+        ->where('data_receive_vouchers.mes_lis_acc_tra_dat_transfer_of_ownership_date','=',$ownership_date);
         if($decesion_status!="*"){
             if($decesion_status=="訂正あり"){
                 $result = $result->where('data_receive_vouchers.mes_lis_acc_tot_tot_net_price_total','=','data_receive_vouchers.mes_lis_shi_tot_tot_net_price_total');
@@ -205,7 +210,7 @@ class ReceiveController extends Controller
                 $result = $result->where('data_receive_vouchers.mes_lis_acc_tot_tot_net_price_total','!=','data_receive_vouchers.mes_lis_shi_tot_tot_net_price_total');
             }
         }
-      
+
         if($request->searchCode1!=''){
             $result = $result->where('data_receive_vouchers.mes_lis_acc_par_shi_code',$request->searchCode1);
         }
@@ -309,11 +314,11 @@ class ReceiveController extends Controller
         // 検索
         $result=data_receive_item::join('data_receive_vouchers as drv','drv.data_receive_voucher_id','=','data_receive_items.data_receive_voucher_id')
         ->join('data_receives as dr','dr.data_receive_id','=','drv.data_receive_id')
-        ->leftJoin('data_order_vouchers as dov','dov.mes_lis_ord_tra_trade_number','=','drv.mes_lis_acc_tra_trade_number')
-        ->leftJoin('data_order_items as doi','doi.data_order_voucher_id','=','dov.data_order_voucher_id')
+        // ->leftJoin('data_order_vouchers as dov','dov.mes_lis_ord_tra_trade_number','=','drv.mes_lis_acc_tra_trade_number')
+        // ->leftJoin('data_order_items as doi','doi.data_order_voucher_id','=','dov.data_order_voucher_id')
         ->where('dr.cmn_connect_id','=',$cmn_connect_id)
         ->where('drv.data_receive_voucher_id','=',$data_receive_voucher_id)
-        //->groupBy('drv.mes_lis_acc_tra_trade_number')
+        // ->groupBy('drv.mes_lis_acc_tra_trade_number')
        // ->paginate($per_page);
         ->get();
 
@@ -367,10 +372,10 @@ class ReceiveController extends Controller
         return response()->json(['order_customer_code_lists' => $result]);
 
     }
-   
+
     public function get_voucher_detail_popup1_receive(Request $request){
         $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
-        
+
 //AND `drv`.`mes_lis_shi_tra_dat_delivery_date` = '".$request->delivery_date."' AND
 //`drv`.`mes_lis_shi_tra_ins_temperature_code` = '".$request->temperature_code."'
         $result = DB::select("SELECT
@@ -383,8 +388,8 @@ class ReceiveController extends Controller
         dr.cmn_connect_id = $cmn_connect_id and
         `dr`.`data_receive_id` = $request->data_receive_id AND
         `drv`.`mes_lis_acc_tra_goo_major_category` = '".$request->major_category."' AND
-        `drv`.`mes_lis_acc_log_del_delivery_service_code` = '".$request->delivery_service_code."' 
-        
+        `drv`.`mes_lis_acc_log_del_delivery_service_code` = '".$request->delivery_service_code."'
+
         group by `drv`.`mes_lis_acc_par_shi_code`
         order by `drv`.`mes_lis_acc_par_shi_code` ASC");
         return response()->json(['popUpList' => $result]);
@@ -406,7 +411,7 @@ class ReceiveController extends Controller
         dr.cmn_connect_id = $cmn_connect_id and
         `dr`.`data_receive_id` = $request->data_receive_id AND
         `drv`.`mes_lis_acc_tra_goo_major_category` = '".$request->major_category."' AND
-        `drv`.`mes_lis_acc_log_del_delivery_service_code` = '".$request->delivery_service_code."' 
+        `drv`.`mes_lis_acc_log_del_delivery_service_code` = '".$request->delivery_service_code."'
         group by `drv`.`mes_lis_acc_par_rec_code`
         order by `drv`.`mes_lis_acc_par_rec_code` ASC");
         return response()->json(['popUpList' => $result]);
@@ -431,7 +436,7 @@ class ReceiveController extends Controller
         dr.cmn_connect_id = $cmn_connect_id and
         `dr`.`data_receive_id` = $request->data_receive_id AND
         `drv`.`mes_lis_acc_tra_goo_major_category` = '".$request->major_category."' AND
-        `drv`.`mes_lis_acc_log_del_delivery_service_code` = '".$request->delivery_service_code."' 
+        `drv`.`mes_lis_acc_log_del_delivery_service_code` = '".$request->delivery_service_code."'
         group by `dri`.`mes_lis_acc_lin_ite_order_item_code`
         order by `dri`.`mes_lis_acc_lin_ite_order_item_code` ASC");
         return response()->json(['popUpList' => $result]);

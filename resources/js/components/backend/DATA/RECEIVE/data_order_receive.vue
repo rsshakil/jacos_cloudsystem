@@ -190,6 +190,7 @@
                           sel_code:received_item.mes_lis_acc_par_sel_code,
                           major_category:received_item.mes_lis_acc_tra_goo_major_category,
                           delivery_service_code:received_item.mes_lis_acc_log_del_delivery_service_code,
+                          ownership_date:received_item.mes_lis_acc_tra_dat_transfer_of_ownership_date
                       },
                     }"
                     class=""
