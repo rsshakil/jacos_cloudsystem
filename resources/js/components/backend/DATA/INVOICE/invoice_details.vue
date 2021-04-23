@@ -419,7 +419,7 @@
 
 
 <b-modal
-      size="lg"
+      size="xl"
       :hide-backdrop="true"
       title="出荷・受領比較"
       cancel-title="閉じる"
@@ -480,7 +480,7 @@
     </b-modal>
 
 <b-modal
-      size="lg"
+      size="xl"
       :hide-backdrop="true"
       title="出荷・受領比較（明細）"
       cancel-title="閉じる"
