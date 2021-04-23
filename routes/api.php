@@ -124,6 +124,8 @@ Route::post('get_payment_list', 'API\DATA\PAYMENT\PaymentController@getPaymentLi
 Route::post('get_payment_detail_list', 'API\DATA\PAYMENT\PaymentController@get_payment_detail_list');
 Route::post('get_payment_item_detail_list', 'API\DATA\PAYMENT\PaymentController@get_payment_item_detail_list');
 Route::post('payment_download', 'API\DATA\PAYMENT\PaymentController@paymentDownload');
+Route::post('/get_payment_customer_code_list', 'API\DATA\PAYMENT\PaymentController@get_payment_customer_code_list');
+
 // Payment End
 Route::get('get_byr_return_list/{adm_user_id}', 'API\DATA\RTN\ReturnController@getReturnItemList');
 Route::post('get_all_cat_list', 'API\CMN\CmnCategoryController@get_all_cat_list');

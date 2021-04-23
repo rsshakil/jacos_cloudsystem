@@ -329,4 +329,23 @@ class PaymentController extends Controller
         // $file_name = $file_name_info->super_code . '-' . "payment_" . $file_name_info->super_code . '-' . $file_name_info->partner_code . "-" . $file_name_info->jcode . '_payment_' . date('YmdHis') . '.' . $file_type;
         return $file_name;
     }
+
+    public function get_payment_customer_code_list(Request $request)
+    {
+        $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
+        $result = DB::select("SELECT
+        dpp.mes_lis_buy_code,
+        dpp.mes_lis_buy_name,
+        dpp.mes_lis_pay_pay_code,
+        dpp.mes_lis_pay_pay_name
+        FROM
+       data_payments AS dp
+       INNER JOIN data_payment_pays AS dpp ON dp.data_payment_id=dpp.data_payment_id
+       WHERE dp.cmn_connect_id='".$cmn_connect_id."'
+       GROUP BY
+        dpp.mes_lis_buy_code,
+        dpp.mes_lis_pay_pay_code");
+        return response()->json(['order_customer_code_lists' => $result]);
+
+    }
 }
