@@ -329,13 +329,10 @@
           </div>
           <div class="col-6 text-right">
             <button class="btn btn-lg btn-primary active" @click="updateDatetimeDecessionfield">
-              選択行を伝票確定
+              選択行を請求確定
             </button>
-            <button
-              class="btn btn-lg btn-danger active"
-              @click="sendInvoiceData"
-            >
-              確定データ送信
+            <button class="btn btn-lg btn-danger active" @click="sendInvoiceData">
+              請求データ送信
             </button>
           </div>
         </div>
@@ -436,7 +433,7 @@
         </div>
         <div class="col-6">
         <h6>ダウンロードを押すと、比較データがダウンロードされます</h6>
-           <button class="btn btn-outline-primary" style="float:right;margin-bottom:15px;" type="button" :disabled="is_disabled(invoice_lists_length>=1?true:false)" @click="invoice_download(1)">
+           <button class="btn btn-outline-primary" style="float:right;margin-bottom:15px;" type="button" :disabled="is_disabled(form.shipment_ids?true:false)" @click="compare_data_download(1)">
         <b-icon icon="download" animation="fade" font-scale="1.2"></b-icon>
         {{ myLang.download }}
       </button>
@@ -590,7 +587,8 @@ export default {
         send_datetime_status:'*',
         sort_by:'data_invoice_pay_detail_id ',
         sort_type:"ASC",
-        page_title:'invoice_details_list'
+        page_title:'invoice_details_list',
+        shipment_ids:[]
       }),
     };
   },
@@ -604,16 +602,20 @@ export default {
       this.invoiceCompareModal = true;
       axios.post(this.BASE_URL + "api/invoice_compare_data", this.form)
         .then(({ data }) => {
-            this.init(data.status);
             this.compareDataList = data.voucherList;
-            //console.log(data.voucherList);
+        });
+    },
+    compare_data_download(){
+        axios.post(this.BASE_URL + "api/invoice_compare_data_download", this.form)
+        .then(({ data }) => {
+            this.downloadFromUrl(data);
+            // this.compareDataList = data.voucherList;
         });
     },
     comparedItemList(value){
       this.invoiceitemDatalistModal = true;
       axios.post(this.BASE_URL + "api/invoice_compare_item", value)
         .then(({ data }) => {
-            this.init(data.status);
             this.compare_item_list = data.compareItemList;
         });
     },
@@ -646,54 +648,54 @@ export default {
       axios.post(this.BASE_URL + "api/update_invoice_detail", this.invoiceDetail)
         .then(({ data }) => {
             this.editInvoiceDetailModal = false;
-
            Fire.$emit("LoadByrinvoiceDetails",this.form.page);
         });
     },
     deleteInvoiceDetail(value){
-var _this = this;
+      var _this = this;
       this.alert_icon = "warning";
       this.alert_title = "";
-      this.alert_text = "Do you want to delete this invoice";
+      this.alert_text = "対象の請求を削除しますがよろしいでしょうか?";
       this.yes_btn = "はい";
       this.cancel_btn = "キャンセル";
 
         this.confirm_sweet().then((result) => {
           if (result.value) {
             axios
-              .post(
-                this.BASE_URL + "api/delete_invoice_detail",value)
+              .post(this.BASE_URL + "api/delete_invoice_detail",value)
               .then(({ data }) => {
-                _this.alert_icon = "success";
-                _this.alert_title = "";
-                _this.alert_text ="Delete success";
+                  if (data.status==1) {
+                     _this.alert_icon = "success";
+                    _this.alert_title = "削除されました!";
+                  }else{
+                     _this.alert_icon = "error";
+                    _this.alert_title = "削除されません!";
+                  }
+                _this.alert_text =data.message;
                 _this.sweet_normal_alert();
                 Fire.$emit("LoadByrinvoiceDetails",_this.form.page);
               })
               .catch(function (response) {
-
+                _this.alert_icon = "error";
+                 _this.alert_title = "削除されません!";
               });
           }
         });
-
-
-
-
-
-
-
     },
     //get Table data
     invoice_details(page = 1) {
         this.form.page=page;
       axios.post(this.BASE_URL + "api/get_invoice_details_list", this.form)
         .then(({ data }) => {
-            this.init(data.status);
             this.invoice_detail_lists = data.invoice_details_list;
             this.invoice_detail_length = this.invoice_detail_lists.data.length;
             this.invoice_lists_length = this.invoice_detail_lists.data.length;
             this.byr_buyer_category_lists = data.byr_buyer_category_list;
             this.byr_buyer_category_lists.unshift({category_code:'*',category_name:'全て'});
+            // var shipment_ids=[];
+            (this.invoice_detail_lists.data).forEach(element => {
+                this.form.shipment_ids.push(element.data_shipment_voucher_id)
+            });
 
         });
     },
@@ -747,11 +749,11 @@ var _this = this;
     decissionDateUpdate(data_invoice_pay_detail_id) {
       if (this.isCheckAll) {
         this.alert_text =
-          "対象となる伝票確定を取消しますがよろしいでしょうか。";
+          "対象となる請求確定を取消しますがよろしいでしょうか。";
         this.selected = this.null_selected.concat(this.not_null_selected);
       } else {
         this.selected.push(data_invoice_pay_detail_id);
-        this.alert_text = "伝票確定を取消しますがよろしいでしょうか。";
+        this.alert_text = "請求確定を取消しますがよろしいでしょうか。";
       }
       this.date_null = true;
       this.null_selected_message = false;
@@ -778,9 +780,9 @@ var _this = this;
                 _this.alert_icon = "success";
                 _this.alert_title = "";
                 _this.alert_text =
-                  _this.selectedNum + "件の伝票を確定しました。";
+                  _this.selectedNum + "件の請求を確定しました。";
                 if (!this.null_selected_message) {
-                  _this.alert_text = "伝票確定を取消しました。";
+                  _this.alert_text = "請求確定を取消しました。";
                 }
                 _this.sweet_normal_alert();
                 this.invoice_details()
@@ -802,19 +804,19 @@ var _this = this;
         });
       } else {
         this.null_selected_message = false;
-        this.alert_text = "対象となる伝票がありません、再度確認して実行してください。";
+        this.alert_text = "対象となる請求がありません。再度確認して実行してください。";
         this.sweet_normal_alert();
       }
     },
     updateDatetimeDecessionfield() {
       if (this.null_selected.length > 0) {
         this.alert_text =
-          this.selected.length + "件の伝票を確定しますがよろしいでしょうか。";
+          this.selected.length + "件の請求を確定しますがよろしいでしょうか。";
         this.updateDecissionDateTime();
       } else {
         this.alert_icon = "warning";
         this.alert_title = "";
-        this.alert_text = "対象となる伝票がありません、再度確認して実行してください。";
+        this.alert_text = "対象となる請求がありません。再度確認して実行してください。";
         this.sweet_normal_alert();
       }
     },
@@ -829,7 +831,7 @@ var _this = this;
             this.init(data.status);
           let csv_data_count = data.csv_data_count;
           if (csv_data_count > 0) {
-            _this.alert_text = csv_data_count + "件の伝票を送信しますがよろしいでしょうか。";
+            _this.alert_text = csv_data_count + "件の請求を送信しますがよろしいでしょうか。";
             this.confirm_sweet().then((result) => {
               if (result.value) {
                   this.form.data_count=false;
@@ -839,14 +841,14 @@ var _this = this;
                     _this.alert_icon = "success";
                     _this.alert_title = "";
                     _this.alert_text =
-                      data.csv_data_count + "件の確定伝票を送信しました。";
+                      data.csv_data_count + "件の確定請求を送信しました。";
                     _this.sweet_normal_alert();
                     Fire.$emit("LoadByrinvoiceDetails",_this.form.page);
                   });
               }
             });
           } else {
-            _this.alert_text = "対象となる伝票がありません、再度確認して実行してください。";
+            _this.alert_text = "対象となる請求がありません。再度確認して実行してください。";
             _this.sweet_normal_alert();
           }
         });

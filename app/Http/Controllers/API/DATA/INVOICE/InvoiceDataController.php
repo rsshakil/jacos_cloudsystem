@@ -178,4 +178,23 @@ class InvoiceDataController extends Controller
             "税率"
         ];
     }
+    public static function invoiceCompareCsvHeading(){
+        return [
+            "mes_lis_shi_par_sel_code",
+            "mes_lis_shi_tra_trade_number",
+            "mes_lis_shi_par_shi_code",
+            "mes_lis_shi_par_shi_name",
+            "shipment_delivery_date",
+            "mes_lis_acc_tra_dat_transfer_of_ownership_date",
+            "mes_lis_shi_tot_tot_net_price_total",
+            "mes_lis_acc_tot_tot_net_price_total",
+            "mes_lis_shi_lin_lin_line_number",
+            "mes_lis_shi_lin_ite_order_item_code",
+            "mes_lis_shi_lin_ite_name",
+            "mes_lis_shi_lin_qua_shi_quantity",
+            "mes_lis_acc_lin_qua_rec_quantity",
+            "mes_lis_shi_lin_amo_item_net_price",
+            "mes_lis_acc_lin_amo_item_net_price",
+        ];
+    }
 }

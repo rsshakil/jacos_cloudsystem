@@ -34,6 +34,7 @@ return [
     'INVOICE_SCHEDULE_START_TIME' => '14:00',
     'INVOICE_SCHEDULE_END_TIME' => '23:00',
     'INVOICE_CSV_PATH' => '/invoice_csv',
+    'INVOICE_COMPARE_CSV_PATH' => '/invoice_compare_csv',
     'adm_role_name' =>'Super Admin',
     'SUCCESS' =>1,
     'ERROR' =>0,
