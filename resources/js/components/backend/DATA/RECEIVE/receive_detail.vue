@@ -340,7 +340,11 @@
                 <td class="text-right">
                   {{ order_detail_list.mes_lis_acc_tot_tot_net_price_total | priceFormat}}
                 </td>
-                <td><span v-if="order_detail_list.mes_lis_acc_tot_tot_net_price_total==order_detail_list.mes_lis_shi_tot_tot_net_price_total">差分あり</span><span v-else>差分なし</span></td>
+                <td>
+                <span v-if="order_detail_list.mes_lis_acc_tot_tot_net_price_total==order_detail_list.mes_lis_shi_tot_tot_net_price_total"></span>
+                <span v-else> 差分あり</span>
+               <!-- 差分なし-->
+                </td>
 
                 <td>
                   {{order_detail_list.update_datetime}}
@@ -483,7 +487,7 @@
     >
       <div class="panel-body">
         <table
-          class="table orderTopDetailTable table-bordered"
+          class="table orderTopDetailTable popupListTable table-bordered"
           style="width: 100%"
         >
 
@@ -562,7 +566,7 @@
     >
       <div class="panel-body">
         <table
-          class="table orderTopDetailTable table-bordered"
+          class="table orderTopDetailTable popupListTable table-bordered"
           style="width: 100%"
         >
 
@@ -641,7 +645,7 @@
     >
       <div class="panel-body">
         <table
-          class="table orderTopDetailTable table-bordered"
+          class="table orderTopDetailTable popupListTable table-bordered"
           style="width: 100%"
         >
 
