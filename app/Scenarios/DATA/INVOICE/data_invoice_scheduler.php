@@ -103,6 +103,7 @@ class data_invoice_scheduler
                     $data_invoice_pay_id = data_invoice_pay::insertGetId($data_invoice_pay_array);
                 }
 
+                $data_invoice_pay_details_array['data_shipment_voucher_id']=$shipment_data['data_shipment_voucher_id'];
                 $data_invoice_pay_details_array['mes_lis_inv_lin_lin_trade_number_reference']=$shipment_data['mes_lis_shi_tra_trade_number'];
                 $data_invoice_pay_details_array['mes_lis_inv_lin_lin_issue_classification_code']=$shipment_data['mes_lis_shi_tra_additional_trade_number']; //Not confirmed
                 $data_invoice_pay_details_array['mes_lis_inv_lin_lin_sequence_number']=$shipment_data['mes_lis_shi_fre_shipment_number']; //Not confirmed
@@ -121,7 +122,7 @@ class data_invoice_scheduler
                 $data_invoice_pay_details_array['mes_lis_inv_lin_det_amo_requested_amount']=$shipment_data['mes_lis_shi_tot_tot_net_price_total'];
                 $data_invoice_pay_details_array['mes_lis_inv_lin_det_amo_req_plus_minus']='+';
                 $data_invoice_pay_details_array['mes_lis_inv_lin_det_amo_tax']=$shipment_data['mes_lis_shi_tot_tot_tax_total'];
-                $data_invoice_pay_details_array['mes_lis_inv_lin_det_balance_carried_code']='50'; //Not confirmed
+                $data_invoice_pay_details_array['mes_lis_inv_lin_det_balance_carried_code']='50'; // Static Data
                 $data_invoice_pay_details_array['mes_lis_inv_lin_det_credit_or_unsettlement']='';
                 $data_invoice_pay_details_array['mes_lis_inv_lin_det_pay_code']='1001'; //schedule: 1001
                 $data_invoice_pay_details_array['mes_lis_inv_lin_det_tax_tax_type_code']='';
