@@ -20,7 +20,7 @@
             <td class="cl_custom_color">請求取引先コード</td>
             <td><input type="text" class="form-control topHeaderInputFieldBtn" v-model="form.mes_lis_inv_pay_code">
             <button
-
+                @click="showAllCustomerCode"
                 class="btn btn-primary active"
               >
                 参照
@@ -183,6 +183,49 @@
       </div>
     </b-modal>
 
+<b-modal
+      size="lg"
+      :hide-backdrop="true"
+      title="取引先コード一覧"
+      cancel-title="閉じる"
+      v-model="showAllCustomerCodeListModal"
+      :hide-footer="true"
+    >
+      <div class="panel-body add_item_body">
+
+          <div class="row">
+  <table class="table table-striped order_item_details_table table-bordered data_table">
+          <thead>
+            <tr>
+              <th style="cursor: pointer">No</th>
+              <th>取引先コード</th>
+              <th>取引先名</th>
+              <th>請求先コード</th>
+              <th>請求取引先名</th>
+              <th>取引先形態区分</th>
+
+            </tr>
+          </thead>
+          <tbody>
+          <tr v-for="(value,index) in order_customer_code_lists" @click="onRowClicked(value)" :key="index">
+          <td>{{index+1}}</td>
+          <td>{{value.mes_lis_inv_pay_code}}</td>
+          <td>{{value.mes_lis_inv_pay_name}}</td>
+          <td>{{value.mes_lis_buy_code}}</td>
+          <td>{{value.mes_lis_buy_code}}</td>
+
+          <td></td>
+          </tr>
+          </tbody>
+          </table>
+
+
+
+
+
+          </div>
+      </div>
+    </b-modal>
 
   </div>
 </template>
@@ -195,7 +238,8 @@ export default {
       invoice_data_lists:[],
       byr_buyer_lists: {},
       invoiceCreateModal:false,
-
+      order_customer_code_lists: {},
+      showAllCustomerCodeListModal:false,
       file: "",
       selected_byr: "0",
       invoiceData:{
@@ -230,6 +274,20 @@ export default {
             }
         },
   methods: {
+    onRowClicked (item) {
+        this.form.mes_lis_inv_pay_code = item.mes_lis_inv_pay_code;
+       this.showAllCustomerCodeListModal = false;
+    },
+    //get Table data
+    showAllCustomerCode(){
+     let loaders = Vue.$loading.show();
+      this.showAllCustomerCodeListModal = true;
+      this.form.post(this.BASE_URL + "api/get_invoice_customer_code_list", this.form)
+        .then(({ data }) => {
+          this.order_customer_code_lists = data.order_customer_code_lists;
+         loaders.hide();
+        });
+    },
     viewInvoicePopup(){
       this.invoiceCreateModal = true;
     },

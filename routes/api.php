@@ -142,6 +142,8 @@ Route::post('send_invoice_data', 'API\DATA\INVOICE\InvoiceController@sendInvoice
 Route::post('update_invoice_decession_datetime', 'API\DATA\INVOICE\InvoiceController@decessionData');
 Route::post('download_invoice', 'API\DATA\INVOICE\InvoiceController@downloadInvoice');
 Route::get('get_all_invoice_by_voucher_number/{voucher_number}', 'API\DATA\INVOICE\InvoiceController@get_all_invoice_by_voucher_number');
+Route::post('/get_payment_customer_code_list', 'API\DATA\INVOICE\InvoiceController@get_payment_customer_code_list');
+
 // Invoice
 Route::post('/cmn_category_create', 'API\CMN\CmnCategoryController@store');
 Route::post('/uploadByrCategoryCsv', 'API\CMN\CmnCategoryController@uploadByrCategoryCsv');
