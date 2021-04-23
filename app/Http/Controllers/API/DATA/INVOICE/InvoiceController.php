@@ -20,7 +20,6 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use PhpParser\Node\Stmt\TryCatch;
-
 class InvoiceController extends Controller
 {
     private $request;
@@ -569,5 +568,26 @@ class InvoiceController extends Controller
         ORDER BY dsi.mes_lis_shi_lin_lin_line_number
         ");
         return response()->json(['compareItemList'=>$result]);
+    }
+
+    public function get_invoice_customer_code_list(Request $request)
+    {
+       
+        $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
+       
+       $result = DB::select("SELECT
+        dip.mes_lis_buy_code,
+        dip.mes_lis_buy_name,
+        dip.mes_lis_inv_pay_code,
+        dip.mes_lis_inv_pay_name
+        FROM
+       data_invoices AS di
+       INNER JOIN data_invoice_pays AS dip ON di.data_invoice_id=dip.data_invoice_id
+       WHERE di.cmn_connect_id='".$cmn_connect_id."'
+       GROUP BY
+       dip.mes_lis_buy_code,
+       dip.mes_lis_inv_pay_code");
+        return response()->json(['order_customer_code_lists' => $result]);
+
     }
 }
