@@ -408,7 +408,7 @@
     >
       <div class="panel-body">
         <table
-          class="table orderTopDetailTable table-bordered"
+          class="table orderTopDetailTable popupListTable table-bordered"
           style="width: 100%"
         >
 <tr>
@@ -487,7 +487,7 @@
     >
       <div class="panel-body">
         <table
-          class="table orderTopDetailTable table-bordered"
+          class="table orderTopDetailTable popupListTable table-bordered"
           style="width: 100%"
         >
 
@@ -567,7 +567,7 @@
     >
       <div class="panel-body">
         <table
-          class="table orderTopDetailTable table-bordered"
+          class="table orderTopDetailTable popupListTable table-bordered"
           style="width: 100%"
         >
 
