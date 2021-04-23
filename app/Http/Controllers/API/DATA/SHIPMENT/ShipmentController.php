@@ -34,7 +34,6 @@ class ShipmentController extends Controller
         $data_count=$request->data_count;
         $data_order_id=$request->data_order_id;
         $download_file_url='';
-        $csv_data_count ='';
         $adm_user_id=$request->adm_user_id;
         $byr_buyer_id=$request->byr_buyer_id;
         $authUser = User::find($adm_user_id);
@@ -44,23 +43,8 @@ class ShipmentController extends Controller
             $cmn_company_info=$this->all_functions->get_user_info($adm_user_id,$byr_buyer_id);
             $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
-        // return $csv_data_count = Data_Controller::get_shipment_data($request)->get();
 
-
-        // $csv_data_count = Data_Controller::get_shipment_data($request)->get()->count();
-        // Log::info();
-        if (!$data_count) {
-            $request->request->add(['cmn_connect_id' => $cmn_connect_id]);
-            $dateTime = date('Y-m-d H:i:s');
-            $new_file_name = $this->all_functions->downloadFileName($request, 'csv');
-            data_shipment::where('data_order_id', $data_order_id)->update(['mes_mes_number_of_trading_documents'=>$csv_data_count]);
-            $download_file_url = Config::get('app.url')."storage/app".config('const.SHIPMENT_CSV_PATH')."/". $new_file_name;
-            (new ShipmentCSVExport($request))->store(config('const.SHIPMENT_CSV_PATH').'/'.$new_file_name);
-            data_shipment_voucher::where('decision_datetime', '!=', null)
-            ->where('send_datetime', '=', null)
-            ->update(['send_datetime'=>$dateTime]);
-        }else{
-            $csv_data_count = data_shipment_voucher::join('data_shipments as ds','ds.data_shipment_id','=','data_shipment_vouchers.data_shipment_id')
+        $csv_data_count = data_shipment_voucher::join('data_shipments as ds','ds.data_shipment_id','=','data_shipment_vouchers.data_shipment_id')
             ->whereNotNull('data_shipment_vouchers.decision_datetime')
             ->whereNull('data_shipment_vouchers.send_datetime')
             ->where('ds.cmn_connect_id',$cmn_connect_id)
@@ -71,6 +55,17 @@ class ShipmentController extends Controller
             ->where('data_shipment_vouchers.mes_lis_shi_tra_dat_delivery_date', $order_info['mes_lis_shi_tra_dat_delivery_date'])
             ->where('data_shipment_vouchers.mes_lis_shi_tra_goo_major_category', $order_info['mes_lis_shi_tra_goo_major_category'])
             ->where('data_shipment_vouchers.mes_lis_shi_tra_ins_temperature_code', $order_info['mes_lis_shi_tra_ins_temperature_code'])->get()->count();
+
+        if (!$data_count) {
+            $request->request->add(['cmn_connect_id' => $cmn_connect_id]);
+            $dateTime = date('Y-m-d H:i:s');
+            $new_file_name = $this->all_functions->downloadFileName($request, 'csv');
+            data_shipment::where('data_order_id', $data_order_id)->update(['mes_mes_number_of_trading_documents'=>$csv_data_count]);
+            $download_file_url = Config::get('app.url')."storage/app".config('const.SHIPMENT_CSV_PATH')."/". $new_file_name;
+            (new ShipmentCSVExport($request))->store(config('const.SHIPMENT_CSV_PATH').'/'.$new_file_name);
+            data_shipment_voucher::where('decision_datetime', '!=', null)
+            ->where('send_datetime', '=', null)
+            ->update(['send_datetime'=>$dateTime]);
         }
 
         return response()->json(['message' => 'Success','status'=>1, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);

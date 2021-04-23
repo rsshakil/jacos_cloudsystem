@@ -291,7 +291,6 @@ class InvoiceController extends Controller
         $data_invoice_id=$request->data_invoice_id;
         $param_data=$request->param_data;
         $download_file_url='';
-        $csv_data_count ='';
         $adm_user_id=$request->adm_user_id;
         $byr_buyer_id=$request->byr_buyer_id;
         $authUser = User::find($adm_user_id);
@@ -302,18 +301,7 @@ class InvoiceController extends Controller
             $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
         // $csv_data_count = InvoiceDataController::get_invoice_data($request)->get()->count();
-        if (!$data_count) {
-            $dateTime = date('Y-m-d H:i:s');
-            $new_file_name = $this->all_used_fun->downloadFileName($request, 'csv');
-            // self::invoiceFileName($data_invoice_id,'csv');
-            data_invoice::where('data_invoice_id',$data_invoice_id)->update(['mes_mes_number_of_trading_documents'=>$csv_data_count]);
-            $download_file_url = Config::get('app.url')."storage/app".config('const.INVOICE_CSV_PATH')."/". $new_file_name;
-            (new InvoiceCSVExport($request))->store(config('const.INVOICE_CSV_PATH').'/'.$new_file_name);
-            data_invoice_pay_detail::where('decision_datetime','!=',null)
-            ->where('send_datetime','=',null)
-            ->update(['send_datetime'=>$dateTime]);
-        }else{
-            $csv_data_count = data_invoice::join('data_invoice_pays as dip','dip.data_invoice_id','=','data_invoices.data_invoice_id')
+        $csv_data_count = data_invoice::join('data_invoice_pays as dip','dip.data_invoice_id','=','data_invoices.data_invoice_id')
             ->join('data_invoice_pay_details as dipd','dipd.data_invoice_pay_id','=','dip.data_invoice_pay_id')
             ->where('data_invoices.cmn_connect_id',$cmn_connect_id)
             ->where('data_invoices.data_invoice_id',$data_invoice_id)
@@ -326,6 +314,16 @@ class InvoiceController extends Controller
             // ->where('dip.mes_lis_buy_name',$param_data['buy_name'])
             ->where('dip.status',$param_data['status'])
             ->get()->count();
+        if (!$data_count) {
+            $dateTime = date('Y-m-d H:i:s');
+            $new_file_name = $this->all_used_fun->downloadFileName($request, 'csv');
+            // self::invoiceFileName($data_invoice_id,'csv');
+            data_invoice::where('data_invoice_id',$data_invoice_id)->update(['mes_mes_number_of_trading_documents'=>$csv_data_count]);
+            $download_file_url = Config::get('app.url')."storage/app".config('const.INVOICE_CSV_PATH')."/". $new_file_name;
+            (new InvoiceCSVExport($request))->store(config('const.INVOICE_CSV_PATH').'/'.$new_file_name);
+            data_invoice_pay_detail::where('decision_datetime','!=',null)
+            ->where('send_datetime','=',null)
+            ->update(['send_datetime'=>$dateTime]);
         }
 
         return response()->json(['message' => 'Success','status'=>1, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);

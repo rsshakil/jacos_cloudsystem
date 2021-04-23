@@ -1167,7 +1167,6 @@ export default {
           order_info: this.order_info,
           data_count: true,
         }).then(({ data }) => {
-            this.init(data.status);
           let csv_data_count = data.csv_data_count;
           if (csv_data_count > 0) {
             _this.alert_text = csv_data_count + "件の伝票を送信しますがよろしいでしょうか。";
@@ -1182,11 +1181,10 @@ export default {
                     data_count: false,
                   })
                   .then(({ data }) => {
-                      this.init(data.status);
+                      console.log(data);
                     _this.alert_icon = "success";
                     _this.alert_title = "";
-                    _this.alert_text =
-                      data.csv_data_count + "件の確定伝票を送信しました。";
+                    _this.alert_text =data.csv_data_count + "件の確定伝票を送信しました。";
                     _this.sweet_normal_alert();
                     Fire.$emit("LoadByrorderDetail",_this.select_field_page_num);
                   });
