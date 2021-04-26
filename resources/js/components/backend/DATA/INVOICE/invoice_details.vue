@@ -381,7 +381,7 @@
             <option value="*">全て</option>
               <option
                 v-for="(temp, i) in mes_lis_inv_lin_det_pay_code_list"
-                :key="i" v-if="temp!='' " :value="i">
+                :key="i" v-if="temp!=''" :value="i">
                 {{ temp }}
               </option>
             </select>

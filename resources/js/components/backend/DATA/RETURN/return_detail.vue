@@ -411,12 +411,15 @@
           class="table orderTopDetailTable table-striped popupListTable table-bordered"
           style="width: 100%"
         >
+        <thead>
 <tr>
           <th>NO</th>
           <th>納品先コード</th>
           <th>納品先名</th>
           <th>納品経路</th>
         </tr>
+        </thead>
+        <tbody>
         <tr v-for="(valueItm,index) in order_search_modal1List" :key="index" @click="setRowscodeIntoForm1(valueItm.mes_lis_ret_par_return_receive_from_code)">
         <td>{{index+1}}</td>
           <td>{{valueItm.mes_lis_ret_par_return_receive_from_code}}</td>
@@ -431,6 +434,7 @@
               }}
           </td>
         </tr>
+        </tbody>
 <!--
           <tr>
             <td class="cl_custom_color">納品先コード</td>
@@ -490,13 +494,15 @@
           class="table orderTopDetailTable table-striped popupListTable table-bordered"
           style="width: 100%"
         >
-
+<thead>
          <tr>
           <th>NO</th>
           <th>納品先コード</th>
           <th>納品先名</th>
           <th>納品経路</th>
         </tr>
+</thead>
+<tbody>
         <tr v-for="(valueItm,index) in order_search_modal2List" :key="index" @click="setRowscodeIntoForm2(valueItm.mes_lis_ret_par_return_from_code)">
         <td>{{index+1}}</td>
           <td>{{valueItm.mes_lis_ret_par_return_from_code}}</td>
@@ -511,6 +517,7 @@
               }}
           </td>
         </tr>
+</tbody>
         <!--
           <tr>
             <td class="cl_custom_color">納品先コード</td>
@@ -570,13 +577,15 @@
           class="table table-striped orderTopDetailTable popupListTable table-bordered"
           style="width: 100%"
         >
-
+<thead>
         <tr>
           <th>NO</th>
           <th>納品先コード</th>
           <th>納品先名</th>
           <th>納品経路</th>
         </tr>
+</thead>
+<tbody>
         <tr v-for="(valueItm,index) in order_search_modal3List" :key="index" @click="setRowscodeIntoForm3(valueItm.mes_lis_ret_lin_ite_order_item_code)">
         <td>{{index+1}}</td>
           <td>{{valueItm.mes_lis_ret_lin_ite_order_item_code}}</td>
@@ -585,6 +594,7 @@
 
           </td>
         </tr>
+</tbody>
         <!--
           <tr>
             <td class="cl_custom_color">商品コード（発注用）</td>
