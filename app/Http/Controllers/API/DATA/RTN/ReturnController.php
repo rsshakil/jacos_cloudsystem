@@ -105,10 +105,7 @@ class ReturnController extends Controller
             'drv.mes_lis_ret_par_sel_code',
             'drv.mes_lis_ret_par_sel_name',
             'drv.mes_lis_ret_tra_dat_transfer_of_ownership_date',
-            \DB::raw('"" as mes_lis_ret_tra_dat_delivery_date'),
             'drv.mes_lis_ret_tra_goo_major_category',
-            \DB::raw('"" as mes_lis_ret_log_del_delivery_service_code'),
-            \DB::raw('"" as mes_lis_ret_tra_ins_temperature_code'),
             'drv.check_datetime',
             \DB::raw('COUNT(drv.data_return_voucher_id) AS cnt'),
             'drv.data_return_voucher_id'
@@ -139,7 +136,16 @@ class ReturnController extends Controller
                     }
 
                 }
-        $result2 = $result2->groupBy('data_returns.receive_datetime')
+        $result2 = $result2->groupBy(['data_returns.receive_datetime',
+        'drv.mes_lis_ret_par_sel_code',
+'drv.mes_lis_ret_tra_dat_transfer_of_ownership_date',
+'drv.mes_lis_ret_tra_goo_major_category'
+        ])
+        ->orderBy('data_returns.receive_datetime','DESC')
+        ->orderBy('drv.mes_lis_ret_par_sel_code')
+        ->orderBy('drv.mes_lis_ret_tra_dat_transfer_of_ownership_date')
+        ->orderBy('drv.mes_lis_ret_tra_goo_major_category')
+       
         ->orderBy($table_name2.$sort_by,$sort_type);
         $result = $result2->paginate($per_page);
         // $result = new Paginator($result, 2);
