@@ -1,23 +1,30 @@
 <template>
     <div class="row" v-can="['byr_view']">
-                <div class="col-12">
-                    <h4 class="top_title text-center" style="margin-top:10px;">{{myLang.master_management}}</h4>
-                </div>
+             
                 <div class="col-12 text-center">
-
-      <label>
-        <input type="file" id="file" ref="file" v-on:change="onChangeFileUpload()"/>
-      </label>
+ <label for="insertItemCategory" class="custom-file-upload" style="float:right;margin-right:15px;padding:6px 15px;">
+                <b-icon
+                  icon="upload"
+                  animation="fade"
+                  font-scale="1.2"
+                ></b-icon>
+                アップロード
+              </label>
+              <input
+                type="file"
+                ref="file"
+                @change="onChangeFileUpload"
+                id="file"
+                class="form-control uploadBtn"
+                style="display: none"
+              />
+     
                 </div>
                 <div class="col-12">
                     <div class="">
-                        <table class="table table-striped table-bordered data_table">
+                        <table class="table table-striped table-bordered order_item_details_table">
                             <thead>
-                                <tr>
-                                    <th colspan="100%" style="border: none;">
-
-                                    </th>
-                                </tr>
+                               
                                 <tr>
                                     <th><input type="checkbox" @click="checkAll()" v-model="isCheckAll"></th>
                                     <th class="sorting" data-input_type="text" data-sorting_type="asc" data-column_name="vendor_items.name"
