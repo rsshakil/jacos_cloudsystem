@@ -440,8 +440,17 @@ class InvoiceController extends Controller
             dsv.mes_lis_shi_tra_dat_revised_delivery_date
             END AS shipment_delivery_date,
             drv.mes_lis_acc_tra_dat_transfer_of_ownership_date,
-            dsv.mes_lis_shi_tot_tot_net_price_total,
+            case when dsv.mes_lis_shi_tot_tot_net_price_total IS NULL then
+            0
+            else
+            dsv.mes_lis_shi_tot_tot_net_price_total
+            END AS mes_lis_shi_tot_tot_net_price_total,
+            case when drv.mes_lis_acc_tot_tot_net_price_total IS NULL then
+            0
+            else
             drv.mes_lis_acc_tot_tot_net_price_total
+            END AS mes_lis_acc_tot_tot_net_price_total
+
             FROM
             data_shipment_vouchers AS dsv
             INNER JOIN data_shipments AS ds ON ds.data_shipment_id=dsv.data_shipment_id
@@ -558,8 +567,18 @@ class InvoiceController extends Controller
         dsi.mes_lis_shi_lin_ite_name,
         dsi.mes_lis_shi_lin_qua_shi_quantity,
         dri.mes_lis_acc_lin_qua_rec_quantity,
-        dsi.mes_lis_shi_lin_amo_item_net_price,
+        case when dsi.mes_lis_shi_lin_amo_item_net_price IS NULL then
+        0
+        else
+        dsi.mes_lis_shi_lin_amo_item_net_price
+        END AS mes_lis_shi_lin_amo_item_net_price,
+
+        case when dri.mes_lis_acc_lin_amo_item_net_price IS NULL then
+        0
+        else
         dri.mes_lis_acc_lin_amo_item_net_price
+        END AS mes_lis_acc_lin_amo_item_net_price
+
         FROM
         data_shipment_items AS dsi
         INNER JOIN data_receive_items AS dri ON dsi.mes_lis_shi_lin_lin_line_number=dri.mes_lis_acc_lin_lin_line_number
@@ -572,9 +591,9 @@ class InvoiceController extends Controller
 
     public function get_invoice_customer_code_list(Request $request)
     {
-       
+
         $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
-       
+
        $result = DB::select("SELECT
         dip.mes_lis_buy_code,
         dip.mes_lis_buy_name,
