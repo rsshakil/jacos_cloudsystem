@@ -340,15 +340,15 @@
       <b-modal
       size="lg"
       :hide-backdrop="true"
-      title="請求伝票追加"
-      ok-title="追加"
+      title="請求伝票変更"
+      ok-title="変更"
       cancel-title="キャンセル"
       @ok.prevent="update_invoice_detail()"
       v-model="editInvoiceDetailModal"
     >
       <div class="panel-body add_item_body">
         <form>
-          <p class="text-center">新規請求伝票を追加できます</p>
+          <p class="text-center">請求伝票を変更できます</p>
           <input type="hidden" v-model="invoiceDetail.data_invoice_id">
             <div class="form-group row">
               <label for="inputPassword" class="col-sm-2 col-form-label">計上日</label>
