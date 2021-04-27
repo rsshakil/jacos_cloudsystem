@@ -463,8 +463,8 @@
             <td>{{value.mes_lis_shi_par_shi_code}} {{value.mes_lis_shi_par_shi_name}}</td>
             <td :class="sameCheck(value.shipment_delivery_date,value.mes_lis_acc_tra_dat_transfer_of_ownership_date)">{{ value.shipment_delivery_date }}</td>
             <td :class="sameCheck(value.shipment_delivery_date,value.mes_lis_acc_tra_dat_transfer_of_ownership_date)">{{value.mes_lis_acc_tra_dat_transfer_of_ownership_date}}</td>
-            <td class="text-right" :class="sameCheck(value.mes_lis_shi_tot_tot_net_price_total,value.mes_lis_acc_tot_tot_net_price_total)">{{value.mes_lis_shi_tot_tot_net_price_total | priceFormat}}</td>
-            <td class="text-right" :class="sameCheck(value.mes_lis_shi_tot_tot_net_price_total,value.mes_lis_acc_tot_tot_net_price_total)">{{value.mes_lis_acc_tot_tot_net_price_total | priceFormat}}</td>
+            <td class="text-right" :class="sameCheck(value.mes_lis_shi_tot_tot_net_price_total,value.mes_lis_acc_tot_tot_net_price_total)">{{ zeroShow(value.mes_lis_shi_tot_tot_net_price_total) | priceFormat}}</td>
+            <td class="text-right" :class="sameCheck(value.mes_lis_shi_tot_tot_net_price_total,value.mes_lis_acc_tot_tot_net_price_total)">{{zeroShow(value.mes_lis_acc_tot_tot_net_price_total) | priceFormat}}</td>
             <td><button @click="comparedItemList(value)" class="btn btn-primary">確認</button></td>
           </tr>
           </tbody>
@@ -516,8 +516,8 @@
             <td>{{ value.mes_lis_shi_lin_ite_name }}</td>
             <td class="text-right" :class="sameCheck(value.mes_lis_shi_lin_qua_shi_quantity,value.mes_lis_acc_lin_qua_rec_quantity)">{{ value.mes_lis_shi_lin_qua_shi_quantity }}</td>
             <td class="text-right" :class="sameCheck(value.mes_lis_shi_lin_qua_shi_quantity,value.mes_lis_acc_lin_qua_rec_quantity)">{{ value.mes_lis_acc_lin_qua_rec_quantity }}</td>
-            <td class="text-right" :class="sameCheck(value.mes_lis_shi_lin_amo_item_net_price,value.mes_lis_acc_lin_amo_item_net_price)">{{ value.mes_lis_shi_lin_amo_item_net_price | priceFormat }}</td>
-            <td class="text-right" :class="sameCheck(value.mes_lis_shi_lin_amo_item_net_price,value.mes_lis_acc_lin_amo_item_net_price)">{{ value.mes_lis_acc_lin_amo_item_net_price | priceFormat }}</td>
+            <td class="text-right" :class="sameCheck(value.mes_lis_shi_lin_amo_item_net_price,value.mes_lis_acc_lin_amo_item_net_price)">{{ zeroShow(value.mes_lis_shi_lin_amo_item_net_price) | priceFormat }}</td>
+            <td class="text-right" :class="sameCheck(value.mes_lis_shi_lin_amo_item_net_price,value.mes_lis_acc_lin_amo_item_net_price)">{{ zeroShow(value.mes_lis_acc_lin_amo_item_net_price) | priceFormat }}</td>
           </tr>
           </tbody>
 
@@ -866,6 +866,9 @@ export default {
         if(value1!=value2){
             return 'same_yellow';
         }
+    },
+    zeroShow(value){
+        return value===0?'0':value
     }
   },
 

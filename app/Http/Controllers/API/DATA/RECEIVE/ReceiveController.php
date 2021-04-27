@@ -30,7 +30,7 @@ class ReceiveController extends Controller
 
     public function orderReceiveList(Request $request){
 
-        $per_page = $request->per_page == null ? 10 : $request->per_page;
+        $per_page = $request->select_field_per_page_num == null ? 10 : $request->select_field_per_page_num;
 
         $adm_user_id = $request->adm_user_id;
         $byr_buyer_id = $request->byr_buyer_id;
@@ -149,6 +149,7 @@ class ReceiveController extends Controller
 
     public function orderReceiveDetailList(Request $request){
         // return $request->all();
+        $today=date('Y-m-d H:i:s');
         $adm_user_id = $request->adm_user_id;
         $byr_buyer_id = $request->byr_buyer_id;
 
@@ -179,7 +180,13 @@ class ReceiveController extends Controller
             $cmn_company_id = $cmn_company_info['cmn_company_id'];
             $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
-        data_receive_voucher::where('data_receive_id',$data_receive_id)->where('mes_lis_acc_tra_goo_major_category',$major_category)->where('mes_lis_acc_log_del_delivery_service_code',$delivery_service_code)->where('mes_lis_acc_par_sel_code',$sel_code)->whereNull('check_datetime')->update(['check_datetime'=>date('Y-m-d H:i:s')]);
+        data_receive_voucher::where('data_receive_id',$data_receive_id)
+        // ->where('cmn_connect_id',$cmn_connect_id)
+        ->where('mes_lis_acc_tra_goo_major_category',$major_category)
+        ->where('mes_lis_acc_log_del_delivery_service_code',$delivery_service_code)
+        ->where('mes_lis_acc_par_sel_code',$sel_code)
+        ->whereNull('check_datetime')
+        ->update(['check_datetime'=>$today]);
 
         /*receive order info for single row*/
         $orderInfo=data_receive_voucher::join('data_receives as dr','dr.data_receive_id','=','data_receive_vouchers.data_receive_id')
