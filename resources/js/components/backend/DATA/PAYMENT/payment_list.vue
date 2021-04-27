@@ -183,7 +183,6 @@
               <th>取引先名</th>
               <th>請求先コード</th>
               <th>請求取引先名</th>
-              <th>取引先形態区分</th>
 
             </tr>
           </thead>
@@ -194,8 +193,6 @@
           <td>{{value.mes_lis_pay_pay_name}}</td>
           <td>{{value.mes_lis_buy_code}}</td>
           <td>{{value.mes_lis_buy_name}}</td>
-
-          <td></td>
           </tr>
           </tbody>
           </table>
