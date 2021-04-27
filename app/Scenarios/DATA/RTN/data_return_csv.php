@@ -8,6 +8,7 @@ use App\Models\DATA\RTN\data_return_voucher;
 use App\Models\DATA\RTN\data_return_item;
 use App\Http\Controllers\API\AllUsedFunction;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class data_return_csv
 {
@@ -20,7 +21,7 @@ class data_return_csv
 
     public function exec($request, $sc)
     {
-        \Log::debug(get_class().' exec start  ---------------');
+        Log::debug(get_class().' exec start  ---------------');
         if (!array_key_exists('up_file',$request->all())) {
             // return response()->json(['message' => "error", 'status' => '0']);
             return ['message' => "error", 'status' => '0'];
@@ -29,12 +30,13 @@ class data_return_csv
         $file_name = time().'-'.$request->file('up_file')->getClientOriginalName();
         // return response()->json(['file_name'=>$file_name,'status'=>0]);
         $path = $request->file('up_file')->storeAs(config('const.RETURN_DATA_PATH').date('Y-m'), $file_name);
-        \Log::debug('save path:'.$path);
+        Log::debug('save path:'.$path);
 
         $received_path = storage_path().'/app//'.config('const.RETURN_DATA_PATH').date('Y-m').'/'.$file_name;
         // フォーマット変換
 
         $dataArr = $this->all_functions->csvReader($received_path, 1);
+        // Log::info($dataArr);
         // $cmn_connect_id=$this->all_functions->get_connect_id_from_file_name($file_name);
         $cmn_connect_id=1;
         $cur_date=date('y-m-d h:i:s');
@@ -82,11 +84,6 @@ class data_return_csv
                 $data_return_array['mes_lis_ret_name']=$value[29];
                 $data_return_array['mes_lis_ret_name_sbcs']=$value[30];
                 // New Added
-
-                // $data_return_array['mes_lis_buy_code']=$value[27];
-                // $data_return_array['mes_lis_buy_gln']=$value[28];
-                // $data_return_array['mes_lis_buy_name']=$value[29];
-                // $data_return_array['mes_lis_buy_name_sbcs']=$value[30];
 
                 // return
                 $data_return_array['receive_datetime']=$cur_date;
