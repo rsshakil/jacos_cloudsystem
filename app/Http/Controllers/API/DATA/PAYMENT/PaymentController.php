@@ -212,6 +212,7 @@ class PaymentController extends Controller
         $category_code = $category_code['category_code'];
 
         $mes_lis_pay_lin_tra_code = $request->mes_lis_pay_lin_tra_code;
+        $mes_lis_pay_lin_sel_code = $request->mes_lis_pay_lin_sel_code;
 
         $mes_lis_pay_lin_lin_trade_number_eference = $request->mes_lis_pay_lin_lin_trade_number_eference;
         $mes_lis_inv_lin_det_pay_code = $request->mes_lis_inv_lin_det_pay_code;
@@ -254,6 +255,9 @@ class PaymentController extends Controller
         }
         if ($mes_lis_pay_lin_tra_code != '' && $mes_lis_pay_lin_tra_code != null) {
             $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_tra_code', $mes_lis_pay_lin_tra_code);
+        }
+        if ($mes_lis_pay_lin_sel_code != '' && $mes_lis_pay_lin_sel_code != null) {
+            $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_sel_code', $mes_lis_pay_lin_sel_code);
         }
         if ($mes_lis_pay_lin_lin_trade_number_eference != '' && $mes_lis_pay_lin_lin_trade_number_eference != null) {
             $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_lin_trade_number_eference', $mes_lis_pay_lin_lin_trade_number_eference);
@@ -337,13 +341,16 @@ class PaymentController extends Controller
         dpp.mes_lis_buy_code,
         dpp.mes_lis_buy_name,
         dpp.mes_lis_pay_pay_code,
-        dpp.mes_lis_pay_pay_name
+        dpp.mes_lis_pay_pay_name,
+        dppd.mes_lis_pay_lin_sel_code,
+        dppd.mes_lis_pay_lin_sel_name
         FROM
        data_payments AS dp
        INNER JOIN data_payment_pays AS dpp ON dp.data_payment_id=dpp.data_payment_id
+       LEFT JOIN data_payment_pay_details AS dppd ON dpp.data_payment_pay_id=dppd.data_payment_pay_id
        WHERE dp.cmn_connect_id='".$cmn_connect_id."'
        GROUP BY
-        dpp.mes_lis_buy_code,
+       dppd.mes_lis_pay_lin_sel_code,
         dpp.mes_lis_pay_pay_code");
         return response()->json(['order_customer_code_lists' => $result]);
 

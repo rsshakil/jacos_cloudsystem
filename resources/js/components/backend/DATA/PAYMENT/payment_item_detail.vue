@@ -53,7 +53,7 @@
           </tr>
           <tr>
             <td class="cl_custom_color">納品先コード</td>
-            <td> <input type="text" class="form-control" v-model="form.mes_lis_pay_lin_tra_code" style="float:left;width:60%;margin-right:10px;">
+            <td> <input type="text" class="form-control" v-model="form.mes_lis_pay_lin_sel_code" style="float:left;width:60%;margin-right:10px;">
              <button @click="showAllCustomerCode" class="btn btn-primary" style="float:left;width:35%;">
               {{ myLang.refer }}
             </button>
@@ -226,23 +226,16 @@ paymentdetailTopTable.current_page *
           <thead>
             <tr>
               <th style="cursor: pointer">No</th>
-              <th>取引先コード</th>
-              <th>取引先名</th>
-              <th>請求先コード</th>
-              <th>請求取引先名</th>
-              <th>取引先形態区分</th>
+              <th>納品先コード</th>
+              <th>納品先名</th>
 
             </tr>
           </thead>
           <tbody>
           <tr v-for="(value,index) in order_customer_code_lists" @click="onRowClicked(value)" :key="index">
           <td>{{index+1}}</td>
-          <td>{{value.mes_lis_ord_par_sel_code}}</td>
-          <td>{{value.mes_lis_ord_par_sel_name}}</td>
-          <td>{{value.mes_lis_ord_par_pay_code}}</td>
-          <td>{{value.mes_lis_ord_par_pay_name}}</td>
-
-          <td></td>
+          <td>{{value.mes_lis_pay_lin_sel_code}}</td>
+          <td>{{value.mes_lis_pay_lin_sel_name}}</td>
           </tr>
           </tbody>
           </table>
@@ -289,6 +282,7 @@ breadcrumb(){
         from_date: null,
         to_date: null,
         category_code: {category_code:'*',category_name:'全て'},
+        mes_lis_pay_lin_sel_code:'',
         mes_lis_inv_lin_det_pay_code:'*',
         mes_lis_pay_lin_det_verification_result_code:'*',
         mes_lis_pay_lin_det_trade_type_code:'*',
@@ -309,7 +303,7 @@ breadcrumb(){
         },
   methods: {
      onRowClicked (item) {
-        this.form.mes_lis_ord_par_sel_code = item.mes_lis_ord_par_sel_code;
+        this.form.mes_lis_pay_lin_sel_code = item.mes_lis_pay_lin_sel_code;
        this.showAllCustomerCodeListModal = false;
     },
     sorting(sorted_field){
@@ -322,11 +316,11 @@ breadcrumb(){
     showAllCustomerCode(){
      //let loaders = Vue.$loading.show();
       this.showAllCustomerCodeListModal = true;
-      // this.form.post(this.BASE_URL + "api/get_order_customer_code_list", this.form)
-      //   .then(({ data }) => {
-      //     this.order_customer_code_lists = data.order_customer_code_lists;
-      //    loaders.hide();
-      //   });
+      this.form.post(this.BASE_URL + "api/get_payment_customer_code_list", this.form)
+        .then(({ data }) => {
+          this.order_customer_code_lists = data.order_customer_code_lists;
+        // loaders.hide();
+        });
     },
     //get Table data
     getAllPaymentDetails(page=1) {
