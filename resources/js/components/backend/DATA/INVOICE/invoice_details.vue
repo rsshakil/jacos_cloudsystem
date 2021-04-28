@@ -540,7 +540,6 @@ export default {
       invoice_detail_lists: {},
       invoice_detail_length: 0,
       byr_voucher_lists: {},
-      byr_buyer_category_lists:[],
       editInvoiceDetailModal:false,
       invoiceCompareModal:false,
       invoiceitemDatalistModal:false,
@@ -690,9 +689,6 @@ export default {
             this.invoice_detail_lists = data.invoice_details_list;
             this.invoice_detail_length = this.invoice_detail_lists.data.length;
             this.invoice_lists_length = this.invoice_detail_lists.data.length;
-            this.byr_buyer_category_lists = data.byr_buyer_category_list;
-            this.byr_buyer_category_lists.unshift({category_code:'*',category_name:'全て'});
-            // var shipment_ids=[];
             (this.invoice_detail_lists.data).forEach(element => {
                 this.form.shipment_ids.push(element.data_shipment_voucher_id)
             });

@@ -175,11 +175,47 @@ class ByrController extends Controller
 
         return response()->json(['byr_info' => $byr_info]);
     }
-    public function buyerJsonSetting($byr_buyer_id){
+    public function buyerJsonSetting(Request $request){
+        $byr_buyer_id = $request->byr_buyer_id;
         $buyer_settings = byr_buyer::select('setting_information')->where('byr_buyer_id', $byr_buyer_id)->first();
         $result = json_decode($buyer_settings->setting_information);
-        $buyer_category_list = $this->all_used_fun->get_allCategoryByByrId($byr_buyer_id);
-        return response()->json([ 'buyer_settings' =>$result,'buyer_category_list'=>$buyer_category_list ]);
+        $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
+        $p_table = 'data_orders';
+        $pv_table = 'data_order_vouchers';
+        $fieldname = 'mes_lis_ord_tra_goo_major_category';
+        $cmnConnect = 'cmn_connect_id';
+        switch($request->component_name){
+            case 'order_receive':
+                    $p_table = 'data_receives';
+                    $pv_table = 'data_receive_vouchers';
+                    $fieldname = 'mes_lis_acc_tra_goo_major_category';
+                break;
+            case 'return_list':
+                    $p_table = 'data_returns';
+                    $pv_table = 'data_return_vouchers';
+                    $fieldname = 'mes_lis_ret_tra_goo_major_category';
+                break;
+            case 'invoice_details':
+                    $p_table = 'data_invoices';
+                    $pv_table = 'data_invoice_pay_details';
+                    $fieldname = 'mes_lis_inv_lin_det_goo_major_category';
+                break;
+            case 'payment_item_detail':
+                    $p_table = 'data_payments';
+                    $pv_table = 'data_payment_pay_details';
+                    $fieldname = 'mes_lis_pay_lin_det_goo_major_category';
+                break;
+        }
+        $catListitem = DB::select("SELECT 
+        $pv_table.$fieldname as category_code,
+        cmn_categories.category_name
+         FROM $p_table
+            INNER JOIN $pv_table
+            LEFT JOIN cmn_categories ON $pv_table.$fieldname=cmn_categories.category_code AND cmn_categories.byr_buyer_id='".$byr_buyer_id."' 
+            WHERE $p_table.$cmnConnect ='".$cmn_connect_id."' and $pv_table.$fieldname!=''
+            GROUP BY $pv_table.$fieldname");
+       // $buyer_category_list = $this->all_used_fun->get_allCategoryByByrId($byr_buyer_id);
+        return response()->json([ 'buyer_settings' =>$result,'buyer_category_list'=>$catListitem ]);
     }
     public function getByrByOrderId(Request $request)
     {
