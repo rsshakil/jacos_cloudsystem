@@ -66,7 +66,7 @@
             <option value="*">全て</option>
             <option v-for="(opt, i) in mes_lis_inv_lin_det_pay_code_list"
                   :key="i"
-                  :value="opt"
+                  :value="i"
                 >
                   {{ opt }}
                 </option>
@@ -84,7 +84,7 @@
 
             <option v-for="(opt, i) in mes_lis_inv_lin_det_balance_carried_code_list"
                   :key="i"
-                  :value="opt"
+                  :value="i"
                 >
                   {{ opt }}
                 </option>
@@ -95,7 +95,7 @@
             <option value="*">全て</option>
             <option v-for="(opt, i) in mes_lis_pay_lin_det_verification_result_code_list"
                   :key="i"
-                  :value="opt"
+                  :value="i"
                 >
                   {{ opt }}
                 </option>
