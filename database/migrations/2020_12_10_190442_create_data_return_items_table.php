@@ -37,6 +37,9 @@ class CreateDataReturnItemsTable extends Migration
             $table->string('mes_lis_ret_lin_ite_col_color_code', 20)->comment('カラーコード');
             $table->string('mes_lis_ret_lin_ite_col_description', 20)->comment('カラー名称');
             $table->string('mes_lis_ret_lin_ite_col_description_sbcs', 20)->comment('カラー名称カナ');
+            $table->string('mes_lis_ret_lin_ite_siz_size_code', 10)->comment('サイズコード');
+            $table->string('mes_lis_ret_lin_ite_siz_description', 30)->comment('サイズ名称');
+            $table->string('mes_lis_ret_lin_ite_siz_description_sbcs', 30)->comment('サイズ名称カナ');
             $table->string('mes_lis_ret_lin_fre_packing_quantity', 20)->comment('入数');
             $table->string('mes_lis_ret_lin_fre_prefecture_code', 20)->comment('都道府県コード');
             $table->string('mes_lis_ret_lin_fre_country_code', 20)->comment('国コード');
@@ -55,9 +58,6 @@ class CreateDataReturnItemsTable extends Migration
             $table->string('mes_lis_ret_lin_fre_item_preservation_code', 20)->comment('商品状態区分');
             $table->string('mes_lis_ret_lin_fre_item_shape_code', 20)->comment('形状・部位');
             $table->string('mes_lis_ret_lin_fre_use', 20)->comment('用途');
-            $table->string('mes_lis_ret_lin_ite_siz_size_code', 10)->comment('サイズコード');
-            $table->string('mes_lis_ret_lin_ite_siz_description', 30)->comment('サイズ名称');
-            $table->string('mes_lis_ret_lin_ite_siz_description_sbcs', 30)->comment('サイズ名称カナ');
             $table->string('mes_lis_ret_lin_sta_statutory_classification_code', 2)->comment('法定管理義務商材区分');
             $table->integer('mes_lis_ret_lin_amo_item_net_price')->comment('原価金額');
             $table->decimal('mes_lis_ret_lin_amo_item_net_price_unit_price', 13, 2)->comment('原単価');
