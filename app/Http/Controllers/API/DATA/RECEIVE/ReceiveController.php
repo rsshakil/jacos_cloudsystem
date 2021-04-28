@@ -185,6 +185,7 @@ class ReceiveController extends Controller
         ->where('mes_lis_acc_tra_goo_major_category',$major_category)
         ->where('mes_lis_acc_log_del_delivery_service_code',$delivery_service_code)
         ->where('mes_lis_acc_par_sel_code',$sel_code)
+        ->where('mes_lis_acc_tra_dat_transfer_of_ownership_date',$ownership_date)
         ->whereNull('check_datetime')
         ->update(['check_datetime'=>$today]);
 
