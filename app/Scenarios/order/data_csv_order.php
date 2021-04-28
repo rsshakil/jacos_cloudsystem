@@ -60,7 +60,9 @@ class data_csv_order
 
         $dataArr = $this->all_functions->csvReader($received_path, 1);
         $cmn_connect_id = $this->all_functions->get_connect_id_from_file_name($file_name);
-
+        // $aaaaa=$this->pdfGenerate(1);
+        // Log::info($aaaaa);
+        // return "OK";
         $order_flg = true;
         $trade_number = '';
         DB::beginTransaction();
@@ -437,24 +439,29 @@ class data_csv_order
     // Mail
         $cmn_connect_options=cmn_connect::select('optional')->where('cmn_connect_id',$cmn_connect_id)->first();
         $optional=json_decode($cmn_connect_options->optional);
-        if ($optional->order->fax->exec) {
-            $this->fax_number=$optional->order->fax->number;
-            $this->attachment_paths_all=$this->pdfGenerate($data_order_id);
-            Log::info($this->attachment_paths_all);
+        try {
+            if ($optional->order->fax->exec) {
+                $this->fax_number=$optional->order->fax->number;
+                $this->attachment_paths_all=$this->pdfGenerate($data_order_id);
+                // Log::info($this->attachment_paths_all);
 
-        foreach ($this->attachment_paths_all as $key => $value) {
-            Log::info('send mail for fax:[to:'.config('const.PDF_SEND_MAIL').',subject:'.$this->fax_number.']');
-            $this->attachment_paths=$value;
-            Mail::send([],[] ,function($message) { $message->to(config('const.PDF_SEND_MAIL'))
-                ->subject($this->fax_number);
-                Log::info('attach file:'.$this->attachment_paths);
-                $message->attach($this->attachment_paths)
-                // foreach($this->attachment_paths as $filePath){
-                //     $message->attach($filePath);
-                // }
-                ->setBody(''); });
+            foreach ($this->attachment_paths_all as $key => $value) {
+                Log::info('send mail for fax:[to:'.config('const.PDF_SEND_MAIL').',subject:'.$this->fax_number.']');
+                $this->attachment_paths=$value;
+                Mail::send([],[] ,function($message) { $message->to(config('const.PDF_SEND_MAIL'))
+                    ->subject($this->fax_number);
+                    Log::info('attach file:'.$this->attachment_paths);
+                    $message->attach($this->attachment_paths)
+                    // foreach($this->attachment_paths as $filePath){
+                    //     $message->attach($filePath);
+                    // }
+                    ->setBody(''); });
+            }
+            }
+        } catch (\Throwable $th) {
+            return ['message' => "May be data font missing in database data or bad file", 'status' => 0];
         }
-        }
+
 
         // Mail
         return ['message' => "success", 'status' => 1];
@@ -465,7 +472,6 @@ class data_csv_order
         $page=0;
         $receipt=$this->fdfRet();
         $pdf_datas = $this->pdfDAta($data_order_id);
-        Log::info(count($pdf_datas));
         $x = 0;
         $y = 0;
         $i = 0;
@@ -473,7 +479,7 @@ class data_csv_order
         $page_limit=10;
         $file_number=1;
         $same_rec_code=1;
-        foreach ($pdf_datas as $pdf_data) {
+        foreach ($pdf_datas as $key=>$pdf_data) {
             if (!($i > count($pdf_datas))) {
                 if ($page!=0 && ($page % $page_limit)==0) {
                     // Log::info("i: ".($i));
@@ -552,6 +558,7 @@ class data_csv_order
         return $receipt;
     }
     public function fdfRet(){
+        Log::info("FPDI");
         $receipt = new Fpdi();
         // Set PDF margins (top left and right)
         $receipt->SetMargins(0, 0, 0);
