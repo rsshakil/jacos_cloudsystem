@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\CMN;
 
+use Session;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\API\AllUsedFunction;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +14,8 @@ class CmnBlogController extends Controller
 {
     private $all_used_fun;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->all_used_fun = new AllUsedFunction();
     }
     /**
@@ -24,80 +26,79 @@ class CmnBlogController extends Controller
     public function index()
     {
         //
-        $result = cmn_blog::where('is_delete','0')->where('blog_by',Auth::user()->id)->orderBy('is_top_blog','ASC')->orderBy('cmn_blog_id','DESC')->get();
+        $result = cmn_blog::where('is_delete', '0')->where('blog_by', Auth::user()->id)->orderBy('is_top_blog', 'ASC')->orderBy('cmn_blog_id', 'DESC')->get();
         return response()->json(['blog_list' => $result]);
     }
     public function get_all_published_blog_list()
     {
         //
-        $result = cmn_blog::where('is_delete','0')->where('blog_status','published')->where('blog_by',Auth::user()->id)->where('is_top_blog','0')->orderBy('is_top_blog','DESC')->orderBy('cmn_blog_id','DESC')->get();
+        $result = cmn_blog::where('is_delete', '0')->where('blog_status', 'published')->where('blog_by', Auth::user()->id)->where('is_top_blog', '0')->orderBy('is_top_blog', 'DESC')->orderBy('cmn_blog_id', 'DESC')->get();
         return response()->json(['blog_list' => $result]);
     }
     public function get_signle_top_blog()
     {
         //admin top blog
-        $super_admin_user_id = User::where('name','Jacos Super Admin')->first();
-        $result = cmn_blog::where('is_delete','0')->where('blog_status','published')->where('blog_by',$super_admin_user_id->id)->where('is_top_blog','1')->first();
-        if($result){
+        $super_admin_user_id = User::where('name', 'Jacos Super Admin')->first();
+        $result = cmn_blog::where('is_delete', '0')->where('blog_status', 'published')->where('blog_by', $super_admin_user_id->id)->where('is_top_blog', '1')->first();
+        if ($result) {
             return response()->json(['blog_list' => $result]);
-        }else{
-            $result = cmn_blog::where('is_delete','0')->where('blog_status','published')->where('blog_by',$super_admin_user_id->id)->orderBy('cmn_blog_id','DESC')->first();
-            if($result){
-            return response()->json(['blog_list' => $result]);
-            }else{
+        } else {
+            $result = cmn_blog::where('is_delete', '0')->where('blog_status', 'published')->where('blog_by', $super_admin_user_id->id)->orderBy('cmn_blog_id', 'DESC')->first();
+            if ($result) {
+                return response()->json(['blog_list' => $result]);
+            } else {
                 $result = array();
                 return response()->json(['blog_list' => $result]);
             }
         }
-
     }
     public function get_user_top_blog()
     {
         $authUser = Auth::user();
-        if($authUser->hasRole('Slr')){
+        if ($authUser->hasRole('Slr')) {
             $byr_info = $this->all_used_fun->get_slrs_byr_id();
-        $result = cmn_blog::where('is_delete','0')->where('blog_status','published')->where('blog_by',$byr_info->adm_user_id)->where('is_top_blog','1')->orderBy('cmn_blog_id','DESC')->first();
-        if($result){
-            return response()->json(['blog_list' => $result]);
-        }else{
-
-            $result =cmn_blog::where('is_delete','0')->where('blog_status','published')->where('blog_by',$byr_info->adm_user_id)->orderBy('cmn_blog_id','DESC')->first();
-            if($result){
+            $result = cmn_blog::where('is_delete', '0')->where('blog_status', 'published')->where('blog_by', $byr_info->adm_user_id)->where('is_top_blog', '1')->orderBy('cmn_blog_id', 'DESC')->first();
+            if ($result) {
                 return response()->json(['blog_list' => $result]);
-            }else{
-                $result = array();
-                return response()->json(['blog_list' => $result]);
+            } else {
+                $result =cmn_blog::where('is_delete', '0')->where('blog_status', 'published')->where('blog_by', $byr_info->adm_user_id)->orderBy('cmn_blog_id', 'DESC')->first();
+                if ($result) {
+                    return response()->json(['blog_list' => $result]);
+                } else {
+                    $result = array();
+                    return response()->json(['blog_list' => $result]);
+                }
             }
-
+        } else {
+            $result = array();
+            return response()->json(['blog_list' => $result]);
         }
-    }else{
-        $result = array();
-                return response()->json(['blog_list' => $result]);
-    }
     }
     public function get_user_top_blog_by_byr_id($byr_buyer_id)
     {
+        \log::debug('get_user_top_blog_by_byr_id start');
         $authUser = Auth::user();
-        if($authUser->hasRole('Slr')){
+        // save session
+        Session::put('byr_buyer_id', $byr_buyer_id);
+
+        if ($authUser->hasRole('Slr')) {
             $byr_info = $this->all_used_fun->get_byr_info_by_byr_buyer_id($byr_buyer_id);
-        $result = cmn_blog::where('is_delete','0')->where('blog_status','published')->where('blog_by',$byr_info->adm_user_id)->where('is_top_blog','1')->orderBy('cmn_blog_id','DESC')->first();
-        if($result){
-            return response()->json(['blog_list' => $result]);
-        }else{
-
-            $result =cmn_blog::where('is_delete','0')->where('blog_status','published')->where('blog_by',$byr_info->adm_user_id)->orderBy('cmn_blog_id','DESC')->first();
-            if($result){
+            $result = cmn_blog::where('is_delete', '0')->where('blog_status', 'published')->where('blog_by', $byr_info->adm_user_id)->where('is_top_blog', '1')->orderBy('cmn_blog_id', 'DESC')->first();
+            if ($result) {
                 return response()->json(['blog_list' => $result]);
-            }else{
-                $result = array();
-                return response()->json(['blog_list' => $result]);
+            } else {
+                $result =cmn_blog::where('is_delete', '0')->where('blog_status', 'published')->where('blog_by', $byr_info->adm_user_id)->orderBy('cmn_blog_id', 'DESC')->first();
+                if ($result) {
+                    return response()->json(['blog_list' => $result]);
+                } else {
+                    $result = array();
+                    return response()->json(['blog_list' => $result]);
+                }
             }
-
+        } else {
+            $result = array();
+            return response()->json(['blog_list' => $result]);
         }
-    }else{
-        $result = array();
-                return response()->json(['blog_list' => $result]);
-    }
     }
 
     /**
@@ -115,7 +116,7 @@ class CmnBlogController extends Controller
     }
     public function store(Request $request)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'blog_title' => 'required|min:5',
             'blog_content'=>'required'
         ]);
@@ -127,35 +128,36 @@ class CmnBlogController extends Controller
         $feature_img = $request->feature_img;
         $img = '';
         if (!empty($feature_img)) {
-            if($request->cmn_blog_id!=''){
-                $info=cmn_blog::where('cmn_blog_id',$request->cmn_blog_id)->first();
+            if ($request->cmn_blog_id!='') {
+                $info=cmn_blog::where('cmn_blog_id', $request->cmn_blog_id)->first();
                 $img = $info->feature_img;
             }
-            if($img!=$feature_img){
+            if ($img!=$feature_img) {
                 $imgs = $this->all_used_fun->save_base64_image($feature_img, 'blog_image_'. time(), $path_with_end_slash = "storage/app/public/backend/images/blog_images/");
                 $arr['feature_img'] = $imgs;
             }
         }
-        if($request->cmn_blog_id!=''){
-            cmn_blog::where('cmn_blog_id',$request->cmn_blog_id)->update($arr);
-        }else{
+        if ($request->cmn_blog_id!='') {
+            cmn_blog::where('cmn_blog_id', $request->cmn_blog_id)->update($arr);
+        } else {
             cmn_blog::insert($arr);
         }
         return response()->json(['success' => 1]);
     }
 
-    public function update_blog_infos(Request $request){
+    public function update_blog_infos(Request $request)
+    {
         $act_type = $request->action_type;
         $blog_info = $request->blog;
         $cmn_blog_id = $blog_info['cmn_blog_id'];
-        if($act_type==0 || $act_type==1){
+        if ($act_type==0 || $act_type==1) {
             $pub_type = ($act_type==0?'unpublished':'published');
-            cmn_blog::where('cmn_blog_id',$cmn_blog_id)->update(['blog_status'=>$pub_type]);
-        }else if($act_type==2){
-            cmn_blog::where('blog_by',Auth::user()->id)->update(['is_top_blog'=>'0']);
-            cmn_blog::where('cmn_blog_id',$cmn_blog_id)->update(['is_top_blog'=>'1']);
-        }else{
-            cmn_blog::where('cmn_blog_id',$cmn_blog_id)->update(['is_delete'=>'1']);
+            cmn_blog::where('cmn_blog_id', $cmn_blog_id)->update(['blog_status'=>$pub_type]);
+        } elseif ($act_type==2) {
+            cmn_blog::where('blog_by', Auth::user()->id)->update(['is_top_blog'=>'0']);
+            cmn_blog::where('cmn_blog_id', $cmn_blog_id)->update(['is_top_blog'=>'1']);
+        } else {
+            cmn_blog::where('cmn_blog_id', $cmn_blog_id)->update(['is_delete'=>'1']);
         }
         return response()->json(['success' => 1]);
     }
