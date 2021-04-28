@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use Illuminate\Support\Facades\DB;
 class CreateByrBuyersTable extends Migration
 {
     /**
@@ -13,7 +13,7 @@ class CreateByrBuyersTable extends Migration
      */
     public function up()
     {
-      
+
         Schema::create('byr_buyers', function (Blueprint $table) {
             $table->increments('byr_buyer_id')->unsigned()->comment('byr_buyer_id');
             $table->unsignedInteger('cmn_company_id');
@@ -38,6 +38,6 @@ class CreateByrBuyersTable extends Migration
             $table->dropForeign('cmn_company_id'); //
         });
         Schema::dropIfExists('byr_buyers');
-        
+
     }
 }

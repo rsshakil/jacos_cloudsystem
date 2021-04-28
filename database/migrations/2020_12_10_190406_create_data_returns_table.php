@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class CreateDataReturnsTable extends Migration
 {
@@ -15,7 +16,6 @@ class CreateDataReturnsTable extends Migration
     {
         Schema::create('data_returns', function (Blueprint $table) {
             $table->increments('data_return_id')->unsigned()->comment('data_return_id');
-            // $table->integer('data_order_id')->unsigned()->comment('data_order_id');
             $table->integer('cmn_connect_id')->unsigned()->comment('cmn_connect_id');
             $table->dateTime('receive_datetime')->nullable()->comment('受信日時');
             $table->string('receive_file_path', 200)->nullable()->comment('receive_file_path');

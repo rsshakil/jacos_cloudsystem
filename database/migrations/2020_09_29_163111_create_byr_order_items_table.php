@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use Illuminate\Support\Facades\DB;
 class CreateByrOrderItemsTable extends Migration
 {
     /**
@@ -30,8 +30,8 @@ class CreateByrOrderItemsTable extends Migration
             $table->enum('order_inputs', ['ケース', 'ボール', 'バラ'])->default('ケース')->comment('order lot inputs');
             $table->decimal('order_quantity', 10, 1)->default('0.0')->comment('order quantity');
             $table->decimal('order_unit_quantity', 10, 1)->default('0.0')->comment('order unit quantity');
-            
-            
+
+
             $table->decimal('cost_unit_price', 10, 2)->default('0.00')->comment('cost unit price');
             $table->integer('cost_price')->unsigned()->default('0')->comment('cost price');
             $table->mediumInteger('selling_unit_price')->unsigned()->default('0')->comment('selling unit price');

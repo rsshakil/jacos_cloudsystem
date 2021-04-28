@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use Illuminate\Support\Facades\DB;
 class CreateByrItemClassesTable extends Migration
 {
     /**
@@ -18,7 +18,7 @@ class CreateByrItemClassesTable extends Migration
             $table->integer('byr_item_id')->unsigned()->comment('byr item Id');
             $table->enum('order_class', ['basic', 'sale','spot'])->default('basic')->comment('byr Class');
             $table->decimal('cost_price',9,2)->comment(' shop Price');
-            $table->decimal('shop_price',9,2)->comment(' shop Price'); 
+            $table->decimal('shop_price',9,2)->comment(' shop Price');
             $table->date('start_date')->comment('basic Start Date');
             $table->date('end_date')->nullable()->comment('basic End Date');
             $table->enum('order_point_inputs', ['ケース', 'ボール','バラ'])->default('ケース')->comment(' Order Point Inputs');
