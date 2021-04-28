@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\API\CMN;
 
-use Session;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\API\AllUsedFunction;
 use Illuminate\Support\Facades\Auth;
@@ -78,8 +77,6 @@ class CmnBlogController extends Controller
     {
         \log::debug('get_user_top_blog_by_byr_id start');
         $authUser = Auth::user();
-        // save session
-        Session::put('byr_buyer_id', $byr_buyer_id);
 
         if ($authUser->hasRole('Slr')) {
             $byr_info = $this->all_used_fun->get_byr_info_by_byr_buyer_id($byr_buyer_id);
