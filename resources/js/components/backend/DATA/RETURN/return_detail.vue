@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-12" style="padding: 10px">
+       <div class="col-12">
+      <div class="col-12" style="background: rgb(216, 227, 240); padding: 10px;">
         <table
           class="table orderTopDetailTable table-bordered"
           style="width: 100%"
@@ -28,7 +29,9 @@
          
         </table>
       </div>
-      <div class="col-12" style="background: #d8e3f0; padding: 10px">
+      </div>
+       <div class="col-12">
+      <div class="col-12" style="background: #d8e3f0; padding: 10px;margin-top: 20px;">
         <table
           class="table orderDetailTable table-bordered"
           style="width: 100%"
@@ -91,6 +94,7 @@
           </tr>
 
         </table>
+      </div>
       </div>
 
       <div class="col-12" style="text-align: center">
