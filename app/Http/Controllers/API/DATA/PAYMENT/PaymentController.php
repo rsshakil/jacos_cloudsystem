@@ -357,4 +357,21 @@ class PaymentController extends Controller
         return response()->json(['order_customer_code_lists' => $result]);
 
     }
+    public function get_payment_trade_code_list(Request $request)
+    {
+        $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
+        $result = DB::select("SELECT
+        
+        dppd.mes_lis_pay_lin_tra_code,
+        dppd.mes_lis_pay_lin_tra_name
+        FROM
+       data_payments AS dp
+       INNER JOIN data_payment_pays AS dpp ON dp.data_payment_id=dpp.data_payment_id
+       LEFT JOIN data_payment_pay_details AS dppd ON dpp.data_payment_pay_id=dppd.data_payment_pay_id
+       WHERE dp.cmn_connect_id='".$cmn_connect_id."' and dp.data_payment_id = '".$request->payment_id."'
+       GROUP BY
+       dppd.mes_lis_pay_lin_tra_code");
+        return response()->json(['order_customer_code_lists' => $result]);
+
+    }
 }
