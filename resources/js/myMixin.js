@@ -23,7 +23,7 @@ mes_lis_ord_tra_ins_goods_classification_codeList: [],
       mes_lis_ord_tra_ins_trade_type_codeList: [],
       mes_lis_inv_lin_det_balance_carried_codeList:[],
       mes_lis_inv_lin_det_pay_code_list:[],
-buyer_category_list:[],
+      byr_buyer_category_lists:[],
             filter_select_box: false,
             buyers: [],
             selected_buyer: [],
@@ -41,6 +41,11 @@ buyer_category_list:[],
             returnsJson: {},
             invoicesJson: {},
             paymentsJson: {},
+            paramInfo: {
+                component_name:'',
+                byr_buyer_id:'',
+                adm_user_id:Globals.user_info_id
+            },
 
             // loader: "",
         };
@@ -61,8 +66,8 @@ buyer_category_list:[],
 
         // Database created and updated datetime conversion
         getbuyerJsonSettingvalue() {
-
-            axios.get(this.BASE_URL + "api/buyerJsonSetting/" + this.byr_buyer_id)
+            this.paramInfo.component_name = this.$route.name;
+            axios.post(this.BASE_URL + "api/buyerJsonSetting", this.paramInfo)
                 .then(({ data }) => {
                     this.init(data.status);
                     this.buyer_settings = data.buyer_settings;
@@ -83,7 +88,8 @@ buyer_category_list:[],
                     
                     this.invoicesJson = this.buyer_settings.invoices;
                     this.paymentsJson = this.buyer_settings.payments;
-                    this.buyer_category_list = data.buyer_category_list;
+                    this.byr_buyer_category_lists = data.buyer_category_list;
+                    this.byr_buyer_category_lists.unshift({category_code:'*',category_name:'全て'});
                 });
         },
         getbyrjsonValueBykeyName(arrName, arrKey, orderType = "orders", buyer_settings = []) {
@@ -365,6 +371,8 @@ buyer_category_list:[],
         //     this.$router.push('/home')
         // }
         this.byr_buyer_id = this.$session.get('byr_buyer_id');
+        this.paramInfo.byr_buyer_id = this.$session.get('byr_buyer_id');
+       
         //this.getbuyerJsonSettingvalue();
         // this.user_data = this.app._data;
 

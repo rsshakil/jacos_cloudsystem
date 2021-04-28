@@ -280,8 +280,7 @@ class InvoiceController extends Controller
             ->where('dip.status',$param_data['status']);
         $result = $result->orderBy('dipd.'.$sort_by,$sort_type);
         $result=$result->paginate($per_page);
-        $byr_buyer_category_list = $this->all_used_fun->get_allCategoryByByrId($byr_buyer_id);
-        return response()->json(['invoice_details_list' => $result,'byr_buyer_category_list'=>$byr_buyer_category_list]);
+        return response()->json(['invoice_details_list' => $result]);
     }
 
     public function sendInvoiceData(Request $request){

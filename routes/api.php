@@ -84,7 +84,7 @@ Route::post('/get_order_list', 'API\DATA\ORDER\OrderController@orderList');
 Route::post('/get_order_customer_code_list', 'API\DATA\ORDER\OrderController@get_order_customer_code_list');
 Route::post('/get_return_customer_code_list', 'API\DATA\RTN\ReturnController@get_return_customer_code_list');
 Route::post('/get_receive_customer_code_list', 'API\DATA\RECEIVE\ReceiveController@get_receive_customer_code_list');
-Route::get('/buyerJsonSetting/{byr_buyer_id}', 'API\BYR\ByrController@buyerJsonSetting');
+Route::post('/buyerJsonSetting', 'API\BYR\ByrController@buyerJsonSetting');
 Route::get('/get_all_company_list/{adm_user_id}', 'API\BYR\ByrController@get_all_company_list');
 // Shipment
 Route::post('update_shipment_detail_bycurrentdatetime', 'API\DATA\SHIPMENT\ShipmentController@decessionData');
