@@ -73,8 +73,8 @@ class data_invoice_scheduler
                 $data_invoice_array['mes_lis_pay_name_sbcs']=$shipment_data['mes_lis_pay_name_sbcs'];
                 $datashipment=false;
                 $data_invoice_id=data_invoice::insertGetId($data_invoice_array);
-                data_shipment_voucher::where('data_shipment_voucher_id',$shipment_data['data_shipment_voucher_id'])->update(['invoice_datetime'=>date('Y-m-d H:i:s')]);
             }
+            data_shipment_voucher::where('data_shipment_voucher_id',$shipment_data['data_shipment_voucher_id'])->update(['invoice_datetime'=>date('Y-m-d H:i:s')]);
 
                 $data_invoice_pay_array['mes_lis_buy_code']=$shipment_data['mes_lis_buy_code'];
                 $data_invoice_pay_array['mes_lis_buy_gln']=$shipment_data['mes_lis_buy_gln'];
