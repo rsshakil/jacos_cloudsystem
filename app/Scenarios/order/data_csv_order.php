@@ -46,6 +46,7 @@ class data_csv_order
         // return $chunks->all();
         Log::debug(get_class() . ' exec start  ---------------');
         if (!array_key_exists('up_file', $request->all())) {
+            Log::error("File not found or file path not valid");
             // return response()->json(['message' => "error", 'status' => '0']);
             return ['message' => "error", 'status' => '0'];
         }
@@ -429,12 +430,7 @@ class data_csv_order
                 $data_item_array = array();
                 $data_shi_item_array = array();
             }
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollback();
-            return ['message' => $e, 'status' => 0];
-            // something went wrong
-        }
+
     // });
     // Mail
         $cmn_connect_options=cmn_connect::select('optional')->where('cmn_connect_id',$cmn_connect_id)->first();
@@ -458,10 +454,17 @@ class data_csv_order
                     ->setBody(''); });
             }
             }
-        } catch (\Throwable $th) {
+        } catch (\Exception $e) {
+            Log::error($e->getMessage().' Or May be data font missing in database data or bad file');
             return ['message' => "May be data font missing in database data or bad file", 'status' => 0];
         }
-
+        DB::commit();
+    } catch (\Exception $e) {
+        DB::rollback();
+        Log::error($e->getMessage());
+        return ['message' => $e, 'status' => 0];
+        // something went wrong
+    }
 
         // Mail
         return ['message' => "success", 'status' => 1];

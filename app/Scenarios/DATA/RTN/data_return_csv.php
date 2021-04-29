@@ -23,6 +23,7 @@ class data_return_csv
     {
         Log::debug(get_class().' exec start  ---------------');
         if (!array_key_exists('up_file',$request->all())) {
+            Log::error("File not found or file path not valid");
             // return response()->json(['message' => "error", 'status' => '0']);
             return ['message' => "error", 'status' => '0'];
         }
@@ -223,6 +224,7 @@ class data_return_csv
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
+            Log::error($e->getMessage());
             return ['message' => $e, 'status' => 0];
             // something went wrong
         }

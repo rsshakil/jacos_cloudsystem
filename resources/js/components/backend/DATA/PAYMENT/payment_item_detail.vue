@@ -165,15 +165,7 @@
           </thead>
           <tbody>
             <tr v-for="(value,index) in paymentdetailTopTable.data" :key="index">
-              <td>{{
-
-paymentdetailTopTable.current_page *
-                      form.select_field_per_page_num -
-                    form.select_field_per_page_num +
-                    index +
-                    1
-
-              }}</td>
+              <td>{{ paymentdetailTopTable.current_page * form.select_field_per_page_num - form.select_field_per_page_num + index + 1 }}</td>
               <td>{{value.mes_lis_pay_lin_det_transfer_of_ownership_date}}</td>
               <td>{{value.mes_lis_pay_lin_det_goo_major_category}}</td>
               <td>{{value.mes_lis_pay_lin_tra_code}}</td>
@@ -293,6 +285,7 @@ breadcrumb(){
         payment_id:'',
         sort_by:'data_payment_pay_detail_id ',
         sort_type:"ASC",
+        pay_code:[1001, 1002, 1004]
       }),
     };
   },

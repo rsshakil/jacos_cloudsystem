@@ -221,6 +221,7 @@ class PaymentController extends Controller
         $mes_lis_pay_lin_det_balance_carried_code = $request->mes_lis_pay_lin_det_balance_carried_code;
         $sort_by = $request->sort_by;
         $sort_type = $request->sort_type;
+        $pay_code=$request->pay_code;
         $result = data_payment::select('data_payments.data_payment_id', 'data_payments.receive_datetime',
             'dpp.mes_lis_pay_pay_code',
             'dpp.mes_lis_pay_pay_name',
@@ -245,10 +246,22 @@ class PaymentController extends Controller
                 ->groupBy('dppd.mes_lis_pay_lin_det_pay_out_date')
             ->first();
 
-        $result1 = data_payment_pay_detail::select('data_payment_pay_details.*','dpp.*')
+        $result1 = data_payment_pay_detail::select(
+            'data_payment_pay_details.data_payment_pay_detail_id',
+            'data_payment_pay_details.mes_lis_pay_lin_det_transfer_of_ownership_date',
+            'data_payment_pay_details.mes_lis_pay_lin_det_goo_major_category',
+            'data_payment_pay_details.mes_lis_pay_lin_tra_code',
+            'data_payment_pay_details.mes_lis_pay_lin_lin_trade_number_eference',
+            'data_payment_pay_details.mes_lis_pay_lin_det_pay_code',
+            'data_payment_pay_details.mes_lis_pay_lin_det_trade_type_code',
+            'data_payment_pay_details.mes_lis_pay_lin_det_balance_carried_code',
+            'data_payment_pay_details.mes_lis_pay_lin_det_amo_requested_amount',
+            'data_payment_pay_details.mes_lis_pay_lin_det_amo_payable_amount',
+            'data_payment_pay_details.mes_lis_pay_lin_det_verification_result_code'
+            )
             ->join('data_payment_pays as dpp', 'data_payment_pay_details.data_payment_pay_id', '=', 'dpp.data_payment_pay_id')
             ->where(['dpp.data_payment_id' => $payment_id])
-            ->whereIn('data_payment_pay_details.mes_lis_pay_lin_det_pay_code', ['1001', '1002', '1004']);
+            ->whereIn('data_payment_pay_details.mes_lis_pay_lin_det_pay_code', $pay_code);
         if ($from_date != '' && $from_date != null) {
             $result1 = $result1->whereDate('data_payment_pay_details.mes_lis_pay_lin_det_transfer_of_ownership_date', '>=', $from_date);
         }
@@ -360,6 +373,7 @@ class PaymentController extends Controller
     public function get_payment_trade_code_list(Request $request)
     {
         $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
+        $pay_code=implode(",",$request->pay_code);
         $result = DB::select("SELECT
         dppd.mes_lis_pay_lin_tra_code,
         -- dppd.mes_lis_pay_lin_tra_name,
@@ -372,7 +386,7 @@ class PaymentController extends Controller
         INNER JOIN data_payment_pays AS dpp ON dp.data_payment_id=dpp.data_payment_id
         LEFT JOIN data_payment_pay_details AS dppd ON dpp.data_payment_pay_id=dppd.data_payment_pay_id
         WHERE dp.cmn_connect_id='".$cmn_connect_id."' and dp.data_payment_id = '".$request->payment_id."'
-        AND dppd.mes_lis_pay_lin_det_pay_code IN (1001, 1002, 1004)
+        AND dppd.mes_lis_pay_lin_det_pay_code IN ($pay_code)
         GROUP BY dppd.mes_lis_pay_lin_tra_code");
         return response()->json(['order_customer_code_lists' => $result]);
 
