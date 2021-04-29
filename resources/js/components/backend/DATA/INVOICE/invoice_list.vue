@@ -280,12 +280,12 @@ export default {
     },
     //get Table data
     showAllCustomerCode(){
-    // let loaders = Vue.$loading.show();
+    let loaders = Vue.$loading.show();
       this.showAllCustomerCodeListModal = true;
       this.form.post(this.BASE_URL + "api/get_invoice_customer_code_list", this.form)
         .then(({ data }) => {
           this.order_customer_code_lists = data.order_customer_code_lists;
-      //   loaders.hide();
+          loaders.hide();
         });
     },
     viewInvoicePopup(){
@@ -295,6 +295,7 @@ export default {
     //get Table data
     get_all_invoice_list(page = 1) {
         this.form.page=page;
+         let loader = Vue.$loading.show();
       axios.post(this.BASE_URL + "api/get_all_invoice_list",this.form)
         .then(({data}) => {
             this.init(data.status);
@@ -302,6 +303,7 @@ export default {
           this.invoice_lists_length=this.invoice_lists.data.length;
           this.invoice_data_lists = data.invoice_list.data;
           this.byr_buyer_lists = data.byr_buyer_list;
+          loader.hide();
         });
     },
     sorting(sorted_field){

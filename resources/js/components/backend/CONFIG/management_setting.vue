@@ -133,11 +133,12 @@ export default {
     },
     //get Table data
     getAllCmnConnectOptionalJsons() {
+      let loader = Vue.$loading.show();
       axios.post(this.BASE_URL + "api/get_partner_fax_list",this.form)
         .then(({ data }) => {
             this.init(data.status);
             this.cmnConnectOptionList = data.result;
-          
+            loader.hide();
         });
     },
    updateInvoiceSettingByModal(item){

@@ -260,12 +260,14 @@ export default {
     },
     //get Table data
     getAllPayments() {
+      let loader = Vue.$loading.show();
       axios.post(this.BASE_URL + "api/get_payment_list", this.form)
         .then(({ data }) => {
           this.init(data.status);
           this.payment_lists = data.payment_item_list;
           this.payment_lists_length = this.payment_lists.data.length;
           this.byr_buyer_lists = data.byr_buyer_list;
+          loader.hide();
         });
     },
     sorting(sorted_field){

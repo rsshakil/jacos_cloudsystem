@@ -292,13 +292,14 @@ export default {
     //get Table data
     getAllReturnList(page = 1) {
         this.form.page=page;
+        let loader = Vue.$loading.show();
         axios.post(this.BASE_URL +"api/data_return_list",this.form)
             .then(({data}) => {
                 this.init(data.status);
                 this.return_item_list = data.return_item_list;
                 this.received_item_length = this.return_item_list.data.length;
                 this.byr_buyer_lists = data.byr_buyer_list;
-
+                loader.hide();
             });
     },
     sorting(sorted_field){

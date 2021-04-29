@@ -336,13 +336,14 @@ export default {
     //get Table data
     getAllReceivedItem(page = 1) {
         this.form.page=page;
+         let loader = Vue.$loading.show();
         axios.post(this.BASE_URL +"api/data_receive_list",this.form)
             .then(({data}) => {
                 this.init(data.status);
                 this.received_item_list = data.received_item_list;
                 this.received_item_length = this.received_item_list.data.length;
                 this.byr_buyer_lists = data.byr_buyer_list;
-
+                 loader.hide();
             });
     },
     sorting(sorted_field){
