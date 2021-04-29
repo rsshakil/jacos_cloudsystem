@@ -245,8 +245,8 @@ class PaymentController extends Controller
                 ->groupBy('dppd.mes_lis_pay_lin_det_pay_out_date')
             ->first();
 
-        $result1 = data_payment_pay_detail::
-            join('data_payment_pays as dpp', 'data_payment_pay_details.data_payment_pay_id', '=', 'dpp.data_payment_pay_id')
+        $result1 = data_payment_pay_detail::select('data_payment_pay_details.*','dpp.*')
+            ->join('data_payment_pays as dpp', 'data_payment_pay_details.data_payment_pay_id', '=', 'dpp.data_payment_pay_id')
             ->where(['dpp.data_payment_id' => $payment_id])
             ->whereIn('data_payment_pay_details.mes_lis_pay_lin_det_pay_code', ['1001', '1002', '1004']);
         if ($from_date != '' && $from_date != null) {
@@ -361,16 +361,19 @@ class PaymentController extends Controller
     {
         $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
         $result = DB::select("SELECT
-        
         dppd.mes_lis_pay_lin_tra_code,
-        dppd.mes_lis_pay_lin_tra_name
+        -- dppd.mes_lis_pay_lin_tra_name,
+        (CASE WHEN dppd.mes_lis_pay_lin_tra_name=''
+        THEN dppd.mes_lis_pay_lin_tra_name_sbcs
+        ELSE dppd.mes_lis_pay_lin_tra_name
+        END) AS mes_lis_pay_lin_tra_name
         FROM
-       data_payments AS dp
-       INNER JOIN data_payment_pays AS dpp ON dp.data_payment_id=dpp.data_payment_id
-       LEFT JOIN data_payment_pay_details AS dppd ON dpp.data_payment_pay_id=dppd.data_payment_pay_id
-       WHERE dp.cmn_connect_id='".$cmn_connect_id."' and dp.data_payment_id = '".$request->payment_id."'
-       GROUP BY
-       dppd.mes_lis_pay_lin_tra_code");
+        data_payments AS dp
+        INNER JOIN data_payment_pays AS dpp ON dp.data_payment_id=dpp.data_payment_id
+        LEFT JOIN data_payment_pay_details AS dppd ON dpp.data_payment_pay_id=dppd.data_payment_pay_id
+        WHERE dp.cmn_connect_id='".$cmn_connect_id."' and dp.data_payment_id = '".$request->payment_id."'
+        AND dppd.mes_lis_pay_lin_det_pay_code IN (1001, 1002, 1004)
+        GROUP BY dppd.mes_lis_pay_lin_tra_code");
         return response()->json(['order_customer_code_lists' => $result]);
 
     }
