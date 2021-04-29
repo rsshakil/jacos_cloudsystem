@@ -340,6 +340,83 @@
       <b-modal
       size="lg"
       :hide-backdrop="true"
+      title="請求伝票追加"
+      ok-title="追加"
+      cancel-title="キャンセル"
+      @ok.prevent="update_invoice_detail()"
+      v-model="addInvoiceDetailModal"
+    >
+      <div class="panel-body add_item_body">
+        <form>
+          <p class="text-center">請求伝票を追加できます</p>
+          <input type="hidden" v-model="invoiceDetail.data_invoice_id">
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">計上日</label>
+              <div class="col-sm-10">
+                <input type="date" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_transfer_of_ownership_date">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">部門コード</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_goo_major_category">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">納品先コード</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_tra_code">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">伝票番号</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_lin_trade_number_reference">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">請求内容</label>
+              <div class="col-sm-10">
+                <select class="form-control" v-model="invoiceDetail.mes_lis_inv_lin_det_pay_code">
+            <option value="*">全て</option>
+              <option
+                v-for="(temp, i) in mes_lis_inv_lin_det_pay_code_list"
+                :key="i" v-if="temp!=''" :value="i">
+                {{ temp }}
+              </option>
+            </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">請求区分</label>
+              <div class="col-sm-10">
+                <select class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_balance_carried_code">
+                <option value="*">全て</option>
+              <option
+                v-for="(temp, i) in mes_lis_inv_lin_det_balance_carried_codeList"
+                :key="i" v-if="temp!='' " :value="i">
+                {{ temp }}
+              </option>
+            </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">請求金額</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_amo_requested_amount">
+              </div>
+            </div>
+
+        </form>
+      </div>
+      <!-- </div>
+        </div>
+      </div>-->
+    </b-modal>
+
+<b-modal
+      size="lg"
+      :hide-backdrop="true"
       title="請求伝票変更"
       ok-title="変更"
       cancel-title="キャンセル"
@@ -413,7 +490,6 @@
         </div>
       </div>-->
     </b-modal>
-
 
 <b-modal
       size="xl"
@@ -541,6 +617,7 @@ export default {
       invoice_detail_length: 0,
       byr_voucher_lists: {},
       editInvoiceDetailModal:false,
+      addInvoiceDetailModal:false,
       invoiceCompareModal:false,
       invoiceitemDatalistModal:false,
       invoice_lists_length:0,
@@ -630,7 +707,7 @@ export default {
       // this.invoiceDetail.fill(value)
     },
     addInvoiceDetail(){
-      this.editInvoiceDetailModal = true;
+      this.addInvoiceDetailModal = true;
         this.invoiceDetail = {
           data_invoice_pay_detail_id:'',
         data_invoice_id:this.$route.query.data_invoice_id,
