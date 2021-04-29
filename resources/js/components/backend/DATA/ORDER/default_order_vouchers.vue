@@ -731,9 +731,9 @@
             <thead>
                 <tr>
                     <th>NO</th>
-                    <th>納品先コード</th>
-                    <th>納品先名</th>
-                    <th>納品経路</th>
+                    <th>商品コード</th>
+                    <th>商品名</th>
+                    <th>規格</th>
                 </tr>
             </thead>
             <tbody>
