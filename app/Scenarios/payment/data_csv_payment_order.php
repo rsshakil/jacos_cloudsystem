@@ -9,6 +9,7 @@ use App\Models\DATA\PAYMENT\data_payment_pay;
 use App\Models\DATA\PAYMENT\data_payment_pay_detail;
 use App\Http\Controllers\API\AllUsedFunction;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class data_csv_payment_order extends Model
 {
@@ -21,8 +22,9 @@ class data_csv_payment_order extends Model
 
     public function exec($request, $sc)
     {
-        \Log::debug(get_class().' exec start  ---------------');
+        Log::debug(get_class().' exec start  ---------------');
         if (!array_key_exists('up_file',$request->all())) {
+            Log::error("File not found or file path not valid");
             // return response()->json(['message' => "error", 'status' => '0']);
             return ['message' => "error", 'status' => '0'];
         }
@@ -30,7 +32,7 @@ class data_csv_payment_order extends Model
         $file_name = time().'-'.$request->file('up_file')->getClientOriginalName();
         // return response()->json(['file_name'=>$file_name,'status'=>0]);
         $path = $request->file('up_file')->storeAs(config('const.PAYMENT_DATA_PATH').date('Y-m'), $file_name);
-        \Log::debug('save path:'.$path);
+        Log::debug('save path:'.$path);
 
         $received_path = storage_path().'/app//'.config('const.PAYMENT_DATA_PATH').date('Y-m').'/'.$file_name;
         // フォーマット変換
@@ -156,6 +158,7 @@ DB::beginTransaction();
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
+            Log::error($e->getMessage());
             return ['message' => $e, 'status' => 0];
             // something went wrong
         }

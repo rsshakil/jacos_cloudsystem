@@ -138,7 +138,8 @@ class data_invoice_scheduler
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
-            return ['message' => $e, 'status' => 0];
+            Log::error($e->getMessage());
+            return ['message' => $e->getMessage(), 'status' => 0];
             // something went wrong
         }
 
