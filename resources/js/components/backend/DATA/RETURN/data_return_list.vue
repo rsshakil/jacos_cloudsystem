@@ -242,11 +242,9 @@ export default {
       return_item_list: {},
       received_item_length: 0,
       byr_buyer_lists: {},
-      byr_buyer_category_lists: [],
       order_customer_code_lists: {},
       showAllCustomerCodeListModal:false,
       byr_buyer_id:null,
-      buyer_settings:[],
       form: new Form({
         select_field_per_page_num:10,
         page:1,
@@ -300,9 +298,6 @@ export default {
                 this.return_item_list = data.return_item_list;
                 this.received_item_length = this.return_item_list.data.length;
                 this.byr_buyer_lists = data.byr_buyer_list;
-                this.byr_buyer_category_lists = data.byr_buyer_category_list;
-                this.byr_buyer_category_lists.unshift({category_code:'*',category_name:'全て'});
-                this.buyer_settings = JSON.parse(data.buyer_settings);
 
             });
     },
@@ -327,6 +322,7 @@ export default {
   created() {
         this.byr_buyer_id=this.$session.get("byr_buyer_id");
         this.form.byr_buyer_id=this.byr_buyer_id;
+this.getbuyerJsonSettingvalue();
         this.getAllReturnList();
         // Fire.$on("LoadAllReceiveItem", () => {
         //   this.getAllReturnList();

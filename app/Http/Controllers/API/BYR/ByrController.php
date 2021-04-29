@@ -206,9 +206,10 @@ class ByrController extends Controller
                     $fieldname = 'mes_lis_pay_lin_det_goo_major_category';
                 break;
         }
-        $catListitem = DB::select("SELECT 
+
+        $catListitem = \DB::select("SELECT 
         $pv_table.$fieldname as category_code,
-        cmn_categories.category_name
+        CONCAT(COALESCE($pv_table.$fieldname,''),' | ',COALESCE(cmn_categories.category_name,'')) AS category_name
          FROM $p_table
             INNER JOIN $pv_table
             LEFT JOIN cmn_categories ON $pv_table.$fieldname=cmn_categories.category_code AND cmn_categories.byr_buyer_id='".$byr_buyer_id."' 

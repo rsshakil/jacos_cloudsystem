@@ -164,8 +164,7 @@ class OrderController extends Controller
         ->orderBy('dov.mes_lis_ord_tra_ins_temperature_code')
         ->paginate($per_page);
         $byr_buyer = $this->all_used_fun->get_company_list($cmn_company_id);
-        $byr_buyer_category_list = $this->all_used_fun->get_allCategoryByByrId($byr_buyer_id);
-        return response()->json(['order_list' => $result, 'byr_buyer_list' => $byr_buyer, 'byr_buyer_category_list'=>$byr_buyer_category_list]);
+        return response()->json(['order_list' => $result, 'byr_buyer_list' => $byr_buyer]);
     }
     public function getByrOrderDataBySlr(Request $request)
     {

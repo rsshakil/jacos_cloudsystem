@@ -61,11 +61,11 @@
             <!-- <td>{{ myLang.shipment }}</td> -->
             <td class="cl_custom_color">部門</td>
             <td>
-                <select class="form-control" v-model="form.major_category">
+                <!-- <select class="form-control" v-model="form.major_category">
                 <option value="*">全て</option>
                 <option v-for="(dsc, i) in byr_buyer_category_lists" :key="i" :value="Object.keys(dsc)[0]"> </option>
-              </select>
-                <!-- <multiselect v-model="form.major_category" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="true" :select-label="''" :deselect-label="''" :selected-label="'選択中'" :preserve-search="true" placeholder="部門"></multiselect> -->
+              </select> -->
+                <multiselect v-model="form.major_category" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="true" :select-label="''" :deselect-label="''" :selected-label="'選択中'" :preserve-search="true" placeholder="部門"></multiselect>
             </td>
             <td class="cl_custom_color">温度区分</td>
             <td>
@@ -286,12 +286,9 @@ export default {
       received_item_list: {},
       received_item_length: 0,
       byr_buyer_lists: {},
-      byr_buyer_category_lists: [],
       order_customer_code_lists: {},
       showAllCustomerCodeListModal:false,
-
       byr_buyer_id:null,
-      buyer_settings:[],
       form: new Form({
         select_field_per_page_num:10,
         page:1,
@@ -345,9 +342,6 @@ export default {
                 this.received_item_list = data.received_item_list;
                 this.received_item_length = this.received_item_list.data.length;
                 this.byr_buyer_lists = data.byr_buyer_list;
-                this.byr_buyer_category_lists = data.byr_buyer_category_list;
-                this.byr_buyer_category_lists.unshift({category_code:'*',category_name:'全て'});
-                this.buyer_settings = JSON.parse(data.buyer_settings);
 
             });
     },

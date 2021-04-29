@@ -322,7 +322,6 @@ export default {
       order_lists_length: 0,
       order_customer_code_lists: {},
       byr_buyer_lists: {},
-      byr_buyer_category_lists:[],
       file: "",
       selected_byr: "0",
       showAllCustomerCodeListModal:false,
@@ -391,8 +390,6 @@ export default {
           this.order_lists = data.order_list;
           this.order_lists_length = this.order_lists.data.length;
           this.byr_buyer_lists = data.byr_buyer_list;
-          this.byr_buyer_category_lists = data.byr_buyer_category_list;
-          this.byr_buyer_category_lists.unshift({category_code:'*',category_name:'全て'});
           this.loader.hide();
         });
     },
