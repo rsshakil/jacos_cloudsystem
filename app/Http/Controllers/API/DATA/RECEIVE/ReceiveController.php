@@ -323,6 +323,7 @@ class ReceiveController extends Controller
         // ->leftJoin('data_order_items as doi','doi.data_order_voucher_id','=','dov.data_order_voucher_id')
         ->where('dr.cmn_connect_id','=',$cmn_connect_id)
         ->where('drv.data_receive_voucher_id','=',$data_receive_voucher_id)
+        // ->groupBy('drv.data_receive_voucher_id')
         // ->groupBy('drv.mes_lis_acc_tra_trade_number')
        // ->paginate($per_page);
         ->get();
