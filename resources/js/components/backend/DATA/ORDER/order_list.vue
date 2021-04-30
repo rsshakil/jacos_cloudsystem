@@ -397,12 +397,13 @@ export default {
     },
     orderDownload(downloadType = 1) {
       //downloadcsvshipment_confirm
+      this.loader = Vue.$loading.show();
       this.downloadType=downloadType
       axios
         .post(this.BASE_URL + "api/downloadcsvshipment_confirm",this.form)
         .then(({ data }) => {
-           this.init(data.status);
            this.downloadFromUrl(data);
+           this.loader.hide();
         });
     },
     // orderDownload() {

@@ -1266,6 +1266,7 @@ export default {
     order_details_download(downloadType = 1) {
       //downloadcsvshipment_confirm
       var _this = this;
+      this.loader = Vue.$loading.show();
     //   this.order_info["form_search"] = this.form;
       axios
         .post(this.BASE_URL + "api/downloadcsvshipment_confirm", {
@@ -1277,8 +1278,8 @@ export default {
           form_search:this.form,
         })
         .then(({ data }) => {
-           this.init(data.status);
             this.downloadFromUrl(data);
+            this.loader.hide();
         });
     },
   },

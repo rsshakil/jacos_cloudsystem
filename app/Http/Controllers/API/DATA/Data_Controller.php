@@ -273,59 +273,77 @@ class Data_Controller extends Controller
             'data_shipments.sta_rec_ide_authority', //3
             'data_shipments.sta_doc_standard', //4
             'data_shipments.sta_doc_type_version', //5
-            'data_shipments.sta_doc_instance_identifier', //6
-            'data_shipments.sta_doc_type', //7
-            'data_shipments.sta_doc_creation_date_and_time', //8
-            'data_shipments.mes_ent_unique_creator_identification', //9
-            'data_shipments.mes_lis_pay_code', //10
-            'data_shipments.mes_lis_pay_gln', //11
-            'data_shipments.mes_lis_buy_code', //12
-            'data_shipments.mes_lis_buy_gln', //13
-            'data_shipments.mes_lis_buy_name', //14
-            'data_shipments.mes_lis_buy_name_sbcs', //15
+            'data_shipments.sta_doc_instance_identifier',
+            'data_shipments.sta_doc_type',
+            'data_shipments.sta_doc_creation_date_and_time',
+            'data_shipments.sta_bus_scope_type',
+            'data_shipments.sta_bus_scope_instance_identifier',
+            'data_shipments.sta_bus_scope_identifier',
+            'data_shipments.mes_ent_unique_creator_identification',
+            'data_shipments.mes_mes_sender_station_address',
+            'data_shipments.mes_mes_ultimate_receiver_station_address',
+            'data_shipments.mes_mes_immediate_receiver_station_addres',
+            'data_shipments.mes_mes_number_of_trading_documents',
+            'data_shipments.mes_mes_sys_key',
+            'data_shipments.mes_mes_sys_value',
+            'data_shipments.mes_lis_con_version',
+            'data_shipments.mes_lis_doc_version',
+            'data_shipments.mes_lis_ext_namespace',
+            'data_shipments.mes_lis_ext_version',
+            'data_shipments.mes_lis_pay_code',
+            'data_shipments.mes_lis_pay_gln',
+            'data_shipments.mes_lis_pay_name',
+            'data_shipments.mes_lis_pay_name_sbcs',
+            'data_shipments.mes_lis_buy_code',
+            'data_shipments.mes_lis_buy_gln',
+            'data_shipments.mes_lis_buy_name',
+            'data_shipments.mes_lis_buy_name_sbcs',
             // data_shipment_vouchers
-            'dsv.mes_lis_shi_tra_trade_number', //16
-            'dsv.mes_lis_shi_tra_additional_trade_number', //17
-            'dsv.mes_lis_shi_fre_shipment_number', //18
-            'dsv.mes_lis_shi_par_shi_code', //19
-            'dsv.mes_lis_shi_par_shi_gln', //20
-            'dsv.mes_lis_shi_par_shi_name', //21
-            'dsv.mes_lis_shi_par_shi_name_sbcs', //22
-            'dsv.mes_lis_shi_par_rec_code', //23
-            'dsv.mes_lis_shi_par_rec_gln', //24
-            'dsv.mes_lis_shi_par_rec_name', //25
-            'dsv.mes_lis_shi_par_rec_name_sbcs', //26
-            'dsv.mes_lis_shi_par_tra_code', //27
-            'dsv.mes_lis_shi_par_tra_gln', //28
-            'dsv.mes_lis_shi_par_tra_name', //29
-            'dsv.mes_lis_shi_par_tra_name_sbcs', //30
-            'dsv.mes_lis_shi_par_pay_code', //31
-            'dsv.mes_lis_shi_par_pay_gln', //32
-            'dsv.mes_lis_shi_par_pay_name', //33
-            'dsv.mes_lis_shi_par_pay_name_sbcs', //34
-            'dsv.mes_lis_shi_par_sel_code', //35
-            'dsv.mes_lis_shi_par_sel_gln', //36
-            'dsv.mes_lis_shi_par_sel_name', //37
-            'dsv.mes_lis_shi_par_sel_name_sbcs', //38
-            'dsv.mes_lis_shi_par_sel_branch_number', //39
-            'dsv.mes_lis_shi_par_sel_ship_location_code', //40
-            'dsv.mes_lis_shi_log_shi_gln', //41
-            'dsv.mes_lis_shi_log_del_route_code', //42
-            'dsv.mes_lis_shi_log_del_delivery_service_code', //43
-            'dsv.mes_lis_shi_log_del_stock_transfer_code', //44
-            'dsv.mes_lis_shi_log_del_delivery_code', //45
-            'dsv.mes_lis_shi_log_del_delivery_time', //46
-            'dsv.mes_lis_shi_log_del_transportation_code', //47
-            'dsv.mes_lis_shi_log_log_barcode_print', //48
-            'dsv.mes_lis_shi_log_log_category_name_print1', //49
-            'dsv.mes_lis_shi_log_log_category_name_print2', //50
-            'dsv.mes_lis_shi_log_log_receiver_abbr_name', //51
-            'dsv.mes_lis_shi_log_log_text', //52
-            'dsv.mes_lis_shi_log_log_text_sbcs', //53
-            'dsv.mes_lis_shi_log_maker_code_for_receiving', //54
-            'dsv.mes_lis_shi_log_delivery_slip_number', //55
-            'dsv.mes_lis_shi_tra_goo_major_category', //56
-            'dsv.mes_lis_shi_tra_goo_sub_major_category', //57
+            'dsv.mes_lis_shi_tra_trade_number',
+            'dsv.mes_lis_shi_tra_additional_trade_number',
+            'dsv.mes_lis_shi_fre_shipment_number',
+            'dsv.mes_lis_shi_par_shi_code',
+            'dsv.mes_lis_shi_par_shi_gln',
+            'dsv.mes_lis_shi_par_shi_name',
+            'dsv.mes_lis_shi_par_shi_name_sbcs',
+            'dsv.mes_lis_shi_par_rec_code',
+            'dsv.mes_lis_shi_par_rec_gln',
+            'dsv.mes_lis_shi_par_rec_name',
+            'dsv.mes_lis_shi_par_rec_name_sbcs',
+            'dsv.mes_lis_shi_par_tra_code',
+            'dsv.mes_lis_shi_par_tra_gln',
+            'dsv.mes_lis_shi_par_tra_name',
+            'dsv.mes_lis_shi_par_tra_name_sbcs',
+            'dsv.mes_lis_shi_par_dis_code',
+            'dsv.mes_lis_shi_par_dis_name',
+            'dsv.mes_lis_shi_par_dis_name_sbcs',
+            'dsv.mes_lis_shi_par_pay_code',
+            'dsv.mes_lis_shi_par_pay_gln',
+            'dsv.mes_lis_shi_par_pay_name',
+            'dsv.mes_lis_shi_par_pay_name_sbcs',
+            'dsv.mes_lis_shi_par_sel_code',
+            'dsv.mes_lis_shi_par_sel_gln',
+            'dsv.mes_lis_shi_par_sel_name',
+            'dsv.mes_lis_shi_par_sel_name_sbcs',
+            'dsv.mes_lis_shi_par_sel_branch_number',
+            'dsv.mes_lis_shi_par_sel_ship_location_code',
+            'dsv.mes_lis_shi_log_shi_gln',
+            'dsv.mes_lis_shi_log_del_route_code',
+            'dsv.mes_lis_shi_log_del_delivery_service_code',
+            'dsv.mes_lis_shi_log_del_stock_transfer_code',
+            'dsv.mes_lis_shi_log_del_delivery_code',
+            'dsv.mes_lis_shi_log_del_delivery_time',
+            'dsv.mes_lis_shi_log_del_transportation_code',
+            'dsv.mes_lis_shi_log_log_barcode_print',
+            'dsv.mes_lis_shi_log_log_category_name_print1',
+            'dsv.mes_lis_shi_log_log_category_name_print2',
+            'dsv.mes_lis_shi_log_log_receiver_abbr_name',
+            'dsv.mes_lis_shi_log_log_text',
+            'dsv.mes_lis_shi_log_log_text_sbcs',
+            'dsv.mes_lis_shi_log_maker_code_for_receiving',
+            'dsv.mes_lis_shi_log_delivery_slip_number',
+            'dsv.mes_lis_shi_tra_goo_major_category',
+            'dsv.mes_lis_shi_tra_goo_sub_major_category',
             DB::raw('CASE
             WHEN dsv.mes_lis_shi_tra_dat_order_date="0000-00-00"
             THEN ""
@@ -354,120 +372,114 @@ class Data_Controller extends Controller
             WHEN dsv.mes_lis_shi_tra_dat_campaign_end_date="0000-00-00"
             THEN ""
             ELSE dsv.mes_lis_shi_tra_dat_campaign_end_date  END'), //64
-
-            'dsv.mes_lis_shi_tra_ins_goods_classification_code', //65
-            'dsv.mes_lis_shi_tra_ins_order_classification_code', //66
-            'dsv.mes_lis_shi_tra_ins_ship_notification_request_code', //67
-
+            'dsv.mes_lis_shi_tra_ins_goods_classification_code',
+            'dsv.mes_lis_shi_tra_ins_order_classification_code',
+            'dsv.mes_lis_shi_tra_ins_ship_notification_request_code',
             DB::raw('CASE
             WHEN dsv.mes_lis_shi_tra_ins_eos_code=null
             THEN "01"
             WHEN dsv.mes_lis_shi_tra_ins_eos_code=""
             THEN "01"
             ELSE dsv.mes_lis_shi_tra_ins_eos_code  END'), //68
-
-            // 'data_shipment_vouchers.mes_lis_shi_tra_ins_eos_code',
-            'dsv.mes_lis_shi_tra_ins_private_brand_code', //69
-            'dsv.mes_lis_shi_tra_ins_temperature_code', //70
-            'dsv.mes_lis_shi_tra_ins_liquor_code', //71
-            'dsv.mes_lis_shi_tra_ins_trade_type_code', //72
-            'dsv.mes_lis_shi_tra_ins_paper_form_less_code', //73
-            'dsv.mes_lis_shi_tra_fre_trade_number_request_code', //74
-            'dsv.mes_lis_shi_tra_fre_package_code', //75
-            'dsv.mes_lis_shi_tra_fre_variable_measure_item_code', //76
-            'dsv.mes_lis_shi_tra_tax_tax_type_code', //77
-            'dsv.mes_lis_shi_tra_tax_tax_rate', //78
-            'dsv.mes_lis_shi_tra_not_text', //79
-            'dsv.mes_lis_shi_tra_not_text_sbcs', //80
-            'dsv.mes_lis_shi_tot_tot_net_price_total', //81
-            'dsv.mes_lis_shi_tot_tot_selling_price_total', //82
-            'dsv.mes_lis_shi_tot_tot_tax_total', //83
-            'dsv.mes_lis_shi_tot_tot_item_total', //84
-            'dsv.mes_lis_shi_tot_tot_unit_total', //85
+            'dsv.mes_lis_shi_tra_ins_private_brand_code',
+            'dsv.mes_lis_shi_tra_ins_temperature_code',
+            'dsv.mes_lis_shi_tra_ins_liquor_code',
+            'dsv.mes_lis_shi_tra_ins_trade_type_code',
+            'dsv.mes_lis_shi_tra_ins_paper_form_less_code',
+            'dsv.mes_lis_shi_tra_fre_trade_number_request_code',
+            'dsv.mes_lis_shi_tra_fre_package_code',
+            'dsv.mes_lis_shi_tra_fre_variable_measure_item_code',
+            'dsv.mes_lis_shi_tra_tax_tax_type_code',
+            'dsv.mes_lis_shi_tra_tax_tax_rate',
+            'dsv.mes_lis_shi_tra_not_text',
+            'dsv.mes_lis_shi_tra_not_text_sbcs',
+            'dsv.mes_lis_shi_tot_tot_net_price_total',
+            'dsv.mes_lis_shi_tot_tot_selling_price_total',
+            'dsv.mes_lis_shi_tot_tot_tax_total',
+            'dsv.mes_lis_shi_tot_tot_item_total',
+            'dsv.mes_lis_shi_tot_tot_unit_total',
             DB::raw('CASE
             WHEN dsv.mes_lis_shi_tot_fre_unit_weight_total=null
             THEN "0"
             WHEN dsv.mes_lis_shi_tot_fre_unit_weight_total=""
             THEN "0"
             ELSE dsv.mes_lis_shi_tot_fre_unit_weight_total  END'), //86
-
             // data_shipment_items
-            'dsi.mes_lis_shi_lin_lin_line_number', //87
-            'dsi.mes_lis_shi_lin_lin_additional_line_number', //88
-            'dsi.mes_lis_shi_lin_fre_trade_number', //89
-            'dsi.mes_lis_shi_lin_fre_line_number', //90
-            'dsi.mes_lis_shi_lin_fre_shipment_line_number', //91
-            'dsi.mes_lis_shi_lin_goo_minor_category', //92
-            'dsi.mes_lis_shi_lin_goo_detailed_category', //93
+            'dsi.mes_lis_shi_lin_lin_line_number',
+            'dsi.mes_lis_shi_lin_lin_additional_line_number',
+            'dsi.mes_lis_shi_lin_fre_trade_number',
+            'dsi.mes_lis_shi_lin_fre_line_number',
+            'dsi.mes_lis_shi_lin_fre_shipment_line_number',
+            'dsi.mes_lis_shi_lin_goo_minor_category',
+            'dsi.mes_lis_shi_lin_goo_detailed_category',
             DB::raw('CASE
             WHEN dsi.mes_lis_shi_lin_ite_scheduled_date="0000-00-00"
             THEN ""
             ELSE dsi.mes_lis_shi_lin_ite_scheduled_date  END'), //94
-            'dsi.mes_lis_shi_lin_ite_deadline_date', //95
-            'dsi.mes_lis_shi_lin_ite_center_delivery_instruction_code', //96
-            'dsi.mes_lis_shi_lin_fre_interim_price_code', //97
-            'dsi.mes_lis_shi_lin_ite_maker_code', //98
-            'dsi.mes_lis_shi_lin_ite_gtin', //99
-            'dsi.mes_lis_shi_lin_ite_order_item_code', //100
-            'dsi.mes_lis_shi_lin_ite_ord_code_type', //101
-            'dsi.mes_lis_shi_lin_ite_supplier_item_code', //102
-            'dsi.mes_lis_shi_lin_ite_name', //103
-            'dsi.mes_lis_shi_lin_ite_name_sbcs', //104
-            'dsi.mes_lis_shi_lin_fre_shipment_item_code', //105
-            'dsi.mes_lis_shi_lin_ite_ite_spec', //106
-            'dsi.mes_lis_shi_lin_ite_ite_spec_sbcs', //107
-            'dsi.mes_lis_shi_lin_ite_col_color_code', //108
-            'dsi.mes_lis_shi_lin_ite_col_description', //109
-            'dsi.mes_lis_shi_lin_ite_col_description_sbcs', //110
-            'dsi.mes_lis_shi_lin_ite_siz_size_code', //111
-            'dsi.mes_lis_shi_lin_ite_siz_description', //112
-            'dsi.mes_lis_shi_lin_ite_siz_description_sbcs', //113
-            'dsi.mes_lis_shi_lin_fre_packing_quantity', //114
-            'dsi.mes_lis_shi_lin_fre_prefecture_code', //115
-            'dsi.mes_lis_shi_lin_fre_country_code', //116
-            'dsi.mes_lis_shi_lin_fre_field_name', //117
-            'dsi.mes_lis_shi_lin_fre_water_area_code', //118
-            'dsi.mes_lis_shi_lin_fre_water_area_name', //119
-            'dsi.mes_lis_shi_lin_fre_area_of_origin', //120
-            'dsi.mes_lis_shi_lin_fre_item_grade', //121
-            'dsi.mes_lis_shi_lin_fre_item_class', //122
-            'dsi.mes_lis_shi_lin_fre_brand', //123
-            'dsi.mes_lis_shi_lin_fre_item_pr', //124
-            'dsi.mes_lis_shi_lin_fre_bio_code', //125
-            'dsi.mes_lis_shi_lin_fre_breed_code', //126
-            'dsi.mes_lis_shi_lin_fre_cultivation_code', //127
-            'dsi.mes_lis_shi_lin_fre_defrost_code', //128
-            'dsi.mes_lis_shi_lin_fre_item_preservation_code', //129
-            'dsi.mes_lis_shi_lin_fre_item_shape_code', //130
-            'dsi.mes_lis_shi_lin_fre_use', //131
-            'dsi.mes_lis_shi_lin_sta_statutory_classification_code', //132
-            'dsi.mes_lis_shi_lin_amo_item_net_price', //133
-            'dsi.mes_lis_shi_lin_amo_item_net_price_unit_price', //134
-            'dsi.mes_lis_shi_lin_amo_item_selling_price', //135
-            'dsi.mes_lis_shi_lin_amo_item_selling_price_unit_price', //136
-            'dsi.mes_lis_shi_lin_amo_item_tax', //137
-            'dsi.mes_lis_shi_lin_qua_unit_multiple', //138
-            'dsi.mes_lis_shi_lin_qua_unit_of_measure', //139
-            'dsi.mes_lis_shi_lin_qua_package_indicator', //140
-            'dsi.mes_lis_shi_lin_qua_ord_quantity', //141
-            'dsi.mes_lis_shi_lin_qua_ord_num_of_order_units', // 142
-            'dsi.mes_lis_shi_lin_qua_shi_quantity', //143
-            'dsi.mes_lis_shi_lin_qua_shi_num_of_order_units', // 144
-            'dsi.mes_lis_shi_lin_qua_sto_quantity', //145
+            'dsi.mes_lis_shi_lin_ite_deadline_date',
+            'dsi.mes_lis_shi_lin_ite_center_delivery_instruction_code',
+            'dsi.mes_lis_shi_lin_fre_interim_price_code',
+            'dsi.mes_lis_shi_lin_ite_maker_code',
+            'dsi.mes_lis_shi_lin_ite_gtin',
+            'dsi.mes_lis_shi_lin_ite_order_item_code',
+            'dsi.mes_lis_shi_lin_ite_ord_code_type',
+            'dsi.mes_lis_shi_lin_ite_supplier_item_code',
+            'dsi.mes_lis_shi_lin_ite_name',
+            'dsi.mes_lis_shi_lin_ite_name_sbcs',
+            'dsi.mes_lis_shi_lin_fre_shipment_item_code',
+            'dsi.mes_lis_shi_lin_ite_ite_spec',
+            'dsi.mes_lis_shi_lin_ite_ite_spec_sbcs',
+            'dsi.mes_lis_shi_lin_ite_col_color_code',
+            'dsi.mes_lis_shi_lin_ite_col_description',
+            'dsi.mes_lis_shi_lin_ite_col_description_sbcs',
+            'dsi.mes_lis_shi_lin_ite_siz_size_code',
+            'dsi.mes_lis_shi_lin_ite_siz_description',
+            'dsi.mes_lis_shi_lin_ite_siz_description_sbcs',
+            'dsi.mes_lis_shi_lin_fre_packing_quantity',
+            'dsi.mes_lis_shi_lin_fre_prefecture_code',
+            'dsi.mes_lis_shi_lin_fre_country_code',
+            'dsi.mes_lis_shi_lin_fre_field_name',
+            'dsi.mes_lis_shi_lin_fre_water_area_code',
+            'dsi.mes_lis_shi_lin_fre_water_area_name',
+            'dsi.mes_lis_shi_lin_fre_area_of_origin',
+            'dsi.mes_lis_shi_lin_fre_item_grade',
+            'dsi.mes_lis_shi_lin_fre_item_class',
+            'dsi.mes_lis_shi_lin_fre_brand',
+            'dsi.mes_lis_shi_lin_fre_item_pr',
+            'dsi.mes_lis_shi_lin_fre_bio_code',
+            'dsi.mes_lis_shi_lin_fre_breed_code',
+            'dsi.mes_lis_shi_lin_fre_cultivation_code',
+            'dsi.mes_lis_shi_lin_fre_defrost_code',
+            'dsi.mes_lis_shi_lin_fre_item_preservation_code',
+            'dsi.mes_lis_shi_lin_fre_item_shape_code',
+            'dsi.mes_lis_shi_lin_fre_use',
+            'dsi.mes_lis_shi_lin_sta_statutory_classification_code',
+            'dsi.mes_lis_shi_lin_amo_item_net_price',
+            'dsi.mes_lis_shi_lin_amo_item_net_price_unit_price',
+            'dsi.mes_lis_shi_lin_amo_item_selling_price',
+            'dsi.mes_lis_shi_lin_amo_item_selling_price_unit_price',
+            'dsi.mes_lis_shi_lin_amo_item_tax',
+            'dsi.mes_lis_shi_lin_qua_unit_multiple',
+            'dsi.mes_lis_shi_lin_qua_unit_of_measure',
+            'dsi.mes_lis_shi_lin_qua_package_indicator',
+            'dsi.mes_lis_shi_lin_qua_ord_quantity',
+            'dsi.mes_lis_shi_lin_qua_ord_num_of_order_units',
+            'dsi.mes_lis_shi_lin_qua_shi_quantity',
+            'dsi.mes_lis_shi_lin_qua_shi_num_of_order_units',
+            'dsi.mes_lis_shi_lin_qua_sto_quantity',
             DB::raw('CASE
             WHEN dsi.mes_lis_shi_lin_qua_sto_num_of_order_units=null
             THEN "0"
             WHEN dsi.mes_lis_shi_lin_qua_sto_num_of_order_units=""
             THEN "0"
             ELSE dsi.mes_lis_shi_lin_qua_sto_num_of_order_units  END'), //146
-            'dsi.mes_lis_shi_lin_qua_sto_reason_code', //147
+            'dsi.mes_lis_shi_lin_qua_sto_reason_code',
             DB::raw('CASE
             WHEN dsi.mes_lis_shi_lin_fre_unit_weight=null
             THEN "0"
             WHEN dsi.mes_lis_shi_lin_fre_unit_weight=""
             THEN "0"
             ELSE dsi.mes_lis_shi_lin_fre_unit_weight  END'), //148
-            // 'data_shipment_items.mes_lis_shi_lin_fre_unit_weight_code',
             DB::raw('CASE
             WHEN dsi.mes_lis_shi_lin_fre_unit_weight_code=null
             THEN "0"
@@ -511,9 +523,9 @@ class Data_Controller extends Controller
             WHEN dsid.mes_lis_shi_lin_pac_number_of_packages=""
             THEN "0"
             ELSE dsid.mes_lis_shi_lin_pac_number_of_packages  END'), //155
-            'dsid.mes_lis_shi_lin_pac_con_sell_by_date', //156
-            'dsid.mes_lis_shi_lin_pac_con_production_date', //157
-            'dsid.mes_lis_shi_lin_pac_con_lot_number' //158
+            'dsid.mes_lis_shi_lin_pac_con_sell_by_date',
+            'dsid.mes_lis_shi_lin_pac_con_production_date',
+            'dsid.mes_lis_shi_lin_pac_con_lot_number'
         )
         ->leftJoin('data_shipment_vouchers as dsv', 'dsv.data_shipment_id', '=', 'data_shipments.data_shipment_id')
         ->leftJoin('data_shipment_items as dsi', 'dsv.data_shipment_voucher_id', '=', 'dsi.data_shipment_voucher_id')
@@ -650,25 +662,40 @@ class Data_Controller extends Controller
     {
         return [
             '送信者ＩＤ',
-            '送信者ID発行元',
+            '送信者ＩＤ発行元',
             '受信者ＩＤ',
-            '受信者ID発行元',
+            '受信者ＩＤ発行元',
             '標準名称',
             'バージョン',
             'インスタンスＩＤ',
             'メッセージ種',
             '作成日時',
+            'タイプ',
+            'テスト区分ＩＤ',
+            '最終送信先ＩＤ',
             'メッセージ識別ＩＤ',
+            '送信者ステーションアドレス',
+            '最終受信者ステーションアドレス',
+            '直接受信者ステーションアドレス',
+            '取引数',
+            'システム情報キー',
+            'システム情報値',
+            'バージョン番号',
+            'バージョン番号',
+            '名前空間',
+            'バージョン',
             '支払法人コード',
             '支払法人GLN',
+            '支払法人名称',
+            '支払法人名称カナ',
             '発注者コード',
             '発注者GLN',
             '発注者名称',
             '発注者名称カナ',
-            '取引番号（発注・返品）', //16
+            '取引番号（発注・返品）',
             '取引付属番号',
             '出荷者管理番号',
-            '直接納品先コード', //19
+            '直接納品先コード',
             '直接納品先GLN',
             '直接納品先名称',
             '直接納品先名称カナ',
@@ -680,15 +707,18 @@ class Data_Controller extends Controller
             '計上部署GLN',
             '計上部署名称',
             '計上部署名称（カナ）',
+            '陳列場所コード',
+            '陳列場所名称',
+            '陳列場所名称カナ',
             '請求取引先コード',
             '請求取引先GLN',
             '請求取引先名',
             '請求取引先名カナ',
-            '取引先コード', //35
+            '取引先コード',
             '取引先GLN',
             '取引先名称',
             '取引先名称カナ',
-            '取引先：枝番',
+            '枝番',
             '出荷先コード',
             '出荷場所GLN',
             '納品経路',
@@ -699,7 +729,7 @@ class Data_Controller extends Controller
             '輸送手段',
             'バーコード情報',
             'カテゴリー名称1（印字用）',
-            'カテゴリー名称2（印字用）', //50
+            'カテゴリー名称2（印字用）',
             '最終納品先略称（印字用）',
             'ラベル自由使用欄（印字用）',
             'ラベル自由使用欄半角カナ（印字用）',
@@ -709,7 +739,7 @@ class Data_Controller extends Controller
             '商品分類（中）',
             '発注日',
             '直接納品先納品日',
-            '最終納品先納品日', //60
+            '最終納品先納品日',
             '訂正後直接納品先納品日',
             '計上日',
             '販促開始日',
@@ -719,7 +749,7 @@ class Data_Controller extends Controller
             '出荷データ有無区分',
             'EOS区分',
             'PB区分',
-            '配送温度区分', //70
+            '配送温度区分',
             '酒区分',
             '処理種別',
             '伝票レス区分',
@@ -729,17 +759,17 @@ class Data_Controller extends Controller
             '税区分',
             '税率',
             '自由使用欄',
-            '自由使用欄半角カナ', //80
-            '原価金額合計', //81
+            '自由使用欄半角カナ',
+            '原価金額合計',
             '売価金額合計',
             '税額合計金額',
             '数量合計',
             '発注単位数量合計',
             '重量合計',
-            '取引明細番号（発注・返品）', //87
+            '取引明細番号（発注・返品）',
             '取引付属明細番号',
             '元取引番号',
-            '元取引明細番号', //90
+            '元取引明細番号',
             '出荷者管理明細番号',
             '商品分類（小）',
             '商品分類（細）',
@@ -748,58 +778,58 @@ class Data_Controller extends Controller
             'センター納品詳細指示',
             '仮伝フラグ',
             'メーカーコード',
-            '商品コード（ＧTIN）',
-            '商品コード（発注用）', //100
+            '商品コード（GTIN）',
+            '商品コード（発注用）',
             '商品コード区分',
             '商品コード（取引先）',
-            '商品名', //103
+            '商品名',
             '商品名カナ',
             '商品コード（出荷元）',
-            '商品規格：規格',
-            '商品規格：規格カナ',
+            '規格',
+            '規格カナ',
             'カラーコード',
             'カラー名称',
-            'カラー名称カナ', //110
+            'カラー名称カナ',
             'サイズコード',
             'サイズ名称',
             'サイズ名称カナ',
-            '商品規格.生鮮：入数',
-            '商品規格.生鮮：都道府県コード',
-            '商品規格.生鮮：国コード',
-            '商品規格.生鮮：産地名',
-            '商品規格.生鮮：水域コード',
-            '商品規格.生鮮：水域名',
-            '商品規格.生鮮：原産エリア',//120
-            '商品規格.生鮮：等級',
-            '商品規格.生鮮：階級',
-            '商品規格.生鮮：銘柄',
-            '商品規格.生鮮：商品ＰＲ',
-            '商品規格.生鮮：バイオ区分',
-            '商品規格.生鮮：品種コード',
-            '商品規格.生鮮：養殖区分',
-            '商品規格.生鮮：解凍区分',
-            '商品規格.生鮮：商品状態区分',
-            '商品規格.生鮮：形状・部位', //130
-            '商品規格.生鮮：用途',
+            '入数',
+            '都道府県コード',
+            '国コード',
+            '産地名',
+            '水域コード',
+            '水域名',
+            '原産エリア',
+            '等級',
+            '階級',
+            '銘柄',
+            '商品ＰＲ',
+            'バイオ区分',
+            '品種コード',
+            '養殖区分',
+            '解凍区分',
+            '商品状態区分',
+            '形状・部位',
+            '用途',
             '法定管理義務商材区分',
-            '原価金額', //133
+            '原価金額',
             '原単価',
             '売価金額',
             '売単価',
             '税額',
             '発注単位',
             '発注単位コード',
-            '発注荷姿コード', //140
+            '発注荷姿コード',
             '発注数量（バラ）',
             '発注数量（発注単位数）',
-            '出荷数量（バラ）', //143
+            '出荷数量（バラ）',
             '出荷数量（発注単位数）',
             '欠品数量(バラ数)',
             '欠品数量(発注単位数)',
             '欠品区分',
             '取引単位重量',
             '単価登録単位',
-            '商品重量', //150
+            '商品重量',
             '発注重量',
             '出荷重量',
             'ITFコード(集合包装GTIN)',
