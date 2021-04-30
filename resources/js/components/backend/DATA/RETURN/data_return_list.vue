@@ -30,7 +30,7 @@
               </button>
 
             </td>
-           
+
           </tr>
           <tr>
             <td class="cl_custom_color">納品日</td>
@@ -56,7 +56,7 @@
 
                 <!-- <multiselect v-model="form.major_category" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="true" :select-label="''" :deselect-label="''" :selected-label="'選択中'" :preserve-search="true" placeholder="部門"></multiselect> -->
             </td>
-           
+
           </tr>
           <tr>
 
@@ -96,7 +96,7 @@
 
     </div>
     <div class="col-12 text-center">
-         <button class="btn btn-outline-primary" type="button" @click="receive_download(1)" :disabled="is_disabled(received_item_length>=1?true:false)">
+         <button class="btn btn-outline-primary" type="button" @click="return_download(1)" :disabled="is_disabled(received_item_length>=1?true:false)">
         <b-icon icon="download" animation="fade" font-scale="1.2"></b-icon>
         {{ myLang.download }}
       </button>
@@ -147,7 +147,7 @@
               <th class="pointer_class" @click="sorting('mes_lis_ret_par_sel_code')">取引先 <span class="float-right" :class="iconSet('mes_lis_ret_par_sel_code')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_ret_tra_dat_transfer_of_ownership_date')">納品日 <span class="float-right" :class="iconSet('mes_lis_ret_tra_dat_transfer_of_ownership_date')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_ret_tra_goo_major_category')">部門 コード <span class="float-right" :class="iconSet('mes_lis_ret_tra_goo_major_category')"></span></th>
-            
+
               <th class="pointer_class" >伝票枚数</th>
               <th class="pointer_class" @click="sorting('check_datetime')">参照状況 <span class="float-right" :class="iconSet('check_datetime')"></span></th>
             </tr>
@@ -178,8 +178,8 @@
               <td>{{ received_item.mes_lis_ret_par_sel_code }} {{ received_item.mes_lis_ret_par_sel_name }}</td>
               <td>{{ received_item.mes_lis_ret_tra_dat_transfer_of_ownership_date }}</td>
               <td>{{ received_item.mes_lis_ret_tra_goo_major_category }}</td>
-             
-             
+
+
               <td>{{ received_item.cnt }}</td>
               <td>{{ received_item.check_datetime }}</td>
             </tr>
@@ -263,7 +263,7 @@ export default {
         // major_category:{category_code:'*',category_name:'全て'},
         sort_by:'receive_datetime ',
         sort_type:"DESC",
-        page_title:'receive_list',
+        page_title:'return_list',
         downloadType:1
 
       }),
@@ -295,7 +295,6 @@ export default {
         let loader = Vue.$loading.show();
         axios.post(this.BASE_URL +"api/data_return_list",this.form)
             .then(({data}) => {
-                this.init(data.status);
                 this.return_item_list = data.return_item_list;
                 this.received_item_length = this.return_item_list.data.length;
                 this.byr_buyer_lists = data.byr_buyer_list;
@@ -308,14 +307,15 @@ export default {
           this.getAllReturnList();
 
       },
-      receive_download(downloadType = 1) {
+      return_download(downloadType = 1) {
       //downloadcsvshipment_confirm
+      let loader = Vue.$loading.show();
       this.form.downloadType= downloadType,
       axios
-        .post(this.BASE_URL + "api/receive_download", this.form)
+        .post(this.BASE_URL + "api/return_download", this.form)
         .then(({ data }) => {
-           this.init(data.status);
           this.downloadFromUrl(data);
+          loader.hide();
         });
     },
   },

@@ -12,9 +12,11 @@ use App\Models\DATA\RTN\data_return_voucher;
 use App\Models\DATA\RTN\data_return_item;
 use App\Models\CMN\cmn_companies_user;
 use App\Models\BYR\byr_buyer;
-use App\Models\BYR\byr_corrected_receive;
 use App\Traits\Csv;
-use DB;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Config;
+use App\Http\Controllers\API\DATA\RTN\DataController;
 class ReturnController extends Controller
 {
     private $all_used_fun;
@@ -83,7 +85,8 @@ class ReturnController extends Controller
         $table_name='drv.';
         if ($sort_by=="data_return_id" || $sort_by=="receive_datetime") {
             $table_name='data_returns.';
-            $table_name2='data_returns.';
+        }else{
+            $table_name='drv.';
         }
 
 
@@ -98,7 +101,7 @@ class ReturnController extends Controller
         // 検索
 
         //union query
-        $result2=data_return::select(
+        $result=data_return::select(
             'data_returns.data_return_id',
             'data_returns.sta_doc_type',
             'data_returns.receive_datetime',
@@ -107,47 +110,48 @@ class ReturnController extends Controller
             'drv.mes_lis_ret_tra_dat_transfer_of_ownership_date',
             'drv.mes_lis_ret_tra_goo_major_category',
             'drv.check_datetime',
-            \DB::raw('COUNT(drv.data_return_voucher_id) AS cnt'),
+            DB::raw('COUNT(distinct drv.data_return_voucher_id) AS cnt'),
             'drv.data_return_voucher_id'
         )
         ->join('data_return_vouchers as drv','data_returns.data_return_id','=','drv.data_return_id')
         ->where('data_returns.cmn_connect_id','=',$cmn_connect_id);
             // 条件指定検索
                 if ($receive_date_from && $receive_date_to) {
-                    $result2 =$result2->whereBetween('data_returns.receive_datetime', [$receive_date_from, $receive_date_to]);
+                    $result =$result->whereBetween('data_returns.receive_datetime', [$receive_date_from, $receive_date_to]);
                 }
                 if ($ownership_date_from && $ownership_date_to) {
-                    $result2 =$result2->whereBetween('drv.mes_lis_ret_tra_dat_transfer_of_ownership_date', [$ownership_date_from, $ownership_date_to]);
+                    $result =$result->whereBetween('drv.mes_lis_ret_tra_dat_transfer_of_ownership_date', [$ownership_date_from, $ownership_date_to]);
                 }
                 if ($major_category!='*') {
-                    $result2 =$result2->where('drv.mes_lis_ret_tra_goo_major_category',$major_category);
+                    $result =$result->where('drv.mes_lis_ret_tra_goo_major_category',$major_category);
                 }
                 if ($request->sel_code!='') {
-                    $result2 =$result2->where('drv.mes_lis_ret_par_sel_code',$request->sel_code);
+                    $result =$result->where('drv.mes_lis_ret_par_sel_code',$request->sel_code);
                 }
                 if ($sta_doc_type!='*') {
-                    $result2 =$result2->where('data_returns.sta_doc_type',$sta_doc_type);
+                    $result =$result->where('data_returns.sta_doc_type',$sta_doc_type);
                 }
                 if ($check_datetime!='*') {
                     if($check_datetime==1){
-                        $result2= $result2->whereNull('drv.check_datetime');
+                        $result= $result->whereNull('drv.check_datetime');
                     }else{
-                        $result2= $result2->whereNotNull('drv.check_datetime');
+                        $result= $result->whereNotNull('drv.check_datetime');
                     }
 
                 }
-        $result2 = $result2->groupBy(['data_returns.receive_datetime',
-        'drv.mes_lis_ret_par_sel_code',
-'drv.mes_lis_ret_tra_dat_transfer_of_ownership_date',
-'drv.mes_lis_ret_tra_goo_major_category'
+        $result = $result->groupBy([
+            'data_returns.receive_datetime',
+            'drv.mes_lis_ret_par_sel_code',
+            'drv.mes_lis_ret_tra_dat_transfer_of_ownership_date',
+            'drv.mes_lis_ret_tra_goo_major_category'
         ])
         ->orderBy('data_returns.receive_datetime','DESC')
         ->orderBy('drv.mes_lis_ret_par_sel_code')
         ->orderBy('drv.mes_lis_ret_tra_dat_transfer_of_ownership_date')
         ->orderBy('drv.mes_lis_ret_tra_goo_major_category')
 
-        ->orderBy($table_name2.$sort_by,$sort_type);
-        $result = $result2->paginate($per_page);
+        ->orderBy($table_name.$sort_by,$sort_type);
+        $result = $result->paginate($per_page);
         $byr_buyer = $this->all_used_fun->get_company_list($cmn_company_id);
 
         return response()->json(['return_item_list' => $result, 'byr_buyer_list' => $byr_buyer]);
@@ -178,14 +182,18 @@ class ReturnController extends Controller
         $table_name='data_return_vouchers.';
 
         $authUser = User::find($adm_user_id);
-        $cmn_company_id = '';
         $cmn_connect_id = '';
+        $cmn_company_id = '';
         if (!$authUser->hasRole(config('const.adm_role_name'))) {
             $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
             $cmn_company_id = $cmn_company_info['cmn_company_id'];
             $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
-        data_return_voucher::where('data_return_id',$data_return_id)->where('mes_lis_ret_tra_goo_major_category',$major_category)->where('mes_lis_ret_par_sel_code',$sel_code)->whereNull('check_datetime')->update(['check_datetime'=>date('Y-m-d H:i:s')]);
+        data_return_voucher::where('data_return_id',$data_return_id)
+        ->where('mes_lis_ret_tra_goo_major_category',$major_category)
+        ->where('mes_lis_ret_par_sel_code',$sel_code)
+        ->whereNull('check_datetime')
+        ->update(['check_datetime'=>date('Y-m-d H:i:s')]);
 
         /*receive order info for single row*/
         $orderInfo=data_return_voucher::join('data_returns as dr','dr.data_return_id','=','data_return_vouchers.data_return_id')
@@ -202,9 +210,11 @@ class ReturnController extends Controller
         ->join('data_return_items','data_return_items.data_return_voucher_id','=','data_return_vouchers.data_return_voucher_id')
         ->leftJoin('data_shipment_vouchers as dsv','dsv.mes_lis_shi_tra_trade_number','=','data_return_vouchers.mes_lis_ret_tra_trade_number')
         ->where('dr.cmn_connect_id','=',$cmn_connect_id)
-        ->where('data_return_vouchers.data_return_id','=',$data_return_id);
+        ->where('data_return_vouchers.data_return_id','=',$data_return_id)
         // ->where('data_return_vouchers.mes_lis_acc_par_sel_name',$sel_name)
-        // ->where('data_return_vouchers.mes_lis_ret_par_sel_code',$sel_code);
+        // ->where('data_return_vouchers.mes_lis_ret_tra_goo_major_category',$major_category)
+        ->where('data_return_vouchers.mes_lis_ret_par_sel_code',$sel_code);
+        // Log::info(" major_category ".$major_category);
         if($decesion_status!="*"){
             if($decesion_status=="訂正あり"){
                 $result = $result->where('data_return_vouchers.mes_lis_ret_tot_tot_net_price_total','>',0);
@@ -250,18 +260,18 @@ class ReturnController extends Controller
             // CSV Download
             $new_file_name =$this->all_used_fun->downloadFileName($request, 'csv','返品');
             //  self::returnFileName($data_return_id, 'csv');
-            $download_file_url = \Config::get('app.url')."storage/app".config('const.RECEIVE_CSV_PATH')."/". $new_file_name;
+            $download_file_url = Config::get('app.url')."storage/app".config('const.RETURN_CSV_PATH')."/". $new_file_name;
 
             // get shipment data query
-            $shipment_query = DataController::getReceiveData($request);
+            $shipment_query = DataController::getRtnData($request);
             $csv_data_count = $shipment_query->count();
             $shipment_data = $shipment_query->get()->toArray();
 
             // CSV create
             Csv::create(
-                config('const.RECEIVE_CSV_PATH')."/". $new_file_name,
+                config('const.RETURN_CSV_PATH')."/". $new_file_name,
                 $shipment_data,
-                DataController::receiveCsvHeading(),
+                DataController::rtnCsvHeading(),
                 'shift-jis'
             );
         }
