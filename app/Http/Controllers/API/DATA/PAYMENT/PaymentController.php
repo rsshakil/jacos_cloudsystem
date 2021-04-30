@@ -315,7 +315,7 @@ class PaymentController extends Controller
         $csv_data_count = 0;
         if ($downloadType == 1) {
             // CSV Download
-            $new_file_name = $this->all_used_fun->downloadFileName($request, 'csv');
+            $new_file_name = $this->all_used_fun->downloadFileName($request, 'csv','支払');
             // self::paymentFileName($data_payment_id, 'csv');
             $download_file_url = Config::get('app.url') . "storage/app" . config('const.PAYMENT_CSV_PATH') . "/" . $new_file_name;
 

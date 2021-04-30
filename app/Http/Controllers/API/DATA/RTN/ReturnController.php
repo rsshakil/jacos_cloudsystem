@@ -76,7 +76,7 @@ class ReturnController extends Controller
         $receive_date_to = $receive_date_to!=null? date('Y-m-d 23:59:59',strtotime($receive_date_to)):$receive_date_to; // 受信日時終了
         $ownership_date_from = $ownership_date_from!=null? date('Y-m-d 00:00:00',strtotime($ownership_date_from)):$ownership_date_from; // 受信日時開始
         $ownership_date_to = $ownership_date_to!=null? date('Y-m-d 23:59:59',strtotime($ownership_date_to)):$ownership_date_to; // 受信日時終了
-       
+
         // $byr_category_code = $request->category_code['category_code']; // 印刷
         // $having_var = '';
 
@@ -145,7 +145,7 @@ class ReturnController extends Controller
         ->orderBy('drv.mes_lis_ret_par_sel_code')
         ->orderBy('drv.mes_lis_ret_tra_dat_transfer_of_ownership_date')
         ->orderBy('drv.mes_lis_ret_tra_goo_major_category')
-       
+
         ->orderBy($table_name2.$sort_by,$sort_type);
         $result = $result2->paginate($per_page);
         $byr_buyer = $this->all_used_fun->get_company_list($cmn_company_id);
@@ -248,7 +248,7 @@ class ReturnController extends Controller
         $csv_data_count =0;
         if ($downloadType==1) {
             // CSV Download
-            $new_file_name =$this->all_used_fun->downloadFileName($request, 'csv');
+            $new_file_name =$this->all_used_fun->downloadFileName($request, 'csv','返品');
             //  self::returnFileName($data_return_id, 'csv');
             $download_file_url = \Config::get('app.url')."storage/app".config('const.RECEIVE_CSV_PATH')."/". $new_file_name;
 
@@ -329,7 +329,7 @@ class ReturnController extends Controller
     }
 
     public function get_return_customer_code_list(Request $request){
-        
+
         $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
         $result = DB::select("SELECT
         drv.mes_lis_ret_par_sel_code,
@@ -348,10 +348,10 @@ class ReturnController extends Controller
 
     public function get_voucher_detail_popup1_return(Request $request){
         $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
-        
+
 //AND `drv`.`mes_lis_shi_tra_dat_delivery_date` = '".$request->delivery_date."' AND
 //`drv`.`mes_lis_shi_tra_ins_temperature_code` = '".$request->temperature_code."'
-//AND `drv`.`mes_lis_ret_log_del_delivery_service_code` = '".$request->delivery_service_code."' 
+//AND `drv`.`mes_lis_ret_log_del_delivery_service_code` = '".$request->delivery_service_code."'
         $result = DB::select("SELECT
         drv.mes_lis_ret_par_return_receive_from_code,
         drv.mes_lis_ret_par_return_receive_from_name,
@@ -361,8 +361,8 @@ class ReturnController extends Controller
         WHERE
         dr.cmn_connect_id = $cmn_connect_id and
         `dr`.`data_return_id` = $request->data_return_id AND
-        `drv`.`mes_lis_ret_tra_goo_major_category` = '".$request->major_category."' 
-        
+        `drv`.`mes_lis_ret_tra_goo_major_category` = '".$request->major_category."'
+
         group by `drv`.`mes_lis_ret_par_return_receive_from_code`
         order by `drv`.`mes_lis_ret_par_return_receive_from_code` ASC");
         return response()->json(['popUpList' => $result]);
@@ -373,7 +373,7 @@ class ReturnController extends Controller
         $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
         //      AND  `dsv`.`mes_lis_shi_tra_dat_delivery_date` = '".$request->delivery_date."' AND
         //`dsv`.`mes_lis_shi_tra_ins_temperature_code` = '".$request->temperature_code."'
-        //AND `drv`.`mes_lis_ret_log_del_delivery_service_code` = '".$request->delivery_service_code."' 
+        //AND `drv`.`mes_lis_ret_log_del_delivery_service_code` = '".$request->delivery_service_code."'
 
         $result = DB::select("SELECT
         drv.mes_lis_ret_par_return_from_code,
@@ -384,7 +384,7 @@ class ReturnController extends Controller
         WHERE
         dr.cmn_connect_id = $cmn_connect_id and
         `dr`.`data_return_id` = $request->data_return_id AND
-        `drv`.`mes_lis_ret_tra_goo_major_category` = '".$request->major_category."' 
+        `drv`.`mes_lis_ret_tra_goo_major_category` = '".$request->major_category."'
         group by `drv`.`mes_lis_ret_par_return_from_code`
         order by `drv`.`mes_lis_ret_par_return_from_code` ASC");
         return response()->json(['popUpList' => $result]);
@@ -397,7 +397,7 @@ class ReturnController extends Controller
                AND `dsv`.`mes_lis_shi_tra_dat_delivery_date` = '".$request->delivery_date."' AND
         `dsv`.`mes_lis_shi_tra_ins_temperature_code` = '".$request->temperature_code."'
 AND
-        `drv`.`mes_lis_ret_log_del_delivery_service_code` = '".$request->delivery_service_code."' 
+        `drv`.`mes_lis_ret_log_del_delivery_service_code` = '".$request->delivery_service_code."'
         */
         $result = DB::select("SELECT
         dri.mes_lis_ret_lin_ite_order_item_code,
@@ -409,7 +409,7 @@ AND
         WHERE
         dr.cmn_connect_id = $cmn_connect_id and
         `dr`.`data_return_id` = $request->data_return_id AND
-        `drv`.`mes_lis_ret_tra_goo_major_category` = '".$request->major_category."' 
+        `drv`.`mes_lis_ret_tra_goo_major_category` = '".$request->major_category."'
         group by `dri`.`mes_lis_ret_lin_ite_order_item_code`
         order by `dri`.`mes_lis_ret_lin_ite_order_item_code` ASC");
         return response()->json(['popUpList' => $result]);

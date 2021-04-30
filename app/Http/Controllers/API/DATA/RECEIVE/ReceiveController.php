@@ -139,7 +139,7 @@ class ReceiveController extends Controller
         ->orderBy('drv.mes_lis_acc_tra_goo_major_category')
         ->paginate($per_page);
         $byr_buyer = $this->all_used_fun->get_company_list($cmn_company_id);
-       
+
         return response()->json(['received_item_list' => $result, 'byr_buyer_list' => $byr_buyer]);
 
     }
@@ -255,7 +255,7 @@ class ReceiveController extends Controller
         $csv_data_count =0;
         if ($downloadType==1) {
             // CSV Download
-            $new_file_name =$this->all_used_fun->downloadFileName($request, 'csv');
+            $new_file_name =$this->all_used_fun->downloadFileName($request, 'csv','受領');
             //  self::receiveFileName($data_receive_id, 'csv');
             $download_file_url = Config::get('app.url')."storage/app".config('const.RECEIVE_CSV_PATH')."/". $new_file_name;
 

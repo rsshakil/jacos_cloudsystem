@@ -561,7 +561,7 @@ class AllUsedFunction extends Controller
             mkdir(storage_path() . '/' . $folder_name, 0777, true);
         }
     }
-    public function downloadFileName($request, $file_type="csv")
+    public function downloadFileName($request, $file_type="csv",$file_header="受注")
     {
         // Log::info($request);
         $adm_user_id=$request->adm_user_id;
@@ -571,7 +571,7 @@ class AllUsedFunction extends Controller
             ->where('byr_buyers.byr_buyer_id',$byr_buyer_id)
             ->first();
             // Log::info($file_name_info);
-            $file_name = '受注'.'_'.$file_name_info->company_name.'_'.date('YmdHis').'.'.$file_type;
+            $file_name = $file_header.'_'.$file_name_info->company_name.'_'.date('YmdHis').'.'.$file_type;
             // \Log::info($file_name);
         // $file_name = $file_name_info->super_code.'-'."shipment_".$file_name_info->super_code.'-'.$file_name_info->partner_code."-".$file_name_info->jcode.'_shipment_'.date('YmdHis').'.'.$file_type;
         return $file_name;

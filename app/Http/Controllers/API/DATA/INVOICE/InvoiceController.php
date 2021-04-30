@@ -314,7 +314,7 @@ class InvoiceController extends Controller
             ->get()->count();
         if (!$data_count) {
             $dateTime = date('Y-m-d H:i:s');
-            $new_file_name = $this->all_used_fun->downloadFileName($request, 'csv');
+            $new_file_name = $this->all_used_fun->downloadFileName($request, 'csv','請求');
             // self::invoiceFileName($data_invoice_id,'csv');
             data_invoice::where('data_invoice_id',$data_invoice_id)->update(['mes_mes_number_of_trading_documents'=>$csv_data_count]);
             $download_file_url = Config::get('app.url')."storage/app".config('const.INVOICE_CSV_PATH')."/". $new_file_name;
@@ -335,7 +335,7 @@ class InvoiceController extends Controller
         $csv_data_count =0;
         if ($downloadType==1) {
             // CSV Download
-            $new_file_name = $this->all_used_fun->downloadFileName($request, 'csv');
+            $new_file_name = $this->all_used_fun->downloadFileName($request, 'csv','請求');
             $download_file_url = Config::get('app.url')."storage/app".config('const.INVOICE_CSV_PATH')."/". $new_file_name;
 
             // get shipment data query
@@ -536,7 +536,7 @@ class InvoiceController extends Controller
         dsv.mes_lis_shi_tra_trade_number,
         dsi.mes_lis_shi_lin_lin_line_number");
         // return $result;
-        $new_file_name = $this->all_used_fun->downloadFileName($request, 'csv');
+        $new_file_name = $this->all_used_fun->downloadFileName($request, 'csv','請求');
         $download_file_url = Config::get('app.url')."storage/app".config('const.INVOICE_COMPARE_CSV_PATH')."/". $new_file_name;
 
         // CSV create
