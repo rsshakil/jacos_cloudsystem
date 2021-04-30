@@ -724,6 +724,7 @@ export default {
       axios.post(this.BASE_URL + "api/update_invoice_detail", this.invoiceDetail)
         .then(({ data }) => {
             this.editInvoiceDetailModal = false;
+            this.addInvoiceDetailModal = false;
            Fire.$emit("LoadByrinvoiceDetails",this.form.page);
         });
     },
