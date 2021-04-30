@@ -23,10 +23,10 @@
             <td><span v-if="order_info && Object.keys(order_info).length">{{ order_info.mes_lis_ret_tra_dat_transfer_of_ownership_date }}</span></td>
             <td class="cl_custom_color">部門</td>
             <td><span v-if="order_info && Object.keys(order_info).length">{{ order_info.mes_lis_ret_tra_goo_major_category }}</span></td>
-       
-            
+
+
           </tr>
-         
+
         </table>
       </div>
       </div>
@@ -90,7 +90,7 @@
                 </option>
               </select>
             </td>
-            
+
           </tr>
 
         </table>
@@ -180,12 +180,12 @@
                     ダウンロード
                   </button>
                   <div class="dropdown-menu dropdown-menu-right">
-                    <button class="dropdown-item" @click="receive_download(1)" type="button" :disabled="is_disabled(receive_details_length>=1?true:false)">
+                    <button class="dropdown-item" @click="return_download(1)" type="button" :disabled="is_disabled(receive_details_length>=1?true:false)">
                       CSV
                     </button>
                     <!-- <button
                       class="dropdown-item"
-                      @click="receive_download(2)"
+                      @click="return_download(2)"
                       type="button">
                       JCA
                     </button> -->
@@ -215,12 +215,12 @@
 
               <tr>
                 <th>No</th>
-                <th class="pointer_class" @click="sorting('mes_lis_ret_par_shi_code')">直接納品先 <span class="float-right" :class="iconSet('mes_lis_ret_par_shi_code')"></span></th>
-                <th class="pointer_class" @click="sorting('mes_lis_ret_par_rec_code')">最終納品先 <span class="float-right" :class="iconSet('mes_lis_ret_par_rec_code')"></span></th>
+                <th class="pointer_class" @click="sorting('mes_lis_ret_par_return_receive_from_code')">直接納品先 <span class="float-right" :class="iconSet('mes_lis_ret_par_return_receive_from_code')"></span></th>
+                <th class="pointer_class" @click="sorting('mes_lis_ret_par_return_from_code')">最終納品先 <span class="float-right" :class="iconSet('mes_lis_ret_par_return_from_code')"></span></th>
                 <th class="pointer_class" @click="sorting('mes_lis_ret_tra_trade_number')">伝票番号 <span class="float-right" :class="iconSet('mes_lis_ret_tra_trade_number')"></span></th>
                 <th class="pointer_class" @click="sorting('mes_lis_ret_tra_ins_trade_type_code')">伝票区分 <span class="float-right" :class="iconSet('mes_lis_ret_tra_ins_trade_type_code')"></span></th>
                 <th class="pointer_class" @click="sorting('mes_lis_ret_tot_tot_net_price_total')">原価金額合計 <span class="float-right" :class="iconSet('mes_lis_ret_tot_tot_net_price_total')"></span></th>
-                
+
               </tr>
             </thead>
             <tbody>
@@ -724,7 +724,7 @@ export default {
       printingStatusOptionList: ["未印刷あり", "印刷済"],
       deliveryDestnationOptionList: ["店舗", "物流センター"],
       receiveOptionList: ["訂正あり", "訂正なし"],
-      
+
       date_null: false,
       null_selected: [],
       not_null_selected: [],
@@ -742,9 +742,9 @@ export default {
         major_category:'',
         delivery_service_code:'',
 // Search
-searchCode1:'',
-searchCode2:'',
-searchCode3:'',
+        searchCode1:'',
+        searchCode2:'',
+        searchCode3:'',
         decesion_status:"*",
         voucher_class:"*",
         goods_classification_code:"*",
@@ -754,7 +754,7 @@ searchCode3:'',
         order_info:{},
         sort_by:'data_return_voucher_id ',
         sort_type:"ASC",
-        page_title:'receive_details_list',
+        page_title:'return_details_list',
         downloadType:1
       }),
       param_data: [],
@@ -789,7 +789,6 @@ searchCode3:'',
        this.$route.query.byr_buyer_id = this.byr_buyer_id;
       axios.post(this.BASE_URL + "api/get_voucher_detail_popup2_return", this.$route.query)
         .then(({ data }) => {
-            console.log(data);
             this.order_search_modal2List = data.popUpList;
         });
     },
@@ -799,7 +798,6 @@ searchCode3:'',
        this.$route.query.byr_buyer_id = this.byr_buyer_id;
       axios.post(this.BASE_URL + "api/get_voucher_detail_popup3_return", this.$route.query)
         .then(({ data }) => {
-            console.log(data);
             this.order_search_modal3List = data.popUpList;
         });
     },
@@ -810,14 +808,14 @@ searchCode3:'',
         Fire.$emit("LoadByrorderDetail",this.form.select_field_page_num);
       }
     },
-    receive_download(downloadType = 1) {
-      //downloadcsvshipment_confirm
+    return_download(downloadType = 1) {
+      let loader = Vue.$loading.show();
       this.form.downloadType=downloadType;
       axios
-        .post(this.BASE_URL + "api/receive_download", this.form)
+        .post(this.BASE_URL + "api/return_download", this.form)
         .then(({ data }) => {
-           this.init(data.status);
           this.downloadFromUrl(data);
+          loader.hide();
         });
     },
 
@@ -827,7 +825,6 @@ searchCode3:'',
       axios
         .post(this.BASE_URL + "api/data_return_detail_list", this.form)
         .then(({ data }) => {
-          this.init(data.status);
           this.receive_detail_lists = data.retrun_detail_list;
           this.receive_details_length = this.receive_detail_lists.data.length;
           this.byr_buyer_lists = data.byr_buyer_list;
