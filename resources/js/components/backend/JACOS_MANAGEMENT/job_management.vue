@@ -10,11 +10,11 @@
                             <thead>
                                 <tr>
                                 <th colspan="3" style="border: none;">
-                                <multiselect v-model="form.select_byr_company_id" id="j_code" placeholder="Company name" label="company_name" track-by="cmn_company_id" :options="slr_company_list" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true"  open-direction="bottom" ></multiselect>
+                                <multiselect v-model="form.select_byr_company_id" id="j_code" placeholder="Company name" label="company_name" track-by="cmn_company_id" :options="slr_company_list" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true"  open-direction="bottom" ><span slot="noOptions">候補がありません</span> <span slot="noResult">候補がありません</span></multiselect>
 
                                     </th>
                                     <th colspan="3" style="border: none;">
-                                    <multiselect v-model="form.select_slr_company_id" id="super_code" placeholder="Company name" label="company_name" track-by="cmn_company_id" :options="byr_company_list" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" open-direction="bottom" ></multiselect>
+                                    <multiselect v-model="form.select_slr_company_id" id="super_code" placeholder="Company name" label="company_name" track-by="cmn_company_id" :options="byr_company_list" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" open-direction="bottom" ><span slot="noOptions">候補がありません</span> <span slot="noResult">候補がありません</span></multiselect>
 
                                     </th>
                                     <th colspan="2" style="border: none;">

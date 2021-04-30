@@ -64,7 +64,7 @@
                     label="canvas_name"
                     track-by="cmn_pdf_canvas_id"
                     @select="showCanvasBg($event)"
-                  ></multiselect>
+                  ><span slot="noOptions">候補がありません</span> <span slot="noResult">候補がありません</span></multiselect>
                 </div>
               </div>
             </div>

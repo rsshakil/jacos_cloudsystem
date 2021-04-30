@@ -45,7 +45,7 @@
                     :preserve-search="true"
                     open-direction="bottom"
                     @select="user_filter_by_buyer"
-                  ></multiselect>
+                  ><span slot="noOptions">候補がありません</span> <span slot="noResult">候補がありません</span></multiselect>
                 </th>
                 <!-- <th colspan="2">
                   <multiselect
@@ -143,7 +143,7 @@
                 :clear-on-select="false"
                 :preserve-search="true"
                 open-direction="bottom"
-              ></multiselect>
+              ><span slot="noOptions">候補がありません</span> <span slot="noResult">候補がありません</span></multiselect>
               <has-error :form="form" field="seller_name"></has-error>
             </div>
           </div>
@@ -162,7 +162,7 @@
                 :clear-on-select="false"
                 :preserve-search="true"
                 open-direction="bottom"
-              ></multiselect>
+              ><span slot="noOptions">候補がありません</span> <span slot="noResult">候補がありません</span></multiselect>
               <has-error :form="form" field="jan_code"></has-error>
             </div>
           </div>

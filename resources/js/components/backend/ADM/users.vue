@@ -109,7 +109,7 @@
                             <div class="form-group">
                                 <label for="roles" class="col-md-12 col-form-label">Select roles</label>
                                 <div class="col-md-12">
-                                    <multiselect v-model="selected_roles" id="roles" placeholder="Search or add roles" label="role_name" track-by="role_id" :options="roles" :multiple="true" :close-on-select="true" :clear-on-select="false" :preserve-search="true" open-direction="bottom" @input="permissionForRole($event)"></multiselect>
+                                    <multiselect v-model="selected_roles" id="roles" placeholder="Search or add roles" label="role_name" track-by="role_id" :options="roles" :multiple="true" :close-on-select="true" :clear-on-select="false" :preserve-search="true" open-direction="bottom" @input="permissionForRole($event)"><span slot="noOptions">候補がありません</span> <span slot="noResult">候補がありません</span></multiselect>
                                 </div>
                             </div>
                             <div class="form-group">

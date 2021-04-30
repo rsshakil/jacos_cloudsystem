@@ -15,7 +15,7 @@
                 <br>
                 <div class="row">
                   <div class="col-4">
-                    <multiselect v-model="selected_buyer" :options="all_buyer" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Select buyers" label="company_name" track-by="byr_buyer_id"></multiselect>
+                    <multiselect v-model="selected_buyer" :options="all_buyer" :searchable="true" :close-on-select="true" :show-labels="false" placeholder="Select buyers" label="company_name" track-by="byr_buyer_id"><span slot="noOptions">候補がありません</span> <span slot="noResult">候補がありません</span></multiselect>
                   </div>
                   <div class="col-3">
                     <input type="text" v-model="canvas_name" class="form-control" placeholder="Please enter canvas name" style="width:300px !important">

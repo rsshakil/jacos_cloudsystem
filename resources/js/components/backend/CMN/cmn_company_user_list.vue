@@ -43,7 +43,7 @@
                     :preserve-search="true"
                     open-direction="bottom"
                     @select="user_filter_by_buyer"
-                  ></multiselect>
+                  ><span slot="noOptions">候補がありません</span> <span slot="noResult">候補がありません</span></multiselect>
                 </th>
                 <th colspan="2">
                   <multiselect
@@ -59,7 +59,7 @@
                     :preserve-search="true"
                     open-direction="bottom"
                     @select="user_filter_by_seller"
-                  ></multiselect>
+                  ><span slot="noOptions">候補がありません</span> <span slot="noResult">候補がありません</span></multiselect>
                 </th>
               </tr>
               <tr>

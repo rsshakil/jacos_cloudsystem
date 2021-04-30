@@ -23,7 +23,7 @@
 										<label for="inputEmail3"
 											class="col-sm-2 col-form-label">{{myLang.user_name}}</label>
 										<div class="col-sm-4">
-											<multiselect v-model="user" :options="all_users" :searchable="true" :close-on-select="true" :show-labels="false" :placeholder="myLang.select_user" label="user_name" track-by="user_id" @select="showPermissions($event)"></multiselect>
+											<multiselect v-model="user" :options="all_users" :searchable="true" :close-on-select="true" :show-labels="false" :placeholder="myLang.select_user" label="user_name" track-by="user_id" @select="showPermissions($event)"><span slot="noOptions">候補がありません</span> <span slot="noResult">候補がありません</span></multiselect>
 										</div>
 									</div>
 									<div class="row" v-if="user_id!=''">

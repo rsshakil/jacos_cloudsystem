@@ -82,7 +82,7 @@
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label for="gender">{{myLang.gender}}</label>
-                                            <multiselect v-model="form.gender" :options="genders" :searchable="true" :close-on-select="true" :show-labels="true" :placeholder="myLang.choose"></multiselect>
+                                            <multiselect v-model="form.gender" :options="genders" :searchable="true" :close-on-select="true" :show-labels="true" :placeholder="myLang.choose"><span slot="noOptions">候補がありません</span> <span slot="noResult">候補がありません</span></multiselect>
                                         </div>
                                         <div class="form-group col-md-2">
                                             <label for="postal_code">{{myLang.zip}}</label>
