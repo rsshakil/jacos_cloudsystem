@@ -78,7 +78,8 @@ class PaymentController extends Controller
             DB::raw('(dppd.mes_lis_pay_lin_det_amo_payable_amount+dppd.mes_lis_pay_lin_det_amo_tax) as total_amount')
         )
             ->join('data_payment_pays as dpp', 'data_payments.data_payment_id', '=', 'dpp.data_payment_id')
-            ->join('data_payment_pay_details as dppd', 'dpp.data_payment_pay_id', '=', 'dppd.data_payment_pay_id');
+            ->join('data_payment_pay_details as dppd', 'dpp.data_payment_pay_id', '=', 'dppd.data_payment_pay_id')
+            ->where('data_payments.cmn_connect_id','=',$cmn_connect_id);
             // ->where($search_where);
             if ($mes_lis_pay_pay_code !=null) {
                 $result =$result->where('dpp.mes_lis_pay_pay_code',$mes_lis_pay_pay_code);
