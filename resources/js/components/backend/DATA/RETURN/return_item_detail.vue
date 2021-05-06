@@ -8,7 +8,7 @@
             <td class="cl_custom_color">受信日時</td>
             <td><span v-if="order_item_lists && Object.keys(order_item_lists).length">{{order_item_lists.receive_datetime}}</span></td>
             <td class="cl_custom_color">取引先</td>
-            <td><span v-if="order_item_lists && Object.keys(order_item_lists).length">{{order_item_lists.mes_lis_ret_par_sel_code}} {{order_item_lists.mes_lis_acc_par_sel_name}}</span></td>
+            <td><span v-if="order_item_lists && Object.keys(order_item_lists).length">{{order_item_lists.mes_lis_ret_par_sel_code}} {{order_item_lists.mes_lis_ret_par_sel_name}}</span></td>
           </tr>
           <tr>
             <td class="cl_custom_color">納品日</td>
@@ -37,14 +37,14 @@
             <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_ret_tra_ins_trade_type_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_trade_type_code',order_item_shipment_data_headTable.mes_lis_ret_tra_ins_trade_type_code,'orders',buyer_settings)}}</span></td>
               <td class="cl_custom_color">税区分・税率</td>
             <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_ret_tra_tax_tax_type_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_tax_tax_type_code',order_item_shipment_data_headTable.mes_lis_ret_tra_tax_tax_type_code,'orders',buyer_settings)}} {{order_item_shipment_data_headTable.mes_lis_ret_tra_tax_tax_rate}} %</span></td>
-          
+
             </tr>
-         
+
           <tr>
             <td class="cl_custom_color">備考</td>
             <td colspan="5"><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_ret_tra_not_text}}</span></td>
           </tr>
-         
+
         </table>
       </div>
       </div>
@@ -81,21 +81,21 @@
               <tr v-for="(order_item_detail_list, index) in order_item_detail_lists" :key="index">
                 <td>{{index+1}}</td>
                 <td style="text-align:left;">
-                商品コード：{{order_item_detail_list.mes_lis_ret_lin_ite_order_item_code.slice(1)}}<br>
+                 商品コード：{{order_item_detail_list.mes_lis_ret_lin_ite_order_item_code.slice(1)}}<br>
                  JANコード： {{order_item_detail_list.mes_lis_ret_lin_ite_order_item_code.slice(1)}}<br>
                  商品名：{{order_item_detail_list.mes_lis_ret_lin_ite_name}}<br>
                  規格：{{order_item_detail_list.mes_lis_ret_lin_ite_ite_spec}}<br>
                  産地：{{order_item_detail_list.mes_lis_ret_lin_fre_field_name}}<br></td>
                 <td></td>
                 <td>
-                {{order_item_detail_list.mes_lis_ret_lin_qua_rec_num_of_order_units}}
+                <!-- {{order_item_detail_list.mes_lis_ret_lin_qua_rec_num_of_order_units}} -->
                </td>
                 <td>
-               
-               {{order_item_detail_list.mes_lis_ret_lin_qua_package_indicator}}
+
+               <!-- {{order_item_detail_list.mes_lis_ret_lin_qua_package_indicator}} -->
                 </td>
                 <td>
-                
+
                 {{order_item_detail_list.mes_lis_ret_lin_qua_quantity}}
 
                 </td>
@@ -104,20 +104,20 @@
                 {{order_item_detail_list.mes_lis_ret_lin_fre_return_weight}}
                 </td>
                 <td class="text-right">
-                
-                {{order_item_detail_list.mes_lis_ret_lin_amo_item_net_price_unit_price | priceFormat}}
+
+                {{zeroShow(order_item_detail_list.mes_lis_ret_lin_amo_item_net_price_unit_price) | priceFormat}}
                 </td>
                 <td class="text-right">
-                {{order_item_detail_list.mes_lis_ret_lin_amo_item_net_price | priceFormat}}
+                {{zeroShow(order_item_detail_list.mes_lis_ret_lin_amo_item_net_price) | priceFormat}}
                 </td>
                 <td class="text-right">
-                
-                {{order_item_detail_list.mes_lis_ret_lin_amo_item_selling_price_unit_price | priceFormat}}
+
+                {{zeroShow(order_item_detail_list.mes_lis_ret_lin_amo_item_selling_price_unit_price) | priceFormat}}
                 </td>
                 <td class="text-right">
-                {{order_item_detail_list.mes_lis_ret_lin_amo_item_selling_price | priceFormat}}
+                {{zeroShow(order_item_detail_list.mes_lis_ret_lin_amo_item_selling_price) | priceFormat}}
                 </td>
-               
+
               </tr>
               <tr v-if="order_item_detail_lists && order_item_detail_lists.length==0">
                 <td class="text-center" colspan="12">データがありません</td>
@@ -136,7 +136,7 @@
               <th style="text-align:right;"><span>{{order_item_shipment_data_headTable.mes_lis_ret_tot_tot_net_price_total | priceFormat}}</span></th>
               <th style="background:#538ED3;color:#fff;text-align:center;">売価全額<br>合計</th>
               <th style="text-align:right;">{{order_item_shipment_data_headTable.mes_lis_ret_tot_tot_selling_price_total | priceFormat}}</th>
-             
+
               </tr>
             </tfoot>
 
@@ -361,12 +361,14 @@ beforeCreate: function() {
     get_all_receive_item_detail() {
       axios.post(this.BASE_URL + "api/data_return_item_detail_list",this.form)
         .then(({data}) => {
-          this.init(data.status);
+            console.log(data);
           this.order_item_detail_lists = data.return_item_detail_list;
+          console.log(this.order_item_detail_lists)
           this.order_item_shipment_data_headTable = data.return_item_detail_list[0];
           this.byr_buyer_lists = data.byr_buyer_list;
           this.buyer_settings = JSON.parse(data.buyer_settings);
           this.order_item_lists = data.return_item_detail_list[0];
+        //   this.order_item_lists = data.order_info;
           this.mes_lis_acc_lin_qua_rec_reason_codeList = this.buyer_settings.receives.mes_lis_acc_lin_qua_rec_reason_code;
 
           this.loader.hide();
@@ -378,13 +380,13 @@ beforeCreate: function() {
 
   created() {
     this.byr_buyer_id = this.$session.get('byr_buyer_id');
-    this.form.byr_buyer_id = this.$session.get('byr_buyer_id');
-    Fire.$emit('byr_has_selected',this.$session.get('byr_buyer_id'));
-    Fire.$emit('permission_check_for_buyer',this.$session.get('byr_buyer_id'));
+    this.form.byr_buyer_id = this.byr_buyer_id;
+    Fire.$emit('byr_has_selected',this.byr_buyer_id);
+    Fire.$emit('permission_check_for_buyer',this.byr_buyer_id);
     this.getbuyerJsonSettingvalue();
     this.loader = Vue.$loading.show();
-    this.data_return_voucher_id = this.$route.params.data_return_voucher_id;
-    this.form.data_return_voucher_id = this.$route.params.data_return_voucher_id;
+    this.data_return_voucher_id = this.$route.query.data_return_voucher_id;
+    this.form.data_return_voucher_id = this.$route.query.data_return_voucher_id;
     this.get_all_receive_item_detail();
     Fire.$on("LoadByrorderItemDetail", () => {
 

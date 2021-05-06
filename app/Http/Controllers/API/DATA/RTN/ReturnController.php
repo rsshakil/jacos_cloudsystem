@@ -125,7 +125,7 @@ class ReturnController extends Controller
                 if ($major_category!='*') {
                     $result =$result->where('drv.mes_lis_ret_tra_goo_major_category',$major_category);
                 }
-                if ($request->sel_code!='') {
+                if ($request->sel_code!=null) {
                     $result =$result->where('drv.mes_lis_ret_par_sel_code',$request->sel_code);
                 }
                 if ($sta_doc_type!='*') {
@@ -168,7 +168,7 @@ class ReturnController extends Controller
         $sel_name = $request->par_sel_name;
         $sel_code = $request->sel_code;
         $major_category = $request->major_category;
-        $delivery_service_code = $request->delivery_service_code;
+        $ownership_date = $request->ownership_date;
 
         $per_page = $request->select_field_per_page_num == null ? 10 : $request->select_field_per_page_num;
         $sort_by = $request->sort_by;
@@ -179,7 +179,7 @@ class ReturnController extends Controller
         $goods_classification_code=$request->goods_classification_code;
         $trade_number=$request->trade_number;
 
-        $table_name='data_return_vouchers.';
+        $table_name='drv.';
 
         $authUser = User::find($adm_user_id);
         $cmn_connect_id = '';
@@ -205,43 +205,52 @@ class ReturnController extends Controller
         ->groupBy('data_return_vouchers.mes_lis_ret_par_sel_name')->first();
         /*receive order info for single row*/
         // 検索
-        $result=data_return_voucher::select('data_return_vouchers.*','dsv.mes_lis_shi_tra_dat_order_date','dsv.mes_lis_shi_tra_trade_number','dsv.mes_lis_shi_tot_tot_net_price_total','dr.cmn_connect_id')
-        ->join('data_returns as dr','dr.data_return_id','=','data_return_vouchers.data_return_id')
-        ->join('data_return_items','data_return_items.data_return_voucher_id','=','data_return_vouchers.data_return_voucher_id')
-        ->leftJoin('data_shipment_vouchers as dsv','dsv.mes_lis_shi_tra_trade_number','=','data_return_vouchers.mes_lis_ret_tra_trade_number')
-        ->where('dr.cmn_connect_id','=',$cmn_connect_id)
-        ->where('data_return_vouchers.data_return_id','=',$data_return_id)
+        $result=data_return::select(
+            'drv.data_return_voucher_id',
+            'drv.mes_lis_ret_par_return_receive_from_code',
+            'drv.mes_lis_ret_par_return_receive_from_name',
+            'drv.mes_lis_ret_par_return_from_code',
+            'drv.mes_lis_ret_par_return_from_name',
+            'drv.mes_lis_ret_tra_trade_number',
+            'drv.mes_lis_ret_tra_ins_trade_type_code',
+            'drv.mes_lis_ret_tot_tot_net_price_total',
+            'dsv.mes_lis_shi_tra_dat_order_date','dsv.mes_lis_shi_tra_trade_number','dsv.mes_lis_shi_tot_tot_net_price_total','data_returns.cmn_connect_id')
+            ->join('data_return_vouchers as drv','data_returns.data_return_id','=','drv.data_return_id')
+            ->join('data_return_items as dri','dri.data_return_voucher_id','=','drv.data_return_voucher_id')
+            ->leftJoin('data_shipment_vouchers as dsv','dsv.mes_lis_shi_tra_trade_number','=','drv.mes_lis_ret_tra_trade_number')
+        ->where('data_returns.cmn_connect_id','=',$cmn_connect_id)
+        ->where('data_returns.data_return_id','=',$data_return_id)
         // ->where('data_return_vouchers.mes_lis_acc_par_sel_name',$sel_name)
-        // ->where('data_return_vouchers.mes_lis_ret_tra_goo_major_category',$major_category)
-        ->where('data_return_vouchers.mes_lis_ret_par_sel_code',$sel_code);
-        // Log::info(" major_category ".$major_category);
+        ->where('drv.mes_lis_ret_tra_goo_major_category',$major_category==null?'':$major_category)
+        ->where('drv.mes_lis_ret_tra_dat_transfer_of_ownership_date',$ownership_date)
+        ->where('drv.mes_lis_ret_par_sel_code',$sel_code);
         if($decesion_status!="*"){
             if($decesion_status=="訂正あり"){
-                $result = $result->where('data_return_vouchers.mes_lis_ret_tot_tot_net_price_total','>',0);
+                $result = $result->where('drv.mes_lis_ret_tot_tot_net_price_total','>',0);
             }
             if($decesion_status=="訂正なし"){
-                $result = $result->where('data_return_vouchers.mes_lis_ret_tot_tot_net_price_total',0);
+                $result = $result->where('drv.mes_lis_ret_tot_tot_net_price_total',0);
             }
         }
         if($request->searchCode1!=''){
-            $result = $result->where('data_return_vouchers.mes_lis_ret_par_return_receive_from_code',$request->searchCode1);
+            $result = $result->where('drv.mes_lis_ret_par_return_receive_from_code',$request->searchCode1);
         }
         if($request->searchCode2!=''){
-            $result = $result->where('data_return_vouchers.mes_lis_ret_par_return_from_code',$request->searchCode2);
+            $result = $result->where('drv.mes_lis_ret_par_return_from_code',$request->searchCode2);
         }
         if($request->searchCode3!=''){
-            $result = $result->where('data_return_items.mes_lis_ret_lin_ite_order_item_code',$request->searchCode3);
+            $result = $result->where('dri.mes_lis_ret_lin_ite_order_item_code',$request->searchCode3);
         }
         if($voucher_class!="*"){
-            $result = $result->where('data_return_vouchers.mes_lis_ret_tra_ins_trade_type_code',$voucher_class);
+            $result = $result->where('drv.mes_lis_ret_tra_ins_trade_type_code',$voucher_class);
         }
         if($goods_classification_code!="*"){
-            $result = $result->where('data_return_vouchers.mes_lis_ret_tra_ins_goods_classification_code',$goods_classification_code);
+            $result = $result->where('drv.mes_lis_ret_tra_ins_goods_classification_code',$goods_classification_code);
         }
         if($trade_number!=null){
-            $result = $result->where('data_return_vouchers.mes_lis_ret_tra_trade_number',$trade_number);
+            $result = $result->where('drv.mes_lis_ret_tra_trade_number',$trade_number);
         }
-        $result=$result->groupBy('data_return_vouchers.mes_lis_ret_tra_trade_number')
+        $result=$result->groupBy('drv.mes_lis_ret_tra_trade_number')
         ->orderBy($table_name.$sort_by,$sort_type)
         ->paginate($per_page);
         $byr_buyer = $this->all_used_fun->get_company_list($cmn_company_id);
@@ -309,24 +318,49 @@ class ReturnController extends Controller
 
 
         /*receive order info for single row*/
-        $orderInfo=data_return_item::
-        join('data_return_vouchers as drv','drv.data_return_voucher_id','=','data_return_items.data_return_voucher_id')
+        // $orderInfo=data_return_item::join('data_return_vouchers as drv','drv.data_return_voucher_id','=','data_return_items.data_return_voucher_id')
+        // ->join('data_returns as dr','dr.data_return_id','=','drv.data_return_id')
+        // ->where('dr.cmn_connect_id','=',$cmn_connect_id)
+        // ->where('drv.data_return_voucher_id','=',$data_return_voucher_id)
+        // // ->groupBy('data_returns.receive_datetime')
+        // ->groupBy('dr.sta_sen_identifier')
+        // ->groupBy('drv.mes_lis_ret_par_sel_code')
+        // ->groupBy('drv.mes_lis_ret_par_sel_name')->first();
+
+        $result=data_return_item::select(
+            'dr.receive_datetime',
+            'drv.mes_lis_ret_par_sel_code',
+            'drv.mes_lis_ret_par_sel_name',
+            'drv.mes_lis_ret_tra_dat_transfer_of_ownership_date',
+            'drv.mes_lis_ret_tra_goo_major_category',
+            'drv.mes_lis_ret_par_return_receive_from_code',
+            'drv.mes_lis_ret_par_return_receive_from_name',
+            'drv.mes_lis_ret_par_return_from_code',
+            'drv.mes_lis_ret_par_return_from_name',
+            'drv.mes_lis_ret_tra_trade_number',
+            'drv.mes_lis_ret_tra_fre_variable_measure_item_code',
+            'drv.mes_lis_ret_tra_ins_trade_type_code',
+            'drv.mes_lis_ret_tra_tax_tax_type_code',
+            'drv.mes_lis_ret_tra_not_text',
+            'drv.mes_lis_ret_tot_tot_net_price_total',
+            'drv.mes_lis_ret_tot_tot_selling_price_total',
+            'data_return_items.mes_lis_ret_lin_ite_order_item_code',
+            'data_return_items.mes_lis_ret_lin_ite_name',
+            'data_return_items.mes_lis_ret_lin_ite_ite_spec',
+            'data_return_items.mes_lis_ret_lin_fre_field_name',
+            'data_return_items.mes_lis_ret_lin_qua_quantity',
+            'data_return_items.mes_lis_ret_lin_fre_return_weight',
+            'data_return_items.mes_lis_ret_lin_amo_item_net_price',
+            'data_return_items.mes_lis_ret_lin_amo_item_net_price_unit_price',
+            'data_return_items.mes_lis_ret_lin_amo_item_selling_price',
+            'data_return_items.mes_lis_ret_lin_amo_item_selling_price_unit_price'
+        )
+        ->join('data_return_vouchers as drv','drv.data_return_voucher_id','=','data_return_items.data_return_voucher_id')
         ->join('data_returns as dr','dr.data_return_id','=','drv.data_return_id')
+        // ->leftJoin('data_order_vouchers as dov','dov.mes_lis_ord_tra_trade_number','=','drv.mes_lis_ret_tra_trade_number')
+        // ->leftJoin('data_order_items as doi','doi.data_order_voucher_id','=','dov.data_order_voucher_id')
         ->where('dr.cmn_connect_id','=',$cmn_connect_id)
         ->where('drv.data_return_voucher_id','=',$data_return_voucher_id)
-        // ->groupBy('data_returns.receive_datetime')
-        ->groupBy('dr.sta_sen_identifier')
-        ->groupBy('drv.mes_lis_ret_par_sel_code')
-        ->groupBy('drv.mes_lis_ret_par_sel_name')->first();
-        /*receive order info for single row*/
-        // 検索
-        $result=data_return_item::join('data_return_vouchers as drv','drv.data_return_voucher_id','=','data_return_items.data_return_voucher_id')
-        ->join('data_returns as dr','dr.data_return_id','=','drv.data_return_id')
-        ->leftJoin('data_order_vouchers as dov','dov.mes_lis_ord_tra_trade_number','=','drv.mes_lis_ret_tra_trade_number')
-        ->leftJoin('data_order_items as doi','doi.data_order_voucher_id','=','dov.data_order_voucher_id')
-        ->where('dr.cmn_connect_id','=',$cmn_connect_id)
-        ->where('drv.data_return_voucher_id','=',$data_return_voucher_id)
-        //->groupBy('drv.mes_lis_acc_tra_trade_number')
        // ->paginate($per_page);
         ->get();
 
@@ -334,7 +368,8 @@ class ReturnController extends Controller
         $buyer_settings = byr_buyer::select('setting_information')->where('byr_buyer_id', $byr_buyer_id)->first();
         $byr_buyer = $this->all_used_fun->get_company_list($cmn_company_id);
 
-        return response()->json(['return_item_detail_list' => $result, 'byr_buyer_list' => $byr_buyer, 'buyer_settings' => $buyer_settings->setting_information,'order_info'=>$orderInfo]);
+        return response()->json(['return_item_detail_list' => $result, 'byr_buyer_list' => $byr_buyer, 'buyer_settings' => $buyer_settings->setting_information]);
+        // return response()->json(['return_item_detail_list' => $result, 'byr_buyer_list' => $byr_buyer, 'buyer_settings' => $buyer_settings->setting_information,'order_info'=>$orderInfo]);
 
     }
 

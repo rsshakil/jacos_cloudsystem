@@ -200,7 +200,7 @@ class DataController extends Controller
             if ($major_category!='*') {
                 $result =$result->where('drv.mes_lis_ret_tra_goo_major_category',$major_category);
             }
-            if ($request->sel_code!='') {
+            if ($request->sel_code!=null) {
                 $result =$result->where('drv.mes_lis_ret_par_sel_code',$request->sel_code);
             }
             if ($sta_doc_type!='*') {
@@ -233,16 +233,48 @@ class DataController extends Controller
             $sel_name = $request->par_sel_name;
             $sel_code = $request->sel_code;
             $major_category = $request->major_category;
-            $delivery_service_code = $request->delivery_service_code;
+            $ownership_date = $request->ownership_date;
 
             $decesion_status=$request->decesion_status;
             $voucher_class=$request->voucher_class;
             $goods_classification_code=$request->goods_classification_code;
             $trade_number=$request->trade_number;
+
+            $result = $result->where('data_returns.data_return_id','=',$data_return_id)
+            // ->where('data_return_vouchers.mes_lis_acc_par_sel_name',$sel_name)
+            ->where('drv.mes_lis_ret_tra_goo_major_category',$major_category==null?'':$major_category)
+            ->where('drv.mes_lis_ret_tra_dat_transfer_of_ownership_date',$ownership_date)
+            ->where('drv.mes_lis_ret_par_sel_code',$sel_code);
+            if($decesion_status!="*"){
+                if($decesion_status=="訂正あり"){
+                    $result = $result->where('drv.mes_lis_ret_tot_tot_net_price_total','>',0);
+                }
+                if($decesion_status=="訂正なし"){
+                    $result = $result->where('drv.mes_lis_ret_tot_tot_net_price_total',0);
+                }
+            }
+            if($request->searchCode1!=''){
+                $result = $result->where('drv.mes_lis_ret_par_return_receive_from_code',$request->searchCode1);
+            }
+            if($request->searchCode2!=''){
+                $result = $result->where('drv.mes_lis_ret_par_return_from_code',$request->searchCode2);
+            }
+            if($request->searchCode3!=''){
+                $result = $result->where('dri.mes_lis_ret_lin_ite_order_item_code',$request->searchCode3);
+            }
+            if($voucher_class!="*"){
+                $result = $result->where('drv.mes_lis_ret_tra_ins_trade_type_code',$voucher_class);
+            }
+            if($goods_classification_code!="*"){
+                $result = $result->where('drv.mes_lis_ret_tra_ins_goods_classification_code',$goods_classification_code);
+            }
+            if($trade_number!=null){
+                $result = $result->where('drv.mes_lis_ret_tra_trade_number',$trade_number);
+            }
+            // $result=$result->groupBy('drv.mes_lis_ret_tra_trade_number');
+
         }
         $result=$result->orderBy($table_name.$sort_by,$sort_type);
-
-        // $csv_data=$csv_data->groupBy('drv.data_receive_voucher_id');
         return $result;
     }
     public static function rtnCsvHeading(){

@@ -251,9 +251,8 @@
                   <router-link
                     :to="{
                       name: 'return_item_detail',
-                      params: {
-                        data_return_voucher_id:
-                          order_detail_list.data_return_voucher_id,
+                      query: {
+                        data_return_voucher_id:order_detail_list.data_return_voucher_id,
                       },
                     }"
                     class=""

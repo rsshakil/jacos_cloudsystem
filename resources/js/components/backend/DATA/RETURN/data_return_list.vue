@@ -167,7 +167,7 @@
                           sel_name:received_item.mes_lis_ret_par_sel_name,
                           sel_code:received_item.mes_lis_ret_par_sel_code,
                           major_category:received_item.mes_lis_ret_tra_goo_major_category,
-                          delivery_service_code:received_item.mes_lis_ret_log_del_delivery_service_code,
+                          ownership_date:received_item.mes_lis_ret_tra_dat_transfer_of_ownership_date
                       },
                     }"
                     class=""
@@ -236,6 +236,7 @@
   </div>
 </template>
 <script>
+import return_item_listVue from './return_item_list.vue';
 export default {
   data() {
     return {
@@ -296,6 +297,7 @@ export default {
         axios.post(this.BASE_URL +"api/data_return_list",this.form)
             .then(({data}) => {
                 this.return_item_list = data.return_item_list;
+                // console.log(this.return_item_list)
                 this.received_item_length = this.return_item_list.data.length;
                 this.byr_buyer_lists = data.byr_buyer_list;
                 loader.hide();

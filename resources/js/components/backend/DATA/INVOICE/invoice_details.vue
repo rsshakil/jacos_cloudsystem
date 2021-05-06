@@ -940,9 +940,6 @@ export default {
         if(value1!=value2){
             return 'same_yellow';
         }
-    },
-    zeroShow(value){
-        return value===0?'0':value
     }
   },
 

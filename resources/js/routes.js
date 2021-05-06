@@ -448,7 +448,7 @@ export const routes = [
         },
     },
     {
-        path: '/return_list/return_detail/return_item_detail/:data_return_voucher_id',
+        path: '/return_list/return_detail/return_item_detail',
         component: return_item_detail,
         name: 'return_item_detail',
         meta: {
@@ -459,7 +459,7 @@ export const routes = [
         },
     },
 
-//return list end
+    //return list end
     {
         path: '/order_corrected_receive',
         component: order_corrected_receive,
