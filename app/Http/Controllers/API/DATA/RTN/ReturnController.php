@@ -79,7 +79,7 @@ class ReturnController extends Controller
         $ownership_date_from = $ownership_date_from!=null? date('Y-m-d 00:00:00',strtotime($ownership_date_from)):$ownership_date_from; // 受信日時開始
         $ownership_date_to = $ownership_date_to!=null? date('Y-m-d 23:59:59',strtotime($ownership_date_to)):$ownership_date_to; // 受信日時終了
 
-        // $byr_category_code = $request->category_code['category_code']; // 印刷
+        $major_category = $major_category['category_code']; // 印刷
         // $having_var = '';
 
         $table_name='drv.';
