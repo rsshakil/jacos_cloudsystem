@@ -736,10 +736,10 @@ export default {
         byr_buyer_id: null,
 
         data_return_id:null,
-        sel_name:'',
-        sel_code:'',
-        major_category:'',
-        delivery_service_code:'',
+        sel_name:null,
+        sel_code:null,
+        major_category:null,
+        ownership_date:null,
 // Search
         searchCode1:'',
         searchCode2:'',
@@ -851,7 +851,7 @@ export default {
     this.form.sel_name = this.$route.query.sel_name;
     this.form.sel_code = this.$route.query.sel_code;
     this.form.major_category = this.$route.query.major_category;
-    this.form.delivery_service_code = this.$route.query.delivery_service_code;
+    this.form.ownership_date = this.$route.query.ownership_date;
     this.loader = Vue.$loading.show();
     this.get_all_receive_detail();
     Fire.$on("LoadByrorderDetail", (page=1) => {

@@ -192,7 +192,7 @@ class ReturnController extends Controller
         data_return_voucher::where('data_return_id',$data_return_id)
         ->where('mes_lis_ret_tra_goo_major_category',$major_category)
         ->where('mes_lis_ret_par_sel_code',$sel_code)
-        // ->whereDate('mes_lis_ret_tra_dat_transfer_of_ownership_date','=',date('y-m-d',strtotime($ownership_date)))
+        ->where('mes_lis_ret_tra_dat_transfer_of_ownership_date','=',$ownership_date)
         ->where('mes_lis_ret_tra_dat_transfer_of_ownership_date',$ownership_date)
         ->whereNull('check_datetime')
         ->update(['check_datetime'=>date('Y-m-d H:i:s')]);
@@ -226,9 +226,9 @@ class ReturnController extends Controller
             // ->leftJoin('data_shipment_vouchers as dsv','dsv.mes_lis_shi_tra_trade_number','=','drv.mes_lis_ret_tra_trade_number')
         ->where('data_returns.cmn_connect_id','=',$cmn_connect_id)
         ->where('data_returns.data_return_id','=',$data_return_id)
-        // ->where('data_return_vouchers.mes_lis_acc_par_sel_name',$sel_name)
+        // ->where('data_return_vouchers.mes_lis_ret_par_sel_name',$sel_name)
         ->where('drv.mes_lis_ret_tra_goo_major_category',$major_category==null?'':$major_category)
-        // ->where('drv.mes_lis_ret_tra_dat_transfer_of_ownership_date',$ownership_date)
+        ->where('drv.mes_lis_ret_tra_dat_transfer_of_ownership_date',$ownership_date)
         ->where('drv.mes_lis_ret_par_sel_code',$sel_code);
         if($decesion_status!="*"){
             if($decesion_status=="訂正あり"){

@@ -243,7 +243,7 @@ class DataController extends Controller
             $result = $result->where('data_returns.data_return_id','=',$data_return_id)
             // ->where('data_return_vouchers.mes_lis_acc_par_sel_name',$sel_name)
             ->where('drv.mes_lis_ret_tra_goo_major_category',$major_category==null?'':$major_category)
-            // ->where('drv.mes_lis_ret_tra_dat_transfer_of_ownership_date',$ownership_date)
+            ->where('drv.mes_lis_ret_tra_dat_transfer_of_ownership_date',$ownership_date)
             ->where('drv.mes_lis_ret_par_sel_code',$sel_code);
             if($decesion_status!="*"){
                 if($decesion_status=="訂正あり"){
