@@ -307,18 +307,19 @@ breadcrumb(){
       },
     //get Table data
     showAllCustomerCode(){
-     //let loaders = Vue.$loading.show();
+     let loaderss = Vue.$loading.show();
       this.showAllCustomerCodeListModal = true;
       this.form.post(this.BASE_URL + "api/get_payment_trade_code_list", this.form)
         .then(({ data }) => {
           this.order_customer_code_lists = data.order_customer_code_lists;
-        // loaders.hide();
+        loaderss.hide();
         });
     },
     //get Table data
     getAllPaymentDetails(page=1) {
       this.form.page = page;
       this.select_field_page_num = page;
+      let loaders = Vue.$loading.show();
       axios.post(this.BASE_URL + "api/get_payment_item_detail_list", this.form)
         .then(({ data }) => {
 
@@ -331,11 +332,14 @@ breadcrumb(){
           this.mes_lis_inv_lin_det_pay_code_list = this.buyer_settings.invoices.mes_lis_inv_lin_det_pay_code;
           this.mes_lis_inv_lin_det_balance_carried_code_list = this.buyer_settings.invoices.mes_lis_inv_lin_det_balance_carried_code;
           this.byr_buyer_category_lists.unshift({category_code:'*',category_name:'全て'});
+          loaders.hide();
         });
     },
 
 searchByFormData() {
+   let loader = Vue.$loading.show();
       Fire.$emit("LoadPaymentItemDetail",this.select_field_page_num);
+      loader.hide();
     },
   },
 

@@ -31,14 +31,14 @@
           <!-- @focusout="toggle = false" -->
 
           <div class="col-1 p-0">
-            <button
+            <!-- <button
               v-if="company_name != ''"
                @mouseover="hover = true"
 
               class="btn btn-default byr_list_show"
             >
               得意先選択
-            </button>
+            </button> -->
 
             <div
               class="top_byr_slr_list"
