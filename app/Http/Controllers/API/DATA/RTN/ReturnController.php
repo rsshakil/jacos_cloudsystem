@@ -281,6 +281,7 @@ class ReturnController extends Controller
             $shipment_query = DataController::getRtnData($request);
             $csv_data_count = $shipment_query->count();
             $shipment_data = $shipment_query->get()->toArray();
+            // Log::info($shipment_data);
 
             // CSV create
             Csv::create(

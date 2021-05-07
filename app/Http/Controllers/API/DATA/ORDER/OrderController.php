@@ -113,7 +113,7 @@ class OrderController extends Controller
         if ($delivery_date_from && $delivery_date_to) {
             $result= $result->whereBetween('dov.mes_lis_ord_tra_dat_delivery_date', [$delivery_date_from, $delivery_date_to]);
         }
-       
+
         if ($mes_lis_ord_par_sel_code!='') {
             $result= $result->where('dov.mes_lis_ord_par_sel_code',$mes_lis_ord_par_sel_code);
         }
@@ -192,20 +192,26 @@ class OrderController extends Controller
     public function orderDetails(Request $request)
     {
         // return $request->all();
+        // $form_search = $request->form_search;
         $data_order_id = $request->data_order_id;
-        $delivery_date = $request->delivery_date;
-        $delivery_service_code = $request->delivery_service_code;
-        $major_category = $request->major_category;
-        $temperature_code = $request->temperature_code;
+        $order_info=$request->order_info;
+        $sort_by = $request->sort_by;
+        $sort_type = $request->sort_type;
+        $par_shi_code = $request->par_shi_code;
+        $par_rec_code = $request->par_rec_code;
+        $order_item_code = $request->order_item_code;
         $per_page = $request->per_page == null ? 10 : $request->per_page;
-        $temperature_code = $temperature_code == null ? '' : $temperature_code;
-        $form_search = $request->form_search;
-        $sort_by=$form_search['sort_by'];
-        $sort_type=$form_search['sort_type'];
-        $searchCode1=$form_search['searchCode1'];
-        $searchCode2=$form_search['searchCode2'];
-        $searchCode3=$form_search['searchCode3'];
 
+        $mes_lis_shi_tra_trade_number=$request->mes_lis_shi_tra_trade_number;
+        $fixedSpecial=$request->fixedSpecial;
+        $printingStatus=$request->printingStatus;
+        $situation=$request->situation;
+
+        $delivery_date = $order_info['delivery_date'];
+        $delivery_service_code = $order_info['delivery_service_code'];
+        $major_category = $order_info['major_category'];
+        $temperature_code = $order_info['temperature_code'];
+        $temperature_code = $temperature_code == null ? '' : $temperature_code;
         data_order_voucher::where('data_order_id',$data_order_id)->where('mes_lis_ord_tra_goo_major_category',$major_category)->where('mes_lis_ord_log_del_delivery_service_code',$delivery_service_code)->where('mes_lis_ord_tra_dat_delivery_date',$delivery_date)->whereNull('check_datetime')->update(['check_datetime'=>date('Y-m-d H:i:s')]);
         $order_info = DB::table('data_shipments as ds')
         ->select(
@@ -259,37 +265,38 @@ class OrderController extends Controller
             ->where('dsv.mes_lis_shi_tra_goo_major_category', $major_category)
             ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $delivery_service_code)
             ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $temperature_code);
-                if($form_search['mes_lis_shi_tra_trade_number']!=""){
-                    $result = $result->where('dsv.mes_lis_shi_tra_trade_number', $form_search['mes_lis_shi_tra_trade_number']);
+
+                if($mes_lis_shi_tra_trade_number!=""){
+                    $result = $result->where('dsv.mes_lis_shi_tra_trade_number', $mes_lis_shi_tra_trade_number);
                 }
-                if($form_search['fixedSpecial']!="*"){
-                    $result = $result->where('dsv.mes_lis_shi_tra_ins_goods_classification_code', $form_search['fixedSpecial']);
+                if($fixedSpecial!="*"){
+                    $result = $result->where('dsv.mes_lis_shi_tra_ins_goods_classification_code', $fixedSpecial);
                 }
-                if($form_search['printingStatus']!="*"){
-                    if($form_search['printingStatus']=="未印刷あり"){
+                if($printingStatus!="*"){
+                    if($printingStatus=="未印刷あり"){
                         $result = $result->whereNull('dsv.print_datetime');
                     }
-                    if($form_search['printingStatus']=="印刷済"){
+                    if($printingStatus=="印刷済"){
                         $result = $result->whereNotNull('dsv.print_datetime');
                     }
 
                 }
-                if($form_search['situation']!="*"){
-                    if($form_search['situation']=="未確定あり"){
+                if($situation!="*"){
+                    if($situation=="未確定あり"){
                         $result = $result->whereNull('dsv.decision_datetime');
                     }
-                    if($form_search['situation']=="確定済"){
+                    if($situation=="確定済"){
                         $result = $result->whereNotNull('dsv.decision_datetime');
                     }
                 }
-                if($searchCode1!=''){
-                    $result = $result->where('dsv.mes_lis_shi_par_shi_code',$searchCode1);
+                if($par_shi_code!=''){
+                    $result = $result->where('dsv.mes_lis_shi_par_shi_code',$par_shi_code);
                 }
-                if($searchCode2!=''){
-                    $result = $result->where('dsv.mes_lis_shi_par_rec_code',$searchCode2);
+                if($par_rec_code!=''){
+                    $result = $result->where('dsv.mes_lis_shi_par_rec_code',$par_rec_code);
                 }
-                if($searchCode3!=''){
-                    $result = $result->where('dsi.mes_lis_shi_lin_ite_order_item_code',$searchCode3);
+                if($order_item_code!=''){
+                    $result = $result->where('dsi.mes_lis_shi_lin_ite_order_item_code',$order_item_code);
                 }
                 $result = $result->orderBy('dsv.'.$sort_by,$sort_type);
                 $result = $result->groupBy('dsv.mes_lis_shi_tra_trade_number')
@@ -325,7 +332,7 @@ class OrderController extends Controller
 
     public function get_voucher_detail_popup1(Request $request){
         $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
-        
+
 
         $result = DB::select("SELECT
         dsv.mes_lis_shi_par_shi_code,
@@ -348,7 +355,7 @@ class OrderController extends Controller
 
     public function get_voucher_detail_popup2(Request $request){
         $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
-        
+
         $result = DB::select("SELECT
         dsv.mes_lis_shi_par_rec_code,
         dsv.mes_lis_shi_par_rec_name,
@@ -370,7 +377,7 @@ class OrderController extends Controller
 
     public function get_voucher_detail_popup3(Request $request){
         $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
-        
+
         $result = DB::select("SELECT
         dsi.mes_lis_shi_lin_ite_order_item_code,
         dsi.mes_lis_shi_lin_ite_name,
