@@ -43,6 +43,9 @@ class data_csv_order
     //
     public function exec($request, $sc)
     {
+        // $this->attachment_paths_all=$this->pdfGenerate(1);
+        // Log::info($this->attachment_paths_all);
+        // return ['message' => "success", 'status' => '1'];
         // return $chunks->all();
         Log::debug(get_class() . ' exec start  ---------------');
         if (!array_key_exists('up_file', $request->all())) {
@@ -439,20 +442,20 @@ class data_csv_order
             if ($optional->order->fax->exec) {
                 $this->fax_number=$optional->order->fax->number;
                 $this->attachment_paths_all=$this->pdfGenerate($data_order_id);
-                // Log::info($this->attachment_paths_all);
+                Log::info($this->attachment_paths_all);
 
-            foreach ($this->attachment_paths_all as $key => $value) {
-                Log::info('send mail for fax:[to:'.config('const.PDF_SEND_MAIL').',subject:'.$this->fax_number.']');
-                $this->attachment_paths=$value;
-                Mail::send([],[] ,function($message) { $message->to(config('const.PDF_SEND_MAIL'))
-                    ->subject($this->fax_number);
-                    Log::info('attach file:'.$this->attachment_paths);
-                    $message->attach($this->attachment_paths)
-                    // foreach($this->attachment_paths as $filePath){
-                    //     $message->attach($filePath);
-                    // }
-                    ->setBody(''); });
-            }
+            // foreach ($this->attachment_paths_all as $key => $value) {
+            //     Log::info('send mail for fax:[to:'.config('const.PDF_SEND_MAIL').',subject:'.$this->fax_number.']');
+            //     $this->attachment_paths=$value;
+            //     Mail::send([],[] ,function($message) { $message->to(config('const.PDF_SEND_MAIL'))
+            //         ->subject($this->fax_number);
+            //         Log::info('attach file:'.$this->attachment_paths);
+            //         $message->attach($this->attachment_paths)
+            //         // foreach($this->attachment_paths as $filePath){
+            //         //     $message->attach($filePath);
+            //         // }
+            //         ->setBody(''); });
+            // }
             }
         } catch (\Exception $e) {
             Log::error($e->getMessage().' Or May be data font missing in database data or bad file');
@@ -473,7 +476,7 @@ class data_csv_order
     {
         $pdf_file_paths=array();
         $page=0;
-        $receipt=$this->fdfRet();
+        $receipt=$this->fpdfRet();
         $pdf_datas = $this->pdfDAta($data_order_id);
         $x = 0;
         $y = 0;
@@ -482,18 +485,21 @@ class data_csv_order
         $page_limit=10;
         $file_number=1;
         $same_rec_code=1;
+        Log::info(count($pdf_datas));
         foreach ($pdf_datas as $key=>$pdf_data) {
+            Log::info($pdf_data);
             if (!($i > count($pdf_datas))) {
                 if ($page!=0 && ($page % $page_limit)==0) {
-                    // Log::info("i: ".($i));
-                    // Log::info("page%: ".($page % $page_limit));
-                    // Log::info("page: ".$page);
-                    // Log::info("page_limit: ".$page_limit);
-                    // Log::info("file_number: ".$file_number);
+                    Log::info("i: ".($i));
+                    Log::info("page%: ".($page % $page_limit));
+                    Log::info("page: ".$page);
+                    Log::info("page_limit: ".$page_limit);
+                    Log::info("file_number: ".$file_number);
+                    Log::info("same_rec_code: ".$same_rec_code);
                     if (!(($file_number*$page_limit)>$page)) {
                         $pdf_file_path = $this->file_save($receipt,$file_number);
                         array_push($pdf_file_paths,$pdf_file_path);
-                        $receipt=$this->fdfRet();
+                        $receipt=$this->fpdfRet();
                         $file_number+=1;
                     }
 
@@ -525,6 +531,7 @@ class data_csv_order
             }
 
         }
+        // if ($page==0 && $page % $page_limit!=0) {
         if ($page % $page_limit!=0) {
             $pdf_file_path= $this->file_save($receipt,$file_number);
             array_push($pdf_file_paths,$pdf_file_path);
@@ -560,7 +567,7 @@ class data_csv_order
         $receipt->Write(0, $pdf_data[0]->mes_lis_ord_par_shi_name);
         return $receipt;
     }
-    public function fdfRet(){
+    public function fpdfRet(){
         Log::info("FPDI");
         $receipt = new Fpdi();
         // Set PDF margins (top left and right)
