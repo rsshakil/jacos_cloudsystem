@@ -255,10 +255,12 @@ class Data_Controller extends Controller
         $request_all=$request->all();
         $all_used_fun = new AllUsedFunction();
         // \Log::info($request_all);
-        // $sort_by=$request->sort_by?$request->sort_by:$request->form_search['sort_by'];
-        // $sort_type=$request->sort_type?$request->sort_type:$request->form_search['sort_type'];
+        $sort_by=$request->sort_by;
+        $sort_type=$request->sort_type;
         $adm_user_id=$request->adm_user_id;
         $byr_buyer_id=$request->byr_buyer_id;
+        $data_order_id=$request->data_order_id;
+
         $authUser = User::find($adm_user_id);
             $cmn_connect_id = '';
             if (!$authUser->hasRole(config('const.adm_role_name'))) {
@@ -536,45 +538,7 @@ class Data_Controller extends Controller
 
 
         // filtering
-        if ((array_key_exists("order_info", $request_all))) {
-            $data_order_id=$request->data_order_id;
-            $order_info=$request->order_info;
-
-
-            $csv_data=$csv_data->where('data_shipments.data_order_id', $data_order_id)
-            ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $order_info['mes_lis_shi_log_del_delivery_service_code'])
-            ->where('dsv.mes_lis_shi_par_sel_code', $order_info['mes_lis_shi_par_sel_code'])
-            ->where('dsv.mes_lis_shi_par_sel_name', $order_info['mes_lis_shi_par_sel_name'])
-            ->where('dsv.mes_lis_shi_tra_dat_delivery_date', $order_info['mes_lis_shi_tra_dat_delivery_date'])
-            ->where('dsv.mes_lis_shi_tra_goo_major_category', $order_info['mes_lis_shi_tra_goo_major_category'])
-            ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $order_info['mes_lis_shi_tra_ins_temperature_code']);
-
-            if ((array_key_exists("form_search", $request_all))) {
-                $form_search = $request->form_search;
-                if ($form_search['mes_lis_shi_tra_trade_number']!="") {
-                    $csv_data=$csv_data->where('dsv.mes_lis_shi_tra_trade_number', $form_search['mes_lis_shi_tra_trade_number']);
-                }
-                if ($form_search['fixedSpecial']!="*") {
-                    $csv_data=$csv_data->where('dsv.mes_lis_shi_tra_ins_goods_classification_code', $form_search['fixedSpecial']);
-                }
-                if ($form_search['printingStatus']!="*") {
-                    if ($form_search['printingStatus']=="未印刷あり") {
-                        $csv_data=$csv_data->whereNull('dsv.print_datetime');
-                    }
-                    if ($form_search['printingStatus']=="印刷済") {
-                        $csv_data=$csv_data->whereNotNull('dsv.print_datetime');
-                    }
-                }
-                if ($form_search['situation']!="*") {
-                    if ($form_search['situation']=="未確定あり") {
-                        $csv_data=$csv_data->whereNull('dsv.decision_datetime');
-                    }
-                    if ($form_search['situation']=="確定済") {
-                        $csv_data=$csv_data->whereNotNull('dsv.decision_datetime');
-                    }
-                }
-            }
-        } else {
+        if ($request->page_title=='order_list') {
             $receive_date_from = $request->receive_date_from;
             $receive_date_to = $request->receive_date_to;
             $delivery_date_from = $request->delivery_date_from;
@@ -637,15 +601,55 @@ class Data_Controller extends Controller
             } elseif ($decission_cnt != "*") {
                 $csv_data=$csv_data->having('decision_cnt', '=', $decission_cnt);
             }
-            $csv_data=$csv_data->groupBy('dsv.mes_lis_shi_tra_trade_number');
+            // $csv_data=$csv_data->groupBy('dsv.mes_lis_shi_tra_trade_number');
+
+        }else if($request->page_title=='order_detail_list'){
+            $order_info=$request->order_info;
+            $mes_lis_shi_tra_trade_number=$request->mes_lis_shi_tra_trade_number;
+            $fixedSpecial=$request->fixedSpecial;
+            $printingStatus=$request->printingStatus;
+            $situation=$request->situation;
+
+
+            $csv_data=$csv_data->where('data_shipments.data_order_id', $data_order_id)
+            ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $order_info['mes_lis_shi_log_del_delivery_service_code'])
+            ->where('dsv.mes_lis_shi_par_sel_code', $order_info['mes_lis_shi_par_sel_code'])
+            ->where('dsv.mes_lis_shi_par_sel_name', $order_info['mes_lis_shi_par_sel_name'])
+            ->where('dsv.mes_lis_shi_tra_dat_delivery_date', $order_info['mes_lis_shi_tra_dat_delivery_date'])
+            ->where('dsv.mes_lis_shi_tra_goo_major_category', $order_info['mes_lis_shi_tra_goo_major_category'])
+            ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $order_info['mes_lis_shi_tra_ins_temperature_code']);
+
+                if ($mes_lis_shi_tra_trade_number!="") {
+                    $csv_data=$csv_data->where('dsv.mes_lis_shi_tra_trade_number', $mes_lis_shi_tra_trade_number);
+                }
+                if ($fixedSpecial!="*") {
+                    $csv_data=$csv_data->where('dsv.mes_lis_shi_tra_ins_goods_classification_code', $fixedSpecial);
+                }
+                if ($printingStatus!="*") {
+                    if ($printingStatus=="未印刷あり") {
+                        $csv_data=$csv_data->whereNull('dsv.print_datetime');
+                    }
+                    if ($printingStatus=="印刷済") {
+                        $csv_data=$csv_data->whereNotNull('dsv.print_datetime');
+                    }
+                }
+                if ($situation!="*") {
+                    if ($situation=="未確定あり") {
+                        $csv_data=$csv_data->whereNull('dsv.decision_datetime');
+                    }
+                    if ($situation=="確定済") {
+                        $csv_data=$csv_data->whereNotNull('dsv.decision_datetime');
+                    }
+                }
         }
+
         // receive_datetime not found in shipment tables
 
-        if (!(array_key_exists("downloadType", $request_all))) {
-            // \Log::info("Clicked");
-            $csv_data=$csv_data->whereNotNull('dsv.decision_datetime');
-            $csv_data=$csv_data->whereNull('dsv.send_datetime');
-        }
+        // if (!(array_key_exists("downloadType", $request_all))) {
+        //     // \Log::info("Clicked");
+        //     $csv_data=$csv_data->whereNotNull('dsv.decision_datetime');
+        //     $csv_data=$csv_data->whereNull('dsv.send_datetime');
+        // }
         // \Log::info("My Query");
         // $csv_data=$csv_data->groupBy('dsv.mes_lis_shi_tra_trade_number');
         // $csv_data=$csv_data->groupBy('dsv.data_shipment_voucher_id');

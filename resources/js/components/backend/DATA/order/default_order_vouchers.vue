@@ -71,7 +71,7 @@
           <tr>
             <td style="width:10%" class="cl_custom_color">直接納品先コード</td>
             <td style="width:15%">
-              <input type="text" v-model="form.searchCode1" class="form-control topHeaderInputFieldBtn" />
+              <input type="text" v-model="form.par_shi_code" class="form-control topHeaderInputFieldBtn" />
               <button
                 @click="deliverySearchForm1"
                 class="btn btn-primary active"
@@ -81,7 +81,7 @@
             </td>
             <td style="width:10%" class="cl_custom_color">最終納品先コード</td>
             <td style="width:15%">
-              <input type="text" v-model="form.searchCode2" class="form-control topHeaderInputFieldBtn" />
+              <input type="text" v-model="form.par_rec_code" class="form-control topHeaderInputFieldBtn" />
               <button
                 @click="deliverySearchForm2"
                 class="btn btn-primary active"
@@ -101,7 +101,7 @@
           <tr>
             <td style="width:10%" class="cl_custom_color">商品コード</td>
             <td style="width:15%">
-              <input type="text" v-model="form.searchCode3" class="form-control topHeaderInputFieldBtn" />
+              <input type="text" v-model="form.order_item_code" class="form-control topHeaderInputFieldBtn" />
               <button
                 @click="deliverySearchForm3"
                 class="btn btn-primary active"
@@ -838,9 +838,10 @@ export default {
     return {
         byr_buyer_id:null,
         adm_user_id: Globals.user_info_id,
+        data_order_id:null,
         rows: 100,
         currentPage: 1,
-        today: new Date().toISOString().slice(0, 10),
+        // today: new Date().toISOString().slice(0, 10),
         sortKey: "",
         reverse: true,
         order_by: "asc",
@@ -852,7 +853,6 @@ export default {
         show_hide_col_list: [],
         expected_delivery_date: "",
         status: "",
-        // byr_order_id: "",
         edit_order_modal: false,
         order_search_modal1: false,
         order_search_modal2: false,
@@ -878,6 +878,11 @@ export default {
         not_null_selected: [],
         null_selected_message: false,
         form: new Form({
+            data_order_id:null,
+            byr_buyer_id:null,
+            adm_user_id:Globals.user_info_id,
+            order_info:[],
+            downloadType:1,
             printingStatus: "*",
             situation: "*",
             fixedSpecial: "*",
@@ -888,11 +893,14 @@ export default {
             mes_lis_shi_tra_trade_number: "",
             sort_by:'data_shipment_voucher_id',
             sort_type:"ASC",
+            page_title:'order_detail_list',
             adm_user_id: Globals.user_info_id,
             byr_buyer_id:null,
-            searchCode1:'',
-            searchCode2:'',
-            searchCode3:'',
+            par_shi_code:'',
+            par_rec_code:'',
+            order_item_code:'',
+            page:1,
+            per_page:10,
         }),
         param_data: [],
         item_search_q: [],
@@ -900,6 +908,21 @@ export default {
     };
   },
   methods: {
+      //get Table data
+    get_all_byr_order_detail(page = 1) {
+        this.form.page=page
+        this.form.per_page=this.select_field_per_page_num
+        this.form.order_info=this.param_data
+        this.select_field_page_num = page;
+        axios.post(this.BASE_URL + "api/order_details", this.form)
+            .then(({ data }) => {
+            this.order_detail_lists = data.order_list_detail;
+            this.order_info = data.order_info;
+            this.order_detail_list_length=this.order_detail_lists.data.length
+            this.$session.set("order_info",this.order_info)
+            this.loader.hide();
+            });
+    },
       sorting(sorted_field){
           this.form.sort_by=sorted_field;
           this.form.sort_type=this.form.sort_type=="ASC"?"DESC":"ASC";
@@ -907,15 +930,15 @@ export default {
 
       },
       setRowscodeIntoForm1(valCode){
-        this.form.searchCode1 = valCode;
+        this.form.par_shi_code = valCode;
         this.order_search_modal1=false;
       },
       setRowscodeIntoForm2(valCode){
-        this.form.searchCode2 = valCode;
+        this.form.par_rec_code = valCode;
         this.order_search_modal2 = false;
       },
       setRowscodeIntoForm3(valCode){
-        this.form.searchCode3 = valCode;
+        this.form.order_item_code = valCode;
         this.order_search_modal3 = false;
       },
     deliverySearchForm1() {
@@ -924,7 +947,6 @@ export default {
       this.$route.query.byr_buyer_id = this.byr_buyer_id;
       axios.post(this.BASE_URL + "api/get_voucher_detail_popup1", this.$route.query)
         .then(({ data }) => {
-            console.log(data);
             this.order_search_modal1List = data.popUpList;
         });
     },
@@ -934,7 +956,6 @@ export default {
        this.$route.query.byr_buyer_id = this.byr_buyer_id;
       axios.post(this.BASE_URL + "api/get_voucher_detail_popup2", this.$route.query)
         .then(({ data }) => {
-            console.log(data);
             this.order_search_modal2List = data.popUpList;
         });
     },
@@ -944,7 +965,6 @@ export default {
        this.$route.query.byr_buyer_id = this.byr_buyer_id;
       axios.post(this.BASE_URL + "api/get_voucher_detail_popup3", this.$route.query)
         .then(({ data }) => {
-            console.log(data);
             this.order_search_modal3List = data.popUpList;
         });
     },
@@ -1019,7 +1039,6 @@ export default {
       axios
         .post(this.BASE_URL + "api/update_byr_order_detail_status", post_data)
         .then(({data}) => {
-          this.init(data.status);
           Fire.$emit("LoadByrorderDetail",this.select_field_page_num);
         });
     },
@@ -1076,7 +1095,6 @@ export default {
         data: order_detail,
       })
         .then(({data})=> {
-          this.init(data.status);
           Fire.$emit("LoadByrorderDetail",this.select_field_page_num);
         })
         .catch(function (response) {
@@ -1122,12 +1140,8 @@ export default {
         this.confirm_sweet().then((result) => {
           if (result.value) {
               this.loader = Vue.$loading.show();
-            axios.post(
-                this.BASE_URL + "api/update_shipment_detail_bycurrentdatetime",
-                { update_id: this.selected, date_null: this.date_null }
-              )
+            axios.post(this.BASE_URL + "api/update_shipment_detail_bycurrentdatetime",{ update_id: this.selected, date_null: this.date_null })
               .then(({ data }) => {
-                  this.init(data.status);
                 _this.alert_icon = "success";
                 _this.alert_title = "";
                 _this.alert_text =
@@ -1165,7 +1179,7 @@ export default {
       this.yes_btn = "はい";
       this.cancel_btn = "キャンセル";
       axios.post(this.BASE_URL + "api/send_shipment_data", {
-          data_order_id: this.param_data.data_order_id,
+          data_order_id: this.data_order_id,
           byr_buyer_id:this.byr_buyer_id,
           adm_user_id:this.adm_user_id,
           order_info: this.order_info,
@@ -1185,7 +1199,7 @@ export default {
                     data_count: false,
                   })
                   .then(({ data }) => {
-                      console.log(data);
+                    //   console.log(data);
                     _this.alert_icon = "success";
                     _this.alert_title = "";
                     _this.alert_text =data.csv_data_count + "件の確定伝票を送信しました。";
@@ -1219,7 +1233,6 @@ export default {
           formData.append("byr_buyer_id", _this.byr_buyer_id);
           axios.post(this.BASE_URL + "api/shipment_update", formData)
             .then(({ data }) => {
-                this.init(data.status);
                 if (data.status==0) {
                     _this.alert_icon = "error";
                     _this.alert_title = "エラー";
@@ -1240,24 +1253,6 @@ export default {
         }
       });
     },
-    //get Table data
-    get_all_byr_order_detail(page = 1) {
-      this.param_data["page"] = page;
-      this.param_data["per_page"] = this.select_field_per_page_num;
-      this.param_data["form_search"] = this.form;
-      this.select_field_page_num = page;
-      axios
-        .post(this.BASE_URL + "api/order_details", this.param_data)
-        .then(({ data }) => {
-          this.init(data.status);
-          this.order_detail_lists = data.order_list_detail;
-          this.order_info = data.order_info;
-          this.order_detail_list_length=this.order_detail_lists.data.length
-          this.$session.set("order_info",this.order_info)
-          this.loader.hide();
-        });
-    },
-
 
     edit_order_detail(order_detail_list) {
       this.edit_order_modal = true;
@@ -1267,19 +1262,12 @@ export default {
       //downloadcsvshipment_confirm
       var _this = this;
       this.loader = Vue.$loading.show();
-    //   this.order_info["form_search"] = this.form;
-      axios
-        .post(this.BASE_URL + "api/downloadcsvshipment_confirm", {
-          data_order_id: this.param_data.data_order_id,
-          order_info: this.order_info,
-          downloadType: downloadType,
-          byr_buyer_id: this.byr_buyer_id,
-          adm_user_id: Globals.user_info_id,
-          form_search:this.form,
-        })
+    this.form.order_info= this.order_info;
+    this.form.downloadType=downloadType;
+      axios.post(this.BASE_URL + "api/downloadcsvshipment_confirm", this.form)
         .then(({ data }) => {
-            this.downloadFromUrl(data);
-            this.loader.hide();
+            _this.downloadFromUrl(data);
+            _this.loader.hide();
         });
     },
   },
@@ -1288,6 +1276,8 @@ export default {
     // this.byr_session_check()
     this.byr_buyer_id=this.$session.get("byr_buyer_id");
     this.form.byr_buyer_id=this.byr_buyer_id;
+    this.data_order_id=this.$route.query.data_order_id
+    this.form.data_order_id=this.data_order_id
     Fire.$emit("byr_has_selected", this.byr_buyer_id);
     Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
 this.getbuyerJsonSettingvalue();

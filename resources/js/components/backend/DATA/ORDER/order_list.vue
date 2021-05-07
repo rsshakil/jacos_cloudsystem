@@ -355,6 +355,7 @@ export default {
         sort_by:'receive_datetime ',
         sort_type:"DESC",
         downloadType: 1,
+        page_title:'order_list',
       }),
     };
   },
