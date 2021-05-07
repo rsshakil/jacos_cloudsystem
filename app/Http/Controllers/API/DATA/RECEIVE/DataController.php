@@ -276,12 +276,12 @@ class DataController extends Controller
 
                         }
 
-                $result = $result->groupBy(
-                    [
-                        'drv.mes_lis_acc_tra_trade_number'
-                    ]
-                )
-                ->orderBy('drv.mes_lis_acc_par_sel_code')
+                // $result = $result->groupBy(
+                //     [
+                //         'drv.mes_lis_acc_tra_trade_number'
+                //     ]
+                // )
+                $result= $result->orderBy('drv.mes_lis_acc_par_sel_code')
                 ->orderBy('drv.mes_lis_acc_tra_dat_transfer_of_ownership_date')
                 ->orderBy('drv.mes_lis_acc_log_del_delivery_service_code')
                 ->orderBy('drv.mes_lis_acc_tra_ins_temperature_code')
@@ -295,6 +295,7 @@ class DataController extends Controller
             $sel_code = $request->sel_code;
             $major_category = $request->major_category;
             $delivery_service_code = $request->delivery_service_code;
+            $ownership_date = $request->ownership_date;
             $data_receive_id=$request->data_receive_id;
 
             $decesion_status=$request->decesion_status;
@@ -306,7 +307,8 @@ class DataController extends Controller
         // ->where('data_receive_vouchers.mes_lis_acc_par_sel_name',$sel_name)
         ->where('drv.mes_lis_acc_par_sel_code',$sel_code)
         ->where('drv.mes_lis_acc_tra_goo_major_category',$major_category)
-        ->where('drv.mes_lis_acc_log_del_delivery_service_code','=',$delivery_service_code);
+        ->where('drv.mes_lis_acc_log_del_delivery_service_code','=',$delivery_service_code)
+        ->where('mes_lis_acc_tra_dat_transfer_of_ownership_date',$ownership_date);
         if($decesion_status!="*"){
             if($decesion_status=="訂正あり"){
                 $result = $result->where('drv.mes_lis_acc_tot_tot_net_price_total','=','data_receive_vouchers.mes_lis_shi_tot_tot_net_price_total');
@@ -315,10 +317,10 @@ class DataController extends Controller
                 $result = $result->where('drv.mes_lis_acc_tot_tot_net_price_total','!=','data_receive_vouchers.mes_lis_shi_tot_tot_net_price_total');
             }
         }
-        if($request->mes_lis_acc_par_shi_code!=''){
+        if($request->mes_lis_acc_par_shi_code!=null){
             $result = $result->where('drv.mes_lis_acc_par_shi_code',$request->mes_lis_acc_par_shi_code);
         }
-        if($request->mes_lis_acc_par_rec_code!=''){
+        if($request->mes_lis_acc_par_rec_code!=null){
             $result = $result->where('drv.mes_lis_acc_par_rec_code',$request->mes_lis_acc_par_rec_code);
         }
         if($voucher_class!="*"){
@@ -330,8 +332,8 @@ class DataController extends Controller
         if($trade_number!=null){
             $result = $result->where('drv.mes_lis_acc_tra_trade_number',$trade_number);
         }
-        $result=$result->groupBy('drv.mes_lis_acc_tra_trade_number')
-        ->orderBy($table_name.$sort_by,$sort_type);
+        // $result=$result->groupBy('drv.mes_lis_acc_tra_trade_number')
+        $result = $result->orderBy($table_name.$sort_by,$sort_type);
         }
 
         // $csv_data=$csv_data->groupBy('drv.data_receive_voucher_id');
