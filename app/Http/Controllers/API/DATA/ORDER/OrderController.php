@@ -195,6 +195,7 @@ class OrderController extends Controller
         // $form_search = $request->form_search;
         $data_order_id = $request->data_order_id;
         $order_info=$request->order_info;
+        Log::info($order_info);
         $sort_by = $request->sort_by;
         $sort_type = $request->sort_type;
         $par_shi_code = $request->par_shi_code;
@@ -212,6 +213,13 @@ class OrderController extends Controller
         $major_category = $order_info['major_category'];
         $temperature_code = $order_info['temperature_code'];
         $temperature_code = $temperature_code == null ? '' : $temperature_code;
+        // 'data_order_id' => '1',
+        // 'delivery_date' => '2021-04-22',
+        // 'major_category' => '111',
+        // 'delivery_service_code' => '01',
+        // 'temperature_code' => '01',
+        Log::info("delivery_date");
+        Log::info($delivery_date);
         data_order_voucher::where('data_order_id',$data_order_id)->where('mes_lis_ord_tra_goo_major_category',$major_category)->where('mes_lis_ord_log_del_delivery_service_code',$delivery_service_code)->where('mes_lis_ord_tra_dat_delivery_date',$delivery_date)->whereNull('check_datetime')->update(['check_datetime'=>date('Y-m-d H:i:s')]);
         $order_info = DB::table('data_shipments as ds')
         ->select(
@@ -266,7 +274,7 @@ class OrderController extends Controller
             ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $delivery_service_code)
             ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $temperature_code);
 
-                if($mes_lis_shi_tra_trade_number!=""){
+                if($mes_lis_shi_tra_trade_number!=null){
                     $result = $result->where('dsv.mes_lis_shi_tra_trade_number', $mes_lis_shi_tra_trade_number);
                 }
                 if($fixedSpecial!="*"){
@@ -289,13 +297,13 @@ class OrderController extends Controller
                         $result = $result->whereNotNull('dsv.decision_datetime');
                     }
                 }
-                if($par_shi_code!=''){
+                if($par_shi_code!=null){
                     $result = $result->where('dsv.mes_lis_shi_par_shi_code',$par_shi_code);
                 }
-                if($par_rec_code!=''){
+                if($par_rec_code!=null){
                     $result = $result->where('dsv.mes_lis_shi_par_rec_code',$par_rec_code);
                 }
-                if($order_item_code!=''){
+                if($order_item_code!=null){
                     $result = $result->where('dsi.mes_lis_shi_lin_ite_order_item_code',$order_item_code);
                 }
                 $result = $result->orderBy('dsv.'.$sort_by,$sort_type);

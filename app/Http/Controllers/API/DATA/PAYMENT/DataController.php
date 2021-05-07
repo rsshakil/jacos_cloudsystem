@@ -142,7 +142,7 @@ class DataController extends Controller
         //     $csv_data=$csv_data->where('dppd.decision_datetime','!=',null);
         //     $csv_data=$csv_data->where('dppd.send_datetime','=',null);
         // }
-        $csv_data=$csv_data->groupBy('dppd.data_payment_pay_detail_id');
+        // $csv_data=$csv_data->groupBy('dppd.data_payment_pay_detail_id');
         // 検索
         // $csv_data = $csv_data->limit(100000)->get()->toArray();
         return $csv_data;
