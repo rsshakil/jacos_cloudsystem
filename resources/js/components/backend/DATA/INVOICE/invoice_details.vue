@@ -353,32 +353,32 @@
             <div class="form-group row">
               <label for="inputPassword" class="col-sm-2 col-form-label">計上日</label>
               <div class="col-sm-10">
-                <input type="date" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_transfer_of_ownership_date">
+                <input type="date" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_transfer_of_ownership_date" required>
               </div>
             </div>
             <div class="form-group row">
               <label for="inputPassword" class="col-sm-2 col-form-label">部門コード</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_goo_major_category">
+                <input type="text" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_goo_major_category" required>
               </div>
             </div>
             <div class="form-group row">
               <label for="inputPassword" class="col-sm-2 col-form-label">納品先コード</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_tra_code">
+                <input type="text" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_tra_code" required>
               </div>
             </div>
             <div class="form-group row">
               <label for="inputPassword" class="col-sm-2 col-form-label">伝票番号</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_lin_trade_number_reference">
+                <input type="text" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_lin_trade_number_reference" required>
               </div>
             </div>
             <div class="form-group row">
               <label for="inputPassword" class="col-sm-2 col-form-label">請求内容</label>
               <div class="col-sm-10">
-                <select class="form-control" v-model="invoiceDetail.mes_lis_inv_lin_det_pay_code">
-            <option value="*">全て</option>
+                <select class="form-control" v-model="invoiceDetail.mes_lis_inv_lin_det_pay_code" required>
+        
               <option
                 v-for="(temp, i) in mes_lis_inv_lin_det_pay_code_list"
                 :key="i" v-if="temp!=''" :value="i">
@@ -390,8 +390,8 @@
             <div class="form-group row">
               <label for="inputPassword" class="col-sm-2 col-form-label">請求区分</label>
               <div class="col-sm-10">
-                <select class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_balance_carried_code">
-                <option value="*">全て</option>
+                <select class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_balance_carried_code" required>
+               
               <option
                 v-for="(temp, i) in mes_lis_inv_lin_det_balance_carried_codeList"
                 :key="i" v-if="temp!='' " :value="i">
@@ -403,7 +403,7 @@
             <div class="form-group row">
               <label for="inputPassword" class="col-sm-2 col-form-label">請求金額</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_amo_requested_amount">
+                <input type="text" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_amo_requested_amount" required>
               </div>
             </div>
 
@@ -455,7 +455,7 @@
               <label for="inputPassword" class="col-sm-2 col-form-label">請求内容</label>
               <div class="col-sm-10">
                 <select class="form-control" v-model="invoiceDetail.mes_lis_inv_lin_det_pay_code">
-            <option value="*">全て</option>
+            
               <option
                 v-for="(temp, i) in mes_lis_inv_lin_det_pay_code_list"
                 :key="i" v-if="temp!=''" :value="i">
@@ -468,7 +468,7 @@
               <label for="inputPassword" class="col-sm-2 col-form-label">請求区分</label>
               <div class="col-sm-10">
                 <select class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_balance_carried_code">
-                <option value="*">全て</option>
+              
               <option
                 v-for="(temp, i) in mes_lis_inv_lin_det_balance_carried_codeList"
                 :key="i" v-if="temp!='' " :value="i">
@@ -640,8 +640,8 @@ export default {
         mes_lis_inv_lin_det_goo_major_category:'',
         mes_lis_inv_lin_tra_code:'',
         mes_lis_inv_lin_lin_trade_number_reference:'',
-        mes_lis_inv_lin_det_pay_code:'*',
-        mes_lis_inv_lin_det_balance_carried_code:'*',
+        mes_lis_inv_lin_det_pay_code:'',
+        mes_lis_inv_lin_det_balance_carried_code:'',
         mes_lis_inv_lin_det_amo_requested_amount:'',
       },
       byr_buyer_id:null,

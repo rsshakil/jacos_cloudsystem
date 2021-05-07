@@ -5,7 +5,7 @@
       <table class="table orderDetailTable cmnWidthTable table-bordered" style="width: 100%">
         <tr>
           <td class="cl_custom_color">
-            {{ myLang.receive_date }}
+           受信日
           </td>
           <td>
 <div class="input-group">
