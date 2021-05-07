@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\API\AllUsedFunction;
 use App\Models\ADM\User;
 use App\Models\DATA\RTN\data_return;
+use Illuminate\Support\Facades\Log;
 
 class DataController extends Controller
 {
@@ -175,6 +176,7 @@ class DataController extends Controller
                 $table_name='drv.';
             }
         if ($request->page_title=='return_list') {
+            // \Log::info($request->all());
             $receive_date_from = $request->receive_date_from; // 受信日時開始
             $receive_date_to = $request->receive_date_to; // 受信日時終了
             $ownership_date_from = $request->ownership_date_from; // 納品日開始
@@ -185,6 +187,8 @@ class DataController extends Controller
             $major_category = $request->major_category; // 配送温度区分
             $sta_doc_type = $request->sta_doc_type; // 配送温度区分
             $check_datetime = $request->check_datetime; // 配送温度区分
+
+            $major_category_code=$major_category['category_code'];
 
             $receive_date_from = $receive_date_from!=null? date('Y-m-d 00:00:00',strtotime($receive_date_from)):$receive_date_from; // 受信日時開始
             $receive_date_to = $receive_date_to!=null? date('Y-m-d 23:59:59',strtotime($receive_date_to)):$receive_date_to; // 受信日時終了
@@ -197,8 +201,8 @@ class DataController extends Controller
             if ($ownership_date_from && $ownership_date_to) {
                 $result =$result->whereBetween('drv.mes_lis_ret_tra_dat_transfer_of_ownership_date', [$ownership_date_from, $ownership_date_to]);
             }
-            if ($major_category!='*') {
-                $result =$result->where('drv.mes_lis_ret_tra_goo_major_category',$major_category);
+            if ($major_category_code!='*') {
+                $result =$result->where('drv.mes_lis_ret_tra_goo_major_category',$major_category_code);
             }
             if ($request->sel_code!=null) {
                 $result =$result->where('drv.mes_lis_ret_par_sel_code',$request->sel_code);
@@ -214,14 +218,14 @@ class DataController extends Controller
                 }
 
             }
-            $result = $result->groupBy([
-                // 'data_returns.receive_datetime',
-                // 'drv.mes_lis_ret_par_sel_code',
-                'drv.mes_lis_ret_tra_trade_number'
-                // 'drv.mes_lis_ret_tra_dat_transfer_of_ownership_date',
-                // 'drv.mes_lis_ret_tra_goo_major_category'
-            ])
-            ->orderBy('data_returns.receive_datetime','DESC')
+            // $result = $result->groupBy([
+            //     // 'data_returns.receive_datetime',
+            //     // 'drv.mes_lis_ret_par_sel_code',
+            //     'drv.mes_lis_ret_tra_trade_number'
+            //     // 'drv.mes_lis_ret_tra_dat_transfer_of_ownership_date',
+            //     // 'drv.mes_lis_ret_tra_goo_major_category'
+            // ])
+            $result= $result->orderBy('data_returns.receive_datetime','DESC')
             ->orderBy('drv.mes_lis_ret_par_sel_code')
             ->orderBy('drv.mes_lis_ret_tra_dat_transfer_of_ownership_date')
             ->orderBy('drv.mes_lis_ret_tra_goo_major_category');
