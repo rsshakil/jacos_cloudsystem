@@ -910,6 +910,7 @@ export default {
   methods: {
       //get Table data
     get_all_byr_order_detail(page = 1) {
+      let loader = Vue.$loading.show();
         this.form.page=page
         this.form.per_page=this.select_field_per_page_num
         this.form.order_info=this.param_data
@@ -920,7 +921,7 @@ export default {
             this.order_info = data.order_info;
             this.order_detail_list_length=this.order_detail_lists.data.length
             this.$session.set("order_info",this.order_info)
-            this.loader.hide();
+            loader.hide();
             });
     },
       sorting(sorted_field){
@@ -1285,7 +1286,7 @@ this.getbuyerJsonSettingvalue();
     this.item_search_q = this.$route.query;
     // console.log(this.param_data);
   this.$session.set("order_param_data",this.param_data)
-    this.loader = Vue.$loading.show();
+    //this.loader = Vue.$loading.show();
     // this.data_order_id = this.$route.params.data_order_id;
     this.get_all_byr_order_detail();
     Fire.$on("LoadByrorderDetail", (page=1) => {

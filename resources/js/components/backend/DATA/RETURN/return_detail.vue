@@ -819,6 +819,7 @@ export default {
     },
 
     get_all_receive_detail(page = 1) {
+      let loadersss = Vue.$loading.show();
         this.form.page=page;
         this.form.select_field_page_num = page;
       axios
@@ -829,7 +830,7 @@ export default {
           this.byr_buyer_lists = data.byr_buyer_list;
           this.order_info = data.order_info;
           this.form.order_info = this.order_info;
-          this.loader.hide();
+          loadersss.hide();
         });
     },
     sorting(sorted_field){
@@ -852,7 +853,7 @@ export default {
     this.form.sel_code = this.$route.query.sel_code;
     this.form.major_category = this.$route.query.major_category;
     this.form.ownership_date = this.$route.query.ownership_date;
-    this.loader = Vue.$loading.show();
+    //this.loader = Vue.$loading.show();
     this.get_all_receive_detail();
     Fire.$on("LoadByrorderDetail", (page=1) => {
       this.get_all_receive_detail(page);

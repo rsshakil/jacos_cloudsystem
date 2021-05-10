@@ -290,6 +290,7 @@ export default {
       },
     //get Table data
     getItemSearchData(page = 1) {
+      let loader = Vue.$loading.show();
         this.form.page=page;
         axios.post(this.BASE_URL + "api/get_all_shipment_item_by_search", this.form)
         .then(({ data }) => {
@@ -297,7 +298,7 @@ export default {
             // console.log(data);
             this.order_item_lists = data.order_item_lists;
             // this.order_info = data.order_info;
-            this.loader.hide();
+            loader.hide();
         });
     },
 

@@ -792,6 +792,7 @@ console.log(this.invoiceDetail.mes_lis_inv_lin_det_balance_carried_code);
     },
     //get Table data
     invoice_details(page = 1) {
+      let loader = Vue.$loading.show();
         this.form.page=page;
       axios.post(this.BASE_URL + "api/get_invoice_details_list", this.form)
         .then(({ data }) => {
@@ -801,7 +802,7 @@ console.log(this.invoiceDetail.mes_lis_inv_lin_det_balance_carried_code);
             (this.invoice_detail_lists.data).forEach(element => {
                 this.form.shipment_ids.push(element.data_shipment_voucher_id)
             });
-
+            loader.hide();
         });
     },
     sorting(sorted_field){
