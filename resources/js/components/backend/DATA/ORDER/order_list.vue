@@ -39,7 +39,7 @@
                 v-for="(dsc, i) in json_delivery_service_codeList"
                 :key="i"
 
-                :value="dsc"
+                :value="i"
               >
                 {{ dsc}}
               </option>
@@ -74,7 +74,7 @@
             <option value="*">全て</option>
               <option
                 v-for="(temp, i) in json_temperature_codeList"
-                :key="i" v-if="temp!='' " :value="temp">
+                :key="i" v-if="temp!=''" :value="i">
                 {{ temp }}
               </option>
             </select>
