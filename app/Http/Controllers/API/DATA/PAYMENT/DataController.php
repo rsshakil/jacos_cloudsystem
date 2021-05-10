@@ -5,16 +5,32 @@ namespace App\Http\Controllers\API\DATA\PAYMENT;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DATA\PAYMENT\data_payment;
+use App\Http\Controllers\API\AllUsedFunction;
+use App\Models\ADM\User;
 
 class DataController extends Controller
 {
+    // private $all_used_fun;
+
+    // public function __construct()
+    // {
+    //     $this->all_used_fun = new AllUsedFunction();
+    //     // $this->all_used_fun->folder_create('app/'.config('const.PAYMENT_CSV_PATH'));
+    // }
     public static function getPaymentData($request)
     {
         // 対象データ取得
         $data_payment_id=$request->data_payment_id;
-        $request_all=$request->all();
-        $sort_by = $request->sort_by;
-        $sort_type = $request->sort_type;
+        $adm_user_id=$request->adm_user_id;
+        $byr_buyer_id=$request->byr_buyer_id;
+        $all_used_fun = new AllUsedFunction();
+        $authUser = User::find($adm_user_id);
+        $cmn_connect_id = '';
+        if (!$authUser->hasRole(config('const.adm_role_name'))) {
+            $cmn_company_info = $all_used_fun->get_user_info($adm_user_id, $byr_buyer_id);
+            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+        }
+
 
         $csv_data=data_payment::select(
             // data_payments
@@ -93,23 +109,38 @@ class DataController extends Controller
             'dppd.mes_lis_pay_lin_det_tax_tax_rate'
             )
         ->join('data_payment_pays as dpp','dpp.data_payment_id','=','data_payments.data_payment_id')
-        ->join('data_payment_pay_details as dppd','dppd.data_payment_pay_id','=','dpp.data_payment_pay_id');
-            if ($request->page_title=='payment_list') {
-                $table_name = 'dpp.';
+        ->join('data_payment_pay_details as dppd','dppd.data_payment_pay_id','=','dpp.data_payment_pay_id')
+        ->where('data_payments.cmn_connect_id',$cmn_connect_id);
+            // if ($request->page_title=='payment_list') {
+            //     $table_name = 'dpp.';
+            $sort_by = $request->sort_by;
+            $sort_type = $request->sort_type;
             if ($sort_by == "receive_datetime" || $sort_by == "data_payment_id") {
                 $table_name = 'data_payments.';
-            } else if ($sort_by == "mes_lis_pay_pay_code" || $sort_by == "mes_lis_buy_name" || $sort_by == "mes_lis_pay_per_end_date" || $sort_by == "check_datetime") {
-                $table_name = 'dpp.';
-            } else if ($sort_by == "mes_lis_pay_lin_det_pay_out_date" || $sort_by == "mes_lis_pay_lin_det_amo_payable_amount") {
+            }else if ($sort_by == "mes_lis_pay_lin_det_pay_out_date" || $sort_by == "mes_lis_pay_lin_det_amo_payable_amount") {
                 $table_name = 'dppd.';
+            }else{
+            // }else if ($sort_by == "mes_lis_pay_pay_code" || $sort_by == "mes_lis_buy_name" || $sort_by == "mes_lis_pay_per_end_date" || $sort_by == "check_datetime") {
+                $table_name = 'dpp.';
             }
-            $mes_lis_pay_pay_code = $request->mes_lis_pay_pay_code; // 受信日時開始
-            $receive_date_from = $request->receive_date_from; // 受信日時開始
-            $receive_date_to = $request->receive_date_to; // 受信日時終了
-            $mes_lis_buy_name = $request->mes_lis_buy_name; // 納品日開始
-            $mes_lis_pay_per_end_date_from = $request->mes_lis_pay_per_end_date_from; // 納品日開始
-            $mes_lis_pay_per_end_date_to = $request->mes_lis_pay_per_end_date_to; // 納品日終了
-            $check_datetime = $request->check_datetime; // 便
+            if ($request->page_title=='payment_list') {
+            $mes_lis_pay_pay_code = $request->mes_lis_pay_pay_code;
+            $mes_lis_buy_name = $request->mes_lis_buy_name;
+            $receive_date_from = $request->receive_date_from;
+            $receive_date_to = $request->receive_date_to;
+            $receive_date_from = $receive_date_from!=null? date('Y-m-d 00:00:00',strtotime($receive_date_from)):$receive_date_from;
+            $receive_date_to = $receive_date_to!=null? date('Y-m-d 23:59:59',strtotime($receive_date_to)):$receive_date_to;
+            $mes_lis_pay_per_end_date_from = $request->mes_lis_pay_per_end_date_from;
+            $mes_lis_pay_per_end_date_to = $request->mes_lis_pay_per_end_date_to;
+            $mes_lis_pay_per_end_date_from = $mes_lis_pay_per_end_date_from!=null? date('Y-m-d 00:00:00',strtotime($mes_lis_pay_per_end_date_from)):$mes_lis_pay_per_end_date_from;
+            $mes_lis_pay_per_end_date_to = $mes_lis_pay_per_end_date_to!=null? date('Y-m-d 23:59:59',strtotime($mes_lis_pay_per_end_date_to)):$mes_lis_pay_per_end_date_to;
+            $mes_lis_pay_lin_det_pay_out_date_from = $request->mes_lis_pay_lin_det_pay_out_date_from;
+            $mes_lis_pay_lin_det_pay_out_date_to = $request->mes_lis_pay_lin_det_pay_out_date_to;
+            $mes_lis_pay_lin_det_pay_out_date_from = $mes_lis_pay_lin_det_pay_out_date_from!=null? date('Y-m-d 00:00:00',strtotime($mes_lis_pay_lin_det_pay_out_date_from)):$mes_lis_pay_lin_det_pay_out_date_from;
+            $mes_lis_pay_lin_det_pay_out_date_to = $mes_lis_pay_lin_det_pay_out_date_to!=null? date('Y-m-d 23:59:59',strtotime($mes_lis_pay_lin_det_pay_out_date_to)):$mes_lis_pay_lin_det_pay_out_date_to;
+
+            $check_datetime = $request->check_datetime;
+
             if ($mes_lis_pay_pay_code !=null) {
                 $csv_data=$csv_data->where('dpp.mes_lis_pay_pay_code',$mes_lis_pay_pay_code);
             }
@@ -118,6 +149,9 @@ class DataController extends Controller
             }
             if ($mes_lis_pay_per_end_date_from && $mes_lis_pay_per_end_date_to) {
                 $csv_data=$csv_data->whereBetween('dpp.mes_lis_pay_per_end_date', [$mes_lis_pay_per_end_date_from, $mes_lis_pay_per_end_date_to]);
+            }
+            if ($mes_lis_pay_lin_det_pay_out_date_from && $mes_lis_pay_lin_det_pay_out_date_to) {
+                $csv_data= $csv_data->whereBetween('dppd.mes_lis_pay_lin_det_pay_out_date', [$mes_lis_pay_lin_det_pay_out_date_from, $mes_lis_pay_lin_det_pay_out_date_to]);
             }
             if ($mes_lis_buy_name !=null) {
                 $csv_data=$csv_data->where('dpp.mes_lis_buy_name',$mes_lis_buy_name);
@@ -131,20 +165,18 @@ class DataController extends Controller
             }
             $csv_data=$csv_data->orderBy($table_name . $sort_by, $sort_type);
         }else if($request->page_title=='payment_details_list'){
-            $csv_data=$csv_data->where('data_payments.data_payment_id',$data_payment_id);
+            $pay_code = $request->pay_code;
+            $end_date = $request->end_date;
+            $out_date = $request->out_date;
+            $whereClause = [
+                'data_payments.data_payment_id'  => $data_payment_id,
+                'dpp.mes_lis_pay_pay_code'  => $pay_code,
+                'dpp.mes_lis_pay_per_end_date'   => $end_date,
+                'dppd.mes_lis_pay_lin_det_pay_out_date' => $out_date
+            ];
+            $csv_data=$csv_data->where($whereClause);
         }
-        // $csv_data=$csv_data->where('dppd.mes_lis_pay_lin_det_pay_code','3003');
-        // if (array_key_exists("data_payment_id", $request_all)) {
-        //     $csv_data=$csv_data->where('data_payments.data_payment_id',$data_payment_id);
-        // }
-
-        // if (!(array_key_exists("downloadType", $request_all))) {
-        //     $csv_data=$csv_data->where('dppd.decision_datetime','!=',null);
-        //     $csv_data=$csv_data->where('dppd.send_datetime','=',null);
-        // }
-        // $csv_data=$csv_data->groupBy('dppd.data_payment_pay_detail_id');
-        // 検索
-        // $csv_data = $csv_data->limit(100000)->get()->toArray();
+        // $csv_data =$csv_data->where('dppd.mes_lis_pay_lin_det_pay_code','3003');
         return $csv_data;
     }
 

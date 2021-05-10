@@ -47,7 +47,7 @@
     </div></td>
             <td class="cl_custom_color">部門</td>
             <td colspan="3">
-                                                        <multiselect v-model="form.category_code" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="true" :select-label="''" :deselect-label="''" :selected-label="'選択中'" :preserve-search="true" placeholder="部門"><span slot="noOptions">候補がありません</span> <span slot="noResult">候補がありません</span></multiselect>
+                <multiselect v-model="form.category_code" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="true" :select-label="''" :deselect-label="''" :selected-label="'選択中'" :preserve-search="true" placeholder="部門"><span slot="noOptions">候補がありません</span> <span slot="noResult">候補がありません</span></multiselect>
             </td>
 
           </tr>
@@ -274,18 +274,21 @@ breadcrumb(){
         from_date: null,
         to_date: null,
         category_code: {category_code:'*',category_name:'全て'},
-        mes_lis_pay_lin_sel_code:'',
+        mes_lis_pay_lin_sel_code:null,
         mes_lis_inv_lin_det_pay_code:'*',
         mes_lis_pay_lin_det_verification_result_code:'*',
         mes_lis_pay_lin_det_trade_type_code:'*',
         mes_lis_pay_lin_det_balance_carried_code:'*',
         mes_lis_pay_lin_lin_trade_number_eference: null,
         check_datetime: null,
+        pay_code:null,
+        end_date:null,
+        out_date:null,
         submit_type: "page_load",
         payment_id:'',
         sort_by:'data_payment_pay_detail_id ',
         sort_type:"ASC",
-        pay_code:[1001, 1002, 1004]
+        pay_code_list:[1001, 1002, 1004]
       }),
     };
   },
@@ -347,6 +350,9 @@ searchByFormData() {
     this.byr_buyer_id = this.$session.get("byr_buyer_id");
     this.form.byr_buyer_id = this.$session.get("byr_buyer_id");
     this.form.payment_id = this.$route.query.data_payment_id;
+    this.form.pay_code = this.$route.query.pay_code
+    this.form.end_date = this.$route.query.end_date
+    this.form.out_date = this.$route.query.out_date
     this.getbuyerJsonSettingvalue();
     this.getAllPaymentDetails();
     Fire.$on("LoadPaymentItemDetail", (page=1) => {

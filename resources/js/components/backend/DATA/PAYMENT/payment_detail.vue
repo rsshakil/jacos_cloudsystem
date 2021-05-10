@@ -59,21 +59,28 @@
           <tbody>
             <tr>
               <td>1</td>
-              <td><router-link :to="{
+              <td>
+                    <router-link :to="{ name: 'payment_item_detail',
+                      query: {
+                        data_payment_id: payment_detail_header.data_payment_id,
+                        pay_code:payment_detail_header.mes_lis_pay_pay_code,
+                        end_date:payment_detail_header.mes_lis_pay_per_end_date,
+                        out_date:payment_detail_header.mes_lis_pay_lin_det_pay_out_date,
+                      },
+                    }">
+                    {{payment_detail_header.mes_lis_pay_pay_code}} {{payment_detail_header.mes_lis_pay_pay_name}}
+                    </router-link>
+                </td>
+                <td>
+                  <router-link :to="{
                       name: 'payment_item_detail',
                       query: {
                         data_payment_id:
                           payment_detail_header.data_payment_id,
                       },
-                    }">{{payment_detail_header.mes_lis_pay_pay_code}} {{payment_detail_header.mes_lis_pay_pay_name}}</router-link></td>
-              <td><router-link :to="{
-                      name: 'payment_item_detail',
-                      query: {
-                        data_payment_id:
-                          payment_detail_header.data_payment_id,
-                      },
-                    }">{{payment_detail_header.mes_lis_pay_pay_id}}</router-link></td>
-              <td class="text-right">{{paymentdetailTopTable.totalAmount | priceFormat}}</td>
+                    }">{{payment_detail_header.mes_lis_pay_pay_id}}</router-link>
+                </td>
+              <td class="text-right">{{payment_detail_header.total_amount | priceFormat}}</td>
             </tr>
             <tr v-if="payment_detail_header && payment_detail_header.length==0">
             <td class="text-center" colspan="4">データがありません</td>
@@ -170,6 +177,9 @@ export default {
         mes_lis_pay_per_end_date_to: null,
         check_datetime: null,
         data_payment_id:null,
+        pay_code:null,
+        end_date:null,
+        out_date:null,
         page_title:'payment_details_list',
         downloadType:1
       }),
@@ -187,7 +197,7 @@ export default {
         .then(({ data }) => {
 
           this.payment_detail_header = data.payment_item_header;
-          this.paymentdetailTopTable = data.paymentdetailTopTable;
+        //   this.paymentdetailTopTable = data.paymentdetailTopTable;
           this.pdtableleft = data.pdtableleft;
           this.paymentdetailRghtTable = data.paymentdetailRghtTable;
 
@@ -209,6 +219,9 @@ export default {
     this.byr_buyer_id = this.$session.get("byr_buyer_id");
     this.form.byr_buyer_id = this.byr_buyer_id;
     this.form.data_payment_id = this.$route.query.data_payment_id
+    this.form.pay_code = this.$route.query.pay_code
+    this.form.end_date = this.$route.query.end_date
+    this.form.out_date = this.$route.query.out_date
     this.getAllPaymentDetails();
     Fire.$emit("byr_has_selected", this.byr_buyer_id);
     Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
