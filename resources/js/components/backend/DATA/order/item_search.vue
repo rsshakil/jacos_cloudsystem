@@ -309,7 +309,7 @@ export default {
   created() {
     Fire.$emit("byr_has_selected", this.$session.get("byr_buyer_id"));
     Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
-    this.loader = Vue.$loading.show();
+   // this.loader = Vue.$loading.show();
 this.$session.set("order_item_search_query",this.$route.query)
     this.order_info=this.$session.get("order_info");
 
