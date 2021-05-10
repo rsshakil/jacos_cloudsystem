@@ -347,6 +347,12 @@
       v-model="addInvoiceDetailModal"
     >
       <div class="panel-body add_item_body">
+        <p v-if="errors.length">
+        <b>次の間違いを正しくしてください:</b>
+        <ul>
+          <li style="color:red;" v-for="error in errors">{{ error }}</li>
+        </ul>
+      </p>
         <form>
           <p class="text-center">請求伝票を追加できます</p>
           <input type="hidden" v-model="invoiceDetail.data_invoice_id">
@@ -613,6 +619,7 @@ export default {
   data() {
     return {
       param_data: [],
+       errors: [],
       invoice_detail_lists: {},
       invoice_detail_length: 0,
       byr_voucher_lists: {},
@@ -674,6 +681,23 @@ export default {
     }
   },
   methods: {
+    checkForm: function (e) {
+      this.errors = [];
+console.log(this.invoiceDetail.mes_lis_inv_lin_det_pay_code);
+console.log(this.invoiceDetail.mes_lis_inv_lin_det_balance_carried_code);
+        if(!this.invoiceDetail.mes_lis_inv_lin_det_transfer_of_ownership_date){this.errors.push("計上日 フィールドは必須項目です")}
+        if(!this.invoiceDetail.mes_lis_inv_lin_det_goo_major_category){this.errors.push("部門コード フィールドは必須項目です")}
+        if(!this.invoiceDetail.mes_lis_inv_lin_tra_code){this.errors.push("納品先コード フィールドは必須項目です")}
+        if(!this.invoiceDetail.mes_lis_inv_lin_lin_trade_number_reference){this.errors.push("伝票番号 フィールドは必須項目です")}
+        if(this.invoiceDetail.mes_lis_inv_lin_det_pay_code==''){this.errors.push("請求内容 フィールドは必須項目です")}
+        if(this.invoiceDetail.mes_lis_inv_lin_det_balance_carried_code==''){this.errors.push("請求区分 フィールドは必須項目です")}
+        if(!this.invoiceDetail.mes_lis_inv_lin_det_amo_requested_amount){this.errors.push("請求金額 フィールドは必須項目です")}
+      
+      if (!this.errors.length) {
+        return true;
+      }
+      return false;
+    },
     invoiceCompareData(){
       this.invoiceCompareModal = true;
       axios.post(this.BASE_URL + "api/invoice_compare_data", this.form)
@@ -715,18 +739,20 @@ export default {
         mes_lis_inv_lin_det_goo_major_category:'',
         mes_lis_inv_lin_tra_code:'',
         mes_lis_inv_lin_lin_trade_number_reference:'',
-        mes_lis_inv_lin_det_pay_code:'*',
-        mes_lis_inv_lin_det_balance_carried_code:'*',
+        mes_lis_inv_lin_det_pay_code:'',
+        mes_lis_inv_lin_det_balance_carried_code:'',
         mes_lis_inv_lin_det_amo_requested_amount:'',
         };
     },
     update_invoice_detail(){
+      if(this.checkForm()){
       axios.post(this.BASE_URL + "api/update_invoice_detail", this.invoiceDetail)
         .then(({ data }) => {
             this.editInvoiceDetailModal = false;
             this.addInvoiceDetailModal = false;
            Fire.$emit("LoadByrinvoiceDetails",this.form.page);
         });
+        }
     },
     deleteInvoiceDetail(value){
       var _this = this;
