@@ -745,12 +745,17 @@ console.log(this.invoiceDetail.mes_lis_inv_lin_det_balance_carried_code);
         };
     },
     update_invoice_detail(){
+      var _this = this;
       if(this.checkForm()){
       axios.post(this.BASE_URL + "api/update_invoice_detail", this.invoiceDetail)
         .then(({ data }) => {
             this.editInvoiceDetailModal = false;
             this.addInvoiceDetailModal = false;
            Fire.$emit("LoadByrinvoiceDetails",this.form.page);
+           _this.alert_icon = "success";
+                _this.alert_title = "";
+                _this.alert_text = "正常に";
+                _this.sweet_normal_alert();
         });
         }
     },
