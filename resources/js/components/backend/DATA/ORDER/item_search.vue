@@ -290,6 +290,7 @@ export default {
       },
     //get Table data
     getItemSearchData(page = 1) {
+      let loader = Vue.$loading.show();
         this.form.page=page;
         axios.post(this.BASE_URL + "api/get_all_shipment_item_by_search", this.form)
         .then(({ data }) => {
@@ -297,7 +298,7 @@ export default {
             // console.log(data);
             this.order_item_lists = data.order_item_lists;
             // this.order_info = data.order_info;
-            this.loader.hide();
+            loader.hide();
         });
     },
 
@@ -308,7 +309,7 @@ export default {
   created() {
     Fire.$emit("byr_has_selected", this.$session.get("byr_buyer_id"));
     Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
-    this.loader = Vue.$loading.show();
+   // this.loader = Vue.$loading.show();
 this.$session.set("order_item_search_query",this.$route.query)
     this.order_info=this.$session.get("order_info");
 
