@@ -45,11 +45,11 @@
           <td class="cl_custom_color">支払日</td>
           <td>
           <div class="input-group">
-                    <input type="date" class="form-control" v-model="form.mes_lis_pay_per_end_date_from">
+                    <input type="date" class="form-control" v-model="form.mes_lis_pay_lin_det_pay_out_date_from">
                     <div class="input-group-prepend">
                         <span class="input-group-text">~</span>
                     </div>
-                    <input type="date" class="form-control" v-model="form.mes_lis_pay_per_end_date_from_to">
+                    <input type="date" class="form-control" v-model="form.mes_lis_pay_lin_det_pay_out_date_to">
                 </div>
            </td>
           <td class="cl_custom_color">参照状況</td>
@@ -141,8 +141,10 @@
                     :to="{
                       name: 'payment_detail',
                       query: {
-                        data_payment_id:
-                          payment.data_payment_id,
+                        data_payment_id:payment.data_payment_id,
+                        pay_code:payment.mes_lis_pay_pay_code,
+                        end_date:payment.mes_lis_pay_per_end_date,
+                        out_date:payment.mes_lis_pay_lin_det_pay_out_date,
                       },
                     }"
                     class=""
@@ -229,6 +231,8 @@ export default {
         mes_lis_buy_name: null,
         mes_lis_pay_per_end_date_from: null,
         mes_lis_pay_per_end_date_to: null,
+        mes_lis_pay_lin_det_pay_out_date_from: null,
+        mes_lis_pay_lin_det_pay_out_date_to: null,
         check_datetime: '*',
         page_title: "payment_list",
         sort_by:'receive_datetime ',
