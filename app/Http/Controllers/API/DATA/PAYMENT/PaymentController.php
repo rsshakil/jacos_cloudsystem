@@ -280,7 +280,7 @@ class PaymentController extends Controller
         $mes_lis_pay_lin_tra_code = $request->mes_lis_pay_lin_tra_code;
         $mes_lis_pay_lin_sel_code = $request->mes_lis_pay_lin_sel_code;
 
-        $mes_lis_pay_lin_lin_trade_number_eference = $request->mes_lis_pay_lin_lin_trade_number_eference;
+        $mes_lis_pay_lin_lin_trade_number_reference = $request->mes_lis_pay_lin_lin_trade_number_reference;
         $mes_lis_inv_lin_det_pay_code = $request->mes_lis_inv_lin_det_pay_code;
         $mes_lis_pay_lin_det_verification_result_code = $request->mes_lis_pay_lin_det_verification_result_code;
         $mes_lis_pay_lin_det_trade_type_code = $request->mes_lis_pay_lin_det_trade_type_code;
@@ -327,7 +327,7 @@ class PaymentController extends Controller
             'data_payment_pay_details.mes_lis_pay_lin_det_transfer_of_ownership_date',
             'data_payment_pay_details.mes_lis_pay_lin_det_goo_major_category',
             'data_payment_pay_details.mes_lis_pay_lin_tra_code',
-            'data_payment_pay_details.mes_lis_pay_lin_lin_trade_number_eference',
+            'data_payment_pay_details.mes_lis_pay_lin_lin_trade_number_reference',
             'data_payment_pay_details.mes_lis_pay_lin_det_pay_code',
             'data_payment_pay_details.mes_lis_pay_lin_det_trade_type_code',
             'data_payment_pay_details.mes_lis_pay_lin_det_balance_carried_code',
@@ -352,8 +352,8 @@ class PaymentController extends Controller
             if ($mes_lis_pay_lin_sel_code != null) {
                 $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_sel_code', $mes_lis_pay_lin_sel_code);
             }
-            if ($mes_lis_pay_lin_lin_trade_number_eference != null) {
-                $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_lin_trade_number_eference', $mes_lis_pay_lin_lin_trade_number_eference);
+            if ($mes_lis_pay_lin_lin_trade_number_reference != null) {
+                $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_lin_trade_number_reference', $mes_lis_pay_lin_lin_trade_number_reference);
             }
 
             if ($mes_lis_inv_lin_det_pay_code != '*') {

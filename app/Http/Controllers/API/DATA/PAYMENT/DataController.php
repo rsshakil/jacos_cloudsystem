@@ -43,8 +43,8 @@ class DataController extends Controller
             'data_payments.sta_doc_instance_identifier',
             'data_payments.sta_doc_type',
             'data_payments.sta_doc_creation_date_and_time',
-            'data_payments.sta_bus_scope_type',
             'data_payments.sta_bus_scope_instance_identifier',
+            'data_payments.sta_bus_scope_type',
             'data_payments.sta_bus_scope_identifier',
             'data_payments.mes_ent_unique_creator_identification',
             'data_payments.mes_mes_sender_station_address',
@@ -55,12 +55,12 @@ class DataController extends Controller
             'data_payments.mes_mes_sys_value',
             'data_payments.mes_lis_con_version',
             'data_payments.mes_lis_doc_version',
+            'data_payments.mes_lis_ext_namespace',
             'data_payments.mes_lis_ext_version',
             'data_payments.mes_lis_pay_code',
             'data_payments.mes_lis_pay_gln',
             'data_payments.mes_lis_pay_name',
             'data_payments.mes_lis_pay_name_sbcs',
-            // data_payment_pays
             'dpp.mes_lis_buy_code',
             'dpp.mes_lis_buy_gln',
             'dpp.mes_lis_buy_name',
@@ -72,9 +72,7 @@ class DataController extends Controller
             'dpp.mes_lis_pay_pay_name_sbcs',
             'dpp.mes_lis_pay_per_begin_date',
             'dpp.mes_lis_pay_per_end_date',
-
-            // data_payment_pay_details
-            'dppd.mes_lis_pay_lin_lin_trade_number_eference',
+            'dppd.mes_lis_pay_lin_lin_trade_number_reference',
             'dppd.mes_lis_pay_lin_lin_issue_classification_code',
             'dppd.mes_lis_pay_lin_lin_sequence_number',
             'dppd.mes_lis_pay_lin_tra_code',
@@ -113,16 +111,16 @@ class DataController extends Controller
         ->where('data_payments.cmn_connect_id',$cmn_connect_id);
             // if ($request->page_title=='payment_list') {
             //     $table_name = 'dpp.';
-            $sort_by = $request->sort_by;
-            $sort_type = $request->sort_type;
-            if ($sort_by == "receive_datetime" || $sort_by == "data_payment_id") {
-                $table_name = 'data_payments.';
-            }else if ($sort_by == "mes_lis_pay_lin_det_pay_out_date" || $sort_by == "mes_lis_pay_lin_det_amo_payable_amount") {
-                $table_name = 'dppd.';
-            }else{
-            // }else if ($sort_by == "mes_lis_pay_pay_code" || $sort_by == "mes_lis_buy_name" || $sort_by == "mes_lis_pay_per_end_date" || $sort_by == "check_datetime") {
-                $table_name = 'dpp.';
-            }
+            // $sort_by = $request->sort_by;
+            // $sort_type = $request->sort_type;
+            // if ($sort_by == "receive_datetime" || $sort_by == "data_payment_id") {
+            //     $table_name = 'data_payments.';
+            // }else if ($sort_by == "mes_lis_pay_lin_det_pay_out_date" || $sort_by == "mes_lis_pay_lin_det_amo_payable_amount") {
+            //     $table_name = 'dppd.';
+            // }else{
+            // // }else if ($sort_by == "mes_lis_pay_pay_code" || $sort_by == "mes_lis_buy_name" || $sort_by == "mes_lis_pay_per_end_date" || $sort_by == "check_datetime") {
+            //     $table_name = 'dpp.';
+            // }
             if ($request->page_title=='payment_list') {
             $mes_lis_pay_pay_code = $request->mes_lis_pay_pay_code;
             $mes_lis_buy_name = $request->mes_lis_buy_name;
@@ -163,7 +161,7 @@ class DataController extends Controller
                     $csv_data=$csv_data->whereNotNull('dpp.check_datetime');
                 }
             }
-            $csv_data=$csv_data->orderBy($table_name . $sort_by, $sort_type);
+            // $csv_data=$csv_data->orderBy($table_name . $sort_by, $sort_type);
         }else if($request->page_title=='payment_details_list'){
             $pay_code = $request->pay_code;
             $end_date = $request->end_date;
@@ -176,73 +174,89 @@ class DataController extends Controller
             ];
             $csv_data=$csv_data->where($whereClause);
         }
+        $csv_data=$csv_data->orderBy('dppd.mes_lis_pay_lin_lin_trade_number_reference', "ASC");
+        // $csv_data=$csv_data->orderBy('dpp.mes_lis_pay_lin_lin_line_number', "ASC");
+
+        // $csv_data=$csv_data
+        // ->orderBy('dppd.mes_lis_pay_lin_sel_code','ASC')
+        // ->orderBy('dppd.mes_lis_pay_lin_det_goo_major_category','ASC');
         // $csv_data =$csv_data->where('dppd.mes_lis_pay_lin_det_pay_code','3003');
         return $csv_data;
     }
 
     public static function paymentCsvHeading(){
         return [
-            "送信者ＩＤ",
-            "送信者ＩＤ発行元",
-            "受信者ＩＤ",
-            "受信者ＩＤ発行元",
-            "標準名称",
-            "バージョン",
-            "インスタンスＩＤ",
-            "メッセージ種",
-            "作成日時",
-            "タイプ",
-            "テスト区分・最終送信先",
-            "テスト区分・最終送信先ＩＤ",
-            "メッセージ識別ＩＤ",
-            "送信者ステーションアドレス",
-            "最終受信者ステーションアドレス",
-            "直接受信者ステーションアドレス",
-            "取引数",
-            "システム情報",
-            "キー",
-            "値",
-            "バージョン番号",
-            "バージョン番号",
-            "名前空間",
-            "バージョン",
-            "支払法人コード",
-            "支払法人GLN",
-            "支払法人名称",
-            "支払法人名称カナ",
-            "発注者コード",
-            "発注者GLN",
-            "発注者名称",
-            "発注者名称カナ",
-            "請求書番号",
-            "請求取引先コード",
-            "請求取引先GLN",
-            "請求取引先名",
-            "請求取引先名カナ",
-            "対象期間開始",
-            "対象期間終了",
-            "取引番号（発注・返品）",
-            "発行区分",
-            "連番",
-            "計上部署コード",
-            "計上部署GLN",
-            "計上部署名称",
-            "計上部署名称（カナ）",
-            "取引先コード",
-            "取引先GLN",
-            "取引先名称",
-            "取引先名称カナ",
-            "商品分類（大）",
-            "商品分類（中）",
-            "計上日",
-            "請求金額",
-            "請求金額符号",
-            "税額合計金額",
-            "請求区分",
-            "未払買掛区分",
-            "支払内容",
-            "税区分",
-            "税率"
+            '送信者ＩＤ',
+            '送信者ＩＤ発行元',
+            '受信者ＩＤ',
+            '受信者ＩＤ発行元',
+            '標準名称',
+            'バージョン',
+            'インスタンスＩＤ',
+            'メッセージ種',
+            '作成日時',
+            'タイプ',
+            'テスト区分ＩＤ',
+            '最終送信先ＩＤ',
+            'メッセージ識別ＩＤ',
+            '送信者ステーションアドレス',
+            '最終受信者ステーションアドレス',
+            '直接受信者ステーションアドレス',
+            '取引数',
+            'システム情報キー',
+            'システム情報値',
+            'バージョン番号',
+            'バージョン番号',
+            '名前空間',
+            'バージョン',
+            '支払法人コード',
+            '支払法人GLN',
+            '支払法人名称',
+            '支払法人名称カナ',
+            '発注者コード',
+            '発注者GLN',
+            '発注者名称',
+            '発注者名称カナ',
+            '請求書番号',
+            '請求取引先コード',
+            '請求取引先GLN',
+            '請求取引先名',
+            '請求取引先名カナ',
+            '対象期間開始',
+            '対象期間終了',
+            '取引番号（発注・返品）',
+            '発行区分',
+            '連番',
+            '計上部署コード',
+            '計上部署GLN',
+            '計上部署名称',
+            '計上部署名称（カナ）',
+            '取引先コード',
+            '取引先GLN',
+            '取引先名称',
+            '取引先名称カナ',
+            '商品分類（大）',
+            '商品分類（中）',
+            '計上日',
+            '支払日',
+            '請求金額',
+            '請求金額符号',
+            '支払金額',
+            '支払金額符号',
+            '金額(小売自由使用)',
+            '金額符号(小売自由使用)',
+            '税額合計金額',
+            '処理種別',
+            '請求区分',
+            '未払買掛区分',
+            '照合結果',
+            '支払内容',
+            '支払内容（個別）',
+            '支払内容（個別名称）',
+            '支払内容（個別名称カナ）',
+            '支払方法区分',
+            '税区分',
+            '税率'
         ];
     }
 }

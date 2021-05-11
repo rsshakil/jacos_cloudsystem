@@ -59,7 +59,7 @@
             </button>
             </td>
             <td class="cl_custom_color">伝票番号</td>
-            <td><input type="text" class="form-control" v-model="form.mes_lis_pay_lin_lin_trade_number_eference"></td>
+            <td><input type="text" class="form-control" v-model="form.mes_lis_pay_lin_lin_trade_number_reference"></td>
             <td class="cl_custom_color">支払内容</td>
             <td>
             <select class="form-control" v-model="form.mes_lis_inv_lin_det_pay_code">
@@ -154,7 +154,7 @@
               <th class="pointer_class" @click="sorting('mes_lis_pay_lin_det_transfer_of_ownership_date')">計上日 <span class="float-right" :class="iconSet('mes_lis_pay_lin_det_transfer_of_ownership_date')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_pay_lin_det_goo_major_category')">部門コード <span class="float-right" :class="iconSet('mes_lis_pay_lin_det_goo_major_category')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_pay_lin_tra_code')">納品先コード <span class="float-right" :class="iconSet('mes_lis_pay_lin_tra_code')"></span></th>
-              <th class="pointer_class" @click="sorting('mes_lis_pay_lin_lin_trade_number_eference')">伝票番号 <span class="float-right" :class="iconSet('mes_lis_pay_lin_lin_trade_number_eference')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_pay_lin_lin_trade_number_reference')">伝票番号 <span class="float-right" :class="iconSet('mes_lis_pay_lin_lin_trade_number_reference')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_pay_lin_det_pay_code')">支払内容 <span class="float-right" :class="iconSet('mes_lis_pay_lin_det_pay_code')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_pay_lin_det_trade_type_code')">伝票区分 <span class="float-right" :class="iconSet('mes_lis_pay_lin_det_trade_type_code')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_pay_lin_det_balance_carried_code')">請求区分 <span class="float-right" :class="iconSet('mes_lis_pay_lin_det_balance_carried_code')"></span></th>
@@ -169,7 +169,7 @@
               <td>{{value.mes_lis_pay_lin_det_transfer_of_ownership_date}}</td>
               <td>{{value.mes_lis_pay_lin_det_goo_major_category}}</td>
               <td>{{value.mes_lis_pay_lin_tra_code}}</td>
-              <td>{{value.mes_lis_pay_lin_lin_trade_number_eference}}</td>
+              <td>{{value.mes_lis_pay_lin_lin_trade_number_reference}}</td>
               <td>{{value.mes_lis_pay_lin_det_pay_code}}
               {{
                 getbyrjsonValueBykeyName(
@@ -279,7 +279,7 @@ breadcrumb(){
         mes_lis_pay_lin_det_verification_result_code:'*',
         mes_lis_pay_lin_det_trade_type_code:'*',
         mes_lis_pay_lin_det_balance_carried_code:'*',
-        mes_lis_pay_lin_lin_trade_number_eference: null,
+        mes_lis_pay_lin_lin_trade_number_reference: null,
         check_datetime: null,
         pay_code:null,
         end_date:null,

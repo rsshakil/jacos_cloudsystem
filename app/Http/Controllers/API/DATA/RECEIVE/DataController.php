@@ -236,11 +236,11 @@ class DataController extends Controller
             $ownership_date_to = $ownership_date_to!=null? date('Y-m-d 23:59:59',strtotime($ownership_date_to)):$ownership_date_to; // 受信日時終了
            // $check_datetime = $check_datetime!=null? date('Y-m-d 00:00:00',strtotime($check_datetime)):$check_datetime; // 受信日時開始
 
-            $table_name='drv.';
-            if ($sort_by=="data_receive_id" || $sort_by=="receive_datetime") {
-                $table_name='data_receives.';
-                // $table_name2='data_returns.';
-            }
+            // $table_name='drv.';
+            // if ($sort_by=="data_receive_id" || $sort_by=="receive_datetime") {
+            //     $table_name='data_receives.';
+            //     // $table_name2='data_returns.';
+            // }
 
 
                 // ->leftJoin('data_receive_items as dri','dri.data_receive_voucher_id','=','drv.data_receive_voucher_id')
@@ -275,19 +275,6 @@ class DataController extends Controller
                             }
 
                         }
-
-                // $result = $result->groupBy(
-                //     [
-                //         'drv.mes_lis_acc_tra_trade_number'
-                //     ]
-                // )
-                $result= $result->orderBy('drv.mes_lis_acc_par_sel_code')
-                ->orderBy('drv.mes_lis_acc_tra_dat_transfer_of_ownership_date')
-                ->orderBy('drv.mes_lis_acc_log_del_delivery_service_code')
-                ->orderBy('drv.mes_lis_acc_tra_ins_temperature_code')
-                ->orderBy('data_receives.receive_datetime','DESC')
-                ->orderBy($table_name.$sort_by,$sort_type)
-                ->orderBy('drv.mes_lis_acc_tra_goo_major_category');
 
 
         }else if($request->page_title=='receive_details_list'){
@@ -333,10 +320,17 @@ class DataController extends Controller
             $result = $result->where('drv.mes_lis_acc_tra_trade_number',$trade_number);
         }
         // $result=$result->groupBy('drv.mes_lis_acc_tra_trade_number')
-        $result = $result->orderBy($table_name.$sort_by,$sort_type);
+        // $result = $result->orderBy($table_name.$sort_by,$sort_type);
         }
 
         // $csv_data=$csv_data->groupBy('drv.data_receive_voucher_id');
+        // $result= $result->orderBy('drv.mes_lis_acc_par_sel_code')
+        // ->orderBy('drv.mes_lis_acc_tra_dat_transfer_of_ownership_date')
+        // ->orderBy('drv.mes_lis_acc_log_del_delivery_service_code')
+        // ->orderBy('drv.mes_lis_acc_tra_ins_temperature_code')
+        // ->orderBy('data_receives.receive_datetime','DESC')
+        // // ->orderBy($table_name.$sort_by,$sort_type)
+        // ->orderBy('drv.mes_lis_acc_tra_goo_major_category');
         return $result;
     }
 

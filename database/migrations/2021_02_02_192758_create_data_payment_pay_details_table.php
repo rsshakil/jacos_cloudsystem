@@ -17,7 +17,7 @@ class CreateDataPaymentPayDetailsTable extends Migration
         Schema::create('data_payment_pay_details', function (Blueprint $table) {
             $table->increments('data_payment_pay_detail_id')->unsigned()->comment('data_payment_pay_detail_id');
             $table->integer('data_payment_pay_id')->unsigned()->comment('data_payment_pay_id');
-            $table->string('mes_lis_pay_lin_lin_trade_number_eference', 20)->comment('取引番号（発注・返品）');
+            $table->string('mes_lis_pay_lin_lin_trade_number_reference', 20)->comment('取引番号（発注・返品）');
             $table->string('mes_lis_pay_lin_lin_issue_classification_code', 20)->comment('発行区分');
             $table->string('mes_lis_pay_lin_lin_sequence_number', 20)->comment('連番');
             $table->string('mes_lis_pay_lin_tra_code', 13)->comment('計上部署コード');

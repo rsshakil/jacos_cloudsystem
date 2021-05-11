@@ -112,7 +112,7 @@ DB::beginTransaction();
 
             // }
  //new Added
-            $data_payment_details_array['mes_lis_pay_lin_lin_trade_number_eference']=$value[38];
+            $data_payment_details_array['mes_lis_pay_lin_lin_trade_number_reference']=$value[38];
             $data_payment_details_array['mes_lis_pay_lin_lin_issue_classification_code']=$value[39];
             $data_payment_details_array['mes_lis_pay_lin_lin_sequence_number']=$value[40];
             $data_payment_details_array['mes_lis_pay_lin_tra_code']=$value[41];

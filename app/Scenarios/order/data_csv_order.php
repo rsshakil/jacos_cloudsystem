@@ -43,9 +43,9 @@ class data_csv_order
     //
     public function exec($request, $sc)
     {
-        // $this->attachment_paths_all=$this->pdfGenerate(1);
-        // Log::info($this->attachment_paths_all);
-        // return ['message' => "success", 'status' => '1'];
+        $this->attachment_paths_all=$this->pdfGenerate(1);
+        Log::info($this->attachment_paths_all);
+        return ['message' => "success", 'status' => '1'];
         // return $chunks->all();
         Log::debug(get_class() . ' exec start  ---------------');
         if (!array_key_exists('up_file', $request->all())) {
@@ -486,56 +486,61 @@ class data_csv_order
         $file_number=1;
         $same_rec_code=1;
         Log::info(count($pdf_datas));
-        foreach ($pdf_datas as $key=>$pdf_data) {
-            Log::info($pdf_data);
-            if (!($i > count($pdf_datas))) {
-                if ($page!=0 && ($page % $page_limit)==0) {
-                    Log::info("i: ".($i));
-                    Log::info("page%: ".($page % $page_limit));
-                    Log::info("page: ".$page);
-                    Log::info("page_limit: ".$page_limit);
-                    Log::info("file_number: ".$file_number);
-                    Log::info("same_rec_code: ".$same_rec_code);
-                    if (!(($file_number*$page_limit)>$page)) {
-                        $pdf_file_path = $this->file_save($receipt,$file_number);
-                        array_push($pdf_file_paths,$pdf_file_path);
-                        $receipt=$this->fpdfRet();
-                        $file_number+=1;
-                    }
-
-                }
-
-                if (isset($pdf_datas[$i])) {
-                    if ($mes_lis_ord_par_rec_code!=$pdf_datas[$i][0]->mes_lis_ord_par_rec_code) {
-                        $receipt->AddPage();
-                        $page+=1;
-                        $receipt=$this->headerData($receipt,$pdf_data,$x,$y);
-                        $this->coordinateText($receipt, $pdf_datas[$i],$i,0,50.7,103.4);
-                    }else{
-                        if ($same_rec_code%2==0) {
-                            $receipt->AddPage();
-                            $page+=1;
-                        }
-                        // $receipt=$this->headerData($receipt,$pdf_data,$x,$y);
-                        $this->coordinateText($receipt, $pdf_datas[$i],$i,0,117,170);
-                        $same_rec_code+=1;
-                        // \Log::info("else i number".$i);
-                    }
-
-                    $mes_lis_ord_par_rec_code=$pdf_datas[$i][0]->mes_lis_ord_par_rec_code;
-                }
-                $i += 1;
-                $x = 0;
-                $y = 0;
-                $same_rec_code=1;
-            }
+        foreach ($pdf_datas as $key => $pdf_data) {
+            Log::info($pdf_data[0]->mes_lis_ord_par_rec_code);
+            Log::info($pdf_data[0]->mes_lis_ord_tra_trade_number);
 
         }
-        // if ($page==0 && $page % $page_limit!=0) {
-        if ($page % $page_limit!=0) {
-            $pdf_file_path= $this->file_save($receipt,$file_number);
-            array_push($pdf_file_paths,$pdf_file_path);
-        }
+        // foreach ($pdf_datas as $key=>$pdf_data) {
+        //     Log::info($pdf_data);
+        //     if (!($i > count($pdf_datas))) {
+        //         if ($page!=0 && ($page % $page_limit)==0) {
+        //             Log::info("i: ".($i));
+        //             Log::info("page%: ".($page % $page_limit));
+        //             Log::info("page: ".$page);
+        //             Log::info("page_limit: ".$page_limit);
+        //             Log::info("file_number: ".$file_number);
+        //             Log::info("same_rec_code: ".$same_rec_code);
+        //             if (!(($file_number*$page_limit)>$page)) {
+        //                 $pdf_file_path = $this->file_save($receipt,$file_number);
+        //                 array_push($pdf_file_paths,$pdf_file_path);
+        //                 $receipt=$this->fpdfRet();
+        //                 $file_number+=1;
+        //             }
+
+        //         }
+
+        //         if (isset($pdf_datas[$i])) {
+        //             if ($mes_lis_ord_par_rec_code!=$pdf_datas[$i][0]->mes_lis_ord_par_rec_code) {
+        //                 $receipt->AddPage();
+        //                 $page+=1;
+        //                 $receipt=$this->headerData($receipt,$pdf_data,$x,$y);
+        //                 $this->coordinateText($receipt, $pdf_datas[$i],$i,0,50.7,103.4);
+        //             }else{
+        //                 if ($same_rec_code%2==0) {
+        //                     $receipt->AddPage();
+        //                     $page+=1;
+        //                 }
+        //                 // $receipt=$this->headerData($receipt,$pdf_data,$x,$y);
+        //                 $this->coordinateText($receipt, $pdf_datas[$i],$i,0,117,170);
+        //                 $same_rec_code+=1;
+        //                 // \Log::info("else i number".$i);
+        //             }
+
+        //             $mes_lis_ord_par_rec_code=$pdf_datas[$i][0]->mes_lis_ord_par_rec_code;
+        //         }
+        //         $i += 1;
+        //         $x = 0;
+        //         $y = 0;
+        //         $same_rec_code=1;
+        //     }
+
+        // }
+        // // if ($page==0 && $page % $page_limit!=0) {
+        // if ($page % $page_limit!=0) {
+        //     $pdf_file_path= $this->file_save($receipt,$file_number);
+        //     array_push($pdf_file_paths,$pdf_file_path);
+        // }
         return $pdf_file_paths;
         // return $response;
     }

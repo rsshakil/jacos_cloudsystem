@@ -218,19 +218,6 @@ class DataController extends Controller
                 }
 
             }
-            // $result = $result->groupBy([
-            //     // 'data_returns.receive_datetime',
-            //     // 'drv.mes_lis_ret_par_sel_code',
-            //     'drv.mes_lis_ret_tra_trade_number'
-            //     // 'drv.mes_lis_ret_tra_dat_transfer_of_ownership_date',
-            //     // 'drv.mes_lis_ret_tra_goo_major_category'
-            // ])
-            $result= $result->orderBy('data_returns.receive_datetime','DESC')
-            ->orderBy('drv.mes_lis_ret_par_sel_code')
-            ->orderBy('drv.mes_lis_ret_tra_dat_transfer_of_ownership_date')
-            ->orderBy('drv.mes_lis_ret_tra_goo_major_category');
-
-
         }else if($request->page_title=='return_details_list'){
             $data_return_id = $request->data_return_id;
 
@@ -278,7 +265,11 @@ class DataController extends Controller
             // $result=$result->groupBy('drv.mes_lis_ret_tra_trade_number');
 
         }
-        $result=$result->orderBy($table_name.$sort_by,$sort_type);
+        // $result=$result->orderBy($table_name.$sort_by,$sort_type);
+        // $result= $result->orderBy('data_returns.receive_datetime','DESC')
+        //     ->orderBy('drv.mes_lis_ret_par_sel_code')
+        //     ->orderBy('drv.mes_lis_ret_tra_dat_transfer_of_ownership_date')
+        //     ->orderBy('drv.mes_lis_ret_tra_goo_major_category');
         return $result;
     }
     public static function rtnCsvHeading(){

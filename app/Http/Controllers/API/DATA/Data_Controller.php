@@ -642,19 +642,13 @@ class Data_Controller extends Controller
                     }
                 }
         }
+        // $csv_data=$csv_data
+        // ->orderBy('dsv.mes_lis_shi_par_sel_code','ASC')
+        // ->orderBy('dsv.mes_lis_shi_tra_dat_delivery_date','ASC')
+        // ->orderBy('dsv.mes_lis_shi_tra_goo_major_category','ASC')
+        // ->orderBy('dsv.mes_lis_shi_log_del_delivery_service_code','ASC')
+        // ->orderBy('dsv.mes_lis_shi_tra_ins_temperature_code','ASC');
 
-        // receive_datetime not found in shipment tables
-
-        // if (!(array_key_exists("downloadType", $request_all))) {
-        //     // \Log::info("Clicked");
-        //     $csv_data=$csv_data->whereNotNull('dsv.decision_datetime');
-        //     $csv_data=$csv_data->whereNull('dsv.send_datetime');
-        // }
-        // \Log::info("My Query");
-        // $csv_data=$csv_data->groupBy('dsv.mes_lis_shi_tra_trade_number');
-        // $csv_data=$csv_data->groupBy('dsv.data_shipment_voucher_id');
-        // $csv_data=$csv_data->groupBy('dsi.data_shipment_item_id'); //New Added
-        // $csv_data=$csv_data->orderBy('dsv.'.$sort_by,$sort_type);
         $csv_data=$csv_data->orderBy('dsv.mes_lis_shi_tra_trade_number', "ASC");
         $csv_data=$csv_data->orderBy('dsi.mes_lis_shi_lin_lin_line_number', "ASC");
         // 検索

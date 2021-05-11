@@ -85,14 +85,14 @@ class InvoiceDataController extends Controller
         // if (!(array_key_exists("downloadType", $request_all))) {
         if ($request->page_title=='invoice_list') {
 
-            $table_name='data_invoices.';
-            if ($sort_by=="data_invoice_id") {
-                $table_name='data_invoices.';
-            }else if($sort_by=="mes_lis_inv_lin_det_amo_requested_amount"){
-                $table_name='dipd.';
-            }else{
-                $table_name='dip.';
-            }
+            // $table_name='data_invoices.';
+            // if ($sort_by=="data_invoice_id") {
+            //     $table_name='data_invoices.';
+            // }else if($sort_by=="mes_lis_inv_lin_det_amo_requested_amount"){
+            //     $table_name='dipd.';
+            // }else{
+            //     $table_name='dip.';
+            // }
             // $csv_data=$csv_data->where('dipd.decision_datetime','!=',null);
             // $csv_data=$csv_data->where('dipd.send_datetime','=',null);
 
@@ -116,7 +116,7 @@ class InvoiceDataController extends Controller
             }else if ($send_datetime_status=='再請求あり'){
                 $csv_data=$csv_data->where('dipd.send_datetime','!=',null);
             }
-            $csv_data=$csv_data->orderBy($table_name.$sort_by,$sort_type);
+            // $csv_data=$csv_data->orderBy($table_name.$sort_by,$sort_type);
 
         }else if($request->page_title=='invoice_details_list'){
             // \Log::info("Mayeen");
