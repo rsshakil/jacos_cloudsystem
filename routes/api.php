@@ -182,6 +182,7 @@ Route::post('/ckeditor_file_up', 'API\CMN\CmnBlogController@ckeditor_file_up');
 Route::post('/get_byr_order_data_by_slr', 'API\DATA\ORDER\OrderController@getByrOrderDataBySlr');
 Route::post('/get_logged_user_company_by_user_id', 'API\CMN\CommonController@get_logged_user_company_by_user_id');
 Route::post('/order_details', 'API\DATA\ORDER\OrderController@orderDetails');
+Route::post('/order_detail_paginations', 'API\DATA\ORDER\OrderController@order_detail_paginations');
 Route::post('/get_voucher_detail_popup1', 'API\DATA\ORDER\OrderController@get_voucher_detail_popup1');
 Route::post('/get_voucher_detail_popup2', 'API\DATA\ORDER\OrderController@get_voucher_detail_popup2');
 Route::post('/get_voucher_detail_popup3', 'API\DATA\ORDER\OrderController@get_voucher_detail_popup3');

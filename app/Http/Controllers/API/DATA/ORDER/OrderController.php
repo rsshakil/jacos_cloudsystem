@@ -321,6 +321,77 @@ class OrderController extends Controller
         /*coll setting*/
         return response()->json(['order_list_detail' => $result, 'order_info' => $order_info, 'slected_list' => $slected_list]);
     }
+    public function order_detail_paginations(Request $request)
+    {
+        // return $request->all();
+        // $form_search = $request->form_search;
+        $data_order_id = $request->order_info['data_order_id'];
+        $order_info=$request->order_info;
+        Log::info($order_info);
+        $sort_by = 'data_shipment_voucher_id';//$request->sort_by;
+        $sort_type = 'asc';//$request->sort_type;
+        $par_shi_code = $request->par_shi_code;
+        $par_rec_code = $request->par_rec_code;
+        $order_item_code = $request->order_item_code;
+        $per_page = $request->per_page == null ? 10 : $request->per_page;
+
+        $mes_lis_shi_tra_trade_number=$request->mes_lis_shi_tra_trade_number;
+        $fixedSpecial=$request->fixedSpecial;
+        $printingStatus=$request->printingStatus;
+        $situation=$request->situation;
+
+        $delivery_date = $order_info['delivery_date'];
+        $delivery_service_code = $order_info['delivery_service_code'];
+        $major_category = $order_info['major_category'];
+        $temperature_code = $order_info['temperature_code'];
+        $temperature_code = $temperature_code == null ? '' : $temperature_code;
+        // 'data_order_id' => '1',
+        // 'delivery_date' => '2021-04-22',
+        // 'major_category' => '111',
+        // 'delivery_service_code' => '01',
+        // 'temperature_code' => '01',
+        Log::info("delivery_date");
+        Log::info($delivery_date);
+        
+        $result = DB::table('data_shipments as ds')
+            ->select(
+                'dor.receive_datetime',
+                'dsv.mes_lis_shi_par_sel_code',
+                'dsv.mes_lis_shi_par_sel_name',
+                'dsv.data_shipment_voucher_id',
+                'dsv.mes_lis_shi_tra_dat_delivery_date',
+                'dsv.mes_lis_shi_tra_goo_major_category',
+                'dsv.mes_lis_shi_log_del_delivery_service_code',
+                'dsv.mes_lis_shi_tra_ins_temperature_code',
+                'dsv.decision_datetime',
+                'dsv.mes_lis_shi_par_shi_code',
+                'dsv.mes_lis_shi_par_rec_code',
+                'dsv.mes_lis_shi_par_rec_name',
+                'dsv.mes_lis_shi_tra_trade_number',
+                'dsv.mes_lis_shi_tra_ins_goods_classification_code',
+                'dsv.mes_lis_shi_tot_tot_net_price_total',
+                'dsv.status',
+                'dsv.updated_at',
+                'dsv.print_datetime',
+                'dsv.send_datetime'
+            )
+            ->join('data_shipment_vouchers as dsv', 'dsv.data_shipment_id', '=', 'ds.data_shipment_id')
+            ->join('data_shipment_items as dsi', 'dsi.data_shipment_voucher_id', '=', 'dsv.data_shipment_voucher_id')
+            ->join('data_orders as dor', 'dor.data_order_id', '=', 'ds.data_order_id')
+            ->where('ds.data_order_id', $data_order_id)
+            ->where('dsv.mes_lis_shi_tra_dat_delivery_date', $delivery_date)
+            ->where('dsv.mes_lis_shi_tra_goo_major_category', $major_category)
+            ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $delivery_service_code)
+            ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $temperature_code);
+
+                
+                $result = $result->orderBy('dsv.'.$sort_by,$sort_type);
+                $result = $result->groupBy('dsv.mes_lis_shi_tra_trade_number')->get();
+               // ->paginate($per_page);
+        /*coll setting*/
+        
+        return response()->json(['order_list_detail' => $result]);
+    }
     public function getOrderById($byr_order_id)
     {
         $result = DB::table('bms_orders')->where('bms_orders.byr_order_id', $byr_order_id)
