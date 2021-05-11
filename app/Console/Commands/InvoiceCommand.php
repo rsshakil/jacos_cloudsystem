@@ -187,6 +187,14 @@ class InvoiceCommand extends Command
             $this->invoice->invoiceScheduler($request);
             // $this->invoice->invoiceScheduler($start_date,$end_date);
             $this->comment("Done");
+
+
+        }
+        $path=storage_path('logs/laravel-'.date('Y-m-d').'.log');
+        // $this->comment($path);
+        if( !chmod($path, 0777) ) {
+            // more code
+            chmod($path, 0777);
         }
     }
 }

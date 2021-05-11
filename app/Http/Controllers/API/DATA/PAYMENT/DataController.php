@@ -176,10 +176,6 @@ class DataController extends Controller
         }
         $csv_data=$csv_data->orderBy('dppd.mes_lis_pay_lin_lin_trade_number_reference', "ASC");
         // $csv_data=$csv_data->orderBy('dpp.mes_lis_pay_lin_lin_line_number', "ASC");
-
-        // $csv_data=$csv_data
-        // ->orderBy('dppd.mes_lis_pay_lin_sel_code','ASC')
-        // ->orderBy('dppd.mes_lis_pay_lin_det_goo_major_category','ASC');
         // $csv_data =$csv_data->where('dppd.mes_lis_pay_lin_det_pay_code','3003');
         return $csv_data;
     }

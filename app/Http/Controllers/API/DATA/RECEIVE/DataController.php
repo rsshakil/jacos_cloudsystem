@@ -322,15 +322,8 @@ class DataController extends Controller
         // $result=$result->groupBy('drv.mes_lis_acc_tra_trade_number')
         // $result = $result->orderBy($table_name.$sort_by,$sort_type);
         }
-
-        // $csv_data=$csv_data->groupBy('drv.data_receive_voucher_id');
-        // $result= $result->orderBy('drv.mes_lis_acc_par_sel_code')
-        // ->orderBy('drv.mes_lis_acc_tra_dat_transfer_of_ownership_date')
-        // ->orderBy('drv.mes_lis_acc_log_del_delivery_service_code')
-        // ->orderBy('drv.mes_lis_acc_tra_ins_temperature_code')
-        // ->orderBy('data_receives.receive_datetime','DESC')
-        // // ->orderBy($table_name.$sort_by,$sort_type)
-        // ->orderBy('drv.mes_lis_acc_tra_goo_major_category');
+        $result=$result->orderBy('drv.mes_lis_acc_tra_trade_number', "ASC");
+        $result=$result->orderBy('dri.mes_lis_acc_lin_lin_line_number', "ASC");
         return $result;
     }
 

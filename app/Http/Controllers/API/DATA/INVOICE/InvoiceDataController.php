@@ -168,8 +168,7 @@ class InvoiceDataController extends Controller
             // ->where('dip.mes_lis_buy_name',$param_data['buy_name'])
             ->where('dip.status',$param_data['status']);
         }
-        // $csv_data=$csv_data->groupBy('dipd.data_invoice_pay_detail_id');
-        // $csv_data=$csv_data->orderBy("data_invoices.data_invoice_id");
+        $csv_data=$csv_data->orderBy("dipd.mes_lis_inv_lin_lin_trade_number_reference");
         // 検索
         // $csv_data = $csv_data->limit(100000)->get()->toArray();
         return $csv_data;

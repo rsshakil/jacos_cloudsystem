@@ -262,14 +262,10 @@ class DataController extends Controller
             if($trade_number!=null){
                 $result = $result->where('drv.mes_lis_ret_tra_trade_number',$trade_number);
             }
-            // $result=$result->groupBy('drv.mes_lis_ret_tra_trade_number');
 
         }
-        // $result=$result->orderBy($table_name.$sort_by,$sort_type);
-        // $result= $result->orderBy('data_returns.receive_datetime','DESC')
-        //     ->orderBy('drv.mes_lis_ret_par_sel_code')
-        //     ->orderBy('drv.mes_lis_ret_tra_dat_transfer_of_ownership_date')
-        //     ->orderBy('drv.mes_lis_ret_tra_goo_major_category');
+        $result=$result->orderBy('drv.mes_lis_ret_tra_trade_number', "ASC");
+        $result=$result->orderBy('dri.mes_lis_ret_lin_lin_line_number', "ASC");
         return $result;
     }
     public static function rtnCsvHeading(){
