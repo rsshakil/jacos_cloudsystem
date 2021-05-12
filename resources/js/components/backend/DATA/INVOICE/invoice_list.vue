@@ -17,20 +17,17 @@
                     <input type="date" class="form-control" v-model="form.mes_lis_inv_per_end_date">
                 </div>
         </td>
-            <td class="cl_custom_color">請求取引先コード</td>
+            <td class="cl_custom_color">取引先コード</td>
             <td><input type="text" class="form-control topHeaderInputFieldBtn" v-model="form.mes_lis_inv_pay_code">
-            <button
-                @click="showAllCustomerCode"
-                class="btn btn-primary active"
-              >
+            <button @click="showAllCustomerCode" class="btn btn-primary active">
                 参照
-              </button>
+            </button>
             </td>
 
-            <td class="cl_custom_color">請求書番号</td>
+            <!-- <td class="cl_custom_color">請求書番号</td>
             <td>
             <input type="text" class="form-control" v-model="form.mes_lis_inv_pay_id">
-            </td>
+            </td> -->
 
           </tr>
           <tr>
@@ -101,7 +98,7 @@
             <tr>
               <th>No</th>
               <th class="pointer_class" @click="sorting('mes_lis_inv_per_end_date')">締日 <span class="float-right" :class="iconSet('mes_lis_inv_per_end_date')"></span></th>
-              <th class="pointer_class" @click="sorting('mes_lis_inv_pay_code')">請求取引先コード <span class="float-right" :class="iconSet('mes_lis_inv_pay_code')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_inv_pay_code')">取引先コード <span class="float-right" :class="iconSet('mes_lis_inv_pay_code')"></span></th>
               <!-- <th class="pointer_class" @click="sorting('mes_lis_inv_pay_id')">請求書番号 <span class="float-right" :class="iconSet('mes_lis_inv_pay_id')"></span></th> -->
               <th class="pointer_class" @click="sorting('status')">請求状況 <span class="float-right" :class="iconSet('status')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_inv_lin_det_amo_requested_amount')">請求金額 <span class="float-right" :class="iconSet('mes_lis_inv_lin_det_amo_requested_amount')"></span></th>
@@ -159,25 +156,25 @@
           style="width: 100%"
         >
           <tr>
-            <td class="cl_custom_color">請求取引先コード</td>
+            <td class="cl_custom_color">取引先コード</td>
             <td><input type="text" v-model="invoiceData.mes_lis_inv_pay_code" class="form-control" /></td>
             <td class="cl_custom_color">締日</td>
             <td>
-              <div class="input-group">
+                <div class="input-group">
 
-      <input type="date" v-model="invoiceData.mes_lis_inv_per_begin_date" class="form-control">
-      <div class="input-group-prepend">
-        <span class="input-group-text">~</span>
-      </div>
-      <input type="date" v-model="invoiceData.mes_lis_inv_per_end_date" class="form-control">
-    </div>
+                    <input type="date" v-model="invoiceData.mes_lis_inv_per_begin_date" class="form-control">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">~</span>
+                    </div>
+                    <input type="date" v-model="invoiceData.mes_lis_inv_per_end_date" class="form-control">
+                </div>
             </td>
           </tr>
-          <tr>
+          <!-- <tr>
             <td class="cl_custom_color">請求書番号</td>
             <td colspan="3"><input type="text" v-model="invoiceData.mes_lis_inv_pay_id" class="form-control" /></td>
 
-          </tr>
+          </tr> -->
 
         </table>
       </div>
@@ -245,8 +242,8 @@ export default {
       invoiceData:{
         adm_user_id: Globals.user_info_id,
         byr_buyer_id: null,
-        mes_lis_inv_pay_id:'',
-        mes_lis_inv_pay_code:'',
+        // mes_lis_inv_pay_id:'',
+        mes_lis_inv_pay_code:null,
         mes_lis_inv_per_begin_date:'',
         mes_lis_inv_per_end_date:'',
       },
@@ -257,7 +254,7 @@ export default {
         adm_user_id: Globals.user_info_id,
         byr_buyer_id: null,
         mes_lis_inv_pay_code: '',
-        mes_lis_inv_pay_id: '',
+        // mes_lis_inv_pay_id: '',
         mes_lis_inv_per_begin_date:'',
         mes_lis_inv_per_end_date:'',
         send_datetime_status: "*",

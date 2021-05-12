@@ -98,15 +98,23 @@ class InvoiceDataController extends Controller
 
             $mes_lis_inv_pay_code=$request->mes_lis_inv_pay_code;
             $send_datetime_status=$request->send_datetime_status;
-            $mes_lis_inv_pay_id=$request->mes_lis_inv_pay_id;
+            $mes_lis_inv_per_begin_date=$request->mes_lis_inv_per_begin_date;
+            $mes_lis_inv_per_end_date=$request->mes_lis_inv_per_end_date;
+            // $mes_lis_inv_pay_id=$request->mes_lis_inv_pay_id;
             if ($mes_lis_inv_pay_code!=null) {
                 $csv_data=$csv_data->where('dip.mes_lis_inv_pay_code','=',$mes_lis_inv_pay_code);
             }
-            if ($mes_lis_inv_pay_id!='') {
-                $csv_data=$csv_data->where('dip.mes_lis_inv_pay_id','=',$mes_lis_inv_pay_id);
+            // if ($mes_lis_inv_pay_id!='') {
+            //     $csv_data=$csv_data->where('dip.mes_lis_inv_pay_id','=',$mes_lis_inv_pay_id);
+            // }
+            if ($mes_lis_inv_per_begin_date && $mes_lis_inv_per_end_date) {
+                $csv_data=$csv_data->whereBetween('dip.mes_lis_inv_per_end_date',[$mes_lis_inv_per_begin_date,$mes_lis_inv_per_end_date]);
             }
-            // if ($mes_lis_inv_per_begin_date && $mes_lis_inv_per_end_date) {
-            //     $result=$result->whereBetween('dip.mes_lis_inv_per_end_date', [$mes_lis_inv_per_begin_date, $mes_lis_inv_per_end_date]);
+            // if ($mes_lis_inv_per_begin_date) {
+            //     $csv_data=$csv_data->where('dip.mes_lis_inv_per_begin_date',$mes_lis_inv_per_begin_date);
+            // }
+            // if ($mes_lis_inv_per_end_date) {
+            //     $csv_data=$csv_data->where('dip.mes_lis_inv_per_end_date',$mes_lis_inv_per_end_date);
             // }
             // will confirm
             if ($send_datetime_status=='未請求'){
