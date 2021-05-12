@@ -173,9 +173,9 @@
               <td>{{value.mes_lis_pay_lin_det_pay_code}}
               {{
                 getbyrjsonValueBykeyName(
-                  "mes_lis_inv_lin_det_pay_code",
+                  "mes_lis_pay_lin_det_pay_code",
                   value.mes_lis_pay_lin_det_pay_code,
-                  "invoices"
+                  "payments"
                 )
               }}
               </td>
