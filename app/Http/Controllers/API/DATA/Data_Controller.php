@@ -262,11 +262,11 @@ class Data_Controller extends Controller
         $data_order_id=$request->data_order_id;
 
         $authUser = User::find($adm_user_id);
-            $cmn_connect_id = '';
-            if (!$authUser->hasRole(config('const.adm_role_name'))) {
-                $cmn_company_info=$all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
-                $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
-            }
+        $cmn_connect_id = '';
+        if (!$authUser->hasRole(config('const.adm_role_name'))) {
+            $cmn_company_info=$all_used_fun->get_user_info($adm_user_id, $byr_buyer_id);
+            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+        }
         $csv_data=data_shipment::select(
             // data_shipments
             'data_shipments.sta_sen_identifier', //0
@@ -534,7 +534,7 @@ class Data_Controller extends Controller
         ->leftJoin('data_shipment_item_details as dsid', 'dsi.data_shipment_item_id', '=', 'dsid.data_shipment_item_id')
         ->join('data_order_vouchers as dov', 'dov.data_order_voucher_id', '=', 'dsv.data_shipment_voucher_id')
         ->join('data_orders as dor', 'dor.data_order_id', '=', 'dov.data_order_id')
-        ->where('data_shipments.cmn_connect_id',$cmn_connect_id);
+        ->where('data_shipments.cmn_connect_id', $cmn_connect_id);
 
 
         // filtering
@@ -602,8 +602,7 @@ class Data_Controller extends Controller
                 $csv_data=$csv_data->having('decision_cnt', '=', $decission_cnt);
             }
             // $csv_data=$csv_data->groupBy('dsv.mes_lis_shi_tra_trade_number');
-
-        }else if($request->page_title=='order_detail_list'){
+        } elseif ($request->page_title=='order_detail_list') {
             $order_info=$request->order_info;
             $mes_lis_shi_tra_trade_number=$request->mes_lis_shi_tra_trade_number;
             $fixedSpecial=$request->fixedSpecial;
@@ -620,36 +619,36 @@ class Data_Controller extends Controller
             ->where('dsv.mes_lis_shi_tra_goo_major_category', $order_info['mes_lis_shi_tra_goo_major_category'])
             ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $order_info['mes_lis_shi_tra_ins_temperature_code']);
 
-                if ($mes_lis_shi_tra_trade_number!="") {
-                    $csv_data=$csv_data->where('dsv.mes_lis_shi_tra_trade_number', $mes_lis_shi_tra_trade_number);
+            if ($mes_lis_shi_tra_trade_number!="") {
+                $csv_data=$csv_data->where('dsv.mes_lis_shi_tra_trade_number', $mes_lis_shi_tra_trade_number);
+            }
+            if ($fixedSpecial!="*") {
+                $csv_data=$csv_data->where('dsv.mes_lis_shi_tra_ins_goods_classification_code', $fixedSpecial);
+            }
+            if ($printingStatus!="*") {
+                if ($printingStatus=="未印刷あり") {
+                    $csv_data=$csv_data->whereNull('dsv.print_datetime');
                 }
-                if ($fixedSpecial!="*") {
-                    $csv_data=$csv_data->where('dsv.mes_lis_shi_tra_ins_goods_classification_code', $fixedSpecial);
+                if ($printingStatus=="印刷済") {
+                    $csv_data=$csv_data->whereNotNull('dsv.print_datetime');
                 }
-                if ($printingStatus!="*") {
-                    if ($printingStatus=="未印刷あり") {
-                        $csv_data=$csv_data->whereNull('dsv.print_datetime');
-                    }
-                    if ($printingStatus=="印刷済") {
-                        $csv_data=$csv_data->whereNotNull('dsv.print_datetime');
-                    }
+            }
+            if ($situation!="*") {
+                if ($situation=="未確定あり") {
+                    $csv_data=$csv_data->whereNull('dsv.decision_datetime');
                 }
-                if ($situation!="*") {
-                    if ($situation=="未確定あり") {
-                        $csv_data=$csv_data->whereNull('dsv.decision_datetime');
-                    }
-                    if ($situation=="確定済") {
-                        $csv_data=$csv_data->whereNotNull('dsv.decision_datetime');
-                    }
+                if ($situation=="確定済") {
+                    $csv_data=$csv_data->whereNotNull('dsv.decision_datetime');
                 }
-                if($send_datetime!="*"){
-                    if($send_datetime=="未送信あり"){
-                        $csv_data = $csv_data->whereNull('dsv.send_datetime');
-                    }
-                    if($send_datetime=="送信済"){
-                        $csv_data = $csv_data->whereNotNull('dsv.send_datetime');
-                    }
+            }
+            if ($send_datetime!="*") {
+                if ($send_datetime=="未送信あり") {
+                    $csv_data = $csv_data->whereNull('dsv.send_datetime');
                 }
+                if ($send_datetime=="送信済") {
+                    $csv_data = $csv_data->whereNotNull('dsv.send_datetime');
+                }
+            }
         }
 
         $csv_data=$csv_data->orderBy('dsv.mes_lis_shi_tra_trade_number', "ASC");
@@ -847,6 +846,8 @@ class Data_Controller extends Controller
 
         $update_voucher_arr = [];
 
+        $cur_date=date('y-m-d h:i:s');
+
         $trade_number='';
         DB::beginTransaction();
         try {
@@ -1037,6 +1038,9 @@ class Data_Controller extends Controller
                 $shipment_voucher_array['mes_lis_shi_tot_tot_item_total']=$item_total;
                 $shipment_voucher_array['mes_lis_shi_tot_tot_unit_total']=$unit_total;
 
+                // 自動確定
+                $shipment_voucher_array['decision_datetime']=$cur_date;
+                
                 // voucher 更新
                 data_shipment_voucher::where('data_shipment_voucher_id', $voucher_info['shipment_voucher_id'])->update($shipment_voucher_array);
 
