@@ -86,7 +86,15 @@
           </table>
       </div>
       <div class="col-12">
-
+        <span class="pagi" style="width:100%">
+            <ul class="list-inline">
+              <li v-for="(item,index) in order_detail_list_paginates" :key="index" v-if="data_order_voucher_id==item.data_shipment_voucher_id">
+                <span v-if="index>=1"><a href="#" class="btn btn-primary" @click="move_next_prev(order_detail_list_paginates[index-1].data_shipment_voucher_id)">前</a></span>
+                <span style="float:right;" v-if="index<order_detail_list_paginates.length-1"><a href="#" class="btn btn-primary" @click="move_next_prev(order_detail_list_paginates[index+1].data_shipment_voucher_id)">次</a></span>
+                
+                </li>
+                </ul>
+              </span>
       </div>
       <div class="col-12">
         <div class="">
@@ -329,6 +337,7 @@ export default {
       reverse: true,
       order_by: "asc",
       order_detail_lists: {},
+      order_detail_list_paginates: {},
       order_item_detail_lists: [],
       order_item_lists: {},
       order_item_shipment_data_headTable: {},
@@ -347,6 +356,7 @@ export default {
       selected: [],
       isCheckAll: false,
       form: new Form({}),
+      paginate_q:{},
       param_data:[],
       queryData:'',
       byr_buyer_id: null,
@@ -358,6 +368,15 @@ beforeCreate: function() {
             }
         },
   methods: {
+    get_prev_next_list(){
+      this.paginate_q.page=1
+        this.paginate_q.per_page=1
+        this.paginate_q.order_info=this.$session.get('order_param_data');
+      axios.post(this.BASE_URL + "api/order_detail_paginations", this.paginate_q)
+            .then(({ data }) => {
+            this.order_detail_list_paginates = data.order_list_detail;
+            });
+    },
     ball_case_cal(order_item_detail_list,field_type){
       if(field_type=='ケース'){
         // order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity=order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units*order_item_detail_list.mes_lis_shi_lin_qua_ord_quantity;
@@ -558,6 +577,10 @@ beforeCreate: function() {
         });
     },
     //get Table data
+    move_next_prev(id){
+      this.data_order_voucher_id=id;
+      this.get_all_byr_order_item_detail();
+    },
     get_all_byr_order_item_detail() {
       axios.get(this.BASE_URL + "api/order_item_details/"+this.data_order_voucher_id)
         .then(({data}) => {
@@ -597,6 +620,7 @@ this.getbuyerJsonSettingvalue();
     });
     this.parent.query = this.$session.get('order_param_data');
     Fire.$emit("loadPageTitle", "受注伝票明細");
+    this.get_prev_next_list();
   },
   computed: {
     total_selling_price: function() {
