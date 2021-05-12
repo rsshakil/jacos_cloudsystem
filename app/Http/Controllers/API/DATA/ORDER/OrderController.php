@@ -78,7 +78,8 @@ class OrderController extends Controller
             'dov.mes_lis_ord_tra_ins_temperature_code',
             DB::raw('COUNT(distinct dov.data_order_voucher_id) AS cnt'),
             DB::raw('COUNT( isnull( dsv.decision_datetime) OR NULL) AS decision_cnt'),
-            DB::raw('COUNT( isnull( dsv.print_datetime)  OR NULL) AS print_cnt'),
+            // DB::raw('COUNT( isnull( dsv.print_datetime)  OR NULL) AS print_cnt'),
+            DB::raw('COUNT( isnull( dsv.send_datetime)  OR NULL) AS send_cnt'),
             'dov.check_datetime'
         )
         ->join('data_order_vouchers AS dov','dor.data_order_id','=','dov.data_order_id')
@@ -100,7 +101,7 @@ class OrderController extends Controller
             // $check_datetime=$request->check_datetime;
             $confirmation_status = $request->confirmation_status; // 参照
             $decission_cnt = $request->decission_cnt; // 確定
-            $print_cnt = $request->print_cnt; // 印刷
+            $send_cnt = $request->send_cnt; // 印刷
             $byr_category_code = $request->category_code; // 印刷
             $mes_lis_ord_par_sel_code = $request->mes_lis_ord_par_sel_code; // 印刷
 
@@ -137,10 +138,10 @@ class OrderController extends Controller
 
         }
 
-        if ($print_cnt == "!0") {
-            $result= $result->having('print_cnt','!=','0');
-        } elseif ($print_cnt != "*") {
-            $result= $result->having('print_cnt','=',$print_cnt);
+        if ($send_cnt == "!0") {
+            $result= $result->having('send_cnt','!=','0');
+        } elseif ($send_cnt != "*") {
+            $result= $result->having('send_cnt','=',$send_cnt);
         }
         if ($decission_cnt == "!0") {
             $result= $result->having('decision_cnt','!=','0');
