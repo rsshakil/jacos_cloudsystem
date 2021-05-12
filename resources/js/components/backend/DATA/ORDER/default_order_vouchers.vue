@@ -1117,7 +1117,7 @@ export default {
       if (this.selectedNum > 0) {
         this.confirm_sweet().then((result) => {
           if (result.value) {
-              this.loader = Vue.$loading.show();
+              let loaderrr = Vue.$loading.show();
             axios.post(this.BASE_URL + "api/update_shipment_detail_bycurrentdatetime",{ update_id: this.selected, date_null: this.date_null })
               .then(({ data }) => {
                 _this.alert_icon = "success";
@@ -1128,6 +1128,7 @@ export default {
                   _this.alert_text = "伝票確定を取消しました。";
                 }
                 _this.sweet_normal_alert();
+                loaderrr.hide();
                 Fire.$emit("LoadByrorderDetail",_this.select_field_page_num);
                 this.selected = [];
                 // this.date_null = false;
@@ -1168,7 +1169,7 @@ export default {
             _this.alert_text = csv_data_count + "件の伝票を送信しますがよろしいでしょうか。";
             this.confirm_sweet().then((result) => {
               if (result.value) {
-                  this.loader = Vue.$loading.show();
+                  let loaderrrs = Vue.$loading.show();
                 axios.post(this.BASE_URL + "api/send_shipment_data", {
                     data_order_id: this.param_data.data_order_id,
                     byr_buyer_id:this.byr_buyer_id,
@@ -1182,6 +1183,7 @@ export default {
                     _this.alert_title = "";
                     _this.alert_text =data.csv_data_count + "件の確定伝票を送信しました。";
                     _this.sweet_normal_alert();
+                    loaderrrs.hide();
                     Fire.$emit("LoadByrorderDetail",_this.select_field_page_num);
                   });
               }
@@ -1203,7 +1205,7 @@ export default {
       this.cancel_btn = "キャンセル";
       this.confirm_sweet().then((result) => {
         if (result.value) {
-            this.loader = Vue.$loading.show();
+            let loaderrrss = Vue.$loading.show();
           const formData = new FormData();
           let file = e.target.files[0];
 
@@ -1214,7 +1216,7 @@ export default {
                 if (data.status==0) {
                     _this.alert_icon = "error";
                     _this.alert_title = "エラー";
-                    this.loader.hide();
+                    loaderrrss.hide();
                 }else{
                     _this.alert_icon = "success";
                     _this.alert_title = "完了";
@@ -1239,13 +1241,13 @@ export default {
     order_details_download(downloadType = 1) {
       //downloadcsvshipment_confirm
       var _this = this;
-      this.loader = Vue.$loading.show();
+     let loaderrrsss = Vue.$loading.show();
     this.form.order_info= this.order_info;
     this.form.downloadType=downloadType;
       axios.post(this.BASE_URL + "api/downloadcsvshipment_confirm", this.form)
         .then(({ data }) => {
             _this.downloadFromUrl(data);
-            _this.loader.hide();
+           loaderrrsss.hide();
         });
     },
   },
@@ -1263,7 +1265,6 @@ this.getbuyerJsonSettingvalue();
     this.item_search_q = this.$route.query;
     // console.log(this.param_data);
   this.$session.set("order_param_data",this.param_data)
-    //this.loader = Vue.$loading.show();
     // this.data_order_id = this.$route.params.data_order_id;
     this.get_all_byr_order_detail();
     Fire.$on("LoadByrorderDetail", (page=1) => {
