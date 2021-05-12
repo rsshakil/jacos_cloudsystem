@@ -297,8 +297,7 @@
     "invoices": {
         "mes_lis_inv_lin_det_balance_carried_code": {
             "01": "今回請求",
-            "02": "前回繰越請求",
-            "50": "仕入"
+            "02": "前回繰越請求"
         },
         "mes_lis_inv_lin_det_credit_or_unsettlement": {
             "01": "買掛（商品代金）",
