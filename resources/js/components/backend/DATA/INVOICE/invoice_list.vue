@@ -334,7 +334,7 @@ export default {
                 if (result.value) {
                     axios.post(this.BASE_URL + "api/exec_invoice_schedular", this.form)
                     .then(({ data }) => {
-                    this.init(data.status);
+                        console.log(data);
                     Fire.$emit("LoadByrinvoice");
                         _this.alert_icon = data.class;
                         _this.alert_title = "完了";
