@@ -102,7 +102,7 @@
               <th>No</th>
               <th class="pointer_class" @click="sorting('mes_lis_inv_per_end_date')">締日 <span class="float-right" :class="iconSet('mes_lis_inv_per_end_date')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_inv_pay_code')">請求取引先コード <span class="float-right" :class="iconSet('mes_lis_inv_pay_code')"></span></th>
-              <th class="pointer_class" @click="sorting('mes_lis_inv_pay_id')">請求書番号 <span class="float-right" :class="iconSet('mes_lis_inv_pay_id')"></span></th>
+              <!-- <th class="pointer_class" @click="sorting('mes_lis_inv_pay_id')">請求書番号 <span class="float-right" :class="iconSet('mes_lis_inv_pay_id')"></span></th> -->
               <th class="pointer_class" @click="sorting('status')">請求状況 <span class="float-right" :class="iconSet('status')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_inv_lin_det_amo_requested_amount')">請求金額 <span class="float-right" :class="iconSet('mes_lis_inv_lin_det_amo_requested_amount')"></span></th>
             </tr>
@@ -129,7 +129,7 @@
                 <!-- <router-link :to="{ name: 'invoice_detail', params: { data_invoice_id: value.data_invoice_id }, }" class="btn btn-info">{{ value.mes_lis_inv_per_end_date }}</router-link> -->
               </td>
               <td>{{ value.mes_lis_inv_pay_code }}</td>
-              <td>{{ value.mes_lis_inv_pay_id }}</td>
+              <!-- <td>{{ value.mes_lis_inv_pay_id }}</td> -->
               <td>{{ value.status }}</td>
               <td class="text-right">{{value.total_amount | priceFormat }}</td>
 
