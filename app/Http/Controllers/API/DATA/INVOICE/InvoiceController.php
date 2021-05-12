@@ -33,7 +33,10 @@ class InvoiceController extends Controller
     }
     public function invoiceScheduler($request){
         $cs = new CmnScenarioController();
-        return $ret = $cs->exec($request);
+
+        $ret = $cs->exec($request);
+        Log::info($ret);
+        return $ret;
         Log::debug($ret->getContent());
         $ret = json_decode($ret->getContent(), true);
         if (1 === $ret['status']) {
@@ -199,7 +202,9 @@ class InvoiceController extends Controller
         $adm_user_id=$request->adm_user_id;
         $byr_buyer_id=$request->byr_buyer_id;
         try {
+            // Artisan::call('optimize', [], $this->getOutput());
             Artisan::call('invoice:scheduler 1 '.$adm_user_id.' '.$byr_buyer_id);
+            // return Artisan::call('invoice:scheduler 1 '.$adm_user_id.' '.$byr_buyer_id,[], $this->getOutput());
         } catch (\Throwable $th) {
             return response()->json(['message' => "エラー",'status'=>0,'class'=>'error']);
         }

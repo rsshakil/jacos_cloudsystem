@@ -183,9 +183,10 @@ class InvoiceCommand extends Command
             $request->request->add(['password' => 'Qe75ymSr']);
             $request->request->add(['start_date' => $start_date]);
             $request->request->add(['end_date' => $end_date]);
-            $this->invoice->invoiceScheduler($request);
+            $aaa=$this->invoice->invoiceScheduler($request);
             // $this->invoice->invoiceScheduler($start_date,$end_date);
             $this->comment("Done");
+            return $aaa;
         }
         Log::info("----invoiceSchedulerCode end----");
     }
