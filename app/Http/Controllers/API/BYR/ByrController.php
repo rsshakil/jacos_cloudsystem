@@ -212,7 +212,7 @@ class ByrController extends Controller
         CONCAT(COALESCE($pv_table.$fieldname,''),' | ',COALESCE(cmn_categories.category_name,'')) AS category_name
          FROM $p_table
             INNER JOIN $pv_table
-            LEFT JOIN cmn_categories ON $pv_table.$fieldname=cmn_categories.category_code AND cmn_categories.byr_buyer_id='".$byr_buyer_id."' 
+            INNER JOIN cmn_categories ON $pv_table.$fieldname=cmn_categories.category_code AND cmn_categories.byr_buyer_id='".$byr_buyer_id."' 
             WHERE $p_table.$cmnConnect ='".$cmn_connect_id."' and $pv_table.$fieldname!=''
             GROUP BY $pv_table.$fieldname");
        // $buyer_category_list = $this->all_used_fun->get_allCategoryByByrId($byr_buyer_id);
