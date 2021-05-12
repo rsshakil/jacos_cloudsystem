@@ -43,9 +43,9 @@ class data_csv_order
     //
     public function exec($request, $sc)
     {
-        $this->attachment_paths_all=$this->pdfGenerate(1);
-        Log::info($this->attachment_paths_all);
-        return ['message' => "success", 'status' => '1'];
+        // $this->attachment_paths_all=$this->pdfGenerate(1);
+        // Log::info($this->attachment_paths_all);
+        // return ['message' => "success", 'status' => '1'];
         // return $chunks->all();
         Log::debug(get_class() . ' exec start  ---------------');
         if (!array_key_exists('up_file', $request->all())) {
@@ -444,18 +444,18 @@ class data_csv_order
                 $this->attachment_paths_all=$this->pdfGenerate($data_order_id);
                 Log::info($this->attachment_paths_all);
 
-            // foreach ($this->attachment_paths_all as $key => $value) {
-            //     Log::info('send mail for fax:[to:'.config('const.PDF_SEND_MAIL').',subject:'.$this->fax_number.']');
-            //     $this->attachment_paths=$value;
-            //     Mail::send([],[] ,function($message) { $message->to(config('const.PDF_SEND_MAIL'))
-            //         ->subject($this->fax_number);
-            //         Log::info('attach file:'.$this->attachment_paths);
-            //         $message->attach($this->attachment_paths)
-            //         // foreach($this->attachment_paths as $filePath){
-            //         //     $message->attach($filePath);
-            //         // }
-            //         ->setBody(''); });
-            // }
+            foreach ($this->attachment_paths_all as $key => $value) {
+                Log::info('send mail for fax:[to:'.config('const.PDF_SEND_MAIL').',subject:'.$this->fax_number.']');
+                $this->attachment_paths=$value;
+                Mail::send([],[] ,function($message) { $message->to(config('const.PDF_SEND_MAIL'))
+                    ->subject($this->fax_number);
+                    Log::info('attach file:'.$this->attachment_paths);
+                    $message->attach($this->attachment_paths)
+                    // foreach($this->attachment_paths as $filePath){
+                    //     $message->attach($filePath);
+                    // }
+                    ->setBody(''); });
+            }
             }
         } catch (\Exception $e) {
             Log::error($e->getMessage().' Or May be data font missing in database data or bad file');
