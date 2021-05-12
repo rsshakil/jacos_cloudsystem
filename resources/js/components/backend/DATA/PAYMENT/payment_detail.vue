@@ -52,7 +52,7 @@
             <tr>
               <th style="cursor: pointer">No</th>
               <th style="cursor: pointer">取引先</th>
-              <th style="cursor: pointer">請求書番号</th>
+              <!-- <th style="cursor: pointer">請求書番号</th> -->
               <th style="cursor: pointer">支払合計金額</th>
             </tr>
           </thead>
@@ -71,7 +71,7 @@
                     {{payment_detail_header.mes_lis_pay_pay_code}} {{payment_detail_header.mes_lis_pay_pay_name}}
                     </router-link>
                 </td>
-                <td>
+                <!-- <td>
                   <router-link :to="{
                       name: 'payment_item_detail',
                       query: {
@@ -79,7 +79,7 @@
                           payment_detail_header.data_payment_id,
                       },
                     }">{{payment_detail_header.mes_lis_pay_pay_id}}</router-link>
-                </td>
+                </td> -->
               <td class="text-right">{{payment_detail_header.total_amount | priceFormat}}</td>
             </tr>
             <tr v-if="payment_detail_header && payment_detail_header.length==0">
