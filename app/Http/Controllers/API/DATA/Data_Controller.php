@@ -609,6 +609,7 @@ class Data_Controller extends Controller
             $fixedSpecial=$request->fixedSpecial;
             $printingStatus=$request->printingStatus;
             $situation=$request->situation;
+            $send_datetime=$request->send_datetime;
 
 
             $csv_data=$csv_data->where('data_shipments.data_order_id', $data_order_id)
@@ -641,13 +642,15 @@ class Data_Controller extends Controller
                         $csv_data=$csv_data->whereNotNull('dsv.decision_datetime');
                     }
                 }
+                if($send_datetime!="*"){
+                    if($send_datetime=="未送信あり"){
+                        $csv_data = $csv_data->whereNull('dsv.send_datetime');
+                    }
+                    if($send_datetime=="送信済"){
+                        $csv_data = $csv_data->whereNotNull('dsv.send_datetime');
+                    }
+                }
         }
-        // $csv_data=$csv_data
-        // ->orderBy('dsv.mes_lis_shi_par_sel_code','ASC')
-        // ->orderBy('dsv.mes_lis_shi_tra_dat_delivery_date','ASC')
-        // ->orderBy('dsv.mes_lis_shi_tra_goo_major_category','ASC')
-        // ->orderBy('dsv.mes_lis_shi_log_del_delivery_service_code','ASC')
-        // ->orderBy('dsv.mes_lis_shi_tra_ins_temperature_code','ASC');
 
         $csv_data=$csv_data->orderBy('dsv.mes_lis_shi_tra_trade_number', "ASC");
         $csv_data=$csv_data->orderBy('dsi.mes_lis_shi_lin_lin_line_number', "ASC");

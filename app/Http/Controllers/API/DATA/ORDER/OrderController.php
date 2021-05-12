@@ -207,6 +207,7 @@ class OrderController extends Controller
         $fixedSpecial=$request->fixedSpecial;
         $printingStatus=$request->printingStatus;
         $situation=$request->situation;
+        $send_datetime=$request->send_datetime;
 
         // Log::info($mes_lis_shi_tra_trade_number);
 
@@ -294,6 +295,14 @@ class OrderController extends Controller
                         $result = $result->whereNotNull('dsv.decision_datetime');
                     }
                 }
+                if($send_datetime!="*"){
+                    if($send_datetime=="未送信あり"){
+                        $result = $result->whereNull('dsv.send_datetime');
+                    }
+                    if($send_datetime=="送信済"){
+                        $result = $result->whereNotNull('dsv.send_datetime');
+                    }
+                }
                 if($par_shi_code!=null){
                     $result = $result->where('dsv.mes_lis_shi_par_shi_code',$par_shi_code);
                 }
@@ -349,7 +358,7 @@ class OrderController extends Controller
         // 'temperature_code' => '01',
         Log::info("delivery_date");
         Log::info($delivery_date);
-        
+
         $result = DB::table('data_shipments as ds')
             ->select(
                 'dor.receive_datetime',
@@ -381,12 +390,12 @@ class OrderController extends Controller
             ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $delivery_service_code)
             ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $temperature_code);
 
-                
+
                 $result = $result->orderBy('dsv.'.$sort_by,$sort_type);
                 $result = $result->groupBy('dsv.mes_lis_shi_tra_trade_number')->get();
                // ->paginate($per_page);
         /*coll setting*/
-        
+
         return response()->json(['order_list_detail' => $result]);
     }
     public function getOrderById($byr_order_id)

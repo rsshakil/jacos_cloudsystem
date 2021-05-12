@@ -72,85 +72,64 @@
             <td style="width:10%" class="cl_custom_color">直接納品先コード</td>
             <td style="width:15%">
               <input type="text" v-model="form.par_shi_code" class="form-control topHeaderInputFieldBtn" />
-              <button
-                @click="deliverySearchForm1"
-                class="btn btn-primary active"
-              >
+              <button @click="deliverySearchForm1" class="btn btn-primary active">
                 参照
               </button>
             </td>
             <td style="width:10%" class="cl_custom_color">最終納品先コード</td>
             <td style="width:15%">
               <input type="text" v-model="form.par_rec_code" class="form-control topHeaderInputFieldBtn" />
-              <button
-                @click="deliverySearchForm2"
-                class="btn btn-primary active"
-              >
+              <button @click="deliverySearchForm2" class="btn btn-primary active">
                 参照
               </button>
             </td>
             <td style="width:10%" class="cl_custom_color">伝票番号</td>
             <td style="width:15%">
-              <input
-                type="text"
-                v-model="form.mes_lis_shi_tra_trade_number"
-                class="form-control"
-              />
+              <input type="text" v-model="form.mes_lis_shi_tra_trade_number" class="form-control" />
             </td>
           </tr>
           <tr>
             <td style="width:10%" class="cl_custom_color">商品コード</td>
             <td style="width:15%">
               <input type="text" v-model="form.order_item_code" class="form-control topHeaderInputFieldBtn" />
-              <button
-                @click="deliverySearchForm3"
-                class="btn btn-primary active"
-              >
+              <button @click="deliverySearchForm3" class="btn btn-primary active">
                 参照
               </button>
             </td>
             <td style="width:10%" class="cl_custom_color">定／特</td>
             <td style="width:15%">
-              <select
-                class="form-control"
-                v-model="form.fixedSpecial"
-
-              >
+              <select class="form-control" v-model="form.fixedSpecial">
                 <option value="*">全て</option>
-
-                <option
-                  v-for="(opt, i) in fixedSpecialOptionList"
-                  :key="i"
-                  :value="Object.keys(opt)[0]"
-                >
+                <option v-for="(opt, i) in fixedSpecialOptionList" :key="i" :value="Object.keys(opt)[0]">
                   {{ Object.values(opt)[0] }}
-                </option>
-              </select>
-            </td>
-            <td style="width:10%" class="cl_custom_color">確定状況</td>
-            <td style="width:15%">
-              <select
-                class="form-control"
-                v-model="form.situation"
-
-              >
-                <option value="*">全て</option>
-                <option :value="item" v-for="(item,i) in situationOptionList" :key="i">
-                  {{ item }}
                 </option>
               </select>
             </td>
           </tr>
           <tr>
             <td style="width:10%" class="cl_custom_color">印刷状況</td>
-            <td style="width:15%" colspan="7">
-              <select
-                class="form-control"
-                v-model="form.printingStatus"
-
-              >
+            <td style="width:15%">
+              <select class="form-control" v-model="form.printingStatus">
                 <option value="*">全て</option>
                 <option :value="item" v-for="(item,i) in printingStatusOptionList" :key="i">
+                  {{ item }}
+                </option>
+              </select>
+            </td>
+            <td style="width:10%" class="cl_custom_color">確定状況</td>
+            <td style="width:15%">
+              <select class="form-control" v-model="form.situation">
+                <option value="*">全て</option>
+                <option :value="item" v-for="(item,i) in situationOptionList" :key="i">
+                  {{ item }}
+                </option>
+              </select>
+            </td>
+            <td style="width:10%" class="cl_custom_color">送信状況</td>
+            <td style="width:15%">
+              <select class="form-control" v-model="form.send_datetime">
+                <option value="*">全て</option>
+                <option :value="item" v-for="(item,i) in send_datetime_options" :key="i">
                   {{ item }}
                 </option>
               </select>
@@ -161,11 +140,7 @@
       </div>
 
       <div class="col-12" style="text-align: center">
-        <button
-          @click="get_all_byr_order_detail"
-          class="btn btn-primary active srchBtn"
-          type="button"
-        >
+        <button @click="get_all_byr_order_detail" class="btn btn-primary active srchBtn" type="button">
           {{ myLang.search }}
         </button>
       </div>
@@ -873,6 +848,7 @@ export default {
         situationOptionList: ["未確定あり", "確定済"],
         printingStatusOptionList: ["未印刷あり", "印刷済"],
         deliveryDestnationOptionList: ["店舗", "物流センター"],
+        send_datetime_options: ["未送信あり", "送信済"],
         date_null: false,
         null_selected: [],
         not_null_selected: [],
@@ -891,6 +867,7 @@ export default {
             deliveryDate: "",
             deliveryName: "",
             mes_lis_shi_tra_trade_number: null,
+            send_datetime: '*',
             sort_by:'data_shipment_voucher_id',
             sort_type:"ASC",
             page_title:'order_detail_list',
