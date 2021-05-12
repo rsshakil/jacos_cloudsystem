@@ -22,9 +22,7 @@
                 {{ param_data.buy_name }}
             </td>
             <td class="cl_custom_color">請求状況</td>
-            <td>
-                {{ param_data.status }}
-            </td>
+            <td></td>
             <td class="cl_custom_color">請求金額</td>
             <td class="text-right">
                 {{ param_data.requested_amount | priceFormat }}
@@ -882,7 +880,6 @@ console.log(this.invoiceDetail.mes_lis_inv_lin_det_balance_carried_code);
                 { update_id: this.selected, date_null: this.date_null }
               )
               .then(({ data }) => {
-                  this.init(data.status);
                 _this.alert_icon = "success";
                 _this.alert_title = "";
                 _this.alert_text =
@@ -934,7 +931,6 @@ console.log(this.invoiceDetail.mes_lis_inv_lin_det_balance_carried_code);
       this.cancel_btn = "キャンセル";
       this.form.data_count=true;
       axios.post(this.BASE_URL + "api/send_invoice_data", this.form).then(({ data }) => {
-            this.init(data.status);
           let csv_data_count = data.csv_data_count;
           if (csv_data_count > 0) {
             _this.alert_text = csv_data_count + "件の請求を送信しますがよろしいでしょうか。";
@@ -943,7 +939,6 @@ console.log(this.invoiceDetail.mes_lis_inv_lin_det_balance_carried_code);
                   this.form.data_count=false;
                 axios.post(this.BASE_URL + "api/send_invoice_data", this.form)
                   .then(({ data }) => {
-                      this.init(data.status);
                     _this.alert_icon = "success";
                     _this.alert_title = "";
                     _this.alert_text =
@@ -964,7 +959,6 @@ console.log(this.invoiceDetail.mes_lis_inv_lin_det_balance_carried_code);
       this.form.downloadType=downloadType
       axios.post(this.BASE_URL + "api/download_invoice",this.form)
         .then(({ data }) => {
-           this.init(data.status);
            this.downloadFromUrl(data);
         });
     },
