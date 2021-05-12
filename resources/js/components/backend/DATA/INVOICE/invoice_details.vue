@@ -384,7 +384,7 @@
               <label for="inputPassword" class="col-sm-2 col-form-label">請求内容</label>
               <div class="col-sm-10">
                 <select class="form-control" v-model="invoiceDetail.mes_lis_inv_lin_det_pay_code" required>
-        
+
               <option
                 v-for="(temp, i) in mes_lis_inv_lin_det_pay_code_list"
                 :key="i" v-if="temp!=''" :value="i">
@@ -397,7 +397,7 @@
               <label for="inputPassword" class="col-sm-2 col-form-label">請求区分</label>
               <div class="col-sm-10">
                 <select class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_balance_carried_code" required>
-               
+
               <option
                 v-for="(temp, i) in mes_lis_inv_lin_det_balance_carried_codeList"
                 :key="i" v-if="temp!='' " :value="i">
@@ -461,7 +461,7 @@
               <label for="inputPassword" class="col-sm-2 col-form-label">請求内容</label>
               <div class="col-sm-10">
                 <select class="form-control" v-model="invoiceDetail.mes_lis_inv_lin_det_pay_code">
-            
+
               <option
                 v-for="(temp, i) in mes_lis_inv_lin_det_pay_code_list"
                 :key="i" v-if="temp!=''" :value="i">
@@ -474,7 +474,7 @@
               <label for="inputPassword" class="col-sm-2 col-form-label">請求区分</label>
               <div class="col-sm-10">
                 <select class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_balance_carried_code">
-              
+
               <option
                 v-for="(temp, i) in mes_lis_inv_lin_det_balance_carried_codeList"
                 :key="i" v-if="temp!='' " :value="i">
@@ -639,7 +639,7 @@ export default {
       date_null:false,
       null_selected_message:false,
       decision_datetime_status: ["未確定あり", "確定済"],
-      send_datetime_status: ["未確定あり", "確定済"],
+      send_datetime_status: ["未送信あり", "送信済"],
       invoiceDetail:{
         data_invoice_pay_detail_id:'',
         data_invoice_id:'',
@@ -692,7 +692,7 @@ console.log(this.invoiceDetail.mes_lis_inv_lin_det_balance_carried_code);
         if(this.invoiceDetail.mes_lis_inv_lin_det_pay_code==''){this.errors.push("請求内容 フィールドは必須項目です")}
         if(this.invoiceDetail.mes_lis_inv_lin_det_balance_carried_code==''){this.errors.push("請求区分 フィールドは必須項目です")}
         if(!this.invoiceDetail.mes_lis_inv_lin_det_amo_requested_amount){this.errors.push("請求金額 フィールドは必須項目です")}
-      
+
       if (!this.errors.length) {
         return true;
       }
