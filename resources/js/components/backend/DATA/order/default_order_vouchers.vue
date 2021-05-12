@@ -231,7 +231,7 @@
                 <p class="mb-0">商品別の更新はこちら</p>
                 <router-link
                 :to="{name: 'item_search',query:item_search_q}" class="active btn btn-primary">
-                  商品別登録
+                  商品別更新
                 </router-link
                 >
               </div>
