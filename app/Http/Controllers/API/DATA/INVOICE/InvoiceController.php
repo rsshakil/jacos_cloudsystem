@@ -80,8 +80,13 @@ class InvoiceController extends Controller
         'dip.mes_lis_inv_pay_code','dip.mes_lis_inv_pay_name','dip.mes_lis_buy_code',
         'dip.mes_lis_inv_pay_id',
         'dip.mes_lis_buy_name',
-        'dip.status','dipd.mes_lis_inv_lin_det_amo_requested_amount',
-        DB::raw('sum(dipd.mes_lis_inv_lin_det_amo_requested_amount) as total_amount')
+        // 'dip.status',
+        'dipd.mes_lis_inv_lin_det_amo_requested_amount',
+        DB::raw('sum(dipd.mes_lis_inv_lin_det_amo_requested_amount) as total_amount'),
+
+        DB::raw('COUNT(distinct dipd.data_invoice_pay_id) AS cnt'),
+        DB::raw('COUNT( isnull( dipd.decision_datetime) OR NULL) AS decision_cnt'),
+        DB::raw('COUNT( isnull( dipd.send_datetime)  OR NULL) AS send_cnt'),
         )
         ->join('data_invoice_pays as dip','data_invoices.data_invoice_id','=','dip.data_invoice_id')
         ->join('data_invoice_pay_details as dipd','dip.data_invoice_pay_id','=','dipd.data_invoice_pay_id')
@@ -89,19 +94,9 @@ class InvoiceController extends Controller
         if ($mes_lis_inv_pay_code!=null) {
             $result=$result->where('dip.mes_lis_inv_pay_code','=',$mes_lis_inv_pay_code);
         }
-        // if ($mes_lis_inv_pay_id!='') {
-        //     $result=$result->where('dip.mes_lis_inv_pay_id','=',$mes_lis_inv_pay_id);
-        // }
         if ($mes_lis_inv_per_begin_date && $mes_lis_inv_per_end_date) {
             $result=$result->whereBetween('dip.mes_lis_inv_per_end_date',[$mes_lis_inv_per_begin_date,$mes_lis_inv_per_end_date]);
         }
-        // if ($mes_lis_inv_per_begin_date) {
-        //     $result=$result->where('dip.mes_lis_inv_per_begin_date',$mes_lis_inv_per_begin_date);
-        // }
-        // if ($mes_lis_inv_per_end_date) {
-        //     $result=$result->where('dip.mes_lis_inv_per_end_date',$mes_lis_inv_per_end_date);
-        // }
-        // will confirm
         if ($send_datetime_status=='未請求'){
             $result=$result->where('dipd.send_datetime','=',null);
         }else if ($send_datetime_status=='請求済'){
@@ -110,6 +105,7 @@ class InvoiceController extends Controller
             $result=$result->where('dipd.send_datetime','!=',null);
         }
         // will confirm
+        // $result=$result->groupBy('dipd.mes_lis_inv_lin_lin_trade_number_reference');
         $result=$result->groupBy('dip.mes_lis_inv_per_end_date')
         ->orderBy($table_name.$sort_by,$sort_type)
         ->paginate($per_page);
@@ -117,6 +113,7 @@ class InvoiceController extends Controller
 
         return response()->json(['invoice_list' => $result, 'byr_buyer_list' => $byr_buyer]);
     }
+
     public function invoiceInsert(Request $request){
         $adm_user_id = $request->adm_user_id;
         $byr_buyer_id = $request->byr_buyer_id;
@@ -279,11 +276,11 @@ class InvoiceController extends Controller
             $result=$result->where('dipd.mes_lis_inv_lin_tra_code','=',$mes_lis_inv_lin_tra_code);
         }
         $result=$result->where('dip.mes_lis_inv_per_end_date',$param_data['end_date'])
-            ->where('dip.mes_lis_inv_pay_code',$param_data['pay_code'])
+            ->where('dip.mes_lis_inv_pay_code',$param_data['pay_code']);
             // ->where('dip.mes_lis_inv_pay_name',$param_data['pay_name'])
             // ->where('dip.mes_lis_buy_code',$param_data['buy_code'])
             // ->where('dip.mes_lis_buy_name',$param_data['buy_name'])
-            ->where('dip.status',$param_data['status']);
+            // ->where('dip.status',$param_data['status']);
         $result = $result->orderBy('dipd.'.$sort_by,$sort_type);
         $result=$result->paginate($per_page);
         return response()->json(['invoice_details_list' => $result]);
@@ -316,7 +313,7 @@ class InvoiceController extends Controller
             // ->where('dip.mes_lis_inv_pay_name',$param_data['pay_name'])
             // ->where('dip.mes_lis_buy_code',$param_data['buy_code'])
             // ->where('dip.mes_lis_buy_name',$param_data['buy_name'])
-            ->where('dip.status',$param_data['status'])
+            // ->where('dip.status',$param_data['status'])
             ->get()->count();
         if (!$data_count) {
             $dateTime = date('Y-m-d H:i:s');

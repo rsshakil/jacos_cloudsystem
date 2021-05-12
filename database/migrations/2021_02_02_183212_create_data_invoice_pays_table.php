@@ -28,7 +28,7 @@ class CreateDataInvoicePaysTable extends Migration
             $table->string('mes_lis_inv_pay_name_sbcs', 20)->comment('請求取引先名カナ');
             $table->date('mes_lis_inv_per_begin_date')->comment('対象期間開始');
             $table->date('mes_lis_inv_per_end_date')->comment('対象期間終了');
-            $table->enum('status', ['未請求', '請求済'])->default('未請求')->comment('Status');
+            // $table->enum('status', ['未請求', '請求済'])->default('未請求')->comment('Status');
             $table->smallInteger('deleted')->unsigned()->default(1)->comment('削除フラグ');
             $table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登録日時');
 			$table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('更新日時');

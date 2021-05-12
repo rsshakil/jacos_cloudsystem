@@ -102,11 +102,12 @@
             </select>
           </td>
           <!-- <td>{{ myLang.confirmation_status }}</td> -->
-          <td class="cl_custom_color">印刷状況</td>
+          <!-- <td class="cl_custom_color">印刷状況</td> -->
+          <td class="cl_custom_color">送信状況</td>
           <td>
-            <select class="form-control" v-model="form.print_cnt">
+            <select class="form-control" v-model="form.send_cnt">
              <option
-                v-for="(dcnt, i) in print_cnt"
+                v-for="(dcnt, i) in send_cnt"
                 :key="i"
                 :value="Object.keys(dcnt)[0]"
               >
@@ -196,7 +197,7 @@
               <th class="pointer_class" @click="sorting('mes_lis_ord_tra_ins_temperature_code')">温度区分 <span class="float-right" :class="iconSet('mes_lis_ord_tra_ins_temperature_code')"></span></th>
               <th class="pointer_class">伝票 枚数</th>
               <th class="pointer_class">未確定 伝票枚数</th>
-              <th class="pointer_class">未印刷 伝票枚数</th>
+              <th class="pointer_class">未送信　伝票枚数</th>
               <th class="pointer_class" @click="sorting('check_datetime')">参照状況 <span class="float-right" :class="iconSet('check_datetime')"></span></th>
             </tr>
           </thead>
@@ -255,7 +256,7 @@
               </td>
               <td>{{ order_list.cnt }}</td>
               <td>{{ order_list.decision_cnt }}</td>
-              <td>{{ order_list.print_cnt }}</td>
+              <td>{{ order_list.send_cnt }}</td>
               <td>{{ order_list.check_datetime }}</td>
             </tr>
 
@@ -329,7 +330,7 @@ export default {
       showAllCustomerCodeListModal:false,
       // temperature:[{id:1,name:"temperature1"},{id:2,name:"temperature2"},{id:3,name:"temperature3"}],
       // confirmation_status:[{id:1,name:"confirmation_status1"},{id:2,name:"confirmation_status2"},{id:3,name:"confirmation_status3"}],
-      print_cnt: [{ "*": "全て" }, { "!0": "未印刷あり" }, { 0: "印刷済" }],
+      send_cnt: [{ "*": "全て" }, { "!0": "未印刷あり" }, { 0: "印刷済" }],
       decission_cnt: [{ "*": "全て" }, { "!0": "未確定あり" }, { 0: "確定済" }],
       confirmation_status_list: [{ "*": "全て" }, { "!0": "未確定あり" }, { 0: "確定済" }],
       form: new Form({
@@ -348,7 +349,7 @@ export default {
         temperature: "*",
         mes_lis_ord_par_sel_code:"",
         // confirmation_status:1,
-        print_cnt: "*",
+        send_cnt: "*",
         decission_cnt: "*",
         confirmation_status_data: "*",
         decisionDateTime:'*',
