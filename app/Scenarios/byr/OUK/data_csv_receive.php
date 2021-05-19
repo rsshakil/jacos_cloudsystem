@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Scenarios\receive;
+namespace App\Scenarios\byr\OUK;
 
 use App\Scenarios\ScenarioBase;
 

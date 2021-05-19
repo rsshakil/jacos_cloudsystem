@@ -2,11 +2,13 @@
 
 namespace App\Scenarios\byr\OUK;
 
+use App\Scenarios\ScenarioBase;
+
 use App\Scenarios\Common;
 use App\Http\Controllers\API\AllUsedFunction;
 use App\Http\Controllers\API\DATA\Data_Controller;
 
-class fixed_length_generate
+class fixed_length_generate extends ScenarioBase
 {
     private $all_functions;
     private $common_class_obj;
@@ -18,16 +20,13 @@ class fixed_length_generate
 
     public function exec($request, $sc)
     {
-        // return $request->all();
-        // order data get
-        // $order_data= Data_Controller::get_order_data($request);
+        \Log::debug(__METHOD__.':start---');
+
         $order_data= Data_Controller::get_shipment_data($request)->get();
-        // \Log::debug($order_data);
 
         $data=[];
         foreach ($order_data as $key => $val) {
             // file head
-            // $do = date('ymd', strtotime($val['mes_lis_shi_tra_dat_order_date'])); //datetime to date string wich length is 6
 
             // 取引先コード取得
             // 桁あふれ桁少ないのを対応
@@ -35,7 +34,6 @@ class fixed_length_generate
 
             $file_head = 'A00'; //default value wich length is 3
             $file_head.= date('ymdHis', strtotime($val['sta_doc_creation_date_and_time'])); //datetime to date time string wich length is 6+6
-            // $file_head.= $do;  //length is 6
             $file_head.= date('ymd', strtotime($val['sta_doc_creation_date_and_time'])); //datetime to date string wich length is 6;  //length is 6
             $file_head.= '82105578'; //default value wich length is 8
             $file_head.= $tori_code."HI"; //add HI with sel code wich length is 8
@@ -55,9 +53,7 @@ class fixed_length_generate
             $voucher_head .= str_pad($val['mes_lis_shi_par_rec_code'], 6, '0', STR_PAD_LEFT); //0 added before string until length is 6
             $voucher_head .= str_pad($val['mes_lis_shi_tra_goo_major_category'], 4, '0', STR_PAD_LEFT); //0 added before string until length is 4
             $voucher_head .='50'; //default value wich length is 2
-            // $voucher_head .= $do; //length is 6
-            // $voucher_head .= $do; //length is 6 mes_lis_ord_tra_dat_order_date
-            $voucher_head.= date('ymd', strtotime($val['mes_lis_shi_tra_dat_order_date'])); //datetime to date string wich length is 6;  //length is 6
+            $voucher_head .= date('ymd', strtotime($val['mes_lis_shi_tra_dat_order_date'])); //datetime to date string wich length is 6;  //length is 6
             $voucher_head .= date('ymd', strtotime($val['mes_lis_shi_tra_dat_delivery_date_to_receiver'])); //datetime to date string wich length is 6
             $voucher_head .= $tori_code; //0 added before string until length is 6
             $voucher_head .= '00'; //default value wich length is 2
@@ -65,13 +61,8 @@ class fixed_length_generate
             $voucher_head .= $this->all_functions->mb_str_pad($val['mes_lis_shi_par_rec_name_sbcs'], 6); //space padding added after string until length is 6
             $voucher_head .= str_repeat(" ", 6); //6 space padding added with vouche string until length is 6
             $voucher_head .= $this->all_functions->mb_str_pad($val['mes_lis_shi_par_sel_name_sbcs'], 22); //space padding added after string until length is 22
-            // $voucher_head .= substr($val['mes_lis_shi_tra_ins_goods_classification_code'], -1); //substring from service_code (right) which length is 1
-            // \Log::debug("Classification code: ". (($val['mes_lis_shi_tra_ins_goods_classification_code']=='01')?0: (($val['mes_lis_shi_tra_ins_goods_classification_code']=='03')?1:$val['mes_lis_shi_tra_ins_goods_classification_code'])));
             $voucher_head .= (($val['mes_lis_shi_tra_ins_goods_classification_code']=='01')?0: (($val['mes_lis_shi_tra_ins_goods_classification_code']=='03')?1:' ')); //if classification_code=01 then 0 else 03 then 1 else space
-            // $voucher_head .= substr($val['mes_lis_shi_tra_ins_goods_classification_code'], -1); //substring from service_code (right) which length is 1
-            // \Log::debug("Route code: ". ($val['mes_lis_shi_log_del_route_code']=='02'?1:' '));
             $voucher_head .= ($val['mes_lis_shi_log_del_route_code']=='02'?1:' '); //space padding added after string until length is 1 if route code!=02 else 1
-            // $voucher_head .= $this->all_functions->mb_str_pad($val['mes_lis_shi_log_del_route_code'], 1); //space padding added after string until length is 1
             $voucher_head .= str_pad($val['mes_lis_shi_par_shi_code'], 6, '0', STR_PAD_LEFT); //0 added before string until length is 6
             $voucher_head .= $this->all_functions->mb_str_pad($val['mes_lis_shi_par_shi_name_sbcs'], 22); //space padding added after string until length is 22
             $voucher_head .= str_repeat(" ", 16); //Sixteen space added which length is 16
@@ -81,8 +72,6 @@ class fixed_length_generate
             $items = 'D01'; //default value wich length is 3
             $items.= str_pad($val['mes_lis_shi_lin_lin_line_number'], 2, '0', STR_PAD_LEFT); //0 added before the string until length is 2
             $items.= $this->all_functions->mb_str_pad($val['mes_lis_shi_lin_ite_order_item_code'], 13); //space padding added after string until length is 13
-            // $items.= str_pad($val['mes_lis_shi_lin_fre_packing_quantity'], 4, '0', STR_PAD_LEFT); //0 added before the string until length is 4
-            // \Log::debug("unit_multiple: ". str_pad($val['mes_lis_shi_lin_qua_unit_multiple'], 4, '0', STR_PAD_LEFT));
             $items.= str_pad($val['mes_lis_shi_lin_qua_unit_multiple'], 4, '0', STR_PAD_LEFT); //0 added before the string until length is 4
             $items.= str_pad($val['mes_lis_shi_lin_qua_ord_num_of_order_units'], 4, '0', STR_PAD_LEFT); //0 added before the string until length is 4
             $items.= str_repeat(" ", 3); //Space added until length is 3
@@ -128,24 +117,14 @@ class fixed_length_generate
         }
         $txt_file_name = $request->file_name?$request->file_name:(date('y-m-d').'_Text_File_'.time().".txt");
         $string_data=$this->all_functions->convert_from_utf8_to_sjis__recursively($string_data);
-        // if ($request->get('ebcdic', false)) {
-            // $string_data=$this->common_class_obj->sjis_2_ebcdic(null, $string_data);
-        // }
 
+        \Log::debug(__METHOD__.':end---');
         if ($string_data!=null) {
-            // $string_data = $this->common_class_obj->ebcdic_2_sjis(null,$string_data);
-            // $string_data = mb_convert_encoding($string_data, "UTF-8", "SJIS");
-
             \File::put(storage_path(config('const.FIXED_LENGTH_FILE_PATH').$txt_file_name), $string_data);
-            // return response()->json(
-                return [
+            return [
                 'status'=>1,
                 'message'=>"File has been created",
-                // 'new_file_name'=>\Config('app.url').'storage/'.config('const.FIXED_LENGTH_FILE_PATH').$txt_file_name,
-                // 'file_name' => $txt_file_name,
-                // 'file_path' => 'storage/'.config('const.FIXED_LENGTH_FILE_PATH').$txt_file_name,
                 ];
-        // );
         } else {
             return response()->json(['status'=>0,'message'=>"No file data found"]);
         }

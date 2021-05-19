@@ -278,6 +278,7 @@ class AllUsedFunction extends Controller
      */
     public function get_user_info($adm_user_id = 0, $selected_byr_buyer_id=0)
     {
+        \Log::debug(__METHOD__.':start---');
         $arr = array('cmn_company_id' => 0, 'byr_buyer_id' => 0, 'cmn_connect_id' => 0);
         Log::info($adm_user_id);
         // return $adm_user_id;
@@ -314,6 +315,7 @@ class AllUsedFunction extends Controller
                 );
             }
         }
+        \Log::debug(__METHOD__.':end---');
         return $arr;
     }
 

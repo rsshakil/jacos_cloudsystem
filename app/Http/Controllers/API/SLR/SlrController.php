@@ -6,26 +6,57 @@ use App\Http\Controllers\Controller;
 use App\Models\ADM\User;
 use App\Models\CMN\cmn_companies_user;
 use App\Models\CMN\cmn_company;
+use App\Models\SLR\slr_seller;
 use Illuminate\Http\Request;
 use DB;
 
 class SlrController extends Controller
 {
+    public static function getSlrInfoByUserId($adm_user_id)
+    {
+        \Log::debug(__METHOD__.':start---');
+        $query = cmn_companies_user::where('adm_user_id', $adm_user_id)
+            ->join('slr_sellers', 'slr_sellers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
+            ->join('cmn_companies', 'cmn_companies_users.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
+            ->select(
+                'slr_sellers.slr_seller_id',
+                'slr_sellers.cmn_company_id',
+                'cmn_companies.company_name',
+                'cmn_companies.company_name_kana',
+                'cmn_companies.jcode',
+                'cmn_companies.phone',
+                'cmn_companies.fax',
+                'cmn_companies.postal_code',
+                'cmn_companies.address'
+            );
+        $result = $query->first();
+        \Log::debug(__METHOD__.':end---');
+        return $result;
+    }
+    
+    /**
+     * slr_management
+     *
+     * @param  mixed $adm_user_id
+     * @return void
+     */
     public function slr_management($adm_user_id)
     {
+        \Log::debug(__METHOD__.':start---');
         $authUser = User::find($adm_user_id);
         if (!$authUser->hasRole(config('const.adm_role_name'))) {
             $cmn_company_info = cmn_companies_user::where('adm_user_id', $adm_user_id)->first();
             $cmn_company_id = $cmn_company_info->cmn_company_id;
         }
 
-        $result = DB::table('cmn_companies')
+        $query = DB::table('cmn_companies')
             ->join('slr_sellers', 'slr_sellers.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
             ->groupBy('cmn_companies.cmn_company_id');
         if (!$authUser->hasRole(config('const.adm_role_name'))) {
-            $result = $result->where('cmn_companies.cmn_company_id', $cmn_company_id);
+            $query = $query->where('cmn_companies.cmn_company_id', $cmn_company_id);
         }
-        $result = $result->get();
+        $result = $query->get();
+        \Log::debug(__METHOD__.':end---');
         return response()->json(['slr_list' => $result]);
     }
     public function getSellerList(Request $request)
@@ -41,5 +72,4 @@ class SlrController extends Controller
         }
         return response()->json(['sellers' => $sellers, 'selected_sellers' => $selected_sellers]);
     }
-
 }

@@ -97,16 +97,24 @@ class CommonController extends Controller
             }
             return array('title' => "Created!", 'message' => "created", 'class_name' => 'success', 'last_user_id' => $last_user_id);
         }
-
     }
-    public function get_logged_user_company_by_user_id(Request $request){
+    /**
+     * get_logged_user_company_by_user_id
+     *
+     * @param  mixed $request
+     * @return void
+     */
+    public function get_logged_user_company_by_user_id(Request $request)
+    {
+        \Log::debug(__METHOD__.':start---');
+
         $adm_user_id = $request->user_id;
         $authUser = User::find($adm_user_id);
         $result = array();
         if (!$authUser->hasRole(config('const.adm_role_name'))) {
-            $result = $this->all_used_fun->get_user_info( $adm_user_id);
+            $result = $this->all_used_fun->get_user_info($adm_user_id);
         }
+        \Log::debug(__METHOD__.':end---');
         return response()->json(['userCompanyInfo' => $result]);
-
     }
 }

@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Scenarios\payment;
+namespace App\Scenarios\byr\OUK;
+
+use App\Scenarios\ScenarioBase;
 
 use App\Scenarios\Common;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +13,7 @@ use App\Http\Controllers\API\AllUsedFunction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class data_csv_payment extends Model
+class data_csv_payment extends ScenarioBase
 {
     private $all_functions;
     public function __construct()

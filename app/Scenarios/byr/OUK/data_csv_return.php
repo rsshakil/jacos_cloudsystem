@@ -2,6 +2,8 @@
 
 namespace App\Scenarios\byr\OUK;
 
+use App\Scenarios\ScenarioBase;
+
 use App\Scenarios\Common;
 use App\Models\DATA\RTN\data_return;
 use App\Models\DATA\RTN\data_return_voucher;
@@ -10,7 +12,7 @@ use App\Http\Controllers\API\AllUsedFunction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class data_csv_return
+class data_csv_return extends ScenarioBase
 {
     private $all_functions;
     public function __construct()
