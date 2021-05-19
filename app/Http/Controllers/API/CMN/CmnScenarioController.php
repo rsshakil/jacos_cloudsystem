@@ -4,6 +4,9 @@ namespace App\Http\Controllers\API\CMN;
 
 use Auth;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\API\CMN\CmnScenarioHistoryController;
+use App\Exceptions\JcsException;
+
 use Illuminate\Http\Request;
 use DB;
 use App\Models\CMN\cmn_scenario;
@@ -11,134 +14,145 @@ use App\Models\CMN\cmn_scenario_history;
 
 class CmnScenarioController extends Controller
 {
-    private $sc_history_array;
+    private $sc_his;
+
     public function __construct()
     {
         parent::__construct();
-        $this->sc_history_array = array();
+        $this->sc_his = new CmnScenarioHistoryController;
     }
 
     /**
-     * Execute scenario
+     * exec
      *
-     * @return \Illuminate\Http\Response
+     * @param  mixed $request
+     * @return void
      */
     public function exec(Request $request)
     {
-        // return $request->all();
-        // return response()->json(['status'=>$request->all()]);
-        \Log::debug(get_class().':'.__FUNCTION__.' start  ---------------');
-        \Log::Info(Auth::user());
+        \Log::debug(__METHOD__.':start---');
 
+        // ユーザチェック
         if (!Auth::user()) {
             $this->validate($request, ['email' => 'required|email', 'password' => 'required']);
             $user = ['email' => $request->get('email'),'password'=>$request->get('password')];
             if (!Auth::attempt($user)) {
                 // ログインエラー
-                return self::history_create($this->error, "Authentication faild");
+                return $this->sc_his->history_create($this->error, "Authentication faild");
             }
             // ログイン成功
             \Log::debug(Auth::user());
-        }else{
+        } else {
             \Log::Info(Auth::user());
         }
 
+        // Permissionチェック
+        // TODO
+
         // 実行ユーザー
-        $this->sc_history_array['adm_user_id']=Auth::id();
+        $this->sc_his->sc_history_array['adm_user_id']=Auth::id();
 
         // シナリオ情報取得
         $cmn_scenario_id=$request->get('scenario_id');
-
-        if (!$cmn_scenario_id) {
-            // シナリオ名指定
-            $cmn_scenario_name=$request->get('scenario_name');
-            if (!$cmn_scenario_name) {
-                // シナリオ指定なし
-                return self::history_create($this->error, "Not scenario select");
-            }
-            // $cmn_scenario_name よりシナリオ取得
-            \Log::debug('cmn_scenario_name:'.$cmn_scenario_name);
-
-            // scenario info check
-            $sc = cmn_scenario::where('name', $cmn_scenario_name)->first();
-        } else {
-            // シナリオID指定
-            // $cmn_scenario_id よりシナリオ取得
-            \Log::debug('cmn_scenario_id:'.$cmn_scenario_id);
-
-            // scenario info check
-            $sc = cmn_scenario::where('cmn_scenario_id', $cmn_scenario_id)->first();
-        }
-
-        // シナリオチェック
-        if (empty($sc)) {
-            return self::history_create($this->error, "No scenario found");
-        }
-
-        \Log::info($sc);
-        // シナリオファイル存在チェック
-        if (!file_exists(app_path().'/'.$sc->file_path.'.php')) {
-            return self::history_create($this->error, 'Scenario file is not exist!'.$sc->file_path);
-        }
-
-        // ファイル読み込み
-        $customClassPath = "\\App\\";
-        $nw_f_pth = explode('/', $sc->file_path);
-        foreach ($nw_f_pth as $p) {
-            $customClassPath .= $p.'\\';
-        }
-        $customClassPath = rtrim($customClassPath, "\\");
-        $sc_obj = new $customClassPath;
-
-        // シナリオ実行function存在チェック
-        if (!method_exists($sc_obj, 'exec')) {
-            // exec functionが存在しない場合
-            return self::history_create($this->error, 'Scenario exec function is not exist!');
-        }
+        $cmn_scenario_name=$request->get('scenario_name');
 
         try {
+            $sc = $this->getScenarioInfo($cmn_scenario_id, $cmn_scenario_name);
+
+            // ファイル読み込み
+            $customClassPath = "\\App\\";
+            $nw_f_pth = explode('/', $sc->file_path);
+            foreach ($nw_f_pth as $p) {
+                $customClassPath .= $p.'\\';
+            }
+            $customClassPath = rtrim($customClassPath, "\\");
+            $sc_obj = new $customClassPath;
+
+            // シナリオ実行function存在チェック
+            if (!method_exists($sc_obj, 'exec')) {
+                // exec functionが存在しない場合
+                throw new JcsException('Scenario exec function is not exist!');
+            }
+
+            $this->sc_his->sc_history_array['cmn_scenario_id']=$sc->cmn_scenario_id;
+            $this->sc_his->sc_history_array['data']=$sc->class;
+
             // シナリオ実行
             $ret = $sc_obj->exec($request, $sc);
 
             // シナリオ結果
             if (($ret)&&(isset($ret['status']))&&($ret['status'] !== $this->success)) {
                 // error
-
-                // return self::history_create($this->error, 'scenario exec error!');
-                return self::history_create($this->error, $ret['message']);
-            } else {
-                // success
-                \Log::debug('scenario exec success');
+                throw new JcsException($ret['message']);
             }
-        } catch (\Throwable $th) {
-            //throw $th;
-            // error
-            // \Log::error($th->getTrace());
-            return self::history_create($this->error, $th->getMessage());
+
+            // \Log::debug($ret);
+
+            // 正常終了
+            if (isset($ret['cmn_connect_id'])) {
+                // cmn_connect_idセット
+                $this->sc_his->sc_history_array['cmn_connect_id']=$ret['cmn_connect_id'];
+            }
+            if (isset($ret['data_id'])) {
+                // data_idセット
+                $this->sc_his->sc_history_array['data_id']=$ret['data_id'];
+            }
+
+            // hisotry
+            $this->sc_his->history_create($this->success, $ret['message']);
+        } catch (\Exception $th) {
+            \Log::error('$th->getCode():'.$th->getCode());
+            //
+            if ($th->getCode() === 0) {
+                \Log::error($th);
+            }
+
+            // 異常終了
+            $this->sc_his->history_create($this->error, $th->getMessage());
+            return ['status'=>$this->error, 'message'=>$th->getMessage()];
         } finally {
-            \Log::debug(get_class().':'.__FUNCTION__.' end  ---------------');
-        }
-        return $ret;
-        return self::history_create($this->success, "scenario exec success");
-    }
-
-    private function history_create($status, $information)
-    {
-        if ($status === $this->error) {
-            \Log::error($information);
+            \Log::debug(__METHOD__.':end---');
         }
 
-        $this->sc_history_array['status']=$status;
-        $this->sc_history_array['information']=$information;
-        cmn_scenario_history::insert($this->sc_history_array);
-
-        return response()->json(['status'=>$status, 'message' => $information]);
+        return ['status'=>$this->success, 'message'=>$ret['message']];
     }
 
-    public function exec_demo(Request $request, $id)
+    private function getScenarioInfo($cmn_scenario_id, $cmn_scenario_name)
     {
-        return response()->json(['req'=>$request->all()]);
+        \Log::debug(__METHOD__.':start---');
+        if ($cmn_scenario_id) {
+            // シナリオID指定
+            // $cmn_scenario_id よりシナリオ取得
+            \Log::debug('cmn_scenario_id:'.$cmn_scenario_id);
+
+            // scenario info check
+            $sc = cmn_scenario::where('cmn_scenario_id', $cmn_scenario_id)->first();
+        } elseif ($cmn_scenario_name) {
+            // シナリオ名指定
+            // $cmn_scenario_name よりシナリオ取得
+            \Log::debug('cmn_scenario_name:'.$cmn_scenario_name);
+
+            // scenario info check
+            $sc = cmn_scenario::where('name', $cmn_scenario_name)->first();
+        } else {
+            throw new JcsException("Not scenario select".' $cmn_scenario_id:'.$cmn_scenario_id.' $cmn_scenario_name:'.$cmn_scenario_name);
+        }
+
+        // シナリオチェック
+        if (empty($sc)) {
+            throw new JcsException('No scenario found'.' $cmn_scenario_id:'.$cmn_scenario_id.' $cmn_scenario_name:'.$cmn_scenario_name);
+        }
+
+        \Log::info($sc);
+        // シナリオファイル存在チェック
+        if (!file_exists(app_path().'/'.$sc->file_path.'.php')) {
+            throw new JcsException('Scenario file is not exist!'.$sc->file_path);
+        }
+
+        \Log::debug(__METHOD__.':end---');
+        return $sc;
     }
+
     public function get_scenario_list()
     {
         $result = cmn_scenario::select('cmn_scenarios.*', 'byr_buyers.super_code')

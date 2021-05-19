@@ -2,6 +2,8 @@
 
 namespace App\Scenarios\receive;
 
+use App\Scenarios\ScenarioBase;
+
 use App\Scenarios\Common;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\DATA\RCV\data_receive;
@@ -14,34 +16,27 @@ use App\Http\Controllers\API\AllUsedFunction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class data_csv_receive_order extends Model
+class data_csv_receive extends ScenarioBase
 {
     private $all_functions;
     public function __construct()
     {
+        parent::__construct();
         $this->common_class_obj = new Common();
         $this->all_functions = new AllUsedFunction();
     }
 
     public function exec($request, $sc)
     {
-        Log::debug(get_class().' exec start  ---------------');
-        if (!array_key_exists('up_file', $request->all())) {
-            Log::error("File not found or file path not valid");
-            // return response()->json(['message' => "error", 'status' => '0']);
-            return ['message' => "error", 'status' => '0'];
-        }
-        // ファイルアップロード
-        $file_name = time().'-'.$request->file('up_file')->getClientOriginalName();
-        // return response()->json(['file_name'=>$file_name,'status'=>0]);
-        $path = $request->file('up_file')->storeAs(config('const.RECEIVE_DATA_PATH').date('Y-m'), $file_name);
-        Log::debug('save path:'.$path);
+        \Log::debug(__METHOD__.':start---');
 
-        $received_path = storage_path().'/app//'.config('const.RECEIVE_DATA_PATH').date('Y-m').'/'.$file_name;
-        // フォーマット変換
+        // file save
+        $file_info = $this->upfileSave($request, config('const.RECEIVE_DATA_PATH') . date('Y-m'));
+        $cmn_connect_id = $file_info['cmn_connect_id'];
+        
+        // csv
+        $dataArr = $this->all_functions->csvReader($file_info['save_path'], 1);
 
-        $dataArr = $this->all_functions->csvReader($received_path, 1);
-        $cmn_connect_id=$this->all_functions->get_connect_id_from_file_name($file_name);
         $cur_date=date('y-m-d h:i:s');
         $rcv_flg = true;
         $trade_number = '';
@@ -99,7 +94,7 @@ class data_csv_receive_order extends Model
 
                     // receive
                     $data_receive_array['receive_datetime']=$cur_date;
-                    $data_receive_array['receive_file_path']=$file_name;
+                    $data_receive_array['receive_file_path']=$file_info['file_name'];
                     $data_receive_array['cmn_connect_id']=$cmn_connect_id;
 
 
@@ -286,11 +281,11 @@ class data_csv_receive_order extends Model
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
-            Log::error($e->getMessage());
-            return ['message' => $e->getMessage(), 'status' => 0];
-            // something went wrong
+            throw $e;
         }
 
-        return ['message' => "success", 'status' => 1];
+        \Log::debug(__METHOD__.':end---');
+
+        return ['message' => '', 'status' => $this->success,'cmn_connect_id' => $cmn_connect_id,'data_id' => $data_receive_id];
     }
 }

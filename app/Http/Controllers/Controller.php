@@ -19,7 +19,4 @@ class Controller extends BaseController
         $this->success = config('const.SUCCESS');
         $this->error = config('const.ERROR');
     }
-    function mysession(){
-        return session()->all();
-    }
 }

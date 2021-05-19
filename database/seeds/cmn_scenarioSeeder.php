@@ -52,7 +52,7 @@ class cmn_scenarioSeeder extends Seeder
                 'vector' => 'to_jacos',
                 'name' => 'DATA_ORDER_CSV_INSERTION',
                 'description' => 'DATA_ORDER_CSV_INSERTION',
-                'file_path' => 'Scenarios/order/data_csv_order',
+                'file_path' => 'Scenarios/byr/OUK/data_csv_order',
             ],
             [
                 'byr_buyer_id' => 1,
@@ -112,7 +112,7 @@ class cmn_scenarioSeeder extends Seeder
                 'vector' => 'in_jacos',
                 'name' => 'order data for download',
                 'description' => 'order data for download',
-                'file_path' => 'Scenarios/order/Order_download',
+                'file_path' => 'Scenarios/byr/OUK/Order_download',
             ],
             [
                 'byr_buyer_id' => 1,
@@ -132,7 +132,7 @@ class cmn_scenarioSeeder extends Seeder
                 'vector' => 'to_jacos',
                 'name' => 'DATA_RECEIVE_CSV_INSERTION',
                 'description' => 'DATA_RECEIVE_CSV_INSERTION',
-                'file_path' => 'Scenarios/receive/data_csv_receive_order',
+                'file_path' => 'Scenarios/byr/OUK/data_csv_receive',
             ],
             [
                 'byr_buyer_id' => 1,
@@ -142,7 +142,7 @@ class cmn_scenarioSeeder extends Seeder
                 'vector' => 'to_jacos',
                 'name' => 'DATA_PAYMENT_CSV_INSERTION',
                 'description' => 'DATA_PAYMENT_CSV_INSERTION',
-                'file_path' => 'Scenarios/payment/data_csv_payment_order',
+                'file_path' => 'Scenarios/byr/OUK/data_csv_payment',
             ],
             [
                 'byr_buyer_id' => 1,
@@ -172,7 +172,7 @@ class cmn_scenarioSeeder extends Seeder
                 'vector' => 'to_jacos',
                 'name' => 'DATA_RETURN_CSV_IMPORT',
                 'description' => 'DATA_RETURN_CSV_IMPORT',
-                'file_path' => 'Scenarios/DATA/RTN/data_return_csv',
+                'file_path' => 'Scenarios/byr/OUK/data_csv_return',
             ],
         );
         cmn_scenario::insert($scenarios);

@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Scenarios\order;
+namespace App\Scenarios\byr\OUK;
+
+use App\Scenarios\ScenarioBase;
 
 use App\Http\Controllers\API\AllUsedFunction;
 use App\Models\DATA\ORD\data_order;
@@ -23,7 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
 // use setasign\Fpdi\Tcpdf\Fpdi;
 use tecnickcom\tcpdf\TCPDF_FONTS;
 
-class data_csv_order
+class data_csv_order extends ScenarioBase
 {
     private $all_functions;
     private $common_class_obj;
@@ -32,9 +34,9 @@ class data_csv_order
     private $attachment_paths;
     public function __construct()
     {
+        parent::__construct();
         $this->common_class_obj = new Common();
         $this->all_functions = new AllUsedFunction();
-        // $this->attachment_paths='';
         $this->attachment_paths_all=array();
         $this->attachment_paths=array();
         $this->fax_number='';
@@ -43,30 +45,15 @@ class data_csv_order
     //
     public function exec($request, $sc)
     {
-        // $this->attachment_paths_all=$this->pdfGenerate(1);
-        // Log::info($this->attachment_paths_all);
-        // return ['message' => "success", 'status' => '1'];
-        // return $chunks->all();
-        Log::debug(get_class() . ' exec start  ---------------');
-        if (!array_key_exists('up_file', $request->all())) {
-            Log::error("File not found or file path not valid");
-            // return response()->json(['message' => "error", 'status' => '0']);
-            return ['message' => "error", 'status' => '0'];
-        }
-        // ファイルアップロード
-        $file_name = time() . '-' . $request->file('up_file')->getClientOriginalName();
-        // return response()->json(['file_name'=>$file_name,'status'=>0]);
-        $path = $request->file('up_file')->storeAs(config('const.ORDER_DATA_PATH') . date('Y-m'), $file_name);
-        Log::debug('save path:' . $path);
+        \Log::debug(__METHOD__.':start---');
 
-        $received_path = storage_path() . '/app//' . config('const.ORDER_DATA_PATH') . date('Y-m') . '/' . $file_name;
-        // フォーマット変換
+        // file save
+        $file_info = $this->upfileSave($request, config('const.ORDER_DATA_PATH') . date('Y-m'));
+        $cmn_connect_id = $file_info['cmn_connect_id'];
 
-        $dataArr = $this->all_functions->csvReader($received_path, 1);
-        $cmn_connect_id = $this->all_functions->get_connect_id_from_file_name($file_name);
-        // $aaaaa=$this->pdfGenerate(1);
-        // Log::info($aaaaa);
-        // return "OK";
+        // csv
+        $dataArr = $this->all_functions->csvReader($file_info['save_path'], 1);
+
         $order_flg = true;
         $trade_number = '';
         DB::beginTransaction();
@@ -113,7 +100,7 @@ class data_csv_order
                     // Order
                     $data_order_array['cmn_connect_id'] = $cmn_connect_id;
                     $data_order_array['route'] = 'edi';
-                    $data_order_array['receive_file_path'] = $file_name;
+                    $data_order_array['receive_file_path'] = $file_info['file_name'];
 
                     $data_order_id = data_order::insertGetId($data_order_array);
 
@@ -434,46 +421,69 @@ class data_csv_order
                 $data_shi_item_array = array();
             }
 
-    // });
-    // Mail
-        $cmn_connect_options=cmn_connect::select('optional')->where('cmn_connect_id',$cmn_connect_id)->first();
+            // FAX data send
+            $this->sendFax($cmn_connect_id, $data_order_id);
+
+            // DB commit
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+
+        // Mail
+        \Log::debug(__METHOD__.':end---');
+        return ['message' => '', 'status' => $this->success,'cmn_connect_id' => $cmn_connect_id,'data_id' => $data_order_id];
+    }
+    
+    /**
+     * sendFax
+     *
+     * @param  mixed $cmn_connect_id
+     * @param  mixed $data_order_id
+     * @return void
+     */
+    private function sendFax($cmn_connect_id, $data_order_id)
+    {
+        \Log::debug(__METHOD__.':start---');
+        
+        $cmn_connect_options=cmn_connect::select('optional')->where('cmn_connect_id', $cmn_connect_id)->first();
         $optional=json_decode($cmn_connect_options->optional);
         try {
             if ($optional->order->fax->exec) {
                 $this->fax_number=$optional->order->fax->number;
                 $this->attachment_paths_all=$this->pdfGenerate($data_order_id);
-                Log::info($this->attachment_paths_all);
+                Log::debug($this->attachment_paths_all);
 
-            foreach ($this->attachment_paths_all as $key => $value) {
                 Log::info('send mail for fax:[to:'.config('const.PDF_SEND_MAIL').',subject:'.$this->fax_number.']');
-                $this->attachment_paths=$value;
-                Mail::send([],[] ,function($message) { $message->to(config('const.PDF_SEND_MAIL'))
-                    ->subject($this->fax_number);
-                    Log::info('attach file:'.$this->attachment_paths);
-                    $message->attach($this->attachment_paths)
-                    // foreach($this->attachment_paths as $filePath){
-                    //     $message->attach($filePath);
-                    // }
-                    ->setBody(''); });
-            }
+                foreach ($this->attachment_paths_all as $key => $value) {
+                    $this->attachment_paths=$value;
+                    Mail::send([], [], function ($message) {
+                        $message->to(config('const.PDF_SEND_MAIL'))
+                            ->subject($this->fax_number);
+                        Log::debug('attach file:'.$this->attachment_paths);
+                        $message->attach($this->attachment_paths)
+                        ->setBody('');
+                    });
+                }
             }
         } catch (\Exception $e) {
             Log::error($e->getMessage().' Or May be data font missing in database data or bad file');
             return ['message' => "May be data font missing in database data or bad file", 'status' => 0];
         }
-        DB::commit();
-    } catch (\Exception $e) {
-        DB::rollback();
-        Log::error($e->getMessage());
-        return ['message' => $e, 'status' => 0];
-        // something went wrong
+        \Log::debug(__METHOD__.':end---');
     }
-
-        // Mail
-        return ['message' => "success", 'status' => 1];
-    }
+    
+    /**
+     * pdfGenerate
+     *
+     * @param  mixed $data_order_id
+     * @return void
+     */
     public function pdfGenerate($data_order_id)
     {
+        \Log::debug(__METHOD__.':start---');
+
         $pdf_file_paths=array();
         $page=0;
         $receipt=$this->fpdfRet();
@@ -487,44 +497,43 @@ class data_csv_order
         $page_limit=10;
         $file_number=1;
         $same_rec_code=1;
-        Log::info(count($pdf_datas));
+        Log::debug(count($pdf_datas));
         // foreach ($pdf_datas as $key => $pdf_data) {
         //     Log::info($pdf_data[0]->mes_lis_ord_par_rec_code);
         //     Log::info($pdf_data[0]->mes_lis_ord_tra_trade_number);
 
         // }
         foreach ($pdf_datas as $key=>$pdf_data) {
-            Log::info($pdf_data);
+            // Log::debug($pdf_data);
             if (!($i > count($pdf_datas))) {
                 if ($page!=0 && ($page % $page_limit)==0) {
-                    Log::info("i: ".($i));
-                    Log::info("page%: ".($page % $page_limit));
-                    Log::info("page: ".$page);
-                    Log::info("page_limit: ".$page_limit);
-                    Log::info("file_number: ".$file_number);
-                    Log::info("same_rec_code: ".$same_rec_code);
+                    Log::debug("i: ".($i));
+                    Log::debug("page%: ".($page % $page_limit));
+                    Log::debug("page: ".$page);
+                    Log::debug("page_limit: ".$page_limit);
+                    Log::debug("file_number: ".$file_number);
+                    Log::debug("same_rec_code: ".$same_rec_code);
                     if (!(($file_number*$page_limit)>$page)) {
-                        $pdf_file_path = $this->file_save($receipt,$file_number);
-                        array_push($pdf_file_paths,$pdf_file_path);
+                        $pdf_file_path = $this->file_save($receipt, $file_number);
+                        array_push($pdf_file_paths, $pdf_file_path);
                         $receipt=$this->fpdfRet();
                         $file_number+=1;
                     }
-
                 }
 
                 if (isset($pdf_datas[$i])) {
                     if ($mes_lis_ord_par_rec_code!=$pdf_datas[$i][0]->mes_lis_ord_par_rec_code) {
                         $receipt->AddPage();
                         $page+=1;
-                        $receipt=$this->headerData($receipt,$pdf_data,$x,$y);
-                        $this->coordinateText($receipt, $pdf_datas[$i],$i,0,50.7,103.4);
-                    }else{
+                        $receipt=$this->headerData($receipt, $pdf_data, $x, $y);
+                        $this->coordinateText($receipt, $pdf_datas[$i], $i, 0, 50.7, 103.4);
+                    } else {
                         if ($same_rec_code%2==0) {
                             $receipt->AddPage();
                             $page+=1;
                         }
                         // $receipt=$this->headerData($receipt,$pdf_data,$x,$y);
-                        $this->coordinateText($receipt, $pdf_datas[$i],$i,0,117,170);
+                        $this->coordinateText($receipt, $pdf_datas[$i], $i, 0, 117, 170);
                         $same_rec_code+=1;
                         // \Log::info("else i number".$i);
                     }
@@ -536,31 +545,39 @@ class data_csv_order
                 $y = 0;
                 $same_rec_code=1;
             }
-
         }
         // if ($page==0 && $page % $page_limit!=0) {
         if ($page % $page_limit!=0) {
-            $pdf_file_path= $this->file_save($receipt,$file_number);
-            array_push($pdf_file_paths,$pdf_file_path);
+            $pdf_file_path= $this->file_save($receipt, $file_number);
+            array_push($pdf_file_paths, $pdf_file_path);
         }
+
+        \Log::debug(__METHOD__.':end---');
         return $pdf_file_paths;
         // return $response;
     }
-    public function file_save($receipt, $file_number){
-        // Log::debug(dd($receipt));
+    public function file_save($receipt, $file_number)
+    {
+        \Log::debug(__METHOD__.':start---');
+
         $pdf_file_name=date('YmdHis').'_'.$file_number.'_receipt.pdf';
         $this->all_functions->folder_create(config('const.PDF_SAVE_PATH'));
         $response = new Response(
-            $receipt->Output(storage_path(config('const.PDF_SAVE_PATH').$pdf_file_name), 'F'), 200, array('content-type' => 'application / pdf')
+            $receipt->Output(storage_path(config('const.PDF_SAVE_PATH').$pdf_file_name), 'F'),
+            200,
+            array('content-type' => 'application / pdf')
         );
         // $pdf_file_path = \Config::get('app.url').'storage/'.config('const.PDF_SAVE_PATH').$pdf_file_name;
         $pdf_file_path = storage_path(config('const.PDF_SAVE_PATH').$pdf_file_name);
         // $receipt = new Fpdi();
         // $pagecount = $receipt->setSourceFile($pdf_file_path);
         // Log::info("Counted".$pagecount);
+        \Log::debug(__METHOD__.':end---');
         return $pdf_file_path;
     }
-    public function headerData($receipt,$pdf_data,$x,$y){
+    public function headerData($receipt, $pdf_data, $x, $y)
+    {
+        \Log::debug(__METHOD__.':start---');
         $receipt->setSourceFile(storage_path(config('const.BLANK_PDF_PATH')));
         $tplIdx = $receipt->importPage(1);
         $receipt->UseTemplate($tplIdx, null, null, null, null, true);
@@ -572,9 +589,12 @@ class data_csv_order
         $receipt->Write(0, $pdf_data[0]->mes_lis_ord_par_sel_code);
         $receipt->SetXY($x + 122, $y + 33);
         $receipt->Write(0, $pdf_data[0]->mes_lis_ord_par_shi_name);
+        \Log::debug(__METHOD__.':end---');
         return $receipt;
     }
-    public function fpdfRet(){
+    public function fpdfRet()
+    {
+        \Log::debug(__METHOD__.':start---');
         Log::info("FPDI");
         $receipt = new Fpdi();
         // Set PDF margins (top left and right)
@@ -591,12 +611,14 @@ class data_csv_order
         $fontPathRegular = storage_path(config('const.MIGMIX_FONT_PATH'));
         $receipt->SetFont(\TCPDF_FONTS::addTTFfont($fontPathRegular), '', 8, '', true);
 
+        \Log::debug(__METHOD__.':end---');
 
         return $receipt;
     }
 
-    public function coordinateText($receipt, $pdf_data,$i=0, $x = 0, $y = 50.7,$sum_of_y=103.4)
+    public function coordinateText($receipt, $pdf_data, $i=0, $x = 0, $y = 50.7, $sum_of_y=103.4)
     {
+        \Log::debug(__METHOD__.':start---');
         //Cell($w, $h=0, $txt='', $border=0, $ln=0, $align='', $fill=0, $link='', $stretch=0, $ignore_min_height=false, $calign='T', $valign='M')
         $receipt->SetXY($x + 29.6, $y);
         $receipt->Cell(14.8, 0, $pdf_data[0]->mes_lis_ord_par_rec_name_sbcs, 0, 1, 'L', 0, '', 0);
@@ -611,9 +633,9 @@ class data_csv_order
         $receipt->SetXY($x + 170.2, $y);
         $receipt->Cell(22, 0, $pdf_data[0]->mes_lis_ord_tra_trade_number, 0, 1, 'C', 0, '', 0);
         $receipt->SetXY($x + 207, $y);
-        $receipt->Cell(21.6, 0, date('y/m/d',strtotime($pdf_data[0]->mes_lis_ord_tra_dat_order_date)), 0, 1, 'C', 0, '', 0);
+        $receipt->Cell(21.6, 0, date('y/m/d', strtotime($pdf_data[0]->mes_lis_ord_tra_dat_order_date)), 0, 1, 'C', 0, '', 0);
         $receipt->SetXY($x + 243, $y);
-        $receipt->Cell(21.6, 0, date('y/m/d',strtotime($pdf_data[0]->mes_lis_ord_tra_dat_delivery_date)), 0, 1, 'C', 0, '', 0);
+        $receipt->Cell(21.6, 0, date('y/m/d', strtotime($pdf_data[0]->mes_lis_ord_tra_dat_delivery_date)), 0, 1, 'C', 0, '', 0);
         $receipt->SetXY($x + 29.6, $y += 4.5);
         $receipt->Cell(14.8, 0, $pdf_data[0]->mes_lis_ord_tra_ins_goods_classification_code, 0, 1, 'C', 0, '', 0);
         $y += 8.3;
@@ -649,10 +671,13 @@ class data_csv_order
         $receipt->SetXY($x + 228.2, $sum_of_y);
         $receipt->Cell(36.5, 4.5, number_format($value->mes_lis_ord_tot_tot_selling_price_total), 0, 1, 'R', 0, '', 0);
         $y=0;
+        \Log::debug(__METHOD__.':end---');
         return $receipt;
     }
     public function pdfDAta($data_order_id)
     {
+        \Log::debug(__METHOD__.':start---');
+
         // $line_per_page=$request->line_per_page;
         // $data_order_id=$request->data_order_id;
         $report_arr_final = array();
@@ -702,6 +727,7 @@ class data_csv_order
             $step0_data_array = $aaa[$step0];
             $report_arr_final[] = $step0_data_array;
         }
+        \Log::debug(__METHOD__.':end---');
         return $report_arr_final;
         // return ['status'=>1,'new_report_array'=>$report_arr_final];
     }

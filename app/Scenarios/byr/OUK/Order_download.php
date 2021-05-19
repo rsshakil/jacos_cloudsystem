@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Scenarios\order;
+namespace App\Scenarios\byr\OUK;
 
 use App\Scenarios\Common;
 use App\Http\Controllers\API\CMN\CmnScenarioController;
