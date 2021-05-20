@@ -48,7 +48,7 @@ class CreateDataReturnVouchersTable extends Migration
             $table->string('mes_lis_ret_tra_goo_sub_major_category', 20)->comment('商品分類（中）');
             $table->date('mes_lis_ret_tra_dat_transfer_of_ownership_date')->comment('計上日');
             $table->date('mes_lis_ret_tra_dat_checking_date')->nullable()->comment('照合基準日');
-            $table->date('mes_lis_ret_tra_dat_checking_date_code')->nullable()->comment('照合基準日区分');
+            $table->string('mes_lis_ret_tra_dat_checking_date_code', 2)->default('')->comment('照合基準日区分');
             $table->string('mes_lis_ret_tra_ins_goods_classification_code', 2)->comment('商品区分');
             $table->string('mes_lis_ret_tra_ins_trade_type_code', 2)->comment('処理種別');
             $table->string('mes_lis_ret_tra_ins_delivery_fee_exemption_code', 2)->comment('配送料免除区分');
