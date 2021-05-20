@@ -82,6 +82,7 @@ class OrderItemController extends Controller
                 'dsv.mes_lis_shi_par_sel_code',
                 'dsv.mes_lis_shi_par_sel_name',
                 'dsv.data_shipment_voucher_id',
+                'dsv.mes_lis_shi_tra_tax_tax_rate',
                 'dsv.mes_lis_shi_tra_dat_delivery_date',
                 'dsv.mes_lis_shi_tra_goo_major_category',
                 'dsv.mes_lis_shi_log_del_delivery_service_code',

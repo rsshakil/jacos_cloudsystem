@@ -269,6 +269,7 @@ $mes_lis_shi_tot_tot_unit_total_sum=0;
         $delivery_service_code = $request->delivery_service_code;
         $delivery_date = $request->delivery_date;
         $temperature_code = $request->temperature_code;
+        $mes_lis_shi_lin_ite_order_item_code = $request->order_item_code;
 
         $result = DB::table('data_shipment_items as dsi')
             ->select(
@@ -292,6 +293,9 @@ $mes_lis_shi_tot_tot_unit_total_sum=0;
 
             if ($mes_lis_shi_lin_ite_gtin) {
                 $result=$result->where('dsi.mes_lis_shi_lin_ite_gtin', $mes_lis_shi_lin_ite_gtin);
+            }
+            if ($mes_lis_shi_lin_ite_order_item_code) {
+                $result=$result->where('dsi.mes_lis_shi_lin_ite_order_item_code', $mes_lis_shi_lin_ite_order_item_code);
             }
             $result=$result->whereNull('dsv.decision_datetime');
 
