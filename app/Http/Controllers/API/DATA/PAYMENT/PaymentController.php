@@ -40,17 +40,17 @@ class PaymentController extends Controller
         $mes_lis_pay_pay_code = $request->mes_lis_pay_pay_code; // 受信日時開始
         $receive_date_from = $request->receive_date_from; // 受信日時開始
         $receive_date_to = $request->receive_date_to; // 受信日時終了
-        $receive_date_from = $receive_date_from!=null? date('Y-m-d 00:00:00',strtotime($receive_date_from)):$receive_date_from; // 受信日時開始
-        $receive_date_to = $receive_date_to!=null? date('Y-m-d 23:59:59',strtotime($receive_date_to)):$receive_date_to; // 受信日時終了
+        $receive_date_from = $receive_date_from!=null? date('Y-m-d 00:00:00', strtotime($receive_date_from)):$receive_date_from; // 受信日時開始
+        $receive_date_to = $receive_date_to!=null? date('Y-m-d 23:59:59', strtotime($receive_date_to)):$receive_date_to; // 受信日時終了
         $mes_lis_buy_name = $request->mes_lis_buy_name; // 納品日開始
         $mes_lis_pay_per_end_date_from = $request->mes_lis_pay_per_end_date_from; // 納品日開始
         $mes_lis_pay_per_end_date_to = $request->mes_lis_pay_per_end_date_to; // 納品日終了
-        $mes_lis_pay_per_end_date_from = $mes_lis_pay_per_end_date_from!=null? date('Y-m-d 00:00:00',strtotime($mes_lis_pay_per_end_date_from)):$mes_lis_pay_per_end_date_from; // 受信日時開始
-        $mes_lis_pay_per_end_date_to = $mes_lis_pay_per_end_date_to!=null? date('Y-m-d 23:59:59',strtotime($mes_lis_pay_per_end_date_to)):$mes_lis_pay_per_end_date_to; // 受信日時終了
+        $mes_lis_pay_per_end_date_from = $mes_lis_pay_per_end_date_from!=null? date('Y-m-d 00:00:00', strtotime($mes_lis_pay_per_end_date_from)):$mes_lis_pay_per_end_date_from; // 受信日時開始
+        $mes_lis_pay_per_end_date_to = $mes_lis_pay_per_end_date_to!=null? date('Y-m-d 23:59:59', strtotime($mes_lis_pay_per_end_date_to)):$mes_lis_pay_per_end_date_to; // 受信日時終了
         $mes_lis_pay_lin_det_pay_out_date_from = $request->mes_lis_pay_lin_det_pay_out_date_from;
         $mes_lis_pay_lin_det_pay_out_date_to = $request->mes_lis_pay_lin_det_pay_out_date_to;
-        $mes_lis_pay_lin_det_pay_out_date_from = $mes_lis_pay_lin_det_pay_out_date_from!=null? date('Y-m-d 00:00:00',strtotime($mes_lis_pay_lin_det_pay_out_date_from)):$mes_lis_pay_lin_det_pay_out_date_from; // 受信日時開始
-        $mes_lis_pay_lin_det_pay_out_date_to = $mes_lis_pay_lin_det_pay_out_date_to!=null? date('Y-m-d 23:59:59',strtotime($mes_lis_pay_lin_det_pay_out_date_to)):$mes_lis_pay_lin_det_pay_out_date_to; // 受信日時終了
+        $mes_lis_pay_lin_det_pay_out_date_from = $mes_lis_pay_lin_det_pay_out_date_from!=null? date('Y-m-d 00:00:00', strtotime($mes_lis_pay_lin_det_pay_out_date_from)):$mes_lis_pay_lin_det_pay_out_date_from; // 受信日時開始
+        $mes_lis_pay_lin_det_pay_out_date_to = $mes_lis_pay_lin_det_pay_out_date_to!=null? date('Y-m-d 23:59:59', strtotime($mes_lis_pay_lin_det_pay_out_date_to)):$mes_lis_pay_lin_det_pay_out_date_to; // 受信日時終了
 
         $check_datetime = $request->check_datetime; // 便
 
@@ -69,14 +69,16 @@ class PaymentController extends Controller
         $table_name = 'dpp.';
         if ($sort_by == "receive_datetime" || $sort_by == "data_payment_id") {
             $table_name = 'data_payments.';
-        } else if ($sort_by == "mes_lis_pay_lin_det_pay_out_date" || $sort_by == "mes_lis_pay_lin_det_amo_payable_amount") {
+        } elseif ($sort_by == "mes_lis_pay_lin_det_pay_out_date" || $sort_by == "mes_lis_pay_lin_det_amo_payable_amount") {
             $table_name = 'dppd.';
-        } else{
-        // } else if ($sort_by == "mes_lis_pay_pay_code" || $sort_by == "mes_lis_buy_name" || $sort_by == "mes_lis_pay_per_end_date" || $sort_by == "check_datetime") {
+        } else {
+            // } else if ($sort_by == "mes_lis_pay_pay_code" || $sort_by == "mes_lis_buy_name" || $sort_by == "mes_lis_pay_per_end_date" || $sort_by == "check_datetime") {
             $table_name = 'dpp.';
         }
 
-        $result = data_payment::select('data_payments.data_payment_id', 'data_payments.receive_datetime',
+        $result = data_payment::select(
+            'data_payments.data_payment_id',
+            'data_payments.receive_datetime',
             'dpp.mes_lis_pay_pay_code',
             'dpp.mes_lis_buy_name',
             'dpp.check_datetime',
@@ -87,31 +89,31 @@ class PaymentController extends Controller
         )
             ->join('data_payment_pays as dpp', 'data_payments.data_payment_id', '=', 'dpp.data_payment_id')
             ->join('data_payment_pay_details as dppd', 'dpp.data_payment_pay_id', '=', 'dppd.data_payment_pay_id')
-            ->where('data_payments.cmn_connect_id','=',$cmn_connect_id);
-            // ->where($search_where);
-            if ($mes_lis_pay_pay_code !=null) {
-                $result =$result->where('dpp.mes_lis_pay_pay_code',$mes_lis_pay_pay_code);
+            ->where('data_payments.cmn_connect_id', '=', $cmn_connect_id);
+        // ->where($search_where);
+        if ($mes_lis_pay_pay_code !=null) {
+            $result =$result->where('dpp.mes_lis_pay_pay_code', $mes_lis_pay_pay_code);
+        }
+        if ($receive_date_from && $receive_date_to) {
+            $result= $result->whereBetween('data_payments.receive_datetime', [$receive_date_from, $receive_date_to]);
+        }
+        if ($mes_lis_pay_per_end_date_from && $mes_lis_pay_per_end_date_to) {
+            $result= $result->whereBetween('dpp.mes_lis_pay_per_end_date', [$mes_lis_pay_per_end_date_from, $mes_lis_pay_per_end_date_to]);
+        }
+        if ($mes_lis_pay_lin_det_pay_out_date_from && $mes_lis_pay_lin_det_pay_out_date_to) {
+            $result= $result->whereBetween('dppd.mes_lis_pay_lin_det_pay_out_date', [$mes_lis_pay_lin_det_pay_out_date_from, $mes_lis_pay_lin_det_pay_out_date_to]);
+        }
+        if ($mes_lis_buy_name !=null) {
+            $result =$result->where('dpp.mes_lis_buy_name', $mes_lis_buy_name);
+        }
+        if ($check_datetime!='*') {
+            if ($check_datetime==1) {
+                $result= $result->whereNull('dpp.check_datetime');
+            } else {
+                $result= $result->whereNotNull('dpp.check_datetime');
             }
-            if ($receive_date_from && $receive_date_to) {
-                $result= $result->whereBetween('data_payments.receive_datetime', [$receive_date_from, $receive_date_to]);
-            }
-            if ($mes_lis_pay_per_end_date_from && $mes_lis_pay_per_end_date_to) {
-                $result= $result->whereBetween('dpp.mes_lis_pay_per_end_date', [$mes_lis_pay_per_end_date_from, $mes_lis_pay_per_end_date_to]);
-            }
-            if ($mes_lis_pay_lin_det_pay_out_date_from && $mes_lis_pay_lin_det_pay_out_date_to) {
-                $result= $result->whereBetween('dppd.mes_lis_pay_lin_det_pay_out_date', [$mes_lis_pay_lin_det_pay_out_date_from, $mes_lis_pay_lin_det_pay_out_date_to]);
-            }
-            if ($mes_lis_buy_name !=null) {
-                $result =$result->where('dpp.mes_lis_buy_name',$mes_lis_buy_name);
-            }
-            if ($check_datetime!='*') {
-                if($check_datetime==1){
-                    $result= $result->whereNull('dpp.check_datetime');
-                }else{
-                    $result= $result->whereNotNull('dpp.check_datetime');
-                }
-            }
-            $result =$result->where('dppd.mes_lis_pay_lin_det_pay_code','3003')
+        }
+        $result =$result->where('dppd.mes_lis_pay_lin_det_pay_code', '3003')
         // ->where('data_payments.cmn_connect_id','=',$cmn_connect_id)
             ->groupBy('data_payments.receive_datetime')
             ->groupBy('dpp.mes_lis_pay_pay_code')
@@ -159,7 +161,7 @@ class PaymentController extends Controller
             ->join('data_payment_pays as dpp', 'data_payments.data_payment_id', '=', 'dpp.data_payment_id')
             ->join('data_payment_pay_details as dppd', 'dpp.data_payment_pay_id', '=', 'dppd.data_payment_pay_id')
             ->where('dpp.data_payment_id', $data_payment_id)
-            ->where('dppd.mes_lis_pay_lin_det_pay_code','3003')
+            ->where('dppd.mes_lis_pay_lin_det_pay_code', '3003')
             ->where($whereClause)
         // ->where('data_payments.cmn_connect_id','=',$cmn_connect_id)
             // ->groupBy('data_payments.receive_datetime')
@@ -182,7 +184,8 @@ class PaymentController extends Controller
         END) as mes_lis_pay_lin_det_amo_payable_amount_sum'),
             'data_payment_pay_details.mes_lis_pay_lin_det_det_meaning',
             'data_payment_pay_details.mes_lis_pay_lin_det_det_code',
-            'dpp.mes_lis_pay_pay_code')
+            'dpp.mes_lis_pay_pay_code'
+        )
             ->join('data_payment_pays as dpp', 'data_payment_pay_details.data_payment_pay_id', '=', 'dpp.data_payment_pay_id')
             ->where(
                 ['data_payment_pay_details.mes_lis_pay_lin_det_pay_code' => '2000',
@@ -190,7 +193,8 @@ class PaymentController extends Controller
                 'dpp.mes_lis_pay_pay_code'  => $pay_code,
                 'dpp.mes_lis_pay_per_end_date'   => $end_date,
                 'data_payment_pay_details.mes_lis_pay_lin_det_pay_out_date' => $out_date
-                ])
+                ]
+            )
                 ->groupBy('data_payment_pay_details.mes_lis_pay_lin_det_det_code')->get();
 
         $pQ1 = data_payment_pay_detail::select(
@@ -205,7 +209,8 @@ class PaymentController extends Controller
                 'dpp.mes_lis_pay_pay_code'  => $pay_code,
                 'dpp.mes_lis_pay_per_end_date'   => $end_date,
                 'data_payment_pay_details.mes_lis_pay_lin_det_pay_out_date' => $out_date
-                ])
+                ]
+            )
             ->groupBy('data_payment_pay_details.data_payment_pay_id');
         $pQ2 = data_payment_pay_detail::select(
             DB::raw('"仕入消費税" as p_title'),
@@ -220,7 +225,8 @@ class PaymentController extends Controller
                 'dpp.mes_lis_pay_pay_code'  => $pay_code,
                 'dpp.mes_lis_pay_per_end_date'   => $end_date,
                 'data_payment_pay_details.mes_lis_pay_lin_det_pay_out_date' => $out_date
-                ])
+                ]
+            )
             ->groupBy('data_payment_pay_details.data_payment_pay_id');
 
         $pQ3 = data_payment_pay_detail::select(
@@ -235,7 +241,8 @@ class PaymentController extends Controller
                 'dpp.mes_lis_pay_pay_code'  => $pay_code,
                 'dpp.mes_lis_pay_per_end_date'   => $end_date,
                 'data_payment_pay_details.mes_lis_pay_lin_det_pay_out_date' => $out_date
-                ])
+                ]
+            )
             ->groupBy('data_payment_pay_details.data_payment_pay_id');
         $pQ4 = data_payment_pay_detail::select(
             DB::raw('"相殺消費税" as p_title'),
@@ -250,7 +257,8 @@ class PaymentController extends Controller
                 'dpp.mes_lis_pay_pay_code'  => $pay_code,
                 'dpp.mes_lis_pay_per_end_date'   => $end_date,
                 'data_payment_pay_details.mes_lis_pay_lin_det_pay_out_date' => $out_date
-                ])->groupBy('data_payment_pay_details.data_payment_pay_id');
+                ]
+            )->groupBy('data_payment_pay_details.data_payment_pay_id');
         $pdtableleft = $pQ1->union($pQ2)->union($pQ3)->union($pQ4)->orderBy('sumation_type', 'ASC')->get();
 
         data_payment_pay::where(
@@ -258,7 +266,8 @@ class PaymentController extends Controller
             'data_payment_pays.data_payment_id' => $data_payment_id,
             'data_payment_pays.mes_lis_pay_pay_code'  => $pay_code,
             'data_payment_pays.mes_lis_pay_per_end_date'   => $end_date
-            ])->whereNull('check_datetime')->update(['check_datetime'=>$today]);
+            ]
+        )->whereNull('check_datetime')->update(['check_datetime'=>$today]);
         return response()->json(['payment_item_header' => $result, 'pdtableleft' => $pdtableleft, 'paymentdetailRghtTable' => $paymentdetailRghtTable]);
         // return response()->json(['payment_item_header' => $result, 'paymentdetailTopTable' => $paymentdetailTopTable, 'pdtableleft' => $pdtableleft, 'paymentdetailRghtTable' => $paymentdetailRghtTable]);
     }
@@ -271,8 +280,8 @@ class PaymentController extends Controller
         $per_page = $request->select_field_per_page_num;
         $from_date = $request->from_date;
         $to_date = $request->to_date;
-        $from_date = $from_date!=null? date('Y-m-d 00:00:00',strtotime($from_date)):$from_date;
-        $to_date = $to_date!=null? date('Y-m-d 23:59:59',strtotime($to_date)):$to_date;
+        $from_date = $from_date!=null? date('Y-m-d 00:00:00', strtotime($from_date)):$from_date;
+        $to_date = $to_date!=null? date('Y-m-d 23:59:59', strtotime($to_date)):$to_date;
         $category_code = $request->category_code;
 
         $category_code = $category_code['category_code'];
@@ -297,7 +306,9 @@ class PaymentController extends Controller
             'dpp.mes_lis_pay_per_end_date'   => $end_date,
             'dppd.mes_lis_pay_lin_det_pay_out_date' => $out_date
         ];
-        $result = data_payment::select('data_payments.data_payment_id', 'data_payments.receive_datetime',
+        $result = data_payment::select(
+            'data_payments.data_payment_id',
+            'data_payments.receive_datetime',
             'dpp.mes_lis_pay_pay_code',
             'dpp.mes_lis_pay_pay_name',
             'dpp.mes_lis_pay_pay_gln',
@@ -313,7 +324,7 @@ class PaymentController extends Controller
             ->join('data_payment_pays as dpp', 'data_payments.data_payment_id', '=', 'dpp.data_payment_id')
             ->join('data_payment_pay_details as dppd', 'dpp.data_payment_pay_id', '=', 'dppd.data_payment_pay_id')
             ->where('dpp.data_payment_id', $payment_id)
-            ->where('dppd.mes_lis_pay_lin_det_pay_code','3003')
+            ->where('dppd.mes_lis_pay_lin_det_pay_code', '3003')
             ->where($whereClause)
             // ->where('data_payments.cmn_connect_id','=',$cmn_connect_id)
                 // ->groupBy('data_payments.receive_datetime')
@@ -334,7 +345,7 @@ class PaymentController extends Controller
             'data_payment_pay_details.mes_lis_pay_lin_det_amo_requested_amount',
             'data_payment_pay_details.mes_lis_pay_lin_det_amo_payable_amount',
             'data_payment_pay_details.mes_lis_pay_lin_det_verification_result_code'
-            )
+        )
             ->join('data_payment_pays as dpp', 'data_payment_pay_details.data_payment_pay_id', '=', 'dpp.data_payment_pay_id')
             ->where(['dpp.data_payment_id' => $payment_id])
             ->where([
@@ -343,45 +354,45 @@ class PaymentController extends Controller
                 'data_payment_pay_details.mes_lis_pay_lin_det_pay_out_date' => $out_date
             ])
             ->whereIn('data_payment_pay_details.mes_lis_pay_lin_det_pay_code', $pay_code_list);
-            if ($from_date && $to_date) {
-                $result1=$result1->whereBetween('data_payment_pay_details.mes_lis_pay_lin_det_transfer_of_ownership_date', [$from_date, $to_date]);
-            }
-            if ($mes_lis_pay_lin_tra_code != null) {
-                $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_tra_code', $mes_lis_pay_lin_tra_code);
-            }
-            if ($mes_lis_pay_lin_sel_code != null) {
-                $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_sel_code', $mes_lis_pay_lin_sel_code);
-            }
-            if ($mes_lis_pay_lin_lin_trade_number_reference != null) {
-                $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_lin_trade_number_reference', $mes_lis_pay_lin_lin_trade_number_reference);
-            }
+        if ($from_date && $to_date) {
+            $result1=$result1->whereBetween('data_payment_pay_details.mes_lis_pay_lin_det_transfer_of_ownership_date', [$from_date, $to_date]);
+        }
+        if ($mes_lis_pay_lin_tra_code != null) {
+            $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_tra_code', $mes_lis_pay_lin_tra_code);
+        }
+        if ($mes_lis_pay_lin_sel_code != null) {
+            $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_sel_code', $mes_lis_pay_lin_sel_code);
+        }
+        if ($mes_lis_pay_lin_lin_trade_number_reference != null) {
+            $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_lin_trade_number_reference', $mes_lis_pay_lin_lin_trade_number_reference);
+        }
 
-            if ($mes_lis_inv_lin_det_pay_code != '*') {
-                $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_det_pay_code', $mes_lis_inv_lin_det_pay_code);
-            }
+        if ($mes_lis_inv_lin_det_pay_code != '*') {
+            $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_det_pay_code', $mes_lis_inv_lin_det_pay_code);
+        }
 
-            if ($mes_lis_pay_lin_det_verification_result_code != '*') {
-                $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_det_verification_result_code', $mes_lis_pay_lin_det_verification_result_code);
-            }
+        if ($mes_lis_pay_lin_det_verification_result_code != '*') {
+            $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_det_verification_result_code', $mes_lis_pay_lin_det_verification_result_code);
+        }
 
-            if ($mes_lis_pay_lin_det_trade_type_code != '*') {
-                $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_det_trade_type_code', $mes_lis_pay_lin_det_trade_type_code);
-            }
+        if ($mes_lis_pay_lin_det_trade_type_code != '*') {
+            $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_det_trade_type_code', $mes_lis_pay_lin_det_trade_type_code);
+        }
 
-            if ($mes_lis_pay_lin_det_balance_carried_code != '*') {
-                $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_det_balance_carried_code', $mes_lis_pay_lin_det_balance_carried_code);
-            }
+        if ($mes_lis_pay_lin_det_balance_carried_code != '*') {
+            $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_det_balance_carried_code', $mes_lis_pay_lin_det_balance_carried_code);
+        }
 
-            if ($category_code != '*') {
-                $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_det_goo_major_category', $category_code);
-            }
-            $result1 = $result1->orderBy('data_payment_pay_details.' . $sort_by, $sort_type);
+        if ($category_code != '*') {
+            $result1 = $result1->where('data_payment_pay_details.mes_lis_pay_lin_det_goo_major_category', $category_code);
+        }
+        $result1 = $result1->orderBy('data_payment_pay_details.' . $sort_by, $sort_type);
 
-            $paymentdetailTopTable = $result1->paginate($per_page);
-            $byr_buyer_category_list = $this->all_used_fun->get_allCategoryByByrId($byr_buyer_id);
-            $buyer_settings = byr_buyer::select('setting_information')->where('byr_buyer_id', $byr_buyer_id)->first();
-            $buyer_settings = $buyer_settings->setting_information;
-            return response()->json(['payment_item_header' => $result, 'paymentdetailTopTable' => $paymentdetailTopTable, 'byr_buyer_category_list' => $byr_buyer_category_list, 'buyer_settings' => $buyer_settings]);
+        $paymentdetailTopTable = $result1->paginate($per_page);
+        $byr_buyer_category_list = $this->all_used_fun->get_allCategoryByByrId($byr_buyer_id);
+        $buyer_settings = byr_buyer::select('setting_information')->where('byr_buyer_id', $byr_buyer_id)->first();
+        $buyer_settings = $buyer_settings->setting_information;
+        return response()->json(['payment_item_header' => $result, 'paymentdetailTopTable' => $paymentdetailTopTable, 'byr_buyer_category_list' => $byr_buyer_category_list, 'buyer_settings' => $buyer_settings]);
     }
     public function paymentDownload(Request $request)
     {
@@ -393,7 +404,7 @@ class PaymentController extends Controller
         $csv_data_count = 0;
         if ($downloadType == 1) {
             // CSV Download
-            $new_file_name = $this->all_used_fun->downloadFileName($request, 'csv','支払');
+            $new_file_name = $this->all_used_fun->downloadFileName($request, 'csv', '支払');
             // self::paymentFileName($data_payment_id, 'csv');
             $download_file_url = Config::get('app.url') . "storage/app" . config('const.PAYMENT_CSV_PATH') . "/" . $new_file_name;
 
@@ -407,7 +418,7 @@ class PaymentController extends Controller
                 config('const.PAYMENT_CSV_PATH') . "/" . $new_file_name,
                 $payment_data,
                 DataController::paymentCsvHeading(),
-                'config('const.CSV_FILE_ENCODE')'
+                config('const.CSV_FILE_ENCODE')
             );
         }
 
@@ -416,7 +427,7 @@ class PaymentController extends Controller
 
     public function get_payment_customer_code_list(Request $request)
     {
-        $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
+        $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id, $request->byr_buyer_id);
         $result = DB::select("SELECT
         dpp.mes_lis_buy_code,
         dpp.mes_lis_buy_name,
@@ -433,12 +444,11 @@ class PaymentController extends Controller
        dppd.mes_lis_pay_lin_sel_code,
         dpp.mes_lis_pay_pay_code");
         return response()->json(['order_customer_code_lists' => $result]);
-
     }
     public function get_payment_trade_code_list(Request $request)
     {
-        $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
-        $pay_code_list=implode(",",$request->pay_code_list);
+        $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id, $request->byr_buyer_id);
+        $pay_code_list=implode(",", $request->pay_code_list);
         $result = DB::select("SELECT
         dppd.mes_lis_pay_lin_tra_code,
         -- dppd.mes_lis_pay_lin_tra_name,
@@ -454,6 +464,5 @@ class PaymentController extends Controller
         AND dppd.mes_lis_pay_lin_det_pay_code IN ($pay_code_list)
         GROUP BY dppd.mes_lis_pay_lin_tra_code");
         return response()->json(['order_customer_code_lists' => $result]);
-
     }
 }

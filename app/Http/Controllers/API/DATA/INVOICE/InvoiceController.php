@@ -356,7 +356,7 @@ class InvoiceController extends Controller
                 config('const.INVOICE_CSV_PATH')."/". $new_file_name,
                 $shipment_data,
                 InvoiceDataController::invoiceCsvHeading(),
-                'config('const.CSV_FILE_ENCODE')'
+                config('const.CSV_FILE_ENCODE')
             );
         } elseif ($downloadType==2) {
             // $request->request->add(['scenario_id' => 6]);
@@ -538,7 +538,7 @@ class InvoiceController extends Controller
             config('const.INVOICE_COMPARE_CSV_PATH')."/". $new_file_name,
             $result,
             InvoiceDataController::invoiceCompareCsvHeading(),
-            'config('const.CSV_FILE_ENCODE')'
+            config('const.CSV_FILE_ENCODE')
         );
         return response()->json(['message' => 'Success','status'=>1,'new_file_name'=>$new_file_name, 'url' => $download_file_url]);
     }
