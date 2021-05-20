@@ -1128,7 +1128,7 @@ export default {
                   _this.alert_text = "伝票確定を取消しました。";
                 }
                 _this.sweet_normal_alert();
-                loaderrr.hide();
+               
                 Fire.$emit("LoadByrorderDetail",_this.select_field_page_num);
                 this.selected = [];
                 // this.date_null = false;
@@ -1138,6 +1138,7 @@ export default {
               .catch(function (response) {
 
               });
+               loaderrr.hide();
           } else {
             this.selected = [];
             this.isCheckAll = false;
@@ -1216,7 +1217,7 @@ export default {
                 if (data.status==0) {
                     _this.alert_icon = "error";
                     _this.alert_title = "エラー";
-                    loaderrrss.hide();
+                    
                 }else{
                     _this.alert_icon = "success";
                     _this.alert_title = "完了";
@@ -1228,6 +1229,7 @@ export default {
               _this.sweet_normal_alert();
               e.target.value = '';
             });
+            loaderrrss.hide();
         }else{
             e.target.value = '';
         }
