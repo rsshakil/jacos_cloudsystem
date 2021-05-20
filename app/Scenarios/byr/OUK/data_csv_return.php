@@ -24,12 +24,12 @@ class data_csv_return extends ScenarioBase
 
     public function exec($request, $sc)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
 
         // file save
         $file_info = $this->upfileSave($request, config('const.RETURN_DATA_PATH') . date('Y-m'));
         $cmn_connect_id = $file_info['cmn_connect_id'];
-        
+
         // csv
         $dataArr = $this->all_functions->csvReader($file_info['save_path'], 1);
 
@@ -123,8 +123,8 @@ class data_csv_return extends ScenarioBase
                     $data_return_voucher_array['mes_lis_ret_tra_goo_sub_major_category']=$value[58];
                     $data_return_voucher_array['mes_lis_ret_tra_dat_transfer_of_ownership_date']=$value[59];
                     $data_return_voucher_array['mes_lis_ret_tra_dat_checking_date']=$value[60]; //New Added
-                $data_return_voucher_array['mes_lis_ret_tra_dat_checking_date_code']=$value[61]; //New Added
-                $data_return_voucher_array['mes_lis_ret_tra_ins_goods_classification_code']=$value[62];
+                    $data_return_voucher_array['mes_lis_ret_tra_dat_checking_date_code']=$value[61]; //New Added
+                    $data_return_voucher_array['mes_lis_ret_tra_ins_goods_classification_code']=$value[62];
                     $data_return_voucher_array['mes_lis_ret_tra_ins_trade_type_code']=$value[63];
                     $data_return_voucher_array['mes_lis_ret_tra_ins_delivery_fee_exemption_code']=$value[64]; //New Added
                     $data_return_voucher_array['mes_lis_ret_tra_ins_paper_form_less_code']=$value[65];
@@ -216,7 +216,7 @@ class data_csv_return extends ScenarioBase
             throw $e;
         }
 
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return ['message' => '', 'status' => $this->success,'cmn_connect_id' => $cmn_connect_id,'data_id' => $data_return_id];
     }
 }
