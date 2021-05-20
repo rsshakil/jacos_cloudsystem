@@ -105,7 +105,9 @@ class InvoiceCommand extends Command
                         $compareDate = strtotime($end_date);
 
                         if ($compareDate > $startDatedt && $compareDate <= $endDatedt) {
-                            $this->comment($first_date);
+                            if ($arg!=1) {
+                                $this->comment($first_date);
+                            }
                             $start_date = $first_date;
                             // $start_date = date('y-m-d', strtotime("+1 day", strtotime($first_date)));
                         }
@@ -169,10 +171,13 @@ class InvoiceCommand extends Command
             }
         }
         // Matched
-        $this->comment("Invoice Running.....");
-        $this->comment("cmn_connect: ".$cmn_connect_id);
-        $this->comment("Start Date: ".$start_date);
-        $this->comment("End Date: ".$end_date);
+        if ($arg!=1) {
+            $this->comment("Invoice Running.....");
+            $this->comment("cmn_connect: ".$cmn_connect_id);
+            $this->comment("Start Date: ".$start_date);
+            $this->comment("End Date: ".$end_date);
+        }
+
         if ($start_date!=null && $end_date!=null) {
             $request = new \Illuminate\Http\Request();
             $request->setMethod('POST');
@@ -185,7 +190,9 @@ class InvoiceCommand extends Command
             $request->request->add(['end_date' => $end_date]);
             $aaa=$this->invoice->invoiceScheduler($request);
             // $this->invoice->invoiceScheduler($start_date,$end_date);
-            $this->comment("Done");
+            if ($arg!=1) {
+                $this->comment("Done");
+            }
             return $aaa;
         }
         Log::info("----invoiceSchedulerCode end----");

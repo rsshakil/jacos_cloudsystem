@@ -335,10 +335,16 @@ export default {
                     axios.post(this.BASE_URL + "api/exec_invoice_schedular", this.form)
                     .then(({ data }) => {
                         console.log(data);
-                    Fire.$emit("LoadByrinvoice");
+                        if (data.status==1) {
+                            Fire.$emit("LoadByrinvoice");
+                            _this.alert_title = "完了";
+                            if (data.message==0) {
+                                _this.alert_text ='請求対象データがありません';
+                            }else{
+                                _this.alert_text =data.message+' data are saved';
+                            }
+                        }
                         _this.alert_icon = data.class;
-                        _this.alert_title = "完了";
-                        _this.alert_text =data.message;
                         _this.sweet_normal_alert();
                     });
                 }

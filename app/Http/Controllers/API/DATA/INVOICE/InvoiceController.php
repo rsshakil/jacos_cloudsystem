@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use PhpParser\Node\Stmt\TryCatch;
 use Illuminate\Support\Facades\Auth;
+use App\Console\Commands\InvoiceCommand;
 class InvoiceController extends Controller
 {
     private $request;
@@ -36,6 +37,7 @@ class InvoiceController extends Controller
         $cs = new CmnScenarioController();
 
         $ret = $cs->exec($request);
+        Log::info("======Count=======");
         Log::info($ret);
         return $ret;
         Log::debug($ret->getContent());
@@ -207,13 +209,19 @@ class InvoiceController extends Controller
     {
         $adm_user_id=$request->adm_user_id;
         $byr_buyer_id=$request->byr_buyer_id;
-        try {
-            // Artisan::call('optimize', [], $this->getOutput());
-            Artisan::call('invoice:scheduler 1 '.$adm_user_id.' '.$byr_buyer_id);
-            // return Artisan::call('invoice:scheduler 1 '.$adm_user_id.' '.$byr_buyer_id,[], $this->getOutput());
-        } catch (\Throwable $th) {
-            return response()->json(['message' => "エラー",'status'=>0,'class'=>'error']);
-        }
+        $Invoice_command = new InvoiceCommand();
+            $aaa=$Invoice_command->invoiceSchedulerCode(1,1);
+            // $aaa=$Invoice_command->invoiceSchedulerCode(1, 1);
+            return $aaa;
+            return response()->json(['message' => "Success",'status'=>1,'class'=>'success']);
+        // try {
+        //     // Artisan::call('optimize', [], $this->getOutput());
+        //     // Artisan::call('invoice:scheduler 1 '.$adm_user_id.' '.$byr_buyer_id);
+        //     // return Artisan::call('invoice:scheduler 1 '.$adm_user_id.' '.$byr_buyer_id,[], $this->getOutput());
+        // } catch (\Throwable $th) {
+        //     return response()->json(['message' => $th->getMessage(),'status'=>0,'class'=>'error']);
+        //     // return response()->json(['message' => "エラー",'status'=>0,'class'=>'error']);
+        // }
         return response()->json(['message' => "締め処理実行",'status'=>1,'class'=>'success']);
     }
 

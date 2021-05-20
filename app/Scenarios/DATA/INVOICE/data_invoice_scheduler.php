@@ -34,8 +34,10 @@ class data_invoice_scheduler
         $data_invoice_pay_array=array();
         $data_invoice_pay_details_array=array();
         $shipment_datas=self::shipmentQuery($request);
+        $data_count=count($shipment_datas);
         // Log::info($shipment_datas);
-        // \Log::info(count($shipment_datas));
+        // Log::info("=====Count=====");
+        // Log::info();
         // return 0;
         $datashipment=true;
         $data_invoice_pay_id=1;
@@ -142,8 +144,9 @@ class data_invoice_scheduler
             return ['message' => $e->getMessage(), 'status' => 0];
             // something went wrong
         }
-
-        return ['message' => "success", 'status' => '1'];
+// return $data_count;
+// return response()->json(['message' => "success", 'status' => 1,'total_success_data'=>$data_count]);
+        return ['message' => $data_count, 'status' => 1];
     }
     public static function shipmentQuery($request){
         // \Log::info($request->all());
