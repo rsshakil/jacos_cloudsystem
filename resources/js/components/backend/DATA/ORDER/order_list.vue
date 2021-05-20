@@ -197,7 +197,7 @@
               <th class="pointer_class" @click="sorting('mes_lis_ord_tra_ins_temperature_code')">温度区分 <span class="float-right" :class="iconSet('mes_lis_ord_tra_ins_temperature_code')"></span></th>
               <th class="pointer_class">伝票 枚数</th>
               <th class="pointer_class">未確定 伝票枚数</th>
-              <th class="pointer_class">未送信　伝票枚数</th>
+              <th class="pointer_class">未送信 伝票枚数</th>
               <th class="pointer_class" @click="sorting('check_datetime')">参照状況 <span class="float-right" :class="iconSet('check_datetime')"></span></th>
             </tr>
           </thead>

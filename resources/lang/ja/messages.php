@@ -36,7 +36,7 @@ return [
     'all_fields_required' => '全て必須項目です',
     'want_delete' => '削除したい',
     'role_delete' => 'ロール削除',
-    //Permission page 
+    //Permission page
     'permission_name' => '権限名',
     'please_permission_name' => '権限名を入力してください',
     'permission_desc' => '権限の説明',
@@ -60,7 +60,7 @@ return [
     'permission_name_duplicate' => '権限名が重複しています',
     'permission_already_exists' => '許可は既に存在します',
     'permission_not_deleted' => '許可は削除されません。 削除できないかもしれません',
-    //Assign role model 
+    //Assign role model
     'user_name' => 'ユーザー名',
     'select_user' => 'ユーザーを選択してください',
     'select_role' => 'ロールを選択してください',
@@ -94,7 +94,7 @@ return [
     'zip' => '郵便番号',
     'postal_code' => '郵便番号',
     'add_user' => '新規ユーザ追加',
-    'email_address' => 'メールアドレス変更',
+    'email_address' => 'メールアドレス',
     'password' => 'パスワード',
     'new_password' => '新しいパスワード',
     'confirm_password' => '新しいパスワード(確認)',
@@ -103,7 +103,7 @@ return [
     'save' => '保存する',
     'image_set' => '画像なし',
     'reset_password' => 'パスワードを再設定する',
-    'send_pass_reset' => 'パスワードリセットリンクを送信',
+    'send_pass_reset' => 'パスワード変更のURLを送信',
     'password_sent' => 'Password Send',
     'choose' => '選択',
     'user_select' => 'ユーザーを選択してください',
@@ -129,7 +129,7 @@ return [
     'email_length' => 'Please correct your email format',
     'user_delete' => 'ユーザ削除',
     'permission_delete' => '権限削除',
-    //Delete modal 
+    //Delete modal
     'role_delete_confirm' => 'ロールを削除しますか？',
     'permission_delete_confirm' => '権限を削除しますか？',
     'user_delete_confirm' => 'ユーザを削除しますか？',

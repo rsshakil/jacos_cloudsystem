@@ -51,6 +51,8 @@ return [
             'level' => 'debug',
             'days' => 14,
             'permission' => 0666,
+            'tap' => [App\Logging\CustomizeFormatter::class],
+
         ],
 
         'slack' => [

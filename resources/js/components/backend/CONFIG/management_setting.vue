@@ -8,17 +8,17 @@
       <div class="row">
 
       <div class="col-12">
-        <h4 class="page_custom_title">取引先別支払合計</h4>
+        <h4 class="page_custom_title"></h4>
           <table
           class="table table-striped order_item_details_table table-bordered data_table"
         >
           <thead>
             <tr>
               <th style="cursor: pointer">取引先コード</th>
-              <th style="cursor: pointer">受注FAX</th>
-              <th></th>
-              <th style="cursor: pointer">支払FAX</th>
-              <th></th>
+              <th style="cursor: pointer">受注FAX番号</th>
+              <th>On/Off</th>
+              <th style="cursor: pointer">支払FAX番号</th>
+              <th>On/Off</th>
               <th>締日登録</th>
             </tr>
           </thead>
@@ -206,7 +206,7 @@ export default {
     //this.getInvoiceJson();
     Fire.$emit("byr_has_selected", this.byr_buyer_id);
     Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
-    Fire.$emit("loadPageTitle", "FAX番号登録");
+    Fire.$emit("loadPageTitle", "自社情報登録");
 
   },
   mounted() {},

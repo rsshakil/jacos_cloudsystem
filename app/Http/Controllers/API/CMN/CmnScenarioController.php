@@ -102,8 +102,9 @@ class CmnScenarioController extends Controller
             $this->sc_his->history_create($this->success, $ret['message']);
         } catch (\Exception $th) {
             \Log::error('$th->getCode():'.$th->getCode());
-            //
+            // JCS_EXCEPTION判定
             if ($th->getCode() === 0) {
+                // JCS_EXCEPTION以外のPHP Exceptionはトレースログ出力
                 \Log::error($th);
             }
 
