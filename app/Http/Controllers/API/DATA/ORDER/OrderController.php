@@ -14,6 +14,7 @@ use App\Models\DATA\ORD\data_order_voucher;
 use App\Models\DATA\ORD\data_order;
 use App\Models\CMN\cmn_tbl_col_setting;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\API\SLR\SlrController;
 
@@ -23,20 +24,20 @@ class OrderController extends Controller
 
     public function __construct()
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
         $this->all_used_fun = new AllUsedFunction();
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
     }
     public function get_order_customer_code_list(Request $request)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
 
         $adm_user_id = $request->adm_user_id;
         $byr_buyer_id = $request->byr_buyer_id;
-
         // seller 情報取得
-        $slr_info = SlrController::getSlrInfoByUserId($adm_user_id);
-        $slr_seller_id = $slr_info->slr_seller_id;
+        // $slr_info = SlrController::getSlrInfoByUserId($adm_user_id);
+        // $slr_seller_id = $slr_info->slr_seller_id;
+        $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
 
         // $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id, $request->byr_buyer_id);
         $query = data_order::join('data_order_vouchers as dov', 'dov.data_order_id', '=', 'data_orders.data_order_id')
@@ -51,10 +52,10 @@ class OrderController extends Controller
             ->where('cc.slr_seller_id', $slr_seller_id)
             ->groupby('dov.mes_lis_ord_par_sel_code', 'dov.mes_lis_ord_par_pay_code');
         $result = $query->get();
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return response()->json(['order_customer_code_lists' => $result]);
     }
-    
+
     /**
      * orderList
      *
@@ -63,22 +64,23 @@ class OrderController extends Controller
      */
     public function orderList(Request $request)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
 
         $adm_user_id = $request->adm_user_id;
         $byr_buyer_id = $request->byr_buyer_id;
         $per_page = $request->per_page?$request->per_page:10;
 
         $authUser = User::find($adm_user_id);
-
-        $slr_info = SlrController::getSlrInfoByUserId($adm_user_id);
-        $slr_seller_id = $slr_info->slr_seller_id;
+        // return Auth::User()->SlrInfo;
+        // $slr_info = SlrController::getSlrInfoByUserId($adm_user_id);
+        // $slr_seller_id = $slr_info->slr_seller_id;
+        $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
 
         $cmn_company_id = '';
         if (!$authUser->hasRole(config('const.adm_role_name'))) {
             $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id, $byr_buyer_id);
             $cmn_company_id = $cmn_company_info['cmn_company_id'];
-            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+            // $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
         $sort_by = $request->sort_by;
         $sort_type = $request->sort_type;
@@ -110,7 +112,6 @@ class OrderController extends Controller
         ->join('data_order_vouchers AS dov', 'dor.data_order_id', '=', 'dov.data_order_id')
         ->join('data_shipment_vouchers AS dsv', 'dsv.data_order_voucher_id', '=', 'dov.data_order_voucher_id')
         ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'dor.cmn_connect_id')
-        // ->where('dor.cmn_connect_id', $cmn_connect_id);
         ->where('cc.byr_buyer_id', $byr_buyer_id)
         ->where('cc.slr_seller_id', $slr_seller_id);
         // if ($submit_type == "search") {
@@ -193,12 +194,12 @@ class OrderController extends Controller
         ->orderBy('dov.mes_lis_ord_tra_ins_temperature_code')
         ->paginate($per_page);
         $byr_buyer = $this->all_used_fun->get_company_list($cmn_company_id);
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return response()->json(['order_list' => $result, 'byr_buyer_list' => $byr_buyer]);
     }
     public function getByrOrderDataBySlr(Request $request)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
         $user_id = $request->user_id;
         $slr_order_info =array();
         $slr_info = cmn_companies_user::select('slr_sellers.slr_seller_id')
@@ -218,12 +219,12 @@ class OrderController extends Controller
                 ->groupBy('byr_buyers.byr_buyer_id')
                 ->get();
         }
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return response()->json(['slr_order_info' => $slr_order_info]);
     }
     public function orderDetails(Request $request)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
         // return $request->all();
         // $form_search = $request->form_search;
         $data_order_id = $request->data_order_id;
@@ -357,12 +358,12 @@ class OrderController extends Controller
         //     }
         // }
         /*coll setting*/
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return response()->json(['order_list_detail' => $result, 'order_info' => $order_info, 'slected_list' => $slected_list]);
     }
     public function order_detail_paginations(Request $request)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
         // return $request->all();
         // $form_search = $request->form_search;
         $data_order_id = $request->order_info['data_order_id'];
@@ -429,13 +430,13 @@ class OrderController extends Controller
         $result = $result->groupBy('dsv.mes_lis_shi_tra_trade_number')->get();
         // ->paginate($per_page);
         /*coll setting*/
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
 
         return response()->json(['order_list_detail' => $result]);
     }
     public function getOrderById($byr_order_id)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
         $result = DB::table('bms_orders')->where('bms_orders.byr_order_id', $byr_order_id)
             ->get();
         /*coll setting*/
@@ -448,13 +449,13 @@ class OrderController extends Controller
             }
         }
         /*coll setting*/
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return response()->json(['order_list_detail' => $result, 'slected_list' => $slected_list]);
     }
 
     public function get_voucher_detail_popup1(Request $request)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
         $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id, $request->byr_buyer_id);
 
 
@@ -473,13 +474,13 @@ class OrderController extends Controller
         `dsv`.`mes_lis_shi_tra_ins_temperature_code` = '".$request->temperature_code."'
         group by `dsv`.`mes_lis_shi_par_shi_code`
         order by `dsv`.`mes_lis_shi_par_shi_code` ASC");
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return response()->json(['popUpList' => $result]);
     }
 
     public function get_voucher_detail_popup2(Request $request)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
         $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id, $request->byr_buyer_id);
 
         $result = DB::select("SELECT
@@ -497,13 +498,13 @@ class OrderController extends Controller
         `dsv`.`mes_lis_shi_tra_ins_temperature_code` = '".$request->temperature_code."'
         group by `dsv`.`mes_lis_shi_par_rec_code`
         order by `dsv`.`mes_lis_shi_par_rec_code` ASC");
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return response()->json(['popUpList' => $result]);
     }
 
     public function get_voucher_detail_popup3(Request $request)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
         $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id, $request->byr_buyer_id);
 
         $result = DB::select("SELECT
@@ -522,7 +523,7 @@ class OrderController extends Controller
         `dsv`.`mes_lis_shi_tra_ins_temperature_code` = '".$request->temperature_code."'
         group by `dsi`.`mes_lis_shi_lin_ite_order_item_code`
         order by `dsi`.`mes_lis_shi_lin_ite_order_item_code` ASC");
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return response()->json(['popUpList' => $result]);
     }
 }

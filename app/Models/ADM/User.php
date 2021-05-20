@@ -13,7 +13,8 @@ use App\Models\ADM\adm_user_details;
 use App\Models\CMN\cmn_companies_user;
 use App\Models\BYR\byr_buyer;
 use App\Models\SLR\slr_seller;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 class User extends Authenticatable
 {
     use Notifiable,HasRoles;
@@ -77,6 +78,29 @@ class User extends Authenticatable
             }
           }
         return $roles;
+    }
+
+    public static function getSlrInfoAttribute()
+    {
+        Log::debug(__METHOD__.':start---');
+        $adm_user_id= Auth::user()->id;
+        $query = cmn_companies_user::where('adm_user_id', $adm_user_id)
+            ->join('slr_sellers', 'slr_sellers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
+            ->join('cmn_companies', 'cmn_companies_users.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
+            ->select(
+                'slr_sellers.slr_seller_id',
+                'slr_sellers.cmn_company_id',
+                'cmn_companies.company_name',
+                'cmn_companies.company_name_kana',
+                'cmn_companies.jcode',
+                'cmn_companies.phone',
+                'cmn_companies.fax',
+                'cmn_companies.postal_code',
+                'cmn_companies.address'
+            );
+        $result = $query->first();
+        Log::debug(__METHOD__.':end---');
+        return $result;
     }
 
     public function getCompanyIdAttribute()

@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Config;
 use App\Http\Controllers\API\DATA\RTN\DataController;
+use Illuminate\Support\Facades\Auth;
 class ReturnController extends Controller
 {
     private $all_used_fun;
@@ -91,6 +92,7 @@ class ReturnController extends Controller
 
 
         $authUser = User::find($adm_user_id);
+        $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
         $cmn_company_id = '';
         $cmn_connect_id = '';
         if (!$authUser->hasRole(config('const.adm_role_name'))) {
@@ -114,7 +116,10 @@ class ReturnController extends Controller
             'drv.data_return_voucher_id'
         )
         ->join('data_return_vouchers as drv','data_returns.data_return_id','=','drv.data_return_id')
-        ->where('data_returns.cmn_connect_id','=',$cmn_connect_id);
+        ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'data_returns.cmn_connect_id')
+        ->where('cc.byr_buyer_id', $byr_buyer_id)
+        ->where('cc.slr_seller_id', $slr_seller_id);
+        // ->where('data_returns.cmn_connect_id','=',$cmn_connect_id);
             // 条件指定検索
                 if ($receive_date_from && $receive_date_to) {
                     $result =$result->whereBetween('data_returns.receive_datetime', [$receive_date_from, $receive_date_to]);
@@ -182,12 +187,13 @@ class ReturnController extends Controller
         $table_name='drv.';
 
         $authUser = User::find($adm_user_id);
-        $cmn_connect_id = '';
+        $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
+        // $cmn_connect_id = '';
         $cmn_company_id = '';
         if (!$authUser->hasRole(config('const.adm_role_name'))) {
             $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
             $cmn_company_id = $cmn_company_info['cmn_company_id'];
-            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+            // $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
         data_return_voucher::where('data_return_id',$data_return_id)
         ->where('mes_lis_ret_tra_goo_major_category',$major_category)
@@ -199,7 +205,10 @@ class ReturnController extends Controller
 
         /*receive order info for single row*/
         $orderInfo=data_return_voucher::join('data_returns as dr','dr.data_return_id','=','data_return_vouchers.data_return_id')
-        ->where('dr.cmn_connect_id','=',$cmn_connect_id)
+        ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'dr.cmn_connect_id')
+        ->where('cc.byr_buyer_id', $byr_buyer_id)
+        ->where('cc.slr_seller_id', $slr_seller_id)
+        // ->where('dr.cmn_connect_id','=',$cmn_connect_id)
         ->where('data_return_vouchers.data_return_id','=',$data_return_id)
         // ->groupBy('data_returns.receive_datetime')
         ->groupBy('dr.sta_sen_identifier')
@@ -224,7 +233,10 @@ class ReturnController extends Controller
             ->join('data_return_vouchers as drv','data_returns.data_return_id','=','drv.data_return_id')
             ->join('data_return_items as dri','dri.data_return_voucher_id','=','drv.data_return_voucher_id')
             // ->leftJoin('data_shipment_vouchers as dsv','dsv.mes_lis_shi_tra_trade_number','=','drv.mes_lis_ret_tra_trade_number')
-        ->where('data_returns.cmn_connect_id','=',$cmn_connect_id)
+            ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'data_returns.cmn_connect_id')
+            ->where('cc.byr_buyer_id', $byr_buyer_id)
+            ->where('cc.slr_seller_id', $slr_seller_id)
+        // ->where('data_returns.cmn_connect_id','=',$cmn_connect_id)
         ->where('data_returns.data_return_id','=',$data_return_id)
         // ->where('data_return_vouchers.mes_lis_ret_par_sel_name',$sel_name)
         ->where('drv.mes_lis_ret_tra_goo_major_category',$major_category==null?'':$major_category)
@@ -315,12 +327,13 @@ class ReturnController extends Controller
         $per_page = $request->select_field_per_page_num == null ? 10 : $request->select_field_per_page_num;
 
         $authUser = User::find($adm_user_id);
+        $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
         $cmn_company_id = '';
-        $cmn_connect_id = '';
+        // $cmn_connect_id = '';
         if (!$authUser->hasRole(config('const.adm_role_name'))) {
             $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
             $cmn_company_id = $cmn_company_info['cmn_company_id'];
-            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+            // $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
 
 
@@ -364,9 +377,12 @@ class ReturnController extends Controller
         )
         ->join('data_return_vouchers as drv','drv.data_return_voucher_id','=','data_return_items.data_return_voucher_id')
         ->join('data_returns as dr','dr.data_return_id','=','drv.data_return_id')
+        ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'dr.cmn_connect_id')
+        ->where('cc.byr_buyer_id', $byr_buyer_id)
+        ->where('cc.slr_seller_id', $slr_seller_id)
         // ->leftJoin('data_order_vouchers as dov','dov.mes_lis_ord_tra_trade_number','=','drv.mes_lis_ret_tra_trade_number')
         // ->leftJoin('data_order_items as doi','doi.data_order_voucher_id','=','dov.data_order_voucher_id')
-        ->where('dr.cmn_connect_id','=',$cmn_connect_id)
+        // ->where('dr.cmn_connect_id','=',$cmn_connect_id)
         ->where('drv.data_return_voucher_id','=',$data_return_voucher_id)
        // ->paginate($per_page);
         ->get();

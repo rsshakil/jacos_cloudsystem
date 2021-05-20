@@ -16,6 +16,7 @@ use App\Http\Controllers\API\DATA\RECEIVE\DataController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Auth;
 
 class ReceiveController extends Controller
 {
@@ -56,7 +57,7 @@ class ReceiveController extends Controller
 
         // $byr_category_code = $request->category_code['category_code']; // 印刷
         // $having_var = '';
-
+        $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
         $table_name='drv.';
         if ($sort_by=="data_receive_id" || $sort_by=="receive_datetime") {
             $table_name='data_receives.';
@@ -66,11 +67,11 @@ class ReceiveController extends Controller
 
         $authUser = User::find($adm_user_id);
         $cmn_company_id = '';
-        $cmn_connect_id = '';
+        // $cmn_connect_id = '';
         if (!$authUser->hasRole(config('const.adm_role_name'))) {
             $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
             $cmn_company_id = $cmn_company_info['cmn_company_id'];
-            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+            // $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
         // 検索
         $result=data_receive::select(
@@ -89,7 +90,10 @@ class ReceiveController extends Controller
         'drv.data_receive_voucher_id'
         )
         ->join('data_receive_vouchers as drv','data_receives.data_receive_id','=','drv.data_receive_id')
-        ->where('data_receives.cmn_connect_id','=',$cmn_connect_id);
+        ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'data_receives.cmn_connect_id')
+        ->where('cc.byr_buyer_id', $byr_buyer_id)
+        ->where('cc.slr_seller_id', $slr_seller_id);
+        // ->where('data_receives.cmn_connect_id','=',$cmn_connect_id);
             // 条件指定検索
                 if ($receive_date_from && $receive_date_to) {
                     $result =$result->whereBetween('data_receives.receive_datetime', [$receive_date_from, $receive_date_to]);
@@ -167,6 +171,8 @@ class ReceiveController extends Controller
         $goods_classification_code=$request->goods_classification_code;
         $trade_number=$request->trade_number;
 
+        $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
+
         $table_name='data_receive_vouchers.';
 
         $authUser = User::find($adm_user_id);
@@ -188,7 +194,10 @@ class ReceiveController extends Controller
 
         /*receive order info for single row*/
         $orderInfo=data_receive_voucher::join('data_receives as dr','dr.data_receive_id','=','data_receive_vouchers.data_receive_id')
-        ->where('dr.cmn_connect_id','=',$cmn_connect_id)
+        ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'dr.cmn_connect_id')
+        ->where('cc.byr_buyer_id', $byr_buyer_id)
+        ->where('cc.slr_seller_id', $slr_seller_id)
+        // ->where('dr.cmn_connect_id','=',$cmn_connect_id)
         ->where('data_receive_vouchers.data_receive_id','=',$data_receive_id)
         // ->groupBy('data_receives.receive_datetime')
         ->groupBy('dr.sta_sen_identifier')
@@ -200,7 +209,10 @@ class ReceiveController extends Controller
         ->join('data_receives as dr','dr.data_receive_id','=','data_receive_vouchers.data_receive_id')
         ->join('data_receive_items','data_receive_items.data_receive_voucher_id','=','data_receive_vouchers.data_receive_voucher_id')
         ->leftJoin('data_shipment_vouchers as dsv','dsv.mes_lis_shi_tra_trade_number','=','data_receive_vouchers.mes_lis_acc_tra_trade_number')
-        ->where('dr.cmn_connect_id','=',$cmn_connect_id)
+        ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'dr.cmn_connect_id')
+        ->where('cc.byr_buyer_id', $byr_buyer_id)
+        ->where('cc.slr_seller_id', $slr_seller_id)
+        // ->where('dr.cmn_connect_id','=',$cmn_connect_id)
         ->where('data_receive_vouchers.data_receive_id','=',$data_receive_id)
         // ->where('data_receive_vouchers.mes_lis_acc_par_sel_name',$sel_name)
         ->where('data_receive_vouchers.mes_lis_acc_par_sel_code',$sel_code)
@@ -296,6 +308,7 @@ class ReceiveController extends Controller
         $per_page = $request->select_field_per_page_num == null ? 10 : $request->select_field_per_page_num;
 
         $authUser = User::find($adm_user_id);
+        $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
         $cmn_company_id = '';
         $cmn_connect_id = '';
         if (!$authUser->hasRole(config('const.adm_role_name'))) {
@@ -309,7 +322,10 @@ class ReceiveController extends Controller
         $orderInfo=data_receive_item::
         join('data_receive_vouchers as drv','drv.data_receive_voucher_id','=','data_receive_items.data_receive_voucher_id')
         ->join('data_receives as dr','dr.data_receive_id','=','drv.data_receive_id')
-        ->where('dr.cmn_connect_id','=',$cmn_connect_id)
+        ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'dr.cmn_connect_id')
+        ->where('cc.byr_buyer_id', $byr_buyer_id)
+        ->where('cc.slr_seller_id', $slr_seller_id)
+        // ->where('dr.cmn_connect_id','=',$cmn_connect_id)
         ->where('drv.data_receive_voucher_id','=',$data_receive_voucher_id)
         // ->groupBy('data_receives.receive_datetime')
         ->groupBy('dr.sta_sen_identifier')
@@ -319,9 +335,10 @@ class ReceiveController extends Controller
         // 検索
         $result=data_receive_item::join('data_receive_vouchers as drv','drv.data_receive_voucher_id','=','data_receive_items.data_receive_voucher_id')
         ->join('data_receives as dr','dr.data_receive_id','=','drv.data_receive_id')
-        // ->leftJoin('data_order_vouchers as dov','dov.mes_lis_ord_tra_trade_number','=','drv.mes_lis_acc_tra_trade_number')
-        // ->leftJoin('data_order_items as doi','doi.data_order_voucher_id','=','dov.data_order_voucher_id')
-        ->where('dr.cmn_connect_id','=',$cmn_connect_id)
+        ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'dr.cmn_connect_id')
+        ->where('cc.byr_buyer_id', $byr_buyer_id)
+        ->where('cc.slr_seller_id', $slr_seller_id)
+        // ->where('dr.cmn_connect_id','=',$cmn_connect_id)
         ->where('drv.data_receive_voucher_id','=',$data_receive_voucher_id)
         // ->groupBy('drv.data_receive_voucher_id')
         // ->groupBy('drv.mes_lis_acc_tra_trade_number')

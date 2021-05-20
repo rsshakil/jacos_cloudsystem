@@ -11,6 +11,7 @@ use App\Models\CMN\cmn_companies_user;
 use App\Models\SLR\slr_seller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class CommonController extends Controller
 {
@@ -106,7 +107,7 @@ class CommonController extends Controller
      */
     public function get_logged_user_company_by_user_id(Request $request)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
 
         $adm_user_id = $request->user_id;
         $authUser = User::find($adm_user_id);
@@ -114,7 +115,7 @@ class CommonController extends Controller
         if (!$authUser->hasRole(config('const.adm_role_name'))) {
             $result = $this->all_used_fun->get_user_info($adm_user_id);
         }
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return response()->json(['userCompanyInfo' => $result]);
     }
 }
