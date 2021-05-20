@@ -207,14 +207,28 @@ class ByrController extends Controller
                 break;
         }
 
-        $catListitem = \DB::select("SELECT 
-        $pv_table.$fieldname as category_code,
-        CONCAT(COALESCE($pv_table.$fieldname,''),' | ',COALESCE(cmn_categories.category_name,'')) AS category_name
-         FROM $p_table
-            INNER JOIN $pv_table
-            INNER JOIN cmn_categories ON $pv_table.$fieldname=cmn_categories.category_code AND cmn_categories.byr_buyer_id='".$byr_buyer_id."' 
-            WHERE $p_table.$cmnConnect ='".$cmn_connect_id."' and $pv_table.$fieldname!=''
-            GROUP BY $pv_table.$fieldname");
+        if($request->component_name=='payment_item_detail'){
+            $catListitem = \DB::select("SELECT 
+            $pv_table.$fieldname as category_code,
+            CONCAT(COALESCE($pv_table.$fieldname,''),' | ',COALESCE(cmn_categories.category_name,'')) AS category_name
+             FROM $p_table
+             inner JOIN data_payment_pays on data_payment_pays.data_payment_id =data_payments.data_payment_id
+             inner JOIN data_payment_pay_details on data_payment_pay_details.data_payment_pay_id =data_payment_pays.data_payment_pay_id
+                left JOIN cmn_categories ON $pv_table.$fieldname=cmn_categories.category_code AND cmn_categories.byr_buyer_id='".$byr_buyer_id."' 
+                WHERE $p_table.$cmnConnect ='".$cmn_connect_id."' and $pv_table.$fieldname!=''
+                GROUP BY $pv_table.$fieldname");
+        }else{
+            $catListitem = \DB::select("SELECT 
+            $pv_table.$fieldname as category_code,
+            CONCAT(COALESCE($pv_table.$fieldname,''),' | ',COALESCE(cmn_categories.category_name,'')) AS category_name
+             FROM $p_table
+                INNER JOIN $pv_table
+                left JOIN cmn_categories ON $pv_table.$fieldname=cmn_categories.category_code AND cmn_categories.byr_buyer_id='".$byr_buyer_id."' 
+                WHERE $p_table.$cmnConnect ='".$cmn_connect_id."' and $pv_table.$fieldname!=''
+                GROUP BY $pv_table.$fieldname");
+        }
+       
+
        // $buyer_category_list = $this->all_used_fun->get_allCategoryByByrId($byr_buyer_id);
         return response()->json([ 'buyer_settings' =>$result,'buyer_category_list'=>$catListitem ]);
     }

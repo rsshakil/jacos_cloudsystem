@@ -264,7 +264,6 @@ breadcrumb(){
       mes_lis_inv_lin_det_pay_code_list:{},
       mes_lis_inv_lin_det_balance_carried_code_list:{},
       paymentdetailTopTable:{},
-      byr_buyer_category_lists:[],
       form: new Form({
         select_field_per_page_num: 10,
         page: 1,
@@ -328,13 +327,12 @@ breadcrumb(){
 
           this.payment_detail_header = data.payment_item_header;
           this.paymentdetailTopTable = data.paymentdetailTopTable;
-          this.byr_buyer_category_lists = data.byr_buyer_category_list;
           this.buyer_settings = JSON.parse(data.buyer_settings);
 
           this.mes_lis_pay_lin_det_verification_result_code_list = this.buyer_settings.payments.mes_lis_pay_lin_det_verification_result_code;
           this.mes_lis_inv_lin_det_pay_code_list = this.buyer_settings.invoices.mes_lis_inv_lin_det_pay_code;
           this.mes_lis_inv_lin_det_balance_carried_code_list = this.buyer_settings.invoices.mes_lis_inv_lin_det_balance_carried_code;
-          this.byr_buyer_category_lists.unshift({category_code:'*',category_name:'全て'});
+          
           loaders.hide();
         });
     },
