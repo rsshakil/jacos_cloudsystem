@@ -137,7 +137,7 @@
 
             </tr>
             <tr v-if="invoice_lists.data && invoice_lists.data.length==0">
-            <td class="text-center" colspan="6">データがありません</td>
+            <td class="text-center" colspan="100%">データがありません</td>
             </tr>
 
           </tbody>
