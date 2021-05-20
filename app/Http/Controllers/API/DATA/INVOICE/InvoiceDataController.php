@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\DATA\INVOICE;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DATA\INVOICE\data_invoice;
+use Illuminate\Support\Facades\Auth;
 
 class InvoiceDataController extends Controller
 {
@@ -16,6 +17,8 @@ class InvoiceDataController extends Controller
         // $request_all=$request->all();
         $sort_by = $request->sort_by;
         $sort_type = $request->sort_type;
+        $byr_buyer_id = $request->byr_buyer_id;
+        $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
 
         $csv_data=data_invoice::select(
             'data_invoices.sta_sen_identifier',
@@ -80,7 +83,10 @@ class InvoiceDataController extends Controller
             'dipd.mes_lis_inv_lin_det_tax_tax_rate'
             )
         ->join('data_invoice_pays as dip','dip.data_invoice_id','=','data_invoices.data_invoice_id')
-        ->join('data_invoice_pay_details as dipd','dipd.data_invoice_pay_id','=','dip.data_invoice_pay_id');
+        ->join('data_invoice_pay_details as dipd','dipd.data_invoice_pay_id','=','dip.data_invoice_pay_id')
+        ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'data_invoices.cmn_connect_id')
+        ->where('cc.byr_buyer_id', $byr_buyer_id)
+        ->where('cc.slr_seller_id', $slr_seller_id);
         // filtering
         // if (!(array_key_exists("downloadType", $request_all))) {
         if ($request->page_title=='invoice_list') {
@@ -170,11 +176,11 @@ class InvoiceDataController extends Controller
             }
             $csv_data=$csv_data->orderBy('dipd.'.$sort_by,$sort_type);
             $csv_data=$csv_data->where('dip.mes_lis_inv_per_end_date',$param_data['end_date'])
-            ->where('dip.mes_lis_inv_pay_code',$param_data['pay_code'])
+            ->where('dip.mes_lis_inv_pay_code',$param_data['pay_code']);
             // ->where('dip.mes_lis_inv_pay_name',$param_data['pay_name'])
             // ->where('dip.mes_lis_buy_code',$param_data['buy_code'])
             // ->where('dip.mes_lis_buy_name',$param_data['buy_name'])
-            ->where('dip.status',$param_data['status']);
+            // ->where('dip.status',$param_data['status']);
         }
         $csv_data=$csv_data->orderBy("dipd.mes_lis_inv_lin_lin_trade_number_reference");
         // 検索

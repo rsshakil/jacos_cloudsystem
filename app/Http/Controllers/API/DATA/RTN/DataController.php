@@ -8,6 +8,7 @@ use App\Http\Controllers\API\AllUsedFunction;
 use App\Models\ADM\User;
 use App\Models\DATA\RTN\data_return;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class DataController extends Controller
 {
@@ -16,22 +17,23 @@ class DataController extends Controller
         // return ;
         // Log::info($request->all());
 
-        $all_used_fun = new AllUsedFunction();
+        // $all_used_fun = new AllUsedFunction();
         // 対象データ取得
 
         // ->where('data_receive_vouchers.data_receive_id','=',$data_receive_id);
-        $sort_by = $request->sort_by;
-        $sort_type = $request->sort_type;
-        $adm_user_id = $request->adm_user_id;
+        // $sort_by = $request->sort_by;
+        // $sort_type = $request->sort_type;
+        // $adm_user_id = $request->adm_user_id;
         $byr_buyer_id = $request->byr_buyer_id;
-        $authUser = User::find($adm_user_id);
-            $cmn_company_id = '';
-            $cmn_connect_id = '';
-            if (!$authUser->hasRole(config('const.adm_role_name'))) {
-                $cmn_company_info=$all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
-                $cmn_company_id = $cmn_company_info['cmn_company_id'];
-                $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
-            }
+        $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
+        // $authUser = User::find($adm_user_id);
+        //     $cmn_company_id = '';
+        //     $cmn_connect_id = '';
+        //     if (!$authUser->hasRole(config('const.adm_role_name'))) {
+        //         $cmn_company_info=$all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
+        //         $cmn_company_id = $cmn_company_info['cmn_company_id'];
+        //         $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+        //     }
         // Log::info($byr_buyer_id);
         $result=data_return::select(
             'data_returns.sta_sen_identifier',
@@ -168,13 +170,16 @@ class DataController extends Controller
             )
             ->join('data_return_vouchers as drv','data_returns.data_return_id','=','drv.data_return_id')
             ->join('data_return_items as dri','dri.data_return_voucher_id','=','drv.data_return_voucher_id')
-            ->where('data_returns.cmn_connect_id','=',$cmn_connect_id);
-            $table_name='drv.';
-            if ($sort_by=="data_return_id" || $sort_by=="receive_datetime") {
-                $table_name='data_returns.';
-            }else{
-                $table_name='drv.';
-            }
+            ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'data_returns.cmn_connect_id')
+            ->where('cc.byr_buyer_id', $byr_buyer_id)
+            ->where('cc.slr_seller_id', $slr_seller_id);
+            // ->where('data_returns.cmn_connect_id','=',$cmn_connect_id);
+            // $table_name='drv.';
+            // if ($sort_by=="data_return_id" || $sort_by=="receive_datetime") {
+            //     $table_name='data_returns.';
+            // }else{
+            //     $table_name='drv.';
+            // }
         if ($request->page_title=='return_list') {
             // \Log::info($request->all());
             $receive_date_from = $request->receive_date_from; // 受信日時開始

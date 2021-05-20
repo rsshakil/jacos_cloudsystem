@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\DATA\PAYMENT\data_payment;
 use App\Http\Controllers\API\AllUsedFunction;
 use App\Models\ADM\User;
+use Illuminate\Support\Facades\Auth;
 
 class DataController extends Controller
 {
@@ -22,14 +23,15 @@ class DataController extends Controller
         // 対象データ取得
         $data_payment_id=$request->data_payment_id;
         $adm_user_id=$request->adm_user_id;
-        $byr_buyer_id=$request->byr_buyer_id;
+        $byr_buyer_id = $request->byr_buyer_id;
+        $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
         $all_used_fun = new AllUsedFunction();
-        $authUser = User::find($adm_user_id);
-        $cmn_connect_id = '';
-        if (!$authUser->hasRole(config('const.adm_role_name'))) {
-            $cmn_company_info = $all_used_fun->get_user_info($adm_user_id, $byr_buyer_id);
-            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
-        }
+        // $authUser = User::find($adm_user_id);
+        // $cmn_connect_id = '';
+        // if (!$authUser->hasRole(config('const.adm_role_name'))) {
+        //     $cmn_company_info = $all_used_fun->get_user_info($adm_user_id, $byr_buyer_id);
+        //     $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+        // }
 
 
         $csv_data=data_payment::select(
@@ -108,7 +110,10 @@ class DataController extends Controller
             )
         ->join('data_payment_pays as dpp','dpp.data_payment_id','=','data_payments.data_payment_id')
         ->join('data_payment_pay_details as dppd','dppd.data_payment_pay_id','=','dpp.data_payment_pay_id')
-        ->where('data_payments.cmn_connect_id',$cmn_connect_id);
+        ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'data_payments.cmn_connect_id')
+        ->where('cc.byr_buyer_id', $byr_buyer_id)
+        ->where('cc.slr_seller_id', $slr_seller_id);
+        // ->where('data_payments.cmn_connect_id',$cmn_connect_id);
             // if ($request->page_title=='payment_list') {
             //     $table_name = 'dpp.';
             // $sort_by = $request->sort_by;

@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use PhpParser\Node\Stmt\TryCatch;
+use Illuminate\Support\Facades\Auth;
 class InvoiceController extends Controller
 {
     private $request;
@@ -72,12 +73,13 @@ class InvoiceController extends Controller
             $table_name='dip.';
         }
         $authUser = User::find($adm_user_id);
+        $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
         $cmn_company_id = 0;
         if (!$authUser->hasRole(config('const.adm_role_name'))) {
             $cmn_company_info = $this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
             $cmn_company_id = $cmn_company_info['cmn_company_id'];
             // $byr_buyer_id = $cmn_company_info['byr_buyer_id'];
-            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+            // $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
         $result=data_invoice::select('data_invoices.data_invoice_id','dip.mes_lis_inv_per_end_date',
         'dip.mes_lis_inv_pay_code','dip.mes_lis_inv_pay_name','dip.mes_lis_buy_code',
@@ -93,7 +95,11 @@ class InvoiceController extends Controller
         )
         ->join('data_invoice_pays as dip','data_invoices.data_invoice_id','=','dip.data_invoice_id')
         ->join('data_invoice_pay_details as dipd','dip.data_invoice_pay_id','=','dipd.data_invoice_pay_id')
-        ->where('data_invoices.cmn_connect_id','=',$cmn_connect_id);
+        ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'data_invoices.cmn_connect_id')
+        ->where('cc.byr_buyer_id', $byr_buyer_id)
+        ->where('cc.slr_seller_id', $slr_seller_id);
+
+        // ->where('data_invoices.cmn_connect_id','=',$cmn_connect_id);
         if ($mes_lis_inv_pay_code!=null) {
             $result=$result->where('dip.mes_lis_inv_pay_code','=',$mes_lis_inv_pay_code);
         }
@@ -232,13 +238,14 @@ class InvoiceController extends Controller
         $param_data = $request->param_data;
         $adm_user_id=$request->adm_user_id;
         $byr_buyer_id=$request->byr_buyer_id;
-        $authUser = User::find($adm_user_id);
+        // $authUser = User::find($adm_user_id);
+        $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
 
-        $cmn_connect_id = '';
-        if (!$authUser->hasRole(config('const.adm_role_name'))) {
-            $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
-            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
-        }
+        // $cmn_connect_id = '';
+        // if (!$authUser->hasRole(config('const.adm_role_name'))) {
+        //     $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
+        //     $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+        // }
 
         $result=data_invoice::select('data_invoices.data_invoice_id','dipd.data_invoice_pay_detail_id','dip.mes_lis_inv_per_end_date',
         'dipd.data_shipment_voucher_id','dipd.mes_lis_inv_lin_det_transfer_of_ownership_date','dipd.mes_lis_inv_lin_tra_code',
@@ -248,8 +255,11 @@ class InvoiceController extends Controller
         )
         ->join('data_invoice_pays as dip','data_invoices.data_invoice_id','=','dip.data_invoice_id')
         ->join('data_invoice_pay_details as dipd','dip.data_invoice_pay_id','=','dipd.data_invoice_pay_id')
-        ->where('data_invoices.data_invoice_id','=',$data_invoice_id)
-        ->where('data_invoices.cmn_connect_id','=',$cmn_connect_id);
+        ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'data_invoices.cmn_connect_id')
+        ->where('cc.byr_buyer_id', $byr_buyer_id)
+        ->where('cc.slr_seller_id', $slr_seller_id)
+        ->where('data_invoices.data_invoice_id','=',$data_invoice_id);
+        // ->where('data_invoices.cmn_connect_id','=',$cmn_connect_id);
         if ($decision_datetime_status=='未確定あり'){
             $result=$result->where('dipd.decision_datetime','=',null);
         }else if ($decision_datetime_status=='確定済'){
@@ -299,17 +309,21 @@ class InvoiceController extends Controller
         $download_file_url='';
         $adm_user_id=$request->adm_user_id;
         $byr_buyer_id=$request->byr_buyer_id;
-        $authUser = User::find($adm_user_id);
+        $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
+        // $authUser = User::find($adm_user_id);
 
-        $cmn_connect_id = '';
-        if (!$authUser->hasRole(config('const.adm_role_name'))) {
-            $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
-            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
-        }
+        // $cmn_connect_id = '';
+        // if (!$authUser->hasRole(config('const.adm_role_name'))) {
+        //     $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
+        //     $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+        // }
         // $csv_data_count = InvoiceDataController::get_invoice_data($request)->get()->count();
         $csv_data_count = data_invoice::join('data_invoice_pays as dip','dip.data_invoice_id','=','data_invoices.data_invoice_id')
             ->join('data_invoice_pay_details as dipd','dipd.data_invoice_pay_id','=','dip.data_invoice_pay_id')
-            ->where('data_invoices.cmn_connect_id',$cmn_connect_id)
+            ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'data_invoices.cmn_connect_id')
+            ->where('cc.byr_buyer_id', $byr_buyer_id)
+            ->where('cc.slr_seller_id', $slr_seller_id)
+            // ->where('data_invoices.cmn_connect_id',$cmn_connect_id)
             ->where('data_invoices.data_invoice_id',$data_invoice_id)
             ->whereNotNull('dipd.decision_datetime')
             ->whereNull('dipd.send_datetime')

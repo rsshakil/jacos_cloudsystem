@@ -13,6 +13,7 @@ use App\Http\Controllers\API\AllUsedFunction;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Models\ADM\User;
+use Illuminate\Support\Facades\Auth;
 
 class Data_Controller extends Controller
 {
@@ -250,7 +251,7 @@ class Data_Controller extends Controller
     }
     public static function get_shipment_data($request)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
 
         // 対象データ取得
 
@@ -262,13 +263,13 @@ class Data_Controller extends Controller
         $adm_user_id=$request->adm_user_id;
         $byr_buyer_id=$request->byr_buyer_id;
         $data_order_id=$request->data_order_id;
-
-        $authUser = User::find($adm_user_id);
-        $cmn_connect_id = '';
-        if (!$authUser->hasRole(config('const.adm_role_name'))) {
-            $cmn_company_info=$all_used_fun->get_user_info($adm_user_id, $byr_buyer_id);
-            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
-        }
+        $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
+        // $authUser = User::find($adm_user_id);
+        // $cmn_connect_id = '';
+        // if (!$authUser->hasRole(config('const.adm_role_name'))) {
+        //     $cmn_company_info=$all_used_fun->get_user_info($adm_user_id, $byr_buyer_id);
+        //     $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+        // }
         $csv_data=data_shipment::select(
             // data_shipments
             'data_shipments.sta_sen_identifier', //0
@@ -536,11 +537,15 @@ class Data_Controller extends Controller
         ->leftJoin('data_shipment_item_details as dsid', 'dsi.data_shipment_item_id', '=', 'dsid.data_shipment_item_id')
         ->join('data_order_vouchers as dov', 'dov.data_order_voucher_id', '=', 'dsv.data_shipment_voucher_id')
         ->join('data_orders as dor', 'dor.data_order_id', '=', 'dov.data_order_id')
-        ->where('data_shipments.cmn_connect_id', $cmn_connect_id);
+        ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'dor.cmn_connect_id')
+        ->where('cc.byr_buyer_id', $byr_buyer_id)
+        ->where('cc.slr_seller_id', $slr_seller_id);
+        // ->where('data_shipments.cmn_connect_id', $cmn_connect_id);
 
 
         // filtering
         if ($request->page_title=='order_list') {
+            // Log::info($request);
             $receive_date_from = $request->receive_date_from;
             $receive_date_to = $request->receive_date_to;
             $delivery_date_from = $request->delivery_date_from;
@@ -556,7 +561,7 @@ class Data_Controller extends Controller
             // $check_datetime=$request->check_datetime;
             $confirmation_status = $request->confirmation_status; // 参照
             $decission_cnt = $request->decission_cnt; // 確定
-            $print_cnt = $request->print_cnt; // 印刷
+            $send_cnt = $request->send_cnt; // 印刷
             $byr_category_code = $request->category_code; // 印刷
             $mes_lis_ord_par_sel_code = $request->mes_lis_ord_par_sel_code; // 印刷
 
@@ -593,10 +598,10 @@ class Data_Controller extends Controller
                 }
             }
 
-            if ($print_cnt == "!0") {
-                $csv_data=$csv_data->having('print_cnt', '!=', '0');
-            } elseif ($print_cnt != "*") {
-                $csv_data=$csv_data->having('print_cnt', '=', $print_cnt);
+            if ($send_cnt == "!0") {
+                $csv_data=$csv_data->having('send_cnt', '!=', '0');
+            } elseif ($send_cnt != "*") {
+                $csv_data=$csv_data->having('send_cnt', '=', $send_cnt);
             }
             if ($decission_cnt == "!0") {
                 $csv_data=$csv_data->having('decision_cnt', '!=', '0');
@@ -657,7 +662,7 @@ class Data_Controller extends Controller
         $csv_data=$csv_data->orderBy('dsi.mes_lis_shi_lin_lin_line_number', "ASC");
         // 検索
         // $csv_data = $csv_data->limit(100000)->get()->toArray();
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
 
         return $csv_data;
     }
@@ -1044,7 +1049,7 @@ class Data_Controller extends Controller
 
                 // 自動確定
                 $shipment_voucher_array['decision_datetime']=$cur_date;
-                
+
                 // voucher 更新
                 data_shipment_voucher::where('data_shipment_voucher_id', $voucher_info['shipment_voucher_id'])->update($shipment_voucher_array);
 

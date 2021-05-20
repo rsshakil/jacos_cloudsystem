@@ -14,6 +14,7 @@ use App\Traits\Csv;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
@@ -56,13 +57,14 @@ class PaymentController extends Controller
 
 
         // }
+        $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
         $authUser = User::find($adm_user_id);
         $cmn_company_id = '';
-        $cmn_connect_id = '';
+        // $cmn_connect_id = '';
         if (!$authUser->hasRole(config('const.adm_role_name'))) {
             $cmn_company_info = $this->all_used_fun->get_user_info($adm_user_id, $byr_buyer_id);
             $cmn_company_id = $cmn_company_info['cmn_company_id'];
-            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+            // $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
         // $search_where[] = ['data_payments.cmn_connect_id', '=', $cmn_connect_id];
         // 検索
@@ -87,7 +89,10 @@ class PaymentController extends Controller
         )
             ->join('data_payment_pays as dpp', 'data_payments.data_payment_id', '=', 'dpp.data_payment_id')
             ->join('data_payment_pay_details as dppd', 'dpp.data_payment_pay_id', '=', 'dppd.data_payment_pay_id')
-            ->where('data_payments.cmn_connect_id','=',$cmn_connect_id);
+            ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'data_payments.cmn_connect_id')
+            ->where('cc.byr_buyer_id', $byr_buyer_id)
+            ->where('cc.slr_seller_id', $slr_seller_id);
+            // ->where('data_payments.cmn_connect_id','=',$cmn_connect_id);
             // ->where($search_where);
             if ($mes_lis_pay_pay_code !=null) {
                 $result =$result->where('dpp.mes_lis_pay_pay_code',$mes_lis_pay_pay_code);
