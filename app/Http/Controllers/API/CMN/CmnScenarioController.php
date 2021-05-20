@@ -103,7 +103,7 @@ class CmnScenarioController extends Controller
         } catch (\Exception $th) {
             \Log::error('$th->getCode():'.$th->getCode());
             // JCS_EXCEPTION判定
-            if ($th->getCode() === 0) {
+            if ($th->getCode() != cofig('const.JCS_EXCEPTION')) {
                 // JCS_EXCEPTION以外のPHP Exceptionはトレースログ出力
                 \Log::error($th);
             }
