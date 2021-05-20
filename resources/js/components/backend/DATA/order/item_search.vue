@@ -54,7 +54,7 @@
             <td class="cl_custom_color">商品コード</td>
             <td>
               <input
-                type="text" class="form-control topHeaderInputFieldBtn"/>
+                type="text" v-model="form.order_item_code" class="form-control topHeaderInputFieldBtn"/>
               <button @click="searchBypopupmodal" class="btn btn-primary active">参照</button>
             </td>
             <td class="cl_custom_color">JANコード</td>
@@ -173,52 +173,25 @@
       v-model="order_search_modal3"
     >
       <div class="panel-body">
-        <table
-          class="table orderTopDetailTable table-bordered"
-          style="width: 100%"
-        >
-          <tr>
-            <td class="cl_custom_color">商品コード（発注用）</td>
-            <td><input type="text" class="form-control" v-model="form.mes_lis_shi_lin_ite_supplier_item_code"/></td>
-            <td class="cl_custom_color">JANコード</td>
-            <td>
-              <input type="text" class="form-control" v-model="form.mes_lis_shi_lin_ite_gtin"/>
-            </td>
-          </tr>
+        <table class="table orderTopDetailTable table-striped popupListTable table-bordered" style="width: 100%">
+            <thead>
+                <tr>
+                    <th>NO</th>
+                    <th>商品コード</th>
+                    <th>商品名</th>
+                    <th>規格</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(valueItm,index) in order_search_modal3List" :key="index" @click="setRowscodeIntoForm3(valueItm.mes_lis_shi_lin_ite_order_item_code)">
+                    <td>{{index+1}}</td>
+                    <td>{{valueItm.mes_lis_shi_lin_ite_order_item_code}}</td>
+                    <td>{{valueItm.mes_lis_shi_lin_ite_name}}</td>
+                    <td>{{valueItm.mes_lis_shi_lin_ite_ite_spec}}
 
-          <tr>
-            <td class="cl_custom_color">商品名</td>
-            <td colspan="3"><input type="text" v-model="form.mes_lis_shi_lin_ite_name" class="form-control"/></td>
-          </tr>
-          <tr>
-            <td class="cl_custom_color">規格</td>
-            <td colspan="3"><input type="text" v-model="form.mes_lis_shi_lin_ite_ite_spec" class="form-control"/></td>
-          </tr>
-          <tr>
-            <td class="cl_custom_color">取引先コード</td>
-            <td><input type="text" class="form-control"/></td>
-            <td class="cl_custom_color">納品先コード</td>
-            <td>
-              <input type="text" class="form-control"/>
-            </td>
-          </tr>
-          <tr>
-            <td class="cl_custom_color">部門</td>
-            <td>
-            <select class="form-control" v-model="form.deliveryDestnation" style="width: 220px">
-              <option value="">全て</option>
-                <option :value="item" v-for="(item,i) in deliveryDestnationOptionList" :key="i">{{ item }}</option>
-              </select>
-            </td>
-            <td class="cl_custom_color">不定貴区分</td>
-            <td>
-              <select class="form-control" v-model="form.mes_lis_shi_tra_fre_variable_measure_item_code" style="width: 220px">
-              <option value="*">全て</option>
-                <option :value="item" v-for="(item,i) in deliveryDestnationOptionList" :key="i">{{ item }}</option>
-              </select>
-            </td>
-
-          </tr>
+                    </td>
+                </tr>
+            </tbody>
         </table>
       </div>
     </b-modal>
@@ -248,6 +221,7 @@ export default {
         order_info:[],
         // deliverySearchForm3:{},
         order_search_modal3:false,
+        order_search_modal3List:[],
         deliveryDestnationOptionList:{},
         order_item_lists:{},
         form: new Form({
@@ -267,6 +241,7 @@ export default {
             major_category:'',
             delivery_service_code:'',
             temperature_code:'',
+            order_item_code:'',
             page:1,
             sort_by:'mes_lis_shi_lin_ite_order_item_code ',
             sort_type:"ASC",
@@ -285,8 +260,18 @@ export default {
           this.getItemSearchData();
 
       },
+      setRowscodeIntoForm3(valCode){
+        this.form.order_item_code = valCode;
+        this.order_search_modal3 = false;
+      },
       searchBypopupmodal(){
         this.order_search_modal3= true;
+         this.$route.query.adm_user_id = Globals.user_info_id;
+        this.$route.query.byr_buyer_id = this.byr_buyer_id;
+        axios.post(this.BASE_URL + "api/get_voucher_detail_popup3", this.$route.query)
+          .then(({ data }) => {
+              this.order_search_modal3List = data.popUpList;
+          });
       },
     //get Table data
     getItemSearchData(page = 1) {

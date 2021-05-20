@@ -274,6 +274,7 @@ class ShipmentController extends Controller
         $delivery_service_code = $request->delivery_service_code;
         $delivery_date = $request->delivery_date;
         $temperature_code = $request->temperature_code;
+        $mes_lis_shi_lin_ite_order_item_code = $request->order_item_code;
 
         $result = DB::table('data_shipment_items as dsi')
             ->select(
@@ -295,10 +296,20 @@ class ShipmentController extends Controller
         // ->where('dsv.mes_lis_shi_tra_trade_number', $mes_lis_shi_tra_trade_number);
         // ->where('ds.receive_datetime', $receive_datetime);
 
+<<<<<<< HEAD
         if ($mes_lis_shi_lin_ite_gtin) {
             $result=$result->where('dsi.mes_lis_shi_lin_ite_gtin', $mes_lis_shi_lin_ite_gtin);
         }
         $result=$result->whereNull('dsv.decision_datetime');
+=======
+            if ($mes_lis_shi_lin_ite_gtin) {
+                $result=$result->where('dsi.mes_lis_shi_lin_ite_gtin', $mes_lis_shi_lin_ite_gtin);
+            }
+            if ($mes_lis_shi_lin_ite_order_item_code) {
+                $result=$result->where('dsi.mes_lis_shi_lin_ite_order_item_code', $mes_lis_shi_lin_ite_order_item_code);
+            }
+            $result=$result->whereNull('dsv.decision_datetime');
+>>>>>>> 106d889dd9a66482489efb998ee26d2dd296f83e
 
         $result=$result->groupBy('dsv.mes_lis_shi_tra_trade_number');
         $result=$result->groupBy('dsi.mes_lis_shi_lin_ite_order_item_code');
