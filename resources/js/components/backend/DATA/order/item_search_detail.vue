@@ -77,7 +77,7 @@
         <div class="col-12">
       <div class="col-12" style="padding: 10px; margin-bottom: 20px;margin-top: 20px;background:#DEE6F0"
       >
-      <p><router-link to="">【一括入力】</router-link>『一括反映』をクリックすると、入力データを全ての伝票に一括反映します。</p>
+      <p><router-link to="">【一括入力】</router-link>対象行のチェックボックス を選択後、『選択行に一括反映』をクリックすると、入力値を選択行に一括反映します。</p>
         <table class="table orderDetailTable table-bordered" style="width: 100%">
           <tr>
             <td class="cl_custom_color_active">ケース数</td>
@@ -103,7 +103,7 @@
 
 
         </table>
-        <button class="btn btn-primary" @click="updateOrderItemFormData" style="float:right;">一括反映 -></button>
+        <button class="btn btn-primary" @click="updateOrderItemFormData" style="float:right;">選択行に一括反映 -></button>
       </div>
       </div>
       <div class="col-12" style="text-align: center">
