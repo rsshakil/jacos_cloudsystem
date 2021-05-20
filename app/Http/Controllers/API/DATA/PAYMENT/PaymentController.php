@@ -407,7 +407,7 @@ class PaymentController extends Controller
                 config('const.PAYMENT_CSV_PATH') . "/" . $new_file_name,
                 $payment_data,
                 DataController::paymentCsvHeading(),
-                'shift-jis'
+                'config('const.CSV_FILE_ENCODE')'
             );
         }
 

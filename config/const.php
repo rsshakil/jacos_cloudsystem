@@ -42,4 +42,6 @@ return [
     'ERROR' =>0,
     'JCS_EXCEPTION'=>1,
 
+    'CSV_FILE_ENCODE'=>'sjis-win'
+
 ];

@@ -288,7 +288,7 @@ class ReturnController extends Controller
                 config('const.RETURN_CSV_PATH')."/". $new_file_name,
                 $shipment_data,
                 DataController::rtnCsvHeading(),
-                'shift-jis'
+                'config('const.CSV_FILE_ENCODE')'
             );
         }
 

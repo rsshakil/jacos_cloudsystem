@@ -30,6 +30,7 @@ class ShipmentController extends Controller
     }
     public function sendShipmentData(Request $request)
     {
+        \Log::debug(__METHOD__.':start---');
         // return $request->all();
         $data_count=$request->data_count;
         $data_order_id=$request->data_order_id;
@@ -40,15 +41,15 @@ class ShipmentController extends Controller
         $order_info=$request->order_info;
         $cmn_connect_id = '';
         if (!$authUser->hasRole(config('const.adm_role_name'))) {
-            $cmn_company_info=$this->all_functions->get_user_info($adm_user_id,$byr_buyer_id);
+            $cmn_company_info=$this->all_functions->get_user_info($adm_user_id, $byr_buyer_id);
             $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
 
-        $csv_data_count = data_shipment_voucher::join('data_shipments as ds','ds.data_shipment_id','=','data_shipment_vouchers.data_shipment_id')
+        $csv_data_count = data_shipment_voucher::join('data_shipments as ds', 'ds.data_shipment_id', '=', 'data_shipment_vouchers.data_shipment_id')
             ->whereNotNull('data_shipment_vouchers.decision_datetime')
             ->whereNull('data_shipment_vouchers.send_datetime')
-            ->where('ds.cmn_connect_id',$cmn_connect_id)
-            ->where('ds.data_order_id',$data_order_id)
+            ->where('ds.cmn_connect_id', $cmn_connect_id)
+            ->where('ds.data_order_id', $data_order_id)
             ->where('data_shipment_vouchers.mes_lis_shi_log_del_delivery_service_code', $order_info['mes_lis_shi_log_del_delivery_service_code'])
             ->where('data_shipment_vouchers.mes_lis_shi_par_sel_code', $order_info['mes_lis_shi_par_sel_code'])
             ->where('data_shipment_vouchers.mes_lis_shi_par_sel_name', $order_info['mes_lis_shi_par_sel_name'])
@@ -59,7 +60,7 @@ class ShipmentController extends Controller
         if (!$data_count) {
             $request->request->add(['cmn_connect_id' => $cmn_connect_id]);
             $dateTime = date('Y-m-d H:i:s');
-            $new_file_name = $this->all_functions->downloadFileName($request, 'csv','受注');
+            $new_file_name = $this->all_functions->downloadFileName($request, 'csv', '受注');
             data_shipment::where('data_order_id', $data_order_id)->update(['mes_mes_number_of_trading_documents'=>$csv_data_count]);
             $download_file_url = Config::get('app.url')."storage/app".config('const.SHIPMENT_CSV_PATH')."/". $new_file_name;
             (new ShipmentCSVExport($request))->store(config('const.SHIPMENT_CSV_PATH').'/'.$new_file_name);
@@ -67,11 +68,13 @@ class ShipmentController extends Controller
             ->where('send_datetime', '=', null)
             ->update(['send_datetime'=>$dateTime]);
         }
+        \Log::debug(__METHOD__.':end---');
 
         return response()->json(['message' => 'Success','status'=>1, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
     }
     public function downloadShipmentCsv(Request $request)
     {
+        \Log::debug(__METHOD__.':start---');
         // return $request->all();
         // return $request->all();
         //ownloadType=2 for Fixed length
@@ -81,20 +84,21 @@ class ShipmentController extends Controller
         $csv_data_count =0;
         if ($downloadType==1) {
             // CSV Download
-            $new_file_name = $this->all_functions->downloadFileName($request, 'csv','受注');
+            $new_file_name = $this->all_functions->downloadFileName($request, 'csv', '受注');
             $download_file_url = Config::get('app.url')."storage/app".config('const.SHIPMENT_CSV_PATH')."/". $new_file_name;
 
             // get shipment data query
             $shipment_query = Data_Controller::get_shipment_data($request);
             $csv_data_count = $shipment_query->count();
             $shipment_data = $shipment_query->get()->toArray();
+            // \Log::debug($shipment_data);
 
             // CSV create
             Csv::create(
                 config('const.SHIPMENT_CSV_PATH')."/". $new_file_name,
                 $shipment_data,
                 Data_Controller::shipmentCsvHeading(),
-                'shift-jis'
+                config('const.CSV_FILE_ENCODE')
             );
         } elseif ($downloadType==2) {
             // JCA Download
@@ -105,7 +109,7 @@ class ShipmentController extends Controller
             $request->request->add(['data_order_id' => $data_order_id]);
             $request->request->add(['email' => 'user@jacos.co.jp']);
             $request->request->add(['password' => 'Qe75ymSr']);
-            $new_file_name =$this->all_functions->downloadFileName($request, 'txt','受注');
+            $new_file_name =$this->all_functions->downloadFileName($request, 'txt', '受注');
             $download_file_url = Config::get('app.url')."storage/".config('const.FIXED_LENGTH_FILE_PATH')."/". $new_file_name;
             $request->request->add(['file_name' => $new_file_name]);
             // $request->request->remove('downloadType');
@@ -122,6 +126,7 @@ class ShipmentController extends Controller
             // }
             // return response()->json($ret);
         }
+        \Log::debug(__METHOD__.':end---');
 
         return response()->json(['message' => 'Success','status'=>1,'new_file_name'=>$new_file_name, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
     }
@@ -157,9 +162,9 @@ class ShipmentController extends Controller
     {
         // return $request->all();
         $byr_buyer_id=$request->byr_buyer_id;
-        $buter_info=byr_buyer::select('setting_information')->where('byr_buyer_id',$byr_buyer_id)->first();
+        $buter_info=byr_buyer::select('setting_information')->where('byr_buyer_id', $byr_buyer_id)->first();
         // return $buter_info;
-        $shipment_reason_code_array=json_decode($buter_info->setting_information,true)['shipments']['mes_lis_shi_lin_qua_sto_reason_code'];
+        $shipment_reason_code_array=json_decode($buter_info->setting_information, true)['shipments']['mes_lis_shi_lin_qua_sto_reason_code'];
         $file_name = time().'-'.$request->file('file')->getClientOriginalName();
         $path = $request->file('file')->storeAs(config('const.SHIPMENT_CSV_UPDATE_PATH'), $file_name);
         Log::debug('save path:'.$path);
@@ -168,7 +173,7 @@ class ShipmentController extends Controller
         // フォーマット変換
 
         $dataArr = $this->all_functions->csvReader($received_path, 1);
-        $update_status=$this->data_controller->shipmentUpdateArray($dataArr, $file_name,$shipment_reason_code_array);
+        $update_status=$this->data_controller->shipmentUpdateArray($dataArr, $file_name, $shipment_reason_code_array);
         $ret = json_decode($update_status->getContent(), true);
         if ($ret['status']===$this->error) {
             unlink(storage_path().'/app/'.$path);
@@ -187,11 +192,11 @@ class ShipmentController extends Controller
         $total_cost_price = $request->total_cost_price;
         $updated_date = $request->updated_date;
         $status = $request->order_status;
-$mes_lis_shi_tot_tot_net_price_total_sum=0;
-$mes_lis_shi_tot_tot_selling_price_total_sum=0;
-$mes_lis_shi_tot_tot_tax_total_sum=0;
-$mes_lis_shi_tot_tot_item_total_sum=0;
-$mes_lis_shi_tot_tot_unit_total_sum=0;
+        $mes_lis_shi_tot_tot_net_price_total_sum=0;
+        $mes_lis_shi_tot_tot_selling_price_total_sum=0;
+        $mes_lis_shi_tot_tot_tax_total_sum=0;
+        $mes_lis_shi_tot_tot_item_total_sum=0;
+        $mes_lis_shi_tot_tot_unit_total_sum=0;
         foreach ($items as $item) {
             $mes_lis_shi_tot_tot_net_price_total_sum +=$item['mes_lis_shi_lin_amo_item_net_price'];
             $mes_lis_shi_tot_tot_selling_price_total_sum +=$item['mes_lis_shi_lin_amo_item_selling_price'];
@@ -287,17 +292,17 @@ $mes_lis_shi_tot_tot_unit_total_sum=0;
             ->where('dsv.mes_lis_shi_tra_dat_delivery_date', $delivery_date)
             ->where('dsv.mes_lis_shi_tra_goo_major_category', $major_category)
             ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $temperature_code);
-            // ->where('dsv.mes_lis_shi_tra_trade_number', $mes_lis_shi_tra_trade_number);
-            // ->where('ds.receive_datetime', $receive_datetime);
+        // ->where('dsv.mes_lis_shi_tra_trade_number', $mes_lis_shi_tra_trade_number);
+        // ->where('ds.receive_datetime', $receive_datetime);
 
-            if ($mes_lis_shi_lin_ite_gtin) {
-                $result=$result->where('dsi.mes_lis_shi_lin_ite_gtin', $mes_lis_shi_lin_ite_gtin);
-            }
-            $result=$result->whereNull('dsv.decision_datetime');
+        if ($mes_lis_shi_lin_ite_gtin) {
+            $result=$result->where('dsi.mes_lis_shi_lin_ite_gtin', $mes_lis_shi_lin_ite_gtin);
+        }
+        $result=$result->whereNull('dsv.decision_datetime');
 
         $result=$result->groupBy('dsv.mes_lis_shi_tra_trade_number');
         $result=$result->groupBy('dsi.mes_lis_shi_lin_ite_order_item_code');
-        $result=$result->orderBy('dsi.'.$sort_by,$sort_type)
+        $result=$result->orderBy('dsi.'.$sort_by, $sort_type)
         ->paginate($per_page);
 
 
@@ -306,7 +311,7 @@ $mes_lis_shi_tot_tot_unit_total_sum=0;
     public function decessionData(Request $request)
     {
         $dateTime = null;
-       $date_null = $request->date_null;
+        $date_null = $request->date_null;
         if (!$date_null) {
             $dateTime = date('Y-m-d H:i:s');
         }
@@ -319,7 +324,7 @@ $mes_lis_shi_tot_tot_unit_total_sum=0;
                         'decision_datetime' => $dateTime,
                         // 'mes_lis_shi_tra_dat_transfer_of_ownership_date' => $dateTime
                         ]);
-                }else{
+                } else {
                     data_shipment_voucher::where('data_shipment_voucher_id', $id)
                     ->whereNull('send_datetime')
                     ->update([
@@ -327,7 +332,6 @@ $mes_lis_shi_tot_tot_unit_total_sum=0;
                         // 'mes_lis_shi_tra_dat_transfer_of_ownership_date' => null
                         ]);
                 }
-
             }
         }
         return response()->json(['success' => '1','status'=>1]);

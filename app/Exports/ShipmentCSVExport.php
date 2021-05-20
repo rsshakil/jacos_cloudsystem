@@ -20,7 +20,7 @@ use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 use \Maatwebsite\Excel\Excel;
 
 // class ShipmentCSVExport implements FromQuery,WithHeadings,WithMapping,ShouldAutoSize
-class ShipmentCSVExport extends DefaultValueBinder implements WithStrictNullComparison, FromQuery,WithHeadings,ShouldAutoSize,WithColumnFormatting
+class ShipmentCSVExport extends DefaultValueBinder implements WithStrictNullComparison, FromQuery, WithHeadings, ShouldAutoSize, WithColumnFormatting
 {
     use Exportable;
     private $request;
@@ -41,7 +41,9 @@ class ShipmentCSVExport extends DefaultValueBinder implements WithStrictNullComp
     }
     public function query()
     {
+        \Log::debug(__METHOD__.':start---');
         $shipment_csv_data = Data_Controller::get_shipment_data($this->request);
+        \Log::debug(__METHOD__.':end---');
         return $shipment_csv_data;
     }
     public function columnFormats(): array
@@ -60,5 +62,4 @@ class ShipmentCSVExport extends DefaultValueBinder implements WithStrictNullComp
             'FO' => '0.000',
         ];
     }
-
 }

@@ -7,6 +7,8 @@ trait Csv
 {
     public static function create($filePath, $data, $header, $encode='UTF-8', $bom=false)
     {
+        \Log::debug(__METHOD__.':start---');
+
         if (!is_null($header)) {
             // ヘッダー付与
             array_unshift($data, $header);
@@ -21,13 +23,15 @@ trait Csv
             fwrite($stream, implode(',', $tmp)."\n");
         }
         rewind($stream);
-        if (strtolower($encode) == 'shift-jis') {
-            // shift-jis
-            $csv = mb_convert_encoding(stream_get_contents($stream), $encode, 'UTF-8');
-            // \Log::debug($csv);
+        if (strtolower($encode) == 'shift-win') {
+            // shift-win
+            $tmp = stream_get_contents($stream);
+            \Log::debug($tmp);
+            $csv = mb_convert_encoding($tmp, $encode, 'UTF-8');
+            \Log::debug($csv);
 
             $csv = str_replace("\n", "\r\n", $csv);
-            // \Log::debug($csv);
+        // \Log::debug($csv);
         } else {
             // utf-8
             if ($bom) {
@@ -39,6 +43,7 @@ trait Csv
 
         // file save
         Storage::put($filePath, $csv);
+        \Log::debug(__METHOD__.':end---');
     }
 
     /**

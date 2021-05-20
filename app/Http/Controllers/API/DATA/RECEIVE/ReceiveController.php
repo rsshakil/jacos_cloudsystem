@@ -269,7 +269,7 @@ class ReceiveController extends Controller
                 config('const.RECEIVE_CSV_PATH')."/". $new_file_name,
                 $shipment_data,
                 DataController::receiveCsvHeading(),
-                'shift-jis'
+                'config('const.CSV_FILE_ENCODE')'
             );
         }
 
