@@ -210,11 +210,16 @@ class InvoiceController extends Controller
     {
         $adm_user_id=$request->adm_user_id;
         $byr_buyer_id=$request->byr_buyer_id;
+        $cmn_connect_id =null;
+        $authUser = User::find($adm_user_id);
+            if (!$authUser->hasRole(config('const.adm_role_name'))) {
+                $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id, $byr_buyer_id);
+                $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+            }
         $Invoice_command = new InvoiceCommand();
-            $aaa=$Invoice_command->invoiceSchedulerCode(1,1);
-            // $aaa=$Invoice_command->invoiceSchedulerCode(1, 1);
-            return $aaa;
-            return response()->json(['message' => "Success",'status'=>1,'class'=>'success']);
+        $aaa=$Invoice_command->invoiceSchedulerCode(1,$cmn_connect_id);
+        return $aaa;
+            // return response()->json(['message' => "Success",'status'=>1,'class'=>'success']);
         // try {
         //     // Artisan::call('optimize', [], $this->getOutput());
         //     // Artisan::call('invoice:scheduler 1 '.$adm_user_id.' '.$byr_buyer_id);
