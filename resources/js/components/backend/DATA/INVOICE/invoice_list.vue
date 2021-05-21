@@ -162,7 +162,13 @@
         >
           <tr>
             <td class="cl_custom_color">取引先コード</td>
-            <td><input type="text" v-model="invoiceData.mes_lis_inv_pay_code" class="form-control" /></td>
+            <td>
+                <select class="form-control" name="" id="" v-model="invoiceData.mes_lis_inv_pay_code">
+                    <option :value="null">Please select partner code</option>
+                    <option v-for="(partner_code,i) in partner_codes" :value="partner_code.partner_code" :key="i">{{ partner_code.partner_code }}</option>
+                </select>
+            </td>
+            <!-- <td><input type="text" v-model="invoiceData.mes_lis_inv_pay_code" class="form-control" /></td> -->
             <td class="cl_custom_color">締日</td>
             <td>
                 <div class="input-group">
@@ -242,6 +248,7 @@ export default {
       invoiceCreateModal:false,
       order_customer_code_lists: {},
       showAllCustomerCodeListModal:false,
+      partner_codes:[],
       file: "",
       selected_byr: "0",
       invoiceData:{
@@ -292,6 +299,7 @@ export default {
     },
     viewInvoicePopup(){
       this.invoiceCreateModal = true;
+      this.invoiceData.mes_lis_inv_pay_code=null;
     },
 
     //get Table data
@@ -300,11 +308,11 @@ export default {
          let loader = Vue.$loading.show();
       axios.post(this.BASE_URL + "api/get_all_invoice_list",this.form)
         .then(({data}) => {
-            this.init(data.status);
           this.invoice_lists = data.invoice_list;
           this.invoice_lists_length=this.invoice_lists.data.length;
           this.invoice_data_lists = data.invoice_list.data;
           this.byr_buyer_lists = data.byr_buyer_list;
+          this.partner_codes = data.partner_codes;
           loader.hide();
         });
     },
