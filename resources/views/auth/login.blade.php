@@ -106,14 +106,14 @@
                                     <input type="submit" id="login" class="fadeIn second"
                                         value="{{ __('messages.login_text') }}">
                                 </div>
-                                <div class="col-md-6 offset-md-3" style="text-align: center; margin-top: -15px;">
+                                {{-- <div class="col-md-6 offset-md-3" style="text-align: center; margin-top: -15px;">
                                     @if (Route::has('password.request'))
                                     <a class="underlineHover"
                                         href="{{Config::get('app.url').'password/reset'}}">
                                         {{ __('messages.forgot_pass_text') }}
                                     </a>
                                     @endif
-                                </div>
+                                </div> --}}
                             </div>
                         </form>
 

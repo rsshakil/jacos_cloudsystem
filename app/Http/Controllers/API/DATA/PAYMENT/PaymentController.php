@@ -432,7 +432,11 @@ class PaymentController extends Controller
 
     public function get_payment_customer_code_list(Request $request)
     {
-        $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id, $request->byr_buyer_id);
+        // return $request->all();
+        // $adm_user_id=$request->adm_user_id;
+        $byr_buyer_id=$request->byr_buyer_id;
+        $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
+        // $cmn_connect_id = $this->all_used_fun->getCmnConnectId($adm_user_id, $byr_buyer_id);
         $result = DB::select("SELECT
         dpp.mes_lis_buy_code,
         dpp.mes_lis_buy_name,
@@ -444,12 +448,13 @@ class PaymentController extends Controller
        data_payments AS dp
        INNER JOIN data_payment_pays AS dpp ON dp.data_payment_id=dpp.data_payment_id
        LEFT JOIN data_payment_pay_details AS dppd ON dpp.data_payment_pay_id=dppd.data_payment_pay_id
-       WHERE dp.cmn_connect_id='".$cmn_connect_id."'
-       GROUP BY
-       dppd.mes_lis_pay_lin_sel_code,
-        dpp.mes_lis_pay_pay_code");
+       INNER JOIN cmn_connects AS cc ON dp.cmn_connect_id=cc.cmn_connect_id
+       WHERE cc.byr_buyer_id=$byr_buyer_id AND cc.slr_seller_id=$slr_seller_id
+       GROUP BY dppd.mes_lis_pay_lin_sel_code, dpp.mes_lis_pay_pay_code");
         return response()->json(['order_customer_code_lists' => $result]);
+        // WHERE dp.cmn_connect_id='".$cmn_connect_id."'
     }
+
     public function get_payment_trade_code_list(Request $request)
     {
         $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id, $request->byr_buyer_id);
@@ -469,5 +474,38 @@ class PaymentController extends Controller
         AND dppd.mes_lis_pay_lin_det_pay_code IN ($pay_code_list)
         GROUP BY dppd.mes_lis_pay_lin_tra_code");
         return response()->json(['order_customer_code_lists' => $result]);
+    }
+    public function unpaidPaymentPist(Request $request)
+    {
+        // return $request->all();
+        $byr_buyer_id=$request->byr_buyer_id;
+        $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
+        $result = DB::select(" SELECT
+        dipd.mes_lis_inv_lin_lin_trade_number_reference,
+        dipd.mes_lis_inv_lin_tra_code,
+        dipd.mes_lis_inv_lin_tra_name,
+        dipd.mes_lis_inv_lin_det_transfer_of_ownership_date,
+        dipd.mes_lis_inv_lin_det_amo_req_plus_minus,
+        dipd.mes_lis_inv_lin_det_amo_requested_amount
+        FROM
+        data_invoices AS di
+        INNER JOIN cmn_connects AS cc ON cc.cmn_connect_id=di.cmn_connect_id
+        INNER JOIN data_invoice_pays AS dip ON dip.data_invoice_id=di.data_invoice_id
+        INNER JOIN data_invoice_pay_details AS dipd ON dipd.data_invoice_pay_id=dip.data_invoice_pay_id
+        left JOIN data_payment_pays AS dpp ON
+        dpp.mes_lis_pay_pay_code=dip.mes_lis_inv_pay_code AND
+        dpp.mes_lis_pay_per_end_date=dip.mes_lis_inv_per_end_date and
+        dpp.mes_lis_buy_code=dip.mes_lis_buy_code
+        WHERE
+        cc.byr_buyer_id=$byr_buyer_id AND
+        cc.slr_seller_id=$slr_seller_id AND
+        dpp.data_payment_pay_id IS null
+        ORDER BY
+        dipd.mes_lis_inv_lin_lin_trade_number_reference,
+        dipd.mes_lis_inv_lin_tra_code,
+        dipd.mes_lis_inv_lin_tra_name,
+        dipd.mes_lis_inv_lin_det_transfer_of_ownership_date,
+        dipd.mes_lis_inv_lin_det_amo_requested_amount");
+        return response()->json(['unpaid_list' => $result]);
     }
 }

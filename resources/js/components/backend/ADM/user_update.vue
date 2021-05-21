@@ -183,7 +183,6 @@ export default {
 
     //User Update
     updateUser() {
-        this.init();
       this.form.post(this.BASE_URL+"api/users_update")
         .then(({ data }) => {
             if (data.message=='fname_required') {

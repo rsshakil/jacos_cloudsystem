@@ -126,6 +126,7 @@ Route::post('get_payment_item_detail_list', 'API\DATA\PAYMENT\PaymentController@
 Route::post('payment_download', 'API\DATA\PAYMENT\PaymentController@paymentDownload');
 Route::post('/get_payment_customer_code_list', 'API\DATA\PAYMENT\PaymentController@get_payment_customer_code_list');
 Route::post('/get_payment_trade_code_list', 'API\DATA\PAYMENT\PaymentController@get_payment_trade_code_list');
+Route::post('/unpaid_payment_list', 'API\DATA\PAYMENT\PaymentController@unpaidPaymentPist');
 
 // Payment End
 Route::get('get_byr_return_list/{adm_user_id}', 'API\DATA\RTN\ReturnController@getReturnItemList');
@@ -161,6 +162,7 @@ Route::post('/shipment_update', 'API\DATA\SHIPMENT\ShipmentController@shipmentUp
 Route::post('/get_permissions_for_buyer', 'API\BYR\ByrController@getPermissionForBuyer');
 Route::post('/get_seller_list', 'API\SLR\SlrController@getSellerList');
 Route::post('/buyer_partner_create', 'API\BYR\ByrController@buyerPartnerCreate');
+Route::post('/buyer_partner_delete', 'API\BYR\ByrController@buyerPartnerDelete');
 // Route::post('/order_create_fixed_length', 'API\BmsOrderController@orderCreateDeleteFixedLength');
 // Route::post('/delete_old_files', 'API\BmsOrderController@orderCreateDeleteFixedLength');
 // Pdf Platform

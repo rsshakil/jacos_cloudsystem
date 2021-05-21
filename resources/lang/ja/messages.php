@@ -103,7 +103,7 @@ return [
     'save' => '保存する',
     'image_set' => '画像なし',
     'reset_password' => 'パスワードを再設定する',
-    'send_pass_reset' => 'パスワード変更のURLを送信',
+    'send_pass_reset' => 'パスワード変更のURLをメールで送信しました',
     'password_sent' => 'Password Send',
     'choose' => '選択',
     'user_select' => 'ユーザーを選択してください',

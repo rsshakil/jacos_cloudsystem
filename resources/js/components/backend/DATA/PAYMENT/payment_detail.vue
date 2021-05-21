@@ -33,6 +33,9 @@
     </div>
     </div>
     <div class="col-12" style="text-align: right;float:right">
+      <button class="btn btn-primary" type="button" @click="openSlipModal">
+        未払伝票確認
+      </button>
       <button class="btn btn-primary active" type="button">
         支払案内書
       </button>
@@ -153,7 +156,58 @@
 
       </div>
     </div>
+    <b-modal size="xl" :hide-backdrop="true" title="未払伝票確認" cancel-title="閉じる" v-model="unpaid_slip_modal" :hide-footer="true" :draggable="true">
+      <div class="panel-body">
+      <div class="row">
+        <div class="col-6">
+          <p style="margin:0">出荷データと受領データで差異が発生している伝票のみ表示されています。</p>
+          <p style="margin:0">未払となった請求伝票のみ表示されています。</p>
+          <p style="margin:0">黄色の項目は差異が発生している項目です。</p>
+        </div>
+        <div class="col-6">
+        <h6>ダウンロードを押すと、比較データがダウンロードされます</h6>
+           <button class="btn btn-outline-primary" style="float:right;margin-bottom:15px;" type="button" :disabled="is_disabled(unpaid_lists?true:false)" @click="unpaid_data_download(1)">
+        <b-icon icon="download" animation="fade" font-scale="1.2"></b-icon>
+        {{ myLang.download }}
+      </button>
+        </div>
+      </div>
+      <table
+            class="table table-striped table-bordered order_item_details_table"
+            style="overflow-x: scroll"
+          >
+          <thead>
+
+            <tr>
+              <th>伝票番号</th>
+              <th>直接納品先</th>
+              <th>計上日</th>
+              <th>請求金額</th>
+          </tr>
+          </thead>
+          <tbody>
+          <!-- <tr> -->
+          <tr v-for="(value,index) in unpaid_lists" :key="index">
+            <td>{{value.mes_lis_inv_lin_lin_trade_number_reference}}</td>
+            <td>{{value.mes_lis_inv_lin_tra_code}} {{value.mes_lis_inv_lin_tra_name}}</td>
+            <td>{{value.mes_lis_inv_lin_det_transfer_of_ownership_date}}</td>
+            <td class="text-right">{{value.mes_lis_inv_lin_det_amo_req_plus_minus}} {{ value.mes_lis_inv_lin_det_amo_requested_amount | priceFormat }}</td>
+            <!-- <td :class="sameCheck(value.shipment_delivery_date,value.mes_lis_acc_tra_dat_transfer_of_ownership_date)">{{ value.shipment_delivery_date }}</td>
+            <td :class="sameCheck(value.shipment_delivery_date,value.mes_lis_acc_tra_dat_transfer_of_ownership_date)">{{value.mes_lis_acc_tra_dat_transfer_of_ownership_date}}</td>
+            <td class="text-right" :class="sameCheck(value.mes_lis_shi_tot_tot_net_price_total,value.mes_lis_acc_tot_tot_net_price_total)">{{ zeroShow(value.mes_lis_shi_tot_tot_net_price_total) | priceFormat}}</td>
+            <td class="text-right" :class="sameCheck(value.mes_lis_shi_tot_tot_net_price_total,value.mes_lis_acc_tot_tot_net_price_total)">{{zeroShow(value.mes_lis_acc_tot_tot_net_price_total) | priceFormat}}</td> -->
+            <!-- <td><button @click="comparedItemList(value)" class="btn btn-primary">確認</button></td> -->
+          </tr>
+          </tbody>
+
+        </table>
+        <div class="col-12 text-center">
+        <button class="btn btn-primary" style="text-align:center" @click="closeSlipModal">閉じる</button>
+      </div>
+      </div>
+    </b-modal>
   </div>
+
 </template>
 <script>
 export default {
@@ -164,6 +218,8 @@ export default {
       paymentdetailTopTable:{},
       pdtableleft:[],
       paymentdetailRghtTable:[],
+      unpaid_slip_modal:false,
+      unpaid_lists:[],
       form: new Form({
         select_field_per_page_num: 10,
         page: 1,
@@ -211,6 +267,24 @@ export default {
            this.init(data.status);
           this.downloadFromUrl(data);
         });
+    },
+    openSlipModal(){
+        axios.post(this.BASE_URL + "api/unpaid_payment_list", this.form)
+        .then(({ data }) => {
+            console.log(data);
+            this.unpaid_lists=data.unpaid_list;
+        });
+       this.unpaid_slip_modal = true;
+    },
+    closeSlipModal(){
+       this.unpaid_slip_modal = false;
+    },
+    unpaid_data_download(){
+        // axios.post(this.BASE_URL + "api/invoice_compare_data_download", this.form)
+        // .then(({ data }) => {
+        //     this.downloadFromUrl(data);
+        //     // this.compareDataList = data.voucherList;
+        // });
     },
 
   },

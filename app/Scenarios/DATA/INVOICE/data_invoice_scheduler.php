@@ -124,11 +124,11 @@ class data_invoice_scheduler
                 $data_invoice_pay_details_array['mes_lis_inv_lin_det_amo_requested_amount']=$shipment_data['mes_lis_shi_tot_tot_net_price_total'];
                 $data_invoice_pay_details_array['mes_lis_inv_lin_det_amo_req_plus_minus']='+';
                 $data_invoice_pay_details_array['mes_lis_inv_lin_det_amo_tax']=$shipment_data['mes_lis_shi_tot_tot_tax_total'];
-                $data_invoice_pay_details_array['mes_lis_inv_lin_det_balance_carried_code']='50'; // Static Data
+                $data_invoice_pay_details_array['mes_lis_inv_lin_det_balance_carried_code']='01'; // Static Data
                 $data_invoice_pay_details_array['mes_lis_inv_lin_det_credit_or_unsettlement']='';
                 $data_invoice_pay_details_array['mes_lis_inv_lin_det_pay_code']='1001'; //schedule: 1001
-                $data_invoice_pay_details_array['mes_lis_inv_lin_det_tax_tax_type_code']='';
-                $data_invoice_pay_details_array['mes_lis_inv_lin_det_tax_tax_rate']='';
+                $data_invoice_pay_details_array['mes_lis_inv_lin_det_tax_tax_type_code']=$shipment_data['mes_lis_shi_tra_tax_tax_type_code'];
+                $data_invoice_pay_details_array['mes_lis_inv_lin_det_tax_tax_rate']=$shipment_data['mes_lis_shi_tra_tax_tax_rate'];
                  //static
                 $data_invoice_pay_details_array['data_invoice_pay_id']=$data_invoice_pay_id;
                 data_invoice_pay_detail::insert($data_invoice_pay_details_array);
@@ -141,13 +141,13 @@ class data_invoice_scheduler
         } catch (\Exception $e) {
             DB::rollback();
             Log::error($e->getMessage());
-            return ['message' => $e->getMessage(), 'status' => 0];
+            return ['message' => $e->getMessage(), 'status' => 0,'data'=>['class'=>'error']];
             // something went wrong
         }
 // return $data_count;
 // return response()->json(['message' => "success", 'status' => 1,'total_success_data'=>$data_count]);
         // return ['message' => $data_count, 'status' => 1];
-        return ['message' => $data_count, 'status' => 1,'total_success_data'=>$data_count];
+        return ['message' => "success", 'status' => 1,'data'=>['total_success_data'=>$data_count,'class'=>'success']];
     }
     public static function shipmentQuery($request){
         // \Log::info($request->all());

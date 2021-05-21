@@ -131,7 +131,6 @@ export default {
 
     //Insert role
     SubmitRole() {
-      this.init();
       this.form
         .post(this.BASE_URL+"api/role")
         .then(({data}) => {
@@ -160,7 +159,6 @@ export default {
         });
     },
     editRole(item) {
-      this.init();
       this.form.clear();
       this.form.reset();
        this.form.role_name=item.role_name;
@@ -173,7 +171,6 @@ export default {
     },
     //Delete role
             deleteRole(id){
-              this.init();
               this.delete_sweet().then((result) => {
               if (result.value) {
                 //Send Request to server

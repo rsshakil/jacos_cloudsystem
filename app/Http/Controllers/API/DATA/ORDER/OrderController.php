@@ -368,7 +368,7 @@ class OrderController extends Controller
         // $form_search = $request->form_search;
         $data_order_id = $request->order_info['data_order_id'];
         $order_info=$request->order_info;
-        Log::info($order_info);
+        // Log::info($order_info);
         $sort_by = 'data_shipment_voucher_id';//$request->sort_by;
         $sort_type = 'asc';//$request->sort_type;
         $par_shi_code = $request->par_shi_code;
