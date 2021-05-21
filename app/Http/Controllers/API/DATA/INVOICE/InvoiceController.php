@@ -91,7 +91,8 @@ class InvoiceController extends Controller
         'dipd.mes_lis_inv_lin_det_amo_requested_amount',
         DB::raw('sum(dipd.mes_lis_inv_lin_det_amo_requested_amount) as total_amount'),
 
-        DB::raw('COUNT(distinct dipd.data_invoice_pay_id) AS cnt'),
+        // DB::raw('COUNT(distinct dipd.data_invoice_pay_id) AS cnt'),
+        DB::raw('COUNT(distinct dipd.data_invoice_pay_detail_id) AS cnt'),
         DB::raw('COUNT( isnull( dipd.decision_datetime) OR NULL) AS decision_cnt'),
         DB::raw('COUNT( isnull( dipd.send_datetime)  OR NULL) AS send_cnt'),
         )
