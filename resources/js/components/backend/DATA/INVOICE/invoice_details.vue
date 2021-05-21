@@ -335,15 +335,8 @@
           </div>
         </div>
       </div>
-      <b-modal
-      size="lg"
-      :hide-backdrop="true"
-      title="請求伝票追加"
-      ok-title="追加"
-      cancel-title="キャンセル"
-      @ok.prevent="update_invoice_detail()"
-      v-model="addInvoiceDetailModal"
-    >
+      <b-modal size="lg" :hide-backdrop="true" title="請求伝票追加" ok-title="追加" cancel-title="キャンセル"
+      @ok.prevent="update_invoice_detail()" v-model="addInvoiceDetailModal">
       <div class="panel-body add_item_body">
         <p v-if="errors.length">
         <b>次の間違いを正しくしてください:</b>
@@ -418,15 +411,8 @@
       </div>-->
     </b-modal>
 
-<b-modal
-      size="lg"
-      :hide-backdrop="true"
-      title="請求伝票変更"
-      ok-title="変更"
-      cancel-title="キャンセル"
-      @ok.prevent="update_invoice_detail()"
-      v-model="editInvoiceDetailModal"
-    >
+<b-modal size="lg" :hide-backdrop="true" title="請求伝票変更" ok-title="変更" cancel-title="キャンセル"
+      @ok.prevent="update_invoice_detail()" v-model="editInvoiceDetailModal">
       <div class="panel-body add_item_body">
         <form>
           <p class="text-center">請求伝票を変更できます</p>
@@ -495,15 +481,7 @@
       </div>-->
     </b-modal>
 
-<b-modal
-      size="xl"
-      :hide-backdrop="true"
-      title="出荷・受領比較"
-      cancel-title="閉じる"
-      v-model="invoiceCompareModal"
-      :hide-footer="true"
-      :draggable="true"
-    >
+<b-modal size="xl" :hide-backdrop="true" title="出荷・受領比較" cancel-title="閉じる" v-model="invoiceCompareModal" :hide-footer="true" :draggable="true">
       <div class="panel-body">
       <div class="row">
         <div class="col-6">

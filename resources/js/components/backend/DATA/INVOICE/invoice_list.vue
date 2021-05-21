@@ -334,22 +334,20 @@ export default {
                 if (result.value) {
                     axios.post(this.BASE_URL + "api/exec_invoice_schedular", this.form)
                     .then(({ data }) => {
-                        console.log(data);
+                        // console.log(data);
                         if (data.status==1) {
                             Fire.$emit("LoadByrinvoice");
                             _this.alert_title = "完了";
-                            _this.alert_icon = 'success';
-                            if (data.message==0) {
+                            if (data.data.total_success_data==0) {
                                 _this.alert_text ='請求対象データがありません';
                             }else{
-                                _this.alert_text =data.message+' data are saved';
+                                _this.alert_text =data.data.total_success_data+' data are saved';
                             }
                         }else{
                             _this.alert_text =data.message;
                             _this.alert_title = "Error";
-                            _this.alert_icon = 'error';
                         }
-
+                        _this.alert_icon = data.data.class;
                         _this.sweet_normal_alert();
                     });
                 }

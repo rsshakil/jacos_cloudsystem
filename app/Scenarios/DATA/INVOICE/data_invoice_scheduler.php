@@ -141,13 +141,13 @@ class data_invoice_scheduler
         } catch (\Exception $e) {
             DB::rollback();
             Log::error($e->getMessage());
-            return ['message' => $e->getMessage(), 'status' => 0];
+            return ['message' => $e->getMessage(), 'status' => 0,'data'=>['class'=>'error']];
             // something went wrong
         }
 // return $data_count;
 // return response()->json(['message' => "success", 'status' => 1,'total_success_data'=>$data_count]);
         // return ['message' => $data_count, 'status' => 1];
-        return ['message' => $data_count, 'status' => 1,'total_success_data'=>$data_count];
+        return ['message' => "success", 'status' => 1,'data'=>['total_success_data'=>$data_count,'class'=>'success']];
     }
     public static function shipmentQuery($request){
         // \Log::info($request->all());
