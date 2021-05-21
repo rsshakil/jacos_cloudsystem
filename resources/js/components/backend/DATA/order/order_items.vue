@@ -89,8 +89,8 @@
         <span class="pagi" style="width:100%">
             <ul class="list-inline">
               <li v-for="(item,index) in order_detail_list_paginates" :key="index" v-if="data_order_voucher_id==item.data_shipment_voucher_id">
-                <span v-if="index>=1"><a href="#" class="btn btn-primary" @click="move_next_prev(order_detail_list_paginates[index-1].data_shipment_voucher_id)">前</a></span>
-                <span style="float:right;" v-if="index<order_detail_list_paginates.length-1"><a href="#" class="btn btn-primary" @click="move_next_prev(order_detail_list_paginates[index+1].data_shipment_voucher_id)">次</a></span>
+                <span v-if="index>=1"><a href="#" class="btn btn-primary" @click="move_next_prev(order_detail_list_paginates[index-1].data_shipment_voucher_id)">＜前伝票</a></span>
+                <span v-if="index<order_detail_list_paginates.length-1"><a href="#" class="btn btn-primary" @click="move_next_prev(order_detail_list_paginates[index+1].data_shipment_voucher_id)">次伝票＞</a></span>
                 
                 </li>
                 </ul>
