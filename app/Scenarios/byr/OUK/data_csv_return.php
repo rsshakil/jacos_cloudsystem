@@ -39,6 +39,7 @@ class data_csv_return extends ScenarioBase
         $cur_date=date('y-m-d h:i:s');
         $rtn_flg = true;
         $trade_number = '';
+        $voucher_key='';
         DB::beginTransaction();
         try {
             foreach ($dataArr as $key => $value) {
@@ -92,8 +93,8 @@ class data_csv_return extends ScenarioBase
                     $rtn_flg =false;
                 }
 
-                if (!data_return_voucher::where('mes_lis_ret_tra_trade_number', $value[31])
-            ->where('mes_lis_ret_tra_dat_transfer_of_ownership_date', $value[59])->exists()) {
+                if ($voucher_key != $value[31].'-'.$value[59]) {
+                    $voucher_key = $value[31].'-'.$value[59];
                     $data_return_voucher_array['mes_lis_ret_tra_trade_number']=$value[31];
                     $data_return_voucher_array['mes_lis_ret_tra_additional_trade_number']=$value[32];
                     $data_return_voucher_array['mes_lis_ret_fre_shipment_number']=$value[33];

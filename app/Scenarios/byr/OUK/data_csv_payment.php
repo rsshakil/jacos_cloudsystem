@@ -38,7 +38,8 @@ class data_csv_payment extends ScenarioBase
         $this->checkCsvData($dataArr, 71);
 
         $payment_flg = true;
-        // $trade_number = '';
+        
+        $pay_key = '';
         $cur_date=date('y-m-d h:i:s');
         DB::beginTransaction();
         try {
@@ -84,29 +85,22 @@ class data_csv_payment extends ScenarioBase
 
                     $payment_flg =false;
                 }
-                // if ($trade_number !=$value[31].'-'.$value[32]) {
-                $data_payment_pay_array['mes_lis_buy_code']=$value[27];
-                $data_payment_pay_array['mes_lis_buy_gln']=$value[28];
-                $data_payment_pay_array['mes_lis_buy_name']=$value[29];
-                $data_payment_pay_array['mes_lis_buy_name_sbcs']=$value[30];
-                $data_payment_pay_array['mes_lis_pay_pay_code']=$value[32];
-                $data_payment_pay_array['mes_lis_pay_pay_id']=$value[31];  //new added
-                $data_payment_pay_array['mes_lis_pay_pay_gln']=$value[33];
-                $data_payment_pay_array['mes_lis_pay_pay_name']=$value[34];
-                $data_payment_pay_array['mes_lis_pay_pay_name_sbcs']=$value[35];
-                $data_payment_pay_array['mes_lis_pay_per_begin_date']=$value[36]; //new added
-                $data_payment_pay_array['mes_lis_pay_per_end_date']=$value[37]; // new added
-                $data_payment_pay_array['data_payment_id']=$data_payment_id;
-                $data_payment_count=data_payment_pay::where('mes_lis_buy_code', $value[27])
-                ->where('mes_lis_pay_pay_gln', $value[33])
-                ->where('mes_lis_pay_pay_id', $value[31])
-                ->where('mes_lis_pay_per_end_date', $value[37])
-                ->get()->count();
-                if ($data_payment_count<=0) {
+                if ($pay_key !=$value[27].'-'.$value[36]) {
+                    $pay_key =$value[27].'-'.$value[36];
+                    $data_payment_pay_array['mes_lis_buy_code']=$value[27];
+                    $data_payment_pay_array['mes_lis_buy_gln']=$value[28];
+                    $data_payment_pay_array['mes_lis_buy_name']=$value[29];
+                    $data_payment_pay_array['mes_lis_buy_name_sbcs']=$value[30];
+                    $data_payment_pay_array['mes_lis_pay_pay_code']=$value[32];
+                    $data_payment_pay_array['mes_lis_pay_pay_id']=$value[31];  //new added
+                    $data_payment_pay_array['mes_lis_pay_pay_gln']=$value[33];
+                    $data_payment_pay_array['mes_lis_pay_pay_name']=$value[34];
+                    $data_payment_pay_array['mes_lis_pay_pay_name_sbcs']=$value[35];
+                    $data_payment_pay_array['mes_lis_pay_per_begin_date']=$value[36]; //new added
+                    $data_payment_pay_array['mes_lis_pay_per_end_date']=$value[37]; // new added
+                    $data_payment_pay_array['data_payment_id']=$data_payment_id;
                     $data_payment_pay_id = data_payment_pay::insertGetId($data_payment_pay_array);
                 }
-
-                // }
                 //new Added
                 $data_payment_details_array['mes_lis_pay_lin_lin_trade_number_reference']=$value[38];
                 $data_payment_details_array['mes_lis_pay_lin_lin_issue_classification_code']=$value[39];
