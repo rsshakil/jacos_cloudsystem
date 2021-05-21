@@ -71,6 +71,7 @@
                 <th style="cursor: pointer">{{ myLang.customer_code }}</th>
                 <th style="cursor: pointer">{{ myLang.status }}</th>
                 <th style="cursor: pointer">Edit</th>
+                <th style="cursor: pointer">Delete</th>
                 <th style="cursor: pointer">{{ myLang.details }}</th>
               </tr>
             </thead>
@@ -91,12 +92,13 @@
                   </select>
                 </td>
                 <td>
-                  <button
-                    class="btn pull-right text-right btn-warning"
-                    style="float: right"
-                    @click="partner_update_modal(value)"
-                  >
+                  <button class="btn pull-right text-right btn-warning" style="float: right" @click="partner_update_modal(value)">
                     Edit
+                  </button>
+                </td>
+                <td>
+                  <button class="btn pull-right text-right btn-danger" style="float: right" @click="partner_delete(value)">
+                    Delete
                   </button>
                 </td>
                 <td>
@@ -127,9 +129,7 @@
       <div class="panel-body add_item_body">
         <form>
           <div class="form-group row">
-            <label for="seller_name" class="col-sm-3 col-form-label"
-              >Wholesaller Name</label
-            >
+            <label for="seller_name" class="col-sm-3 col-form-label">Wholesaller Name</label>
             <div class="col-sm-9">
               <multiselect
                 v-model="form.selected_sellers"
@@ -274,12 +274,9 @@ export default {
     },
     partner_update_modal(value) {
       // console.log(value)
-      axios
-        .post(this.BASE_URL + "api/get_seller_list", {
+      axios.post(this.BASE_URL + "api/get_seller_list", {
           cmn_connect_id: value.cmn_connect_id,
-        })
-        .then(({ data }) => {
-          this.init(data.status);
+        }).then(({ data }) => {
           this.sellers = data.sellers;
           this.form.selected_sellers = data.selected_sellers;
           this.form.partner_code = value.partner_code;
@@ -289,6 +286,23 @@ export default {
           this.partner_create_modal = true;
         });
     },
+    partner_delete(value){
+        console.log(value);
+        this.delete_sweet().then((result) => {
+              if (result.value) {
+                  axios.post(this.BASE_URL + "api/buyer_partner_delete", {
+                    cmn_connect_id: value.cmn_connect_id,
+                    }).then(({ data }) => {
+                        console.log(data)
+                        this.alert_text = data.message;
+                        this.alert_title = data.title;
+                        this.alert_icon = data.class_name;
+                        this.company_partner_list();
+                        this.sweet_normal_alert();
+                    })
+              }
+        })
+    }
   },
 
   created() {
