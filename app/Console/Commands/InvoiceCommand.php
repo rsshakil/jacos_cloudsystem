@@ -66,9 +66,6 @@ class InvoiceCommand extends Command
         } else {
             $cmn_connects=cmn_connect::select('cmn_connect_id')->get();
             foreach ($cmn_connects as $key => $cmn_connect) {
-                // if ($key==1) {
-                //     break;
-                // }
                 $this->invoiceSchedulerCode($arg, $cmn_connect->cmn_connect_id);
             }
         }

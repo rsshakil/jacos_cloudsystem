@@ -146,7 +146,8 @@ class data_invoice_scheduler
         }
 // return $data_count;
 // return response()->json(['message' => "success", 'status' => 1,'total_success_data'=>$data_count]);
-        return ['message' => $data_count, 'status' => 1];
+        // return ['message' => $data_count, 'status' => 1];
+        return ['message' => $data_count, 'status' => 1,'total_success_data'=>$data_count];
     }
     public static function shipmentQuery($request){
         // \Log::info($request->all());
