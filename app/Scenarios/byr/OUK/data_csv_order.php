@@ -54,6 +54,9 @@ class data_csv_order extends ScenarioBase
         // csv
         $dataArr = $this->all_functions->csvReader($file_info['save_path'], 1);
 
+        // data check
+        $this->checkCsvData($dataArr, 158);
+
         $order_flg = true;
         $trade_number = '';
         DB::beginTransaction();

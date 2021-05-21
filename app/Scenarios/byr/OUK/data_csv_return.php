@@ -33,6 +33,9 @@ class data_csv_return extends ScenarioBase
         // csv
         $dataArr = $this->all_functions->csvReader($file_info['save_path'], 1);
 
+        // data check
+        $this->checkCsvData($dataArr, 131);
+
         $cur_date=date('y-m-d h:i:s');
         $rtn_flg = true;
         $trade_number = '';

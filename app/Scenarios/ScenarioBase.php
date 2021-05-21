@@ -32,7 +32,7 @@ class ScenarioBase
         \Log::debug(__METHOD__.':start---');
 
         if (!array_key_exists('up_file', $request->all())) {
-            throw new JcsException($ret['File not found or file path not valid']);
+            throw new JcsException('File not found or file path not valid');
         }
 
         // ファイルアップロード
@@ -71,5 +71,22 @@ class ScenarioBase
         
         \Log::debug(__METHOD__.':end---');
         return $connect_info->cmn_connect_id;
+    }
+    
+    /**
+     * checkCsvData
+     *
+     * @param  mixed $dataLen
+     * @return void
+     */
+    public function checkCsvData($dataArr, $dataLen)
+    {
+        // data check
+        if (count($dataArr) === 0) {
+            // 空データ
+            throw new JcsException('Csv data is empty');
+        } elseif (count($dataArr[0]) !==$dataLen) {
+            throw new JcsException('not match column count');
+        }
     }
 }

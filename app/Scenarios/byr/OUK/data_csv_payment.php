@@ -33,7 +33,10 @@ class data_csv_payment extends ScenarioBase
                 
         // csv
         $dataArr = $this->all_functions->csvReader($file_info['save_path'], 1);
-        
+
+        // data check
+        $this->checkCsvData($dataArr, 71);
+
         $payment_flg = true;
         // $trade_number = '';
         $cur_date=date('y-m-d h:i:s');

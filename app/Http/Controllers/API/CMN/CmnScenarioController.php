@@ -115,7 +115,11 @@ class CmnScenarioController extends Controller
             \Log::debug(__METHOD__.':end---');
         }
 
-        return ['status'=>$this->success, 'message'=>$ret['message']];
+        $ret_data = '';
+        if (isset($ret['data'])) {
+            $ret_data = $ret['data'];
+        }
+        return ['status'=>$this->success, 'message'=>$ret['message'],'data'=>$ret_data];
     }
 
     private function getScenarioInfo($cmn_scenario_id, $cmn_scenario_name)
