@@ -1216,7 +1216,7 @@ export default {
                 if (data.status==0) {
                     _this.alert_icon = "error";
                     _this.alert_title = "エラー";
-                    loaderrrss.hide();
+                    
                 }else{
                     _this.alert_icon = "success";
                     _this.alert_title = "完了";
@@ -1227,6 +1227,7 @@ export default {
             //   '出荷データアップロード';
               _this.sweet_normal_alert();
               e.target.value = '';
+              loaderrrss.hide();
             });
         }else{
             e.target.value = '';
