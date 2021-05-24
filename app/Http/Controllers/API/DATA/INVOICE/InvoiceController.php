@@ -127,12 +127,12 @@ class InvoiceController extends Controller
         }
         // will confirm
         // $result=$result->groupBy('dipd.mes_lis_inv_lin_lin_trade_number_reference');
-        $result=$result->groupBy('data_invoices.created_at')
+        $result=$result->groupBy('data_invoices.data_invoice_id')
         ->orderBy($table_name.$sort_by, $sort_type)
         ->paginate($per_page);
         $byr_buyer = $this->all_used_fun->get_company_list($cmn_company_id);
         // return response()->json(['invoice_list' => $result, 'byr_buyer_list' => $byr_buyer]);
-        $partner_codes=cmn_connect::select('partner_code')->where('byr_buyer_id',$byr_buyer_id)->where('slr_seller_id',$slr_seller_id)->get();
+        $partner_codes=cmn_connect::select('partner_code')->where('byr_buyer_id', $byr_buyer_id)->where('slr_seller_id', $slr_seller_id)->get();
         Log::debug(__METHOD__.':end---');
         return response()->json(['invoice_list' => $result, 'byr_buyer_list' => $byr_buyer,'partner_codes'=>$partner_codes]);
     }
