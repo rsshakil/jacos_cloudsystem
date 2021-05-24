@@ -92,7 +92,7 @@
                 <th>原価全額</th>
                 <th>売単価</th>
                 <th>売価金額</th>
-                <th>訂正理由</th>
+              <!--  <th>訂正理由</th>-->
               </tr>
 
             </thead>
@@ -143,14 +143,15 @@
                 <td class="text-right"><!--{{order_item_detail_list.mes_lis_acc_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_acc_lin_qua_shi_quantity}}-->
                 {{order_item_detail_list.mes_lis_acc_lin_amo_item_selling_price | priceFormat}}
                 </td>
-                <td><!--{{order_item_detail_list.mes_lis_acc_lin_qua_rec_reason_code}} {{getbyrjsonValueBykeyName('mes_lis_acc_lin_qua_rec_reason_code',order_item_detail_list.mes_lis_acc_lin_qua_rec_reason_code,'receives',buyer_settings)}}
+              <!--  <td>-->
+                <!--{{order_item_detail_list.mes_lis_acc_lin_qua_rec_reason_code}} {{getbyrjsonValueBykeyName('mes_lis_acc_lin_qua_rec_reason_code',order_item_detail_list.mes_lis_acc_lin_qua_rec_reason_code,'receives',buyer_settings)}}
                 <select v-model="order_item_detail_list.mes_lis_acc_lin_qua_rec_reason_code" class="form-control ">
                 <option v-for="item in mes_lis_acc_lin_qua_rec_reason_codeList" :value="Object.keys(item)[0]">{{Object.values(item)[0]}}</option>
                 </select>-->
                 <!--<input type="hidden" v-model="totalCostPrice += order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity">
                 <input type="hidden" v-model="totalSellingPrice += order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity">-->
-                {{order_item_detail_list.mes_lis_acc_lin_qua_rec_reason_code}}
-                </td>
+               <!-- {{order_item_detail_list.mes_lis_acc_lin_qua_rec_reason_code}}
+                </td>-->
               </tr>
               <tr v-if="order_item_detail_lists && order_item_detail_lists.length==0">
                 <td class="text-center" colspan="12">データがありません</td>
@@ -169,7 +170,6 @@
               <th style="text-align:right;">{{totalCostPriceVal | priceFormat}}</th>
               <th style="background:#538ED3;color:#fff;text-align:center;">売価全額<br>合計</th>
               <th style="text-align:right;">{{totalSellingPriceVal | priceFormat}}</th>
-              <th></th>
               </tr>
             </tfoot>
 
