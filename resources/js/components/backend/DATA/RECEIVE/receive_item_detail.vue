@@ -2,31 +2,32 @@
   <div>
     <div class="row">
 
-      <div class="col-12" style="padding: 10px">
-        <table class="table orderTopDetailTable table-bordered" style="width: 100%">
+      <div class="col-12">
+      <div class="col-12" style="background: #d8e3f0; padding: 10px;margin-bottom: 20px;">
+        <table class="table orderDetailTable table-bordered" style="width: 100%">
           <tr>
             <td class="cl_custom_color">受信日時</td>
             <td><span v-if="order_item_lists && Object.keys(order_item_lists).length">{{order_item_lists.receive_datetime}}</span></td>
             <td class="cl_custom_color">取引先</td>
-            <td colspan="5"><span v-if="order_item_lists && Object.keys(order_item_lists).length">{{order_item_lists.mes_lis_acc_par_sel_code}} {{order_item_lists.mes_lis_acc_par_sel_name}}</span></td>
+            <td><span v-if="order_item_lists && Object.keys(order_item_lists).length">{{order_item_lists.mes_lis_acc_par_sel_code}} {{order_item_lists.mes_lis_acc_par_sel_name}}</span></td>
+           <td class="cl_custom_color">便</td>
+            <td> <span v-if="order_item_lists && Object.keys(order_item_lists).length">{{getbyrjsonValueBykeyName('mes_lis_ord_log_del_delivery_service_code',order_item_lists.mes_lis_acc_log_del_delivery_service_code,'orders',buyer_settings)}}</span></td>
+            
           </tr>
           <tr>
             <td class="cl_custom_color">納品日</td>
             <td><span v-if="order_item_lists && Object.keys(order_item_lists).length">{{order_item_lists.mes_lis_acc_tra_dat_transfer_of_ownership_date}}</span></td>
             <td class="cl_custom_color">部門</td>
             <td><span v-if="order_item_lists && Object.keys(order_item_lists).length">{{order_item_lists.mes_lis_acc_tra_goo_major_category}}</span></td>
-            <td class="cl_custom_color">便</td>
-            <td> <span v-if="order_item_lists && Object.keys(order_item_lists).length">{{getbyrjsonValueBykeyName('mes_lis_ord_log_del_delivery_service_code',order_item_lists.mes_lis_acc_log_del_delivery_service_code,'orders',buyer_settings)}}</span></td>
-            <td class="cl_custom_color">温度区分</td>
+           <td class="cl_custom_color">温度区分</td>
             <td><span v-if="order_item_lists && Object.keys(order_item_lists).length">{{order_item_lists.mes_lis_acc_tra_ins_temperature_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_item_lists.mes_lis_acc_tra_ins_temperature_code,'orders',buyer_settings)}}</span></td>
           </tr>
         </table>
       </div>
-      <div
-        class="col-12"
-        style="padding: 10px; margin-top: 20px"
-      >
-        <table class="table orderTopDetailTable table-bordered" style="width: 100%">
+      </div>
+      <div class="col-12">
+      <div class="col-12" style="background: #d8e3f0; padding: 10px; margin-bottom:20px;">
+        <table class="table orderDetailTable table-bordered" style="width: 100%">
           <tr>
             <td class="cl_custom_color">直接納品先</td>
             <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_acc_par_shi_code}} {{order_item_shipment_data_headTable.mes_lis_acc_par_shi_name}}</span></td>
@@ -64,6 +65,7 @@
           </tr>
 
         </table>
+      </div>
       </div>
       <div class="col-12" style="text-align: center">
 

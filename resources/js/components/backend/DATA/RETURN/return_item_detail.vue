@@ -2,8 +2,8 @@
   <div>
     <div class="row">
  <div class="col-12">
-      <div class="col-12" style="background: #d8e3f0; padding: 10px">
-        <table class="table orderTopDetailTable table-bordered" style="width: 100%">
+      <div class="col-12" style="background: #d8e3f0; padding: 10px;margin-bottom:20px;">
+        <table class="table orderDetailTable table-bordered" style="width: 100%">
           <tr>
             <td class="cl_custom_color">受信日時</td>
             <td><span v-if="order_item_lists && Object.keys(order_item_lists).length">{{order_item_lists.receive_datetime}}</span></td>
@@ -20,8 +20,8 @@
       </div>
       </div>
       <div class="col-12">
-      <div class="col-12" style="background: #d8e3f0; padding: 10px; margin-top: 20px">
-        <table class="table orderTopDetailTable table-bordered" style="width: 100%">
+      <div class="col-12" style="background: #d8e3f0; padding: 10px; margin-bottom: 20px;">
+        <table class="table orderDetailTable table-bordered" style="width: 100%">
           <tr>
             <td class="cl_custom_color">直接納品先</td>
             <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_ret_par_return_receive_from_code}} {{order_item_shipment_data_headTable.mes_lis_ret_par_return_receive_from_name}}</span></td>

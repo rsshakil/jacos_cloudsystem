@@ -4,7 +4,7 @@
        <div class="col-12">
       <div class="col-12" style="background: rgb(216, 227, 240); padding: 10px;">
         <table
-          class="table orderTopDetailTable table-bordered"
+          class="table orderDetailTable table-bordered"
           style="width: 100%"
         >
           <tr>
