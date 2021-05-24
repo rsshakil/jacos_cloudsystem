@@ -103,7 +103,7 @@ class InvoiceController extends Controller
         // DB::raw('COUNT(distinct dipd.data_invoice_pay_id) AS cnt'),
         DB::raw('COUNT(distinct dipd.data_invoice_pay_detail_id) AS cnt'),
             DB::raw('COUNT( isnull( dipd.decision_datetime) OR NULL) AS decision_cnt'),
-            DB::raw('COUNT( isnull( dipd.send_datetime)  OR NULL) AS send_cnt'),
+            DB::raw('COUNT( isnull( dipd.send_datetime)  OR NULL) AS send_cnt')
         )
         ->join('data_invoice_pays as dip', 'data_invoices.data_invoice_id', '=', 'dip.data_invoice_id')
         ->join('data_invoice_pay_details as dipd', 'dip.data_invoice_pay_id', '=', 'dipd.data_invoice_pay_id')
@@ -277,7 +277,7 @@ class InvoiceController extends Controller
             'data_invoices.data_invoice_id',
             'dipd.data_invoice_pay_detail_id',
             'dip.mes_lis_inv_per_end_date',
-            'dipd.data_shipment_voucher_id',
+           // 'dipd.data_shipment_voucher_id',
             'dipd.mes_lis_inv_lin_det_transfer_of_ownership_date',
             'dipd.mes_lis_inv_lin_tra_code',
             'dipd.mes_lis_inv_lin_tra_name',
