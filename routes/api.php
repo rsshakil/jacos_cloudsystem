@@ -195,7 +195,7 @@ Route::post('/get_voucher_detail_popup1_return', 'API\DATA\RTN\ReturnController@
 Route::post('/get_voucher_detail_popup2_return', 'API\DATA\RTN\ReturnController@get_voucher_detail_popup2_return');
 Route::post('/get_voucher_detail_popup3_return', 'API\DATA\RTN\ReturnController@get_voucher_detail_popup3_return');
 Route::get('/order_item_details/{data_shipment_voucher_id}', 'API\DATA\ORDER\OrderItemController@orderItemDetails');
-Route::get('/shipment_item_detail_search/{item_code}', 'API\DATA\ORDER\OrderItemController@shipmentItemDetailSearch');
+Route::post('/shipment_item_detail_search', 'API\DATA\ORDER\OrderItemController@shipmentItemDetailSearch');
 Route::get('slr_job_list_all', 'API\CMN\CmnJobController@index');
 //get user company byr slr list
 Route::post('/get_user_company_byr_slr_list', 'API\ADM\UserController@get_user_company_byr_slr_list');

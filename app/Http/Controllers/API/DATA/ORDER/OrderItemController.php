@@ -42,8 +42,9 @@ class OrderItemController extends Controller
         $slected_list = array();
         return response()->json(['order_item_list_detail' => $result, 'orderItem' => $orderItem, 'slected_list' => $slected_list]);
     }
-    public function shipmentItemDetailSearch($item_code)
+    public function shipmentItemDetailSearch(Request $request)
     {
+
         $orderItem = DB::table('data_shipment_items as dsi')
         ->select(
             'dor.receive_datetime',
@@ -71,7 +72,14 @@ class OrderItemController extends Controller
         ->leftJoin('data_shipment_vouchers as dsv', 'dsv.data_shipment_voucher_id', '=', 'dsi.data_shipment_voucher_id')
         ->join('data_shipments as ds', 'ds.data_shipment_id', '=', 'dsv.data_shipment_id')
         ->join('data_orders as dor', 'dor.data_order_id', '=', 'ds.data_order_id')
-        ->where('dsi.mes_lis_shi_lin_ite_supplier_item_code', $item_code)
+        ->where('dsi.mes_lis_shi_lin_ite_supplier_item_code', $request->item_code)
+
+        ->where('ds.data_order_id', $request->data_order_id)
+        ->where('dsv.mes_lis_shi_tra_dat_delivery_date', $request->delivery_date)
+        ->where('dsv.mes_lis_shi_tra_goo_major_category', $request->major_category)
+        ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $request->delivery_service_code)
+        ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $request->temperature_code)
+
         ->whereNull('dsv.decision_datetime')
         ->groupBy('dsv.mes_lis_shi_tra_trade_number')->first();
         //shipment
@@ -108,8 +116,16 @@ class OrderItemController extends Controller
             ->join('data_shipments as ds', 'ds.data_shipment_id', '=', 'dsv.data_shipment_id')
             ->join('data_orders as dor', 'dor.data_order_id', '=', 'ds.data_order_id')
             ->join('data_order_items as doi', 'doi.data_order_voucher_id', '=', 'dsv.data_order_voucher_id')
+            ->where('dsi.mes_lis_shi_lin_ite_supplier_item_code', $request->item_code)
 
-            ->where('dsi.mes_lis_shi_lin_ite_supplier_item_code', $item_code)
+
+        ->where('ds.data_order_id', $request->data_order_id)
+        ->where('dsv.mes_lis_shi_tra_dat_delivery_date', $request->delivery_date)
+        ->where('dsv.mes_lis_shi_tra_goo_major_category', $request->major_category)
+        ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $request->delivery_service_code)
+        ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $request->temperature_code)
+        
+
             ->whereNull('dsv.decision_datetime')
             ->groupBy('dsv.mes_lis_shi_tra_trade_number')->get();
 

@@ -521,7 +521,7 @@ export default {
     },
     //get Table data
     get_all_byr_order_item_detail() {
-      axios.get(this.BASE_URL + "api/shipment_item_detail_search/"+this.item_id)
+      axios.post(this.BASE_URL + "api/shipment_item_detail_search",this.$route.query)
         .then(({data}) => {
 
           this.init(data.status);

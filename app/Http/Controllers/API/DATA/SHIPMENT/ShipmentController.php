@@ -304,7 +304,7 @@ class ShipmentController extends Controller
             }
             $result=$result->whereNull('dsv.decision_datetime');
 
-        $result=$result->groupBy('dsv.mes_lis_shi_tra_trade_number');
+       // $result=$result->groupBy('dsv.mes_lis_shi_tra_trade_number');
         $result=$result->groupBy('dsi.mes_lis_shi_lin_ite_order_item_code');
         $result=$result->orderBy('dsi.'.$sort_by, $sort_type)
         ->paginate($per_page);

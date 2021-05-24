@@ -208,7 +208,7 @@ export const routes = [
     },
 
     {
-        path: '/order_list/order_list_details/item_search/:item_id',
+        path: '/order_list/order_list_details/item_search/item_search_detail',
         component: item_search_detail,
         name: 'item_search_detail',
         meta: {

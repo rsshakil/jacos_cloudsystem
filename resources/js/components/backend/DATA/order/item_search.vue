@@ -136,10 +136,14 @@
                 <td><router-link
                     :to="{
                       name: 'item_search_detail',
-                      params: {
-                        item_id:
-                          order_detail_list.mes_lis_shi_lin_ite_order_item_code,
-                      },
+                      query: {
+                      data_order_id: item_search_query.data_order_id,
+                      delivery_date: item_search_query.delivery_date,
+                      major_category:item_search_query.major_category,
+                      delivery_service_code:item_search_query.delivery_service_code,
+                      temperature_code:item_search_query.temperature_code,
+                      item_code:order_detail_list.mes_lis_shi_lin_ite_order_item_code,
+                    },
                     }"
                     class=""
                     >
@@ -246,6 +250,7 @@ export default {
         breadcumbtitle:'受注商品別一覧',
         parent: { name: 'order_list_details', query: {}},
         order_info:[],
+        item_search_query:[],
         // deliverySearchForm3:{},
         order_search_modal3:false,
         deliveryDestnationOptionList:{},
@@ -331,6 +336,7 @@ this.form.temperature_code=this.$route.query.temperature_code;
     Fire.$on("getItemSearchData", () => {
       this.getItemSearchData();
     });
+    this.item_search_query = this.$route.query;
     this.parent.query = this.$session.get('order_param_data');
     Fire.$emit("loadPageTitle", "受注商品別一覧");
   },
