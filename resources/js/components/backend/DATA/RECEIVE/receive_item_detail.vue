@@ -70,9 +70,16 @@
       <div class="col-12" style="text-align: center">
 
       </div>
-
-      <div class="col-12">
-
+ <div class="col-12">
+        <span class="pagi" style="width:100%">
+            <ul class="list-inline">
+              <li v-for="(item,index) in order_detail_item_list_paginates" :key="index" v-if="form.data_receive_voucher_id==item.data_receive_voucher_id">
+                <span v-if="index>=1"><button class="btn btn-primary" @click="move_next_prev(order_detail_item_list_paginates[index-1].data_receive_voucher_id)">＜前伝票</button></span>
+                <span v-if="index<order_detail_item_list_paginates.length-1"><button class="btn btn-primary" @click="move_next_prev(order_detail_item_list_paginates[index+1].data_receive_voucher_id)">次伝票＞</button></span>
+                
+                </li>
+                </ul>
+              </span>
       </div>
       <div class="col-12">
 
@@ -321,6 +328,7 @@ breadcrumb(){
       reverse: true,
       order_by: "asc",
       order_detail_lists: {},
+      order_detail_item_list_paginates:{},
       order_item_lists:{},
       order_item_detail_lists: [],
       order_item_shipment_data_headTable: {},
@@ -389,7 +397,11 @@ beforeCreate: function() {
         this.order_item_shipment_data_headTable.status='完納';
       }
     },
-
+ move_next_prev(id){
+      this.form.data_receive_voucher_id=id;
+      this.data_receive_voucher_id=id;
+      this.get_all_receive_item_detail();
+    },
     //get Table data
     get_all_receive_item_detail() {
       axios.post(this.BASE_URL + "api/data_receive_item_detail_list",this.form)
@@ -406,6 +418,16 @@ beforeCreate: function() {
         });
     },
 
+    //get Table data
+    get_all_receive_item_detail_pagination() {
+      this.parentQ.query.adm_user_id=Globals.user_info_id;
+        this.parentQ.query.byr_buyer_id=this.byr_buyer_id;
+      axios.post(this.BASE_URL + "api/data_receive_detail_list_pagination",this.parentQ.query)
+        .then(({data}) => {
+           this.order_detail_item_list_paginates = data.received_detail_list_single_pagination;
+        });
+    },
+
 
   },
 
@@ -414,16 +436,18 @@ beforeCreate: function() {
     this.form.byr_buyer_id = this.$session.get('byr_buyer_id');
     Fire.$emit('byr_has_selected',this.$session.get('byr_buyer_id'));
     Fire.$emit('permission_check_for_buyer',this.$session.get('byr_buyer_id'));
+    this.parentQ.query = this.$session.get('order_receive_detail_query_param');
     this.getbuyerJsonSettingvalue();
     this.loader = Vue.$loading.show();
     this.data_receive_voucher_id = this.$route.params.data_receive_voucher_id;
     this.form.data_receive_voucher_id = this.$route.params.data_receive_voucher_id;
     this.get_all_receive_item_detail();
+    
     Fire.$on("LoadByrorderItemDetail", () => {
 
       this.get_all_receive_item_detail();
     });
-   this.parentQ.query = this.$session.get('order_receive_detail_query_param');
+   this.get_all_receive_item_detail_pagination();
    Fire.$emit("loadPageTitle", "受領伝票明細");
   },
   computed: {

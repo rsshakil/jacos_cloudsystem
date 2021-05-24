@@ -108,6 +108,7 @@ Route::get('get_all_master_item/{adm_user_id}', 'API\DATA\ORDER\OrderItemControl
 // receive
 Route::post('data_receive_list', 'API\DATA\RECEIVE\ReceiveController@orderReceiveList');
 Route::post('data_receive_detail_list', 'API\DATA\RECEIVE\ReceiveController@orderReceiveDetailList');
+Route::post('data_receive_detail_list_pagination', 'API\DATA\RECEIVE\ReceiveController@data_receive_detail_list_pagination');
 Route::post('data_receive_item_detail_list', 'API\DATA\RECEIVE\ReceiveController@orderReceiveItemDetailList');
 Route::post('receive_download', 'API\DATA\RECEIVE\ReceiveController@receiveDownload');
 // return

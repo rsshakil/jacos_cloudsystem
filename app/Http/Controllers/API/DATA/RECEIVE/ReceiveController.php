@@ -258,6 +258,64 @@ class ReceiveController extends Controller
 
         return response()->json(['received_detail_list' => $result, 'byr_buyer_list' => $byr_buyer, 'buyer_settings' => $buyer_settings->setting_information,'order_info'=>$orderInfo]);
     }
+
+    public function data_receive_detail_list_pagination(Request $request)
+    {
+        // return $request->all();
+        $today=date('Y-m-d H:i:s');
+        $adm_user_id = $request->adm_user_id;
+        $byr_buyer_id = $request->byr_buyer_id;
+
+        $data_receive_id = $request->data_receive_id;
+
+        $sel_name = $request->par_sel_name;
+        $sel_code = $request->sel_code;
+        $major_category = $request->major_category;
+        $delivery_service_code = $request->delivery_service_code;
+        $ownership_date = $request->ownership_date;
+
+        $per_page = $request->select_field_per_page_num == null ? 10 : $request->select_field_per_page_num;
+        $sort_by = 'data_receive_voucher_id';
+        $sort_type = 'ASC';
+
+        $decesion_status=$request->decesion_status;
+        $voucher_class=$request->voucher_class;
+        $goods_classification_code=$request->goods_classification_code;
+        $trade_number=$request->trade_number;
+
+        $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
+
+        $table_name='data_receive_vouchers.';
+
+        $authUser = User::find($adm_user_id);
+        $cmn_company_id = '';
+        $cmn_connect_id = '';
+        if (!$authUser->hasRole(config('const.adm_role_name'))) {
+            $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id, $byr_buyer_id);
+            $cmn_company_id = $cmn_company_info['cmn_company_id'];
+            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+        }
+
+        $result=data_receive_voucher::select('data_receive_vouchers.*', 'dsv.mes_lis_shi_tra_dat_order_date', 'dsv.mes_lis_shi_tra_trade_number', 'dsv.mes_lis_shi_tot_tot_net_price_total', 'dr.cmn_connect_id')
+        ->join('data_receives as dr', 'dr.data_receive_id', '=', 'data_receive_vouchers.data_receive_id')
+        ->join('data_receive_items', 'data_receive_items.data_receive_voucher_id', '=', 'data_receive_vouchers.data_receive_voucher_id')
+        ->leftJoin('data_shipment_vouchers as dsv', 'dsv.mes_lis_shi_tra_trade_number', '=', 'data_receive_vouchers.mes_lis_acc_tra_trade_number')
+        ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'dr.cmn_connect_id')
+        ->where('cc.byr_buyer_id', $byr_buyer_id)
+        ->where('cc.slr_seller_id', $slr_seller_id)
+        // ->where('dr.cmn_connect_id','=',$cmn_connect_id)
+        ->where('data_receive_vouchers.data_receive_id', '=', $data_receive_id)
+        // ->where('data_receive_vouchers.mes_lis_acc_par_sel_name',$sel_name)
+        ->where('data_receive_vouchers.mes_lis_acc_par_sel_code', $sel_code)
+        ->where('data_receive_vouchers.mes_lis_acc_tra_goo_major_category', $major_category)
+        ->where('data_receive_vouchers.mes_lis_acc_log_del_delivery_service_code', '=', $delivery_service_code)
+        ->where('data_receive_vouchers.mes_lis_acc_tra_dat_transfer_of_ownership_date', '=', $ownership_date);
+       
+        $result=$result->groupBy('data_receive_vouchers.mes_lis_acc_tra_trade_number')
+        ->orderBy($table_name.$sort_by, $sort_type)->get();
+        return response()->json(['received_detail_list_single_pagination' => $result]);
+    }
+
     public function receiveDownload(Request $request)
     {
         // return $request->all();
