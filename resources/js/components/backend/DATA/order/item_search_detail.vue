@@ -84,14 +84,15 @@
             <td><input type="text" class="form-control" v-model="order_item_lists.mes_lis_shi_lin_qua_shi_num_of_order_units" /></td>
             <td class="cl_custom_color_active">バラ数</td>
             <td><input type="text" class="form-control" v-model="order_item_lists.mes_lis_shi_lin_qua_shi_quantity"/></td>
-            <td class="cl_custom_color_active">重量</td>
+            <!--<td class="cl_custom_color_active">重量</td>
             <td><input type="text" class="form-control" v-model="order_item_lists.mes_lis_shi_lin_fre_order_weight"/></td>
+            -->
             <td class="cl_custom_color_active">原単価</td>
             <td><input type="text" class="form-control" v-model="order_item_lists.mes_lis_shi_lin_amo_item_net_price_unit_price"/></td>
           </tr>
           <tr>
             <td class="cl_custom_color_active">売単価</td>
-            <td><input type="text" class="form-control" v-model="order_item_lists.mes_lis_shi_lin_amo_item_net_price"/></td>
+            <td><input type="text" class="form-control" v-model="order_item_lists.mes_lis_ord_lin_amo_item_selling_price_unit_price"/></td>
             <td class="cl_custom_color_active">欠品理由</td>
             <td colspan="5">
               <select class="form-control" v-model="order_item_lists.mes_lis_shi_lin_qua_sto_reason_code">
