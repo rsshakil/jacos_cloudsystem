@@ -156,6 +156,7 @@ class ByrController extends Controller
         $address = $request->address;
         $selected_permissions = $request->selected_permissions;
         $buyer_company_array = array(
+            'company_type' => 'buyer',
             'company_name' => $company_name,
             'jcode' => $jcode,
             'postal_code' => $postal_code,

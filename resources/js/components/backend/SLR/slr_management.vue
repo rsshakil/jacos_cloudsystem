@@ -238,18 +238,17 @@ export default {
   methods: {
     add_new_company_cmn() {
       this.form.reset();
+      this.form.errors.clear();
       this.add_cmn_company_modal = true;
     },
     edit_slr_data(form_data) {
       this.add_cmn_company_modal = true;
-
       this.form.reset();
+      this.form.errors.clear();
       this.form.fill(form_data);
     },
     save_new_slr() {
-      
-      this.form
-        .post(this.BASE_URL + "api/slr_company_create")
+      this.form.post(this.BASE_URL + "api/slr_company_create")
         .then((data) => {
           this.add_cmn_company_modal = false;
           Fire.$emit("AfterCreatesellerCompany");
@@ -265,10 +264,10 @@ export default {
             title: tittles,
             text: msg_text,
           });
-         
+
         })
         .catch((error) => {
-        
+
           Swal.fire({
             icon: "warning",
             title: "Invalid company info",
@@ -280,9 +279,8 @@ export default {
       axios
         .get(this.BASE_URL + "api/slr_management/" + Globals.user_info_id)
         .then(({data}) => {
-            this.init(data.status);
           this.slr_lists = data.slr_list;
-          
+
         });
     },
   },
@@ -292,10 +290,10 @@ export default {
     Fire.$on("AfterCreatesellerCompany", () => {
       this.get_all_slr();
     });
-   
+
   },
   mounted() {
-    
+
   },
 };
 </script>

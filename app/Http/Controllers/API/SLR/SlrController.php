@@ -33,7 +33,7 @@ class SlrController extends Controller
         \Log::debug(__METHOD__.':end---');
         return $result;
     }
-    
+
     /**
      * slr_management
      *
@@ -71,5 +71,50 @@ class SlrController extends Controller
                 ->where('cmn_connects.cmn_connect_id', $cmn_connect_id)->first();
         }
         return response()->json(['sellers' => $sellers, 'selected_sellers' => $selected_sellers]);
+    }
+    public function createSeller(Request $request)
+    {
+        // return $request->all();
+        $this->validate($request, [
+            'company_name' => 'required|string|max:100',
+            'fax' => 'required|string|max:30',
+            'jcode' => 'required|string|min:3',
+            'postal_code' => 'required|string|min:3',
+            'phone' => 'required|string|max:20',
+            'address' => 'required|string|min:3',
+        ]);
+
+        $cmn_company_id = $request->cmn_company_id;
+        $company_name = $request->company_name;
+        $jcode = $request->jcode;
+        $fax = $request->fax;
+        $postal_code = $request->postal_code;
+        $phone = $request->phone;
+        $address = $request->address;
+
+        $seller_company_array = array(
+            'company_type' => 'seller',
+            'company_name' => $company_name,
+            'jcode' => $jcode,
+            'fax' => $fax,
+            'postal_code' => $postal_code,
+            'phone' => $phone,
+            'address' => $address,
+        );
+        if ($cmn_company_id != null) {
+            cmn_company::where('cmn_company_id', $cmn_company_id)->update($seller_company_array);
+            // $adm_role_info = slr_seller::where('cmn_company_id', $cmn_company_id)->first();
+            // $adm_role_id = $adm_role_info->adm_role_id;
+            // $this->all_used_fun->assignPermissionToRole($adm_role_id, $selected_permissions);
+            // byr_buyer::where('cmn_company_id', $cmn_company_id)->update(['super_code' => $super_code]);
+            return response()->json(['title' => "Updated!", 'message' => "updated", 'class_name' => 'success']);
+
+        } else {
+            // $role_last_id = Role::insertGetId(['name' => 'byr' . $jcode, 'guard_name' => 'web', 'role_description' => 'byr' . $jcode, 'is_system' => 0]);
+            // $this->all_used_fun->assignPermissionToRole($role_last_id, $selected_permissions);
+            $cmn_company_id = cmn_company::insertGetId($seller_company_array);
+            slr_seller::insert(['cmn_company_id' => $cmn_company_id, 'adm_role_id' =>0]);
+            return response()->json(['title' => "Created!", 'message' => "created", 'class_name' => 'success']);
+        }
     }
 }

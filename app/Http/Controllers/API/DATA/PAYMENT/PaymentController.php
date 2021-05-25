@@ -479,6 +479,7 @@ class PaymentController extends Controller
     {
         // return $request->all();
         $byr_buyer_id=$request->byr_buyer_id;
+        $end_date=$request->end_date;
         $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
         $result = DB::select(" SELECT
         dipd.mes_lis_inv_lin_lin_trade_number_reference,
@@ -499,6 +500,7 @@ class PaymentController extends Controller
         WHERE
         cc.byr_buyer_id=$byr_buyer_id AND
         cc.slr_seller_id=$slr_seller_id AND
+        dip.mes_lis_inv_per_end_date=$end_date AND
         dpp.data_payment_pay_id IS null
         ORDER BY
         dipd.mes_lis_inv_lin_lin_trade_number_reference,

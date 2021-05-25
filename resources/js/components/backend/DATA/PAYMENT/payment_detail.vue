@@ -192,12 +192,10 @@
             <td>{{value.mes_lis_inv_lin_tra_code}} {{value.mes_lis_inv_lin_tra_name}}</td>
             <td>{{value.mes_lis_inv_lin_det_transfer_of_ownership_date}}</td>
             <td class="text-right">{{value.mes_lis_inv_lin_det_amo_req_plus_minus}} {{ value.mes_lis_inv_lin_det_amo_requested_amount | priceFormat }}</td>
-            <!-- <td :class="sameCheck(value.shipment_delivery_date,value.mes_lis_acc_tra_dat_transfer_of_ownership_date)">{{ value.shipment_delivery_date }}</td>
-            <td :class="sameCheck(value.shipment_delivery_date,value.mes_lis_acc_tra_dat_transfer_of_ownership_date)">{{value.mes_lis_acc_tra_dat_transfer_of_ownership_date}}</td>
-            <td class="text-right" :class="sameCheck(value.mes_lis_shi_tot_tot_net_price_total,value.mes_lis_acc_tot_tot_net_price_total)">{{ zeroShow(value.mes_lis_shi_tot_tot_net_price_total) | priceFormat}}</td>
-            <td class="text-right" :class="sameCheck(value.mes_lis_shi_tot_tot_net_price_total,value.mes_lis_acc_tot_tot_net_price_total)">{{zeroShow(value.mes_lis_acc_tot_tot_net_price_total) | priceFormat}}</td> -->
-            <!-- <td><button @click="comparedItemList(value)" class="btn btn-primary">確認</button></td> -->
           </tr>
+        <tr v-if="unpaid_lists && unpaid_lists.length==0">
+            <td class="text-center" colspan="4">データがありません</td>
+        </tr>
           </tbody>
 
         </table>
@@ -271,7 +269,7 @@ export default {
     openSlipModal(){
         axios.post(this.BASE_URL + "api/unpaid_payment_list", this.form)
         .then(({ data }) => {
-            console.log(data);
+            // console.log(data);
             this.unpaid_lists=data.unpaid_list;
         });
        this.unpaid_slip_modal = true;

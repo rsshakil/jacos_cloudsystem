@@ -79,6 +79,7 @@ Route::get('/company_partner_list/{cmn_company_id?}', 'API\BYR\ByrController@com
 Route::get('/get_byr_slr_company/{cmn_company_id?}', 'API\CMN\CommonController@get_byr_slr_company');
 
 Route::get('/get_scenario_list', 'API\CMN\CmnScenarioController@get_scenario_list');
+Route::post('/slr_company_create', 'API\SLR\SlrController@createSeller');
 Route::get('/slr_management/{adm_user_id}', 'API\SLR\SlrController@slr_management');
 Route::post('/get_order_list', 'API\DATA\ORDER\OrderController@orderList');
 Route::post('/get_order_customer_code_list', 'API\DATA\ORDER\OrderController@get_order_customer_code_list');
@@ -98,7 +99,7 @@ Route::get('/deletedownloadedshipmentCsv/{fileUrl}', 'API\DATA\SHIPMENT\Shipment
 Route::post('/cmn_user_create', 'API\CMN\CommonController@cmn_user_create');
 Route::post('/slr_seller_user_create', 'API\BYR\ByrController@slr_seller_user_create');
 Route::post('/create_buyer', 'API\BYR\ByrController@createBuyer');
-Route::post('/slr_company_create', 'API\BYR\ByrController@slr_company_create');
+// Route::post('/slr_company_create', 'API\BYR\ByrController@slr_company_create');
 Route::post('/get_byr_info_by_data_order_id', 'API\BYR\ByrController@getByrByOrderId');
 
 // Route::post('/bms_order_save/{job_id}', 'API\BmsOrderController@store');

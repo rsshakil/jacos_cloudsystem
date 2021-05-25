@@ -48,8 +48,8 @@ class data_csv_order extends ScenarioBase
         Log::debug(__METHOD__.':start---');
 
         // test
-        $this->pdfGenerate(1);
-        return ['message'=>'Success','status'=>1];
+        // $this->pdfGenerate(1);
+        // return ['message'=>'Success','status'=>1];
         // test
 
         // file save
