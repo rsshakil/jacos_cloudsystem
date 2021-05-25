@@ -104,11 +104,11 @@
 
 
         </table>
-        <button class="btn btn-primary" @click="updateOrderItemFormData" style="float:right;">選択行に一括反映 -></button>
+       
       </div>
       </div>
-      <div class="col-12" style="text-align: center">
-
+      <div class="col-12" style="text-align: right">
+         <button class="btn btn-primary" @click="updateOrderItemFormData" style="float:right;">選択行に一括反映 -></button>
       </div>
 
       <div class="col-12">
@@ -175,10 +175,11 @@
 
 
                 {{order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code}} {{getbyrjsonValueBykeyName('mes_lis_shi_lin_qua_sto_reason_code',order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code,'shipments')}}
-                <select v-model="order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code" class="form-control ">
+                <select v-model="order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code" class="form-control " :class="[order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units!=order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units && order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code=='00' ? 'error_found' :'',order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units==order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units && order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code!='00'?'error_found':'']">
                 <option v-for="(item,i) in mes_lis_shi_lin_qua_sto_reason_codeList" :value="i" :key="i">{{item}}</option>
                 </select>
-
+<span v-if="order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units!=order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units && order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code=='00'" style="color:red;font-size:12px">欠品のため欠品理由が必要です。</span>
+                <span v-if="order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units==order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units && order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code!='00'" style="color:red;font-size:12px">完納のため欠品理由は不正です。</span>
 
                 </td>
               </tr>
@@ -392,8 +393,56 @@ export default {
             }
         },
   methods: {
+    checkValidate(){
+       var _this = this;
+       var isValidate = 1;
+       this.order_item_detail_lists.forEach(function (value,index) {
+          
+          if(value.mes_lis_shi_lin_qua_shi_num_of_order_units!=value.mes_lis_shi_lin_qua_ord_num_of_order_units && value.mes_lis_shi_lin_qua_sto_reason_code=='00'){
+            
+            _this.alert_icon = "error";
+            _this.alert_title = "";
+            _this.alert_text = "入力データが不正です。入力値を確認してください。";
+            _this.sweet_normal_alert();
+            isValidate = 0;
+            return isValidate;
+          }
+          if((value.mes_lis_shi_lin_qua_shi_num_of_order_units==value.mes_lis_shi_lin_qua_ord_num_of_order_units) && value.mes_lis_shi_lin_qua_sto_reason_code!='00'){
+            _this.alert_icon = "error";
+            _this.alert_title = "";
+            _this.alert_text = "入力データが不正です。入力値を確認してください。";
+            _this.sweet_normal_alert();
+             isValidate = 0;
+            return isValidate;
+          }
+        });
+        return isValidate;
+    },
     updateShipmentItemDetails(){
       var _this = this;
+
+this.order_item_detail_lists.forEach(function (value,index) {
+          
+          if(value.mes_lis_shi_lin_qua_shi_num_of_order_units!=value.mes_lis_shi_lin_qua_ord_num_of_order_units && value.mes_lis_shi_lin_qua_sto_reason_code=='00'){
+            
+            _this.alert_icon = "error";
+            _this.alert_title = "";
+            _this.alert_text = "入力データが不正です。入力値を確認してください。";
+            _this.sweet_normal_alert();
+            return false;
+          }
+          if((value.mes_lis_shi_lin_qua_shi_num_of_order_units==value.mes_lis_shi_lin_qua_ord_num_of_order_units) && value.mes_lis_shi_lin_qua_sto_reason_code!='00'){
+            _this.alert_icon = "error";
+            _this.alert_title = "";
+            _this.alert_text = "入力データが不正です。入力値を確認してください。";
+            _this.sweet_normal_alert();
+            return false;
+          }
+        });
+       if(this.checkValidate()==false){
+         return false;
+       }
+
       var order_detailitem = {'items':this.order_item_detail_lists,'updated_date':this.order_item_shipment_data_headTable.mes_lis_shi_tra_dat_revised_delivery_date,'total_cost_price':this.totalCostPriceVal,'total_selling_price':this.totalSellingPriceVal};
       axios({
         method: "POST",
