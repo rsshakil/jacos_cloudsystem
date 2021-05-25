@@ -45,7 +45,12 @@ class data_csv_order extends ScenarioBase
     //
     public function exec($request, $sc)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
+
+        // test
+        $this->pdfGenerate(1);
+        return ['message'=>'Success','status'=>1];
+        // test
 
         // file save
         $file_info = $this->upfileSave($request, config('const.ORDER_DATA_PATH') . date('Y-m'));
@@ -435,10 +440,10 @@ class data_csv_order extends ScenarioBase
         }
 
         // Mail
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return ['message' => '', 'status' => $this->success,'cmn_connect_id' => $cmn_connect_id,'data_id' => $data_order_id];
     }
-    
+
     /**
      * sendFax
      *
@@ -448,8 +453,8 @@ class data_csv_order extends ScenarioBase
      */
     private function sendFax($cmn_connect_id, $data_order_id)
     {
-        \Log::debug(__METHOD__.':start---');
-        
+        Log::debug(__METHOD__.':start---');
+
         $cmn_connect_options=cmn_connect::select('optional')->where('cmn_connect_id', $cmn_connect_id)->first();
         $optional=json_decode($cmn_connect_options->optional);
         try {
@@ -474,9 +479,9 @@ class data_csv_order extends ScenarioBase
             Log::error($e->getMessage().' Or May be data font missing in database data or bad file');
             return ['message' => "May be data font missing in database data or bad file", 'status' => 0];
         }
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
     }
-    
+
     /**
      * pdfGenerate
      *
@@ -485,7 +490,7 @@ class data_csv_order extends ScenarioBase
      */
     public function pdfGenerate($data_order_id)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
 
         $pdf_file_paths=array();
         $page=0;
@@ -502,12 +507,14 @@ class data_csv_order extends ScenarioBase
         $same_rec_code=1;
         Log::debug(count($pdf_datas));
         // foreach ($pdf_datas as $key => $pdf_data) {
-        //     Log::info($pdf_data[0]->mes_lis_ord_par_rec_code);
-        //     Log::info($pdf_data[0]->mes_lis_ord_tra_trade_number);
+        //     Log::info($pdf_data->mes_lis_ord_par_rec_code);
+        //     Log::info($pdf_data->mes_lis_ord_tra_trade_number);
 
         // }
+        // return 0;
         foreach ($pdf_datas as $key=>$pdf_data) {
-            // Log::debug($pdf_data);
+            Log::info("key= ".$key);
+            Log::debug(count($pdf_data));
             if (!($i > count($pdf_datas))) {
                 if ($page!=0 && ($page % $page_limit)==0) {
                     Log::debug("i: ".($i));
@@ -555,13 +562,13 @@ class data_csv_order extends ScenarioBase
             array_push($pdf_file_paths, $pdf_file_path);
         }
 
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return $pdf_file_paths;
         // return $response;
     }
     public function file_save($receipt, $file_number)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
 
         $pdf_file_name=date('YmdHis').'_'.$file_number.'_receipt.pdf';
         $this->all_functions->folder_create(config('const.PDF_SAVE_PATH'));
@@ -575,12 +582,12 @@ class data_csv_order extends ScenarioBase
         // $receipt = new Fpdi();
         // $pagecount = $receipt->setSourceFile($pdf_file_path);
         // Log::info("Counted".$pagecount);
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return $pdf_file_path;
     }
     public function headerData($receipt, $pdf_data, $x, $y)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
         $receipt->setSourceFile(storage_path(config('const.BLANK_PDF_PATH')));
         $tplIdx = $receipt->importPage(1);
         $receipt->UseTemplate($tplIdx, null, null, null, null, true);
@@ -592,12 +599,12 @@ class data_csv_order extends ScenarioBase
         $receipt->Write(0, $pdf_data[0]->mes_lis_ord_par_sel_code);
         $receipt->SetXY($x + 122, $y + 33);
         $receipt->Write(0, $pdf_data[0]->mes_lis_ord_par_shi_name);
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return $receipt;
     }
     public function fpdfRet()
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
         Log::info("FPDI");
         $receipt = new Fpdi();
         // Set PDF margins (top left and right)
@@ -614,14 +621,14 @@ class data_csv_order extends ScenarioBase
         $fontPathRegular = storage_path(config('const.MIGMIX_FONT_PATH'));
         $receipt->SetFont(\TCPDF_FONTS::addTTFfont($fontPathRegular), '', 8, '', true);
 
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
 
         return $receipt;
     }
 
     public function coordinateText($receipt, $pdf_data, $i=0, $x = 0, $y = 50.7, $sum_of_y=103.4)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
         //Cell($w, $h=0, $txt='', $border=0, $ln=0, $align='', $fill=0, $link='', $stretch=0, $ignore_min_height=false, $calign='T', $valign='M')
         $receipt->SetXY($x + 29.6, $y);
         $receipt->Cell(14.8, 0, $pdf_data[0]->mes_lis_ord_par_rec_name_sbcs, 0, 1, 'L', 0, '', 0);
@@ -674,12 +681,12 @@ class data_csv_order extends ScenarioBase
         $receipt->SetXY($x + 228.2, $sum_of_y);
         $receipt->Cell(36.5, 4.5, number_format($value->mes_lis_ord_tot_tot_selling_price_total), 0, 1, 'R', 0, '', 0);
         $y=0;
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return $receipt;
     }
     public function pdfDAta($data_order_id)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
 
         // $line_per_page=$request->line_per_page;
         // $data_order_id=$request->data_order_id;
@@ -713,7 +720,6 @@ class data_csv_order extends ScenarioBase
             ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'data_orders.cmn_connect_id')
             ->where('data_orders.data_order_id', $data_order_id)
             ->get();
-        // return $order_data;
         $collection = collect($order_data);
 
         $grouped = $collection->groupBy('mes_lis_ord_tra_trade_number');
@@ -725,12 +731,14 @@ class data_csv_order extends ScenarioBase
             // =====
             for ($k = 0; $k < count($aaa[$step0]); $k++) {
                 $aaa[$step0][$k]['fax_number'] = json_decode($aaa[$step0][$k]['optional'])->order->fax->number;
+                unset($aaa[$step0][$k]['optional']);
             }
             // =====
             $step0_data_array = $aaa[$step0];
+
             $report_arr_final[] = $step0_data_array;
         }
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return $report_arr_final;
         // return ['status'=>1,'new_report_array'=>$report_arr_final];
     }
