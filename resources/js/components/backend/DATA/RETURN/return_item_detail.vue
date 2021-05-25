@@ -52,8 +52,16 @@
 
       </div>
 
-      <div class="col-12">
-
+<div class="col-12">
+        <span class="pagi" style="width:100%">
+            <ul class="list-inline">
+              <li v-for="(item,index) in return_detail_item_list_paginates" :key="index" v-if="form.data_return_voucher_id==item.data_return_voucher_id">
+                <span v-if="index>=1"><button class="btn btn-primary" @click="move_next_prev(return_detail_item_list_paginates[index-1].data_return_voucher_id)">＜前伝票</button></span>
+                <span v-if="index<return_detail_item_list_paginates.length-1"><button class="btn btn-primary" @click="move_next_prev(return_detail_item_list_paginates[index+1].data_return_voucher_id)">次伝票＞</button></span>
+                
+                </li>
+                </ul>
+              </span>
       </div>
       <div class="col-12">
 
@@ -288,6 +296,7 @@ breadcrumb(){
       reverse: true,
       order_by: "asc",
       order_detail_lists: {},
+      return_detail_item_list_paginates:{},
       order_item_lists:{},
       order_item_detail_lists: [],
       order_item_shipment_data_headTable: {},
@@ -361,9 +370,7 @@ beforeCreate: function() {
     get_all_receive_item_detail() {
       axios.post(this.BASE_URL + "api/data_return_item_detail_list",this.form)
         .then(({data}) => {
-            console.log(data);
           this.order_item_detail_lists = data.return_item_detail_list;
-          console.log(this.order_item_detail_lists)
           this.order_item_shipment_data_headTable = data.return_item_detail_list[0];
           this.byr_buyer_lists = data.byr_buyer_list;
           this.buyer_settings = JSON.parse(data.buyer_settings);
@@ -372,6 +379,22 @@ beforeCreate: function() {
           this.mes_lis_acc_lin_qua_rec_reason_codeList = this.buyer_settings.receives.mes_lis_acc_lin_qua_rec_reason_code;
 
           this.loader.hide();
+        });
+    },
+
+move_next_prev(id){
+      this.form.data_return_voucher_id=id;
+      this.data_return_voucher_id=id;
+      this.get_all_receive_item_detail();
+    },
+    
+    //get Table data
+    get_all_return_item_detail_pagination() {
+      this.parentQ.query.adm_user_id=Globals.user_info_id;
+        this.parentQ.query.byr_buyer_id=this.byr_buyer_id;
+      axios.post(this.BASE_URL + "api/data_return_detail_list_pagination",this.parentQ.query)
+        .then(({data}) => {
+           this.return_detail_item_list_paginates = data.retrun_detail_list_pagination;
         });
     },
 
@@ -394,6 +417,7 @@ beforeCreate: function() {
     });
    this.parentQ.query = this.$session.get('order_receive_detail_query_param');
    Fire.$emit("loadPageTitle", "返品伝票明細");
+   this.get_all_return_item_detail_pagination();
   },
   computed: {
 

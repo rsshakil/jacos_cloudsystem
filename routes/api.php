@@ -114,6 +114,7 @@ Route::post('receive_download', 'API\DATA\RECEIVE\ReceiveController@receiveDownl
 // return
 Route::post('data_return_list', 'API\DATA\RTN\ReturnController@returnList');
 Route::post('data_return_detail_list', 'API\DATA\RTN\ReturnController@returnDetailList');
+Route::post('data_return_detail_list_pagination', 'API\DATA\RTN\ReturnController@data_return_detail_list_pagination');
 Route::post('data_return_item_detail_list', 'API\DATA\RTN\ReturnController@returnItemDetailList');
 Route::post('return_download', 'API\DATA\RTN\ReturnController@returnDownload');
 
