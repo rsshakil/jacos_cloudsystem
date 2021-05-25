@@ -232,8 +232,7 @@ export default {
       // }else if (selected_seller_length) {
       //   var cmn_user_create_url="api/seller_user_create";
       // }
-      this.form
-        .post(this.BASE_URL + "api/cmn_user_create")
+      this.form.post(this.BASE_URL + "api/cmn_user_create")
         .then(({ data }) => {
           Fire.$emit("AfterCreateUser");
           if (data.message == "created") {
@@ -255,7 +254,7 @@ export default {
         });
     },
     buyer_user_update_modal(user) {
-    
+
       this.form.reset();
       this.form.cmn_company_id = this.cmn_company_id;
       this.form.adm_user_id = user.id;
@@ -281,10 +280,10 @@ export default {
     Fire.$on("AfterCreateUser", () => {
       this.get_all_company_users();
     });
-    
+
   },
   mounted() {
-    
+
   },
 };
 </script>
