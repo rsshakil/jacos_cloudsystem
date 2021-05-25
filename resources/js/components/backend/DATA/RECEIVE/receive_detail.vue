@@ -8,17 +8,17 @@
           style="width: 100%"
         >
           <tr>
-            <td class="cl_custom_color">受信日</td>
-            <td><span v-if="order_info && Object.keys(order_info).length"> {{ order_info.receive_datetime }}</span></td>
-            <td class="cl_custom_color">取引先</td>
-            <td>
+            <td class="cl_custom_color" style="width:10%">受信日</td>
+            <td style="width:15%"><span v-if="order_info && Object.keys(order_info).length"> {{ order_info.receive_datetime }}</span></td>
+            <td class="cl_custom_color" style="width:10%">取引先</td>
+            <td style="width:15%">
             <span v-if="order_info && Object.keys(order_info).length">
               {{ order_info.mes_lis_acc_par_sel_code}}
               {{ order_info.mes_lis_acc_par_sel_name }}
               </span>
             </td>
-            <td class="cl_custom_color">便</td>
-            <td>
+            <td class="cl_custom_color" style="width:10%">便</td>
+            <td style="width:15%">
             <span v-if="order_info && Object.keys(order_info).length">
 
               {{
@@ -33,13 +33,13 @@
             </td>
           </tr>
           <tr>
-            <td class="cl_custom_color">計上日</td>
-            <td><span v-if="order_info && Object.keys(order_info).length">{{ order_info.mes_lis_acc_tra_dat_transfer_of_ownership_date }}</span></td>
-            <td class="cl_custom_color">部門</td>
-            <td><span v-if="order_info && Object.keys(order_info).length">{{ order_info.mes_lis_acc_tra_goo_major_category }}</span></td>
+            <td class="cl_custom_color" style="width:10%">計上日</td>
+            <td style="width:15%"><span v-if="order_info && Object.keys(order_info).length">{{ order_info.mes_lis_acc_tra_dat_transfer_of_ownership_date }}</span></td>
+            <td class="cl_custom_color" style="width:10%">部門</td>
+            <td style="width:15%"><span v-if="order_info && Object.keys(order_info).length">{{ order_info.mes_lis_acc_tra_goo_major_category }}</span></td>
             
-            <td class="cl_custom_color">温度区分</td>
-            <td>
+            <td class="cl_custom_color" style="width:10%">温度区分</td>
+            <td style="width:15%">
             <span v-if="order_info && Object.keys(order_info).length">
               {{ order_info.mes_lis_acc_tra_ins_temperature_code }}
               {{

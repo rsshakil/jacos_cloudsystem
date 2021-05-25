@@ -6,21 +6,21 @@
       <div class="col-12" style="background: #d8e3f0; padding: 10px;margin-bottom: 20px;">
         <table class="table orderDetailTable table-bordered" style="width: 100%">
           <tr>
-            <td class="cl_custom_color">受信日時</td>
-            <td><span v-if="order_item_lists && Object.keys(order_item_lists).length">{{order_item_lists.receive_datetime}}</span></td>
-            <td class="cl_custom_color">取引先</td>
-            <td><span v-if="order_item_lists && Object.keys(order_item_lists).length">{{order_item_lists.mes_lis_acc_par_sel_code}} {{order_item_lists.mes_lis_acc_par_sel_name}}</span></td>
-           <td class="cl_custom_color">便</td>
-            <td> <span v-if="order_item_lists && Object.keys(order_item_lists).length">{{getbyrjsonValueBykeyName('mes_lis_ord_log_del_delivery_service_code',order_item_lists.mes_lis_acc_log_del_delivery_service_code,'orders',buyer_settings)}}</span></td>
+            <td class="cl_custom_color" style="width:10%">受信日時</td>
+            <td style="width:15%"><span v-if="order_item_lists && Object.keys(order_item_lists).length">{{order_item_lists.receive_datetime}}</span></td>
+            <td class="cl_custom_color" style="width:10%">取引先</td>
+            <td style="width:15%"><span v-if="order_item_lists && Object.keys(order_item_lists).length">{{order_item_lists.mes_lis_acc_par_sel_code}} {{order_item_lists.mes_lis_acc_par_sel_name}}</span></td>
+           <td class="cl_custom_color" style="width:10%">便</td>
+            <td style="width:15%"> <span v-if="order_item_lists && Object.keys(order_item_lists).length">{{getbyrjsonValueBykeyName('mes_lis_ord_log_del_delivery_service_code',order_item_lists.mes_lis_acc_log_del_delivery_service_code,'orders',buyer_settings)}}</span></td>
             
           </tr>
           <tr>
-            <td class="cl_custom_color">納品日</td>
-            <td><span v-if="order_item_lists && Object.keys(order_item_lists).length">{{order_item_lists.mes_lis_acc_tra_dat_transfer_of_ownership_date}}</span></td>
-            <td class="cl_custom_color">部門</td>
-            <td><span v-if="order_item_lists && Object.keys(order_item_lists).length">{{order_item_lists.mes_lis_acc_tra_goo_major_category}}</span></td>
-           <td class="cl_custom_color">温度区分</td>
-            <td><span v-if="order_item_lists && Object.keys(order_item_lists).length">{{order_item_lists.mes_lis_acc_tra_ins_temperature_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_item_lists.mes_lis_acc_tra_ins_temperature_code,'orders',buyer_settings)}}</span></td>
+            <td class="cl_custom_color" style="width:10%">納品日</td>
+            <td style="width:15%"><span v-if="order_item_lists && Object.keys(order_item_lists).length">{{order_item_lists.mes_lis_acc_tra_dat_transfer_of_ownership_date}}</span></td>
+            <td class="cl_custom_color" style="width:10%">部門</td>
+            <td style="width:15%"><span v-if="order_item_lists && Object.keys(order_item_lists).length">{{order_item_lists.mes_lis_acc_tra_goo_major_category}}</span></td>
+           <td class="cl_custom_color" style="width:10%">温度区分</td>
+            <td style="width:15%"><span v-if="order_item_lists && Object.keys(order_item_lists).length">{{order_item_lists.mes_lis_acc_tra_ins_temperature_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_temperature_code',order_item_lists.mes_lis_acc_tra_ins_temperature_code,'orders',buyer_settings)}}</span></td>
           </tr>
         </table>
       </div>
@@ -29,38 +29,38 @@
       <div class="col-12" style="background: #d8e3f0; padding: 10px; margin-bottom:20px;">
         <table class="table orderDetailTable table-bordered" style="width: 100%">
           <tr>
-            <td class="cl_custom_color">直接納品先</td>
-            <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_acc_par_shi_code}} {{order_item_shipment_data_headTable.mes_lis_acc_par_shi_name}}</span></td>
-            <td class="cl_custom_color">最終納品先</td>
-            <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_acc_par_rec_code}} {{order_item_shipment_data_headTable.mes_lis_acc_par_rec_name}}</span></td>
-            <td class="cl_custom_color">伝票番号</td>
-            <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_acc_tra_trade_number}}</span></td>
+            <td class="cl_custom_color" style="width:10%">直接納品先</td>
+            <td style="width:15%"><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_acc_par_shi_code}} {{order_item_shipment_data_headTable.mes_lis_acc_par_shi_name}}</span></td>
+            <td class="cl_custom_color" style="width:10%">最終納品先</td>
+            <td style="width:15%"><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_acc_par_rec_code}} {{order_item_shipment_data_headTable.mes_lis_acc_par_rec_name}}</span></td>
+            <td class="cl_custom_color" style="width:10%">伝票番号</td>
+            <td style="width:15%"><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_acc_tra_trade_number}}</span></td>
           </tr>
           <tr>
-            <td class="cl_custom_color">定／特</td>
-            <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_acc_tra_ins_goods_classification_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_goods_classification_code',order_item_shipment_data_headTable.mes_lis_acc_tra_ins_goods_classification_code,'orders',buyer_settings)}}</span></td>
-            <td class="cl_custom_color">不定貴区分</td>
-            <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_acc_tra_fre_variable_measure_item_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_fre_variable_measure_item_code',order_item_shipment_data_headTable.mes_lis_acc_tra_fre_variable_measure_item_code,'orders',buyer_settings)}}</span></td>
-            <td class="cl_custom_color">発注者</td>
-            <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_buy_name}}</span></td>
+            <td class="cl_custom_color" style="width:10%">定／特</td>
+            <td style="width:15%"><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_acc_tra_ins_goods_classification_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_goods_classification_code',order_item_shipment_data_headTable.mes_lis_acc_tra_ins_goods_classification_code,'orders',buyer_settings)}}</span></td>
+            <td class="cl_custom_color" style="width:10%">不定貴区分</td>
+            <td style="width:15%"><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_acc_tra_fre_variable_measure_item_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_fre_variable_measure_item_code',order_item_shipment_data_headTable.mes_lis_acc_tra_fre_variable_measure_item_code,'orders',buyer_settings)}}</span></td>
+            <td class="cl_custom_color" style="width:10%">発注者</td>
+            <td style="width:15%"><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_buy_name}}</span></td>
           </tr>
           <tr>
-            <td class="cl_custom_color">発注日</td>
-            <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_acc_tra_dat_order_date}}</span></td>
-            <td class="cl_custom_color">伝票区分</td>
-            <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_acc_tra_ins_trade_type_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_trade_type_code',order_item_shipment_data_headTable.mes_lis_acc_tra_ins_trade_type_code,'orders',buyer_settings)}}</span></td>
-            <td class="cl_custom_color">受領内容</td>
-            <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.status='訂正なし'}}</span></td>
+            <td class="cl_custom_color" style="width:10%">発注日</td>
+            <td style="width:15%"><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_acc_tra_dat_order_date}}</span></td>
+            <td class="cl_custom_color" style="width:10%">伝票区分</td>
+            <td style="width:15%"><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_acc_tra_ins_trade_type_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_ins_trade_type_code',order_item_shipment_data_headTable.mes_lis_acc_tra_ins_trade_type_code,'orders',buyer_settings)}}</span></td>
+            <td class="cl_custom_color" style="width:10%">受領内容</td>
+            <td style="width:15%"><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.status='訂正なし'}}</span></td>
           </tr>
           <tr>
-            <td class="cl_custom_color">備考</td>
-            <td colspan="5"><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_acc_tra_not_text}}</span></td>
+            <td class="cl_custom_color" style="width:10%">備考</td>
+            <td colspan="5" style="width:15%"><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_acc_tra_not_text}}</span></td>
           </tr>
           <tr>
-            <td class="cl_custom_color">税区分・税率</td>
-            <td><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_acc_tra_tax_tax_type_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_tax_tax_type_code',order_item_shipment_data_headTable.mes_lis_acc_tra_tax_tax_type_code,'orders',buyer_settings)}} {{order_item_shipment_data_headTable.mes_lis_acc_tra_tax_tax_rate}} %</span></td>
-            <td class="cl_custom_color">実納品日 </td>
-            <td colspan="3">
+            <td class="cl_custom_color" style="width:10%">税区分・税率</td>
+            <td style="width:15%"><span v-if="order_item_shipment_data_headTable && Object.keys(order_item_shipment_data_headTable).length">{{order_item_shipment_data_headTable.mes_lis_acc_tra_tax_tax_type_code}} {{getbyrjsonValueBykeyName('mes_lis_ord_tra_tax_tax_type_code',order_item_shipment_data_headTable.mes_lis_acc_tra_tax_tax_type_code,'orders',buyer_settings)}} {{order_item_shipment_data_headTable.mes_lis_acc_tra_tax_tax_rate}} %</span></td>
+            <td class="cl_custom_color" style="width:10%">実納品日 </td>
+            <td colspan="3" style="width:15%">
             <span>{{order_item_shipment_data_headTable.mes_lis_acc_tra_dat_revised_delivery_date_to_receiver}}</span></td>
           </tr>
 
