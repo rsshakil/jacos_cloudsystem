@@ -19,6 +19,7 @@ class CreateCmnCompaniesUsersTable extends Migration
             $table->integer('adm_user_id')->unsigned()->comment('adm_user_id');
             $table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('Time of creation');
             $table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('last updated time');
+            $table->foreign('adm_user_id')->references('id')->on('adm_users')->onDelete('cascade');
         });
     }
 

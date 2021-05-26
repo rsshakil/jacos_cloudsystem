@@ -29,6 +29,10 @@ class CreateAdmUserDetailsTable extends Migration
             $table->string('image', 240)->comment('Image of user')->nullable();
 			$table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('Time of creation');
 			$table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->comment('Time of Update');
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('adm_users')
+                ->onDelete('cascade');
         });
     }
 

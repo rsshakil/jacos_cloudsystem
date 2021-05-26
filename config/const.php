@@ -38,6 +38,8 @@ return [
     'INVOICE_CSV_PATH' => '/invoice_csv',
     'INVOICE_COMPARE_CSV_PATH' => '/invoice_compare_csv',
     'adm_role_name' =>'Super Admin',
+    'buyer_role_name' =>'Byr',
+    'seller_role_name' =>'Slr',
     'SUCCESS' =>1,
     'ERROR' =>0,
     'JCS_EXCEPTION'=>1,

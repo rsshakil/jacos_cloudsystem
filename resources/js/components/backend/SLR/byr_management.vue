@@ -63,7 +63,7 @@
                   <router-link
                     :to="{
                       name: 'byr_company_user_list',
-                      params: { cmn_company_id: company_list.cmn_company_id },
+                      query: { cmn_company_id: company_list.cmn_company_id },
                     }"
                     class="btn btn-primary"
                     >{{ myLang.user_management }}</router-link
