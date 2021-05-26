@@ -80,7 +80,10 @@ Route::get('/get_byr_slr_company/{cmn_company_id?}', 'API\CMN\CommonController@g
 
 Route::get('/get_scenario_list', 'API\CMN\CmnScenarioController@get_scenario_list');
 Route::post('/slr_company_create', 'API\SLR\SlrController@createSeller');
+Route::post('/seller_delete', 'API\SLR\SlrController@sellerDelete');
+Route::post('/seller_user_delete', 'API\SLR\SlrController@sellerUserDelete');
 Route::get('/slr_management/{adm_user_id}', 'API\SLR\SlrController@slr_management');
+
 Route::post('/get_order_list', 'API\DATA\ORDER\OrderController@orderList');
 Route::post('/get_order_customer_code_list', 'API\DATA\ORDER\OrderController@get_order_customer_code_list');
 Route::post('/get_return_customer_code_list', 'API\DATA\RTN\ReturnController@get_return_customer_code_list');

@@ -71,7 +71,7 @@
                 <th style="cursor: pointer">{{ myLang.customer_code }}</th>
                 <th style="cursor: pointer">{{ myLang.status }}</th>
                 <th style="cursor: pointer">Edit</th>
-                <th style="cursor: pointer">Delete</th>
+                <th style="cursor: pointer">{{ myLang.delete }}</th>
                 <th style="cursor: pointer">{{ myLang.details }}</th>
               </tr>
             </thead>
@@ -98,7 +98,7 @@
                 </td>
                 <td>
                   <button class="btn pull-right text-right btn-danger" style="float: right" @click="partner_delete(value)">
-                    Delete
+                    {{ myLang.delete }}
                   </button>
                 </td>
                 <td>
@@ -216,13 +216,11 @@ export default {
   },
   methods: {
     company_partner_list() {
-      axios
-        .get(this.BASE_URL + "api/company_partner_list/" + this.cmn_company_id)
+        // console.log(this.cmn_company_id);
+      axios.get(this.BASE_URL + "api/company_partner_list/" + this.cmn_company_id)
         .then(({ data }) => {
-          this.init(data.status);
           this.company_partner_lists = data.partner_list;
           this.company_name = data.company_name;
-          // console.log(this.company_partner_lists);
         });
     },
     user_filter_by_buyer(value){

@@ -8,6 +8,7 @@ use App\Models\ADM\adm_user_details;
 use App\Models\ADM\User;
 use App\Models\BYR\byr_buyer;
 use App\Models\CMN\cmn_companies_user;
+use App\Models\CMN\cmn_company;
 use App\Models\SLR\slr_seller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -69,6 +70,8 @@ class CommonController extends Controller
         $email = $request->email;
         $password = $request->password;
         $adm_user_id = $request->adm_user_id;
+        $cmn_company_id = $request->cmn_company_id;
+        $cmn_company_info = cmn_company::select('company_type')->where('cmn_company_id',$cmn_company_id)->first();
 
         $user_array = array(
             'name' => $name,
@@ -95,6 +98,12 @@ class CommonController extends Controller
             } else {
                 $last_user_id = User::insertGetId($user_array);
                 adm_user_details::insert(['user_id' => $last_user_id]);
+                $user = User::findOrFail($last_user_id);
+                if ($cmn_company_info->company_type=='seller') {
+                    $user->assignRole(config('const.seller_role_name'));
+                }else if($cmn_company_info->company_type=='buyer'){
+                    $user->assignRole(config('const.buyer_role_name'));
+                }
             }
             return array('title' => "Created!", 'message' => "created", 'class_name' => 'success', 'last_user_id' => $last_user_id);
         }

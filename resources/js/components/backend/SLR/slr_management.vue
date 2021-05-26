@@ -48,6 +48,7 @@
                 <th style="cursor: pointer">{{ myLang.partner_management }}</th>
                 <th style="cursor: pointer">{{ myLang.ordering_data }}</th>
                 <th style="cursor: pointer">{{ myLang.details }}</th>
+                <th style="cursor: pointer">{{ myLang.delete }}</th>
               </tr>
             </thead>
             <tbody>
@@ -63,7 +64,7 @@
                   <router-link
                     :to="{
                       name: 'slr_company_user_list',
-                      params: { cmn_company_id: slr_list.cmn_company_id },
+                      query: { cmn_company_id: slr_list.cmn_company_id },
                     }"
                     class="btn btn-primary"
                     >{{ myLang.user_management }}</router-link
@@ -78,7 +79,7 @@
                   <router-link
                     :to="{
                       name: 'slr_company_partner_list',
-                      params: { cmn_company_id: slr_list.cmn_company_id },
+                      query: { cmn_company_id: slr_list.cmn_company_id },
                     }"
                     class="btn btn-danger"
                     >{{ myLang.partner_management }}</router-link
@@ -96,6 +97,11 @@
                     class="btn btn-primary"
                   >
                     {{ myLang.details }}
+                  </button>
+                </td>
+                <td>
+                    <button @click="delete_slr_data(slr_list)" class="btn btn-danger">
+                    {{ myLang.delete }}
                   </button>
                 </td>
               </tr>
@@ -246,6 +252,22 @@ export default {
       this.form.reset();
       this.form.errors.clear();
       this.form.fill(form_data);
+    },
+    delete_slr_data(form_data){
+        // console.log(form_data)
+        // return 0;
+        this.delete_sweet().then((result) => {
+              if (result.value) {
+                  axios.post(this.BASE_URL + "api/seller_delete", form_data).then(({ data }) => {
+                        console.log(data)
+                        this.alert_text = data.message;
+                        this.alert_title = data.title;
+                        this.alert_icon = data.class_name;
+                        this.get_all_slr();
+                        this.sweet_normal_alert();
+                    })
+              }
+        })
     },
     save_new_slr() {
       this.form.post(this.BASE_URL + "api/slr_company_create")

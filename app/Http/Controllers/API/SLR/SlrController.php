@@ -117,4 +117,26 @@ class SlrController extends Controller
             return response()->json(['title' => "Created!", 'message' => "created", 'class_name' => 'success']);
         }
     }
+
+    public function sellerDelete(Request $request){
+        $cmn_company_id=$request->cmn_company_id;
+        $slr_seller_id=$request->slr_seller_id;
+        // slr_seller::where('slr_seller_id',$slr_seller_id)->delete();
+        cmn_company::where('cmn_company_id',$cmn_company_id)->delete();
+        $cmn_company_users = cmn_companies_user::select('adm_user_id')->where('cmn_company_id', $cmn_company_id)->get();
+        foreach ($cmn_company_users as $key => $cmn_company_user) {
+            $user = User::findOrFail($cmn_company_user->adm_user_id);
+            $user->syncRoles();
+            User::where('id',$cmn_company_user->adm_user_id)->delete();
+        }
+        return response()->json(['title' => "Deleted!", 'message' => "Deleted", 'class_name' => 'success']);
+    }
+
+    public function sellerUserDelete(Request $request){
+        $adm_user_id=$request->adm_user_id;
+        $user = User::findOrFail($adm_user_id);
+        $user->syncRoles();
+        User::where('id',$adm_user_id)->delete();
+        return response()->json(['title' => "Deleted!", 'message' => "Deleted", 'class_name' => 'success']);
+    }
 }

@@ -69,8 +69,10 @@
                 <th style="cursor: pointer">{{ myLang.email }}</th>
                 <th style="cursor: pointer">Super Code</th>
                 <th style="cursor: pointer">J Code</th>
+                <th style="cursor: pointer">{{ myLang.status_in_operation }}</th>
                 <!-- <th style="cursor: pointer">{{ myLang.status }}</th> -->
                 <th style="cursor: pointer">{{ myLang.details }}</th>
+                <th style="cursor: pointer">{{ myLang.delete }}</th>
               </tr>
             </thead>
             <tbody>
@@ -90,7 +92,10 @@
                   </select>
                 </td>
                 <td>
-                  <button class="btn btn-info" @click="buyer_user_update_modal(value)">{{ myLang.details }}</button>
+                  <button class="btn btn-info" @click="seller_user_update_modal(value)">{{ myLang.details }}</button>
+                </td>
+                <td>
+                  <button class="btn btn-danger" @click="sellerUserDelete(value)">{{ myLang.delete }}</button>
                 </td>
               </tr>
             </tbody>
@@ -190,6 +195,7 @@ export default {
         password: "",
         cmn_company_id: null,
         adm_user_id: null,
+        // user_type:'slr'
       }),
     };
   },
@@ -222,16 +228,6 @@ export default {
       // this.password_field = true;
     },
     create_new_user() {
-      // console.log(this.selected_buyer);
-      // console.log(this.selected_seller);
-      // var selected_buyer_length=Object.keys(this.selected_buyer).length
-      // var selected_seller_length=Object.keys(this.selected_seller).length
-      // var cmn_user_create_url="";
-      // if (selected_buyer_length) {
-      //   var cmn_user_create_url="api/buyer_user_create";
-      // }else if (selected_seller_length) {
-      //   var cmn_user_create_url="api/seller_user_create";
-      // }
       this.form.post(this.BASE_URL + "api/cmn_user_create")
         .then(({ data }) => {
           Fire.$emit("AfterCreateUser");
@@ -253,7 +249,7 @@ export default {
           this.sweet_advance_alert();
         });
     },
-    buyer_user_update_modal(user) {
+    seller_user_update_modal(user) {
 
       this.form.reset();
       this.form.cmn_company_id = this.cmn_company_id;
@@ -265,11 +261,26 @@ export default {
       // this.password_field = false;
       this.user_create_modal = true;
     },
+    sellerUserDelete(user){
+        // console.log(user);
+        this.delete_sweet().then((result) => {
+              if (result.value) {
+                  axios.post(this.BASE_URL + "api/seller_user_delete", {adm_user_id:user.id}).then(({ data }) => {
+                        console.log(data)
+                        this.alert_text = data.message;
+                        this.alert_title = data.title;
+                        this.alert_icon = data.class_name;
+                        this.get_all_company_users();
+                        this.sweet_normal_alert();
+                    })
+              }
+        })
+    }
   },
 
   created() {
-    this.cmn_company_id = this.$route.params.cmn_company_id;
-    this.form.cmn_company_id = this.$route.params.cmn_company_id;
+    this.cmn_company_id = this.$route.query.cmn_company_id;
+    this.form.cmn_company_id = this.$route.query.cmn_company_id;
 
     this.get_all_company_users();
     this.get_byr_slr_company(this.cmn_company_id)

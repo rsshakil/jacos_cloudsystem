@@ -260,7 +260,7 @@ export const routes = [
 
     },
     {
-        path: '/byr_management/byr_company_user_list/:cmn_company_id',
+        path: '/byr_management/byr_company_user_list',
         component: cmn_company_user_list,
         name: 'byr_company_user_list',
         meta: {
@@ -348,7 +348,7 @@ export const routes = [
         },
     },
     {
-        path: '/slr_management/slr_company_user_list/:cmn_company_id',
+        path: '/slr_management/slr_company_user_list',
         component: cmn_company_user_list,
         name: 'slr_company_user_list',
         meta: {
@@ -359,7 +359,7 @@ export const routes = [
 
     },
     {
-        path: '/slr_management/slr_company_partner_list/:cmn_company_id',
+        path: '/slr_management/slr_company_partner_list',
         component: cmn_company_partner_list,
         name: 'slr_company_partner_list',
         meta: {
