@@ -180,11 +180,13 @@
               </td>
               <td width="10%" class="cl_custom_color_extra">確定状況</td>
               <td width="15%">
-                {{ order_item_shipment_data_headTable.decision_datetime }}
+                <span v-if="order_item_shipment_data_headTable.decision_datetime!=null">{{ order_item_shipment_data_headTable.decision_datetime }}</span>
+                <span v-else>未確定</span>
               </td>
               <td width="10%" class="cl_custom_color_extra">送信状況</td>
               <td width="15%">
-                {{ order_item_shipment_data_headTable.send_datetime }}
+              <span v-if="order_item_shipment_data_headTable.send_datetime!=null">{{ order_item_shipment_data_headTable.send_datetime }}</span>
+                <span v-else>未送信</span>
               </td>
             </tr>
           </table>
@@ -315,6 +317,8 @@
                       )
                     "
                     class="form-control"
+                    :min="0"
+                    :max="order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units"
                     @keyup="ball_case_cal(order_item_detail_list, 'ケース')"
                     v-model="
                       order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units
@@ -339,6 +343,8 @@
                       )
                     "
                     class="form-control"
+                    :min="0"
+                    :max="order_item_detail_list.mes_lis_shi_lin_qua_ord_quantity"
                     @keyup="ball_case_cal(order_item_detail_list, 'バラ')"
                     v-model="
                       order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity
@@ -366,6 +372,8 @@
                       )
                     "
                     class="form-control text-right"
+                    :min="0"
+                    :max="order_item_detail_list.mes_lis_ord_lin_amo_item_net_price_unit_price"
                     v-model="
                       order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price
                     "
@@ -392,7 +400,7 @@
                 </td>
                 <td class="text-right">
                   <input
-                    type="text"
+                    type="number"
                     :disabled="
                       is_disabled(
                         order_item_shipment_data_headTable.decision_datetime ==
@@ -402,6 +410,8 @@
                       )
                     "
                     class="form-control text-right"
+                    :min="0"
+                    :max="order_item_detail_list.mes_lis_ord_lin_amo_item_selling_price_unit_price"
                     v-model="
                       order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price
                     "

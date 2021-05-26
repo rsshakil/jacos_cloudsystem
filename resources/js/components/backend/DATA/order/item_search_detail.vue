@@ -126,8 +126,10 @@
               <td class="cl_custom_color_active">ケース数</td>
               <td>
                 <input
-                  type="text"
+                  type="number"
                   class="form-control"
+                  :min="0"
+                    :max="order_item_lists.mes_lis_shi_lin_qua_ord_num_of_order_units"
                   v-model="
                     order_item_lists.mes_lis_shi_lin_qua_shi_num_of_order_units
                   "
@@ -136,8 +138,10 @@
               <td class="cl_custom_color_active">バラ数</td>
               <td>
                 <input
-                  type="text"
+                  type="number"
                   class="form-control"
+                  :min="0"
+                    :max="order_item_lists.mes_lis_shi_lin_qua_ord_quantity"
                   v-model="order_item_lists.mes_lis_shi_lin_qua_shi_quantity"
                 />
               </td>
@@ -147,8 +151,10 @@
               <td class="cl_custom_color_active">原単価</td>
               <td>
                 <input
-                  type="text"
+                  type="number"
                   class="form-control"
+                  :min="0"
+                    :max="order_item_lists.mes_lis_ord_lin_amo_item_net_price_unit_price"
                   v-model="
                     order_item_lists.mes_lis_shi_lin_amo_item_net_price_unit_price
                   "
@@ -159,10 +165,12 @@
               <td class="cl_custom_color_active">売単価</td>
               <td>
                 <input
-                  type="text"
+                  type="number"
                   class="form-control"
+                  :min="0"
+                    :max="order_item_lists.mes_lis_ord_lin_amo_item_selling_price_unit_price"
                   v-model="
-                    order_item_lists.mes_lis_ord_lin_amo_item_selling_price_unit_price
+                    order_item_lists.mes_lis_shi_lin_amo_item_selling_price_unit_price
                   "
                 />
               </td>
@@ -246,7 +254,9 @@
                 </td>
                 <td>
                   <input
-                    type="text"
+                    type="number"
+                    :min="0"
+                    :max="order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units"
                     v-model="
                       order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units
                     "
@@ -270,10 +280,13 @@
                 </td>
                 <td>
                   <input
-                    type="text"
+                    type="number"
+                     :min="0"
+                    :max="order_item_detail_list.mes_lis_shi_lin_qua_ord_quantity"
                     v-model="
                       order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity
                     "
+                    
                     class="form-control"
                   />
                   {{ order_item_detail_list.mes_lis_shi_lin_qua_ord_quantity }}
@@ -286,7 +299,9 @@
                 </td>
                 <td class="text-right">
                   <input
-                    type="text"
+                    type="number"
+                     :min="0"
+                    :max="order_item_detail_list.mes_lis_ord_lin_amo_item_net_price_unit_price"
                     v-model="
                       order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price
                     "
@@ -307,7 +322,9 @@
 
                 <td class="text-right">
                   <input
-                    type="text"
+                    type="number"
+                    :min="0"
+                    :max="order_item_detail_list.mes_lis_ord_lin_amo_item_selling_price_unit_price"
                     v-model="
                       order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price
                     "
