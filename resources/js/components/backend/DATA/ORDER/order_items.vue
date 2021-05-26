@@ -683,6 +683,11 @@
     </b-modal>
   </div>
 </template>
+<style>
+input[type=number]{
+    min-width: 100px;
+} 
+</style>
 <script>
 export default {
   // props: ["param_data"],
