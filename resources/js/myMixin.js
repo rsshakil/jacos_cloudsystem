@@ -363,6 +363,10 @@ export default {
             if (!str) return ''
             return str.toString().replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         },
+        priceFormatNullZero(str) {
+            if (!str) return '0'
+            return str.toString().replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        },
         customArrReverse(str) {
             return str.slice().reverse();
         },

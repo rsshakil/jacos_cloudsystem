@@ -101,6 +101,18 @@
             style="width: 100%"
           >
             <tr>
+            <td class="cl_custom_color" style="width: 10%">発注日</td>
+              <td style="width: 15%">
+                <span
+                  v-if="
+                    order_item_shipment_data_headTable &&
+                    Object.keys(order_item_shipment_data_headTable).length
+                  "
+                  >{{
+                    order_item_shipment_data_headTable.mes_lis_acc_tra_dat_order_date
+                  }}</span
+                >
+              </td>
               <td class="cl_custom_color" style="width: 10%">直接納品先</td>
               <td style="width: 15%">
                 <span
@@ -131,7 +143,10 @@
                   }}</span
                 >
               </td>
-              <td class="cl_custom_color" style="width: 10%">伝票番号</td>
+              
+            </tr>
+            <tr>
+            <td class="cl_custom_color" style="width: 10%">伝票番号</td>
               <td style="width: 15%">
                 <span
                   v-if="
@@ -143,74 +158,7 @@
                   }}</span
                 >
               </td>
-            </tr>
-            <tr>
-              <td class="cl_custom_color" style="width: 10%">定／特</td>
-              <td style="width: 15%">
-                <span
-                  v-if="
-                    order_item_shipment_data_headTable &&
-                    Object.keys(order_item_shipment_data_headTable).length
-                  "
-                  >{{
-                    order_item_shipment_data_headTable.mes_lis_acc_tra_ins_goods_classification_code
-                  }}
-                  {{
-                    getbyrjsonValueBykeyName(
-                      "mes_lis_ord_tra_ins_goods_classification_code",
-                      order_item_shipment_data_headTable.mes_lis_acc_tra_ins_goods_classification_code,
-                      "orders",
-                      buyer_settings
-                    )
-                  }}</span
-                >
-              </td>
-              <td class="cl_custom_color" style="width: 10%">不定貴区分</td>
-              <td style="width: 15%">
-                <span
-                  v-if="
-                    order_item_shipment_data_headTable &&
-                    Object.keys(order_item_shipment_data_headTable).length
-                  "
-                  >{{
-                    order_item_shipment_data_headTable.mes_lis_acc_tra_fre_原価金額able_measure_item_code
-                  }}
-                  {{
-                    getbyrjsonValueBykeyName(
-                      "mes_lis_ord_tra_fre_variable_measure_item_code",
-                      order_item_shipment_data_headTable.mes_lis_acc_tra_fre_variable_measure_item_code,
-                      "orders",
-                      buyer_settings
-                    )
-                  }}</span
-                >
-              </td>
-              <td class="cl_custom_color" style="width: 10%">発注者</td>
-              <td style="width: 15%">
-                <span
-                  v-if="
-                    order_item_shipment_data_headTable &&
-                    Object.keys(order_item_shipment_data_headTable).length
-                  "
-                  >{{
-                    order_item_shipment_data_headTable.mes_lis_buy_name
-                  }}</span
-                >
-              </td>
-            </tr>
-            <tr>
-              <td class="cl_custom_color" style="width: 10%">発注日</td>
-              <td style="width: 15%">
-                <span
-                  v-if="
-                    order_item_shipment_data_headTable &&
-                    Object.keys(order_item_shipment_data_headTable).length
-                  "
-                  >{{
-                    order_item_shipment_data_headTable.mes_lis_acc_tra_dat_order_date
-                  }}</span
-                >
-              </td>
+               
               <td class="cl_custom_color" style="width: 10%">伝票区分</td>
               <td style="width: 15%">
                 <span
@@ -231,7 +179,7 @@
                   }}</span
                 >
               </td>
-              <td class="cl_custom_color" style="width: 10%">受領内容</td>
+              <td class="cl_custom_color" style="width: 10%">定／特</td>
               <td style="width: 15%">
                 <span
                   v-if="
@@ -239,27 +187,57 @@
                     Object.keys(order_item_shipment_data_headTable).length
                   "
                   >{{
-                    (order_item_shipment_data_headTable.status = "訂正なし")
+                    order_item_shipment_data_headTable.mes_lis_acc_tra_ins_goods_classification_code
+                  }}
+                  {{
+                    getbyrjsonValueBykeyName(
+                      "mes_lis_ord_tra_ins_goods_classification_code",
+                      order_item_shipment_data_headTable.mes_lis_acc_tra_ins_goods_classification_code,
+                      "orders",
+                      buyer_settings
+                    )
                   }}</span
                 >
               </td>
-            </tr>
-            <tr>
-              <td class="cl_custom_color" style="width: 10%">備考</td>
-              <td colspan="5" style="width: 15%">
+             
+            <!--  <td class="cl_custom_color" style="width: 10%">発注者</td>
+              <td style="width: 15%">
                 <span
                   v-if="
                     order_item_shipment_data_headTable &&
                     Object.keys(order_item_shipment_data_headTable).length
                   "
                   >{{
-                    order_item_shipment_data_headTable.mes_lis_acc_tra_not_text
+                    order_item_shipment_data_headTable.mes_lis_buy_name
+                  }}</span
+                >
+              </td>-->
+            </tr>
+            <tr>
+              
+
+<td class="cl_custom_color" style="width: 10%">不定貴区分</td>
+              <td style="width: 15%">
+                <span
+                  v-if="
+                    order_item_shipment_data_headTable &&
+                    Object.keys(order_item_shipment_data_headTable).length
+                  "
+                  >{{
+                    order_item_shipment_data_headTable.mes_lis_acc_tra_fre_原価金額able_measure_item_code
+                  }}
+                  {{
+                    getbyrjsonValueBykeyName(
+                      "mes_lis_ord_tra_fre_variable_measure_item_code",
+                      order_item_shipment_data_headTable.mes_lis_acc_tra_fre_variable_measure_item_code,
+                      "orders",
+                      buyer_settings
+                    )
                   }}</span
                 >
               </td>
-            </tr>
-            <tr>
-              <td class="cl_custom_color" style="width: 10%">税区分・税率</td>
+
+               <td class="cl_custom_color" style="width: 10%">税区分・税率</td>
               <td style="width: 15%">
                 <span
                   v-if="
@@ -283,16 +261,69 @@
                   %</span
                 >
               </td>
+              <!--<td class="cl_custom_color" style="width: 10%">受領内容</td>
+              <td style="width: 15%">
+                <span
+                  v-if="
+                    order_item_shipment_data_headTable &&
+                    Object.keys(order_item_shipment_data_headTable).length
+                  "
+                  >{{
+                    (order_item_shipment_data_headTable.status = "訂正なし")
+                  }}</span
+                >
+              </td>-->
+              <td class="cl_custom_color" style="width: 10%">備考</td>
+              <td colspan="5" style="width: 15%">
+                <span
+                  v-if="
+                    order_item_shipment_data_headTable &&
+                    Object.keys(order_item_shipment_data_headTable).length
+                  "
+                  >{{
+                    order_item_shipment_data_headTable.mes_lis_acc_tra_not_text
+                  }}</span
+                >
+              </td>
+            </tr>
+            
+          </table>
+        </div>
+      </div>
+ <div class="col-12">
+        <div
+          class="col-12"
+          style="background: #d8e3f0; padding: 10px; margin-bottom: 20px"
+        >
+          <table
+            class="table orderDetailTable table-bordered"
+            style="width: 100%"
+          >
+<tr>
+             
               <td class="cl_custom_color" style="width: 10%">実納品日</td>
               <td colspan="3" style="width: 15%">
                 <span>{{
                   order_item_shipment_data_headTable.mes_lis_acc_tra_dat_revised_delivery_date_to_receiver
                 }}</span>
               </td>
+              <td class="cl_custom_color_extra" style="width: 10%">受領訂正日時</td>
+              <td style="width: 15%">
+                <span
+                  v-if="
+                    order_item_shipment_data_headTable &&
+                    Object.keys(order_item_shipment_data_headTable).length
+                  "
+                  >{{
+                    order_item_shipment_data_headTable.update_datetime 
+                  }}</span
+                >
+              </td>
             </tr>
           </table>
         </div>
       </div>
+
       <div class="col-12" style="text-align: center"></div>
       <div class="col-12">
         <span class="pagi" style="width: 100%">
@@ -378,7 +409,7 @@
               </td>
               <td>
                 {{
-                  order_item_detail_list.mes_lis_acc_lin_fre_packing_quantity
+                  order_item_detail_list.mes_lis_acc_lin_qua_unit_multiple
                 }}
               </td>
               <td>
@@ -393,7 +424,7 @@
               <td>
                 <!-- {{order_item_detail_list.mes_lis_acc_lin_qua_unit_of_measure}}  {{getbyrjsonValueBykeyName('mes_lis_ord_lin_qua_unit_of_measure',order_item_detail_list.mes_lis_acc_lin_qua_unit_of_measure,'orders',buyer_settings)}}-->
                 {{
-                  order_item_detail_list.mes_lis_acc_lin_qua_package_indicator
+                  order_item_detail_list.mes_lis_acc_lin_qua_unit_of_measure
                 }}
               </td>
               <td>
@@ -404,7 +435,7 @@
 
               <td>
                 <!--{{order_item_detail_list.mes_lis_acc_lin_fre_item_weight * order_item_detail_list.mes_lis_acc_lin_qua_shi_quantity}}-->
-                {{ order_item_detail_list.mes_lis_acc_lin_fre_received_weight }}
+                <span v-if="order_item_detail_list.mes_lis_acc_lin_fre_received_weight!='0.000'">{{ order_item_detail_list.mes_lis_acc_lin_fre_received_weight }}</span>
               </td>
               <td class="text-right">
                 <!-- <input type="text" class="form-control" v-model="order_item_detail_list.mes_lis_acc_lin_amo_item_net_price_unit_price">
@@ -418,7 +449,7 @@
                 <!--{{ order_item_detail_list.mes_lis_acc_lin_amo_item_net_price_unit_price * order_item_detail_list.mes_lis_acc_lin_qua_shi_quantity}}-->
                 {{
                   order_item_detail_list.mes_lis_acc_lin_amo_item_net_price
-                    | priceFormat
+                    | priceFormatNullZero
                 }}
               </td>
               <td class="text-right">
@@ -433,7 +464,7 @@
                 <!--{{order_item_detail_list.mes_lis_acc_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_acc_lin_qua_shi_quantity}}-->
                 {{
                   order_item_detail_list.mes_lis_acc_lin_amo_item_selling_price
-                    | priceFormat
+                    | priceFormatNullZero
                 }}
               </td>
               <!--  <td>-->

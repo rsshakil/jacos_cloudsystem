@@ -95,7 +95,7 @@
 
               <li class="nav-item dropdown">
                 <a
-                  class="nav-link top_menu_custom_a dropdown-toggle text-nowrap px-3"
+                  class="nav-link top_menu_custom_a loggedUserName  text-nowrap px-3"
                   data-toggle="dropdown"
                   href="#"
                   role="button"
@@ -103,7 +103,7 @@
                   aria-expanded="false"
                 >
                   <!-- @if(Auth::user()->image) -->
-                  <!--
+                  <!--dropdown-toggle off dropdown
               <img
                 class="user-avatar rounded-circle mr-2"
                 style="max-height: 46px !important"
@@ -120,7 +120,7 @@
                  
                 </a>
                 <div
-                  class="dropdown-menu dropdown-menu-small"
+                  class="dropdown-menu dropdown-menu-small d-none"
                   style="margin-left: -60px"
                 >
                  
