@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ADM\User;
 use App\Models\BYR\byr_buyer;
 use App\Models\CMN\cmn_scenario;
+use App\Models\CMN\cmn_companies_user;
 use App\Models\LV3\lv3_history;
 use App\Models\LV3\lv3_job;
 use App\Models\LV3\lv3_service;
@@ -49,11 +50,9 @@ class Level3Controller extends Controller
             } else {
                 return response()->json(['message' => "passwordがありません。properties.fileを確認してください。", 'class_name' => 'alert-danger']);
             }
-
         } else {
             return response()->json(['message' => "emailがありません。properties.fileを確認してください。", 'class_name' => 'alert-danger']);
         }
-
     }
 
     public function historyData(Request $request)
@@ -73,55 +72,46 @@ class Level3Controller extends Controller
 
     public function getCustomer(Request $request)
     {
+        \Log::debug(__METHOD__.':start---');
+
         $customer_array=array();
 
         $user_id = $request->user_id;
         $customers_data = array();
         $authUser = User::find($user_id);
-        if ($authUser->hasRole(config('const.adm_role_name'))) {
-            $customers_data = byr_buyer::select('cmn_connects.cmn_connect_id', 'cmn_connects.partner_code', 'cmn_companies.company_name')
-                ->join('cmn_companies', 'byr_buyers.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
-                ->join('cmn_connects', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
-                ->groupBy(['cmn_companies.company_name', 'cmn_connects.partner_code'])
-                ->orderBy('cmn_companies.cmn_company_id')
-                ->orderBy('cmn_connects.cmn_connect_id','ASC')
-                ->get();
-        }else{
-            //Buyer work
-            // $customers_data = cmn_companies_user::select('cmn_companies_users.adm_user_id', 'cmn_connects.cmn_connect_id', 'cmn_connects.partner_code', 'cmn_companies.company_name')
-        //     ->join('slr_sellers', 'slr_sellers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
-        //     ->join('cmn_connects', 'cmn_connects.slr_seller_id', '=', 'slr_sellers.slr_seller_id')
-        //     ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
-        //     ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
-        //     ->where('cmn_companies_users.adm_user_id', $user_id)->get();
+        //Buyer work
+        $customers_data = cmn_companies_user::select(
+            'cmn_companies_users.adm_user_id',
+            'cmn_connects.cmn_connect_id',
+            'cmn_connects.partner_code',
+            'cmn_companies.company_name'
+        )
+            ->join('slr_sellers', 'slr_sellers.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
+            ->join('cmn_connects', 'cmn_connects.slr_seller_id', '=', 'slr_sellers.slr_seller_id')
+            ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
+            ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
+            ->where('cmn_companies_users.adm_user_id', $user_id)->get();
         // \Log::info($customers_data);
-        }
 
         foreach ($customers_data as $key1 => $value) {
             $tmp['cmn_connect_id']=$value->cmn_connect_id;
             $tmp['partner_code']=$value->partner_code;
             $tmp['company_name']=$value->company_name;
             $request->request->add(['cmn_connect_id' => $value->cmn_connect_id]);
-            $req_data = json_decode($this->showServiceData($request)->getContent(), true)['all_service_data'];
-            $tmp['service_info']=$req_data;
+            // get service
+            $tmp['service_info']=$this->getService($user_id, $value->cmn_connect_id);
 
-            // foreach ($req_data as $key => $service_value) {
-            //     $request->request->add(['service_id' => $service_value['lv3_service_id']]);
-            //     $tmp['service_info'][$key]['schedule_data']=json_decode($this->scheduleData($request)->getContent(), true);
-            // }
             $customer_array[]=$tmp;
-
         }
+        \Log::debug(__METHOD__.':end---');
         return response()->json(['customers_data' => $customer_array]);
     }
 
-    public function showServiceData(Request $request)
+    private function getService($adm_user_id, $cmn_connect_id)
     {
-        // return $request->all();
-        $cmn_connect_id = $request->cmn_connect_id;
-        $adm_user_id = $request->user_id;
-        $all_service_data = lv3_service::where(['cmn_connect_id' => $cmn_connect_id, 'adm_user_id' => $adm_user_id])->get();
-        return \response()->json(['all_service_data' => $all_service_data]);
+        return lv3_service::select('lv3_service_id', 'service_name')
+        ->where(['cmn_connect_id' => $cmn_connect_id, 'adm_user_id' => $adm_user_id])
+        ->get();
     }
 
     public function addService(Request $request)
@@ -189,8 +179,16 @@ class Level3Controller extends Controller
             }
         }
         $file_path_info = $this->getFilePath($user_id, $service_id);
-        $job_info = lv3_job::select('lv3_job_id', 'lv3_service_id', 'job_execution_flag', 'cmn_scenario_id',
-            'execution', 'batch_file_path', 'next_service_id', 'append')
+        $job_info = lv3_job::select(
+            'lv3_job_id',
+            'lv3_service_id',
+            'job_execution_flag',
+            'cmn_scenario_id',
+            'execution',
+            'batch_file_path',
+            'next_service_id',
+            'append'
+        )
             ->where('lv3_service_id', $service_id)->first();
 
         // ===Scenario===
@@ -220,7 +218,6 @@ class Level3Controller extends Controller
             'all_service_data' => $all_service_data,
         );
         return response()->json($final_arr);
-
     }
 
     public function getFilePath($user_id, $service_id)
@@ -262,7 +259,6 @@ class Level3Controller extends Controller
         lv3_trigger_schedule::insert($insert_first_array);
         lv3_trigger_schedule::insert($insert_second_array);
         return response()->json(['message' => '更新完了', 'class_name' => 'alert-success']);
-
     }
     public function setFilePath(Request $request)
     {
@@ -467,7 +463,7 @@ class Level3Controller extends Controller
             rename($path . $checked_files[0], $path . 'moved/' . $checked_files[0]);
             $this->message = "ファイルが見つかりました。";
             $this->status_code = 200;
-        }else {
+        } else {
             $this->message = "ファイルが見つかりませんでした。";
             $this->status_code = 401;
         }
