@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
-use DB;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -146,11 +147,11 @@ class UserController extends Controller
         $user->name = $name;
         $user->email = $email;
         $user->save();
-        \Log::info('User Saved');
+        Log::info('User Saved');
         $file_name = '';
         $file_name_db = $user_details_data['image'];
 
-        \Log::info('file_name_db=' . $file_name_db);
+        Log::info('file_name_db=' . $file_name_db);
         if($request->image_url){
             if ($file_name_db != '') {
                 $image_exists = $file_name_db;
@@ -247,7 +248,7 @@ public function changePassword(Request $request)
 public function get_user_company_byr_slr_list(){
     $user_comp_info = array();
     $slr_order_info = array();
-    $user_company_info = \DB::table('cmn_companies_users')
+    $user_company_info = DB::table('cmn_companies_users')
     ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'cmn_companies_users.cmn_company_id')
     ->select('cmn_companies.cmn_company_id', 'cmn_companies.company_name')
     ->where('cmn_companies_users.adm_user_id',Auth::user()->id)

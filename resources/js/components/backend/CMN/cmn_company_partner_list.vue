@@ -250,6 +250,8 @@ export default {
         .post(this.BASE_URL + "api/buyer_partner_create")
         .then(({ data }) => {
           // console.log(data)
+          this.alert_icon = data.class_name;
+          this.alert_title = data.title;
           if (data.message == "created") {
             this.partner_create_modal = false;
             this.alert_text = "You have successfully added partner";
@@ -259,10 +261,12 @@ export default {
             this.alert_text = "You have successfully updated partner";
             this.company_partner_list();
           } else {
+            this.alert_title = 'error';
             this.alert_text = "Some Error";
+            this.alert_icon = 'error';
           }
-          this.alert_title = data.title;
-          this.alert_icon = data.class_name;
+
+
           this.sweet_normal_alert();
         })
         .catch((error) => {
