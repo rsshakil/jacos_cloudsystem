@@ -30,7 +30,7 @@
                   </button>
                 </th>
               </tr>
-              <tr v-if="filter_select_box">
+              <tr v-if="filter_select_box==true">
                 <th colspan="2">
                   <multiselect
                     v-model="selected_buyer"
@@ -306,23 +306,26 @@ export default {
   created() {
       if (this.$route.query.cmn_company_id) {
          this.cmn_company_id = this.$route.query.cmn_company_id;
+      }else{
+          this.cmn_company_id ="";
       }
+    //   console.log('cmn: ',this.cmn_company_id);
     this.company_partner_list();
     this.get_byr_slr_company(this.cmn_company_id)
     Fire.$on("company_partner_list_emit", (cmn_company_id) => {
       this.cmn_company_id=cmn_company_id;
         this.company_partner_list();
     });
-    // if (this.cmn_company_id==null) {
-    //   this.filter_select_box=true
-    // // var company_info=this.get_byr_slr_company(this.cmn_company_id);
-    // axios
-    //   .get(this.BASE_URL + "api/get_byr_slr_company/" + this.cmn_company_id)
-    //   .then(({ data }) => {
-    //     this.buyers=data.buyer_info;
-    //     // console.log(data)
-    //   });
-    // }
+    if (this.cmn_company_id=="") {
+      this.filter_select_box=true
+    // var company_info=this.get_byr_slr_company(this.cmn_company_id);
+    axios
+      .get(this.BASE_URL + "api/get_byr_slr_company/" + this.cmn_company_id)
+      .then(({ data }) => {
+        this.buyers=data.buyer_info;
+        // console.log(data)
+      });
+    }
 
   },
   mounted() {

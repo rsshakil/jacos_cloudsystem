@@ -17,7 +17,7 @@ class CreateByrBuyersTable extends Migration
         Schema::create('byr_buyers', function (Blueprint $table) {
             $table->increments('byr_buyer_id')->unsigned()->comment('byr_buyer_id');
             $table->unsignedInteger('cmn_company_id');
-            $table->foreign('cmn_company_id')->references('cmn_company_id')->on('cmn_companies');
+            $table->foreign('cmn_company_id')->references('cmn_company_id')->on('cmn_companies')->onDelete('cascade');;
             $table->string('super_code',4)->comment('Super Code');
             $table->integer('adm_role_id')->default(0)->unsigned()->comment('Admin role id');
             $table->json('setting_information')->nullable()->comment('Setting Information Json');
