@@ -549,6 +549,8 @@ class AllUsedFunction extends Controller
     }
     public function downloadFileName($request, $file_type="csv", $file_header="受注")
     {
+        \Log::debug(__METHOD__.':start---');
+
         // Log::info($request);
         $adm_user_id=$request->adm_user_id;
         $byr_buyer_id=$request->byr_buyer_id;
@@ -560,6 +562,34 @@ class AllUsedFunction extends Controller
         $file_name = $file_header.'_'.$file_name_info->company_name.'_'.date('YmdHis').'.'.$file_type;
         // \Log::info($file_name);
         // $file_name = $file_name_info->super_code.'-'."shipment_".$file_name_info->super_code.'-'.$file_name_info->partner_code."-".$file_name_info->jcode.'_shipment_'.date('YmdHis').'.'.$file_type;
+        \Log::debug(__METHOD__.':end---');
+        return $file_name;
+    }
+
+    public function sendFileName($request, $file_type="csv", $file_header="shipment")
+    {
+        \Log::debug(__METHOD__.':start---');
+
+        Log::info($request);
+        $adm_user_id=$request->adm_user_id;
+        $byr_buyer_id=$request->byr_buyer_id;
+        $cmn_connect_id = $request->cmn_connect_id;
+        $file_name_info=byr_buyer::select(
+            'byr_buyers.super_code',
+            'cmn_companies.jcode',
+            'cmn_companies.company_name',
+            'cmn_connects.partner_code'
+        )
+            ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
+            ->join('cmn_connects', 'cmn_connects.byr_buyer_id', '=', 'byr_buyers.byr_buyer_id')
+            ->where('byr_buyers.byr_buyer_id', $byr_buyer_id)
+            ->where('cmn_connects.cmn_connect_id', $cmn_connect_id)
+            ->first();
+        // Log::info($file_name_info);
+        $file_name = $file_header.'_'.$file_name_info->company_name.'_'.date('YmdHis').'.'.$file_type;
+        // \Log::info($file_name);
+        $file_name = $file_name_info->super_code.'-'.$file_header.'_'.$file_name_info->super_code.'-'.$file_name_info->partner_code."-".$file_name_info->jcode.'_'.$file_header.'_'.date('YmdHis').'.'.$file_type;
+        \Log::debug(__METHOD__.':end---');
         return $file_name;
     }
 
