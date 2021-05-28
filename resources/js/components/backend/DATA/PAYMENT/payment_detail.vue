@@ -166,7 +166,7 @@
         </div>
         <div class="col-6">
         <h6>ダウンロードを押すと、比較データがダウンロードされます</h6>
-           <button class="btn btn-outline-primary" style="float:right;margin-bottom:15px;" type="button" :disabled="is_disabled(unpaid_lists?true:false)" @click="unpaid_data_download(1)">
+           <button class="btn btn-outline-primary" style="float:right;margin-bottom:15px;" type="button" :disabled="is_disabled(unpaid_lists.length>0?true:false)" @click="unpaid_data_download(1)">
         <b-icon icon="download" animation="fade" font-scale="1.2"></b-icon>
         {{ myLang.download }}
       </button>
@@ -271,18 +271,18 @@ export default {
         .then(({ data }) => {
             // console.log(data);
             this.unpaid_lists=data.unpaid_list;
+            // console.log(this.unpaid_lists.length)
         });
        this.unpaid_slip_modal = true;
     },
     closeSlipModal(){
        this.unpaid_slip_modal = false;
     },
-    unpaid_data_download(){
-        // axios.post(this.BASE_URL + "api/invoice_compare_data_download", this.form)
-        // .then(({ data }) => {
-        //     this.downloadFromUrl(data);
-        //     // this.compareDataList = data.voucherList;
-        // });
+    unpaid_data_download(download_flag=1){
+        axios.post(this.BASE_URL + "api/payment_unpaid_data_download", this.form)
+        .then(({ data }) => {
+            this.downloadFromUrl(data);
+        });
     },
 
   },

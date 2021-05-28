@@ -30,7 +30,7 @@ class ShipmentController extends Controller
     }
     public function sendShipmentData(Request $request)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
         // return $request->all();
         $data_count=$request->data_count;
         $data_order_id=$request->data_order_id;
@@ -64,18 +64,32 @@ class ShipmentController extends Controller
             $new_file_name = $this->all_functions->sendFileName($request, 'csv', 'shipment');
             data_shipment::where('data_order_id', $data_order_id)->update(['mes_mes_number_of_trading_documents'=>$csv_data_count]);
             $download_file_url = Config::get('app.url')."storage/app".config('const.SHIPMENT_CSV_PATH')."/". $new_file_name;
-            (new ShipmentCSVExport($request))->store(config('const.SHIPMENT_CSV_PATH').'/'.$new_file_name);
-            data_shipment_voucher::where('decision_datetime', '!=', null)
-            ->where('send_datetime', '=', null)
+            // ==============
+            $shipment_query = Data_Controller::get_shipment_data($request);
+            // $csv_data_count = $shipment_query->count();
+            $shipment_data = $shipment_query->get()->toArray();
+            // \Log::debug($shipment_data);
+
+            // CSV create
+            Csv::create(
+                config('const.SHIPMENT_CSV_PATH')."/". $new_file_name,
+                $shipment_data,
+                Data_Controller::shipmentCsvHeading(),
+                config('const.CSV_FILE_ENCODE')
+            );
+            // ==============
+            // (new ShipmentCSVExport($request))->store(config('const.SHIPMENT_CSV_PATH').'/'.$new_file_name);
+            data_shipment_voucher::whereNotNull('decision_datetime')
+            ->whereNull('send_datetime')
             ->update(['send_datetime'=>$dateTime]);
         }
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
 
         return response()->json(['message' => 'Success','status'=>1, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
     }
     public function downloadShipmentCsv(Request $request)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
         // return $request->all();
         // return $request->all();
         //ownloadType=2 for Fixed length
@@ -127,7 +141,7 @@ class ShipmentController extends Controller
             // }
             // return response()->json($ret);
         }
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
 
         return response()->json(['message' => 'Success','status'=>1,'new_file_name'=>$new_file_name, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
     }

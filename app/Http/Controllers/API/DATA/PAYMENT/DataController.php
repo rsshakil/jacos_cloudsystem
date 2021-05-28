@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\DATA\PAYMENT;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DATA\PAYMENT\data_payment;
+use App\Models\DATA\INVOICE\data_invoice;
 use App\Http\Controllers\API\AllUsedFunction;
 use App\Models\ADM\User;
 use Illuminate\Support\Facades\Auth;
@@ -258,6 +259,46 @@ class DataController extends Controller
             '支払方法区分',
             '税区分',
             '税率'
+        ];
+    }
+
+    public static function getUnpaidData($request){
+        $byr_buyer_id=$request->byr_buyer_id;
+        $end_date=$request->end_date;
+        $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
+        $result = data_invoice::select('dipd.mes_lis_inv_lin_lin_trade_number_reference',
+        'dipd.mes_lis_inv_lin_tra_code',
+        'dipd.mes_lis_inv_lin_tra_name',
+        'dipd.mes_lis_inv_lin_det_transfer_of_ownership_date',
+        'dipd.mes_lis_inv_lin_det_amo_req_plus_minus',
+        'dipd.mes_lis_inv_lin_det_amo_requested_amount')
+        ->join('cmn_connects as cc','cc.cmn_connect_id','=','data_invoices.cmn_connect_id')
+        ->join('data_invoice_pays as dip','dip.data_invoice_id','=','data_invoices.data_invoice_id')
+        ->join('data_invoice_pay_details as dipd','dipd.data_invoice_pay_id','=','dip.data_invoice_pay_id')
+        ->leftJoin('data_payment_pays as dpp', function($join){
+            $join->on('dpp.mes_lis_pay_pay_code', '=', 'dip.mes_lis_inv_pay_code');
+            $join->on('dpp.mes_lis_pay_per_end_date', '=', 'dip.mes_lis_inv_per_end_date');
+            $join->on('dpp.mes_lis_buy_code', '=', 'dip.mes_lis_buy_code');
+        })
+        ->where('cc.byr_buyer_id',$byr_buyer_id)
+        ->where('cc.slr_seller_id',$slr_seller_id)
+        ->where('dip.mes_lis_inv_per_end_date',$end_date)
+        ->whereNull('dpp.data_payment_pay_id')
+        ->orderBy('dipd.mes_lis_inv_lin_lin_trade_number_reference', "ASC")
+        ->orderBy('dipd.mes_lis_inv_lin_tra_code', "ASC")
+        ->orderBy('dipd.mes_lis_inv_lin_tra_name', "ASC")
+        ->orderBy('dipd.mes_lis_inv_lin_det_transfer_of_ownership_date', "ASC")
+        ->orderBy('dipd.mes_lis_inv_lin_det_amo_requested_amount', "ASC");
+        return $result;
+    }
+    public static function paymentUnpaidCsvHeading(){
+        return [
+            '取引番号（発注・返品）',
+            '計上部署コード',
+            '計上部署名称',
+            '計上日',
+            '請求金額符号',
+            '請求金額',
         ];
     }
 }

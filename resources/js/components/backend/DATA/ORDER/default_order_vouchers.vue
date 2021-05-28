@@ -878,6 +878,8 @@ export default {
             order_item_code:null,
             page:1,
             per_page:10,
+            data_count: false,
+            send_data:false
         }),
         param_data: [],
         item_search_q: [],
@@ -896,6 +898,7 @@ export default {
             .then(({ data }) => {
             this.order_detail_lists = data.order_list_detail;
             this.order_info = data.order_info;
+            this.form.order_info=this.order_info
             this.order_detail_list_length=this.order_detail_lists.data.length
             this.$session.set("order_info",this.order_info)
             loader.hide();
@@ -1157,26 +1160,17 @@ export default {
       this.alert_title = "";
       this.yes_btn = "はい";
       this.cancel_btn = "キャンセル";
-      axios.post(this.BASE_URL + "api/send_shipment_data", {
-          data_order_id: this.data_order_id,
-          byr_buyer_id:this.byr_buyer_id,
-          adm_user_id:this.adm_user_id,
-          order_info: this.order_info,
-          data_count: true,
-        }).then(({ data }) => {
+      this.form.data_count=true;
+      axios.post(this.BASE_URL + "api/send_shipment_data", this.form).then(({ data }) => {
           let csv_data_count = data.csv_data_count;
           if (csv_data_count > 0) {
             _this.alert_text = csv_data_count + "件の伝票を送信しますがよろしいでしょうか。";
             this.confirm_sweet().then((result) => {
               if (result.value) {
                   let loaderrrs = Vue.$loading.show();
-                axios.post(this.BASE_URL + "api/send_shipment_data", {
-                    data_order_id: this.param_data.data_order_id,
-                    byr_buyer_id:this.byr_buyer_id,
-                    adm_user_id:this.adm_user_id,
-                    order_info: this.order_info,
-                    data_count: false,
-                  })
+                  this.form.send_data=true;
+                  this.form.data_count=false;
+                axios.post(this.BASE_URL + "api/send_shipment_data", this.form)
                   .then(({ data }) => {
                     //   console.log(data);
                     _this.alert_icon = "success";
@@ -1185,6 +1179,7 @@ export default {
                     _this.sweet_normal_alert();
                     loaderrrs.hide();
                     Fire.$emit("LoadByrorderDetail",_this.select_field_page_num);
+                    this.form.send_data=false;
                   });
               }
             });
@@ -1192,6 +1187,7 @@ export default {
             _this.alert_text = "対象となる伝票がありません、再度確認して実行してください。";
             _this.confirmButtonText = '完了';
             _this.sweet_normal_alert();
+            this.form.send_data=false;
           }
         });
     },
@@ -1216,7 +1212,7 @@ export default {
                 if (data.status==0) {
                     _this.alert_icon = "error";
                     _this.alert_title = "エラー";
-                    
+
                 }else{
                     _this.alert_icon = "success";
                     _this.alert_title = "完了";

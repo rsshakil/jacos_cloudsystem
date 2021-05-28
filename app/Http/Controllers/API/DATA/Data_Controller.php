@@ -656,6 +656,13 @@ class Data_Controller extends Controller
                     $csv_data = $csv_data->whereNotNull('dsv.send_datetime');
                 }
             }
+            // ========
+            // send_data
+            if ($request->send_data==true) {
+                $csv_data = $csv_data->whereNotNull('dsv.decision_datetime')
+                ->whereNull('dsv.send_datetime');
+            }
+            // =======
         }
 
         $csv_data=$csv_data->orderBy('dsv.mes_lis_shi_tra_trade_number', "ASC");
