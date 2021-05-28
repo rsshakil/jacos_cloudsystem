@@ -574,15 +574,15 @@ class AllUsedFunction extends Controller
         $adm_user_id=$request->adm_user_id;
         $byr_buyer_id=$request->byr_buyer_id;
         $cmn_connect_id = $request->cmn_connect_id;
-        $file_name_info=byr_buyer::select(
+        $file_name_info=cmn_connect::select(
             'byr_buyers.super_code',
             'cmn_companies.jcode',
             'cmn_companies.company_name',
             'cmn_connects.partner_code'
         )
-            ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
-            ->join('cmn_connects', 'cmn_connects.byr_buyer_id', '=', 'byr_buyers.byr_buyer_id')
-            ->where('byr_buyers.byr_buyer_id', $byr_buyer_id)
+            ->join('byr_buyers', 'cmn_connects.byr_buyer_id', '=', 'byr_buyers.byr_buyer_id')
+            ->join('slr_sellers', 'slr_sellers.slr_seller_id', '=', 'cmn_connects.slr_seller_id')
+            ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'slr_sellers.cmn_company_id')
             ->where('cmn_connects.cmn_connect_id', $cmn_connect_id)
             ->first();
         // Log::info($file_name_info);
