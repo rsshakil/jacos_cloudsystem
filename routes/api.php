@@ -133,6 +133,7 @@ Route::post('payment_download', 'API\DATA\PAYMENT\PaymentController@paymentDownl
 Route::post('/get_payment_customer_code_list', 'API\DATA\PAYMENT\PaymentController@get_payment_customer_code_list');
 Route::post('/get_payment_trade_code_list', 'API\DATA\PAYMENT\PaymentController@get_payment_trade_code_list');
 Route::post('/unpaid_payment_list', 'API\DATA\PAYMENT\PaymentController@unpaidPaymentPist');
+Route::post('payment_unpaid_data_download', 'API\DATA\PAYMENT\PaymentController@paymentUnpaidDataDownload');
 
 // Payment End
 Route::get('get_byr_return_list/{adm_user_id}', 'API\DATA\RTN\ReturnController@getReturnItemList');

@@ -19,6 +19,7 @@ return [
     'RECEIVE_CSV_PATH' => '/receive_csv',
     'RETURN_CSV_PATH' => '/return_csv',
     'PAYMENT_CSV_PATH' => '/payment_downloaded_csv',
+    'PAYMENT_UNPAID_CSV_PATH' => '/payment_unpaid_csv',
     'SHIPMENT_CSV_UPDATE_PATH' => '/shipment_updated_csv',
     // Fixed length file save path
     'FIXED_LENGTH_FILE_PATH' => 'app/fixed_length_files/',

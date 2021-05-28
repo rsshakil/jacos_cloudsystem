@@ -10,6 +10,7 @@ use App\Models\BYR\byr_buyer;
 use App\Models\DATA\PAYMENT\data_payment;
 use App\Models\DATA\PAYMENT\data_payment_pay;
 use App\Models\DATA\PAYMENT\data_payment_pay_detail;
+use App\Models\DATA\INVOICE\data_invoice;
 use App\Traits\Csv;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
@@ -477,37 +478,26 @@ class PaymentController extends Controller
     }
     public function unpaidPaymentPist(Request $request)
     {
-        // return $request->all();
-        $byr_buyer_id=$request->byr_buyer_id;
-        $end_date=$request->end_date;
-        $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
-        $result = DB::select(" SELECT
-        dipd.mes_lis_inv_lin_lin_trade_number_reference,
-        dipd.mes_lis_inv_lin_tra_code,
-        dipd.mes_lis_inv_lin_tra_name,
-        dipd.mes_lis_inv_lin_det_transfer_of_ownership_date,
-        dipd.mes_lis_inv_lin_det_amo_req_plus_minus,
-        dipd.mes_lis_inv_lin_det_amo_requested_amount
-        FROM
-        data_invoices AS di
-        INNER JOIN cmn_connects AS cc ON cc.cmn_connect_id=di.cmn_connect_id
-        INNER JOIN data_invoice_pays AS dip ON dip.data_invoice_id=di.data_invoice_id
-        INNER JOIN data_invoice_pay_details AS dipd ON dipd.data_invoice_pay_id=dip.data_invoice_pay_id
-        left JOIN data_payment_pays AS dpp ON
-        dpp.mes_lis_pay_pay_code=dip.mes_lis_inv_pay_code AND
-        dpp.mes_lis_pay_per_end_date=dip.mes_lis_inv_per_end_date and
-        dpp.mes_lis_buy_code=dip.mes_lis_buy_code
-        WHERE
-        cc.byr_buyer_id=$byr_buyer_id AND
-        cc.slr_seller_id=$slr_seller_id AND
-        dip.mes_lis_inv_per_end_date=$end_date AND
-        dpp.data_payment_pay_id IS null
-        ORDER BY
-        dipd.mes_lis_inv_lin_lin_trade_number_reference,
-        dipd.mes_lis_inv_lin_tra_code,
-        dipd.mes_lis_inv_lin_tra_name,
-        dipd.mes_lis_inv_lin_det_transfer_of_ownership_date,
-        dipd.mes_lis_inv_lin_det_amo_requested_amount");
+        $result = DataController::getUnpaidData($request)
+        ->get();
         return response()->json(['unpaid_list' => $result]);
+    }
+    public function paymentUnpaidDataDownload(Request $request)
+    {
+        $new_file_name = $this->all_used_fun->downloadFileName($request, 'csv', '支払');
+        $download_file_url = Config::get('app.url') . "storage/app" . config('const.PAYMENT_UNPAID_CSV_PATH') . "/" . $new_file_name;
+        // get unpaid data query
+        $unpaid_query = DataController::getUnpaidData($request);
+        $csv_data_count = $unpaid_query->count();
+        $unpaid_data = $unpaid_query->get()->toArray();
+        // CSV create
+        Csv::create(
+            config('const.PAYMENT_UNPAID_CSV_PATH') . "/" . $new_file_name,
+            $unpaid_data,
+            DataController::paymentUnpaidCsvHeading(),
+            config('const.CSV_FILE_ENCODE')
+        );
+
+        return response()->json(['message' => 'Success', 'status' => 1, 'new_file_name' => $new_file_name, 'url' => $download_file_url, 'csv_data_count' => $csv_data_count]);
     }
 }

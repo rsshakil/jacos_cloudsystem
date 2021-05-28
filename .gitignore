@@ -30,6 +30,7 @@ storage/app/invoice_compare_csv/*
 storage/app/shipment_updated_csv/*
 storage/app/payment_csv/*
 storage/app/payment_downloaded_csv/*
+storage/app/payment_unpaid_csv/*
 storage/app/order/*
 storage/app/receives/*
 storage/app/returns/*
