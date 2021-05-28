@@ -9,7 +9,8 @@ use App\Models\SLR\slr_seller;
 use App\Models\CMN\cmn_companies_user;
 use App\Models\CMN\cmn_company;
 use App\Models\CMN\cmn_connect;
-use DB;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -265,7 +266,7 @@ class ByrController extends Controller
         }
 
         if($request->component_name=='payment_item_detail'){
-            $catListitem = \DB::select("SELECT
+            $catListitem = DB::select("SELECT
             $pv_table.$fieldname as category_code,
             CONCAT(COALESCE($pv_table.$fieldname,''),' | ',COALESCE(cmn_categories.category_name,'')) AS category_name
              FROM $p_table
@@ -275,7 +276,7 @@ class ByrController extends Controller
                 WHERE $p_table.$cmnConnect ='".$cmn_connect_id."' and $pv_table.$fieldname!=''
                 GROUP BY $pv_table.$fieldname");
         }else{
-            $catListitem = \DB::select("SELECT
+            $catListitem = DB::select("SELECT
             $pv_table.$fieldname as category_code,
             CONCAT(COALESCE($pv_table.$fieldname,''),' | ',COALESCE(cmn_categories.category_name,'')) AS category_name
              FROM $p_table
