@@ -41,22 +41,27 @@ class Level3Controller extends Controller
     }
     public function userLogin(Request $request)
     {
+        \Log::debug(__METHOD__.':start---');
         $email = $request->user_name;
         $password = $request->password;
         if (User::where('email', '=', $email)->exists()) {
             $user = User::where('email', '=', $email)->first();
             if (Hash::check($password, $user->password)) {
+                \Log::debug(__METHOD__.':end---');
                 return response()->json(['message' => 'success', 'class_name' => 'alert-success', 'user_id' => $user->id, 'user_name' => $user->name]);
             } else {
+                \Log::debug(__METHOD__.':end---');
                 return response()->json(['message' => "passwordがありません。properties.fileを確認してください。", 'class_name' => 'alert-danger']);
             }
         } else {
+            \Log::debug(__METHOD__.':end---');
             return response()->json(['message' => "emailがありません。properties.fileを確認してください。", 'class_name' => 'alert-danger']);
         }
     }
 
     public function historyData(Request $request)
     {
+        \Log::debug(__METHOD__.':start---');
         $user_id = $request->user_id;
         $all_history = lv3_history::select('lv3_histories.*', 'lv3_services.lv3_service_id', 'lv3_services.service_name', 'cmn_companies.company_name', 'cmn_connects.partner_code')
             ->join('lv3_services', 'lv3_histories.lv3_service_id', '=', 'lv3_services.lv3_service_id')
@@ -67,6 +72,7 @@ class Level3Controller extends Controller
             ->orderBy('lv3_histories.lv3_history_id', 'DESC')
             ->take(100)->get();
         \Log::info($all_history);
+        \Log::debug(__METHOD__.':end---');
         return \response()->json(['histories' => $all_history]);
     }
 
@@ -116,6 +122,8 @@ class Level3Controller extends Controller
 
     public function addService(Request $request)
     {
+        \Log::debug(__METHOD__.':start---');
+
         $user_id = $request->user_id;
         $service_id = $request->service_id;
         $cmn_connect_id = $request->cmn_connect_id;
@@ -154,12 +162,15 @@ class Level3Controller extends Controller
                 $this->flag = 0;
             }
         }
+        \Log::debug(__METHOD__.':end---');
 
         return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'class_name' => $this->class_name, 'flag' => $this->flag, 'lst_service_id' => $this->lst_service_id]);
     }
 
     public function scheduleData(Request $request)
     {
+        \Log::debug(__METHOD__.':start---');
+
         $user_id = $request->user_id;
         $service_id = $request->service_id;
         $schedule_data = lv3_trigger_schedule::where('lv3_service_id', $service_id)->get();
@@ -192,19 +203,9 @@ class Level3Controller extends Controller
             ->where('lv3_service_id', $service_id)->first();
 
         // ===Scenario===
-        $authUser = User::find($user_id);
-        if ($authUser->hasRole(config('const.adm_role_name'))) {
-            $job_api_scenario_list = cmn_scenario::select('cmn_scenario_id', 'name', 'description')->get();
-        } else {
-            $job_api_scenario_list = DB::select('SELECT cs.cmn_scenario_id,cs.name,cs.description FROM cmn_scenarios AS cs
-        INNER JOIN adm_model_has_roles AS amhr ON cs.adm_role_id = amhr.role_id
-        WHERE amhr.model_id =' . $user_id . ' AND cs.byr_buyer_id =
-        (
-            SELECT byr_buyer_id FROM cmn_companies_users AS ccu
-            INNER JOIN byr_buyers AS bb ON bb.cmn_company_id=ccu.cmn_company_id
-            WHERE ccu.adm_user_id=' . $user_id . '
-        )');
-        }
+
+        $job_api_scenario_list = DB::select('SELECT cs.class, cs.cmn_scenario_id, cs.name, cs.description FROM cmn_scenarios AS cs INNER JOIN adm_model_has_roles AS amhr ON cs.adm_role_id = amhr.role_id left JOIN cmn_connects AS cc ON cc.byr_buyer_id=cs.byr_buyer_id INNER JOIN lv3_services AS lsb on lsb.cmn_connect_id=cc.cmn_connect_id WHERE amhr.model_id ='.$user_id.' AND lsb.lv3_service_id='.$service_id.' union SELECT cs.class, cs.cmn_scenario_id, cs.name, cs.description FROM cmn_scenarios AS cs INNER JOIN adm_model_has_roles AS amhr ON cs.adm_role_id = amhr.role_id left JOIN cmn_connects AS ccs ON ccs.slr_seller_id=cs.slr_seller_id INNER JOIN lv3_services AS lss on lss.cmn_connect_id=ccs.cmn_connect_id WHERE amhr.model_id ='.$user_id.' AND lss.lv3_service_id='.$service_id);
+
         // ===Scenario===
 
         $all_service_data = lv3_service::select('lv3_service_id', 'service_name', 'cmn_connect_id')
@@ -217,6 +218,7 @@ class Level3Controller extends Controller
             'job_api_scenario_list' => $job_api_scenario_list,
             'all_service_data' => $all_service_data,
         );
+        \Log::debug(__METHOD__.':end---');
         return response()->json($final_arr);
     }
 
@@ -227,6 +229,7 @@ class Level3Controller extends Controller
 
     public function setScheduleData(Request $request)
     {
+        \Log::debug(__METHOD__.':start---');
         $user_id = $request->user_id;
         $customer_id = $request->cmn_connect_id;
         $service_id = $request->service_id;
@@ -258,10 +261,12 @@ class Level3Controller extends Controller
         lv3_trigger_schedule::where('lv3_service_id', $service_id)->delete();
         lv3_trigger_schedule::insert($insert_first_array);
         lv3_trigger_schedule::insert($insert_second_array);
+        \Log::debug(__METHOD__.':end---');
         return response()->json(['message' => '更新完了', 'class_name' => 'alert-success']);
     }
     public function setFilePath(Request $request)
     {
+        \Log::debug(__METHOD__.':start---');
         $user_id = $request->user_id;
         $service_id = $request->service_id;
         $path_execution_flag = $request->path_execution_flag;
@@ -282,11 +287,13 @@ class Level3Controller extends Controller
         } else {
             lv3_trigger_file_path::insert($file_path_array);
         }
+        \Log::debug(__METHOD__.':end---');
         return \response()->json(['message' => 'ファイルパスを保存しました。', 'class_name' => 'alert-success']);
     }
 
     public function setJobData(Request $request)
     {
+        \Log::debug(__METHOD__.':start---');
         $job_id = $request->job_update_id;
         $service_id = $request->service_id;
         $cmn_scenario_id = $request->cmn_scenario_id;
@@ -314,6 +321,7 @@ class Level3Controller extends Controller
             $this->status_code = 200;
             $this->class_name = 'alert-success';
         }
+        \Log::debug(__METHOD__.':end---');
         return response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'class_name' => $this->class_name]);
     }
     public function lv3ScheduleData(Request $request)
@@ -503,11 +511,13 @@ class Level3Controller extends Controller
     // }
     public function deleteService(Request $request)
     {
+        \Log::debug(__METHOD__.':start---');
         $service_id = $request->service_id;
         lv3_service::where('lv3_service_id', $service_id)->delete();
         $this->message = '削除が完了しました。';
         $this->status_code = 200;
         $this->class_name = 'alert-success';
+        \Log::debug(__METHOD__.':end---');
         return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'class_name' => $this->class_name]);
     }
 
