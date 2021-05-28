@@ -434,20 +434,23 @@ class Level3Controller extends Controller
 
     public function jobScenario(Request $request)
     {
+        \Log::debug(__METHOD__.':start---');
         // return $request->all();
         $cs = new CmnScenarioController();
         $ret = $cs->exec($request);
-        \Log::debug($ret->getContent());
-        $ret = json_decode($ret->getContent(), true);
-        if (1 === $ret['status']) {
+        // \Log::debug($ret->getContent());
+        // $ret = json_decode($ret->getContent(), true);
+        if ($this->error === $ret['status']) {
             // sceanario exec error
             \Log::error($ret['message']);
-            return $ret;
         }
+        \Log::debug(__METHOD__.':end---');
         return response()->json($ret);
     }
     public function getShipmentFile(Request $request)
     {
+        \Log::debug(__METHOD__.':start---');
+
         $url_path = \Config::get('app.url') . 'storage/app/shipment_csv/moved/';
         $path = \storage_path('/app/shipment_csv/');
         $files = array_values(array_diff(scandir($path), array('.', '..')));
@@ -463,6 +466,7 @@ class Level3Controller extends Controller
         } else {
             $this->message = "フォルダが空です";
             $this->status_code = 400;
+            \Log::debug(__METHOD__.':end---');
             return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'file_name' => $file_name,'file_path'=>$file_path]);
         }
         if (!empty($checked_files)) {
@@ -475,6 +479,7 @@ class Level3Controller extends Controller
             $this->message = "ファイルが見つかりませんでした。";
             $this->status_code = 401;
         }
+        \Log::debug(__METHOD__.':end---');
         return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'file_name' => $file_name,'file_path'=>$file_path]);
     }
     // public function getShipmentFile(Request $request)
