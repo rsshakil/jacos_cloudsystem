@@ -5,7 +5,7 @@
       <!--<h4 class="top_title text-center" style="margin-top:10px;">{{myLang.payment_data}}</h4>-->
       <table class="table orderDetailTable payemntWidthTable table-bordered" style="width: 100%">
         <tr>
-        <td class="cl_custom_color">受信日時</td>
+        <td class="cl_custom_color">受信日</td>
           <td>
           <div class="input-group">
                     <input type="date" class="form-control" v-model="form.receive_date_from">
@@ -125,7 +125,7 @@
           <thead>
             <tr>
               <th>No</th>
-              <th class="pointer_class" @click="sorting('receive_datetime')">受注日時 <span class="float-right" :class="iconSet('receive_datetime')"></span></th>
+              <th class="pointer_class" @click="sorting('receive_datetime')">受信日時 <span class="float-right" :class="iconSet('receive_datetime')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_pay_pay_code')">請求取引先コード <span class="float-right" :class="iconSet('mes_lis_pay_pay_code')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_buy_name')">発注者 <span class="float-right" :class="iconSet('mes_lis_buy_name')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_pay_per_end_date')">締日 <span class="float-right" :class="iconSet('mes_lis_pay_per_end_date')"></span></th>
