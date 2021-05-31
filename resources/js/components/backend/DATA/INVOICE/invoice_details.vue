@@ -56,7 +56,7 @@
             <multiselect v-model="form.category_code" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="true" :select-label="''" :deselect-label="''" :selected-label="'選択中'" :preserve-search="true"  placeholder="部門"><span slot="noOptions">候補がありません</span> <span slot="noResult">候補がありません</span></multiselect>
           </td>
 
-            <td class="cl_custom_color">計上先</td>
+            <td class="cl_custom_color">納品先</td>
             <!-- @click="deliverySearchForm2" -->
             <td>
               <input type="text" class="form-control topHeaderInputFieldBtn" v-model="form.mes_lis_inv_lin_tra_code" />
@@ -220,7 +220,7 @@
               </tr>
             <tr>
               <th>No</th>
-              <th>請求</th>
+              <th>確定</th>
               <th class="pointer_class" @click="sorting('mes_lis_inv_lin_det_transfer_of_ownership_date')">計上日 <span class="float-right" :class="iconSet('mes_lis_inv_lin_det_transfer_of_ownership_date')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_inv_lin_det_goo_major_category')">部門コード <span class="float-right" :class="iconSet('mes_lis_inv_lin_det_goo_major_category')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_inv_lin_tra_code')">納品先 <span class="float-right" :class="iconSet('mes_lis_inv_lin_tra_code')"></span></th>
@@ -356,19 +356,19 @@
             <div class="form-group row">
               <label for="inputPassword" class="col-sm-2 col-form-label">部門コード</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_goo_major_category" required>
+                <input type="number" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_goo_major_category">
               </div>
             </div>
             <div class="form-group row">
               <label for="inputPassword" class="col-sm-2 col-form-label">納品先コード</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_tra_code" required>
+                <input type="number" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_tra_code" required>
               </div>
             </div>
             <div class="form-group row">
               <label for="inputPassword" class="col-sm-2 col-form-label">伝票番号</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_lin_trade_number_reference" required>
+                <input type="number" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_lin_trade_number_reference" required>
               </div>
             </div>
             <div class="form-group row">
@@ -400,7 +400,7 @@
             <div class="form-group row">
               <label for="inputPassword" class="col-sm-2 col-form-label">請求金額</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_amo_requested_amount" required>
+                <input type="number" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_amo_requested_amount" required>
               </div>
             </div>
 
@@ -426,19 +426,19 @@
             <div class="form-group row">
               <label for="inputPassword" class="col-sm-2 col-form-label">部門コード</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_goo_major_category">
+                <input type="number" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_goo_major_category">
               </div>
             </div>
             <div class="form-group row">
               <label for="inputPassword" class="col-sm-2 col-form-label">納品先コード</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_tra_code">
+                <input type="number" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_tra_code">
               </div>
             </div>
             <div class="form-group row">
               <label for="inputPassword" class="col-sm-2 col-form-label">伝票番号</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_lin_trade_number_reference">
+                <input type="number" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_lin_trade_number_reference">
               </div>
             </div>
             <div class="form-group row">
@@ -470,7 +470,7 @@
             <div class="form-group row">
               <label for="inputPassword" class="col-sm-2 col-form-label">請求金額</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_amo_requested_amount">
+                <input type="number" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_amo_requested_amount">
               </div>
             </div>
 
@@ -659,10 +659,8 @@ export default {
   methods: {
     checkForm: function (e) {
       this.errors = [];
-console.log(this.invoiceDetail.mes_lis_inv_lin_det_pay_code);
-console.log(this.invoiceDetail.mes_lis_inv_lin_det_balance_carried_code);
         if(!this.invoiceDetail.mes_lis_inv_lin_det_transfer_of_ownership_date){this.errors.push("計上日 フィールドは必須項目です")}
-        if(!this.invoiceDetail.mes_lis_inv_lin_det_goo_major_category){this.errors.push("部門コード フィールドは必須項目です")}
+        //if(!this.invoiceDetail.mes_lis_inv_lin_det_goo_major_category){this.errors.push("部門コード フィールドは必須項目です")}
         if(!this.invoiceDetail.mes_lis_inv_lin_tra_code){this.errors.push("納品先コード フィールドは必須項目です")}
         if(!this.invoiceDetail.mes_lis_inv_lin_lin_trade_number_reference){this.errors.push("伝票番号 フィールドは必須項目です")}
         if(this.invoiceDetail.mes_lis_inv_lin_det_pay_code==''){this.errors.push("請求内容 フィールドは必須項目です")}
