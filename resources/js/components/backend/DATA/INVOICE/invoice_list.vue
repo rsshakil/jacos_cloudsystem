@@ -163,8 +163,8 @@
           <tr>
             <td class="cl_custom_color">取引先コード</td>
             <td>
-                <select class="form-control" name="" id="" v-model="invoiceData.mes_lis_inv_pay_code">
-                    <option :value="null">Please select partner code</option>
+                <select class="form-control" v-model="invoiceData.mes_lis_inv_pay_code">
+                    <option :value="null">取引先コード</option>
                     <option v-for="(partner_code,i) in partner_codes" :value="partner_code.partner_code" :key="i">{{ partner_code.partner_code }}</option>
                 </select>
             </td>

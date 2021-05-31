@@ -146,6 +146,7 @@ Route::post('exec_invoice_schedular', 'API\DATA\INVOICE\InvoiceController@execIn
 Route::post('update_invoice_detail', 'API\DATA\INVOICE\InvoiceController@update_invoice_detail');
 Route::post('delete_invoice_detail', 'API\DATA\INVOICE\InvoiceController@delete_invoice_detail');
 Route::post('get_invoice_details_list', 'API\DATA\INVOICE\InvoiceController@invoiceDetailsList');
+Route::post('get_voucher_detail_popup2_invoice', 'API\DATA\INVOICE\InvoiceController@get_voucher_detail_popup2_invoice');
 Route::post('invoice_compare_data', 'API\DATA\INVOICE\InvoiceController@invoiceCompareData');
 Route::post('invoice_compare_data_download', 'API\DATA\INVOICE\InvoiceController@invoiceCompareDataDownload');
 Route::post('invoice_compare_item', 'API\DATA\INVOICE\InvoiceController@invoiceCompareItem');

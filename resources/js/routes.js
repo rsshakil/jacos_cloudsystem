@@ -514,7 +514,7 @@ export const routes = [
         meta: {
 
             breadcrumb: {
-                label: '取引先別支払明細',
+                label: '支払伝票一覧',
                 parent: 'payment_detail'
             },
         },
