@@ -377,16 +377,16 @@ class InvoiceController extends Controller
             // self::invoiceFileName($data_invoice_id,'csv');
             data_invoice::where('data_invoice_id', $data_invoice_id)->update(['mes_mes_number_of_trading_documents'=>$csv_data_count]);
             $download_file_url = Config::get('app.url')."storage/app".config('const.INVOICE_CSV_PATH')."/". $new_file_name;
-            $shipment_query = InvoiceDataController::get_invoice_data($request);
+            $invoice_query = InvoiceDataController::get_invoice_data($request);
             // $shipment_query = Data_Controller::get_shipment_data($request);
             // $csv_data_count = $shipment_query->count();
-            $shipment_data = $shipment_query->get()->toArray();
+            $invoice_data = $invoice_query->get()->toArray();
             // \Log::debug($shipment_data);
 
             // CSV create
             Csv::create(
                 config('const.INVOICE_CSV_PATH')."/". $new_file_name,
-                $shipment_data,
+                $invoice_data,
                 InvoiceDataController::invoiceCsvHeading(),
                 config('const.CSV_FILE_ENCODE')
             );
