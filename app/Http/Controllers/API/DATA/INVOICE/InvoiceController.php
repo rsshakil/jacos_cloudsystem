@@ -336,6 +336,56 @@ class InvoiceController extends Controller
         $result=$result->paginate($per_page);
         return response()->json(['invoice_details_list' => $result]);
     }
+    public function get_voucher_detail_popup2_invoice(Request $request)
+    {
+        $data_invoice_id=$request->data_invoice_id;
+        $sort_by = 'data_invoice_pay_detail_id';
+        $sort_type = 'ASC';
+        $adm_user_id=$request->adm_user_id;
+        $byr_buyer_id=$request->byr_buyer_id;
+        // $authUser = User::find($adm_user_id);
+        $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
+
+        // $cmn_connect_id = '';
+        // if (!$authUser->hasRole(config('const.adm_role_name'))) {
+        //     $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
+        //     $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+        // }
+
+        $result=data_invoice::select(
+            'data_invoices.data_invoice_id',
+            'dipd.data_invoice_pay_detail_id',
+            'dip.mes_lis_inv_per_end_date',
+           // 'dipd.data_shipment_voucher_id',
+            'dipd.mes_lis_inv_lin_det_transfer_of_ownership_date',
+            'dipd.mes_lis_inv_lin_tra_code',
+            'dipd.mes_lis_inv_lin_tra_name',
+            'dipd.mes_lis_inv_lin_lin_trade_number_reference',
+            'dipd.mes_lis_inv_lin_det_amo_requested_amount',
+            'dipd.mes_lis_inv_lin_det_pay_code',
+            'dipd.mes_lis_inv_lin_det_balance_carried_code',
+            'dipd.send_datetime',
+            'dipd.decision_datetime',
+            'dipd.mes_lis_inv_lin_det_goo_major_category'
+        )
+        ->join('data_invoice_pays as dip', 'data_invoices.data_invoice_id', '=', 'dip.data_invoice_id')
+        ->join('data_invoice_pay_details as dipd', 'dip.data_invoice_pay_id', '=', 'dipd.data_invoice_pay_id')
+        ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'data_invoices.cmn_connect_id')
+        ->where('cc.byr_buyer_id', $byr_buyer_id)
+        ->where('cc.slr_seller_id', $slr_seller_id)
+        ->where('data_invoices.data_invoice_id', '=', $data_invoice_id);
+        
+        $result=$result->where('dip.mes_lis_inv_per_end_date', $request->end_date)
+            ->where('dip.mes_lis_inv_pay_code', $request->pay_code);
+        // ->where('dip.mes_lis_inv_pay_name',$param_data['pay_name'])
+        // ->where('dip.mes_lis_buy_code',$param_data['buy_code'])
+        // ->where('dip.mes_lis_buy_name',$param_data['buy_name'])
+        // ->where('dip.status',$param_data['status']);
+        $result = $result->groupBy('dipd.mes_lis_inv_lin_tra_code');
+        $result = $result->orderBy('dipd.'.$sort_by, $sort_type);
+        $result=$result->get();
+        return response()->json(['popUpList' => $result]);
+    }
 
     public function sendInvoiceData(Request $request)
     {

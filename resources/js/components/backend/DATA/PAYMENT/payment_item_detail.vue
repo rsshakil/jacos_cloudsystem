@@ -245,7 +245,7 @@
 export default {
 breadcrumb(){
     return {
-    label: "取引先別支払明細",
+    label: "支払伝票一覧",
     parent: this.parentQ
   }
 },
@@ -358,7 +358,7 @@ searchByFormData() {
     });
     Fire.$emit("byr_has_selected", this.byr_buyer_id);
     Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
-    Fire.$emit("loadPageTitle", "支払合計");
+    Fire.$emit("loadPageTitle", "支払伝票一覧");
     this.parentQ.query = this.$session.get('payment_detail_query_param');
   },
   computed: {

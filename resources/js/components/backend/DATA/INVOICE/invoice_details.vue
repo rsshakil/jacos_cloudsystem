@@ -57,10 +57,9 @@
           </td>
 
             <td class="cl_custom_color">納品先</td>
-            <!-- @click="deliverySearchForm2" -->
             <td>
               <input type="text" class="form-control topHeaderInputFieldBtn" v-model="form.mes_lis_inv_lin_tra_code" />
-              <button class="btn btn-primary active" style="float:left;">
+              <button class="btn btn-primary active" @click="deliverySearchForm2" style="float:left;">
                 参照
               </button>
             </td>
@@ -585,7 +584,39 @@
         </div>
       </div>
     </b-modal>
-
+ <b-modal
+      size="lg"
+      :hide-backdrop="true"
+      title="納品先検索"
+      ok-title="検　索"
+      cancel-title="閉じる"
+      @ok.prevent="update_order_voucher_detail()"
+      v-model="order_search_modal2"
+    >
+      <div class="panel-body">
+        <table
+          class="table orderTopDetailTable table-striped popupListTable table-bordered"
+          style="width: 100%"
+        >
+<thead>
+        <tr>
+          <th>NO</th>
+          <th>納品先コード</th>
+          <th>納品先名</th>
+        </tr>
+        </thead>
+<tbody>
+        <tr v-for="(valueItm,index) in order_search_modal2List" :key="index" @click="setRowscodeIntoForm2(valueItm.mes_lis_inv_lin_tra_code)">
+        <td>{{index+1}}</td>
+          <td>{{valueItm.mes_lis_inv_lin_tra_code}}</td>
+          <td>{{valueItm.mes_lis_inv_lin_tra_name}}</td>
+          
+        </tr>
+</tbody>
+       
+        </table>
+      </div>
+    </b-modal>
 
 
   </div>
@@ -603,6 +634,8 @@ export default {
       addInvoiceDetailModal:false,
       invoiceCompareModal:false,
       invoiceitemDatalistModal:false,
+      order_search_modal2:false,
+      order_search_modal2List:[],
       invoice_lists_length:0,
       file: "",
       data_invoice_id: "",
@@ -658,6 +691,20 @@ export default {
     }
   },
   methods: {
+    setRowscodeIntoForm2(valCode){
+        this.form.mes_lis_inv_lin_tra_code = valCode;
+        this.order_search_modal2 = false;
+      },
+      deliverySearchForm2() {
+      this.order_search_modal2 = true;
+       this.$route.query.adm_user_id = Globals.user_info_id;
+       this.$route.query.byr_buyer_id = this.byr_buyer_id;
+      axios.post(this.BASE_URL + "api/get_voucher_detail_popup2_invoice", this.$route.query)
+        .then(({ data }) => {
+            console.log(data);
+            this.order_search_modal2List = data.popUpList;
+        });
+    },
     checkForm: function (e) {
       this.errors = [];
         if(!this.invoiceDetail.mes_lis_inv_lin_det_transfer_of_ownership_date){this.errors.push("計上日 フィールドは必須項目です")}

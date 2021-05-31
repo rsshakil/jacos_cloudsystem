@@ -160,7 +160,7 @@
       <div class="panel-body">
       <div class="row">
         <div class="col-6">
-          <p style="margin:0">出荷データと受領データで差異が発生している伝票のみ表示されています。</p>
+          <!--<p style="margin:0">出荷データと受領データで差異が発生している伝票のみ表示されています。</p>-->
           <p style="margin:0">未払となった請求伝票のみ表示されています。</p>
           <p style="margin:0">黄色の項目は差異が発生している項目です。</p>
         </div>
