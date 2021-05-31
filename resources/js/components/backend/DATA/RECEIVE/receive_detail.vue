@@ -138,7 +138,18 @@
           </tr>
           <tr>
           <td class="cl_custom_color" style="width:10%">出荷比較</td>
-            <td colspan="7" style="width:15%">
+            <td style="width:15%">
+              <select
+                class="form-control"
+                v-model="form.confirm_status">
+                <option value="*">全て</option>
+                <option :value="item" v-for="(item,i) in confirmationOptionList" :key="i">
+                  {{ item }}
+                </option>
+              </select>
+            </td>
+            <td class="cl_custom_color" style="width:10%">受領訂正</td>
+            <td colspan="3" style="width:15%">
               <select
                 class="form-control"
                 v-model="form.decesion_status">
@@ -803,6 +814,7 @@ export default {
       printingStatusOptionList: ["未印刷あり", "印刷済"],
       deliveryDestnationOptionList: ["店舗", "物流センター"],
       receiveOptionList: ["訂正あり", "訂正なし"],
+      confirmationOptionList: ["差分あり", "差分なし"],
       mes_lis_ord_tra_ins_goods_classification_codeList: [],
       mes_lis_ord_tra_ins_trade_type_codeList: [],
       date_null: false,
@@ -827,6 +839,7 @@ export default {
         searchCode2:'',
         searchCode3:'',
         decesion_status:"*",
+        confirm_status:"*",
         voucher_class:"*",
         goods_classification_code:"*",
         trade_number:null,
