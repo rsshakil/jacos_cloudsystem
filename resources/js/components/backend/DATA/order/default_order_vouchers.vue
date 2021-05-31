@@ -237,13 +237,12 @@
               </div>
               <div class="col-5">
                 <b-form inline>
-                  <label class="sr-only" for="inline-form-input-name"
-                    >各種帳票の印刷はこちら</label
-                  >
-                  <select class="mb-2 mr-sm-2 mb-sm-0 form-control">
-                    <option>選択してください</option>
+                  <label class="sr-only" for="inline-form-input-name">各種帳票の印刷はこちら</label>
+                  <select class="mb-2 mr-sm-2 mb-sm-0 form-control" v-model="form.shipment_download_type">
+                    <!-- <option>選択してください</option> -->
+                    <option value="pdf">PDF</option>
                   </select>
-                  <b-button class="active" variant="primary">印刷</b-button>
+                  <b-button class="active" variant="primary" @click="pdfDownload()">印刷</b-button>
                 </b-form>
               </div>
             </div>
@@ -879,7 +878,8 @@ export default {
             page:1,
             per_page:10,
             data_count: false,
-            send_data:false
+            send_data:false,
+            shipment_download_type:'pdf'
         }),
         param_data: [],
         item_search_q: [],
@@ -1242,6 +1242,19 @@ export default {
     this.form.order_info= this.order_info;
     this.form.downloadType=downloadType;
       axios.post(this.BASE_URL + "api/downloadcsvshipment_confirm", this.form)
+        .then(({ data }) => {
+            _this.downloadFromUrl(data);
+           loaderrrsss.hide();
+        });
+    },
+    pdfDownload(){
+        console.log(this.form.shipment_download_type);
+      //download pdf
+      var _this = this;
+     let loaderrrsss = Vue.$loading.show();
+    this.form.order_info= this.order_info;
+    // this.form.downloadType=downloadType;
+      axios.post(this.BASE_URL + "api/sipment_pdf_download", this.form)
         .then(({ data }) => {
             _this.downloadFromUrl(data);
            loaderrrsss.hide();

@@ -17,14 +17,17 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 use App\Traits\Csv;
 use App\Models\ADM\User;
+use App\Scenarios\byr\OUK\data_csv_order;
 
 class ShipmentController extends Controller
 {
     private $all_functions;
     private $data_controller;
+    private $data_csv_order;
     public function __construct()
     {
         $this->all_functions = new AllUsedFunction();
+        $this->data_csv_order = new data_csv_order();
         $this->data_controller = new Data_Controller();
         $this->all_functions->folder_create('app/'.config('const.SHIPMENT_CSV_PATH'));
     }
@@ -143,6 +146,34 @@ class ShipmentController extends Controller
         Log::debug(__METHOD__.':end---');
 
         return response()->json(['message' => 'Success','status'=>1,'new_file_name'=>$new_file_name, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
+    }
+    public function sipmentPdfDownload(Request $request)
+    {
+        Log::debug(__METHOD__.':start---');
+        // return $request->all();
+        // return $request->all();
+        //ownloadType=2 for Fixed length
+        $data_order_id=$request->data_order_id?$request->data_order_id:1;
+        // \Log::info("Download ".$data_order_id);
+        $shipment_download_type=$request->shipment_download_type;
+        $csv_data_count =0;
+        $pdf_file_paths=null;
+        $report_arr_final = array();
+        if ($shipment_download_type=='pdf') {
+            // CSV Download
+            $new_file_name = $this->all_functions->downloadFileName($request, 'pdf', '受注');
+            $download_file_url = Config::get('app.url')."storage/app".config('const.PDF_SAVE_PATH')."/". $new_file_name;
+
+            // get shipment data query
+            return $pdf_data = Data_Controller::getShipmentPdfData($request);
+
+            // $pdf_file_paths=$this->data_csv_order->pdfGenerate(null,$report_arr_final);
+        }
+        return $report_arr_final;
+        Log::debug(__METHOD__.':end---');
+
+        return response()->json(['message' => 'Success','status'=>1,'file_names'=>$pdf_file_paths, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
+        // return response()->json(['message' => 'Success','status'=>1,'new_file_name'=>$new_file_name, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
     }
     // private static function shipmentFileName($request, $file_type="csv")
     // {

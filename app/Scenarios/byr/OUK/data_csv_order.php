@@ -48,8 +48,8 @@ class data_csv_order extends ScenarioBase
         Log::debug(__METHOD__.':start---');
 
         // test
-        $this->pdfGenerate(1);
-        return ['message'=>'Success','status'=>1];
+        // $this->pdfGenerate(1);
+        // return ['message'=>'Success','status'=>1];
         // test
 
         // file save
@@ -488,14 +488,18 @@ class data_csv_order extends ScenarioBase
      * @param  mixed $data_order_id
      * @return void
      */
-    public function pdfGenerate($data_order_id)
+    public function pdfGenerate($data_order_id=null,$shipment_data=[])
     {
         Log::debug(__METHOD__.':start---');
 
         $pdf_file_paths=array();
         $page=0;
         $receipt=$this->fpdfRet();
-        $pdf_datas = $this->pdfDAta($data_order_id);
+        if ($data_order_id==null) {
+            $pdf_datas =$shipment_data;
+        }else{
+            $pdf_datas = $this->pdfDAta($data_order_id);
+        }
         // print_r($pdf_datas);
         // Log::info($pdf_datas);
         $x = 0;
