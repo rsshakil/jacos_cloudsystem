@@ -15,8 +15,8 @@ class InvoiceDataController extends Controller
         $data_invoice_id=$request->data_invoice_id;
         // $order_info=$request->order_info;
         // $request_all=$request->all();
-        $sort_by = $request->sort_by;
-        $sort_type = $request->sort_type;
+        // $sort_by = $request->sort_by;
+        // $sort_type = $request->sort_type;
         $byr_buyer_id = $request->byr_buyer_id;
         $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
 
@@ -174,13 +174,19 @@ class InvoiceDataController extends Controller
             if($mes_lis_inv_lin_tra_code!=''){
                 $csv_data=$csv_data->where('dipd.mes_lis_inv_lin_tra_code','=',$mes_lis_inv_lin_tra_code);
             }
-            $csv_data=$csv_data->orderBy('dipd.'.$sort_by,$sort_type);
+            // $csv_data=$csv_data->orderBy('dipd.'.$sort_by,$sort_type);
             $csv_data=$csv_data->where('dip.mes_lis_inv_per_end_date',$param_data['end_date'])
             ->where('dip.mes_lis_inv_pay_code',$param_data['pay_code']);
             // ->where('dip.mes_lis_inv_pay_name',$param_data['pay_name'])
             // ->where('dip.mes_lis_buy_code',$param_data['buy_code'])
             // ->where('dip.mes_lis_buy_name',$param_data['buy_name'])
             // ->where('dip.status',$param_data['status']);
+            // send_data
+            if ($request->send_data==true) {
+                $csv_data = $csv_data->whereNotNull('dipd.decision_datetime')
+                ->whereNull('dipd.send_datetime');
+            }
+            // =======
         }
         $csv_data=$csv_data->orderBy("dipd.mes_lis_inv_lin_lin_trade_number_reference");
         // 検索

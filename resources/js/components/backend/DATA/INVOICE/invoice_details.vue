@@ -636,6 +636,7 @@ export default {
         adm_user_id: Globals.user_info_id,
         byr_buyer_id: null,
         data_count: false,
+        send_data:false,
         param_data:[],
         from_date:'',
         to_date:'',
@@ -915,6 +916,7 @@ console.log(this.invoiceDetail.mes_lis_inv_lin_det_balance_carried_code);
             this.confirm_sweet().then((result) => {
               if (result.value) {
                   this.form.data_count=false;
+                  this.form.send_data=true;
                 axios.post(this.BASE_URL + "api/send_invoice_data", this.form)
                   .then(({ data }) => {
                     _this.alert_icon = "success";
@@ -922,12 +924,15 @@ console.log(this.invoiceDetail.mes_lis_inv_lin_det_balance_carried_code);
                     _this.alert_text =
                       data.csv_data_count + "件の確定請求を送信しました。";
                     _this.sweet_normal_alert();
+                    this.form.send_data=false;
                     Fire.$emit("LoadByrinvoiceDetails",_this.form.page);
                   });
               }
             });
           } else {
             _this.alert_text = "対象となる請求がありません。再度確認して実行してください。";
+            this.form.data_count=false;
+            this.form.send_data=false;
             _this.sweet_normal_alert();
           }
         });
