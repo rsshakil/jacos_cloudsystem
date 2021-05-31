@@ -218,6 +218,7 @@ Route::post('scenario_exec', 'API\CMN\CmnScenarioController@exec');
 Route::post('job_exec', 'API\CMN\CmnJobController@exec');
 // Level3
 Route::post('get_shipment_file', 'API\LV3\Level3Controller@getShipmentFile');
+Route::post('get_invoice_file', 'API\LV3\Level3Controller@getInvoiceFile');
 Route::post('delete_service', 'API\LV3\Level3Controller@deleteService');
 Route::post('/job_list', 'API\LV3\Level3Controller@job_list');
 Route::post('get_user_login', 'API\LV3\Level3Controller@userLogin');
