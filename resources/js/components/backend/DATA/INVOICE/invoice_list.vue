@@ -156,6 +156,12 @@
       v-model="invoiceCreateModal"
     >
       <div class="panel-body">
+      <p v-if="errors.length">
+        <b>次の間違いを正しくしてください:</b>
+        <ul>
+          <li style="color:red;" v-for="error in errors">{{ error }}</li>
+        </ul>
+      </p>
         <table
           class="table orderDetailTable table-bordered"
           style="width: 100%"
@@ -164,7 +170,6 @@
             <td class="cl_custom_color">取引先コード</td>
             <td>
                 <select class="form-control" v-model="invoiceData.mes_lis_inv_pay_code">
-                    <option :value="null">取引先コード</option>
                     <option v-for="(partner_code,i) in partner_codes" :value="partner_code.partner_code" :key="i">{{ partner_code.partner_code }}</option>
                 </select>
             </td>
@@ -244,6 +249,7 @@ export default {
       invoice_lists: {},
       invoice_lists_length:0,
       invoice_data_lists:[],
+      errors:[],
       byr_buyer_lists: {},
       invoiceCreateModal:false,
       order_customer_code_lists: {},
@@ -361,8 +367,20 @@ export default {
                 }
             })
     },
+    checkForm: function (e) {
+      this.errors = [];
+        if(this.invoiceData.mes_lis_inv_pay_code==''){this.errors.push("取引先コード フィールドは必須項目です")}
+        if(this.invoiceData.mes_lis_inv_per_begin_date==''){this.errors.push("開始日 フィールドは必須項目です")}
+        if(!this.invoiceData.mes_lis_inv_per_end_date){this.errors.push("終了日 フィールドは必須項目です")}
+
+      if (!this.errors.length) {
+        return true;
+      }
+      return false;
+    },
     insertInvoice() {
       var _this = this;
+      if(this.checkForm()){
       axios
         .post(this.BASE_URL + "api/invoiceInsert",this.invoiceData)
         .then(({data}) => {
@@ -375,6 +393,7 @@ export default {
         _this.sweet_normal_alert();
         _this.invoiceCreateModal = false;
         });
+      }
     },
     // check_byr_order_api() {
     //   let formData = new FormData();
