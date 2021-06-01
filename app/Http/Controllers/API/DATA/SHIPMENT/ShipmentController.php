@@ -186,22 +186,23 @@ class ShipmentController extends Controller
         $y = 0;
         $odd_even=0;
         $data_count=0;
+        $shipment_pdf_save_path=config('const.SHIPMENT_PDF_SAVE_PATH');
 
-        $receipt=$this->fpdfRet();
+        $receipt=$this->all_functions->fpdfRet();
         foreach ($pdf_datas as $key => $pdf_data) {
             $receipt->AddPage();
             foreach ($pdf_data as $key => $value) {
                 if ($data_count==0) {
-                    $receipt=$this->headerData($receipt, $value, $x, $y);
+                    $receipt=$this->all_functions->pdfHeaderData($receipt, $value, $x, $y);
                 }
                 if ($odd_even==0) {
                     if ($data_count!=0 && $data_count%2==0) {
                         $receipt->AddPage();
-                        $receipt=$this->headerData($receipt, $value, $x, $y);
+                        $receipt=$this->all_functions->pdfHeaderData($receipt, $value, $x, $y);
                     }
-                    $this->coordinateText($receipt, $value, 0, 50.7, 103.4);
+                    $this->all_functions->coordinateText($receipt, $value, 0, 50.7, 103.4);
                 }else{
-                    $this->coordinateText($receipt, $value, 0, 117, 170);
+                    $this->all_functions->coordinateText($receipt, $value, 0, 117, 170);
                 }
 
                 if ($odd_even==0) {
@@ -215,7 +216,7 @@ class ShipmentController extends Controller
             $data_count=0;
             $odd_even=0;
         }
-        $pdf_file_path= $this->file_save($receipt, 0);
+        $pdf_file_path= $this->all_functions->pdfFileSave($receipt, 1,$shipment_pdf_save_path);
         array_push($pdf_file_paths, $pdf_file_path);
         // return 0;
         Log::debug(__METHOD__.':end---');
@@ -223,127 +224,7 @@ class ShipmentController extends Controller
         // return $response;
     }
     // PDF Function End
-    public function fpdfRet()
-    {
-        Log::debug(__METHOD__.':start---');
-        Log::info("FPDI");
-        $receipt = new Fpdi();
-        // Set PDF margins (top left and right)
-        $receipt->SetMargins(0, 0, 0);
 
-        // Disable header output
-        $receipt->setPrintHeader(false);
-
-        // Disable footer output
-        $receipt->setPrintFooter(false);
-        // $receipt->UseTemplate($tplIdx, null, null, null, null, true);
-        $receipt->setFontSubsetting(true);
-        // font declared
-        $fontPathRegular = storage_path(config('const.MIGMIX_FONT_PATH'));
-        $receipt->SetFont(\TCPDF_FONTS::addTTFfont($fontPathRegular), '', 8, '', true);
-
-        Log::debug(__METHOD__.':end---');
-
-        return $receipt;
-    }
-    public function headerData($receipt, $pdf_data, $x, $y)
-    {
-        Log::debug(__METHOD__.':start---');
-        $receipt->setSourceFile(storage_path(config('const.BLANK_PDF_PATH')));
-        $tplIdx = $receipt->importPage(1);
-        $receipt->UseTemplate($tplIdx, null, null, null, null, true);
-        $receipt->SetXY($x + 23, $y + 33.5);
-        $receipt->Write(0, $pdf_data[0]->fax_number);
-        $receipt->SetXY($x + 15, $y + 37.8);
-        $receipt->Write(0, $pdf_data[0]->mes_lis_ord_par_sel_name_sbcs);
-        $receipt->SetXY($x + 26.5, $y + 41.8);
-        $receipt->Write(0, $pdf_data[0]->mes_lis_ord_par_sel_code);
-        $receipt->SetXY($x + 122, $y + 33);
-        $receipt->Write(0, $pdf_data[0]->mes_lis_ord_par_shi_name);
-        Log::debug(__METHOD__.':end---');
-        return $receipt;
-    }
-    public function coordinateText($receipt, $pdf_data, $x = 0, $y = 50.7, $sum_of_y=103.4)
-    {
-        Log::debug(__METHOD__.':start---');
-        //Cell($w, $h=0, $txt='', $border=0, $ln=0, $align='', $fill=0, $link='', $stretch=0, $ignore_min_height=false, $calign='T', $valign='M')
-        $receipt->SetXY($x + 29.6, $y);
-        $receipt->Cell(14.8, 0, $pdf_data[0]->mes_lis_ord_par_rec_name_sbcs, 0, 1, 'L', 0, '', 0);
-        $receipt->SetXY($x + 62.5, $y);
-        $receipt->Cell(20, 0, str_pad($pdf_data[0]->mes_lis_ord_par_rec_code, 4, "0", STR_PAD_LEFT), 0, 1, 'C', 0, '', 0);
-        $receipt->SetXY($x + 100.5, $y);
-        $receipt->Cell(11.5, 0, '50', 0, 1, 'C', 0, '', 0);
-        $receipt->SetXY($x + 121.5, $y);
-        $receipt->Cell(11.5, 0, str_pad($pdf_data[0]->mes_lis_ord_tra_goo_major_category, 4, "0", STR_PAD_LEFT), 0, 1, 'C', 0, '', 0);
-        $receipt->SetXY($x + 147.5, $y);
-        $receipt->Cell(4.5, 0, $pdf_data[0]->mes_lis_ord_log_del_delivery_service_code, 0, 1, 'C', 0, '', 0);
-        $receipt->SetXY($x + 170.2, $y);
-        $receipt->Cell(22, 0, $pdf_data[0]->mes_lis_ord_tra_trade_number, 0, 1, 'C', 0, '', 0);
-        $receipt->SetXY($x + 207, $y);
-        $receipt->Cell(21.6, 0, date('y/m/d', strtotime($pdf_data[0]->mes_lis_ord_tra_dat_order_date)), 0, 1, 'C', 0, '', 0);
-        $receipt->SetXY($x + 243, $y);
-        $receipt->Cell(21.6, 0, date('y/m/d', strtotime($pdf_data[0]->mes_lis_ord_tra_dat_delivery_date)), 0, 1, 'C', 0, '', 0);
-        $receipt->SetXY($x + 29.6, $y += 4.5);
-        $receipt->Cell(14.8, 0, $pdf_data[0]->mes_lis_ord_tra_ins_goods_classification_code, 0, 1, 'C', 0, '', 0);
-        $y += 8.3;
-        foreach ($pdf_data as $key1 => $value) {
-            $receipt->SetXY($x += 14.7, $y);
-            $receipt->Cell(14.8, 4.5, str_pad($value->mes_lis_ord_lin_lin_line_number, 2, "0", STR_PAD_LEFT), 0, 1, 'C', 0, '', 0);
-            $receipt->SetXY($x += 15, $y);
-            $receipt->Cell(52.5, 4.5, $value->mes_lis_ord_lin_ite_name_sbcs, 0, 1, 'L', 0, '', 0);
-            $receipt->SetXY($x += 52.5, $y);
-            $receipt->Cell(30, 4.5, $value->mes_lis_ord_lin_ite_order_item_code, 0, 1, 'L', 0, '', 0);
-            $receipt->SetXY($x += 30, $y);
-            $receipt->Cell(21, 4.5, intVal($value->mes_lis_ord_lin_qua_ord_quantity), 0, 1, 'R', 0, '', 0);
-            $receipt->SetXY($x += 21, $y);
-            $receipt->Cell(37, 4.5, number_format($value->mes_lis_ord_lin_amo_item_net_price_unit_price, 2), 0, 1, 'R', 0, '', 0);
-            $receipt->SetXY($x += 37, $y);
-            $receipt->Cell(36.8, 4.5, number_format($value->mes_lis_ord_lin_amo_item_net_price), 0, 1, 'R', 0, '', 0);
-            $receipt->SetXY($x += 36.8, $y);
-            $receipt->Cell(21.5, 4.5, number_format($value->mes_lis_ord_lin_amo_item_selling_price_unit_price), 0, 1, 'R', 0, '', 0);
-            $receipt->SetXY($x += 21.5, $y);
-            $receipt->Cell(36, 4.5, number_format($value->mes_lis_ord_lin_amo_item_selling_price), 0, 1, 'R', 0, '', 0);
-            $x = 0;
-            $y += 4.5;
-        }
-        $x = 0;
-        // if ($i%2==0) {
-        //     $y=103.4;
-        // }else{
-        //     $y=170;
-        // }
-        // $y += 33.7;
-        $receipt->SetXY($x + 170.5, $sum_of_y);
-        $receipt->Cell(36.5, 4.5, number_format($value->mes_lis_ord_tot_tot_net_price_total), 0, 1, 'R', 0, '', 0);
-        $receipt->SetXY($x + 228.2, $sum_of_y);
-        $receipt->Cell(36.5, 4.5, number_format($value->mes_lis_ord_tot_tot_selling_price_total), 0, 1, 'R', 0, '', 0);
-        $y=0;
-        Log::debug(__METHOD__.':end---');
-        return $receipt;
-    }
-    public function file_save($receipt, $file_number)
-    {
-        Log::debug(__METHOD__.':start---');
-
-        $pdf_file_name=date('YmdHis').'_'.$file_number.'_receipt.pdf';
-        $this->all_functions->folder_create(config('const.PDF_SAVE_PATH'));
-        $response = new Response(
-            $receipt->Output(storage_path(config('const.PDF_SAVE_PATH').$pdf_file_name), 'F'),
-            200,
-            array('content-type' => 'application / pdf')
-        );
-        $pdf_file_path = \Config::get('app.url').'storage/'.config('const.PDF_SAVE_PATH').$pdf_file_name;
-        $file_info=array(
-            'pdf_file_path'=>$pdf_file_path,
-            'pdf_file_name'=>$pdf_file_name
-        );
-        // $pdf_file_path = storage_path(config('const.PDF_SAVE_PATH').$pdf_file_name);
-        // $receipt = new Fpdi();
-        // $pagecount = $receipt->setSourceFile($pdf_file_path);
-        // Log::info("Counted".$pagecount);
-        Log::debug(__METHOD__.':end---');
-        return $file_info;
-    }
     public function deletedownloadedshipmentCsv($fileUrl)
     {
         $path = storage_path().'/app'.config('const.SHIPMENT_CSV_PATH')."/". $fileUrl;

@@ -13,6 +13,8 @@ storage/app/public/backend/images/canvas/Canvas_screenshoot/*
 storage/app/order_pdf/*
 !storage/app/order_pdf/demo
 
+storage/app/shipment_pdf/*
+
 storage/app/public/backend/images/blog_images/*
 
 storage/app/public/backend/images/canvas/pdf_platform/*
