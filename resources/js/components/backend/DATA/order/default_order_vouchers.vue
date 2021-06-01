@@ -1251,13 +1251,14 @@ export default {
         console.log(this.form.shipment_download_type);
       //download pdf
       var _this = this;
-     let loaderrrsss = Vue.$loading.show();
+    //  let loaderrrsss = Vue.$loading.show();
     this.form.order_info= this.order_info;
     // this.form.downloadType=downloadType;
       axios.post(this.BASE_URL + "api/sipment_pdf_download", this.form)
         .then(({ data }) => {
+            console.log(data);
             _this.downloadFromUrl(data);
-           loaderrrsss.hide();
+        //    loaderrrsss.hide();
         });
     },
   },

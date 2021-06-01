@@ -612,27 +612,27 @@ class Data_Controller extends Controller
         $report_arr_final = array();
         $shipment_data = data_shipment::select(
             'cc.optional',
-            'dsv.mes_lis_shi_par_sel_name_sbcs',
-            'dsv.mes_lis_shi_par_sel_code',
-            'dsv.mes_lis_shi_par_rec_name_sbcs',
-            'dsv.mes_lis_shi_tra_ins_goods_classification_code',
-            'dsv.mes_lis_shi_par_rec_code',
-            'dsv.mes_lis_shi_tra_goo_major_category',
-            'dsv.mes_lis_shi_par_shi_name',
-            'dsv.mes_lis_shi_log_del_delivery_service_code',
-            'dsv.mes_lis_shi_tra_trade_number',
-            'dsv.mes_lis_shi_tra_dat_order_date',
-            'dsv.mes_lis_shi_tra_dat_delivery_date',
-            'dsv.mes_lis_shi_tot_tot_selling_price_total',
-            'dsv.mes_lis_shi_tot_tot_net_price_total',
-            'dsi.mes_lis_shi_lin_ite_name_sbcs',
-            'dsi.mes_lis_shi_lin_ite_order_item_code',
-            'dsi.mes_lis_shi_lin_qua_ord_quantity',
-            'dsi.mes_lis_shi_lin_amo_item_selling_price',
-            'dsi.mes_lis_shi_lin_amo_item_selling_price_unit_price',
-            'dsi.mes_lis_shi_lin_amo_item_net_price',
-            'dsi.mes_lis_shi_lin_amo_item_net_price_unit_price',
-            'dsi.mes_lis_shi_lin_lin_line_number'
+            'dov.mes_lis_ord_par_sel_name_sbcs',
+            'dov.mes_lis_ord_par_sel_code',
+            'dov.mes_lis_ord_par_rec_name_sbcs',
+            'dov.mes_lis_ord_tra_ins_goods_classification_code',
+            'dov.mes_lis_ord_par_rec_code',
+            'dov.mes_lis_ord_tra_goo_major_category',
+            'dov.mes_lis_ord_par_shi_name',
+            'dov.mes_lis_ord_log_del_delivery_service_code',
+            'dov.mes_lis_ord_tra_trade_number',
+            'dov.mes_lis_ord_tra_dat_order_date',
+            'dov.mes_lis_ord_tra_dat_delivery_date',
+            'dov.mes_lis_ord_tot_tot_selling_price_total',
+            'dov.mes_lis_ord_tot_tot_net_price_total',
+            'doi.mes_lis_ord_lin_ite_name_sbcs',
+            'doi.mes_lis_ord_lin_ite_order_item_code',
+            'doi.mes_lis_ord_lin_qua_ord_quantity',
+            'doi.mes_lis_ord_lin_amo_item_selling_price',
+            'doi.mes_lis_ord_lin_amo_item_selling_price_unit_price',
+            'doi.mes_lis_ord_lin_amo_item_net_price',
+            'doi.mes_lis_ord_lin_amo_item_net_price_unit_price',
+            'doi.mes_lis_ord_lin_lin_line_number'
         )
             ->join('data_shipment_vouchers as dsv', 'dsv.data_shipment_id', '=', 'data_shipments.data_shipment_id')
             ->join('data_shipment_items as dsi', 'dsi.data_shipment_voucher_id', '=', 'dsv.data_shipment_voucher_id')
@@ -685,32 +685,28 @@ class Data_Controller extends Controller
         // return $shipment_data;
         // ===========
 
-
+            // return $shipment_data;
         // ===============
         $recs = new \Illuminate\Database\Eloquent\Collection($shipment_data);
         $grouped = $recs->groupBy('mes_lis_shi_tra_trade_number')->transform(function ($item, $k) {
             return $item->groupBy('mes_lis_shi_par_rec_code');
         });
-        return $grouped;
+        // return $grouped;
         // ===============
-
-        $collection = collect($shipment_data);
-        $grouped = $collection->groupBy('mes_lis_shi_tra_trade_number');
-
         $aaa = $grouped->all();
-        $report_arr_count = count($aaa);
-
-        for ($i = 0; $i < $report_arr_count; $i++) {
-            $step0 = array_keys($aaa)[$i];
-            // =====
-            for ($k = 0; $k < count($aaa[$step0]); $k++) {
-                $aaa[$step0][$k]['fax_number'] = json_decode($aaa[$step0][$k]['optional'])->order->fax->number;
-                unset($aaa[$step0][$k]['optional']);
+        $report_arr_final=array();
+        foreach ($aaa as $key => $value) {
+            $tmp_array1=array();
+            foreach ($value as $key1 => $value1) {
+            $tmp_array2=array();
+                foreach ($value1 as $key2 => $value2) {
+                    $value2->fax_number = json_decode($value2->optional)->order->fax->number;
+                    unset($value2->optional);
+                    $tmp_array2[]=$value2;
+                }
+                $tmp_array1[]=$tmp_array2;
             }
-            // =====
-            $step0_data_array = $aaa[$step0];
-
-            $report_arr_final[] = $step0_data_array;
+            $report_arr_final[]=$tmp_array1;
         }
         Log::debug(__METHOD__.':end---');
         return $report_arr_final;
