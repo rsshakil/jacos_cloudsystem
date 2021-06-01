@@ -683,109 +683,113 @@ class Data_Controller extends Controller
             $situation=$request->situation;
             $send_datetime=$request->send_datetime;
             $data_order_id=$request->data_order_id;
-
             $report_arr_final = array();
-        $shipment_data = data_shipment::select(
+
+            // $shipment_data = data_shipment::select('dsv.mes_lis_shi_par_sel_name_sbcs')
+            // ->join('data_shipment_vouchers as dsv','dsv.data_shipment_id','=','data_shipments.data_shipment_id')
+            // ->join('data_shipment_items as dsi', 'dsi.data_shipment_voucher_id', '=', 'dsv.data_shipment_voucher_id')
+            // ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'data_shipments.cmn_connect_id')
+            // ->where('data_shipments.data_order_id', $data_order_id);
+
+
+        $shipment_data = data_order::select(
             'cc.optional',
-            'dsv.mes_lis_shi_par_sel_name_sbcs',
-            'dsv.mes_lis_shi_par_sel_code',
-            'dsv.mes_lis_shi_par_rec_name_sbcs',
-            'dsv.mes_lis_shi_tra_ins_goods_classification_code',
-            'dsv.mes_lis_shi_par_rec_code',
-            'dsv.mes_lis_shi_tra_goo_major_category',
-            'dsv.mes_lis_shi_par_shi_name',
-            'dsv.mes_lis_shi_log_del_delivery_service_code',
-            'dsv.mes_lis_shi_tra_trade_number',
-            'dsv.mes_lis_shi_tra_dat_order_date',
-            'dsv.mes_lis_shi_tra_dat_delivery_date',
-            'dsv.mes_lis_shi_tot_tot_selling_price_total',
-            'dsv.mes_lis_shi_tot_tot_net_price_total',
-            'dsi.mes_lis_shi_lin_ite_name_sbcs',
-            'dsi.mes_lis_shi_lin_ite_order_item_code',
-            'dsi.mes_lis_shi_lin_qua_ord_quantity',
-            'dsi.mes_lis_shi_lin_amo_item_selling_price',
-            'dsi.mes_lis_shi_lin_amo_item_selling_price_unit_price',
-            'dsi.mes_lis_shi_lin_amo_item_net_price',
-            'dsi.mes_lis_shi_lin_amo_item_net_price_unit_price',
-            'dsi.mes_lis_shi_lin_lin_line_number'
+            'dov.mes_lis_ord_par_sel_name_sbcs',
+            'dov.mes_lis_ord_par_sel_code',
+            'dov.mes_lis_ord_par_rec_name_sbcs',
+            'dov.mes_lis_ord_tra_ins_goods_classification_code',
+            'dov.mes_lis_ord_par_rec_code',
+            'dov.mes_lis_ord_tra_goo_major_category',
+            'dov.mes_lis_ord_par_shi_name',
+            'dov.mes_lis_ord_log_del_delivery_service_code',
+            'dov.mes_lis_ord_tra_trade_number',
+            'dov.mes_lis_ord_tra_dat_order_date',
+            'dov.mes_lis_ord_tra_dat_delivery_date',
+            'dov.mes_lis_ord_tot_tot_selling_price_total',
+            'dov.mes_lis_ord_tot_tot_net_price_total',
+            'doi.mes_lis_ord_lin_ite_name_sbcs',
+            'doi.mes_lis_ord_lin_ite_order_item_code',
+            'doi.mes_lis_ord_lin_qua_ord_quantity',
+            'doi.mes_lis_ord_lin_amo_item_selling_price',
+            'doi.mes_lis_ord_lin_amo_item_selling_price_unit_price',
+            'doi.mes_lis_ord_lin_amo_item_net_price',
+            'doi.mes_lis_ord_lin_amo_item_net_price_unit_price',
+            'doi.mes_lis_ord_lin_lin_line_number'
         )
-            ->join('data_shipment_vouchers as dsv', 'dsv.data_shipment_id', '=', 'data_shipments.data_shipment_id')
-            ->join('data_shipment_items as dsi', 'dsi.data_shipment_voucher_id', '=', 'dsv.data_shipment_voucher_id')
-            ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'data_shipments.cmn_connect_id');
+            ->join('data_order_vouchers as dov', 'dov.data_order_id', '=', 'data_orders.data_order_id')
+            ->join('data_order_items as doi', 'doi.data_order_voucher_id', '=', 'dov.data_order_voucher_id')
+            // ->join('data_shipments as ds', 'ds.data_order_id', '=', 'data_orders.data_order_id')
+            // ->join('data_shipment_vouchers as dsv', 'dsv.data_shipment_id', '=', 'ds.data_shipment_id')
+            ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'data_orders.cmn_connect_id');
             // ->where('data_orders.data_order_id', $data_order_id)
             // ->get();
 
 
-            $shipment_data=$shipment_data->where('data_shipments.data_order_id', $data_order_id)
-            ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $order_info['mes_lis_shi_log_del_delivery_service_code'])
-            ->where('dsv.mes_lis_shi_par_sel_code', $order_info['mes_lis_shi_par_sel_code'])
-            ->where('dsv.mes_lis_shi_par_sel_name', $order_info['mes_lis_shi_par_sel_name'])
-            ->where('dsv.mes_lis_shi_tra_dat_delivery_date', $order_info['mes_lis_shi_tra_dat_delivery_date'])
-            ->where('dsv.mes_lis_shi_tra_goo_major_category', $order_info['mes_lis_shi_tra_goo_major_category'])
-            ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $order_info['mes_lis_shi_tra_ins_temperature_code']);
+            $shipment_data=$shipment_data->where('data_orders.data_order_id', $data_order_id)
+            ->where('dov.mes_lis_ord_log_del_delivery_service_code', $order_info['mes_lis_shi_log_del_delivery_service_code'])
+            ->where('dov.mes_lis_ord_par_sel_code', $order_info['mes_lis_shi_par_sel_code'])
+            ->where('dov.mes_lis_ord_par_sel_name', $order_info['mes_lis_shi_par_sel_name'])
+            ->where('dov.mes_lis_ord_tra_dat_delivery_date', $order_info['mes_lis_shi_tra_dat_delivery_date'])
+            ->where('dov.mes_lis_ord_tra_goo_major_category', $order_info['mes_lis_shi_tra_goo_major_category'])
+            ->where('dov.mes_lis_ord_tra_ins_temperature_code', $order_info['mes_lis_shi_tra_ins_temperature_code']);
 
-            if ($mes_lis_shi_tra_trade_number!="") {
-                $shipment_data=$shipment_data->where('dsv.mes_lis_shi_tra_trade_number', $mes_lis_shi_tra_trade_number);
-            }
-            if ($fixedSpecial!="*") {
-                $shipment_data=$shipment_data->where('dsv.mes_lis_shi_tra_ins_goods_classification_code', $fixedSpecial);
-            }
-            if ($printingStatus!="*") {
-                if ($printingStatus=="未印刷あり") {
-                    $shipment_data=$shipment_data->whereNull('dsv.print_datetime');
-                }
-                if ($printingStatus=="印刷済") {
-                    $shipment_data=$shipment_data->whereNotNull('dsv.print_datetime');
-                }
-            }
-            if ($situation!="*") {
-                if ($situation=="未確定あり") {
-                    $shipment_data=$shipment_data->whereNull('dsv.decision_datetime');
-                }
-                if ($situation=="確定済") {
-                    $shipment_data=$shipment_data->whereNotNull('dsv.decision_datetime');
-                }
-            }
-            if ($send_datetime!="*") {
-                if ($send_datetime=="未送信あり") {
-                    $shipment_data = $shipment_data->whereNull('dsv.send_datetime');
-                }
-                if ($send_datetime=="送信済") {
-                    $shipment_data = $shipment_data->whereNotNull('dsv.send_datetime');
-                }
-            }
-            $shipment_data=$shipment_data
-            // ->groupBy('mes_lis_shi_tra_trade_number')
-            ->get();
+            // if ($mes_lis_shi_tra_trade_number!="") {
+            //     $shipment_data=$shipment_data->where('dsv.mes_lis_shi_tra_trade_number', $mes_lis_shi_tra_trade_number);
+            // }
+            // if ($fixedSpecial!="*") {
+            //     $shipment_data=$shipment_data->where('dsv.mes_lis_shi_tra_ins_goods_classification_code', $fixedSpecial);
+            // }
+            // if ($printingStatus!="*") {
+            //     if ($printingStatus=="未印刷あり") {
+            //         $shipment_data=$shipment_data->whereNull('dsv.print_datetime');
+            //     }
+            //     if ($printingStatus=="印刷済") {
+            //         $shipment_data=$shipment_data->whereNotNull('dsv.print_datetime');
+            //     }
+            // }
+            // if ($situation!="*") {
+            //     if ($situation=="未確定あり") {
+            //         $shipment_data=$shipment_data->whereNull('dsv.decision_datetime');
+            //     }
+            //     if ($situation=="確定済") {
+            //         $shipment_data=$shipment_data->whereNotNull('dsv.decision_datetime');
+            //     }
+            // }
+            // if ($send_datetime!="*") {
+            //     if ($send_datetime=="未送信あり") {
+            //         $shipment_data = $shipment_data->whereNull('dsv.send_datetime');
+            //     }
+            //     if ($send_datetime=="送信済") {
+            //         $shipment_data = $shipment_data->whereNotNull('dsv.send_datetime');
+            //     }
+            // }
+            // $shipment_data = $shipment_data->groupBy('dsv.mes_lis_shi_tra_trade_number');
+            $shipment_data=$shipment_data->get();
             // return $shipment_data;
             // ===========
 
-
+            // return $shipment_data;
         // ===============
         $recs = new \Illuminate\Database\Eloquent\Collection($shipment_data);
-        $grouped = $recs->groupBy('mes_lis_shi_tra_trade_number')->transform(function($item, $k) {
-            return $item->groupBy('mes_lis_shi_par_rec_code');
+        $grouped = $recs->groupBy('mes_lis_ord_par_rec_code')->transform(function($item, $k) {
+            return $item->groupBy('mes_lis_ord_tra_trade_number');
         });
-        return $grouped;
+        // return $grouped;
         // ===============
-
-        $collection = collect($shipment_data);
-        $grouped = $collection->groupBy('mes_lis_shi_tra_trade_number');
-
         $aaa = $grouped->all();
-        $report_arr_count = count($aaa);
-
-        for ($i = 0; $i < $report_arr_count; $i++) {
-            $step0 = array_keys($aaa)[$i];
-            // =====
-            for ($k = 0; $k < count($aaa[$step0]); $k++) {
-                $aaa[$step0][$k]['fax_number'] = json_decode($aaa[$step0][$k]['optional'])->order->fax->number;
-                unset($aaa[$step0][$k]['optional']);
+        $report_arr_final=array();
+        foreach ($aaa as $key => $value) {
+            $tmp_array1=array();
+            foreach ($value as $key1 => $value1) {
+            $tmp_array2=array();
+                foreach ($value1 as $key2 => $value2) {
+                    $value2->fax_number = json_decode($value2->optional)->order->fax->number;
+                    unset($value2->optional);
+                    $tmp_array2[]=$value2;
+                }
+                $tmp_array1[]=$tmp_array2;
             }
-            // =====
-            $step0_data_array = $aaa[$step0];
-
-            $report_arr_final[] = $step0_data_array;
+            $report_arr_final[]=$tmp_array1;
         }
         Log::debug(__METHOD__.':end---');
         return $report_arr_final;
