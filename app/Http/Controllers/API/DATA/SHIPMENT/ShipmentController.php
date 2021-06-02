@@ -172,7 +172,7 @@ class ShipmentController extends Controller
             $voucher_id_array=$pdf_data_json['voucher_id_array'];
 
             $download_files=$this->pdfGenerate($pdf_datas);
-            $download_file_url=$download_files[0]['pdf_file_path'];
+            $download_file_url=$download_files[0]['pdf_file_url'];
             $pdf_file_names=$download_files[0]['pdf_file_name'];
 
             foreach ($voucher_id_array as $key => $voucher_id) {

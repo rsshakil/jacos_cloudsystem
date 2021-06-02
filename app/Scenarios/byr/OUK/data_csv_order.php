@@ -469,8 +469,8 @@ class data_csv_order extends ScenarioBase
                     Mail::send([], [], function ($message) {
                         $message->to(config('const.PDF_SEND_MAIL'))
                             ->subject($this->fax_number);
-                        Log::debug('attach file:'.$this->attachment_paths['pdf_file_url']);
-                        $message->attach($this->attachment_paths['pdf_file_url'])
+                        Log::debug('attach file:'.$this->attachment_paths['pdf_file_path']);
+                        $message->attach($this->attachment_paths['pdf_file_path'])
                         ->setBody('');
                     });
                 }
