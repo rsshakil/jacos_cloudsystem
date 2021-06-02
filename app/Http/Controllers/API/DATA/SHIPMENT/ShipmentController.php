@@ -161,15 +161,25 @@ class ShipmentController extends Controller
         $csv_data_count =0;
         $download_file_url=null;
         if ($shipment_download_type=='pdf') {
+            $cur_datetime=date('y-m-d H:i:s');
             // CSV Download
             $new_file_name = $this->all_functions->downloadFileName($request, 'pdf', '受注');
             $download_file_url = Config::get('app.url')."storage/app".config('const.PDF_SAVE_PATH')."/". $new_file_name;
 
             // get shipment data query
-            $pdf_datas = Data_Controller::getShipmentPdfData($request);
+            $pdf_data_json = Data_Controller::getShipmentPdfData($request);
+            $pdf_datas=$pdf_data_json['report_arr_final'];
+            $voucher_id_array=$pdf_data_json['voucher_id_array'];
+
             $download_files=$this->pdfGenerate($pdf_datas);
             $download_file_url=$download_files[0]['pdf_file_path'];
             $pdf_file_names=$download_files[0]['pdf_file_name'];
+
+            foreach ($voucher_id_array as $key => $voucher_id) {
+                data_shipment_voucher::where('data_order_voucher_id',$voucher_id)->update(
+                    ['print_datetime'=>$cur_datetime]
+                );
+            }
         }
         Log::debug(__METHOD__.':end---');
 

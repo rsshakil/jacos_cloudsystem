@@ -610,15 +610,9 @@ class Data_Controller extends Controller
         $data_order_id=$request->data_order_id;
         $report_arr_final = array();
 
-        // $shipment_data = data_shipment::select('dsv.mes_lis_shi_par_sel_name_sbcs')
-        // ->join('data_shipment_vouchers as dsv','dsv.data_shipment_id','=','data_shipments.data_shipment_id')
-        // ->join('data_shipment_items as dsi', 'dsi.data_shipment_voucher_id', '=', 'dsv.data_shipment_voucher_id')
-        // ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'data_shipments.cmn_connect_id')
-        // ->where('data_shipments.data_order_id', $data_order_id);
-
-
         $shipment_data = data_order::select(
             'cc.optional',
+            'dov.data_order_voucher_id',
             'dov.mes_lis_ord_par_sel_name_sbcs',
             'dov.mes_lis_ord_par_sel_code',
             'dov.mes_lis_ord_par_rec_name_sbcs',
@@ -646,9 +640,6 @@ class Data_Controller extends Controller
         // ->join('data_shipments as ds', 'ds.data_order_id', '=', 'data_orders.data_order_id')
         // ->join('data_shipment_vouchers as dsv', 'dsv.data_shipment_id', '=', 'ds.data_shipment_id')
         ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'data_orders.cmn_connect_id');
-        // ->where('data_orders.data_order_id', $data_order_id)
-        // ->get();
-
 
         $shipment_data=$shipment_data->where('data_orders.data_order_id', $data_order_id)
         ->where('dov.mes_lis_ord_log_del_delivery_service_code', $order_info['mes_lis_shi_log_del_delivery_service_code'])
@@ -691,19 +682,15 @@ class Data_Controller extends Controller
         // $shipment_data = $shipment_data->groupBy('dsv.mes_lis_shi_tra_trade_number');
         $shipment_data=$shipment_data->get();
         // return $shipment_data;
-        // ===========
 
-        // return $shipment_data;
-        // ===============
+        // ===============For PDF Data Start============
         $recs = new \Illuminate\Database\Eloquent\Collection($shipment_data);
         $grouped = $recs->groupBy('mes_lis_ord_par_rec_code')->transform(function($item, $k) {
             return $item->groupBy('mes_lis_ord_tra_trade_number');
         });
-        // return $grouped;
-        // ===============
-        $aaa = $grouped->all();
+        $all_shipment_data = $grouped->all();
         $report_arr_final=array();
-        foreach ($aaa as $key => $value) {
+        foreach ($all_shipment_data as $key => $value) {
             $tmp_array1=array();
             foreach ($value as $key1 => $value1) {
             $tmp_array2=array();
@@ -716,8 +703,19 @@ class Data_Controller extends Controller
             }
             $report_arr_final[]=$tmp_array1;
         }
+        // ===============For PDF Data End============
+        // ==========For Voucher Id Start==============
+        $data_collection = collect($shipment_data);
+        $data_grouped = $data_collection->groupBy('data_order_voucher_id');
+        $data_grouped=$data_grouped->all();
+        $voucher_id_arr=array();
+        for ($i=0; $i <count($data_grouped) ; $i++) {
+            $step0=array_keys($data_grouped)[$i];
+            $voucher_id_arr[]=$step0;
+        }
+        // ==========For Voucher Id End==============
         Log::debug(__METHOD__.':end---');
-        return $report_arr_final;
+        return ['report_arr_final'=>$report_arr_final,'voucher_id_array'=>$voucher_id_arr];
     }
     public static function shipmentCsvHeading()
     {
