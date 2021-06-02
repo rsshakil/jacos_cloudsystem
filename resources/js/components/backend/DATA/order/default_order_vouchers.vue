@@ -1258,6 +1258,7 @@ export default {
             // console.log(data);
             _this.downloadFromUrl(data);
            loaderrrsss.hide();
+           this.get_all_byr_order_detail();
         });
     },
   },
