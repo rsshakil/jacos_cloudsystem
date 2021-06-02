@@ -57,19 +57,16 @@
         methods:{
             get_all_blogs(){
                 axios.get(this.BASE_URL +"api/get_all_published_blog_list").then(({data}) => {
-                    this.init(data.status);
                     this.blog_lists = data.blog_list;
                 });
             },
             get_signle_top_blog(){
                 axios.get(this.BASE_URL +"api/get_signle_top_blog").then(({data}) => {
-                    this.init(data.status);
                     this.single_blog = data.blog_list;
                 });
             },
             get_user_top_blog(){
                 axios.get(this.BASE_URL +"api/get_user_top_blog").then(({data}) => {
-                    this.init(data.status);
                     this.user_blog = data.blog_list;
                 });
             },

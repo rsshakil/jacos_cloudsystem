@@ -266,16 +266,17 @@ class DataController extends Controller
         $byr_buyer_id=$request->byr_buyer_id;
         $end_date=$request->end_date;
         $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
-        $result = data_invoice::select('dipd.mes_lis_inv_lin_lin_trade_number_reference',
-        'dipd.mes_lis_inv_lin_tra_code',
-        'dipd.mes_lis_inv_lin_tra_name',
-        'dipd.mes_lis_inv_lin_det_transfer_of_ownership_date',
-        'dipd.mes_lis_inv_lin_det_amo_req_plus_minus',
-        'dipd.mes_lis_inv_lin_det_amo_requested_amount')
-        ->join('cmn_connects as cc','cc.cmn_connect_id','=','data_invoices.cmn_connect_id')
-        ->join('data_invoice_pays as dip','dip.data_invoice_id','=','data_invoices.data_invoice_id')
-        ->join('data_invoice_pay_details as dipd','dipd.data_invoice_pay_id','=','dip.data_invoice_pay_id')
-        ->leftJoin('data_payment_pays as dpp', function($join){
+        $result = data_invoice::select(
+            'dipd.mes_lis_inv_lin_lin_trade_number_reference',
+            'dipd.mes_lis_inv_lin_tra_code',
+            'dipd.mes_lis_inv_lin_tra_name',
+            'dipd.mes_lis_inv_lin_det_transfer_of_ownership_date',
+            'dipd.mes_lis_inv_lin_det_amo_req_plus_minus',
+            'dipd.mes_lis_inv_lin_det_amo_requested_amount')
+            ->join('cmn_connects as cc','cc.cmn_connect_id','=','data_invoices.cmn_connect_id')
+            ->join('data_invoice_pays as dip','dip.data_invoice_id','=','data_invoices.data_invoice_id')
+            ->join('data_invoice_pay_details as dipd','dipd.data_invoice_pay_id','=','dip.data_invoice_pay_id')
+            ->leftJoin('data_payment_pays as dpp', function($join){
             $join->on('dpp.mes_lis_pay_pay_code', '=', 'dip.mes_lis_inv_pay_code');
             $join->on('dpp.mes_lis_pay_per_end_date', '=', 'dip.mes_lis_inv_per_end_date');
             $join->on('dpp.mes_lis_buy_code', '=', 'dip.mes_lis_buy_code');
@@ -284,6 +285,8 @@ class DataController extends Controller
         ->where('cc.slr_seller_id',$slr_seller_id)
         ->where('dip.mes_lis_inv_per_end_date',$end_date)
         ->whereNull('dpp.data_payment_pay_id')
+        ->whereNotNull('dipd.send_datetime')
+        // AND dipd.send_datetime IS NOT null
         ->orderBy('dipd.mes_lis_inv_lin_lin_trade_number_reference', "ASC")
         ->orderBy('dipd.mes_lis_inv_lin_tra_code', "ASC")
         ->orderBy('dipd.mes_lis_inv_lin_tra_name', "ASC")

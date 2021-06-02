@@ -30,6 +30,7 @@ import page_header_default from './page_header_default'
           created() {
                 Fire.$emit('buyer_session_destroy');
                  Fire.$emit("loadPageTitle", "得意先一覧");
+                //  this.loading=false;
             },
         mounted() {
             // this.init();

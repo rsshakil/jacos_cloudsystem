@@ -27,15 +27,14 @@ import blog_view from './blog_view'
         methods:{
             get_all_blogs(){
                 axios.get(this.BASE_URL +"api/get_all_published_blog_list").then(({data}) => {
-                    this.init(data.status);
+
                     this.blog_lists = data.blog_list;
                 });
             },
             get_signle_top_blog(){
                 axios.get(this.BASE_URL +"api/get_signle_top_blog").then(({data}) => {
-                    this.init(data.status);
                     this.single_blog = data.blog_list;
-                    
+
                 });
             },
         },
@@ -44,8 +43,9 @@ import blog_view from './blog_view'
       this.get_signle_top_blog();
       Fire.$on("AfterCreateblog", () => {
         this.get_all_blogs();
+        // this.loading=false;
     });
-      
+
   },
         mounted() {
         }
