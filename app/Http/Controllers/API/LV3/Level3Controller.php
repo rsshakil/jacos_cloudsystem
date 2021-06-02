@@ -14,9 +14,11 @@ use App\Models\LV3\lv3_job;
 use App\Models\LV3\lv3_service;
 use App\Models\LV3\lv3_trigger_file_path;
 use App\Models\LV3\lv3_trigger_schedule;
-use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Config;
 
 use function GuzzleHttp\json_decode;
 
@@ -41,27 +43,27 @@ class Level3Controller extends Controller
     }
     public function userLogin(Request $request)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
         $email = $request->user_name;
         $password = $request->password;
         if (User::where('email', '=', $email)->exists()) {
             $user = User::where('email', '=', $email)->first();
             if (Hash::check($password, $user->password)) {
-                \Log::debug(__METHOD__.':end---');
+                Log::debug(__METHOD__.':end---');
                 return response()->json(['message' => 'success', 'class_name' => 'alert-success', 'user_id' => $user->id, 'user_name' => $user->name]);
             } else {
-                \Log::debug(__METHOD__.':end---');
+                Log::debug(__METHOD__.':end---');
                 return response()->json(['message' => "passwordがありません。properties.fileを確認してください。", 'class_name' => 'alert-danger']);
             }
         } else {
-            \Log::debug(__METHOD__.':end---');
+            Log::debug(__METHOD__.':end---');
             return response()->json(['message' => "emailがありません。properties.fileを確認してください。", 'class_name' => 'alert-danger']);
         }
     }
 
     public function historyData(Request $request)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
         $user_id = $request->user_id;
         $all_history = lv3_history::select('lv3_histories.*', 'lv3_services.lv3_service_id', 'lv3_services.service_name', 'cmn_companies.company_name', 'cmn_connects.partner_code')
             ->join('lv3_services', 'lv3_histories.lv3_service_id', '=', 'lv3_services.lv3_service_id')
@@ -71,14 +73,14 @@ class Level3Controller extends Controller
             ->where('lv3_services.adm_user_id', $user_id)
             ->orderBy('lv3_histories.lv3_history_id', 'DESC')
             ->take(100)->get();
-        \Log::info($all_history);
-        \Log::debug(__METHOD__.':end---');
+        Log::info($all_history);
+        Log::debug(__METHOD__.':end---');
         return \response()->json(['histories' => $all_history]);
     }
 
     public function getCustomer(Request $request)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
 
         $customer_array=array();
 
@@ -109,7 +111,7 @@ class Level3Controller extends Controller
 
             $customer_array[]=$tmp;
         }
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return response()->json(['customers_data' => $customer_array]);
     }
 
@@ -122,7 +124,7 @@ class Level3Controller extends Controller
 
     public function addService(Request $request)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
 
         $user_id = $request->user_id;
         $service_id = $request->service_id;
@@ -162,14 +164,14 @@ class Level3Controller extends Controller
                 $this->flag = 0;
             }
         }
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
 
         return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'class_name' => $this->class_name, 'flag' => $this->flag, 'lst_service_id' => $this->lst_service_id]);
     }
 
     public function scheduleData(Request $request)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
 
         $user_id = $request->user_id;
         $service_id = $request->service_id;
@@ -218,7 +220,7 @@ class Level3Controller extends Controller
             'job_api_scenario_list' => $job_api_scenario_list,
             'all_service_data' => $all_service_data,
         );
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return response()->json($final_arr);
     }
 
@@ -229,7 +231,7 @@ class Level3Controller extends Controller
 
     public function setScheduleData(Request $request)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
         $user_id = $request->user_id;
         $customer_id = $request->cmn_connect_id;
         $service_id = $request->service_id;
@@ -242,7 +244,7 @@ class Level3Controller extends Controller
         $insert_first_array = array();
         $insert_second_array = array();
 
-        \Log::info($data_array[0]);
+        Log::info($data_array[0]);
         for ($i = 0; $i < count($data_array); $i++) {
             $test_first['lv3_service_id'] = $service_id;
             $test_first['weekday'] = $this->all_functions->binary_to_decimal($data_array[$i]);
@@ -261,12 +263,12 @@ class Level3Controller extends Controller
         lv3_trigger_schedule::where('lv3_service_id', $service_id)->delete();
         lv3_trigger_schedule::insert($insert_first_array);
         lv3_trigger_schedule::insert($insert_second_array);
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return response()->json(['message' => '更新完了', 'class_name' => 'alert-success']);
     }
     public function setFilePath(Request $request)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
         $user_id = $request->user_id;
         $service_id = $request->service_id;
         $path_execution_flag = $request->path_execution_flag;
@@ -287,13 +289,13 @@ class Level3Controller extends Controller
         } else {
             lv3_trigger_file_path::insert($file_path_array);
         }
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return \response()->json(['message' => 'ファイルパスを保存しました。', 'class_name' => 'alert-success']);
     }
 
     public function setJobData(Request $request)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
         $job_id = $request->job_update_id;
         $service_id = $request->service_id;
         $cmn_scenario_id = $request->cmn_scenario_id;
@@ -321,7 +323,7 @@ class Level3Controller extends Controller
             $this->status_code = 200;
             $this->class_name = 'alert-success';
         }
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'class_name' => $this->class_name]);
     }
     public function lv3ScheduleData(Request $request)
@@ -434,7 +436,7 @@ class Level3Controller extends Controller
 
     public function jobScenario(Request $request)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
         // return $request->all();
         $cs = new CmnScenarioController();
         $ret = $cs->exec($request);
@@ -442,16 +444,16 @@ class Level3Controller extends Controller
         // $ret = json_decode($ret->getContent(), true);
         if ($this->error === $ret['status']) {
             // sceanario exec error
-            \Log::error($ret['message']);
+            Log::error($ret['message']);
         }
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return response()->json($ret);
     }
     public function getShipmentFile(Request $request)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
 
-        $url_path = \Config::get('app.url') . 'storage/app/shipment_csv/moved/';
+        $url_path = Config::get('app.url') . 'storage/app/shipment_csv/moved/';
         $path = \storage_path('/app/shipment_csv/');
         $files = array_values(array_diff(scandir($path), array('.', '..')));
         $file_name='';
@@ -466,7 +468,7 @@ class Level3Controller extends Controller
         } else {
             $this->message = "フォルダが空です";
             $this->status_code = 400;
-            \Log::debug(__METHOD__.':end---');
+            Log::debug(__METHOD__.':end---');
             return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'file_name' => $file_name,'file_path'=>$file_path]);
         }
         if (!empty($checked_files)) {
@@ -479,14 +481,14 @@ class Level3Controller extends Controller
             $this->message = "ファイルが見つかりませんでした。";
             $this->status_code = 401;
         }
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'file_name' => $file_name,'file_path'=>$file_path]);
     }
     public function getInvoiceFile(Request $request)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
 
-        $url_path = \Config::get('app.url') . 'storage/app/invoice_csv/moved/';
+        $url_path = Config::get('app.url') . 'storage/app/invoice_csv/moved/';
         $path = \storage_path('/app/invoice_csv/');
         $files = array_values(array_diff(scandir($path), array('.', '..')));
         $file_name='';
@@ -501,7 +503,7 @@ class Level3Controller extends Controller
         } else {
             $this->message = "フォルダが空です";
             $this->status_code = 400;
-            \Log::debug(__METHOD__.':end---');
+            Log::debug(__METHOD__.':end---');
             return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'file_name' => $file_name,'file_path'=>$file_path]);
         }
         if (!empty($checked_files)) {
@@ -514,7 +516,7 @@ class Level3Controller extends Controller
             $this->message = "ファイルが見つかりませんでした。";
             $this->status_code = 401;
         }
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'file_name' => $file_name,'file_path'=>$file_path]);
     }
     // public function getShipmentFile(Request $request)
@@ -551,13 +553,13 @@ class Level3Controller extends Controller
     // }
     public function deleteService(Request $request)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
         $service_id = $request->service_id;
         lv3_service::where('lv3_service_id', $service_id)->delete();
         $this->message = '削除が完了しました。';
         $this->status_code = 200;
         $this->class_name = 'alert-success';
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'class_name' => $this->class_name]);
     }
 
