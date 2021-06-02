@@ -618,7 +618,7 @@
         <tr v-for="(valueItm,index) in order_search_modal2List" :key="index" @click="setRowscodeIntoForm2(valueItm.mes_lis_inv_lin_tra_code)">
         <td>{{index+1}}</td>
           <td>{{valueItm.mes_lis_inv_lin_tra_code}}</td>
-          <td>{{valueItm.mes_lis_inv_lin_tra_name}}</td>
+          <td><span v-if="valueItm.mes_lis_inv_lin_tra_name!=''">{{valueItm.mes_lis_inv_lin_tra_name}}</span><span v-else>{{valueItm.mes_lis_inv_lin_tra_name_sbcs}}</span></td>
 
         </tr>
 </tbody>
