@@ -496,7 +496,7 @@
         </div>
         <div class="col-6">
         <h6>ダウンロードを押すと、比較データがダウンロードされます</h6>
-           <button class="btn btn-outline-primary" style="float:right;margin-bottom:15px;" type="button" :disabled="is_disabled(form.shipment_ids?true:false)" @click="compare_data_download(1)">
+           <button class="btn btn-outline-primary" style="float:right;margin-bottom:15px;" type="button" :disabled="is_disabled(compareDataList.length>0?true:false)" @click="compare_data_download(1)">
         <b-icon icon="download" animation="fade" font-scale="1.2"></b-icon>
         {{ myLang.download }}
       </button>
@@ -520,16 +520,19 @@
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(value,index) in compareDataList" :key="index">
-            <td>{{value.mes_lis_shi_par_sel_code}}</td>
-            <td>{{value.mes_lis_shi_tra_trade_number}}</td>
-            <td>{{value.mes_lis_shi_par_shi_code}} {{value.mes_lis_shi_par_shi_name}}</td>
-            <td :class="sameCheck(value.shipment_delivery_date,value.mes_lis_acc_tra_dat_transfer_of_ownership_date)">{{ value.shipment_delivery_date }}</td>
-            <td :class="sameCheck(value.shipment_delivery_date,value.mes_lis_acc_tra_dat_transfer_of_ownership_date)">{{value.mes_lis_acc_tra_dat_transfer_of_ownership_date}}</td>
-            <td class="text-right" :class="sameCheck(value.mes_lis_shi_tot_tot_net_price_total,value.mes_lis_acc_tot_tot_net_price_total)">{{ zeroShow(value.mes_lis_shi_tot_tot_net_price_total) | priceFormat}}</td>
-            <td class="text-right" :class="sameCheck(value.mes_lis_shi_tot_tot_net_price_total,value.mes_lis_acc_tot_tot_net_price_total)">{{zeroShow(value.mes_lis_acc_tot_tot_net_price_total) | priceFormat}}</td>
-            <td><button @click="comparedItemList(value)" class="btn btn-primary">確認</button></td>
-          </tr>
+            <tr v-for="(value,index) in compareDataList" :key="index">
+                <td>{{value.mes_lis_shi_par_sel_code}}</td>
+                <td>{{value.mes_lis_shi_tra_trade_number}}</td>
+                <td>{{value.mes_lis_shi_par_shi_code}} {{value.mes_lis_shi_par_shi_name}}</td>
+                <td :class="sameCheck(value.shipment_delivery_date,value.mes_lis_acc_tra_dat_transfer_of_ownership_date)">{{ value.shipment_delivery_date }}</td>
+                <td :class="sameCheck(value.shipment_delivery_date,value.mes_lis_acc_tra_dat_transfer_of_ownership_date)">{{value.mes_lis_acc_tra_dat_transfer_of_ownership_date}}</td>
+                <td class="text-right" :class="sameCheck(value.mes_lis_shi_tot_tot_net_price_total,value.mes_lis_acc_tot_tot_net_price_total)">{{ zeroShow(value.mes_lis_shi_tot_tot_net_price_total) | priceFormat}}</td>
+                <td class="text-right" :class="sameCheck(value.mes_lis_shi_tot_tot_net_price_total,value.mes_lis_acc_tot_tot_net_price_total)">{{zeroShow(value.mes_lis_acc_tot_tot_net_price_total) | priceFormat}}</td>
+                <td><button @click="comparedItemList(value)" class="btn btn-primary">確認</button></td>
+            </tr>
+            <tr v-if="compareDataList && compareDataList.length==0">
+                <td class="text-center" colspan="100%">データがありません</td>
+            </tr>
           </tbody>
 
         </table>
@@ -616,10 +619,10 @@
         <td>{{index+1}}</td>
           <td>{{valueItm.mes_lis_inv_lin_tra_code}}</td>
           <td>{{valueItm.mes_lis_inv_lin_tra_name}}</td>
-          
+
         </tr>
 </tbody>
-       
+
         </table>
       </div>
     </b-modal>
@@ -727,6 +730,7 @@ export default {
       return false;
     },
     invoiceCompareData(){
+        // console.log(this.form);
       this.invoiceCompareModal = true;
       axios.post(this.BASE_URL + "api/invoice_compare_data", this.form)
         .then(({ data }) => {
@@ -737,7 +741,6 @@ export default {
         axios.post(this.BASE_URL + "api/invoice_compare_data_download", this.form)
         .then(({ data }) => {
             this.downloadFromUrl(data);
-            // this.compareDataList = data.voucherList;
         });
     },
     comparedItemList(value){
@@ -827,6 +830,7 @@ export default {
             this.invoice_detail_lists = data.invoice_details_list;
             this.invoice_detail_length = this.invoice_detail_lists.data.length;
             this.invoice_lists_length = this.invoice_detail_lists.data.length;
+            // console.log(this.invoice_detail_lists.data);
             (this.invoice_detail_lists.data).forEach(element => {
                 this.form.shipment_ids.push(element.data_shipment_voucher_id)
             });
