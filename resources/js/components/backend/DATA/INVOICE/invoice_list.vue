@@ -261,7 +261,7 @@ export default {
         adm_user_id: Globals.user_info_id,
         byr_buyer_id: null,
         // mes_lis_inv_pay_id:'',
-        mes_lis_inv_pay_code:null,
+        mes_lis_inv_pay_code:'',
         mes_lis_inv_per_begin_date:'',
         mes_lis_inv_per_end_date:'',
       },
@@ -305,7 +305,7 @@ export default {
     },
     viewInvoicePopup(){
       this.invoiceCreateModal = true;
-      this.invoiceData.mes_lis_inv_pay_code=null;
+      this.invoiceData.mes_lis_inv_pay_code=this.partner_codes[0].partner_code;
     },
 
     //get Table data
@@ -389,7 +389,7 @@ export default {
          _this.alert_icon = "success";
         _this.alert_title = "";
         _this.alert_text =
-          "Invoice insert success";
+          "請求データを追加しました。";
         _this.sweet_normal_alert();
         _this.invoiceCreateModal = false;
         });
