@@ -10,7 +10,7 @@
             <td class="cl_custom_color">締日</td>
             <td>{{ param_data.end_date }}</td>
             <td class="cl_custom_color">請求取引先</td>
-            <td colspan="5">
+            <td>
               {{ param_data.pay_code }}
               {{ param_data.pay_name }}
             </td>
@@ -21,8 +21,8 @@
                 {{ param_data.buy_code }}
                 {{ param_data.buy_name }}
             </td>
-            <td class="cl_custom_color">請求状況</td>
-            <td></td>
+            <!--<td class="cl_custom_color">請求状況</td>
+            <td></td>-->
             <td class="cl_custom_color">請求金額</td>
             <td class="text-right">
                 {{ param_data.requested_amount | priceFormat }}
