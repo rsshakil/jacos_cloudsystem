@@ -229,19 +229,19 @@ class ReceiveController extends Controller
             //     $result = $result->where('data_receive_vouchers.mes_lis_acc_tot_tot_net_price_total', '!=', 'data_receive_vouchers.mes_lis_shi_tot_tot_net_price_total');
             // }
             if ($decesion_status=="訂正あり") {
-                $result = $result->whereNull('data_receive_vouchers.update_datetime');
+                $result = $result->whereNotNull('data_receive_vouchers.update_datetime');
             }
             if ($decesion_status=="訂正なし") {
-                $result = $result->whereNotNull('data_receive_vouchers.update_datetime');
+                $result = $result->whereNull('data_receive_vouchers.update_datetime');
             }
         }
 
         if($confirm_status!='*'){
             if ($confirm_status=="差分あり") {
-                $result = $result->where('data_receive_vouchers.mes_lis_acc_tot_tot_net_price_total', '=', 'data_receive_vouchers.mes_lis_shi_tot_tot_net_price_total');
+                $result = $result->where('data_receive_vouchers.mes_lis_acc_tot_tot_net_price_total', '=', 'dsv.mes_lis_shi_tot_tot_net_price_total');
             }
             if ($confirm_status=="差分なし") {
-                $result = $result->where('data_receive_vouchers.mes_lis_acc_tot_tot_net_price_total', '!=', 'data_receive_vouchers.mes_lis_shi_tot_tot_net_price_total');
+                $result = $result->where('data_receive_vouchers.mes_lis_acc_tot_tot_net_price_total', '!=', 'dsv.mes_lis_shi_tot_tot_net_price_total');
             }
         }
 
