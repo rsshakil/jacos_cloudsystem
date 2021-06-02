@@ -277,7 +277,7 @@ class InvoiceController extends Controller
             'data_invoices.data_invoice_id',
             'dipd.data_invoice_pay_detail_id',
             'dip.mes_lis_inv_per_end_date',
-           // 'dipd.data_shipment_voucher_id',
+            'dipd.data_shipment_voucher_id',
             'dipd.mes_lis_inv_lin_det_transfer_of_ownership_date',
             'dipd.mes_lis_inv_lin_tra_code',
             'dipd.mes_lis_inv_lin_tra_name',
@@ -374,7 +374,7 @@ class InvoiceController extends Controller
         ->where('cc.byr_buyer_id', $byr_buyer_id)
         ->where('cc.slr_seller_id', $slr_seller_id)
         ->where('data_invoices.data_invoice_id', '=', $data_invoice_id);
-        
+
         $result=$result->where('dip.mes_lis_inv_per_end_date', $request->end_date)
             ->where('dip.mes_lis_inv_pay_code', $request->pay_code);
         // ->where('dip.mes_lis_inv_pay_name',$param_data['pay_name'])
