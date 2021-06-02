@@ -647,10 +647,11 @@ class AllUsedFunction extends Controller
             array('content-type' => 'application / pdf')
         );
         $pdf_file_path = Config::get('app.url').'storage/'.$pdf_save_path.$pdf_file_name;
-        // $pdf_file_path = storage_path($pdf_save_path.$pdf_file_name);
+        $pdf_file_url = storage_path($pdf_save_path.$pdf_file_name);
         $file_info=array(
             'pdf_file_path'=>$pdf_file_path,
-            'pdf_file_name'=>$pdf_file_name
+            'pdf_file_name'=>$pdf_file_name,
+            'pdf_file_url'=>$pdf_file_url
         );
         // $receipt = new Fpdi();
         // $pagecount = $receipt->setSourceFile($pdf_file_path);
