@@ -31,6 +31,7 @@
 
           </tr>
           <tr>
+          <!--
             <td class="cl_custom_color">請求状況</td>
             <td colspan="5">
                 <select class="form-control" v-model="form.send_datetime_status">
@@ -39,7 +40,33 @@
                   {{ item }}
                 </option>
               </select>
-            </td>
+            </td>-->
+             <td class="cl_custom_color">確定状況</td>
+          <td>
+            <select class="form-control" v-model="form.decission_cnt">
+              <option
+                v-for="(dcnt, i) in decission_cnt"
+                :key="i"
+                :value="Object.keys(dcnt)[0]"
+              >
+                {{ Object.values(dcnt)[0] }}
+              </option>
+            </select>
+          </td>
+          <!-- <td>{{ myLang.confirmation_status }}</td> -->
+          <!-- <td class="cl_custom_color">印刷状況</td> -->
+          <td class="cl_custom_color">送信状況</td>
+          <td>
+            <select class="form-control" v-model="form.send_cnt">
+             <option
+                v-for="(dcnt, i) in send_cnt"
+                :key="i"
+                :value="Object.keys(dcnt)[0]"
+              >
+                {{ Object.values(dcnt)[0] }}
+              </option>
+            </select>
+          </td>
           </tr>
         </table>
     </div>
@@ -254,6 +281,8 @@ export default {
       invoiceCreateModal:false,
       order_customer_code_lists: {},
       showAllCustomerCodeListModal:false,
+      send_cnt: [{ "*": "全て" }, { "!0": "未送信あり" }, { 0: "送信済" }],
+      decission_cnt: [{ "*": "全て" }, { "!0": "未確定あり" }, { 0: "確定済" }],
       partner_codes:[],
       file: "",
       selected_byr: "0",
@@ -272,6 +301,8 @@ export default {
         adm_user_id: Globals.user_info_id,
         byr_buyer_id: null,
         mes_lis_inv_pay_code: '',
+        send_cnt:'*',
+        decission_cnt:'*',
         // mes_lis_inv_pay_id: '',
         mes_lis_inv_per_begin_date:'',
         mes_lis_inv_per_end_date:'',

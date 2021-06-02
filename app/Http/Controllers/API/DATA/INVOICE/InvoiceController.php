@@ -65,6 +65,8 @@ class InvoiceController extends Controller
         $mes_lis_inv_per_begin_date=$request->mes_lis_inv_per_begin_date;
         $mes_lis_inv_per_end_date=$request->mes_lis_inv_per_end_date;
         $send_datetime_status=$request->send_datetime_status;
+        $decission_cnt=$request->decission_cnt;
+        $send_cnt=$request->send_cnt;
         // $mes_lis_inv_pay_id=$request->mes_lis_inv_pay_id;
         $sort_by = $request->sort_by;
         $sort_type = $request->sort_type;
@@ -118,12 +120,23 @@ class InvoiceController extends Controller
         if ($mes_lis_inv_per_begin_date && $mes_lis_inv_per_end_date) {
             $result=$result->whereBetween('dip.mes_lis_inv_per_end_date', [$mes_lis_inv_per_begin_date,$mes_lis_inv_per_end_date]);
         }
+        /*
         if ($send_datetime_status=='未請求') {
             $result=$result->where('dipd.send_datetime', '=', null);
         } elseif ($send_datetime_status=='請求済') {
             $result=$result->where('dipd.send_datetime', '!=', null);
         } elseif ($send_datetime_status=='再請求あり') {
             $result=$result->where('dipd.send_datetime', '!=', null);
+        }*/
+        if ($send_cnt == "!0") {
+            $result= $result->having('send_cnt', '!=', '0');
+        } elseif ($send_cnt != "*") {
+            $result= $result->having('send_cnt', '=', $send_cnt);
+        }
+        if ($decission_cnt == "!0") {
+            $result= $result->having('decision_cnt', '!=', '0');
+        } elseif ($decission_cnt != "*") {
+            $result= $result->having('decision_cnt', '=', $decission_cnt);
         }
         // will confirm
         // $result=$result->groupBy('dipd.mes_lis_inv_lin_lin_trade_number_reference');
