@@ -283,7 +283,7 @@ class AllUsedFunction extends Controller
      */
     public function get_user_info($adm_user_id = 0, $selected_byr_buyer_id=0)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
         $arr = array('cmn_company_id' => 0, 'byr_buyer_id' => 0, 'cmn_connect_id' => 0);
         Log::info($adm_user_id);
         // return $adm_user_id;
@@ -320,7 +320,7 @@ class AllUsedFunction extends Controller
                 );
             }
         }
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return $arr;
     }
 
@@ -554,7 +554,7 @@ class AllUsedFunction extends Controller
     }
     public function downloadFileName($request, $file_type="csv", $file_header="受注")
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
 
         // Log::info($request);
         $adm_user_id=$request->adm_user_id;
@@ -567,13 +567,13 @@ class AllUsedFunction extends Controller
         $file_name = $file_header.'_'.$file_name_info->company_name.'_'.date('YmdHis').'.'.$file_type;
         // \Log::info($file_name);
         // $file_name = $file_name_info->super_code.'-'."shipment_".$file_name_info->super_code.'-'.$file_name_info->partner_code."-".$file_name_info->jcode.'_shipment_'.date('YmdHis').'.'.$file_type;
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return $file_name;
     }
 
     public function sendFileName($request, $file_type="csv", $file_header="shipment")
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
 
         Log::info($request);
         $adm_user_id=$request->adm_user_id;
@@ -594,7 +594,7 @@ class AllUsedFunction extends Controller
         $file_name = $file_header.'_'.$file_name_info->company_name.'_'.date('YmdHis').'.'.$file_type;
         // \Log::info($file_name);
         $file_name = $file_name_info->super_code.'-'.$file_header.'_'.$file_name_info->super_code.'-'.$file_name_info->partner_code."-".$file_name_info->jcode.'_'.$file_header.'_'.date('YmdHis').'.'.$file_type;
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return $file_name;
     }
 
