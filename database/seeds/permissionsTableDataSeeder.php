@@ -254,11 +254,7 @@ class permissionsTableDataSeeder extends Seeder
                 'guard_name' => 'web',
                 'is_system' => 0,
             ],
-            [
-                'name' => 'voucher_setting',
-                'guard_name' => 'web',
-                'is_system' => 0,
-            ],
+            
             [
                 'name' => 'item_master',
                 'guard_name' => 'web',
@@ -286,7 +282,38 @@ class permissionsTableDataSeeder extends Seeder
                 'is_system' => 0,
             ],
             [
+                'name' => 'slr_order_list_details',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+           
+            [
+                'name' => 'slr_order_item_list_detail',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'slr_item_search',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'slr_item_search_detail',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
                 'name' => 'slr_receive_list',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'slr_receive_detail',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'slr_receive_item_detail',
                 'guard_name' => 'web',
                 'is_system' => 0,
             ],
@@ -296,7 +323,27 @@ class permissionsTableDataSeeder extends Seeder
                 'is_system' => 0,
             ],
             [
+                'name' => 'slr_return_detail',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'slr_return_item_detail',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'slr_return_item_list',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
                 'name' => 'slr_invoice_list',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'slr_invoice_details',
                 'guard_name' => 'web',
                 'is_system' => 0,
             ],
@@ -305,6 +352,17 @@ class permissionsTableDataSeeder extends Seeder
                 'guard_name' => 'web',
                 'is_system' => 0,
             ],
+            [
+                'name' => 'slr_payment_detail',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'slr_payment_item_detail',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+           
             // New
             [
                 'name' => 'blog',
@@ -366,11 +424,7 @@ class permissionsTableDataSeeder extends Seeder
                 'guard_name' => 'web',
                 'is_system' => 0,
             ],
-            [
-                'name' => 'byr_management',
-                'guard_name' => 'web',
-                'is_system' => 0,
-            ],
+          
             [
                 'name' => 'voucher_setting',
                 'guard_name' => 'web',
@@ -406,21 +460,13 @@ class permissionsTableDataSeeder extends Seeder
                 'guard_name' => 'web',
                 'is_system' => 0,
             ],
-            [
-                'name' => 'scenario_management',
-                'guard_name' => 'web',
-                'is_system' => 0,
-            ],
+           
             [
                 'name' => 'job_management',
                 'guard_name' => 'web',
                 'is_system' => 0,
             ],
-            [
-                'name' => 'slr_management',
-                'guard_name' => 'web',
-                'is_system' => 0,
-            ],
+            
             [
                 'name' => 'slr_company_user_list',
                 'guard_name' => 'web',
@@ -431,16 +477,8 @@ class permissionsTableDataSeeder extends Seeder
                 'guard_name' => 'web',
                 'is_system' => 0,
             ],
-            [
-                'name' => 'item_master',
-                'guard_name' => 'web',
-                'is_system' => 0,
-            ],
-            [
-                'name' => 'item_category',
-                'guard_name' => 'web',
-                'is_system' => 0,
-            ],
+           
+           
             [
                 'name' => 'payment_detail',
                 'guard_name' => 'web',
