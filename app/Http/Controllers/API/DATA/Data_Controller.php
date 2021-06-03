@@ -685,7 +685,7 @@ class Data_Controller extends Controller
 
         // ===============For PDF Data Start============
         $recs = new \Illuminate\Database\Eloquent\Collection($shipment_data);
-        $grouped = $recs->groupBy('mes_lis_ord_par_rec_code')->transform(function($item, $k) {
+        $grouped = $recs->groupBy('mes_lis_ord_par_rec_code')->transform(function ($item, $k) {
             return $item->groupBy('mes_lis_ord_tra_trade_number');
         });
         $all_shipment_data = $grouped->all();
@@ -693,7 +693,7 @@ class Data_Controller extends Controller
         foreach ($all_shipment_data as $key => $value) {
             $tmp_array1=array();
             foreach ($value as $key1 => $value1) {
-            $tmp_array2=array();
+                $tmp_array2=array();
                 foreach ($value1 as $key2 => $value2) {
                     $value2->fax_number = json_decode($value2->optional)->order->fax->number;
                     unset($value2->optional);
@@ -901,7 +901,7 @@ class Data_Controller extends Controller
     }
     public function shipmentUpdateArray($data_array, $file_name="", $reason_code_list=[])
     {
-        log::debug('shipmentUpdateArray start');
+        Log::debug(__METHOD__.':start---');
 
         $update_voucher_arr = [];
 
@@ -913,13 +913,12 @@ class Data_Controller extends Controller
             foreach ($data_array as $key => $value) {
                 $shipment_item_array=array();
 
-                // line number
-                $line_number = $value[87];
+                $line_number = $value[105]; // 行番号
 
                 // data_shipment_voucher情報取得
-                if ($trade_number !== $value[16]) {
-                    $trade_number = $value[16];     // 伝票番号
-                    $order_date = $value[58];       // 発注日
+                if ($trade_number !== $value[31]) {
+                    $trade_number = $value[31];     // 伝票番号
+                    $order_date = $value[76];       // 発注日
                     $dsv_query=data_shipment_voucher::where('mes_lis_shi_tra_trade_number', $trade_number)
                         ->where('mes_lis_shi_tra_dat_order_date', $order_date);
                     $data_shipment_voucher_info=$dsv_query->first();
@@ -957,9 +956,9 @@ class Data_Controller extends Controller
                 $tax_rate = $data_shipment_voucher_info->mes_lis_shi_tra_tax_tax_rate;                                      // 税率
 
                 // data set from csv
-                $revised_delivery_date = $value[61];                                                                // 訂正後直接納品先納品日
-                $shi_num_of_order_units = $value[144];                                                              // 出荷数量(単位)
-                $sto_reason_code = $value[147];                                                                     // 欠品理由
+                $revised_delivery_date = $value[79];                                                                // 訂正後直接納品先納品日
+                $shi_num_of_order_units = $value[162];                                                              // 出荷数量(単位)
+                $sto_reason_code = $value[165];                                                                     // 欠品理由
 
                 // data check validation
                 // - shi_num_of_order_units
@@ -1131,7 +1130,7 @@ class Data_Controller extends Controller
             // something went wrong
         }
 
-        log::debug('shipmentUpdateArray end');
+        Log::debug(__METHOD__.':end---');
         return response()->json(['message'=>"出荷データアップロード",'status'=>1]);
     }
 }
