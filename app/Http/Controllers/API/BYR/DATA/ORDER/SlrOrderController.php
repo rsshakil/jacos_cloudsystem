@@ -20,6 +20,7 @@ class SlrOrderController extends Controller
 
     public function slrOrderList(Request $request){
         Log::debug(__METHOD__.':start---');
+        // return $request->all();
         $buyer_info = Auth::User()->ByrInfo;
         // return $UserType = Auth::User()->UserType;
         // return $request->all();

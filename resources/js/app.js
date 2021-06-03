@@ -183,7 +183,11 @@ router.onReady(() => {
     }
 });
 // Set axios default parameters
-axios.defaults.params = {
+// axios.defaults.params = {
+//     adm_user_id: Globals.user_info_id ? Globals.user_info_id : '',
+//     global_user_type: Globals.global_user_type ? Globals.global_user_type : ''
+// };
+axios.defaults.data = {
     adm_user_id: Globals.user_info_id ? Globals.user_info_id : '',
     global_user_type: Globals.global_user_type ? Globals.global_user_type : ''
 };
