@@ -102,6 +102,18 @@ class User extends Authenticatable
         Log::debug(__METHOD__.':end---');
         return $result;
     }
+    public static function getByrInfoAttribute()
+    {
+        Log::debug(__METHOD__.':start---');
+        $adm_user_id= Auth::user()->id;
+        $result = cmn_companies_user::select('bb.*')
+        ->join('cmn_companies as cc','cc.cmn_company_id','=','cmn_companies_users.cmn_company_id')
+        ->join('byr_buyers as bb','bb.cmn_company_id','=','cc.cmn_company_id')
+        ->where('cmn_companies_users.adm_user_id',$adm_user_id)
+        ->first();
+        Log::debug(__METHOD__.':end---');
+        return $result;
+    }
 
     public function getCompanyIdAttribute()
     {

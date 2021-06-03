@@ -20,17 +20,20 @@ class SlrOrderController extends Controller
 
     public function slrOrderList(Request $request){
         Log::debug(__METHOD__.':start---');
+        $buyer_info = Auth::User()->ByrInfo;
         // return $UserType = Auth::User()->UserType;
         // return $request->all();
-        $adm_user_id = $request->adm_user_id;
-        $global_user_type = $request->global_user_type;
-        $buyer_info = $this->default_functions->getByrInfo($adm_user_id);
+        // $adm_user_id = $request->adm_user_id;
+        // $global_user_type = $request->global_user_type;
+
+
+        // $buyer_info = $this->default_functions->getByrInfo($adm_user_id);
         $byr_buyer_id =$buyer_info->byr_buyer_id;
-        $cmn_company_id =$buyer_info->cmn_company_id;
+        // $cmn_company_id =$buyer_info->cmn_company_id;
     //    return $byr_buyer_id = $global_user_type=='byr'?$adm_user_id:'';
         $per_page = $request->per_page?$request->per_page:10;
 
-        $authUser = User::find($adm_user_id);
+        // $authUser = User::find($adm_user_id);
         // return Auth::User()->SlrInfo;
         // $slr_info = SlrController::getSlrInfoByUserId($adm_user_id);
         // $slr_seller_id = $slr_info->slr_seller_id;
