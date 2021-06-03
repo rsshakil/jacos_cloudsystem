@@ -313,13 +313,15 @@
                 </td>
                 <td class="text-right">
                   <!--{{order_item_detail_list.mes_lis_shi_lin_amo_item_net_price}}-->
+                  <span v-if="(order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity)>0">
                   {{
                     (order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price *
                       order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity)
                       | priceFormat
-                  }}
+                  }}</span>
+                  <span v-else>0</span>
                 </td>
-
+          
                 <td class="text-right">
                   <input
                     type="number"
@@ -336,23 +338,36 @@
                 </td>
                 <td class="text-right">
                   <!--{{order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price}}-->
+                  <span v-if="(order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price * order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity)>0">
                   {{
                     (order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price *
                       order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity)
                       | priceFormat
                   }}
+                  </span>
+                   <span v-else>0</span>
                 </td>
                 <td>
-                  {{
-                    order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code
-                  }}
-                  {{
-                    getbyrjsonValueBykeyName(
-                      "mes_lis_shi_lin_qua_sto_reason_code",
-                      order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code,
-                      "shipments"
-                    )
-                  }}
+                 <span
+                    v-if="
+                      order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units !=
+                        order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units &&
+                      order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code ==
+                        '00'
+                    "
+                    style="color: red; font-size: 12px"
+                    >欠品のため欠品理由が必要です。</span
+                  >
+                  <span
+                    v-if="
+                      order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units ==
+                        order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units &&
+                      order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code !=
+                        '00'
+                    "
+                    style="color: red; font-size: 12px"
+                    >完納のため欠品理由は不正です。</span
+                  >
                   <select
                     v-model="
                       order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code
@@ -383,26 +398,17 @@
                       {{ item }}
                     </option>
                   </select>
-                  <span
-                    v-if="
-                      order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units !=
-                        order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units &&
-                      order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code ==
-                        '00'
-                    "
-                    style="color: red; font-size: 12px"
-                    >欠品のため欠品理由が必要です。</span
-                  >
-                  <span
-                    v-if="
-                      order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units ==
-                        order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units &&
-                      order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code !=
-                        '00'
-                    "
-                    style="color: red; font-size: 12px"
-                    >完納のため欠品理由は不正です。</span
-                  >
+                   {{
+                    order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code
+                  }}
+                  {{
+                    getbyrjsonValueBykeyName(
+                      "mes_lis_shi_lin_qua_sto_reason_code",
+                      order_item_detail_list.mes_lis_shi_lin_qua_sto_reason_code,
+                      "shipments"
+                    )
+                  }}
+                  
                 </td>
               </tr>
               <tr

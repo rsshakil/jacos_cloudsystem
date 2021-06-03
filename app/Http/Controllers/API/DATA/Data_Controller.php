@@ -454,7 +454,7 @@ class Data_Controller extends Controller
             'dsid.mes_lis_shi_lin_pac_number_of_packages',
             DB::raw('CASE WHEN dsid.mes_lis_shi_lin_pac_con_sell_by_date="0000-00-00" THEN "" ELSE dsid.mes_lis_shi_lin_pac_con_sell_by_date  END as mes_lis_shi_lin_pac_con_sell_by_date'),  //156
             DB::raw('CASE WHEN dsid.mes_lis_shi_lin_pac_con_production_date="0000-00-00" THEN "" ELSE dsid.mes_lis_shi_lin_pac_con_production_date  END as mes_lis_shi_lin_pac_con_production_date'),   //157
-            'dsid.mes_lis_shi_lin_pac_con_lot_number',
+            'dsid.mes_lis_shi_lin_pac_con_lot_number'
         )
         ->leftJoin('data_shipment_vouchers as dsv', 'dsv.data_shipment_id', '=', 'data_shipments.data_shipment_id')
         ->leftJoin('data_shipment_items as dsi', 'dsv.data_shipment_voucher_id', '=', 'dsi.data_shipment_voucher_id')
