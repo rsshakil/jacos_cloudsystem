@@ -71,7 +71,7 @@ class cmn_scenarioSeeder extends Seeder
                 'class' => 'order',
                 'vector' => 'to_jacos',
                 'name' => 'ORDER FIXED LENGT GENERATE',
-                'description' => 'BMS ORDER FIXED LENGT GENERATE',
+                'description' => 'ORDER FIXED LENGT GENERATE',
                 'file_path' => 'Scenarios/byr/OUK/fixed_length_generate',
             ],
             [
@@ -173,6 +173,16 @@ class cmn_scenarioSeeder extends Seeder
                 'name' => 'DATA_RETURN_CSV_IMPORT',
                 'description' => 'DATA_RETURN_CSV_IMPORT',
                 'file_path' => 'Scenarios/byr/OUK/data_csv_return',
+            ],
+            [
+                'byr_buyer_id' => 1,
+                'slr_seller_id' => 0,
+                'adm_role_id' => 4,
+                'class' => 'order',
+                'vector' => 'to_jacos',
+                'name' => 'SLR ORDER FIXED LENGT GENERATE',
+                'description' => 'SLR ORDER FIXED LENGT GENERATE',
+                'file_path' => 'Scenarios/byr/SLR/slr_fixed_length_generate',
             ],
         );
         cmn_scenario::insert($scenarios);

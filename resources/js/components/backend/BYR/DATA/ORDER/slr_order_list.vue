@@ -319,26 +319,18 @@ export default {
   data() {
     return {
       today: new Date().toISOString().slice(0, 10),
-      // receive_date:null,
       // today:new Date().toLocaleDateString(),
       order_lists: {},
       order_lists_length: 0,
       order_customer_code_lists: {},
-      byr_buyer_lists: {},
-      file: "",
-      selected_byr: "0",
       showAllCustomerCodeListModal:false,
-      // temperature:[{id:1,name:"temperature1"},{id:2,name:"temperature2"},{id:3,name:"temperature3"}],
-      // confirmation_status:[{id:1,name:"confirmation_status1"},{id:2,name:"confirmation_status2"},{id:3,name:"confirmation_status3"}],
       send_cnt: [{ "*": "全て" }, { "!0": "未送信あり" }, { 0: "送信済" }],
       decission_cnt: [{ "*": "全て" }, { "!0": "未確定あり" }, { 0: "確定済" }],
       confirmation_status_list: [{ "*": "全て" }, { "!0": "未確定あり" }, { 0: "確定済" }],
       form: new Form({
-        // adm_user_id: Globals.user_info_id,
         data_order_id:null,
         per_page:10,
         page:1,
-        byr_buyer_id: null,
         receive_date_from: null,
         receive_date_to: null,
         category_code:{category_code:'*',category_name:'全て'},
@@ -360,11 +352,6 @@ export default {
       }),
     };
   },
-//   beforeCreate: function() {
-//             if (!this.$session.exists()) {
-//                 this.$router.push('/home');
-//             }
-//         },
   methods: {
     onRowClicked (item) {
         this.form.mes_lis_ord_par_sel_code = item.mes_lis_ord_par_sel_code;
@@ -374,7 +361,7 @@ export default {
     showAllCustomerCode(){
      let loaders = Vue.$loading.show();
       this.showAllCustomerCodeListModal = true;
-      this.form.post(this.BASE_URL + "api/get_order_customer_code_list", this.form)
+      this.form.post(this.BASE_URL + "api/get_slr_customer_code_list", this.form)
         .then(({ data }) => {
           this.order_customer_code_lists = data.order_customer_code_lists;
          loaders.hide();
@@ -391,88 +378,31 @@ export default {
       this.form.page=page;
       this.form.post(this.BASE_URL + "api/get_slr_order_list", this.form)
         .then(({ data }) => {
-            console.log(data);
+            // console.log(data);
           this.order_lists = data.order_list;
           this.order_lists_length = this.order_lists.data.length;
-          this.byr_buyer_lists = data.byr_buyer_list;
+        //   this.byr_buyer_lists = data.byr_buyer_list;
           this.loader.hide();
         });
-    this.loader.hide();
     },
     orderDownload(downloadType = 1) {
       //downloadcsvshipment_confirm
       this.loader = Vue.$loading.show();
       this.downloadType=downloadType
       axios
-        .post(this.BASE_URL + "api/downloadcsvshipment_confirm",this.form)
+        .post(this.BASE_URL + "api/slr_shipment_download",this.form)
         .then(({ data }) => {
            this.downloadFromUrl(data);
            this.loader.hide();
         });
     },
-    // orderDownload() {
-    //   let formData = new FormData();
-    //   formData.append("scenario_id", 11);
-    //   formData.append("byr_buyer_id", this.$session.get("byr_buyer_id"));
-    //   axios({
-    //     method: "POST",
-    //     url: this.BASE_URL + "api/scenario_exec",
-    //     data: formData,
-    //     headers: { "Content-Type": "multipart/form-data" },
-    //   })
-    //     .then(({data})=> {
-    //       //handle success
-    //       this.init(data.status);
-    //       this.downloadFromUrl(data);
-    //       Fire.$emit("LoadByrorder");
-    //     }).catch(function (response) {
-    //     });
-    // },
-    check_byr_order_api() {
-      let formData = new FormData();
-      formData.append("up_file", this.file);
-      formData.append("email", "user@jacos.co.jp");
-      formData.append("password", "Qe75ymSr");
-      formData.append("cmn_job_id", 1);
-      axios({
-        method: "POST",
-        url: this.BASE_URL + "api/job_exec",
-        data: formData,
-        headers: { "Content-Type": "multipart/form-data" },
-      })
-        .then(({data})=> {
-          this.init(data.status);
-          Fire.$emit("LoadByrorder");
-        })
-        .catch(function (response) {
-        });
-    },
-    onChangeFileUpload() {
-      this.file = this.$refs.file.files[0];
-      this.check_byr_order_api();
-    },
-
-    change(e) {
-      const selectedCode = e.target.value;
-      const option = this.options.find((option) => {
-        return selectedCode === option.byr_buyer_id;
-      });
-      //   this.$emit("input", option);
-    },
   },
 
   created() {
-    // this.byr_session_check()
-    // this.getbuyerJsonSettingvalue();
-    this.form.byr_buyer_id = this.$session.get("byr_buyer_id");
-    // this.today= new Date().toISOString().slice(0, 10);
-
     this.get_all_order();
-    Fire.$on("LoadByrorder", () => {
-      this.get_all_order();
-    });
-    Fire.$emit("byr_has_selected", this.$session.get("byr_buyer_id"));
-    Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
+    // Fire.$on("LoadByrorder", () => {
+    //   this.get_all_order();
+    // });
     Fire.$emit("loadPageTitle", "受注データ一覧");
   },
   mounted() {

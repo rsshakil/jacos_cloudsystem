@@ -38,6 +38,8 @@ storage/app/receives/*
 storage/app/returns/*
 storage/app/payments/*
 storage/app/temp/*
+# Byr File paths
+storage/app/BYR/*
 
 public/backend/images/users/*
 public/dashboard/images/*

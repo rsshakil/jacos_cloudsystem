@@ -215,6 +215,8 @@ Route::group(['middleware'=>'ApiMiddleWire'], function () {
 
     // Byr Menu Url
     Route::post('/get_slr_order_list', 'API\BYR\DATA\ORDER\SlrOrderController@slrOrderList');
+    Route::post('/get_slr_customer_code_list', 'API\BYR\DATA\ORDER\SlrOrderController@slrCustomerCodeList');
+    Route::post('/slr_shipment_download', 'API\BYR\DATA\ORDER\SlrOrderController@slrShipmentDownload');
 });
 // scenario exec
 Route::post('scenario_exec', 'API\CMN\CmnScenarioController@exec');

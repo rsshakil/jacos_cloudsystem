@@ -7,45 +7,35 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 use App\Models\ADM\User;
+use App\Models\DATA\ORD\data_order;
+use App\Http\Controllers\API\BYR\DATA\ORDER\DataController;
 use App\Http\Controllers\API\BYR\DATA\DFLT\DefaultFunctions;
+use App\Traits\Csv;
+use App\Http\Controllers\API\CMN\CmnScenarioController;
+// use App\Http\Controllers\API\AllUsedFunction;
 
 class SlrOrderController extends Controller
 {
     private $default_functions;
+    // private $all_used_fun;
     public function __construct()
     {
         $this->default_functions = new DefaultFunctions();
+        // $this->all_used_fun = new AllUsedFunction();
     }
 
     public function slrOrderList(Request $request){
         Log::debug(__METHOD__.':start---');
         // return $request->all();
-        $buyer_info = Auth::User()->ByrInfo;
-        // return $UserType = Auth::User()->UserType;
-        // return $request->all();
+        // $buyer_info = Auth::User()->ByrInfo;
         // $adm_user_id = $request->adm_user_id;
         // $global_user_type = $request->global_user_type;
 
-
-        // $buyer_info = $this->default_functions->getByrInfo($adm_user_id);
-        $byr_buyer_id =$buyer_info->byr_buyer_id;
-        // $cmn_company_id =$buyer_info->cmn_company_id;
-    //    return $byr_buyer_id = $global_user_type=='byr'?$adm_user_id:'';
+        // $byr_buyer_id =$buyer_info->byr_buyer_id;
+        $byr_buyer_id =Auth::User()->ByrInfo->byr_buyer_id;
         $per_page = $request->per_page?$request->per_page:10;
-
-        // $authUser = User::find($adm_user_id);
-        // return Auth::User()->SlrInfo;
-        // $slr_info = SlrController::getSlrInfoByUserId($adm_user_id);
-        // $slr_seller_id = $slr_info->slr_seller_id;
-        // $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
-
-        // $cmn_company_id = '';
-        // if (!$authUser->hasRole(config('const.adm_role_name'))) {
-        //     $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id, $byr_buyer_id);
-        //     $cmn_company_id = $cmn_company_info['cmn_company_id'];
-        //     // $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
-        // }
         $sort_by = $request->sort_by;
         $sort_type = $request->sort_type;
 
@@ -157,9 +147,90 @@ class SlrOrderController extends Controller
         ->orderBy('dov.mes_lis_ord_log_del_delivery_service_code')
         ->orderBy('dov.mes_lis_ord_tra_ins_temperature_code')
         ->paginate($per_page);
+        // $cmn_company_id =$buyer_info->cmn_company_id;
         // $byr_buyer = $this->all_used_fun->get_company_list($cmn_company_id);
         Log::debug(__METHOD__.':end---');
         return response()->json(['order_list' => $result]);
         // return response()->json(['order_list' => $result, 'byr_buyer_list' => $byr_buyer]);
+    }
+    // slrCustomerCodeList
+    public function slrCustomerCodeList(Request $request)
+    {
+        Log::debug(__METHOD__.':start---');
+
+        $byr_buyer_id =Auth::User()->ByrInfo->byr_buyer_id;
+        $query = data_order::join('data_order_vouchers as dov', 'dov.data_order_id', '=', 'data_orders.data_order_id')
+            ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'data_orders.cmn_connect_id')
+            ->select(
+                'dov.mes_lis_ord_par_sel_code',
+                'dov.mes_lis_ord_par_sel_name',
+                'dov.mes_lis_ord_par_pay_code',
+                'dov.mes_lis_ord_par_pay_name'
+            )
+            ->where('cc.byr_buyer_id', $byr_buyer_id)
+            // ->where('cc.slr_seller_id', $slr_seller_id)
+            ->groupby('dov.mes_lis_ord_par_sel_code', 'dov.mes_lis_ord_par_pay_code');
+        $result = $query->get();
+        Log::debug(__METHOD__.':end---');
+        return response()->json(['order_customer_code_lists' => $result]);
+    }
+
+    public function slrShipmentDownload(Request $request)
+    {
+        Log::debug(__METHOD__.':start---');
+        // return $request->all();
+        // return $request->all();
+        //ownloadType=2 for Fixed length
+        $data_order_id=$request->data_order_id?$request->data_order_id:1;
+        // \Log::info("Download ".$data_order_id);
+        $downloadType=$request->downloadType;
+        $csv_data_count =0;
+        if ($downloadType==1) {
+            // CSV Download
+            $new_file_name = $this->default_functions->downloadFileName($request, 'csv', '受注');
+            $download_file_url = Config::get('app.url')."storage/app".config('const.SLR_SHIPMENT_CSV_PATH')."/". $new_file_name;
+
+            // get shipment data query
+            $shipment_query = DataController::get_shipment_data($request);
+            $csv_data_count = $shipment_query->count();
+            $shipment_data = $shipment_query->get()->toArray();
+            // \Log::debug($shipment_data);
+
+            // CSV create
+            Csv::create(
+                config('const.SLR_SHIPMENT_CSV_PATH')."/". $new_file_name,
+                $shipment_data,
+                DataController::shipmentCsvHeading(),
+                config('const.CSV_FILE_ENCODE')
+            );
+        } elseif ($downloadType==2) {
+            // JCA Download
+            // $request = new \Illuminate\Http\Request();
+            // $request->setMethod('POST');
+            // $request=$this->request;
+            $request->request->add(['scenario_id' => 17]);
+            $request->request->add(['data_order_id' => $data_order_id]);
+            $request->request->add(['email' => 'user@jacos.co.jp']);
+            $request->request->add(['password' => 'Qe75ymSr']);
+            $new_file_name =$this->default_functions->downloadFileName($request, 'txt', '受注');
+            $download_file_url = Config::get('app.url')."storage/".config('const.SLR_FIXED_LENGTH_FILE_PATH')."/". $new_file_name;
+            $request->request->add(['file_name' => $new_file_name]);
+            // $request->request->remove('downloadType');
+            // return $request->all();
+            $cs = new CmnScenarioController();
+            $ret = $cs->exec($request);
+            //  return collect($ret)->toJson();
+            // \Log::debug($ret->getContent());
+            // return $ret = json_decode($ret->getContent(), true);
+            // if (1 === $ret['status']) {
+            //     // sceanario exec error
+            //     \Log::error($ret['message']);
+            //     return $ret;
+            // }
+            // return response()->json($ret);
+        }
+        Log::debug(__METHOD__.':end---');
+
+        return response()->json(['message' => 'Success','status'=>1,'new_file_name'=>$new_file_name, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
     }
 }
