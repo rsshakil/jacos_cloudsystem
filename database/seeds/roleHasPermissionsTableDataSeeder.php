@@ -27,7 +27,7 @@ class roleHasPermissionsTableDataSeeder extends Seeder
         $role_saler->givePermissionTo('home','selected_buyer','order_list_details','order_item_list_detail','management_setting','slr_view','add_company_users','order_list','slr_management','receive_list','receive_detail','order_corrected_receive','return_item_list','payment_list','invoice_list','invoice_details','byr_management','item_search','item_search_detail','receive_item_detail','payment_detail','payment_item_detail','return_list','return_detail','return_item_detail');
 
         $role_byr = Role::findByName('Byr');
-        $role_byr->givePermissionTo('home','voucher_setting','item_category','pdf_platform_setting','pdf_platform_view','byr_view','blog','item_master','item_category','slr_order_list','slr_receive_list','slr_return_list','slr_invoice_list','slr_payment_list');
+        $role_byr->givePermissionTo('home','voucher_setting','item_category','pdf_platform_setting','pdf_platform_view','byr_view','blog','item_master','item_category','slr_order_list','slr_receive_list','slr_return_list','slr_return_detail','slr_return_item_detail','slr_invoice_list','slr_payment_list','slr_invoice_details','byr_management','slr_item_search','slr_item_search_detail','slr_receive_item_detail','slr_payment_detail','slr_payment_item_detail','slr_order_list_details','slr_order_item_list_detail','slr_receive_detail','slr_return_item_list');
 
         // $role_byr = Role::findByName('Byr1');
         // $role_byr->givePermissionTo('home','voucher_setting','item_master','item_category','pdf_platform_setting','pdf_platform_view','byr_view');
