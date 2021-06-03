@@ -121,8 +121,10 @@ class User extends Authenticatable
       $seller_list = slr_seller::where('cmn_company_id',$cmn_company_id)->get();
       if($buyer_list){
         return 'byr';
-      }else{
+      }elseif($seller_list){
         return 'slr';
+      }else{
+        return 'others';
       }
     }
 

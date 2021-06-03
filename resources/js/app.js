@@ -182,22 +182,18 @@ router.onReady(() => {
         router.push("home")
     }
 });
-// const defaultRoute = '/home';
+// Set axios default parameters
+axios.defaults.params = {
+    adm_user_id: Globals.user_info_id ? Globals.user_info_id : '',
+    global_user_type: Globals.global_user_type ? Globals.global_user_type : ''
+};
+// Set axios default response action
 axios.interceptors.response.use(function(response) {
-    // console.log(response);
-    // Any status code that lie within the range of 2xx cause this function to trigger
-    // Do something with response data
     if (response.data.status == 419) {
-        // alert('Your token may be expired');
         window.location.reload();
     }
-    // console.log(response);
     return response;
 }, function(error) {
-    // alert('Your token may be Error');
-    // window.location.reload();
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
     return Promise.reject(error);
 });
 router.beforeEach(async(to, from, next) => {

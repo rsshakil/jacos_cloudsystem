@@ -334,7 +334,7 @@ export default {
       decission_cnt: [{ "*": "全て" }, { "!0": "未確定あり" }, { 0: "確定済" }],
       confirmation_status_list: [{ "*": "全て" }, { "!0": "未確定あり" }, { 0: "確定済" }],
       form: new Form({
-        adm_user_id: Globals.user_info_id,
+        // adm_user_id: Globals.user_info_id,
         data_order_id:null,
         per_page:10,
         page:1,
@@ -389,13 +389,14 @@ export default {
     get_all_order(page=1) {
        this.loader = Vue.$loading.show();
       this.form.page=page;
-    //   this.form.post(this.BASE_URL + "api/get_order_list", this.form)
-    //     .then(({ data }) => {
-    //       this.order_lists = data.order_list;
-    //       this.order_lists_length = this.order_lists.data.length;
-    //       this.byr_buyer_lists = data.byr_buyer_list;
-    //       this.loader.hide();
-    //     });
+      this.form.post(this.BASE_URL + "api/get_slr_order_list", this.form)
+        .then(({ data }) => {
+            console.log(data);
+          this.order_lists = data.order_list;
+          this.order_lists_length = this.order_lists.data.length;
+          this.byr_buyer_lists = data.byr_buyer_list;
+          this.loader.hide();
+        });
     this.loader.hide();
     },
     orderDownload(downloadType = 1) {
