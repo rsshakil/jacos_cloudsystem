@@ -59,7 +59,7 @@ import blog from './components/backend/CMN/cmn_blog_list.vue'
 import selected_buyer from './components/backend/SLR/selected_byr_page.vue'
 import management_setting from './components/backend/CONFIG/management_setting.vue'
 // Byr Menu Pages
-import slr_order_list from './components/backend/Byr/DATA/ORDER/slr_order_list.vue'
+import slr_order_list from './components/backend/BYR/DATA/ORDER/slr_order_list.vue'
 import { homedir } from 'os'
 // import login_body from './components/login/login_body.vue'
 

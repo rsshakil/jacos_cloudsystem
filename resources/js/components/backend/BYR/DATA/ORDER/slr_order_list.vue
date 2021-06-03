@@ -360,11 +360,11 @@ export default {
       }),
     };
   },
-  beforeCreate: function() {
-            if (!this.$session.exists()) {
-                this.$router.push('/home');
-            }
-        },
+//   beforeCreate: function() {
+//             if (!this.$session.exists()) {
+//                 this.$router.push('/home');
+//             }
+//         },
   methods: {
     onRowClicked (item) {
         this.form.mes_lis_ord_par_sel_code = item.mes_lis_ord_par_sel_code;
@@ -396,6 +396,7 @@ export default {
     //       this.byr_buyer_lists = data.byr_buyer_list;
     //       this.loader.hide();
     //     });
+    this.loader.hide();
     },
     orderDownload(downloadType = 1) {
       //downloadcsvshipment_confirm
