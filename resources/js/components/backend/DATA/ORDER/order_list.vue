@@ -209,7 +209,7 @@
                     index +
                     1 }}</td>
               <!-- <td>{{order_list.receive_date.valueOf() }}</td> -->
-              <!-- ,order_receive_date:order_list.receive_date -->
+              <!-- ,receive_list_date:order_list.receive_date -->
               <td>
                 <router-link
                   :to="{

@@ -37,7 +37,7 @@ import slr_job_list from './components/backend/SLR/slr_job_list.vue'
 // import company_seller_user_list from './components/backend/CMN/cmn_company_seller_user_list.vue'
 import item_master from './components/backend/BYR/byr_item_master.vue'
 import item_category from './components/backend/BYR/item_category.vue'
-import data_order_receive from './components/backend/DATA/RECEIVE/data_order_receive.vue'
+import receive_list from './components/backend/DATA/RECEIVE/receive_list.vue'
 import receive_detail from './components/backend/DATA/RECEIVE/receive_detail.vue'
 import receive_item_detail from './components/backend/DATA/RECEIVE/receive_item_detail.vue'
 
@@ -58,6 +58,8 @@ import pdf_platform_view from './components/backend/PDF_PLATFORM/pdf_platform_vi
 import blog from './components/backend/CMN/cmn_blog_list.vue'
 import selected_buyer from './components/backend/SLR/selected_byr_page.vue'
 import management_setting from './components/backend/CONFIG/management_setting.vue'
+// Byr Menu Pages
+import slr_order_list from './components/backend/Byr/DATA/ORDER/slr_order_list.vue'
 import { homedir } from 'os'
 // import login_body from './components/login/login_body.vue'
 
@@ -391,9 +393,9 @@ export const routes = [
     },
 
     {
-        path: '/order_receive',
-        component: data_order_receive,
-        name: 'order_receive',
+        path: '/receive_list',
+        component: receive_list,
+        name: 'receive_list',
         meta: {
             breadcrumb: {
                 label: '受領トップ',
@@ -402,18 +404,18 @@ export const routes = [
         },
     },
     {
-        path: '/order_receive/receive_detail',
+        path: '/receive_list/receive_detail',
         component: receive_detail,
         name: 'receive_detail',
         meta: {
             breadcrumb: {
                 label: '受領伝票一覧',
-                parent: 'order_receive'
+                parent: 'receive_list'
             }
         },
     },
     {
-        path: '/order_receive/receive_detail/receive_item_detail/:data_receive_voucher_id',
+        path: '/receive_list/receive_detail/receive_item_detail/:data_receive_voucher_id',
         component: receive_item_detail,
         name: 'receive_item_detail',
         meta: {
@@ -589,6 +591,17 @@ export const routes = [
         meta: {
             breadcrumb: {
                 label: '管理'
+            }
+        },
+    },
+    {
+        path: '/slr_order_list',
+        component: slr_order_list,
+        name: 'slr_order_list',
+        meta: {
+            breadcrumb: {
+                label: '受注トップ',
+                parent: 'home'
             }
         },
     },

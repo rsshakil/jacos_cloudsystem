@@ -143,7 +143,7 @@
                   }}</span
                 >
               </td>
-              
+
             </tr>
             <tr>
             <td class="cl_custom_color" style="width: 10%">伝票番号</td>
@@ -158,7 +158,7 @@
                   }}</span
                 >
               </td>
-               
+
               <td class="cl_custom_color" style="width: 10%">伝票区分</td>
               <td style="width: 15%">
                 <span
@@ -199,7 +199,7 @@
                   }}</span
                 >
               </td>
-             
+
             <!--  <td class="cl_custom_color" style="width: 10%">発注者</td>
               <td style="width: 15%">
                 <span
@@ -214,7 +214,7 @@
               </td>-->
             </tr>
             <tr>
-              
+
 
 <td class="cl_custom_color" style="width: 10%">不定貴区分</td>
               <td style="width: 15%">
@@ -286,7 +286,7 @@
                 >
               </td>
             </tr>
-            
+
           </table>
         </div>
       </div>
@@ -300,7 +300,7 @@
             style="width: 100%"
           >
 <tr>
-             
+
               <td class="cl_custom_color" style="width: 10%">実納品日</td>
               <td colspan="3" style="width: 15%">
                 <span>{{
@@ -315,7 +315,7 @@
                     Object.keys(order_item_shipment_data_headTable).length
                   "
                   >{{
-                    order_item_shipment_data_headTable.update_datetime 
+                    order_item_shipment_data_headTable.update_datetime
                   }}</span
                 >
               </td>
@@ -771,7 +771,7 @@ export default {
     this.form.byr_buyer_id = this.$session.get("byr_buyer_id");
     Fire.$emit("byr_has_selected", this.$session.get("byr_buyer_id"));
     Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
-    this.parentQ.query = this.$session.get("order_receive_detail_query_param");
+    this.parentQ.query = this.$session.get("receive_list_detail_query_param");
     this.getbuyerJsonSettingvalue();
     this.loader = Vue.$loading.show();
     this.data_receive_voucher_id = this.$route.params.data_receive_voucher_id;

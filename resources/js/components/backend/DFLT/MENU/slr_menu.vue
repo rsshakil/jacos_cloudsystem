@@ -13,7 +13,7 @@
           <div class="collapse" id="slrmenu1" aria-expanded="false">
             <ul class="flex-column pl-2 nav">
 
-              
+
               <li class="nav-item" v-can="['order_list']">
                 <router-link to="/order_list" class="nav-link">
                   <b-icon icon="receipt" font-scale="1.2"></b-icon>
@@ -26,13 +26,13 @@
                   {{ myLang.jacos_voucher_setting }}
                 </router-link>
               </li>
-              
-              
 
-              <li class="nav-item" v-can="['order_receive']">
-                <router-link to="/order_receive" class="nav-link">
+
+
+              <li class="nav-item" v-can="['receive_list']">
+                <router-link to="/receive_list" class="nav-link">
                   <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
-                  {{ myLang.order_receive }}
+                  {{ myLang.receive_list }}
                 </router-link>
               </li>
 
@@ -68,7 +68,7 @@
                   {{ myLang.product_management }}
                 </router-link>
               </li>
-              
+
               </ul>
               </div>
               </li>-->
@@ -79,8 +79,8 @@
                  受注・出荷業務
                 </router-link>
               </li>
-               <li class="nav-item" v-can="['order_receive']">
-                <router-link to="/order_receive" class="nav-link">
+               <li class="nav-item" v-can="['receive_list']">
+                <router-link to="/receive_list" class="nav-link">
                   <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
                  受領確認
                 </router-link>
@@ -97,10 +97,10 @@
                   {{ myLang.jacos_voucher_setting }}
                 </router-link>
               </li>
-              
-              
 
-             
+
+
+
 <!--
               <li class="nav-item" v-can="['order_corrected_receive']">
                 <router-link to="/order_corrected_receive" class="nav-link">
@@ -128,7 +128,7 @@
                 </router-link>
               </li>
 
-              
+
               <li class="nav-item" v-can="['item_master']">
                 <router-link to="/item_master" class="nav-link">
                   <b-icon icon="receipt" font-scale="1.2"></b-icon>
@@ -149,15 +149,15 @@
 export default {
   data() {
     return {
-     
+
     };
-    
+
   },
   methods: {
-  
+
   },
   created(){
-      
+
   }
 };
 </script>

@@ -858,7 +858,7 @@ export default {
     Fire.$on("LoadByrorderDetail", (page=1) => {
       this.get_all_receive_detail(page);
     });
-    this.$session.set("order_receive_detail_query_param",this.$route.query);
+    this.$session.set("receive_list_detail_query_param",this.$route.query);
     Fire.$emit("loadPageTitle", "返品伝票一覧");
   },
   mounted() {

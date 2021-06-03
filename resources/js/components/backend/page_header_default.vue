@@ -28,7 +28,7 @@
                   this.page_heading = '得意先一覧';
              }else if(this.$route.name=='order_list'){
           this.page_heading = '受注受信一覧';
-      }else if(this.$route.name=='order_receive'){
+      }else if(this.$route.name=='receive_list'){
           this.page_heading = '受領受信一覧';
       }else if(this.$route.name=='payment_list'){
           this.page_heading = '支払受信一覧';

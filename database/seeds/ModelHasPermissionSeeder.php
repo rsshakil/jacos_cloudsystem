@@ -15,14 +15,14 @@ class ModelHasPermissionSeeder extends Seeder
      */
     public function run()
     {
-        $byr1 = self::userDetails('Byr1 User');
-        $byr1->givePermissionTo('order_list','order_receive','order_corrected_receive');
+        // $byr1 = self::userDetails('Byr1 User');
+        // $byr1->givePermissionTo('order_list','receive_list','order_corrected_receive');
 
-        $byr2 = self::userDetails('Byr2 User');
-        $byr2->givePermissionTo('return_item_list');
+        // $byr2 = self::userDetails('Byr2 User');
+        // $byr2->givePermissionTo('return_item_list');
 
-        $byr3 = self::userDetails('Byr3 User');
-        $byr3->givePermissionTo('payment_list','invoice_list','byr_management');
+        // $byr3 = self::userDetails('Byr3 User');
+        // $byr3->givePermissionTo('payment_list','invoice_list','byr_management');
     }
 
     private function userDetails($user_name){

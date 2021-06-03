@@ -37,7 +37,7 @@
             <td style="width:15%"><span v-if="order_info && Object.keys(order_info).length">{{ order_info.mes_lis_acc_tra_dat_transfer_of_ownership_date }}</span></td>
             <td class="cl_custom_color" style="width:10%">部門</td>
             <td style="width:15%"><span v-if="order_info && Object.keys(order_info).length">{{ order_info.mes_lis_acc_tra_goo_major_category }}</span></td>
-            
+
             <td class="cl_custom_color" style="width:10%">温度区分</td>
             <td style="width:15%">
             <span v-if="order_info && Object.keys(order_info).length">
@@ -962,7 +962,7 @@ export default {
     Fire.$on("LoadByrorderDetail", (page=1) => {
       this.get_all_receive_detail(page);
     });
-    this.$session.set("order_receive_detail_query_param",this.$route.query);
+    this.$session.set("receive_list_detail_query_param",this.$route.query);
     Fire.$emit("loadPageTitle", "受領伝票一覧");
   },
   mounted() {

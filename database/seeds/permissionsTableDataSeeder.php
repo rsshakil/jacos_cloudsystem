@@ -204,7 +204,7 @@ class permissionsTableDataSeeder extends Seeder
                 'is_system' => 0,
             ],
             [
-                'name' => 'order_receive',
+                'name' => 'receive_list',
                 'guard_name' => 'web',
                 'is_system' => 0,
             ],
@@ -276,6 +276,32 @@ class permissionsTableDataSeeder extends Seeder
             ],
             [
                 'name' => 'pdf_platform_view',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            //bur Menu
+            [
+                'name' => 'slr_order_list',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'slr_receive_list',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'slr_return_list',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'slr_invoice_list',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
+                'name' => 'slr_payment_list',
                 'guard_name' => 'web',
                 'is_system' => 0,
             ],

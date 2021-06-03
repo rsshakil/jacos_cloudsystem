@@ -16,7 +16,7 @@ return [
     'buyer_management' => 'Buyer Management',
     'scenario_management' => 'Scenario Management',
     'wholesaler_management' => 'Wholesaler Management',
-    'order_receive' => 'Order Receive',
+    'receive_list' => 'Order Receive',
     'order_corrected_receive' => 'Order Corrected Receive',
     'return_data' => 'Return Data',
     'payment_list' => 'Payment Data',
@@ -25,7 +25,7 @@ return [
     'master_management' => 'Master Management',
     'product_management' => 'Product Management',
     'category_management' => 'Category Management',
-    // PDF Platform 
+    // PDF Platform
     'pdf_platform' => 'PDF Platform',
     'pdf_platform_setting' => 'PDF Platform Settings',
     'pdf_platform_show' => 'PDF Platform Show',

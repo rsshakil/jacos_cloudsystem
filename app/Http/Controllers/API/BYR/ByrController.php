@@ -243,7 +243,7 @@ class ByrController extends Controller
         $fieldname = 'mes_lis_ord_tra_goo_major_category';
         $cmnConnect = 'cmn_connect_id';
         switch($request->component_name){
-            case 'order_receive':
+            case 'receive_list':
                     $p_table = 'data_receives';
                     $pv_table = 'data_receive_vouchers';
                     $fieldname = 'mes_lis_acc_tra_goo_major_category';

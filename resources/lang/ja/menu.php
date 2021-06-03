@@ -9,14 +9,14 @@ return [
     'assign_permission_to_user' => 'ユーザ-権限',
     'manage_users' => 'ユーザ管理',
     'new_notice'=>"新規　お知らせ",
-    // Management 
+    // Management
     'management' => '管理',
     'order_list' => '発注データ',
     'jacos_voucher_setting' => 'ジャコス伝票設定',
     'buyer_management' => '小売管理',
     'scenario_management' => 'シナリオ管理',
     'wholesaler_management' => '問屋管理',
-    'order_receive' => '受領データ',
+    'receive_list' => '受領データ',
     'order_corrected_receive' => '受領訂正データ',
     'return_data' => '返品データ',
     'payment_list' => '支払データ',
@@ -25,7 +25,7 @@ return [
     'master_management' => 'マスターメンテ',
     'product_management' => '商品メンテ',
     'category_management' => '分類',
-    // PDF Platform 
+    // PDF Platform
     'pdf_platform' => 'PDFプラットフォーム',
     'pdf_platform_setting' => 'PDFプラットフォーム設定',
     'pdf_platform_show' => 'PDFプラットフォーム公演',

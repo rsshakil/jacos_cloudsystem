@@ -634,7 +634,7 @@ export default {
     Fire.$on("LoadByrorderItemDetail", () => {
       this.get_all_receive_item_detail();
     });
-    this.parentQ.query = this.$session.get("order_receive_detail_query_param");
+    this.parentQ.query = this.$session.get("receive_list_detail_query_param");
     Fire.$emit("loadPageTitle", "返品伝票明細");
     this.get_all_return_item_detail_pagination();
   },

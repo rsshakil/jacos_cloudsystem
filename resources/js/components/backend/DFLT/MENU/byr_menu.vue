@@ -47,33 +47,33 @@
           >
           <div class="collapse" id="slrDatamenu1" aria-expanded="false">
             <ul class="flex-column pl-2 nav">
-            <li class="nav-item" v-can="['byr_view']">
-                <router-link to="/order_list" class="nav-link">
+            <li class="nav-item" v-can="['slr_order_list']">
+                <router-link to="/slr_order_list" class="nav-link">
                   <b-icon icon="receipt" font-scale="1.2"></b-icon>
                  受注・出荷業務
                 </router-link>
               </li>
-               <li class="nav-item" v-can="['byr_view']">
-                <router-link to="/order_receive" class="nav-link">
+               <li class="nav-item" v-can="['slr_receive_list']">
+                <router-link to="/slr_receive_list" class="nav-link">
                   <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
                  受領確認
                 </router-link>
               </li>
-              <li class="nav-item" v-can="['byr_view']">
-                <router-link to="/return_list" class="nav-link">
+              <li class="nav-item" v-can="['slr_return_list']">
+                <router-link to="/slr_return_list" class="nav-link">
                   <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
                  返品確認
                 </router-link>
               </li>
-             
-              <li class="nav-item" v-can="['byr_view']">
-                <router-link to="/invoice_list" class="nav-link">
+
+              <li class="nav-item" v-can="['slr_invoice_list']">
+                <router-link to="/slr_invoice_list" class="nav-link">
                   <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
                   請求業務
                 </router-link>
               </li>
-              <li class="nav-item" v-can="['byr_view']">
-                <router-link to="/payment_list" class="nav-link">
+              <li class="nav-item" v-can="['slr_payment_list']">
+                <router-link to="/slr_payment_list" class="nav-link">
                   <b-icon icon="card-checklist" font-scale="1.2"></b-icon>
                 支払確認
                 </router-link>
@@ -90,15 +90,15 @@
 export default {
   data() {
     return {
-     
+
     };
-    
+
   },
   methods: {
-  
+
   },
   created(){
-      
+
   }
 };
 </script>

@@ -130,7 +130,7 @@ var Globals = <?php echo json_encode(array(
     'set_up' => __('messages.set_up'),
     'order_list' => __('messages.order_list'),
     'shipment_list' => __('messages.shipment_list'),
-    // Menu 
+    // Menu
     'heading' => __('menu.heading'),
     'dashboard_text' => __('menu.dashboard_text'),
     'role_management' => __('menu.role_management'),
@@ -147,7 +147,7 @@ var Globals = <?php echo json_encode(array(
     'buyer_management' => __('menu.buyer_management'),
     'scenario_management' => __('menu.scenario_management'),
     'wholesaler_management' => __('menu.wholesaler_management'),
-    'order_receive' => __('menu.order_receive'),
+    'receive_list' => __('menu.receive_list'),
     'order_corrected_receive' => __('menu.order_corrected_receive'),
     'return_data' => __('menu.return_data'),
     'payment_list' => __('menu.payment_list'),
@@ -156,14 +156,14 @@ var Globals = <?php echo json_encode(array(
     'master_management' => __('menu.master_management'),
     'product_management' => __('menu.product_management'),
     'category_management' => __('menu.category_management'),
-    // PDF Platform 
+    // PDF Platform
     'pdf_platform' => __('menu.pdf_platform'),
     'pdf_platform_setting' => __('menu.pdf_platform_setting'),
     'pdf_platform_show' => __('menu.pdf_platform_show'),
-    // Home page 
+    // Home page
     'notice_text' => __('home.notice_text'),
     'previous_notice' => __('home.previous_notice'),
-    // Blog Page 
+    // Blog Page
     'notice_management' => __('blog.notice_management'),
     'add_new' => __('blog.add_new'),
     'title' => __('blog.title'),
@@ -172,7 +172,7 @@ var Globals = <?php echo json_encode(array(
     'operation' => __('blog.operation'),
     'contents' => __('blog.contents'),
     'editor_lang' => __('blog.editor_lang'),
-    // Order List 
+    // Order List
     'order_data_heading' => __('order_list.order_data_heading'),
     'buyer_selection' => __('order_list.buyer_selection'),
     'select_buyer' => __('order_list.select_buyer'),
@@ -239,34 +239,34 @@ var Globals = <?php echo json_encode(array(
     'scenario' => __('buyer_management.scenario'),
     'schedule_setting' => __('buyer_management.schedule_setting'),
     'folder_monitoring' => __('buyer_management.folder_monitoring'),
-    // Scenario_management 
+    // Scenario_management
     'scenario_heading' => __('scenario_management.scenario_heading'),
     'scenario_name' => __('scenario_management.scenario_name'),
     'scenario_description' => __('scenario_management.scenario_description'),
     'scenario_file_path' => __('scenario_management.scenario_file_path'),
-    // Saler_management 
+    // Saler_management
     'saler_management_head' => __('saler_management.saler_management_head'),
     'wholesaler_modal_title' => __('saler_management.wholesaler_modal_title'),
     'fax' => __('saler_management.fax'),
-    // order_receive
-    'order_receive_head' => __('order_receive.order_receive_head'),
-    'receive_date' => __('order_receive.receive_date'),
-    'download_date' => __('order_receive.download_date'),
-    'received_data' => __('order_receive.received_data'),
-    // Order Corrected Receive 
-    'corrected_receive_data' => __('order_receive.corrected_receive_data'),
-    'return_data' => __('order_receive.return_data'),
-    'payment_data' => __('order_receive.payment_data'),
-    // Invoice_list 
-    'invoice_list' => __('order_receive.invoice_list'),
-    'Invoice_data_upload' => __('order_receive.Invoice_data_upload'),
-    'list_of_slip' => __('order_receive.list_of_slip'),
-    'invoice_date' => __('order_receive.invoice_date'),
-    'biling_period' => __('order_receive.biling_period'),
-    'biling_amount' => __('order_receive.biling_amount'),
-    'billing_data' => __('order_receive.billing_data'),
-    'invoice' => __('order_receive.invoice'),
-    'download' => __('order_receive.download'),
+    // receive_list
+    'receive_list_head' => __('receive_list.receive_list_head'),
+    'receive_date' => __('receive_list.receive_date'),
+    'download_date' => __('receive_list.download_date'),
+    'received_data' => __('receive_list.received_data'),
+    // Order Corrected Receive
+    'corrected_receive_data' => __('receive_list.corrected_receive_data'),
+    'return_data' => __('receive_list.return_data'),
+    'payment_data' => __('receive_list.payment_data'),
+    // Invoice_list
+    'invoice_list' => __('receive_list.invoice_list'),
+    'Invoice_data_upload' => __('receive_list.Invoice_data_upload'),
+    'list_of_slip' => __('receive_list.list_of_slip'),
+    'invoice_date' => __('receive_list.invoice_date'),
+    'biling_period' => __('receive_list.biling_period'),
+    'biling_amount' => __('receive_list.biling_amount'),
+    'billing_data' => __('receive_list.billing_data'),
+    'invoice' => __('receive_list.invoice'),
+    'download' => __('receive_list.download'),
     // Master Management->item_master
     'product_name' => __('master_management.product_name'),
     'standerd' => __('master_management.standerd'),

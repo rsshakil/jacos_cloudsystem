@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-12">
-      <!-- <h4 class="top_title text-center" style="margin-top:10px;">{{myLang.order_receive_head}}</h4>-->
+      <!-- <h4 class="top_title text-center" style="margin-top:10px;">{{myLang.receive_list_head}}</h4>-->
       <div class="col-12" style="background: #d8e3f0; padding: 10px">
         <table
           class="table orderDetailTable cmnWidthTable table-bordered"
