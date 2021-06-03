@@ -333,6 +333,11 @@ class permissionsTableDataSeeder extends Seeder
                 'is_system' => 0,
             ],
             [
+                'name' => 'slr_return_item_list',
+                'guard_name' => 'web',
+                'is_system' => 0,
+            ],
+            [
                 'name' => 'slr_invoice_list',
                 'guard_name' => 'web',
                 'is_system' => 0,

@@ -41,6 +41,10 @@ import receive_list from './components/backend/DATA/RECEIVE/receive_list.vue'
 import receive_detail from './components/backend/DATA/RECEIVE/receive_detail.vue'
 import receive_item_detail from './components/backend/DATA/RECEIVE/receive_item_detail.vue'
 
+import slr_receive_list from './components/backend/BYR/DATA/RECEIVE/slr_receive_list.vue'
+import slr_receive_detail from './components/backend/BYR/DATA/RECEIVE/slr_receive_detail.vue'
+import slr_receive_item_detail from './components/backend/BYR/DATA/RECEIVE/slr_receive_item_detail.vue'
+
 import data_return_list from './components/backend/DATA/RETURN/data_return_list.vue'
 import return_detail from './components/backend/DATA/RETURN/return_detail.vue'
 import return_item_detail from './components/backend/DATA/RETURN/return_item_detail.vue'
@@ -605,5 +609,42 @@ export const routes = [
             }
         },
     },
+
+
+//slr receive list
+    {
+        path: '/slr_receive_list',
+        component: slr_receive_list,
+        name: 'slr_receive_list',
+        meta: {
+            breadcrumb: {
+                label: '受領トップ',
+                parent: 'home'
+            }
+        },
+    },
+    {
+        path: '/slr_receive_list/slr_receive_detail',
+        component: slr_receive_detail,
+        name: 'slr_receive_detail',
+        meta: {
+            breadcrumb: {
+                label: '受領伝票一覧',
+                parent: 'slr_receive_list'
+            }
+        },
+    },
+    {
+        path: '/slr_receive_list/slr_receive_detail/slr_receive_item_detail/:data_receive_voucher_id',
+        component: slr_receive_item_detail,
+        name: 'slr_receive_item_detail',
+        meta: {
+            breadcrumb: {
+                label: '受領伝票明細',
+                parent: 'slr_receive_detail'
+            }
+        },
+    },
+    //slr receive list end
     // { path: '/login', name: 'login', component: login_body },
 ];
