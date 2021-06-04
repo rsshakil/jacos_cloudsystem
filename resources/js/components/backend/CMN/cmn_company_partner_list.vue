@@ -226,12 +226,15 @@ export default {
         });
     },
     user_filter_by_buyer(value){
+        // console.log(this.form)
       this.selected_seller=[];
+      this.cmn_company_id=value.cmn_company_id;
       this.form.cmn_company_id=value.cmn_company_id;
       this.company_partner_list();
     },
     user_filter_by_seller(value){
       this.selected_buyer=[];
+      this.cmn_company_id=value.cmn_company_id;
       this.form.cmn_company_id=value.cmn_company_id;
       this.company_partner_list();
     },
@@ -240,10 +243,8 @@ export default {
       this.form.cmn_company_id = this.cmn_company_id;
       this.partner_create_modal = true;
       this.save_button = this.myLang.add_new;
-      axios
-        .post(this.BASE_URL + "api/get_seller_list", { cmn_connect_id: null })
+      axios.post(this.BASE_URL + "api/get_seller_list", { cmn_connect_id: null })
         .then(({ data }) => {
-            this.init(data.status);
           this.sellers = data.sellers;
         });
     },
@@ -264,8 +265,8 @@ export default {
             this.alert_text = "You have successfully updated partner";
             this.company_partner_list();
           } else {
+              this.alert_text = "Some Error";
             this.alert_title = 'error';
-            this.alert_text = "Some Error";
             this.alert_icon = 'error';
           }
 
@@ -273,7 +274,13 @@ export default {
           this.sweet_normal_alert();
         })
         .catch((error) => {
-          this.alert_text = error;
+            // console.log(error)
+            if (this.form.cmn_company_id=="") {
+                  this.alert_text = "Please select buyer";
+              }else{
+                  this.alert_text = error;
+              }
+        //   this.alert_text = error;
           this.sweet_advance_alert();
         });
     },
@@ -327,13 +334,13 @@ export default {
     if (this.cmn_company_id=="") {
       this.filter_select_box=true
     // var company_info=this.get_byr_slr_company(this.cmn_company_id);
-    axios
-      .get(this.BASE_URL + "api/get_byr_slr_company/" + this.cmn_company_id)
+
+    }
+    axios.get(this.BASE_URL + "api/get_byr_slr_company/" + this.cmn_company_id)
       .then(({ data }) => {
         this.buyers=data.buyer_info;
         // console.log(data)
       });
-    }
 
   },
   mounted() {

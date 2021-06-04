@@ -139,7 +139,7 @@ class ByrController extends Controller
 
     public function buyerPartnerCreate(Request $request)
     {
-// return $request->all();
+        // return $request->all();
         $this->validate($request, [
             'cmn_company_id' => 'required|integer',
             'partner_code' => 'required',
@@ -156,9 +156,11 @@ class ByrController extends Controller
                 if ($company_info->company_type=='seller') {
                     $seller_id_info = slr_seller::select('slr_seller_id')->where('cmn_company_id', $cmn_company_id)->first();
                     $slr_seller_id = $seller_id_info->slr_seller_id;
+                    // $byr_buyer_id =0;
                 }else if($company_info->company_type=='buyer'){
                     $buyer_id_info = byr_buyer::select('byr_buyer_id')->where('cmn_company_id', $cmn_company_id)->first();
                     $byr_buyer_id = $buyer_id_info->byr_buyer_id;
+                    // $slr_seller_id = $selected_sellers['slr_seller_id'];
                 }
             }
 
