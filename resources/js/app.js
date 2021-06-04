@@ -187,10 +187,10 @@ router.onReady(() => {
 //     adm_user_id: Globals.user_info_id ? Globals.user_info_id : '',
 //     global_user_type: Globals.global_user_type ? Globals.global_user_type : ''
 // };
-axios.defaults.data = {
-    adm_user_id: Globals.user_info_id ? Globals.user_info_id : '',
-    global_user_type: Globals.global_user_type ? Globals.global_user_type : ''
-};
+// axios.defaults.data = {
+//     adm_user_id: Globals.user_info_id ? Globals.user_info_id : '',
+//     global_user_type: Globals.global_user_type ? Globals.global_user_type : ''
+// };
 // Set axios default response action
 axios.interceptors.response.use(function(response) {
     if (response.data.status == 419) {
