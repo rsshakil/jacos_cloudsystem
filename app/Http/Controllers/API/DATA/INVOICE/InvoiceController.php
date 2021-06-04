@@ -301,24 +301,36 @@ class InvoiceController extends Controller
             'dipd.mes_lis_inv_lin_det_balance_carried_code',
             'dipd.send_datetime',
             'dipd.decision_datetime',
-            'dipd.mes_lis_inv_lin_det_goo_major_category'
+            'dipd.mes_lis_inv_lin_det_goo_major_category',
+            'dppd.mes_lis_pay_lin_det_pay_out_date'
         )
         ->join('data_invoice_pays as dip', 'data_invoices.data_invoice_id', '=', 'dip.data_invoice_id')
         ->join('data_invoice_pay_details as dipd', 'dip.data_invoice_pay_id', '=', 'dipd.data_invoice_pay_id')
+        ->leftJoin('data_payment_pays as dpp', function($join){
+            $join->on('dpp.mes_lis_pay_pay_code', '=', 'dip.mes_lis_inv_pay_code');
+            $join->on('dpp.mes_lis_pay_per_end_date', '=', 'dip.mes_lis_inv_per_end_date');
+            $join->on('dpp.mes_lis_buy_code', '=', 'dip.mes_lis_buy_code');
+        })
+        ->leftJoin('data_payment_pay_details as dppd','dppd.data_payment_pay_id','=','dpp.data_payment_pay_id')
         ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'data_invoices.cmn_connect_id')
         ->where('cc.byr_buyer_id', $byr_buyer_id)
         ->where('cc.slr_seller_id', $slr_seller_id)
         ->where('data_invoices.data_invoice_id', '=', $data_invoice_id);
         // ->where('data_invoices.cmn_connect_id','=',$cmn_connect_id);
         if ($decision_datetime_status=='未確定あり') {
-            $result=$result->where('dipd.decision_datetime', '=', null);
+            $result=$result->whereNull('dipd.decision_datetime');
         } elseif ($decision_datetime_status=='確定済') {
-            $result=$result->where('dipd.decision_datetime', '!=', null);
+            $result=$result->whereNotNull('dipd.decision_datetime');
         }
         if ($send_datetime_status=='未確定あり') {
-            $result=$result->where('dipd.send_datetime', '=', null);
+            $result=$result->whereNull('dipd.send_datetime');
         } elseif ($send_datetime_status=='確定済') {
-            $result=$result->where('dipd.send_datetime', '!=', null);
+            $result=$result->whereNotNull('dipd.send_datetime');
+        }
+        if ($payment_datetime_status=='支払日あり') {
+            $result=$result->whereNotNull('dppd.mes_lis_pay_lin_det_pay_out_date');
+        } elseif ($payment_datetime_status=='支払日無し') {
+            $result=$result->whereNull('dppd.mes_lis_pay_lin_det_pay_out_date');
         }
 
         if ($from_date!='') {

@@ -293,7 +293,7 @@
               </td>
               <td class="text-right">{{ value.mes_lis_inv_lin_det_amo_requested_amount | priceFormat }}</td>
               <td>{{ value.send_datetime }}</td>
-              <td></td>
+              <td>{{ value.mes_lis_pay_lin_det_pay_out_date }}</td>
               <td>
                   <button @click="editInvoiceDetail(value)" class="btn btn-primary">変更</button>
               </td>
