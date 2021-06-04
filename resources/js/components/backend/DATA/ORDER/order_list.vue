@@ -223,6 +223,8 @@
                         order_list.mes_lis_ord_log_del_delivery_service_code,
                       temperature_code:
                         order_list.mes_lis_ord_tra_ins_temperature_code,
+                      sel_code:
+                        order_list.mes_lis_ord_par_sel_code,
                     },
                   }"
                   class=""

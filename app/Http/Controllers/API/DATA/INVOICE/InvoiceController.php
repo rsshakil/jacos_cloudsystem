@@ -266,6 +266,7 @@ class InvoiceController extends Controller
         $number_reference=$request->mes_lis_inv_lin_lin_trade_number_reference;
         $decision_datetime_status=$request->decision_datetime_status;
         $send_datetime_status=$request->send_datetime_status;
+        $payment_datetime_status=$request->payment_datetime_status;
         $mes_lis_inv_lin_tra_code=$request->mes_lis_inv_lin_tra_code;
         $category_code = $request->category_code;
         $category_code =$category_code['category_code'];
@@ -345,7 +346,11 @@ class InvoiceController extends Controller
         // ->where('dip.mes_lis_buy_code',$param_data['buy_code'])
         // ->where('dip.mes_lis_buy_name',$param_data['buy_name'])
         // ->where('dip.status',$param_data['status']);
-        $result = $result->orderBy('dipd.'.$sort_by, $sort_type);
+        $table_name='dipd.';
+        if ($sort_by=='mes_lis_pay_lin_det_pay_out_date') {
+            $table_name='dppd.';
+        }
+        $result = $result->orderBy($table_name.$sort_by, $sort_type);
         $result=$result->paginate($per_page);
         return response()->json(['invoice_details_list' => $result]);
     }

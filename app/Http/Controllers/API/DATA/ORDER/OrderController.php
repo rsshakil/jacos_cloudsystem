@@ -251,6 +251,7 @@ class OrderController extends Controller
         $delivery_service_code = $order_info['delivery_service_code'];
         $major_category = $order_info['major_category'];
         $temperature_code = $order_info['temperature_code'];
+        $sel_code = $order_info['sel_code'];
         $temperature_code = $temperature_code == null ? '' : $temperature_code;
 
         data_order_voucher::where('data_order_id', $data_order_id)->where('mes_lis_ord_tra_goo_major_category', $major_category)->where('mes_lis_ord_log_del_delivery_service_code', $delivery_service_code)->where('mes_lis_ord_tra_dat_delivery_date', $delivery_date)->whereNull('check_datetime')->update(['check_datetime'=>date('Y-m-d H:i:s')]);
@@ -273,6 +274,7 @@ class OrderController extends Controller
         ->where('dsv.mes_lis_shi_tra_goo_major_category', $major_category)
         ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $delivery_service_code)
         ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $temperature_code)
+        ->where('dsv.mes_lis_shi_par_sel_code', $sel_code)
         ->groupBy('dsv.mes_lis_shi_tra_trade_number')
         ->first();
 
@@ -305,7 +307,9 @@ class OrderController extends Controller
             ->where('dsv.mes_lis_shi_tra_dat_delivery_date', $delivery_date)
             ->where('dsv.mes_lis_shi_tra_goo_major_category', $major_category)
             ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $delivery_service_code)
-            ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $temperature_code);
+            ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $temperature_code)
+            ->where('dsv.mes_lis_shi_par_sel_code', $sel_code);
+
 
         if ($mes_lis_shi_tra_trade_number!=null) {
             $result = $result->where('dsv.mes_lis_shi_tra_trade_number', $mes_lis_shi_tra_trade_number);
