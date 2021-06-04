@@ -913,6 +913,13 @@ class Data_Controller extends Controller
             foreach ($data_array as $key => $value) {
                 $shipment_item_array=array();
 
+                // csv count check
+                if (count($value) != 177) {
+                    // CSVカラム数チェック
+                    Log::error('upload file format error:177:'.count($value));
+                    return response()->json(['status'=>0,'message'=>'アップロードファイルのフォーマットが不正です。']);
+                }
+
                 $line_number = $value[105]; // 行番号
 
                 // data_shipment_voucher情報取得
