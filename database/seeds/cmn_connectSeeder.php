@@ -18,7 +18,7 @@ class cmn_connectSeeder extends Seeder
                 'byr_shop_id'=>0,
                 'slr_seller_id'=>1,
                 'slr_ware_house_id'=>0,
-                'partner_code'=>'010690',
+                'partner_code'=>'993477',
                 'is_active'=>1,
                 'optional'=>'{
                     "order": {

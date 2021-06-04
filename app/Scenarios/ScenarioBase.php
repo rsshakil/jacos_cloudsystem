@@ -29,7 +29,7 @@ class ScenarioBase
 
     public function upfileSave($request, $saveDir)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
 
         if (!array_key_exists('up_file', $request->all())) {
             throw new JcsException('File not found or file path not valid');
@@ -43,7 +43,7 @@ class ScenarioBase
         $save_path = storage_path() . '/app//' . $saveDir . '/' . $file_name;
         Log::info('save file path:' . $save_path);
 
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return ['file_name'=>$file_name,'save_path'=>$save_path,'cmn_connect_id'=>$cmn_connect_id];
     }
 
@@ -55,8 +55,10 @@ class ScenarioBase
      */
     private function get_connect_id_from_file_name($file_name)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
         $name_array = explode('-', $file_name);
+        // \Log::info($file_name);
+        // \Log::info($name_array);
         $super_code = $name_array[1];
         $partner_code = $name_array[2];
 
@@ -68,11 +70,11 @@ class ScenarioBase
         if (empty($connect_info)) {
             throw new JcsException('Can not get connect_info: super_code:'.$super_code.' partner_code:'. $partner_code);
         }
-        
-        \Log::debug(__METHOD__.':end---');
+
+        Log::debug(__METHOD__.':end---');
         return $connect_info->cmn_connect_id;
     }
-    
+
     /**
      * checkCsvData
      *
