@@ -64,6 +64,8 @@ import selected_buyer from './components/backend/SLR/selected_byr_page.vue'
 import management_setting from './components/backend/CONFIG/management_setting.vue'
 // Byr Menu Pages
 import slr_order_list from './components/backend/BYR/DATA/ORDER/slr_order_list.vue'
+import slr_order_list_details from './components/backend/BYR/DATA/ORDER/slr_order_list_details.vue'
+
 import { homedir } from 'os'
 // import login_body from './components/login/login_body.vue'
 
@@ -609,9 +611,22 @@ export const routes = [
             }
         },
     },
+    {
+        path: '/slr_order_list/slr_order_list_details',
+        component: slr_order_list_details,
+        name: 'slr_order_list_details',
+        meta: {
+            // breadcrumb: 'Order detail'
+            breadcrumb: {
+                label: '受注伝票一覧',
+                parent: 'slr_order_list'
+            },
+        },
+
+    },
 
 
-//slr receive list
+    //slr receive list
     {
         path: '/slr_receive_list',
         component: slr_receive_list,

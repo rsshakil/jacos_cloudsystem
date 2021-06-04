@@ -455,12 +455,15 @@ class data_csv_order extends ScenarioBase
     {
         Log::debug(__METHOD__.':start---');
 
-        $cmn_connect_options=cmn_connect::select('optional')->where('cmn_connect_id', $cmn_connect_id)->first();
+        $cmn_connect_options=cmn_connect::select('optional','partner_code')->where('cmn_connect_id', $cmn_connect_id)->first();
+        // Log::info($cmn_connect_options);
         $optional=json_decode($cmn_connect_options->optional);
+        // Log::debug($optional->order->fax->exec);
         try {
             if ($optional->order->fax->exec) {
                 $this->fax_number=$optional->order->fax->number;
-                $this->attachment_paths_all=$this->pdfGenerate($data_order_id);
+                $partner_code=$cmn_connect_options->partner_code;
+                $this->attachment_paths_all=$this->pdfGenerate($data_order_id,$partner_code);
                 Log::debug($this->attachment_paths_all);
 
                 Log::info('send mail for fax:[to:'.config('const.PDF_SEND_MAIL').',subject:'.$this->fax_number.']');
@@ -488,11 +491,11 @@ class data_csv_order extends ScenarioBase
      * @param  mixed $data_order_id
      * @return void
      */
-    public function pdfGenerate($data_order_id)
+    public function pdfGenerate($data_order_id,$partner_code)
     {
         Log::debug(__METHOD__.':start---');
 
-        $pdf_datas = $this->pdfDAta($data_order_id);
+        $pdf_datas = $this->pdfDAta($data_order_id,$partner_code);
         // return $pdf_datas;
         // =====================
         $pdf_file_paths=array();
@@ -558,7 +561,7 @@ class data_csv_order extends ScenarioBase
         return $pdf_file_paths;
         // =====================
     }
-    public function pdfDAta($data_order_id)
+    public function pdfDAta($data_order_id,$partner_code)
     {
         Log::debug(__METHOD__.':start---');
 
@@ -592,8 +595,10 @@ class data_csv_order extends ScenarioBase
             ->join('data_order_vouchers', 'data_order_vouchers.data_order_id', '=', 'data_orders.data_order_id')
             ->join('data_order_items', 'data_order_items.data_order_voucher_id', '=', 'data_order_vouchers.data_order_voucher_id')
             ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'data_orders.cmn_connect_id')
+            ->where('data_order_vouchers.mes_lis_ord_par_sel_code', $partner_code)
             ->where('data_orders.data_order_id', $data_order_id)
             ->get();
+            // Here partner code is 993477 but in database sel_code=0993477 (will be fixed) 0 will be added
             // ==================
             $recs = new \Illuminate\Database\Eloquent\Collection($order_data);
             $grouped = $recs->groupBy('mes_lis_ord_par_rec_code')->transform(function($item, $k) {
