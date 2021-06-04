@@ -270,13 +270,17 @@ class InvoiceController extends Controller
         $mes_lis_inv_lin_tra_code=$request->mes_lis_inv_lin_tra_code;
         $category_code = $request->category_code;
         $category_code =$category_code['category_code'];
+
         $from_date = $request->from_date;
         $to_date = $request->to_date;
+        $from_date = $from_date!=null? date('Y-m-d 00:00:00', strtotime($from_date)):$from_date; // 受信日時開始
+        $to_date = $to_date!=null? date('Y-m-d 23:59:59', strtotime($to_date)):$to_date; // 受信日時終了
+
         $sort_by = $request->sort_by;
         $sort_type = $request->sort_type;
 
         $param_data = $request->param_data;
-        $adm_user_id=$request->adm_user_id;
+        // $adm_user_id=$request->adm_user_id;
         $byr_buyer_id=$request->byr_buyer_id;
         // $authUser = User::find($adm_user_id);
         $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
@@ -332,15 +336,9 @@ class InvoiceController extends Controller
         } elseif ($payment_datetime_status=='支払日無し') {
             $result=$result->whereNull('dppd.mes_lis_pay_lin_det_pay_out_date');
         }
-
-        if ($from_date!='') {
-            $result=$result->where('dipd.mes_lis_inv_lin_det_transfer_of_ownership_date', '>=', $from_date);
+        if ($from_date!='' && $to_date!='') {
+            $result=$result->whereBetween('dipd.mes_lis_inv_lin_det_transfer_of_ownership_date', [$from_date,$to_date]);
         }
-
-        if ($to_date!='') {
-            $result=$result->where('dipd.mes_lis_inv_lin_det_transfer_of_ownership_date', '<=', $to_date);
-        }
-
         if ($number_reference!=null) {
             $result=$result->where('dipd.mes_lis_inv_lin_lin_trade_number_reference', '=', $number_reference);
         }
