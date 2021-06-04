@@ -69,6 +69,8 @@
             <td>
               <input type="text" v-model="form.mes_lis_inv_lin_lin_trade_number_reference" class="form-control" />
             </td>
+          </tr>
+          <tr>
             <td class="cl_custom_color">確定状況</td>
             <td>
               <select class="form-control" v-model="form.decision_datetime_status">
@@ -84,6 +86,15 @@
               <select class="form-control" v-model="form.send_datetime_status">
                 <option value="*">全て</option>
                 <option :value="item" v-for="(item,i) in send_datetime_status" :key="i">
+                  {{ item }}
+                </option>
+              </select>
+            </td>
+            <td class="cl_custom_color">支払状況</td>
+            <td>
+              <select class="form-control" v-model="form.payment_datetime_status">
+                <option value="*">全て</option>
+                <option :value="item" v-for="(item,i) in payment_datetime_status" :key="i">
                   {{ item }}
                 </option>
               </select>
@@ -213,7 +224,7 @@
                     type="checkbox"
                   /> 全選択
                 </th>
-                <th class="text-right" colspan="9">
+                <th class="text-right" colspan="100%">
                  <button @click="invoiceCompareData" class="btn btn-primary " style="float:right;margin-right:10px;">出荷受領比較</button>
                 <b-button class="active text-right pull-right" @click="addInvoiceDetail" variant="primary">新規伝票追加</b-button></th>
               </tr>
@@ -228,14 +239,12 @@
               <th class="pointer_class" @click="sorting('mes_lis_inv_lin_det_balance_carried_code')">請求区分 <span class="float-right" :class="iconSet('mes_lis_inv_lin_det_balance_carried_code')"></span></th>
               <th class="pointer_class" @click="sorting('mes_lis_inv_lin_det_amo_requested_amount')">請求金額 <span class="float-right" :class="iconSet('mes_lis_inv_lin_det_amo_requested_amount')"></span></th>
               <th class="pointer_class" @click="sorting('send_datetime')">送信日時 <span class="float-right" :class="iconSet('send_datetime')"></span></th>
-            <th>詳細</th>
+              <th class="pointer_class" @click="sorting('mes_lis_pay_lin_det_pay_out_date')">支払日 <span class="float-right" :class="iconSet('mes_lis_pay_lin_det_pay_out_date')"></span></th>
+            <th colspan="2">詳細</th>
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-for="(value, index) in invoice_detail_lists.data"
-              :key="index"
-            >
+            <tr v-for="(value, index) in invoice_detail_lists.data" :key="index">
               <td>
                   <!-- {{ index + 1 }} -->
                   {{ invoice_detail_lists.current_page * form.select_field_per_page_num - form.select_field_per_page_num + index +1 }}
@@ -284,7 +293,13 @@
               </td>
               <td class="text-right">{{ value.mes_lis_inv_lin_det_amo_requested_amount | priceFormat }}</td>
               <td>{{ value.send_datetime }}</td>
-              <td><button @click="editInvoiceDetail(value)" class="btn btn-primary">変更</button><button @click="deleteInvoiceDetail(value)" class="btn btn-danger">削除</button></td>
+              <td></td>
+              <td>
+                  <button @click="editInvoiceDetail(value)" class="btn btn-primary">変更</button>
+              </td>
+              <td>
+                <button @click="deleteInvoiceDetail(value)" class="btn btn-danger">削除</button>
+              </td>
             </tr>
             <tr v-if="invoice_detail_lists.data && invoice_detail_lists.data.length==0">
                 <td class="text-center" colspan="100%">データがありません</td>
@@ -658,6 +673,7 @@ export default {
       null_selected_message:false,
       decision_datetime_status: ["未確定あり", "確定済"],
       send_datetime_status: ["未送信あり", "送信済"],
+      payment_datetime_status: ["支払日あり", "支払日無し"],
       invoiceDetail:{
         data_invoice_pay_detail_id:'',
         data_invoice_id:'',
@@ -687,6 +703,7 @@ export default {
         decision_datetime_status:'*',
         category_code:{category_code:'*',category_name:'全て'},
         send_datetime_status:'*',
+        payment_datetime_status:'*',
         sort_by:'data_invoice_pay_detail_id ',
         sort_type:"ASC",
         page_title:'invoice_details_list',
