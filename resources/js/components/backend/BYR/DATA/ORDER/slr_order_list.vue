@@ -213,16 +213,14 @@
               <td>
                 <router-link
                   :to="{
-                    name: 'order_list_details',
+                    name: 'slr_order_list_details',
                     query: {
-                      data_order_id: order_list.data_order_id,
-                      delivery_date: order_list.mes_lis_ord_tra_dat_delivery_date.valueOf(),
-                      major_category:
-                        order_list.mes_lis_ord_tra_goo_major_category,
-                      delivery_service_code:
-                        order_list.mes_lis_ord_log_del_delivery_service_code,
-                      temperature_code:
-                        order_list.mes_lis_ord_tra_ins_temperature_code,
+                        data_order_id: order_list.data_order_id,
+                        delivery_date: order_list.mes_lis_ord_tra_dat_delivery_date.valueOf(),
+                        major_category: order_list.mes_lis_ord_tra_goo_major_category,
+                        delivery_service_code: order_list.mes_lis_ord_log_del_delivery_service_code,
+                        temperature_code: order_list.mes_lis_ord_tra_ins_temperature_code,
+                        sel_code: order_list.mes_lis_ord_par_sel_code,
                     },
                   }"
                   class=""
