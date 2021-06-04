@@ -181,6 +181,7 @@ class OrderController extends Controller
         $result = $result->groupBy([
             'dor.receive_datetime',
             'dor.sta_sen_identifier',
+            'dov.mes_lis_ord_par_sel_code',
             'dov.mes_lis_ord_tra_dat_delivery_date',
             'dov.mes_lis_ord_tra_goo_major_category',
             'dov.mes_lis_ord_log_del_delivery_service_code',
