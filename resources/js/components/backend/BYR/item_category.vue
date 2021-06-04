@@ -280,7 +280,7 @@ export default {
       var _this = this;
       this.alert_icon = "warning";
       this.alert_title = "";
-      this.alert_text = "Do you want to upload category csv";
+      this.alert_text = "分類コードファイルをアップロードしますか？";
       this.yes_btn = "はい";
       this.cancel_btn = "キャンセル";
       this.confirm_sweet().then((result) => {
