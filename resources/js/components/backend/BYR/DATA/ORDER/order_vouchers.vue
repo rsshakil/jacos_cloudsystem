@@ -8,7 +8,7 @@
 <script>
 // './bms_byr_order_detail.vue'
 
-import default_order_vouchers from './default_order_vouchers.vue'
+import default_order_vouchers from './slr_order_list_details.vue'
 // import bms_byr_order_detail from '../BMS/bms_byr_order_detail'
 export default {
   components: {

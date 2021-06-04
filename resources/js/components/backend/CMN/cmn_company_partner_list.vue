@@ -216,21 +216,23 @@ export default {
   },
   methods: {
     company_partner_list() {
+        // console.log(this.form);
         // console.log(this.cmn_company_id);
-      axios.get(this.BASE_URL + "api/company_partner_list/" + this.cmn_company_id)
+      axios.post(this.BASE_URL + "api/company_partner_list", this.form)
         .then(({ data }) => {
+            // console.log(data);
           this.company_partner_lists = data.partner_list;
           this.company_name = data.company_name;
         });
     },
     user_filter_by_buyer(value){
       this.selected_seller=[];
-      this.cmn_company_id=value.cmn_company_id;
+      this.form.cmn_company_id=value.cmn_company_id;
       this.company_partner_list();
     },
     user_filter_by_seller(value){
       this.selected_buyer=[];
-      this.cmn_company_id=value.cmn_company_id;
+      this.form.cmn_company_id=value.cmn_company_id;
       this.company_partner_list();
     },
     new_partner_create_modal() {
@@ -246,8 +248,9 @@ export default {
         });
     },
     create_new_partner() {
-      this.form
-        .post(this.BASE_URL + "api/buyer_partner_create")
+        console.log(this.form)
+        // return 0;
+      this.form.post(this.BASE_URL + "api/buyer_partner_create")
         .then(({ data }) => {
           // console.log(data)
           this.alert_icon = data.class_name;
@@ -275,7 +278,7 @@ export default {
         });
     },
     partner_update_modal(value) {
-      // console.log(value)
+      console.log(value)
       axios.post(this.BASE_URL + "api/get_seller_list", {
           cmn_connect_id: value.cmn_connect_id,
         }).then(({ data }) => {
@@ -310,6 +313,7 @@ export default {
   created() {
       if (this.$route.query.cmn_company_id) {
          this.cmn_company_id = this.$route.query.cmn_company_id;
+         this.form.cmn_company_id=this.cmn_company_id;
       }else{
           this.cmn_company_id ="";
       }

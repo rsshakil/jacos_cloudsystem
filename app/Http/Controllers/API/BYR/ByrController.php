@@ -65,10 +65,11 @@ class ByrController extends Controller
         return response()->json(['user_list' => $buyer_users, 'company_name' => $company_name]);
     }
 
-    public function company_partner_list($cmn_company_id=null)
+    public function company_partner_list(Request $request)
     {
         // return $cmn_company_id;
         $company_name = null;
+        $cmn_company_id = $request->cmn_company_id;
         // $result = DB::table('byr_buyers')
         // ->select('slr_sellers.slr_seller_id', 'cmn_connects.byr_buyer_id', 'cmn_connects.cmn_connect_id',
         // 'byr_buyers.super_code', 'cmn_companies.company_name', 'cmn_companies.jcode',
@@ -89,31 +90,30 @@ class ByrController extends Controller
         // $result =$result->get();
 // New
         if ($cmn_company_id==null) {
-            $result = DB::table('byr_buyers')
-            ->select('slr_sellers.slr_seller_id', 'cmn_connects.byr_buyer_id', 'cmn_connects.cmn_connect_id',
-            'byr_buyers.super_code', 'cmn_companies.company_name', 'cmn_companies.jcode',
-            'cmn_connects.partner_code', 'cmn_connects.is_active', 'slr_sellers.slr_seller_id')
-                ->join('cmn_connects', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
-                ->join('slr_sellers', 'slr_sellers.slr_seller_id', '=', 'cmn_connects.slr_seller_id')
-                ->join('cmn_companies', 'slr_sellers.cmn_company_id', '=', 'cmn_companies.cmn_company_id');
+            $result = DB::table('byr_buyers as bb')
+            ->select('ss.slr_seller_id', 'bb.byr_buyer_id','bb.super_code', 'cc.cmn_connect_id',
+            'cc.partner_code', 'cc.is_active', 'ccom.company_name', 'ccom.jcode')
+                ->join('cmn_connects as cc', 'bb.byr_buyer_id', '=', 'cc.byr_buyer_id')
+                ->join('slr_sellers as ss', 'ss.slr_seller_id', '=', 'cc.slr_seller_id')
+                ->join('cmn_companies as ccom', 'ss.cmn_company_id', '=', 'ccom.cmn_company_id');
         }else{
             $company_info = cmn_company::select('company_type','company_name')->where('cmn_company_id', $cmn_company_id)->first();
             if ($company_info->company_type=='seller') {
-                $result = slr_seller::select('slr_sellers.slr_seller_id', 'cmn_connects.cmn_connect_id',
-                'cmn_companies.company_name', 'cmn_companies.jcode', 'cmn_connects.partner_code',
-                'cmn_connects.is_active', 'slr_sellers.slr_seller_id')
-                    ->join('cmn_connects', 'slr_sellers.slr_seller_id', '=', 'cmn_connects.slr_seller_id')
-                    ->join('cmn_companies', 'slr_sellers.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
+                $result = slr_seller::select('slr_sellers.slr_seller_id', 'cc.cmn_connect_id',
+                'cc.partner_code','cc.is_active','ccom.company_name', 'ccom.jcode')
+                    ->join('cmn_connects as cc', 'slr_sellers.slr_seller_id', '=', 'cc.slr_seller_id')
+                    ->join('byr_buyers as bb', 'bb.byr_buyer_id', '=', 'cc.byr_buyer_id')
+                    ->join('cmn_companies as ccom', 'bb.cmn_company_id', '=', 'ccom.cmn_company_id')
                     ->where('slr_sellers.cmn_company_id', $cmn_company_id);
             }else if($company_info->company_type=='buyer'){
-                $result = byr_buyer::select('cmn_connects.byr_buyer_id', 'cmn_connects.cmn_connect_id',
-                    'byr_buyers.super_code', 'cmn_companies.company_name', 'cmn_companies.jcode',
-                    'cmn_connects.partner_code', 'cmn_connects.is_active')
-                        ->join('cmn_connects', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
-                        ->join('cmn_companies', 'byr_buyers.cmn_company_id', '=', 'cmn_companies.cmn_company_id')
+                $result = byr_buyer::select('byr_buyers.byr_buyer_id','byr_buyers.super_code','cc.cmn_connect_id',
+                      'cc.partner_code', 'cc.is_active','ccom.company_name', 'ccom.jcode')
+                        ->join('cmn_connects as cc', 'byr_buyers.byr_buyer_id', '=', 'cc.byr_buyer_id')
+                        ->join('slr_sellers as ss', 'ss.slr_seller_id', '=', 'cc.slr_seller_id')
+                        ->join('cmn_companies as ccom', 'ccom.cmn_company_id', '=', 'ss.cmn_company_id')
                         ->where('byr_buyers.cmn_company_id', $cmn_company_id);
             }
-            $result =$result->groupBy('cmn_connects.partner_code');
+            // $result =$result->groupBy('cc.partner_code');
             $company_name = $company_info->company_name;
         }
         // $result =$result->groupBy('cmn_connects.partner_code')->get();
