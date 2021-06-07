@@ -23,7 +23,7 @@ trait Csv
             fwrite($stream, implode(',', $tmp)."\n");
         }
         rewind($stream);
-        if (strtolower($encode) == 'shift-win') {
+        if (strtolower($encode) == 'sjis-win') {
             // shift-win
             $tmp = stream_get_contents($stream);
             \Log::debug($tmp);
