@@ -893,7 +893,7 @@ export default {
         this.form.page=page
         this.form.per_page=this.select_field_per_page_num
         this.form.order_info=this.param_data
-        this.select_field_page_num = page;
+        // this.select_field_page_num = page;
         axios.post(this.BASE_URL + "api/order_details", this.form)
             .then(({ data }) => {
             this.order_detail_lists = data.order_list_detail;
