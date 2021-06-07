@@ -735,7 +735,7 @@ export default {
     //get Table data
     get_all_receive_item_detail() {
       axios
-        .post(this.BASE_URL + "api/data_receive_item_detail_list", this.form)
+        .post(this.BASE_URL + "api/slr_data_receive_item_detail_list", this.form)
         .then(({ data }) => {
           this.init(data.status);
           this.order_item_detail_lists = data.received_item_detail_list;
@@ -756,7 +756,7 @@ export default {
       this.parentQ.query.byr_buyer_id = this.byr_buyer_id;
       axios
         .post(
-          this.BASE_URL + "api/data_receive_detail_list_pagination",
+          this.BASE_URL + "api/slr_data_receive_detail_list_pagination",
           this.parentQ.query
         )
         .then(({ data }) => {
