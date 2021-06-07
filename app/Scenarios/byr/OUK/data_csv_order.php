@@ -590,15 +590,15 @@ class data_csv_order extends ScenarioBase
             'data_order_items.mes_lis_ord_lin_amo_item_selling_price_unit_price',
             'data_order_items.mes_lis_ord_lin_amo_item_net_price',
             'data_order_items.mes_lis_ord_lin_amo_item_net_price_unit_price',
-            'data_order_items.mes_lis_ord_lin_lin_line_number'
+            'data_order_items.mes_lis_ord_lin_lin_line_number',
+            // DB::raw('substr(data_order_vouchers.mes_lis_ord_par_sel_code, -6) as sel_code')
         )
             ->join('data_order_vouchers', 'data_order_vouchers.data_order_id', '=', 'data_orders.data_order_id')
             ->join('data_order_items', 'data_order_items.data_order_voucher_id', '=', 'data_order_vouchers.data_order_voucher_id')
             ->join('cmn_connects', 'cmn_connects.cmn_connect_id', '=', 'data_orders.cmn_connect_id')
-            ->where('data_order_vouchers.mes_lis_ord_par_sel_code', $partner_code)
+            ->where(DB::raw('substr(data_order_vouchers.mes_lis_ord_par_sel_code, -6)'), '=' , $partner_code)
             ->where('data_orders.data_order_id', $data_order_id)
             ->get();
-            // Here partner code is 993477 but in database sel_code=0993477 (will be fixed) 0 will be added
             // ==================
             $recs = new \Illuminate\Database\Eloquent\Collection($order_data);
             $grouped = $recs->groupBy('mes_lis_ord_par_rec_code')->transform(function($item, $k) {
