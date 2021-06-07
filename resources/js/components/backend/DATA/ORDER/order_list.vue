@@ -461,7 +461,7 @@ export default {
     },
   },
 
-  created() {
+  mounted() {
     // this.byr_session_check()
     this.getbuyerJsonSettingvalue();
     this.form.byr_buyer_id = this.$session.get("byr_buyer_id");
@@ -475,7 +475,7 @@ export default {
     Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
     Fire.$emit("loadPageTitle", "受注データ一覧");
   },
-  mounted() {
-  },
+//   mounted() {
+//   },
 };
 </script>

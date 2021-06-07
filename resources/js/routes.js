@@ -13,8 +13,9 @@ import password_reset from './components/backend/ADM/password_reset.vue'
 import order_list from './components/backend/DATA/ORDER/order_list.vue'
 import order_vouchers from './components/backend/DATA/ORDER/order_vouchers.vue'
 import item_search from './components/backend/DATA/ORDER/item_search.vue'
-import order_items from './components/backend/DATA/ORDER/order_items.vue'
 import item_search_detail from './components/backend/DATA/ORDER/item_search_detail.vue'
+import order_items from './components/backend/DATA/ORDER/order_items.vue'
+
 
 // data/shipment
 // data/receive
@@ -65,6 +66,9 @@ import management_setting from './components/backend/CONFIG/management_setting.v
 // Byr Menu Pages
 import slr_order_list from './components/backend/BYR/DATA/ORDER/slr_order_list.vue'
 import slr_order_list_details from './components/backend/BYR/DATA/ORDER/slr_order_list_details.vue'
+import slr_order_list_items from './components/backend/BYR/DATA/ORDER/slr_order_list_items.vue'
+import slr_item_search from './components/backend/BYR/DATA/ORDER/slr_item_search.vue'
+import slr_item_search_detail from './components/backend/BYR/DATA/ORDER/slr_item_search_detail.vue'
 
 import { homedir } from 'os'
 // import login_body from './components/login/login_body.vue'
@@ -620,6 +624,45 @@ export const routes = [
             breadcrumb: {
                 label: '受注伝票一覧',
                 parent: 'slr_order_list'
+            },
+        },
+
+    },
+    {
+        path: '/slr_order_list/slr_order_list_details/slr_order_item_list_detail',
+        component: slr_order_list_items,
+        name: 'slr_order_item_list_detail',
+        meta: {
+            breadcrumb: {
+                label: '受注伝票明細',
+                parent: 'slr_order_list_details'
+            }
+        }
+    },
+
+    {
+        path: '/slr_order_list/slr_order_list_details/slr_item_search',
+        component: slr_item_search,
+        name: 'slr_item_search',
+        meta: {
+
+            breadcrumb: {
+                label: '受注商品別一覧',
+                parent: 'slr_order_list_details'
+            },
+        },
+
+    },
+
+    {
+        path: '/slr_order_list/slr_order_list_details/slr_item_search/slr_item_search_detail',
+        component: slr_item_search_detail,
+        name: 'slr_item_search_detail',
+        meta: {
+
+            breadcrumb: {
+                label: '受注商品別明細',
+                parent: 'slr_item_search'
             },
         },
 

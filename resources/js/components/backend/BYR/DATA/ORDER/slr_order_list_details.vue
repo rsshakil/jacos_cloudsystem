@@ -230,7 +230,7 @@
               <div class="col-3">
                 <p class="mb-0">商品別の更新はこちら</p>
                 <router-link
-                :to="{name: 'item_search',query:item_search_q}" class="active btn btn-primary">
+                :to="{name: 'slr_item_search',query:item_search_q}" class="active btn btn-primary">
                   商品別登録
                 </router-link
                 >
@@ -322,10 +322,9 @@
                 <td>
                   <router-link
                     :to="{
-                      name: 'order_item_list_detail',
-                      params: {
-                        data_order_list_voucher_id:
-                          order_detail_list.data_shipment_voucher_id,
+                      name: 'slr_order_item_list_detail',
+                      query: {
+                        voucher_id:order_detail_list.data_shipment_voucher_id,
                       },
                     }"
                     class=""
@@ -810,23 +809,23 @@ export default {
   // props: ["param_data"],
   data() {
     return {
-        byr_buyer_id:null,
-        adm_user_id: Globals.user_info_id,
-        data_order_id:null,
-        rows: 100,
-        currentPage: 1,
-        // today: new Date().toISOString().slice(0, 10),
-        sortKey: "",
-        reverse: true,
-        order_by: "asc",
+        // byr_buyer_id:null,
+        // adm_user_id: Globals.user_info_id,
+        // data_order_id:null,
+        // rows: 100,
+        // currentPage: 1,
+        // // today: new Date().toISOString().slice(0, 10),
+        // sortKey: "",
+        // reverse: true,
+        // // order_by: "asc",
         order_detail_lists: {},
         order_info: {},
-        order_date: "",
-        order_detail_list: [],
+        // order_date: "",
+        // order_detail_list: [],
         order_detail_list_length:0,
-        show_hide_col_list: [],
-        expected_delivery_date: "",
-        status: "",
+        // show_hide_col_list: [],
+        // expected_delivery_date: "",
+        // status: "",
         edit_order_modal: false,
         order_search_modal1: false,
         order_search_modal2: false,
@@ -835,8 +834,8 @@ export default {
         order_search_modal2List: [],
         order_search_modal3List: [],
         selected: [],
-        selectedNum: 0,
-        select_field_page_num: 0,
+        // selectedNum: 0,
+        // select_field_page_num: 0,
         select_field_per_page_num: 10,
         isCheckAll: false,
         fixedSpecialOptionList: [
@@ -848,13 +847,13 @@ export default {
         printingStatusOptionList: ["未印刷あり", "印刷済"],
         deliveryDestnationOptionList: ["店舗", "物流センター"],
         send_datetime_options: ["未送信あり", "送信済"],
-        date_null: false,
-        null_selected: [],
-        not_null_selected: [],
-        null_selected_message: false,
+        // date_null: false,
+        // null_selected: [],
+        // not_null_selected: [],
+        // null_selected_message: false,
         form: new Form({
             data_order_id:null,
-            byr_buyer_id:null,
+            // byr_buyer_id:null,
             adm_user_id:Globals.user_info_id,
             order_info:[],
             downloadType:1,
@@ -877,9 +876,9 @@ export default {
             order_item_code:null,
             page:1,
             per_page:10,
-            data_count: false,
-            send_data:false,
-            shipment_download_type:'pdf'
+            // data_count: false,
+            // send_data:false,
+            // shipment_download_type:'pdf'
         }),
         param_data: [],
         item_search_q: [],
@@ -894,7 +893,7 @@ export default {
         this.form.per_page=this.select_field_per_page_num
         this.form.order_info=this.param_data
         // this.select_field_page_num = page;
-        axios.post(this.BASE_URL + "api/order_details", this.form)
+        axios.post(this.BASE_URL + "api/slr_order_details", this.form)
             .then(({ data }) => {
             this.order_detail_lists = data.order_list_detail;
             this.order_info = data.order_info;
@@ -1265,12 +1264,12 @@ export default {
 
   created() {
     // this.byr_session_check()
-    this.byr_buyer_id=this.$session.get("byr_buyer_id");
-    this.form.byr_buyer_id=this.byr_buyer_id;
+    // this.byr_buyer_id=this.$session.get("byr_buyer_id");
+    // this.form.byr_buyer_id=this.byr_buyer_id;
     this.data_order_id=this.$route.query.data_order_id
     this.form.data_order_id=this.data_order_id
-    Fire.$emit("byr_has_selected", this.byr_buyer_id);
-    Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
+    // Fire.$emit("byr_has_selected", this.byr_buyer_id);
+    // Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
 this.getbuyerJsonSettingvalue();
     this.param_data = this.$route.query;
     this.item_search_q = this.$route.query;

@@ -11,6 +11,14 @@ import VueRouter from "vue-router";
 // import vueselect from 'vue-select2';
 //Routes
 import { routes } from "./routes";
+// ================
+// import BackMixin from 'vue-router-back-mixin'
+// Route sync
+// import { sync } from 'vuex-router-sync'
+// import store from './store' // vuex store instance
+// const unsync = sync(store, routes) // done. Returns an unsync callback fn
+// unsync() // Unsyncs store from router
+// ===============
 //Import Sweetalert2
 import Swal from "sweetalert2";
 //Import v-from
@@ -182,6 +190,19 @@ router.onReady(() => {
         router.push("home")
     }
 });
+
+// Warnind before route exit
+// Vue.mixin({
+//     beforeRouteLeave(to, from, next) {
+//         const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
+//         if (answer) {
+//             next()
+//         } else {
+//             next(false)
+//         }
+//     }
+// })
+
 // Set axios default parameters
 // axios.defaults.params = {
 //     adm_user_id: Globals.user_info_id ? Globals.user_info_id : '',
