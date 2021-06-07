@@ -437,8 +437,9 @@ class PaymentController extends Controller
     {
         // return $request->all();
         // $adm_user_id=$request->adm_user_id;
-        $byr_buyer_id=$request->byr_buyer_id;
-        $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
+        $buyer_info = Auth::User()->ByrInfo;
+        $byr_buyer_id =$buyer_info->byr_buyer_id;
+        //$slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
         // $cmn_connect_id = $this->all_used_fun->getCmnConnectId($adm_user_id, $byr_buyer_id);
         $result = DB::select("SELECT
         dpp.mes_lis_buy_code,
@@ -452,7 +453,7 @@ class PaymentController extends Controller
        INNER JOIN data_payment_pays AS dpp ON dp.data_payment_id=dpp.data_payment_id
        LEFT JOIN data_payment_pay_details AS dppd ON dpp.data_payment_pay_id=dppd.data_payment_pay_id
        INNER JOIN cmn_connects AS cc ON dp.cmn_connect_id=cc.cmn_connect_id
-       WHERE cc.byr_buyer_id=$byr_buyer_id AND cc.slr_seller_id=$slr_seller_id
+       WHERE cc.byr_buyer_id=$byr_buyer_id
        GROUP BY dppd.mes_lis_pay_lin_sel_code, dpp.mes_lis_pay_pay_code");
         return response()->json(['order_customer_code_lists' => $result]);
         // WHERE dp.cmn_connect_id='".$cmn_connect_id."'
