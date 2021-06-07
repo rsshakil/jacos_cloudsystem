@@ -156,7 +156,8 @@ class ReceiveController extends Controller
         // return $request->all();
         $today=date('Y-m-d H:i:s');
         $adm_user_id = $request->adm_user_id;
-        $byr_buyer_id = $request->byr_buyer_id;
+        $buyer_info = Auth::User()->ByrInfo;
+        $byr_buyer_id =$buyer_info->byr_buyer_id;
 
         $data_receive_id = $request->data_receive_id;
 
@@ -176,7 +177,7 @@ class ReceiveController extends Controller
         $goods_classification_code=$request->goods_classification_code;
         $trade_number=$request->trade_number;
 
-        $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
+        //$slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
 
         $table_name='data_receive_vouchers.';
 
@@ -201,7 +202,7 @@ class ReceiveController extends Controller
         $orderInfo=data_receive_voucher::join('data_receives as dr', 'dr.data_receive_id', '=', 'data_receive_vouchers.data_receive_id')
         ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'dr.cmn_connect_id')
         ->where('cc.byr_buyer_id', $byr_buyer_id)
-        ->where('cc.slr_seller_id', $slr_seller_id)
+       // ->where('cc.slr_seller_id', $slr_seller_id)
         // ->where('dr.cmn_connect_id','=',$cmn_connect_id)
         ->where('data_receive_vouchers.data_receive_id', '=', $data_receive_id)
         // ->groupBy('data_receives.receive_datetime')
@@ -216,7 +217,7 @@ class ReceiveController extends Controller
         ->leftJoin('data_shipment_vouchers as dsv', 'dsv.mes_lis_shi_tra_trade_number', '=', 'data_receive_vouchers.mes_lis_acc_tra_trade_number')
         ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'dr.cmn_connect_id')
         ->where('cc.byr_buyer_id', $byr_buyer_id)
-        ->where('cc.slr_seller_id', $slr_seller_id)
+        //->where('cc.slr_seller_id', $slr_seller_id)
         // ->where('dr.cmn_connect_id','=',$cmn_connect_id)
         ->where('data_receive_vouchers.data_receive_id', '=', $data_receive_id)
         // ->where('data_receive_vouchers.mes_lis_acc_par_sel_name',$sel_name)

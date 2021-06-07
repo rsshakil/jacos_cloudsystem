@@ -922,7 +922,7 @@ export default {
         this.form.page=page;
         this.form.select_field_page_num = page;
       axios
-        .post(this.BASE_URL + "api/data_receive_detail_list", this.form)
+        .post(this.BASE_URL + "api/slr_data_receive_detail_list", this.form)
         .then(({ data }) => {
           this.init(data.status);
           this.receive_detail_lists = data.received_detail_list;
