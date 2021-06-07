@@ -686,7 +686,7 @@
 <style>
 input[type=number]{
     min-width: 100px;
-} 
+}
 </style>
 <script>
 export default {
@@ -1009,21 +1009,21 @@ export default {
   },
 
   created() {
-    this.byr_buyer_id = this.$session.get("byr_buyer_id");
+    // this.byr_buyer_id = this.$session.get("byr_buyer_id");
 
-    Fire.$emit("byr_has_selected", this.$session.get("byr_buyer_id"));
-    Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
+    // Fire.$emit("byr_has_selected", this.$session.get("byr_buyer_id"));
+    // Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
     this.getbuyerJsonSettingvalue();
-    this.param_data = this.$route.query;
+    // this.param_data = this.$route.query;
 
     this.loader = Vue.$loading.show();
-    this.data_order_voucher_id = this.$route.params.data_order_list_voucher_id;
+    this.data_order_voucher_id = this.$route.query.voucher_id;
 
     this.get_all_byr_order_item_detail();
     Fire.$on("LoadByrorderItemDetail", () => {
       this.get_all_byr_order_item_detail();
     });
-    this.parent.query = this.$session.get("order_param_data");
+    // this.parent.query = this.$session.get("order_param_data");
     Fire.$emit("loadPageTitle", "受注伝票明細");
     this.get_prev_next_list();
   },

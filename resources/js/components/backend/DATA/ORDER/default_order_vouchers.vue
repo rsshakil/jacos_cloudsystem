@@ -1,5 +1,7 @@
 <template>
   <div>
+      <!-- <button class="btn btn-danger" @click="$router.back()">Back</button> -->
+      <!-- <button class="btn btn-danger" @click="backButton()">Back</button> -->
     <div class="row">
     <div class="col-12">
       <div class="col-12" style="background: #d8e3f0;padding: 10px;margin-bottom:20px;">

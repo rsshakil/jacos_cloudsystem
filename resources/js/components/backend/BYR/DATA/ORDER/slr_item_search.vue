@@ -135,7 +135,7 @@
 
                 <td><router-link
                     :to="{
-                      name: 'item_search_detail',
+                      name: 'slr_item_search_detail',
                       query: {
                       data_order_id: item_search_query.data_order_id,
                       delivery_date: item_search_query.delivery_date,

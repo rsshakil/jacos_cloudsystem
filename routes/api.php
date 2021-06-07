@@ -244,6 +244,7 @@ Route::post('slr_payment_unpaid_data_download', 'API\BYR\DATA\PAYMENT\PaymentCon
     Route::post('/get_slr_order_list', 'API\BYR\DATA\ORDER\SlrOrderController@slrOrderList');
     Route::post('/get_slr_customer_code_list', 'API\BYR\DATA\ORDER\SlrOrderController@slrCustomerCodeList');
     Route::post('/slr_shipment_download', 'API\BYR\DATA\ORDER\SlrOrderController@slrShipmentDownload');
+    Route::post('/slr_order_details', 'API\BYR\DATA\ORDER\SlrOrderController@slrOrderDetails');
 });
 // scenario exec
 Route::post('scenario_exec', 'API\CMN\CmnScenarioController@exec');
