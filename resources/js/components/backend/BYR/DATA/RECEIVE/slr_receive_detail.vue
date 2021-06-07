@@ -320,7 +320,7 @@
                 <td>
                   <router-link
                     :to="{
-                      name: 'receive_item_detail',
+                      name: 'slr_receive_item_detail',
                       params: {
                         data_receive_voucher_id:
                           order_detail_list.data_receive_voucher_id,
