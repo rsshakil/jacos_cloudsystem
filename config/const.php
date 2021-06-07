@@ -30,11 +30,10 @@ return [
     'BLANK_PDF_PATH' => 'app/order_pdf/demo/blank.pdf',
     'ORDER_PDF_SAVE_PATH' => 'app/order_pdf/created/',
     'SHIPMENT_PDF_SAVE_PATH' => 'app/shipment_pdf/created/',
-    'PDF_SEND_MAIL' => 'mayeennbd@gmail.com',
+    // 'PDF_SEND_MAIL' => 'mayeennbd@gmail.com',
     // 'PDF_SEND_MAIL' => 'fax849653@ecofax.jp',
-    // 'PDF_SEND_MAIL' => 'sakaki@jacos.co.jp',
+    'PDF_SEND_MAIL' => 'sakaki@jacos.co.jp',
     'INVOICE_SCHEDULE_TIME' => '12:00',
-
     'INVOICE_SCHEDULE_START_TIME' => '14:00',
     'INVOICE_SCHEDULE_END_TIME' => '23:00',
     'INVOICE_CSV_PATH' => '/invoice_csv',
