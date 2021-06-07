@@ -256,7 +256,7 @@ export default {
     showAllCustomerCode(){
      let loaders = Vue.$loading.show();
       this.showAllCustomerCodeListModal = true;
-      this.form.post(this.BASE_URL + "api/get_payment_customer_code_list", this.form)
+      this.form.post(this.BASE_URL + "api/slr_get_payment_customer_code_list", this.form)
         .then(({ data }) => {
           this.order_customer_code_lists = data.order_customer_code_lists;
          loaders.hide();

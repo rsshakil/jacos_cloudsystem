@@ -85,7 +85,7 @@ Route::group(['middleware'=>'ApiMiddleWire'], function () {
 
     Route::post('/get_order_list', 'API\DATA\ORDER\OrderController@orderList');
     Route::post('/get_order_customer_code_list', 'API\DATA\ORDER\OrderController@get_order_customer_code_list');
-    Route::post('/get_return_customer_code_list', 'API\DATA\RTN\ReturnController@get_return_customer_code_list');
+    
     Route::post('/get_receive_customer_code_list', 'API\DATA\RECEIVE\ReceiveController@get_receive_customer_code_list');
     Route::post('/buyerJsonSetting', 'API\BYR\ByrController@buyerJsonSetting');
     Route::get('/get_all_company_list/{adm_user_id}', 'API\BYR\ByrController@get_all_company_list');
@@ -128,13 +128,14 @@ Route::group(['middleware'=>'ApiMiddleWire'], function () {
     Route::post('data_return_detail_list_pagination', 'API\DATA\RTN\ReturnController@data_return_detail_list_pagination');
     Route::post('data_return_item_detail_list', 'API\DATA\RTN\ReturnController@returnItemDetailList');
     Route::post('return_download', 'API\DATA\RTN\ReturnController@returnDownload');
-
+    Route::post('/get_return_customer_code_list', 'API\DATA\RTN\ReturnController@get_return_customer_code_list');
      // slr_return
      Route::post('slr_data_return_list', 'API\BYR\DATA\RTN\ReturnController@returnList');
      Route::post('slr_data_return_detail_list', 'API\BYR\DATA\RTN\ReturnController@returnDetailList');
      Route::post('slr_data_return_detail_list_pagination', 'API\BYR\DATA\RTN\ReturnController@data_return_detail_list_pagination');
      Route::post('slr_data_return_item_detail_list', 'API\BYR\DATA\RTN\ReturnController@returnItemDetailList');
      Route::post('slr_return_download', 'API\BYR\DATA\RTN\ReturnController@returnDownload');
+     Route::post('/slr_get_return_customer_code_list', 'API\BYR\DATA\RTN\ReturnController@get_return_customer_code_list');
 
     Route::get('corrected_receive_list/{adm_user_id}', 'API\DATA\RECEIVE\ReceiveController@correctedReceiveList');
 
