@@ -150,6 +150,19 @@ Route::group(['middleware'=>'ApiMiddleWire'], function () {
     Route::post('payment_unpaid_data_download', 'API\DATA\PAYMENT\PaymentController@paymentUnpaidDataDownload');
 
     // Payment End
+
+// slr_Payment Start
+Route::post('slr_get_payment_list', 'API\BYR\DATA\PAYMENT\PaymentController@getPaymentList');
+Route::post('slr_get_payment_detail_list', 'API\BYR\DATA\PAYMENT\PaymentController@get_payment_detail_list');
+Route::post('slr_get_payment_item_detail_list', 'API\BYR\DATA\PAYMENT\PaymentController@get_payment_item_detail_list');
+Route::post('slr_payment_download', 'API\BYR\DATA\PAYMENT\PaymentController@paymentDownload');
+Route::post('/slr_get_payment_customer_code_list', 'API\BYR\DATA\PAYMENT\PaymentController@get_payment_customer_code_list');
+Route::post('/slr_get_payment_trade_code_list', 'API\BYR\DATA\PAYMENT\PaymentController@get_payment_trade_code_list');
+Route::post('/slr_unpaid_payment_list', 'API\BYR\DATA\PAYMENT\PaymentController@unpaidPaymentPist');
+Route::post('slr_payment_unpaid_data_download', 'API\BYR\DATA\PAYMENT\PaymentController@paymentUnpaidDataDownload');
+
+// slr_Payment End
+
     Route::get('get_byr_return_list/{adm_user_id}', 'API\DATA\RTN\ReturnController@getReturnItemList');
     Route::post('get_all_cat_list', 'API\CMN\CmnCategoryController@get_all_cat_list');
     // Invoice

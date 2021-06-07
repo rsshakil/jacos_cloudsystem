@@ -57,9 +57,15 @@ import slr_return_item_detail from './components/backend/BYR/DATA/RETURN/slr_ret
 
 import order_corrected_receive from './components/backend/DATA/CRTRCV/order_corrected_receive.vue'
 import return_item_list from './components/backend/DATA/RETURN/return_item_list.vue'
+
 import payment_list from './components/backend/DATA/PAYMENT/payment_list.vue'
 import payment_detail from './components/backend/DATA/PAYMENT/payment_detail.vue'
 import payment_item_detail from './components/backend/DATA/PAYMENT/payment_item_detail.vue'
+
+
+import slr_payment_list from './components/backend/BYR/DATA/PAYMENT/slr_payment_list.vue'
+import slr_payment_detail from './components/backend/BYR/DATA/PAYMENT/slr_payment_detail.vue'
+import slr_payment_item_detail from './components/backend/BYR/DATA/PAYMENT/slr_payment_item_detail.vue'
 
 import invoice_list from './components/backend/DATA/INVOICE/invoice_list.vue'
 import invoice_details from './components/backend/DATA/INVOICE/invoice_details.vue'
@@ -536,6 +542,7 @@ export const routes = [
         },
 
     },
+    //payment_list start
     {
         path: '/payment_list',
         component: payment_list,
@@ -574,6 +581,46 @@ export const routes = [
         },
 
     },
+    //slr_payment_list start
+    {
+        path: '/slr_payment_list',
+        component: slr_payment_list,
+        name: 'slr_payment_list',
+        meta: {
+            breadcrumb: {
+                label: '支払トップ',
+                parent: 'home'
+            }
+        }
+
+    },
+    {
+        path: '/slr_payment_list/slr_payment_detail',
+        component: slr_payment_detail,
+        name: 'slr_payment_detail',
+        meta: {
+
+            breadcrumb: {
+                label: '支払合計',
+                parent: 'slr_payment_list'
+            },
+        },
+
+    },
+    {
+        path: '/slr_payment_list/slr_payment_detail/slr_payment_item_detail',
+        component: slr_payment_item_detail,
+        name: 'slr_payment_item_detail',
+        meta: {
+
+            breadcrumb: {
+                label: '支払伝票一覧',
+                parent: 'slr_payment_detail'
+            },
+        },
+
+    },
+    //payment end
     {
         path: '/invoice_list',
         component: invoice_list,

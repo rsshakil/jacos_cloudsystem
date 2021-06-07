@@ -646,7 +646,7 @@ export default {
   data() {
     return {
       parentQ: {
-        name: "receive_detail",
+        name: "slr_receive_detail",
         query: {},
       },
       sortKey: "",
@@ -683,11 +683,11 @@ export default {
       data_receive_voucher_id: "",
     };
   },
-  beforeCreate: function () {
-    if (!this.$session.exists()) {
-      this.$router.push("/home");
-    }
-  },
+  // beforeCreate: function () {
+  //   if (!this.$session.exists()) {
+  //     this.$router.push("/home");
+  //   }
+  // },
   methods: {
     ball_case_cal(order_item_detail_list, field_type) {
       if (field_type == "ケース") {
