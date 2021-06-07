@@ -9,11 +9,13 @@ use App\Models\SLR\slr_seller;
 use App\Models\CMN\cmn_companies_user;
 use App\Models\CMN\cmn_company;
 use App\Models\CMN\cmn_connect;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Auth;
 
 class ByrController extends Controller
 {
@@ -236,7 +238,14 @@ class ByrController extends Controller
         return response()->json(['byr_info' => $byr_info]);
     }
     public function buyerJsonSetting(Request $request){
-        $byr_buyer_id = $request->byr_buyer_id;
+
+        
+        if(isset($request->byr_buyer_id)){
+            $byr_buyer_id = $request->byr_buyer_id;
+        }else{
+            $buyer_info = Auth::User()->ByrInfo;
+            $byr_buyer_id =$buyer_info->byr_buyer_id;
+        }
         $buyer_settings = byr_buyer::select('setting_information')->where('byr_buyer_id', $byr_buyer_id)->first();
         $result = json_decode($buyer_settings->setting_information);
         $cmn_connect_id = $this->all_used_fun->getCmnConnectId($request->adm_user_id,$request->byr_buyer_id);
@@ -246,6 +255,7 @@ class ByrController extends Controller
         $cmnConnect = 'cmn_connect_id';
         switch($request->component_name){
             case 'receive_list':
+            case 'slr_receive_list':
                     $p_table = 'data_receives';
                     $pv_table = 'data_receive_vouchers';
                     $fieldname = 'mes_lis_acc_tra_goo_major_category';
