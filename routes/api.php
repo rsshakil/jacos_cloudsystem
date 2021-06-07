@@ -129,6 +129,13 @@ Route::group(['middleware'=>'ApiMiddleWire'], function () {
     Route::post('data_return_item_detail_list', 'API\DATA\RTN\ReturnController@returnItemDetailList');
     Route::post('return_download', 'API\DATA\RTN\ReturnController@returnDownload');
 
+     // slr_return
+     Route::post('slr_data_return_list', 'API\BYR\DATA\RTN\ReturnController@returnList');
+     Route::post('slr_data_return_detail_list', 'API\BYR\DATA\RTN\ReturnController@returnDetailList');
+     Route::post('slr_data_return_detail_list_pagination', 'API\BYR\DATA\RTN\ReturnController@data_return_detail_list_pagination');
+     Route::post('slr_data_return_item_detail_list', 'API\BYR\DATA\RTN\ReturnController@returnItemDetailList');
+     Route::post('slr_return_download', 'API\BYR\DATA\RTN\ReturnController@returnDownload');
+
     Route::get('corrected_receive_list/{adm_user_id}', 'API\DATA\RECEIVE\ReceiveController@correctedReceiveList');
 
     // receive end

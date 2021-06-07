@@ -48,6 +48,13 @@ import slr_receive_item_detail from './components/backend/BYR/DATA/RECEIVE/slr_r
 import data_return_list from './components/backend/DATA/RETURN/data_return_list.vue'
 import return_detail from './components/backend/DATA/RETURN/return_detail.vue'
 import return_item_detail from './components/backend/DATA/RETURN/return_item_detail.vue'
+
+
+import slr_data_return_list from './components/backend/BYR/DATA/RETURN/slr_data_return_list.vue'
+import slr_return_detail from './components/backend/BYR/DATA/RETURN/slr_return_detail.vue'
+import slr_return_item_detail from './components/backend/BYR/DATA/RETURN/slr_return_item_detail.vue'
+
+
 import order_corrected_receive from './components/backend/DATA/CRTRCV/order_corrected_receive.vue'
 import return_item_list from './components/backend/DATA/RETURN/return_item_list.vue'
 import payment_list from './components/backend/DATA/PAYMENT/payment_list.vue'
@@ -468,6 +475,45 @@ export const routes = [
     },
 
     //return list end
+
+     //slr_return list
+
+     {
+        path: '/slr_return_list',
+        component: slr_data_return_list,
+        name: 'slr_return_list',
+        meta: {
+            breadcrumb: {
+                label: '返品トップ',
+                parent: 'home'
+            }
+        },
+    },
+    {
+        path: '/slr_return_list/slr_return_detail',
+        component: slr_return_detail,
+        name: 'slr_return_detail',
+        meta: {
+            breadcrumb: {
+                label: '返品伝票一覧',
+                parent: 'slr_return_list'
+            }
+        },
+    },
+    {
+        path: '/slr_return_list/slr_return_detail/slr_return_item_detail',
+        component: slr_return_item_detail,
+        name: 'slr_return_item_detail',
+        meta: {
+            breadcrumb: {
+                label: '返品伝票明細',
+                parent: 'slr_return_detail'
+            }
+        },
+    },
+
+    //slr_return list end
+
     {
         path: '/order_corrected_receive',
         component: order_corrected_receive,
