@@ -75,22 +75,21 @@ class SlrOrderController extends Controller
         $delivery_date_from = $request->delivery_date_from;
         $delivery_date_to = $request->delivery_date_to;
         $receive_date_from = $receive_date_from!=null? date('Y-m-d 00:00:00', strtotime($receive_date_from)):$receive_date_from; // 受信日時開始
-            $receive_date_to = $receive_date_to!=null? date('Y-m-d 23:59:59', strtotime($receive_date_to)):$receive_date_to; // 受信日時終了
-            $delivery_date_from = $delivery_date_from!=null? date('Y-m-d 00:00:00', strtotime($delivery_date_from)):$delivery_date_from; // 納品日開始
-            $delivery_date_to =$delivery_date_to!=null? date('Y-m-d 23:59:59', strtotime($delivery_date_to)):$delivery_date_to;
-        ; // 納品日終了
-            $delivery_service_code = $request->delivery_service_code; // 便
-            $temperature = $request->temperature; // 配送温度区分
-            $check_datetime = $request->check_datetime;
-        // $check_datetime=$request->check_datetime;
-            $confirmation_status = $request->confirmation_status; // 参照
-            $decission_cnt = $request->decission_cnt; // 確定
-            $send_cnt = $request->send_cnt; // 印刷
-            $byr_category_code = $request->category_code; // 印刷
-            $mes_lis_ord_par_sel_code = $request->mes_lis_ord_par_sel_code; // 印刷
+        $receive_date_to = $receive_date_to!=null? date('Y-m-d 23:59:59', strtotime($receive_date_to)):$receive_date_to; // 受信日時終了
+        $delivery_date_from = $delivery_date_from!=null? date('Y-m-d 00:00:00', strtotime($delivery_date_from)):$delivery_date_from; // 納品日開始
+        $delivery_date_to =$delivery_date_to!=null? date('Y-m-d 23:59:59', strtotime($delivery_date_to)):$delivery_date_to;// 納品日終了
+        $delivery_service_code = $request->delivery_service_code; // 便
+        $temperature = $request->temperature; // 配送温度区分
+        $check_datetime = $request->check_datetime;
+    // $check_datetime=$request->check_datetime;
+        $confirmation_status = $request->confirmation_status; // 参照
+        $decission_cnt = $request->decission_cnt; // 確定
+        $send_cnt = $request->send_cnt; // 印刷
+        $byr_category_code = $request->category_code; // 印刷
+        $mes_lis_ord_par_sel_code = $request->mes_lis_ord_par_sel_code; // 印刷
 
 
-            $byr_category_code = $byr_category_code['category_code'];
+        $byr_category_code = $byr_category_code['category_code'];
 
         if ($receive_date_from && $receive_date_to) {
             $result= $result->whereBetween('dor.receive_datetime', [$receive_date_from, $receive_date_to]);
