@@ -283,7 +283,7 @@ export default {
     showAllCustomerCode(){
      let loaders = Vue.$loading.show();
       this.showAllCustomerCodeListModal = true;
-      this.form.post(this.BASE_URL + "api/get_return_customer_code_list", this.form)
+      this.form.post(this.BASE_URL + "api/slr_get_return_customer_code_list", this.form)
         .then(({ data }) => {
           this.order_customer_code_lists = data.order_customer_code_lists;
          loaders.hide();
@@ -310,13 +310,13 @@ export default {
       },
       return_download(downloadType = 1) {
       //downloadcsvshipment_confirm
-      let loader = Vue.$loading.show();
+      let loaderttt = Vue.$loading.show();
       this.form.downloadType= downloadType,
       axios
         .post(this.BASE_URL + "api/slr_return_download", this.form)
         .then(({ data }) => {
           this.downloadFromUrl(data);
-          loader.hide();
+          loaderttt.hide();
         });
     },
   },
