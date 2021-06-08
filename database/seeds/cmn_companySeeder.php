@@ -82,6 +82,16 @@ class cmn_companySeeder extends Seeder
                 'postal_code' => "",
                 'address' => "",
             ],
+            [
+                'company_type' => "seller",
+                'company_name' => "株式会社ジャコス問屋",
+                'company_name_kana' => "ｼﾞｬｺｽﾄﾝﾔ",
+                'jcode' => 99970,
+                'phone' => "",
+                'fax' => "",
+                'postal_code' => "",
+                'address' => "",
+            ],
         );
         App\Models\CMN\cmn_company::insert($cmn_company_array);
     }

@@ -18,7 +18,7 @@ class cmn_connectSeeder extends Seeder
                 'byr_shop_id'=>0,
                 'slr_seller_id'=>1,
                 'slr_ware_house_id'=>0,
-                'partner_code'=>'993477',
+                'partner_code'=>'010690',
                 'is_active'=>1,
                 'optional'=>'{
                     "order": {
@@ -393,7 +393,92 @@ class cmn_connectSeeder extends Seeder
                 }
 
                 ',
+            ],
+            [
+                'byr_buyer_id'=>1,
+                'byr_shop_id'=>0,
+                'slr_seller_id'=>5,
+                'slr_ware_house_id'=>0,
+                'partner_code'=>'993477',
+                'is_active'=>1,
+                'optional'=>'{
+                    "order": {
+                        "fax": {
+                            "number": "0364503611",
+                            "exec": true
+                        },
+                        "download": "7"
+                    },
+                    "invoice": {
+                        "closing_date": [
+                            "10"
+                        ]
+                    },
+                    "payment": {
+                        "fax": {
+                            "number": "0364503611",
+                            "exec": false
+                        }
+                    }
+                }',
+            ],
+            [
+                'byr_buyer_id'=>1,
+                'byr_shop_id'=>0,
+                'slr_seller_id'=>5,
+                'slr_ware_house_id'=>0,
+                'partner_code'=>'993478',
+                'is_active'=>1,
+                'optional'=>'{
+                    "order": {
+                        "fax": {
+                            "number": "0364503611",
+                            "exec": false
+                        },
+                        "download": "7"
+                    },
+                    "invoice": {
+                        "closing_date": [
+                            "10"
+                        ]
+                    },
+                    "payment": {
+                        "fax": {
+                            "number": "0364503611",
+                            "exec": false
+                        }
+                    }
+                }',
+            ],
+            [
+                'byr_buyer_id'=>1,
+                'byr_shop_id'=>0,
+                'slr_seller_id'=>5,
+                'slr_ware_house_id'=>0,
+                'partner_code'=>'993479',
+                'is_active'=>1,
+                'optional'=>'{
+                    "order": {
+                        "fax": {
+                            "number": "0364503611",
+                            "exec": false
+                        },
+                        "download": "7"
+                    },
+                    "invoice": {
+                        "closing_date": [
+                            "10"
+                        ]
+                    },
+                    "payment": {
+                        "fax": {
+                            "number": "0364503611",
+                            "exec": false
+                        }
+                    }
+                }',
             ]
+
         );
         App\Models\CMN\cmn_connect::insert($cmn_connect);
     }

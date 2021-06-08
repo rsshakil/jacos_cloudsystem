@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use App\Models\ADM\User;
+
 class modelHasrolesTableDataSeeder extends Seeder
 {
     /**
@@ -14,12 +15,11 @@ class modelHasrolesTableDataSeeder extends Seeder
      */
     public function run()
     {
-        
         $super_admin = User::findOrFail($this->user_search('Jacos Super Admin'));
-        $super_admin->assignRole('Super Admin','Admin','User');
+        $super_admin->assignRole('Super Admin', 'Admin', 'User');
 
         $admin = User::findOrFail($this->user_search('Jacos Admin'));
-        $admin->assignRole('Admin','User');
+        $admin->assignRole('Admin', 'User');
 
         $user = User::findOrFail($this->user_search('Jacos User'));
         $user->assignRole('User');
@@ -45,14 +45,16 @@ class modelHasrolesTableDataSeeder extends Seeder
         $slr4 = User::findOrFail($this->user_search('Slr4 User'));
         $slr4->assignRole('Slr');
 
+        $slr5 = User::findOrFail($this->user_search('sakaki'));
+        $slr5->assignRole('Slr');
 
 
         // $user_user = User::findOrFail($this->user_search('Chairman'));
         // $user_user->assignRole('Admin');
-        
     }
-    private function user_search($user_name){
-        $user_info=User::where('name',$user_name)->first();
+    private function user_search($user_name)
+    {
+        $user_info=User::where('name', $user_name)->first();
         return $user_id=$user_info['id'];
     }
 }

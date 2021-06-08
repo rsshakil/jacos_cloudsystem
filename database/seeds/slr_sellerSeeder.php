@@ -33,6 +33,11 @@ class slr_sellerSeeder extends Seeder
                 'cmn_company_id' => 5,
                 'adm_role_id' => 0,
             ],
+            [
+                'cmn_company_id' => 8,
+                'adm_role_id' => 0,
+            ],
+
         );
         App\Models\SLR\slr_seller::insert($slr);
     }

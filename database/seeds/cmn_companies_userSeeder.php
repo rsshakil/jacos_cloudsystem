@@ -40,6 +40,10 @@ class cmn_companies_userSeeder extends Seeder
             [
                 'cmn_company_id'=>7,
                 'adm_user_id'=>11,
+            ],
+            [
+                'cmn_company_id'=>8,
+                'adm_user_id'=>12,
             ]
         );
         App\Models\CMN\cmn_companies_user::insert($companies_user);
