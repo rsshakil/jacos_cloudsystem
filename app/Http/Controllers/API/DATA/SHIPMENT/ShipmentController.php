@@ -47,6 +47,7 @@ class ShipmentController extends Controller
         $byr_buyer_id=$request->byr_buyer_id;
         $authUser = User::find($adm_user_id);
         $order_info=$request->order_info;
+        $dateTime = date('Y-m-d H:i:s');
         $cmn_connect_id = '';
         if (!$authUser->hasRole(config('const.adm_role_name'))) {
             $cmn_company_info=$this->all_functions->get_user_info($adm_user_id, $byr_buyer_id);
@@ -56,7 +57,7 @@ class ShipmentController extends Controller
         $csv_data_count = data_shipment_voucher::join('data_shipments as ds', 'ds.data_shipment_id', '=', 'data_shipment_vouchers.data_shipment_id')
             ->whereNotNull('data_shipment_vouchers.decision_datetime')
             ->whereNull('data_shipment_vouchers.send_datetime')
-            ->where('ds.cmn_connect_id', $cmn_connect_id)
+            // ->where('ds.cmn_connect_id', $cmn_connect_id)
             ->where('ds.data_order_id', $data_order_id)
             ->where('data_shipment_vouchers.mes_lis_shi_log_del_delivery_service_code', $order_info['mes_lis_shi_log_del_delivery_service_code'])
             ->where('data_shipment_vouchers.mes_lis_shi_par_sel_code', $order_info['mes_lis_shi_par_sel_code'])
@@ -67,7 +68,7 @@ class ShipmentController extends Controller
 
         if (!$data_count) {
             $request->request->add(['cmn_connect_id' => $cmn_connect_id]);
-            $dateTime = date('Y-m-d H:i:s');
+
             // $new_file_name = $this->all_functions->downloadFileName($request, 'csv', '受注');
             $new_file_name = $this->all_functions->sendFileName($request, 'csv', 'shipment');
 
@@ -90,6 +91,12 @@ class ShipmentController extends Controller
             // (new ShipmentCSVExport($request))->store(config('const.SHIPMENT_CSV_PATH').'/'.$new_file_name);
             data_shipment_voucher::whereNotNull('decision_datetime')
             ->whereNull('send_datetime')
+            ->where('mes_lis_shi_log_del_delivery_service_code', $order_info['mes_lis_shi_log_del_delivery_service_code'])
+            ->where('mes_lis_shi_par_sel_code', $order_info['mes_lis_shi_par_sel_code'])
+            ->where('mes_lis_shi_par_sel_name', $order_info['mes_lis_shi_par_sel_name'])
+            ->where('mes_lis_shi_tra_dat_delivery_date', $order_info['mes_lis_shi_tra_dat_delivery_date'])
+            ->where('mes_lis_shi_tra_goo_major_category', $order_info['mes_lis_shi_tra_goo_major_category'])
+            ->where('mes_lis_shi_tra_ins_temperature_code', $order_info['mes_lis_shi_tra_ins_temperature_code'])
             ->update(['send_datetime'=>$dateTime]);
         }
         Log::debug(__METHOD__.':end---');
