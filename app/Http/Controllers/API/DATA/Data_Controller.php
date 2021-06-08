@@ -682,27 +682,50 @@ class Data_Controller extends Controller
         // $shipment_data = $shipment_data->groupBy('dsv.mes_lis_shi_tra_trade_number');
         $shipment_data=$shipment_data->get();
         // return $shipment_data;
-
-        // ===============For PDF Data Start============
+        // ===================
         $recs = new \Illuminate\Database\Eloquent\Collection($shipment_data);
-        $grouped = $recs->groupBy('mes_lis_ord_par_rec_code')->transform(function ($item, $k) {
-            return $item->groupBy('mes_lis_ord_tra_trade_number');
-        });
+        // return $recs->groupBy(['mes_lis_ord_par_rec_code','mes_lis_ord_tra_trade_number']);
+        $grouped = $recs->groupBy(['mes_lis_ord_par_sel_code','mes_lis_ord_par_rec_code','mes_lis_ord_tra_trade_number']);
+        // ===================
+        // ===============For PDF Data Start============
+        // $recs = new \Illuminate\Database\Eloquent\Collection($shipment_data);
+        // $grouped = $recs->groupBy('mes_lis_ord_par_rec_code')->transform(function ($item, $k) {
+        //     return $item->groupBy('mes_lis_ord_tra_trade_number');
+        // });
+        // return $grouped;
         $all_shipment_data = $grouped->all();
+        // return $all_shipment_data;
         $report_arr_final=array();
         foreach ($all_shipment_data as $key => $value) {
             $tmp_array1=array();
             foreach ($value as $key1 => $value1) {
                 $tmp_array2=array();
                 foreach ($value1 as $key2 => $value2) {
-                    $value2->fax_number = json_decode($value2->optional)->order->fax->number;
-                    unset($value2->optional);
-                    $tmp_array2[]=$value2;
+                    $tmp_array3=array();
+                    foreach ($value2 as $key => $value3) {
+                        $value3->fax_number = json_decode($value3->optional)->order->fax->number;
+                        unset($value3->optional);
+                        $tmp_array3[]=$value3;
+                    }
+                    $tmp_array2[]=$tmp_array3;
                 }
                 $tmp_array1[]=$tmp_array2;
             }
             $report_arr_final[]=$tmp_array1;
         }
+        // foreach ($all_shipment_data as $key => $value) {
+        //     $tmp_array1=array();
+        //     foreach ($value as $key1 => $value1) {
+        //         $tmp_array2=array();
+        //         foreach ($value1 as $key2 => $value2) {
+        //             $value2->fax_number = json_decode($value2->optional)->order->fax->number;
+        //             unset($value2->optional);
+        //             $tmp_array2[]=$value2;
+        //         }
+        //         $tmp_array1[]=$tmp_array2;
+        //     }
+        //     $report_arr_final[]=$tmp_array1;
+        // }
         // ===============For PDF Data End============
         // ==========For Voucher Id Start==============
         $data_collection = collect($shipment_data);

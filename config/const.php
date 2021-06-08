@@ -16,6 +16,7 @@ return [
     'TASKCTRL' => 'tools/taskctrl/taskctrlWrapper.sh',
 
     'SHIPMENT_CSV_PATH' => '/shipment_csv',
+    'SHIPMENT_DOWNLOAD_CSV_PATH' => '/shipment_download_csv',
     'RECEIVE_CSV_PATH' => '/receive_csv',
     'RETURN_CSV_PATH' => '/return_csv',
     'PAYMENT_CSV_PATH' => '/payment_downloaded_csv',

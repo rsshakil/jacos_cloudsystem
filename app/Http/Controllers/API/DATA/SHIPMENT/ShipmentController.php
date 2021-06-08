@@ -34,6 +34,7 @@ class ShipmentController extends Controller
         $this->data_csv_order = new data_csv_order();
         $this->data_controller = new Data_Controller();
         $this->all_functions->folder_create('app/'.config('const.SHIPMENT_CSV_PATH'));
+        $this->all_functions->folder_create('app/'.config('const.SHIPMENT_DOWNLOAD_CSV_PATH'));
     }
     public function sendShipmentData(Request $request)
     {
@@ -108,7 +109,7 @@ class ShipmentController extends Controller
         if ($downloadType==1) {
             // CSV Download
             $new_file_name = $this->all_functions->downloadFileName($request, 'csv', '受注');
-            $download_file_url = Config::get('app.url')."storage/app".config('const.SHIPMENT_CSV_PATH')."/". $new_file_name;
+            $download_file_url = Config::get('app.url')."storage/app".config('const.SHIPMENT_DOWNLOAD_CSV_PATH')."/". $new_file_name;
 
             // get shipment data query
             $shipment_query = Data_Controller::get_shipment_data($request);
@@ -118,7 +119,7 @@ class ShipmentController extends Controller
 
             // CSV create
             Csv::create(
-                config('const.SHIPMENT_CSV_PATH')."/". $new_file_name,
+                config('const.SHIPMENT_DOWNLOAD_CSV_PATH')."/". $new_file_name,
                 $shipment_data,
                 Data_Controller::shipmentCsvHeading(),
                 config('const.CSV_FILE_ENCODE')
@@ -196,36 +197,75 @@ class ShipmentController extends Controller
         $y = 0;
         $odd_even=0;
         $data_count=0;
+        $first_page=0;
         $shipment_pdf_save_path=config('const.SHIPMENT_PDF_SAVE_PATH');
 
         $receipt=$this->all_functions->fpdfRet();
-        foreach ($pdf_datas as $key => $pdf_data) {
-            $receipt->AddPage();
-            foreach ($pdf_data as $key => $value) {
-                if ($data_count==0) {
-                    $receipt=$this->all_functions->pdfHeaderData($receipt, $value, $x, $y);
-                }
-                if ($odd_even==0) {
-                    if ($data_count!=0 && $data_count%2==0) {
-                        $receipt->AddPage();
-                        $receipt=$this->all_functions->pdfHeaderData($receipt, $value, $x, $y);
-                    }
-                    $this->all_functions->coordinateText($receipt, $value, 0, 50.7, 103.4);
-                }else{
-                    $this->all_functions->coordinateText($receipt, $value, 0, 117, 170);
-                }
-
-                if ($odd_even==0) {
-                    $odd_even=1;
-                }else{
-                    $odd_even=0;
-                }
-                $data_count+=1;
+        foreach ($pdf_datas as $key => $sel_data) {
+            if ($first_page!=0) {
+                $receipt->AddPage();
+                $first_page+=1;
             }
 
-            $data_count=0;
-            $odd_even=0;
+            foreach ($sel_data as $key => $rec_data) {
+                if ($first_page==0) {
+                    $receipt->AddPage();
+                }
+
+                foreach ($rec_data as $key => $trade_data) {
+                    if ($data_count==0) {
+                        $receipt=$this->all_functions->pdfHeaderData($receipt, $trade_data, $x, $y);
+                    }
+                    if ($odd_even==0) {
+                        if ($data_count!=0 && $data_count%2==0) {
+                            $receipt->AddPage();
+                            $receipt=$this->all_functions->pdfHeaderData($receipt, $trade_data, $x, $y);
+                        }
+                        $this->all_functions->coordinateText($receipt, $trade_data, 0, 50.7, 103.4);
+                    }else{
+                        $this->all_functions->coordinateText($receipt, $trade_data, 0, 117, 170);
+                    }
+
+                    if ($odd_even==0) {
+                        $odd_even=1;
+                    }else{
+                        $odd_even=0;
+                    }
+                    $data_count+=1;
+                }
+                $data_count=0;
+                $odd_even=0;
+            }
+            $first_page=0;
+
         }
+        // foreach ($pdf_datas as $key => $pdf_data) {
+        //     $receipt->AddPage();
+        //     foreach ($pdf_data as $key => $value) {
+        //         if ($data_count==0) {
+        //             $receipt=$this->all_functions->pdfHeaderData($receipt, $value, $x, $y);
+        //         }
+        //         if ($odd_even==0) {
+        //             if ($data_count!=0 && $data_count%2==0) {
+        //                 $receipt->AddPage();
+        //                 $receipt=$this->all_functions->pdfHeaderData($receipt, $value, $x, $y);
+        //             }
+        //             $this->all_functions->coordinateText($receipt, $value, 0, 50.7, 103.4);
+        //         }else{
+        //             $this->all_functions->coordinateText($receipt, $value, 0, 117, 170);
+        //         }
+
+        //         if ($odd_even==0) {
+        //             $odd_even=1;
+        //         }else{
+        //             $odd_even=0;
+        //         }
+        //         $data_count+=1;
+        //     }
+
+        //     $data_count=0;
+        //     $odd_even=0;
+        // }
         $pdf_file_path= $this->all_functions->pdfFileSave($receipt, 1,$shipment_pdf_save_path);
         array_push($pdf_file_paths, $pdf_file_path);
         // return 0;
@@ -237,7 +277,7 @@ class ShipmentController extends Controller
 
     public function deletedownloadedshipmentCsv($fileUrl)
     {
-        $path = storage_path().'/app'.config('const.SHIPMENT_CSV_PATH')."/". $fileUrl;
+        $path = storage_path().'/app'.config('const.SHIPMENT_DOWNLOAD_CSV_PATH')."/". $fileUrl;
         unlink($path);
         return response()->json(['message' => 'Success','status'=>1]);
     }
