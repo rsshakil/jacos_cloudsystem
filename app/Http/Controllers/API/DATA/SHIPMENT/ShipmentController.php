@@ -418,7 +418,7 @@ class ShipmentController extends Controller
             ->join('data_shipments as ds', 'ds.data_shipment_id', '=', 'dsv.data_shipment_id')
             ->where('ds.data_order_id', $data_order_id)
             ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $delivery_service_code)
-            // ->where('dsv.mes_lis_shi_par_sel_code', $mes_lis_shi_par_sel_code)
+             ->where('dsv.mes_lis_shi_par_sel_code', $mes_lis_shi_par_sel_code)
             // ->where('dsv.mes_lis_shi_par_sel_name', $mes_lis_shi_par_sel_name)
             ->where('dsv.mes_lis_shi_tra_dat_delivery_date', $delivery_date)
             ->where('dsv.mes_lis_shi_tra_goo_major_category', $major_category)

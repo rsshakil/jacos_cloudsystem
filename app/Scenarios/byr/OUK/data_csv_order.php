@@ -590,7 +590,7 @@ class data_csv_order extends ScenarioBase
             'data_order_items.mes_lis_ord_lin_amo_item_selling_price_unit_price',
             'data_order_items.mes_lis_ord_lin_amo_item_net_price',
             'data_order_items.mes_lis_ord_lin_amo_item_net_price_unit_price',
-            'data_order_items.mes_lis_ord_lin_lin_line_number',
+            'data_order_items.mes_lis_ord_lin_lin_line_number'
             // DB::raw('substr(data_order_vouchers.mes_lis_ord_par_sel_code, -6) as sel_code')
         )
             ->join('data_order_vouchers', 'data_order_vouchers.data_order_id', '=', 'data_orders.data_order_id')
