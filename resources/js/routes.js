@@ -70,6 +70,10 @@ import slr_payment_item_detail from './components/backend/BYR/DATA/PAYMENT/slr_p
 
 import invoice_list from './components/backend/DATA/INVOICE/invoice_list.vue'
 import invoice_details from './components/backend/DATA/INVOICE/invoice_details.vue'
+
+import slr_invoice_list from './components/backend/BYR/DATA/INVOICE/slr_invoice_list.vue'
+import slr_invoice_details from './components/backend/BYR/DATA/INVOICE/slr_invoice_details.vue'
+
 import voucher_detail from './components/backend/voucher_detail.vue'
 import pdf_platform_setting from './components/backend/PDF_PLATFORM/pdf_platform_setting.vue'
 import pdf_platform_view from './components/backend/PDF_PLATFORM/pdf_platform_view.vue'
@@ -649,6 +653,32 @@ export const routes = [
             }
         }
     },
+    //slr invoice list
+    {
+        path: '/slr_invoice_list',
+        component: slr_invoice_list,
+        name: 'slr_invoice_list',
+        meta: {
+            breadcrumb: {
+                label: '請求トップ',
+                parent: 'home'
+            }
+        },
+
+
+    },
+    {
+        path: '/slr_invoice_list/slr_invoice_details',
+        component: slr_invoice_details,
+        name: 'slr_invoice_details',
+        meta: {
+            breadcrumb: {
+                label: '請求伝票一覧',
+                parent: 'slr_invoice_list'
+            }
+        }
+    },
+    //slr invoice list
     {
         path: '/invoice_list/voucher_detail/:voucher_number',
         component: voucher_detail,

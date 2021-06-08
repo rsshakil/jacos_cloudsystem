@@ -166,6 +166,11 @@ Route::post('slr_payment_unpaid_data_download', 'API\BYR\DATA\PAYMENT\PaymentCon
 
     Route::get('get_byr_return_list/{adm_user_id}', 'API\DATA\RTN\ReturnController@getReturnItemList');
     Route::post('get_all_cat_list', 'API\CMN\CmnCategoryController@get_all_cat_list');
+    //slr Invoice
+    Route::post('slr_get_all_invoice_list', 'API\BYR\DATA\INVOICE\InvoiceController@get_all_invoice_list');
+    Route::post('slr_get_invoice_details_list', 'API\BYR\DATA\INVOICE\InvoiceController@invoiceDetailsList');
+    Route::post('slr_get_voucher_detail_popup2_invoice', 'API\BYR\DATA\INVOICE\InvoiceController@get_voucher_detail_popup2_invoice');
+
     // Invoice
     Route::post('get_all_invoice_list', 'API\DATA\INVOICE\InvoiceController@get_all_invoice_list');
     Route::post('invoiceInsert', 'API\DATA\INVOICE\InvoiceController@invoiceInsert');
