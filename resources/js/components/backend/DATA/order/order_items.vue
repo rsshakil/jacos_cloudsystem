@@ -769,7 +769,7 @@ export default {
         var calval =
           order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity /
           order_item_detail_list.mes_lis_shi_lin_qua_unit_multiple;
-        if (calval > 0 && calval % 1 === 0) {
+        //if (calval > 0 && calval % 1 === 0) {
           if (
             calval >
             order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units
@@ -780,30 +780,32 @@ export default {
               calval * order_item_detail_list.mes_lis_shi_lin_qua_unit_multiple;
           }
           order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units = calval;
-        }
+        //}
       }
       this.checkUpdateDeliveryStatus();
     },
     checkUpdateDeliveryStatus() {
       var caseBallQtycheck = [];
       var allIsZero = [];
+      var allIsfull = [];
       var allIsNotZero = [];
-      var allIsZeroNotZero = [];
       var totalRows = this.order_item_detail_lists.length;
       this.order_item_detail_lists.forEach(function (
         order_item_detail_listData
       ) {
         if (order_item_detail_listData.mes_lis_shi_lin_qua_shi_quantity == 0) {
           allIsZero.push(0);
-        } else {
-          allIsNotZero.push(1);
+        } else if(order_item_detail_listData.mes_lis_shi_lin_qua_shi_num_of_order_units == order_item_detail_listData.mes_lis_shi_lin_qua_ord_num_of_order_units ){
+          allIsfull.push(1);
+        }else{
+          allIsNotZero.push(2);
         }
       });
       this.order_item_shipment_data_headTable.status = "一部未納";
       if (totalRows == allIsZero.length) {
         this.order_item_shipment_data_headTable.status = "未納";
       }
-      if (totalRows == allIsNotZero.length) {
+      if (totalRows == allIsfull.length) {
         this.order_item_shipment_data_headTable.status = "完納";
       }
     },

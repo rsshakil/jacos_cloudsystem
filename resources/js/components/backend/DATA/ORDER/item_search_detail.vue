@@ -646,7 +646,7 @@ export default {
         var calval =
           order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity /
           order_item_detail_list.mes_lis_shi_lin_qua_unit_multiple;
-        if (calval > 0 && calval % 1 === 0) {
+       // if (calval > 0 && calval % 1 === 0) {
           if (
             calval >
             order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units
@@ -657,7 +657,7 @@ export default {
               calval * order_item_detail_list.mes_lis_shi_lin_qua_unit_multiple;
           }
           order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units = calval;
-        }
+        //}
       }
       //this.checkUpdateDeliveryStatus();
     },
