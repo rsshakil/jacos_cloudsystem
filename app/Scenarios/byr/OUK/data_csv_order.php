@@ -48,7 +48,7 @@ class data_csv_order extends ScenarioBase
         Log::debug(__METHOD__.':start---');
 
         // test
-        // $data=$this->pdfGenerate(1);
+        // $data=$this->pdfGenerate(1,993477);
         // return ['message'=>'Success','status'=>1,'data'=>$data];
         // test
 
@@ -507,19 +507,30 @@ class data_csv_order extends ScenarioBase
         $file_number=1;
         $page_limit=10;
         $order_pdf_save_path=config('const.ORDER_PDF_SAVE_PATH');
+        $first_page=0;
 
         $receipt=$this->all_functions->fpdfRet();
-        foreach ($pdf_datas as $key => $pdf_data) {
+
+        foreach ($pdf_datas as $key => $sel_data) {
             if ($page!=0 && $page%$page_limit==0) {
                 $pdf_file_path = $this->all_functions->pdfFileSave($receipt, $file_number,$order_pdf_save_path);
                 array_push($pdf_file_paths, $pdf_file_path);
                 $receipt=$this->all_functions->fpdfRet();
                 $file_number+=1;
             }
-            $receipt->AddPage();
-            Log::info($page);
-            $page+=1;
-            foreach ($pdf_data as $key => $value) {
+            if ($first_page!=0) {
+                $receipt->AddPage();
+                $first_page+=1;
+                $page+=1;
+            }
+            // $receipt->AddPage();
+            // Log::info($page);
+            foreach ($sel_data as $key => $rec_data) {
+                if ($first_page==0) {
+                    $receipt->AddPage();
+                    $page+=1;
+                }
+            foreach ($rec_data as $key => $value) {
                 if ($data_count==0) {
                     $receipt=$this->all_functions->pdfHeaderData($receipt, $value, $x, $y);
                 }
@@ -551,6 +562,8 @@ class data_csv_order extends ScenarioBase
             $data_count=0;
             $odd_even=0;
         }
+        $first_page=0;
+    }
         if ($page%$page_limit!=0) {
             $pdf_file_path = $this->all_functions->pdfFileSave($receipt, $file_number,$order_pdf_save_path);
             array_push($pdf_file_paths, $pdf_file_path);
@@ -561,6 +574,77 @@ class data_csv_order extends ScenarioBase
         return $pdf_file_paths;
         // =====================
     }
+    // OLD OK Function
+    // public function pdfGenerate($data_order_id,$partner_code)
+    // {
+    //     Log::debug(__METHOD__.':start---');
+
+    //     $pdf_datas = $this->pdfDAta($data_order_id,$partner_code);
+    //     // return $pdf_datas;
+    //     // =====================
+    //     $pdf_file_paths=array();
+    //     $page=0;
+    //     $x = 0;
+    //     $y = 0;
+    //     $odd_even=0;
+    //     $data_count=0;
+    //     $file_number=1;
+    //     $page_limit=10;
+    //     $order_pdf_save_path=config('const.ORDER_PDF_SAVE_PATH');
+
+    //     $receipt=$this->all_functions->fpdfRet();
+    //     foreach ($pdf_datas as $key => $pdf_data) {
+    //         if ($page!=0 && $page%$page_limit==0) {
+    //             $pdf_file_path = $this->all_functions->pdfFileSave($receipt, $file_number,$order_pdf_save_path);
+    //             array_push($pdf_file_paths, $pdf_file_path);
+    //             $receipt=$this->all_functions->fpdfRet();
+    //             $file_number+=1;
+    //         }
+    //         $receipt->AddPage();
+    //         Log::info($page);
+    //         $page+=1;
+    //         foreach ($pdf_data as $key => $value) {
+    //             if ($data_count==0) {
+    //                 $receipt=$this->all_functions->pdfHeaderData($receipt, $value, $x, $y);
+    //             }
+    //             if ($odd_even==0) {
+    //                 if ($data_count!=0 && $data_count%2==0) {
+    //                     if ($page%$page_limit==0) {
+    //                         $pdf_file_path = $this->all_functions->pdfFileSave($receipt, $file_number,$order_pdf_save_path);
+    //                         array_push($pdf_file_paths, $pdf_file_path);
+    //                         $receipt=$this->all_functions->fpdfRet();
+    //                         $file_number+=1;
+    //                     }
+    //                     $receipt->AddPage();
+    //                     $page+=1;
+    //                     $receipt=$this->all_functions->pdfHeaderData($receipt, $value, $x, $y);
+    //                 }
+    //                 $this->all_functions->coordinateText($receipt, $value, 0, 50.7, 103.4);
+    //             }else{
+    //                 $this->all_functions->coordinateText($receipt, $value, 0, 117, 170);
+    //             }
+
+    //             if ($odd_even==0) {
+    //                 $odd_even=1;
+    //             }else{
+    //                 $odd_even=0;
+    //             }
+    //             $data_count+=1;
+    //         }
+
+    //         $data_count=0;
+    //         $odd_even=0;
+    //     }
+    //     if ($page%$page_limit!=0) {
+    //         $pdf_file_path = $this->all_functions->pdfFileSave($receipt, $file_number,$order_pdf_save_path);
+    //         array_push($pdf_file_paths, $pdf_file_path);
+    //         $receipt=$this->all_functions->fpdfRet();
+    //         $file_number+=1;
+    //     }
+    //     Log::debug(__METHOD__.':end---');
+    //     return $pdf_file_paths;
+    //     // =====================
+    // }
     public function pdfDAta($data_order_id,$partner_code)
     {
         Log::debug(__METHOD__.':start---');
@@ -568,7 +652,7 @@ class data_csv_order extends ScenarioBase
         // $line_per_page=$request->line_per_page;
         // $data_order_id=$request->data_order_id;
         $report_arr_final = array();
-        $order_data = data_order::select(
+        $order_query_data = data_order::select(
             'cmn_connects.optional',
             'data_order_vouchers.mes_lis_ord_par_sel_name_sbcs',
             'data_order_vouchers.mes_lis_ord_par_sel_code',
@@ -600,27 +684,48 @@ class data_csv_order extends ScenarioBase
             ->where('data_orders.data_order_id', $data_order_id)
             ->get();
             // ==================
-            $recs = new \Illuminate\Database\Eloquent\Collection($order_data);
-            $grouped = $recs->groupBy('mes_lis_ord_par_rec_code')->transform(function($item, $k) {
-                return $item->groupBy('mes_lis_ord_tra_trade_number');
-            });
+            // $recs = new \Illuminate\Database\Eloquent\Collection($order_data);
+            // $grouped = $recs->groupBy('mes_lis_ord_par_rec_code')->transform(function($item, $k) {
+            //     return $item->groupBy('mes_lis_ord_tra_trade_number');
+            // });
+            $recs = new \Illuminate\Database\Eloquent\Collection($order_query_data);
+            $grouped = $recs->groupBy(['mes_lis_ord_par_sel_code','mes_lis_ord_par_rec_code','mes_lis_ord_tra_trade_number']);
+            // ===================
+            // $all_shipment_data = $grouped->all();
             // return $grouped;
             // ===============
-            $aaa = $grouped->all();
+            $order_raw_data = $grouped->all();
             $report_arr_final=array();
-            foreach ($aaa as $key => $value) {
+            foreach ($order_raw_data as $key => $value) {
                 $tmp_array1=array();
                 foreach ($value as $key1 => $value1) {
-                $tmp_array2=array();
+                    $tmp_array2=array();
                     foreach ($value1 as $key2 => $value2) {
-                        $value2->fax_number = json_decode($value2->optional)->order->fax->number;
-                        unset($value2->optional);
-                        $tmp_array2[]=$value2;
+                        $tmp_array3=array();
+                        foreach ($value2 as $key => $value3) {
+                            $value3->fax_number = json_decode($value3->optional)->order->fax->number;
+                            unset($value3->optional);
+                            $tmp_array3[]=$value3;
+                        }
+                        $tmp_array2[]=$tmp_array3;
                     }
                     $tmp_array1[]=$tmp_array2;
                 }
                 $report_arr_final[]=$tmp_array1;
             }
+            // foreach ($order_raw_data as $key => $value) {
+            //     $tmp_array1=array();
+            //     foreach ($value as $key1 => $value1) {
+            //     $tmp_array2=array();
+            //         foreach ($value1 as $key2 => $value2) {
+            //             $value2->fax_number = json_decode($value2->optional)->order->fax->number;
+            //             unset($value2->optional);
+            //             $tmp_array2[]=$value2;
+            //         }
+            //         $tmp_array1[]=$tmp_array2;
+            //     }
+            //     $report_arr_final[]=$tmp_array1;
+            // }
             Log::debug(__METHOD__.':end---');
             return $report_arr_final;
             // ==================

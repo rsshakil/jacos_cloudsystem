@@ -287,19 +287,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr
-                v-for="(order_detail_list, index) in order_detail_lists.data"
-                :key="index"
-              >
-                <td>
-                  {{
-                    order_detail_lists.current_page *
-                      select_field_per_page_num -
-                    select_field_per_page_num +
-                    index +
-                    1
-                  }}
-                </td>
+              <tr v-for="(order_detail_list, index) in order_detail_lists.data" :key="index">
+                <td>{{ order_detail_lists.current_page * select_field_per_page_num - select_field_per_page_num + index + 1 }}</td>
                 <td>
                   <span v-if="order_detail_list.decision_datetime != null">
                     <b-button pill variant="info" @click="decissionDateUpdate(order_detail_list.data_shipment_voucher_id)" :disabled="is_disabled(!order_detail_list.send_datetime)">
@@ -308,12 +297,7 @@
                     >
                   </span>
                   <span v-else>
-                    <input
-                      type="checkbox"
-                      v-bind:value="order_detail_list.data_shipment_voucher_id"
-                      v-model="selected"
-                      @change="updateCheckall()"
-                    />
+                    <input type="checkbox" v-bind:value="order_detail_list.data_shipment_voucher_id" v-model="selected" @change="updateCheckall()" />
                   </span>
                 </td>
                 <td>{{ order_detail_list.mes_lis_shi_par_shi_code }}</td>
@@ -322,19 +306,11 @@
                   {{ order_detail_list.mes_lis_shi_par_rec_name }}
                 </td>
                 <td>
-                  <router-link
-                    :to="{
-                      name: 'order_item_list_detail',
-                      params: {
-                        data_order_list_voucher_id:
-                          order_detail_list.data_shipment_voucher_id,
-                      },
-                    }"
-                    class=""
-                    >{{
+                    <router-link :to="{ name: 'order_item_list_detail', params: { data_order_list_voucher_id: order_detail_list.data_shipment_voucher_id},}" class="">
+                    {{
                       order_detail_list.mes_lis_shi_tra_trade_number
-                    }}</router-link
-                  >
+                    }}
+                    </router-link>
                 </td>
                 <td>
                   {{
