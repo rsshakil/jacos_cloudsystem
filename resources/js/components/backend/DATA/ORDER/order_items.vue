@@ -532,7 +532,7 @@
                   原価金額<br />合計
                 </th>
                 <th style="text-align: right">
-                  {{ totalCostPriceVal | priceFormat }}
+                  {{ totalCostPriceVal | priceFormatNullZero }}
                 </th>
                 <th
                   style="background: #538ed3; color: #fff; text-align: center"
@@ -540,7 +540,7 @@
                   売価金額<br />合計
                 </th>
                 <th style="text-align: right">
-                  {{ totalSellingPriceVal | priceFormat }}
+                  {{ totalSellingPriceVal | priceFormatNullZero }}
                 </th>
                 <th></th>
               </tr>
