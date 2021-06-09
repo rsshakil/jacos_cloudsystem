@@ -320,7 +320,6 @@ class ShipmentController extends Controller
         $updated_date = $request->updated_date;
         $total_selling_price = $request->total_selling_price;
         $total_cost_price = $request->total_cost_price;
-        $updated_date = $request->updated_date;
         $status = $request->order_status;
         $mes_lis_shi_tot_tot_net_price_total_sum=0;
         $mes_lis_shi_tot_tot_selling_price_total_sum=0;
@@ -328,9 +327,9 @@ class ShipmentController extends Controller
         $mes_lis_shi_tot_tot_item_total_sum=0;
         $mes_lis_shi_tot_tot_unit_total_sum=0;
         foreach ($items as $item) {
-            $mes_lis_shi_tot_tot_net_price_total_sum +=$item['mes_lis_shi_lin_amo_item_net_price'];
-            $mes_lis_shi_tot_tot_selling_price_total_sum +=$item['mes_lis_shi_lin_amo_item_selling_price'];
-            $mes_lis_shi_tot_tot_tax_total_sum +=$item['mes_lis_shi_lin_amo_item_tax'];
+            $mes_lis_shi_tot_tot_net_price_total_sum +=$item['mes_lis_shi_lin_qua_shi_quantity']*$item['mes_lis_shi_lin_amo_item_net_price_unit_price'];//$item['mes_lis_shi_lin_amo_item_net_price'];
+            $mes_lis_shi_tot_tot_selling_price_total_sum +=$item['mes_lis_shi_lin_qua_shi_quantity']*$item['mes_lis_shi_lin_amo_item_selling_price_unit_price'];//$item['mes_lis_shi_lin_amo_item_selling_price'];
+            $mes_lis_shi_tot_tot_tax_total_sum +=($item['mes_lis_shi_lin_amo_item_net_price']*$item['mes_lis_shi_tra_tax_tax_rate'])/100;//$item['mes_lis_shi_lin_amo_item_tax'];
             $mes_lis_shi_tot_tot_item_total_sum +=$item['mes_lis_shi_lin_qua_shi_quantity'];
             $mes_lis_shi_tot_tot_unit_total_sum +=$item['mes_lis_shi_lin_qua_shi_num_of_order_units'];
             data_shipment_item::where('data_shipment_item_id', $item['data_shipment_item_id'])->update([
@@ -355,8 +354,12 @@ class ShipmentController extends Controller
                 'mes_lis_shi_lin_amo_item_selling_price_unit_price'=>$item['mes_lis_shi_lin_amo_item_selling_price_unit_price'],
             ]);
         }
+       if(isset($updated_date)){
         data_shipment_voucher::where('data_shipment_voucher_id', $items[0]['data_shipment_voucher_id'])->update([
-            'mes_lis_shi_tra_dat_revised_delivery_date'=>$updated_date,
+            'mes_lis_shi_tra_dat_revised_delivery_date'=>$updated_date
+            ]);
+       }
+        data_shipment_voucher::where('data_shipment_voucher_id', $items[0]['data_shipment_voucher_id'])->update([
             'mes_lis_shi_tot_tot_net_price_total'=>$mes_lis_shi_tot_tot_net_price_total_sum,
             'mes_lis_shi_tot_tot_selling_price_total'=>$mes_lis_shi_tot_tot_selling_price_total_sum,
             'mes_lis_shi_tot_tot_tax_total'=>$mes_lis_shi_tot_tot_tax_total_sum,
