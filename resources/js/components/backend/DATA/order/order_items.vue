@@ -319,7 +319,7 @@
                     class="form-control"
                     :min="0"
                     :max="order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units"
-                    @keyup="ball_case_cal(order_item_detail_list, 'ケース')"
+                    @change="ball_case_cal(order_item_detail_list, 'ケース')"
                     v-model="
                       order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units
                     "
@@ -345,7 +345,8 @@
                     class="form-control"
                     :min="0"
                     :max="order_item_detail_list.mes_lis_shi_lin_qua_ord_quantity"
-                    @keyup="ball_case_cal(order_item_detail_list, 'バラ')"
+                    @change="ball_case_cal(order_item_detail_list, 'バラ')"
+                    :step="order_item_detail_list.mes_lis_shi_lin_qua_unit_multiple"
                     v-model="
                       order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity
                     "
@@ -752,7 +753,7 @@ export default {
     },
     ball_case_cal(order_item_detail_list, field_type) {
       if (field_type == "ケース") {
-        // order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity=order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units*order_item_detail_list.mes_lis_shi_lin_qua_ord_quantity;
+         order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity=order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units*order_item_detail_list.mes_lis_shi_lin_qua_unit_multiple;
         if (
           order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units >
           order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units

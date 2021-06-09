@@ -257,6 +257,7 @@
                     type="number"
                     :min="0"
                     :max="order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units"
+                    @change="ball_case_cal(order_item_detail_list, 'ケース')"
                     v-model="
                       order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units
                     "
@@ -283,6 +284,8 @@
                     type="number"
                      :min="0"
                     :max="order_item_detail_list.mes_lis_shi_lin_qua_ord_quantity"
+                    :step="order_item_detail_list.mes_lis_shi_lin_qua_unit_multiple"
+                    @change="ball_case_cal(order_item_detail_list, 'バラ')"
                     v-model="
                       order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity
                     "
@@ -625,6 +628,39 @@ export default {
     }
   },
   methods: {
+    ball_case_cal(order_item_detail_list, field_type) {
+      if (field_type == "ケース") {
+         order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity=order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units*order_item_detail_list.mes_lis_shi_lin_qua_unit_multiple;
+        if (
+          order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units >
+          order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units
+        ) {
+          order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units =
+            order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units;
+        }
+        order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity =
+          order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units *
+          order_item_detail_list.mes_lis_shi_lin_qua_unit_multiple;
+      } else {
+        // var calval=order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity/order_item_detail_list.mes_lis_shi_lin_qua_ord_quantity;
+        var calval =
+          order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity /
+          order_item_detail_list.mes_lis_shi_lin_qua_unit_multiple;
+        if (calval > 0 && calval % 1 === 0) {
+          if (
+            calval >
+            order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units
+          ) {
+            calval =
+              order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units;
+            order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity =
+              calval * order_item_detail_list.mes_lis_shi_lin_qua_unit_multiple;
+          }
+          order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units = calval;
+        }
+      }
+      //this.checkUpdateDeliveryStatus();
+    },
     checkValidate() {
       var _this = this;
       var isValidate = 1;
