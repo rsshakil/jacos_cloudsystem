@@ -19,6 +19,7 @@ use App\Traits\Csv;
 use App\Models\ADM\User;
 use App\Scenarios\byr\OUK\data_csv_order;
 use setasign\Fpdi\Tcpdf\Fpdi;
+
 require_once base_path('vendor/tecnickcom/tcpdf/tcpdf.php');
 use Symfony\Component\HttpFoundation\Response;
 use tecnickcom\tcpdf\TCPDF_FONTS;
@@ -81,11 +82,11 @@ class ShipmentController extends Controller
             // \Log::debug($shipment_data);
 
             // CSV create
+            // UTF-8
             Csv::create(
                 config('const.SHIPMENT_CSV_PATH')."/". $new_file_name,
                 $shipment_data,
-                Data_Controller::shipmentCsvHeading(),
-                config('const.CSV_FILE_ENCODE')
+                Data_Controller::shipmentCsvHeading()
             );
             // ==============
             // (new ShipmentCSVExport($request))->store(config('const.SHIPMENT_CSV_PATH').'/'.$new_file_name);
@@ -184,7 +185,7 @@ class ShipmentController extends Controller
             $pdf_file_names=$download_files[0]['pdf_file_name'];
 
             foreach ($voucher_id_array as $key => $voucher_id) {
-                data_shipment_voucher::where('data_order_voucher_id',$voucher_id)->update(
+                data_shipment_voucher::where('data_order_voucher_id', $voucher_id)->update(
                     ['print_datetime'=>$cur_datetime]
                 );
             }
@@ -229,13 +230,13 @@ class ShipmentController extends Controller
                             $receipt=$this->all_functions->pdfHeaderData($receipt, $trade_data, $x, $y);
                         }
                         $this->all_functions->coordinateText($receipt, $trade_data, 0, 50.7, 103.4);
-                    }else{
+                    } else {
                         $this->all_functions->coordinateText($receipt, $trade_data, 0, 117, 170);
                     }
 
                     if ($odd_even==0) {
                         $odd_even=1;
-                    }else{
+                    } else {
                         $odd_even=0;
                     }
                     $data_count+=1;
@@ -244,7 +245,6 @@ class ShipmentController extends Controller
                 $odd_even=0;
             }
             $first_page=0;
-
         }
         // foreach ($pdf_datas as $key => $pdf_data) {
         //     $receipt->AddPage();
@@ -273,7 +273,7 @@ class ShipmentController extends Controller
         //     $data_count=0;
         //     $odd_even=0;
         // }
-        $pdf_file_path= $this->all_functions->pdfFileSave($receipt, 1,$shipment_pdf_save_path);
+        $pdf_file_path= $this->all_functions->pdfFileSave($receipt, 1, $shipment_pdf_save_path);
         array_push($pdf_file_paths, $pdf_file_path);
         // return 0;
         Log::debug(__METHOD__.':end---');
