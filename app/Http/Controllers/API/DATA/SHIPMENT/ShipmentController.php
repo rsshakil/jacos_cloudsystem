@@ -327,9 +327,12 @@ class ShipmentController extends Controller
         $mes_lis_shi_tot_tot_item_total_sum=0;
         $mes_lis_shi_tot_tot_unit_total_sum=0;
         foreach ($items as $item) {
-            $mes_lis_shi_tot_tot_net_price_total_sum +=$item['mes_lis_shi_lin_qua_shi_quantity']*$item['mes_lis_shi_lin_amo_item_net_price_unit_price'];//$item['mes_lis_shi_lin_amo_item_net_price'];
-            $mes_lis_shi_tot_tot_selling_price_total_sum +=$item['mes_lis_shi_lin_qua_shi_quantity']*$item['mes_lis_shi_lin_amo_item_selling_price_unit_price'];//$item['mes_lis_shi_lin_amo_item_selling_price'];
-            $mes_lis_shi_tot_tot_tax_total_sum +=($item['mes_lis_shi_lin_amo_item_net_price']*$item['mes_lis_shi_tra_tax_tax_rate'])/100;//$item['mes_lis_shi_lin_amo_item_tax'];
+            $netprice = $item['mes_lis_shi_lin_qua_shi_quantity']*$item['mes_lis_shi_lin_amo_item_net_price_unit_price'];
+            $sellingPrice = $item['mes_lis_shi_lin_qua_shi_quantity']*$item['mes_lis_shi_lin_amo_item_selling_price_unit_price'];
+            $tax = ($netprice*$item['mes_lis_shi_tra_tax_tax_rate'])/100;
+            $mes_lis_shi_tot_tot_net_price_total_sum +=$netprice;
+            $mes_lis_shi_tot_tot_selling_price_total_sum +=$sellingPrice;
+            $mes_lis_shi_tot_tot_tax_total_sum +=$tax;//$item['mes_lis_shi_lin_amo_item_tax'];
             $mes_lis_shi_tot_tot_item_total_sum +=$item['mes_lis_shi_lin_qua_shi_quantity'];
             $mes_lis_shi_tot_tot_unit_total_sum +=$item['mes_lis_shi_lin_qua_shi_num_of_order_units'];
             data_shipment_item::where('data_shipment_item_id', $item['data_shipment_item_id'])->update([
@@ -346,11 +349,11 @@ class ShipmentController extends Controller
                 'mes_lis_shi_lin_qua_sto_num_of_order_units'=>$item['mes_lis_shi_lin_qua_ord_num_of_order_units']-$item['mes_lis_shi_lin_qua_shi_num_of_order_units'],
                 'mes_lis_shi_lin_qua_sto_reason_code'=>$item['mes_lis_shi_lin_qua_sto_reason_code'],
                // 'mes_lis_shi_lin_amo_item_net_price'=>$total_cost_price,
-                'mes_lis_shi_lin_amo_item_net_price'=>$item['mes_lis_shi_lin_qua_shi_quantity']*$item['mes_lis_shi_lin_amo_item_net_price_unit_price'],
+                'mes_lis_shi_lin_amo_item_net_price'=>$netprice,
                 'mes_lis_shi_lin_amo_item_net_price_unit_price'=>$item['mes_lis_shi_lin_amo_item_net_price_unit_price'],
                 //'mes_lis_shi_lin_amo_item_selling_price'=>$total_selling_price,
-                'mes_lis_shi_lin_amo_item_selling_price'=>$item['mes_lis_shi_lin_qua_shi_quantity']*$item['mes_lis_shi_lin_amo_item_selling_price_unit_price'],
-                'mes_lis_shi_lin_amo_item_tax'=>($item['mes_lis_shi_lin_amo_item_net_price']*$item['mes_lis_shi_tra_tax_tax_rate'])/100,
+                'mes_lis_shi_lin_amo_item_selling_price'=>$sellingPrice,
+                'mes_lis_shi_lin_amo_item_tax'=>$tax,
                 'mes_lis_shi_lin_amo_item_selling_price_unit_price'=>$item['mes_lis_shi_lin_amo_item_selling_price_unit_price'],
             ]);
         }
