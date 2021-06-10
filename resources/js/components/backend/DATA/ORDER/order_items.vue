@@ -374,7 +374,7 @@
                     "
                     class="form-control text-right"
                     :min="0"
-                    :max="order_item_detail_list.mes_lis_ord_lin_amo_item_net_price_unit_price"
+                    
                     v-model="
                       order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price
                     "
@@ -412,7 +412,7 @@
                     "
                     class="form-control text-right"
                     :min="0"
-                    :max="order_item_detail_list.mes_lis_ord_lin_amo_item_selling_price_unit_price"
+                    
                     v-model="
                       order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price
                     "

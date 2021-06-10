@@ -129,7 +129,7 @@
                   type="number"
                   class="form-control"
                   :min="0"
-                    :max="order_item_lists.mes_lis_shi_lin_qua_ord_num_of_order_units"
+                    
                     @change="caseBallUpdate(order_item_lists, 'ケース')"
                   v-model="
                     order_item_lists.mes_lis_shi_lin_qua_shi_num_of_order_units
@@ -141,7 +141,7 @@
                   type="number"
                   class="form-control"
                   :min="0"
-                    :max="order_item_lists.mes_lis_shi_lin_qua_ord_quantity"
+                    
                     :step="order_item_lists.mes_lis_shi_lin_qua_unit_multiple"
                      @change="caseBallUpdate(order_item_lists, 'バラ')"
                   v-model="order_item_lists.mes_lis_shi_lin_qua_shi_quantity" 
@@ -156,7 +156,7 @@
                   type="number"
                   class="form-control"
                   :min="0"
-                    :max="order_item_lists.mes_lis_ord_lin_amo_item_net_price_unit_price"
+                   
                   v-model="
                     order_item_lists.mes_lis_shi_lin_amo_item_net_price_unit_price
                   "
@@ -170,7 +170,7 @@
                   type="number"
                   class="form-control"
                   :min="0"
-                    :max="order_item_lists.mes_lis_ord_lin_amo_item_selling_price_unit_price"
+                    
                   v-model="
                     order_item_lists.mes_lis_shi_lin_amo_item_selling_price_unit_price
                   "
@@ -306,7 +306,7 @@
                   <input
                     type="number"
                      :min="0"
-                    :max="order_item_detail_list.mes_lis_ord_lin_amo_item_net_price_unit_price"
+                    
                     v-model="
                       order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price
                     "
@@ -331,7 +331,7 @@
                   <input
                     type="number"
                     :min="0"
-                    :max="order_item_detail_list.mes_lis_ord_lin_amo_item_selling_price_unit_price"
+                    
                     v-model="
                       order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price
                     "
