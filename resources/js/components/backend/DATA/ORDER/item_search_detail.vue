@@ -667,27 +667,27 @@ export default {
     caseBallUpdate(order_item_detail_list, field_type){
       if(field_type=="ケース"){
         this.order_item_lists.mes_lis_shi_lin_qua_shi_quantity=order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units*order_item_detail_list.mes_lis_shi_lin_qua_unit_multiple;
-       if (
-          this.order_item_lists.mes_lis_shi_lin_qua_shi_num_of_order_units >
-          order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units
-        ) {
-          this.order_item_lists.mes_lis_shi_lin_qua_shi_num_of_order_units =
-            order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units;
-            this.order_item_lists.mes_lis_shi_lin_qua_shi_quantity=order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units*order_item_detail_list.mes_lis_shi_lin_qua_unit_multiple;
-        }
+      //  if (
+      //     this.order_item_lists.mes_lis_shi_lin_qua_shi_num_of_order_units >
+      //     order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units
+      //   ) {
+      //     this.order_item_lists.mes_lis_shi_lin_qua_shi_num_of_order_units =
+      //       order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units;
+      //       this.order_item_lists.mes_lis_shi_lin_qua_shi_quantity=order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units*order_item_detail_list.mes_lis_shi_lin_qua_unit_multiple;
+      //   }
       }else{
         var calval =
           order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity /
           order_item_detail_list.mes_lis_shi_lin_qua_unit_multiple;
-          if (
-            calval >
-            order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units
-          ) {
-            calval =
-              order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units;
-            order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity =
-              calval * order_item_detail_list.mes_lis_shi_lin_qua_unit_multiple;
-          }
+          // if (
+          //   calval >
+          //   order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units
+          // ) {
+          //   calval =
+          //     order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units;
+          //   order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity =
+          //     calval * order_item_detail_list.mes_lis_shi_lin_qua_unit_multiple;
+          // }
           this.order_item_lists.mes_lis_shi_lin_qua_shi_num_of_order_units = calval;
 
       }
@@ -782,8 +782,19 @@ export default {
       var order_detailitem = { items: this.order_item_lists };
       //this.order_item_detail_lists.push(this.order_item_lists); 
       _this.order_item_detail_lists.forEach(function (value, index) {
-        _this.order_item_detail_lists[index].mes_lis_shi_lin_qua_shi_num_of_order_units=_this.order_item_lists.mes_lis_shi_lin_qua_shi_num_of_order_units;
-        _this.order_item_detail_lists[index].mes_lis_shi_lin_qua_shi_quantity=_this.order_item_lists.mes_lis_shi_lin_qua_shi_quantity;
+        if(_this.order_item_lists.mes_lis_shi_lin_qua_shi_num_of_order_units>_this.order_item_detail_lists[index].mes_lis_shi_lin_qua_ord_num_of_order_units){
+          _this.order_item_detail_lists[index].mes_lis_shi_lin_qua_shi_num_of_order_units=_this.order_item_detail_lists[index].mes_lis_shi_lin_qua_ord_num_of_order_units
+        }else{
+          _this.order_item_detail_lists[index].mes_lis_shi_lin_qua_shi_num_of_order_units=_this.order_item_lists.mes_lis_shi_lin_qua_shi_num_of_order_units;
+        }
+        
+        if(_this.order_item_lists.mes_lis_shi_lin_qua_shi_quantity>_this.order_item_detail_lists[index].mes_lis_shi_lin_qua_ord_quantity){
+          _this.order_item_detail_lists[index].mes_lis_shi_lin_qua_shi_quantity=_this.order_item_detail_lists[index].mes_lis_shi_lin_qua_ord_quantity;
+        }else{
+          _this.order_item_detail_lists[index].mes_lis_shi_lin_qua_shi_quantity=_this.order_item_lists.mes_lis_shi_lin_qua_shi_quantity;
+        }
+        
+
         _this.order_item_detail_lists[index].mes_lis_shi_lin_amo_item_net_price_unit_price=_this.order_item_lists.mes_lis_shi_lin_amo_item_net_price_unit_price;
         _this.order_item_detail_lists[index].mes_lis_shi_lin_amo_item_selling_price_unit_price=_this.order_item_lists.mes_lis_shi_lin_amo_item_selling_price_unit_price;
         _this.order_item_detail_lists[index].mes_lis_shi_lin_qua_sto_reason_code=_this.order_item_lists.mes_lis_shi_lin_qua_sto_reason_code;
