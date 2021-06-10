@@ -65,7 +65,7 @@
      <div class="selectFildlistdata" style="position:relative;">
      <div class="customselectFields" v-for="(input,index) in selectfieldList" :key="input.id">
      <select class="form-control custominvoicejsnslect" v-model="input.value">
-        <option v-for="n in 30" :value="n">{{n}}日</option>
+        <option v-for="(n,i) in 30" :value="n" :key="i">{{n}}日</option>
         <option value="last">月末</option>
      </select>
      <b-icon @click="removeSelectField(input)" v-if="index!=0" class="customMinusIcon" icon="trash" aria-hidden="true"></b-icon>
@@ -107,7 +107,7 @@ export default {
   methods: {
 
     update_optional_json_value(){
-     
+
        this.alert_icon = "warning";
       this.alert_title = "";
       this.alert_text = "FAX番号の登録を更新しますがよろしいでしょうか。";
@@ -142,17 +142,21 @@ export default {
         });
     },
    updateInvoiceSettingByModal(item){
+    //    console.log(cmnConnectOptionList)
+    //    console.log(item)
      this.invoice_update_setting=true;
      this.cmn_connect_id_invoice_update =  item.rows.cmn_connect_id;
       if(item.jsonRows.invoice.closing_date.length>0){
         this.selectfieldList = [];
+        // return 0
       }
-    item.jsonRows.invoice.closing_date.forEach((value, index) => {
+    (item.jsonRows.invoice.closing_date).forEach((value, index) => {
     this.selectfieldList.push({
                 id: `invoicejson_${++this.selectfieldCounter}`,
                 value: value,
             });
-});
+        });
+        // console.log(this.selectfieldList)
      //this.selectfieldList=
    },
      addSelectField() {
@@ -166,7 +170,7 @@ export default {
         },
 
         update_invoice_json_setting() {
-           
+
             this.alert_icon = "warning";
       this.alert_title = "";
       this.alert_text = "締日の登録を更新しますがよろしいでしょうか。";
