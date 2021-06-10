@@ -1,0 +1,12 @@
+super_user_name=super_admin@jacos.co.jp
+slr_user_name=slr01@test.jp
+byr_user_name=byr01@test.jp
+sakaki_user_name=sakaki@jacos.co.jp
+sakaki_password=jacos6571
+password=Qe75ymSr
+login_url=http://localhost/jcs/login
+user_identity=#email
+password_identity=#password
+login_btn_identity=#login
+logout_btn_identity=.logout_btn
+waiting_time=1000
