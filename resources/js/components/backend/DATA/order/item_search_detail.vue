@@ -130,9 +130,10 @@
                   class="form-control"
                   :min="0"
                     :max="order_item_lists.mes_lis_shi_lin_qua_ord_num_of_order_units"
+                    @change="caseBallUpdate(order_item_lists, 'ケース')"
                   v-model="
                     order_item_lists.mes_lis_shi_lin_qua_shi_num_of_order_units
-                  " readonly                />
+                  "                 />
               </td>
               <td class="cl_custom_color_active">バラ数</td>
               <td>
@@ -142,8 +143,8 @@
                   :min="0"
                     :max="order_item_lists.mes_lis_shi_lin_qua_ord_quantity"
                     :step="order_item_lists.mes_lis_shi_lin_qua_unit_multiple"
-                    
-                  v-model="order_item_lists.mes_lis_shi_lin_qua_shi_quantity" readonly
+                     @change="caseBallUpdate(order_item_lists, 'バラ')"
+                  v-model="order_item_lists.mes_lis_shi_lin_qua_shi_quantity" 
                 />
               </td>
               <!--<td class="cl_custom_color_active">重量</td>
@@ -600,7 +601,7 @@ export default {
       order_by: "asc",
       order_detail_lists: {},
       order_info: {},
-      order_item_detail_lists: {},
+      order_item_detail_lists: [],
       buyer_setting_valuesse: {},
       order_item_lists: [],
       order_item_shipment_data_headTable: {},
@@ -639,7 +640,7 @@ export default {
             order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units;
         }
         order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity=order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units*order_item_detail_list.mes_lis_shi_lin_qua_unit_multiple;
-        this.order_item_lists.mes_lis_shi_lin_qua_shi_num_of_order_units = order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units;
+        //this.order_item_lists.mes_lis_shi_lin_qua_shi_num_of_order_units = order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units;
       } else {
         // var calval=order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity/order_item_detail_list.mes_lis_shi_lin_qua_ord_quantity;
         var calval =
@@ -656,23 +657,41 @@ export default {
               calval * order_item_detail_list.mes_lis_shi_lin_qua_unit_multiple;
           }
           order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units = calval;
-          this.order_item_lists.mes_lis_shi_lin_qua_shi_num_of_order_units = calval;
+          //this.order_item_lists.mes_lis_shi_lin_qua_shi_num_of_order_units = calval;
          
         //}
       }
-       this.order_item_lists.mes_lis_shi_lin_qua_shi_quantity=order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity;
+      // this.order_item_lists.mes_lis_shi_lin_qua_shi_quantity=order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity;
       //this.checkUpdateDeliveryStatus();
     },
-    // caseBallUpdate(order_item_detail_list, field_type){
-    //   if(field_type=="ケース"){
-    //    this.order_item_detail_lists[0].mes_lis_shi_lin_qua_shi_num_of_order_units= this.order_item_lists.mes_lis_shi_lin_qua_shi_num_of_order_units
-    
-    //   }else{
-    //     this.order_item_detail_lists[0].mes_lis_shi_lin_qua_shi_quantity=this.order_item_lists.mes_lis_shi_lin_qua_shi_quantity;
-    //   }
-    //   console.log(order_item_detail_list);
-    //   this.ball_case_cal(order_item_detail_list, field_type);
-    // },
+    caseBallUpdate(order_item_detail_list, field_type){
+      if(field_type=="ケース"){
+        this.order_item_lists.mes_lis_shi_lin_qua_shi_quantity=order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units*order_item_detail_list.mes_lis_shi_lin_qua_unit_multiple;
+       if (
+          this.order_item_lists.mes_lis_shi_lin_qua_shi_num_of_order_units >
+          order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units
+        ) {
+          this.order_item_lists.mes_lis_shi_lin_qua_shi_num_of_order_units =
+            order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units;
+            this.order_item_lists.mes_lis_shi_lin_qua_shi_quantity=order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units*order_item_detail_list.mes_lis_shi_lin_qua_unit_multiple;
+        }
+      }else{
+        var calval =
+          order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity /
+          order_item_detail_list.mes_lis_shi_lin_qua_unit_multiple;
+          if (
+            calval >
+            order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units
+          ) {
+            calval =
+              order_item_detail_list.mes_lis_shi_lin_qua_ord_num_of_order_units;
+            order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity =
+              calval * order_item_detail_list.mes_lis_shi_lin_qua_unit_multiple;
+          }
+          this.order_item_lists.mes_lis_shi_lin_qua_shi_num_of_order_units = calval;
+
+      }
+    },
     checkValidate() {
       var _this = this;
       var isValidate = 1;
@@ -759,7 +778,14 @@ export default {
     },
     updateOrderItemFormData() {
       var _this = this;
+      this.order_item_detail_lists=[];
       var order_detailitem = { items: this.order_item_lists };
+      this.order_item_detail_lists.push(this.order_item_lists); 
+     _this.alert_icon = "success";
+          _this.alert_title = "";
+          _this.alert_text = "入力データを反映させました";
+          _this.sweet_normal_alert();
+      /*
       axios({
         method: "POST",
         url: this.BASE_URL + "api/update_shipment_item_detail_form_data",
@@ -774,6 +800,8 @@ export default {
           Fire.$emit("LoadByrorderItemDetail");
         })
         .catch(function (response) {});
+        */
+
     },
     checkAll() {
       this.isCheckAll = !this.isCheckAll;
