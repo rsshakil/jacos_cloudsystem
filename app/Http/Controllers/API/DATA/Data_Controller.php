@@ -990,6 +990,7 @@ class Data_Controller extends Controller
                 $shi_num_of_order_units = $value[162];                                                              // 出荷数量(単位)
                 $sto_reason_code = $value[165];                                                                     // 欠品理由
 
+
                 // data check validation
                 // - shi_num_of_order_units
                 // -- number check
@@ -1005,8 +1006,11 @@ class Data_Controller extends Controller
                     return response()->json(['status'=>0,'message'=>'対象データが許容外です。<br>[出荷数量(単位)]:'.$shi_num_of_order_units.'<br>[発注数量(単位)]'.$ord_num_of_order_units.'<br>[伝票番号]'.$trade_number.'<br>[明細番号]'.$line_number]);
                 }
 
-
                 // - sto_reason_code
+                if ($sto_reason_code == '0') {
+                    $sto_reason_code = '00';
+                }
+
                 // -- json data check
                 if (!array_key_exists($sto_reason_code, $reason_code_list)) {
                     //
