@@ -778,9 +778,16 @@ export default {
     },
     updateOrderItemFormData() {
       var _this = this;
-      this.order_item_detail_lists=[];
+     // this.order_item_detail_lists=[];
       var order_detailitem = { items: this.order_item_lists };
-      this.order_item_detail_lists.push(this.order_item_lists); 
+      //this.order_item_detail_lists.push(this.order_item_lists); 
+      _this.order_item_detail_lists.forEach(function (value, index) {
+        _this.order_item_detail_lists[index].mes_lis_shi_lin_qua_shi_num_of_order_units=_this.order_item_lists.mes_lis_shi_lin_qua_shi_num_of_order_units;
+        _this.order_item_detail_lists[index].mes_lis_shi_lin_qua_shi_quantity=_this.order_item_lists.mes_lis_shi_lin_qua_shi_quantity;
+        _this.order_item_detail_lists[index].mes_lis_shi_lin_amo_item_net_price_unit_price=_this.order_item_lists.mes_lis_shi_lin_amo_item_net_price_unit_price;
+        _this.order_item_detail_lists[index].mes_lis_shi_lin_amo_item_selling_price_unit_price=_this.order_item_lists.mes_lis_shi_lin_amo_item_selling_price_unit_price;
+        _this.order_item_detail_lists[index].mes_lis_shi_lin_qua_sto_reason_code=_this.order_item_lists.mes_lis_shi_lin_qua_sto_reason_code;
+      })
      _this.alert_icon = "success";
           _this.alert_title = "";
           _this.alert_text = "入力データを反映させました";
