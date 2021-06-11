@@ -27,16 +27,13 @@ fixture `Getting Started`.page `${login_url}`
     // });
 
 test('Sakaki Seller Test', async t => {
-    // const firstItem = Selector('.buyer_button_list:nth-child(2)');
-    // console.log(Selector('ul'));
-    const osCount = Selector('.jcs_left_side_bar_menu').count;
-    // console.log(osCount)
+    let today = new Date().toISOString().slice(0, 10)
     await t
         .maximizeWindow()
         // .wait(waiting_time)
-        .typeText(user_identity, sakaki_user_name)
+        .typeText(user_identity, sakaki_user_name, { speed: 0.5 })
         // .wait(waiting_time)
-        .typeText(password_identity, sakaki_password)
+        .typeText(password_identity, sakaki_password, { speed: 0.5 })
         // .wait(waiting_time)
         // .takeScreenshot({
         //     path:     'my-fixture/welcome_page.png',
@@ -47,14 +44,42 @@ test('Sakaki Seller Test', async t => {
         .click(Selector('.btn-outline-primary').nth(0))
         // .wait(waiting_time)
         .click(Selector('.jcs_left_side_bar_menu').nth(4).child(0))
-        .wait(waiting_time)
-        // .scrollIntoView(Selector('.order_item_details_table'), { offsetX: 1, offsetY: 1 })
-        .scrollIntoView(Selector('.order_item_details_table'))
+        // .wait(waiting_time)
+        // ========Partner Code modal to search============
+        .click(Selector('.btn-primary').withText("参照"))
+        .click(Selector('.order_list_partner_code_modal').find('tbody > tr').nth(0))
+        .scrollIntoView(Selector('.order_list_table'))
         .scrollIntoView(Selector('.orderDetailTable '))
+        .click(Selector('.srchBtn').withText("検索"))
+        // .click(Selector('.order_list_table').find('tbody > tr').nth(0).find('td').nth(1).find('a')) //Tr value canbe changed
+        // .wait(waiting_time)
+        // .scrollBy(0, 300)
+        // ========Partner Code modal to search============
+        // .click(Selector('.order_details_table').find('tbody > tr').nth(0).find('td').nth(1).find('input[type=checkbox]'))
+        // .click(Selector('.btn-primary').withText("選択行を伝票確定"))
+        // .click(Selector('.swal2-confirm').withText("はい"))
+        // .click(Selector('.swal2-confirm').withText("完了"))
+        // .click(Selector('h6').find('a').withAttribute('href', '/jcs/order_list'))
+        // ========Partner Code modal to search============
+        // .click(Selector('.btn-primary').withText("参照"))
+        // .click(Selector('.order_list_partner_code_modal').find('tbody > tr').nth(0))
+        // .scrollIntoView(Selector('.order_list_table'))
+        // .scrollIntoView(Selector('.orderDetailTable '))
+        // .click(Selector('.srchBtn').withText("検索"))
+        .click(Selector('.order_list_table').find('tbody > tr').nth(3).find('td').nth(1).find('a')) //Tr value canbe changed
         .wait(waiting_time)
-
-    // .click(logout_btn_identity)
-    // .wait(waiting_time);
+        .scrollBy(0, 300)
+        // ========Partner Code modal to search============
+        .click(Selector('.order_details_table').find('tbody > tr').nth(0).find('td').nth(4).find('a'))
+        // .drag(Selector('.correction_delivery_date_table').find('tr').nth(0).find('td').nth(1).find('input[type=date]'), 360, 0, { offsetX: 350, offsetY: 10 })
+        // .click(Selector('.correction_delivery_date_table').find('tr').nth(0).find('td').nth(1).find('input[type=date]'))
+        // .click(Selector('.correction_delivery_date_table').find('tr').nth(0).find('td').nth(1).find('input[type=date]'), { offsetX: 800, offsetY: 10 })
+        .typeText(Selector('.correction_delivery_date_table').find('tr').nth(0).find('td').nth(1).find('input[type=date]'), today)
+        // .drag('.ui-slider-handle', 360, 0, { offsetX: 10, offsetY: 10 })
+        .click(Selector('.order_item_list_table').find('tbody > tr').nth(0).find('td').nth(3).find('input[type=number]'))
+        .pressKey('pagedown')
+        // .click(logout_btn_identity)
+        // .wait(waiting_time);
 });
 // test('Seller Test', async t => {
 //     await t

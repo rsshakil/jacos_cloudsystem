@@ -256,10 +256,7 @@
     <div class="row">
       <div class="col-12">
         <div class="">
-          <table
-            class="table table-striped table-bordered order_item_details_table"
-            style="overflow-x: scroll"
-          >
+          <table class="table table-striped table-bordered order_details_table" style="overflow-x: scroll">
             <thead>
               <tr class="first_heading_th">
                 <th></th>

@@ -428,17 +428,14 @@ class data_csv_order extends ScenarioBase
                 $data_item_array = array();
                 $data_shi_item_array = array();
             }
-
-            // FAX data send
-            $this->sendFax($cmn_connect_id, $data_order_id);
-
             // DB commit
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
             throw $e;
         }
-
+        // FAX data send
+        $this->sendFax($cmn_connect_id, $data_order_id);
         // Mail
         Log::debug(__METHOD__.':end---');
         return ['message' => '', 'status' => $this->success,'cmn_connect_id' => $cmn_connect_id,'data_id' => $data_order_id];
