@@ -194,26 +194,14 @@
       </div>
 
       <div class="col-12">
-        <table
-          class="table orderDetailTable table-bordered"
-          style="width: 100%"
-        >
+        <table class="table correction_delivery_date_table table-bordered" style="width: 100%">
           <tr>
             <td class="cl_custom_color_extra">訂正納品日</td>
             <td colspan="3">
-              <input
-                class="form-control"
-                :disabled="
-                  is_disabled(
-                    order_item_shipment_data_headTable.decision_datetime == null
-                      ? true
-                      : false
-                  )
-                "
+              <input class="form-control" :disabled="
+                  is_disabled( order_item_shipment_data_headTable.decision_datetime == null ? true : false)"
                 type="date"
-                v-model="
-                  order_item_shipment_data_headTable.mes_lis_shi_tra_dat_revised_delivery_date
-                "
+                v-model="order_item_shipment_data_headTable.mes_lis_shi_tra_dat_revised_delivery_date"
               />
             </td>
           </tr>
@@ -260,9 +248,8 @@
       <div class="col-12">
         <div class="">
           <table
-            class="table table-striped table-bordered table-responsive order_item_details_table data_table"
-            style="overflow-x: scroll"
-          >
+            class="table table-striped table-bordered table-responsive order_item_list_table data_table"
+            style="overflow-x: scroll">
             <thead>
               <tr>
                 <th>No</th>
@@ -374,7 +361,7 @@
                     "
                     class="form-control text-right"
                     :min="0"
-                    
+
                     v-model="
                       order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price
                     "
@@ -412,7 +399,7 @@
                     "
                     class="form-control text-right"
                     :min="0"
-                    
+
                     v-model="
                       order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price
                     "
@@ -687,7 +674,7 @@
 <style>
 input[type=number]{
     min-width: 100px;
-} 
+}
 </style>
 <script>
 export default {
