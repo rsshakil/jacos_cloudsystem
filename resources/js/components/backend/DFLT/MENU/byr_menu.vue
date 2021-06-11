@@ -9,7 +9,7 @@
             data-toggle="collapse"
             data-target="#byrmenu1"
             ><b-icon icon="gear-fill" font-scale="1.2"></b-icon>
-            BYR</a
+            管理</a
           >
           <div class="collapse" id="byrmenu1" aria-expanded="false">
             <ul class="flex-column pl-2 nav">
@@ -42,7 +42,7 @@
             href="#slrDatamenu1"
             data-toggle="collapse"
             data-target="#slrDatamenu1"
-            ><b-icon icon="gear-fill" font-scale="1.2"></b-icon>
+            ><b-icon icon="inbox-fill" font-scale="1.2"></b-icon>
             問屋データ</a
           >
           <div class="collapse" id="slrDatamenu1" aria-expanded="false">
