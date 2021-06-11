@@ -295,7 +295,7 @@ class InvoiceController extends Controller
             'data_invoices.data_invoice_id',
             'dipd.data_invoice_pay_detail_id',
             'dip.mes_lis_inv_per_end_date',
-            //'dipd.data_shipment_voucher_id',
+            'dipd.data_shipment_voucher_id',
             'dipd.mes_lis_inv_lin_det_transfer_of_ownership_date',
             'dipd.mes_lis_inv_lin_tra_code',
             'dipd.mes_lis_inv_lin_tra_name',
@@ -556,16 +556,17 @@ class InvoiceController extends Controller
         Log::debug(__METHOD__.':start---');
 
         // return $request->all();
-        $adm_user_id=$request->adm_user_id;
+        // $adm_user_id=$request->adm_user_id;
         $byr_buyer_id=$request->byr_buyer_id;
         $shipment_ids=$request->shipment_ids;
         $shipment_ids= implode(', ', $shipment_ids);
-        $cmn_connect_id =null;
-        $authUser = User::find($adm_user_id);
-        if (!$authUser->hasRole(config('const.adm_role_name'))) {
-            $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id, $byr_buyer_id);
-            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
-        }
+        $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
+        // $cmn_connect_id =null;
+        // $authUser = User::find($adm_user_id);
+        // if (!$authUser->hasRole(config('const.adm_role_name'))) {
+        //     $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id, $byr_buyer_id);
+        //     $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+        // }
         $result = DB::select(" SELECT
             dsv.data_shipment_voucher_id,
             drv.data_receive_voucher_id,
@@ -595,9 +596,11 @@ class InvoiceController extends Controller
             INNER JOIN data_shipments AS ds ON ds.data_shipment_id=dsv.data_shipment_id
             INNER JOIN data_receive_vouchers AS drv ON dsv.mes_lis_shi_tra_trade_number = drv.mes_lis_acc_tra_trade_number
             INNER JOIN data_receives AS dr ON dr.data_receive_id=drv.data_receive_id
+            INNER JOIN cmn_connects AS cc ON cc.cmn_connect_id=ds.cmn_connect_id AND cc.cmn_connect_id=dr.cmn_connect_id
             WHERE
-            dr.cmn_connect_id=$cmn_connect_id
-            AND ds.cmn_connect_id = $cmn_connect_id
+            cc.byr_buyer_id=$byr_buyer_id
+            AND cc.slr_seller_id=$slr_seller_id
+            -- CC JOIN
             AND dsv.data_shipment_voucher_id IN ($shipment_ids)
             AND (
             dsv.mes_lis_shi_tot_tot_net_price_total != drv.mes_lis_acc_tot_tot_net_price_total
@@ -612,22 +615,25 @@ class InvoiceController extends Controller
             != drv.mes_lis_acc_tra_dat_transfer_of_ownership_date
             )
         ");
+        // dr.cmn_connect_id=$cmn_connect_id
+        // AND ds.cmn_connect_id = $cmn_connect_id
         Log::debug(__METHOD__.':end---');
         return response()->json(['voucherList'=>$result]);
     }
     public function invoiceCompareDataDownload(Request $request)
     {
         // return $request->all();
-        $adm_user_id=$request->adm_user_id;
+        // $adm_user_id=$request->adm_user_id;
         $byr_buyer_id=$request->byr_buyer_id;
         $shipment_ids=$request->shipment_ids;
         $shipment_ids= implode(', ', $shipment_ids);
-        $cmn_connect_id =null;
-        $authUser = User::find($adm_user_id);
-        if (!$authUser->hasRole(config('const.adm_role_name'))) {
-            $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id, $byr_buyer_id);
-            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
-        }
+        $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
+        // $cmn_connect_id =null;
+        // $authUser = User::find($adm_user_id);
+        // if (!$authUser->hasRole(config('const.adm_role_name'))) {
+        //     $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id, $byr_buyer_id);
+        //     $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+        // }
         $result = DB::select("SELECT
         dsv.mes_lis_shi_par_sel_code,
         dsv.mes_lis_shi_tra_trade_number,
@@ -656,10 +662,10 @@ class InvoiceController extends Controller
         INNER JOIN data_receives AS dr ON dr.data_receive_id=drv.data_receive_id
         INNER join data_shipment_items AS dsi ON dsi.data_shipment_voucher_id=dsv.data_shipment_voucher_id
         INNER JOIN data_receive_items AS dri ON dsi.mes_lis_shi_lin_lin_line_number=dri.mes_lis_acc_lin_lin_line_number AND dri.data_receive_voucher_id=drv.data_receive_voucher_id
-
+        INNER JOIN cmn_connects AS cc ON cc.cmn_connect_id=ds.cmn_connect_id AND cc.cmn_connect_id=dr.cmn_connect_id
         WHERE
-        dr.cmn_connect_id=$cmn_connect_id
-        AND ds.cmn_connect_id = $cmn_connect_id
+        cc.byr_buyer_id=$byr_buyer_id
+        AND cc.slr_seller_id=$slr_seller_id
         AND dsv.data_shipment_voucher_id IN($shipment_ids)
         AND (
         dsv.mes_lis_shi_tot_tot_net_price_total != drv.mes_lis_acc_tot_tot_net_price_total
