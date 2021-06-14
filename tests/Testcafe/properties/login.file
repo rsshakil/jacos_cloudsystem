@@ -10,3 +10,4 @@ password_identity=#password
 login_btn_identity=#login
 logout_btn_identity=.logout_btn
 waiting_time=1000
+writing_speed=0.5
