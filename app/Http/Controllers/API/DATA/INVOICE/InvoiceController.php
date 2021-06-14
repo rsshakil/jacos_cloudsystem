@@ -684,7 +684,7 @@ class InvoiceController extends Controller
         dsv.mes_lis_shi_tra_trade_number,
         dsi.mes_lis_shi_lin_lin_line_number");
         // return $result;
-        $new_file_name = $this->all_used_fun->downloadFileName($request, 'csv', '請求');
+        $new_file_name = $this->all_used_fun->downloadFileName($request, 'csv', '出荷受領比較');
         $download_file_url = Config::get('app.url')."storage/app".config('const.INVOICE_COMPARE_CSV_PATH')."/". $new_file_name;
 
         // CSV create

@@ -484,7 +484,7 @@ class PaymentController extends Controller
     }
     public function paymentUnpaidDataDownload(Request $request)
     {
-        $new_file_name = $this->all_used_fun->downloadFileName($request, 'csv', '支払');
+        $new_file_name = $this->all_used_fun->downloadFileName($request, 'csv', '未払');
         $download_file_url = Config::get('app.url') . "storage/app" . config('const.PAYMENT_UNPAID_CSV_PATH') . "/" . $new_file_name;
         // get unpaid data query
         $unpaid_query = DataController::getUnpaidData($request);
