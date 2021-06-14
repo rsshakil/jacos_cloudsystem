@@ -6,9 +6,12 @@ use App\Scenarios\ScenarioBase;
 
 use App\Scenarios\Common;
 use App\Http\Controllers\API\AllUsedFunction;
-use App\Http\Controllers\API\BYR\DATA\ORDER\DataController;
+use App\Http\Controllers\API\BYR\DATA\SHIPMENT\DataController;
 use App\Http\Controllers\API\BYR\DATA\DFLT\DefaultFunctions;
-
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 class slr_fixed_length_generate extends ScenarioBase
 {
     private $all_functions;
@@ -23,7 +26,7 @@ class slr_fixed_length_generate extends ScenarioBase
 
     public function exec($request, $sc)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
 
         $order_data= DataController::get_shipment_data($request)->get();
 
@@ -95,7 +98,11 @@ class slr_fixed_length_generate extends ScenarioBase
 
             $data[$file_head][$voucher_head][] = $items;
         }
-
+        // return [
+        //     'status'=>1,
+        //     'message'=>"File has been created",
+        //     'data'=>$data
+        //     ];
         $string_data="";
         for ($i=0; $i < count($data); $i++) {
             $step0=array_keys($data)[$i];
@@ -121,7 +128,7 @@ class slr_fixed_length_generate extends ScenarioBase
         $txt_file_name = $request->file_name?$request->file_name:(date('y-m-d').'_Text_File_'.time().".txt");
         $string_data=$this->all_functions->convert_from_utf8_to_sjis__recursively($string_data);
 
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         if ($string_data!=null) {
             \File::put(storage_path(config('const.SLR_FIXED_LENGTH_FILE_PATH').$txt_file_name), $string_data);
             return [
@@ -129,7 +136,11 @@ class slr_fixed_length_generate extends ScenarioBase
                 'message'=>"File has been created",
                 ];
         } else {
-            return response()->json(['status'=>0,'message'=>"No file data found"]);
+            return [
+                'status'=>0,
+                'message'=>"No file data found",
+                ];
+            // return response()->json(['status'=>0,'message'=>"No file data found"]);
         }
     }
 }

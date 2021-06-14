@@ -19,11 +19,11 @@ use App\Http\Controllers\API\CMN\CmnScenarioController;
 
 class SlrOrderController extends Controller
 {
-    private $default_functions;
+    // private $default_functions;
     // private $all_used_fun;
     public function __construct()
     {
-        $this->default_functions = new DefaultFunctions();
+        // $this->default_functions = new DefaultFunctions();
         // $this->all_used_fun = new AllUsedFunction();
     }
 
@@ -173,64 +173,6 @@ class SlrOrderController extends Controller
         return response()->json(['order_customer_code_lists' => $result]);
     }
 
-    public function slrShipmentDownload(Request $request)
-    {
-        Log::debug(__METHOD__.':start---');
-        // return $request->all();
-        // return $request->all();
-        //ownloadType=2 for Fixed length
-        $data_order_id=$request->data_order_id?$request->data_order_id:1;
-        // \Log::info("Download ".$data_order_id);
-        $downloadType=$request->downloadType;
-        $csv_data_count =0;
-        if ($downloadType==1) {
-            // CSV Download
-            $new_file_name = $this->default_functions->downloadFileName($request, 'csv', '受注');
-            $download_file_url = Config::get('app.url')."storage/app".config('const.SLR_SHIPMENT_CSV_PATH')."/". $new_file_name;
-
-            // get shipment data query
-            $shipment_query = DataController::get_shipment_data($request);
-            $csv_data_count = $shipment_query->count();
-            $shipment_data = $shipment_query->get()->toArray();
-            // \Log::debug($shipment_data);
-
-            // CSV create
-            Csv::create(
-                config('const.SLR_SHIPMENT_CSV_PATH')."/". $new_file_name,
-                $shipment_data,
-                DataController::shipmentCsvHeading(),
-                config('const.CSV_FILE_ENCODE')
-            );
-        } elseif ($downloadType==2) {
-            // JCA Download
-            // $request = new \Illuminate\Http\Request();
-            // $request->setMethod('POST');
-            // $request=$this->request;
-            $request->request->add(['scenario_id' => 17]);
-            $request->request->add(['data_order_id' => $data_order_id]);
-            $request->request->add(['email' => 'user@jacos.co.jp']);
-            $request->request->add(['password' => 'Qe75ymSr']);
-            $new_file_name =$this->default_functions->downloadFileName($request, 'txt', '受注');
-            $download_file_url = Config::get('app.url')."storage/".config('const.SLR_FIXED_LENGTH_FILE_PATH')."/". $new_file_name;
-            $request->request->add(['file_name' => $new_file_name]);
-            // $request->request->remove('downloadType');
-            // return $request->all();
-            $cs = new CmnScenarioController();
-            $ret = $cs->exec($request);
-            //  return collect($ret)->toJson();
-            // \Log::debug($ret->getContent());
-            // return $ret = json_decode($ret->getContent(), true);
-            // if (1 === $ret['status']) {
-            //     // sceanario exec error
-            //     \Log::error($ret['message']);
-            //     return $ret;
-            // }
-            // return response()->json($ret);
-        }
-        Log::debug(__METHOD__.':end---');
-
-        return response()->json(['message' => 'Success','status'=>1,'new_file_name'=>$new_file_name, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
-    }
     public function slrOrderDetails(Request $request){
         Log::debug(__METHOD__.':start---');
         // return $request->all();
@@ -367,14 +309,6 @@ class SlrOrderController extends Controller
                 ->paginate($per_page);
         /*coll setting*/
         $slected_list = array();
-        // $result_data = cmn_tbl_col_setting::where('url_slug', 'order_list_details')->first();
-        // $header_list = json_decode($result_data->content_setting);
-        // foreach ($header_list as $header) {
-        //     if ($header->header_status == true) {
-        //         $slected_list[] = $header->header_field;
-        //     }
-        // }
-        /*coll setting*/
         Log::debug(__METHOD__.':end---');
         return response()->json(['order_list_detail' => $result, 'order_info' => $order_info, 'slected_list' => $slected_list]);
     }

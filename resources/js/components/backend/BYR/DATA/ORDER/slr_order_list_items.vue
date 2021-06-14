@@ -545,20 +545,7 @@
               </tr>
             </tfoot>
           </table>
-          <button
-            style="float: right"
-            @click="updateShipmentItemDetails"
-            :disabled="
-              is_disabled(
-                order_item_shipment_data_headTable.decision_datetime == null
-                  ? true
-                  : false
-              )
-            "
-            class="btn btn-lg btn-primary pull-right text-right active"
-          >
-            更新
-          </button>
+
         </div>
       </div>
     </div>
@@ -837,58 +824,7 @@ export default {
       });
       return isValidate;
     },
-    updateShipmentItemDetails() {
-      var _this = this;
-      this.order_item_detail_lists.forEach(function (value, index) {
-        if (
-          value.mes_lis_shi_lin_qua_shi_num_of_order_units !=
-            value.mes_lis_shi_lin_qua_ord_num_of_order_units &&
-          value.mes_lis_shi_lin_qua_sto_reason_code == "00"
-        ) {
-          _this.alert_icon = "error";
-          _this.alert_title = "";
-          _this.alert_text = "入力データが不正です。入力値を確認してください。";
-          _this.sweet_normal_alert();
-          return false;
-        }
-        if (
-          value.mes_lis_shi_lin_qua_shi_num_of_order_units ==
-            value.mes_lis_shi_lin_qua_ord_num_of_order_units &&
-          value.mes_lis_shi_lin_qua_sto_reason_code != "00"
-        ) {
-          _this.alert_icon = "error";
-          _this.alert_title = "";
-          _this.alert_text = "入力データが不正です。入力値を確認してください。";
-          _this.sweet_normal_alert();
-          return false;
-        }
-      });
-      if (this.checkValidate() == false) {
-        return false;
-      }
-      var order_detailitem = {
-        items: this.order_item_detail_lists,
-        updated_date: this.order_item_shipment_data_headTable
-          .mes_lis_shi_tra_dat_revised_delivery_date,
-        total_cost_price: this.totalCostPriceVal,
-        total_selling_price: this.totalSellingPriceVal,
-        order_status: this.order_item_shipment_data_headTable.status,
-      };
-      axios({
-        method: "POST",
-        url: this.BASE_URL + "api/update_shipment_item_details",
-        data: order_detailitem,
-      })
-        .then(({ data }) => {
-          this.init(data.status);
-          _this.alert_icon = "success";
-          _this.alert_title = "";
-          _this.alert_text = "出荷データを更新しました";
-          _this.sweet_normal_alert();
-          Fire.$emit("LoadByrorderItemDetail");
-        })
-        .catch(function (response) {});
-    },
+
 
     checkAll() {
       this.isCheckAll = !this.isCheckAll;

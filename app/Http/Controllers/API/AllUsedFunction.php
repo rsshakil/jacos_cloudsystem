@@ -559,6 +559,7 @@ class AllUsedFunction extends Controller
         // Log::info($request);
         $adm_user_id=$request->adm_user_id;
         $byr_buyer_id=$request->byr_buyer_id;
+        $byr_buyer_id=$byr_buyer_id==null?Auth::User()->ByrInfo->byr_buyer_id:$byr_buyer_id;
         $file_name_info=byr_buyer::select('cmn_companies.company_name')
             ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
             ->where('byr_buyers.byr_buyer_id', $byr_buyer_id)
