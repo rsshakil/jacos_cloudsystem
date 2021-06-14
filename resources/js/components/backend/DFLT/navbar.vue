@@ -84,7 +84,7 @@
               </table>
             </div>
           </div>
-          <div class="col-5 p-0">
+          <div class="col-5">
             <ul class="navbar-nav top_custom_ul flex-row">
               <li class="nav-item" v-if="userCompanyInfo.company_name != ''">
                 <a class="uer_company nav-link top_menu_custom_a">
