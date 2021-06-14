@@ -303,6 +303,7 @@ class InvoiceController extends Controller
             'dipd.mes_lis_inv_lin_tra_name',
             'dipd.mes_lis_inv_lin_lin_trade_number_reference',
             'dipd.mes_lis_inv_lin_det_amo_requested_amount',
+            'dipd.mes_lis_inv_lin_det_amo_req_plus_minus',
             'dipd.mes_lis_inv_lin_det_pay_code',
             'dipd.mes_lis_inv_lin_det_balance_carried_code',
             'dipd.send_datetime',

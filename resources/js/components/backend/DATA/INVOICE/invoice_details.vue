@@ -458,7 +458,7 @@
             <div class="form-group row">
               <label for="inputPassword" class="col-sm-2 col-form-label">伝票番号</label>
               <div class="col-sm-10">
-                <input type="number" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_lin_trade_number_reference">
+                <input type="number" class="form-control" v-model="invoiceDetail.mes_lis_inv_lin_lin_trade_number_reference">
               </div>
             </div>
             <div class="form-group row">
@@ -776,6 +776,13 @@ export default {
     editInvoiceDetail(valuess){
       this.editInvoiceDetailModal = true;
       this.invoiceDetail = valuess;
+      // if(valuess.mes_lis_inv_lin_det_amo_req_plus_minus=='+'){
+      // this.invoiceDetail.mes_lis_inv_lin_det_amo_requested_amount=valuess.mes_lis_inv_lin_det_amo_requested_amount;
+
+      // }else{
+      // this.invoiceDetail.mes_lis_inv_lin_det_amo_requested_amount=valuess.mes_lis_inv_lin_det_amo_requested_amount;
+      // }
+      // console.log(valuess);
       // this.invoiceDetail.fill(value)
     },
     addInvoiceDetail(){

@@ -206,14 +206,27 @@ class InvoiceController extends Controller
 
     public function update_invoice_detail(Request $request)
     {
+        $matches = array();
+        $explodeAmountSign = $request->mes_lis_inv_lin_det_amo_requested_amount;
+        preg_match_all("/\d+|[\\+\\-\\/\\*]/",$explodeAmountSign,$matches);
+        $countMatch = count($matches[0]);
+        if($countMatch==2){
+            $request_amount = $matches[0][1];
+            $request_sign = $matches[0][0];
+        }else{
+            $request_amount = $matches[0][0];
+            $request_sign = '+';
+        }
+        
         $updatedArray = array(
-        'mes_lis_inv_lin_det_transfer_of_ownership_date'=>$request->mes_lis_inv_lin_det_transfer_of_ownership_date,
-        'mes_lis_inv_lin_det_goo_major_category'=>$request->mes_lis_inv_lin_det_goo_major_category,
-        'mes_lis_inv_lin_tra_code'=>$request->mes_lis_inv_lin_tra_code,
-        'mes_lis_inv_lin_lin_trade_number_reference'=>$request->mes_lis_inv_lin_lin_trade_number_reference,
-        'mes_lis_inv_lin_det_pay_code'=>$request->mes_lis_inv_lin_det_pay_code,
-        'mes_lis_inv_lin_det_balance_carried_code'=>$request->mes_lis_inv_lin_det_balance_carried_code,
-        'mes_lis_inv_lin_det_amo_requested_amount'=>$request->mes_lis_inv_lin_det_amo_requested_amount
+            'mes_lis_inv_lin_det_transfer_of_ownership_date'=>$request->mes_lis_inv_lin_det_transfer_of_ownership_date,
+            'mes_lis_inv_lin_det_goo_major_category'=>$request->mes_lis_inv_lin_det_goo_major_category,
+            'mes_lis_inv_lin_tra_code'=>$request->mes_lis_inv_lin_tra_code,
+            'mes_lis_inv_lin_lin_trade_number_reference'=>$request->mes_lis_inv_lin_lin_trade_number_reference,
+            'mes_lis_inv_lin_det_pay_code'=>$request->mes_lis_inv_lin_det_pay_code,
+            'mes_lis_inv_lin_det_balance_carried_code'=>$request->mes_lis_inv_lin_det_balance_carried_code,
+            'mes_lis_inv_lin_det_amo_requested_amount'=>$request_amount,
+            'mes_lis_inv_lin_det_amo_req_plus_minus'=>$request_sign
         );
         if ($request->data_invoice_pay_detail_id!='') {
             data_invoice_pay_detail::where(['data_invoice_pay_detail_id'=>$request->data_invoice_pay_detail_id])->update($updatedArray);
@@ -301,6 +314,7 @@ class InvoiceController extends Controller
             'dipd.mes_lis_inv_lin_tra_name',
             'dipd.mes_lis_inv_lin_lin_trade_number_reference',
             'dipd.mes_lis_inv_lin_det_amo_requested_amount',
+            'dipd.mes_lis_inv_lin_det_amo_req_plus_minus',
             'dipd.mes_lis_inv_lin_det_pay_code',
             'dipd.mes_lis_inv_lin_det_balance_carried_code',
             'dipd.send_datetime',
