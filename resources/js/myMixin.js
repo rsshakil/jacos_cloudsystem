@@ -5,6 +5,7 @@ export default {
             global_user_id: Globals.user_info_id,
             global_user_type: Globals.global_user_type,
             global_user_name: Globals.user_info_name,
+            global_cmn_company_id: Globals.cmn_company_id,
             myLang: Globals,
             APP_ENV: Globals.APP_ENV,
             BASE_URL: Globals.base_url,

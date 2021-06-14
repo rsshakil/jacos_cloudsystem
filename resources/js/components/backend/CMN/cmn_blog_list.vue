@@ -115,7 +115,7 @@ export default {
                     feature_img: '',
                     blog_content: '',
                     cmn_blog_id: '',
-                    blog_by:Globals.user_info_id
+                    blog_by:Globals.cmn_company_id
 
                 })
     };

@@ -128,12 +128,12 @@ class User extends Authenticatable
     }
 
     public function getUserTypeAttribute(){
-      $cmn_company_id= $this->getCompanyIdAttribute();
-      $buyer_list = byr_buyer::where('cmn_company_id',$cmn_company_id)->get();
-      $seller_list = slr_seller::where('cmn_company_id',$cmn_company_id)->get();
+       $cmn_company_id= $this->getCompanyIdAttribute();
+      $buyer_list = byr_buyer::where('cmn_company_id',$cmn_company_id)->first();
+      $seller_list = slr_seller::where('cmn_company_id',$cmn_company_id)->first();
       if($buyer_list){
         return 'byr';
-      }elseif($seller_list){
+      }else if($seller_list){
         return 'slr';
       }else{
         return 'others';

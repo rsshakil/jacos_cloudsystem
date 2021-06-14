@@ -24,14 +24,14 @@ class CmnBlogController extends Controller
      */
     public function index()
     {
-        //
-        $result = cmn_blog::where('is_delete', '0')->where('blog_by', Auth::user()->id)->orderBy('is_top_blog', 'ASC')->orderBy('cmn_blog_id', 'DESC')->get();
+        //Auth::User()->CompanyId
+        $result = cmn_blog::where('is_delete', '0')->where('blog_by', Auth::user()->CompanyId)->orderBy('is_top_blog', 'ASC')->orderBy('cmn_blog_id', 'DESC')->get();
         return response()->json(['blog_list' => $result]);
     }
     public function get_all_published_blog_list()
     {
         //
-        $result = cmn_blog::where('is_delete', '0')->where('blog_status', 'published')->where('blog_by', Auth::user()->id)->where('is_top_blog', '0')->orderBy('is_top_blog', 'DESC')->orderBy('cmn_blog_id', 'DESC')->get();
+        $result = cmn_blog::where('is_delete', '0')->where('blog_status', 'published')->where('blog_by', Auth::user()->CompanyId)->where('is_top_blog', '0')->orderBy('is_top_blog', 'DESC')->orderBy('cmn_blog_id', 'DESC')->get();
         return response()->json(['blog_list' => $result]);
     }
     public function get_signle_top_blog()

@@ -42,6 +42,8 @@
           this.page_heading = '受注商品別一覧';
       }else if(this.$route.name=='item_search_detail'){
           this.page_heading = '受注商品別明細';
+      }else if(this.$route.name=='blog'){
+          this.page_heading = 'お知らせ管理';
       }
         Fire.$on("loadPageTitle", (PageTitle) => {
             this.page_heading = PageTitle;

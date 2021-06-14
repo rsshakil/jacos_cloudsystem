@@ -24,7 +24,7 @@
             <!--<div class="custom_bredcrubs">
               <Breadcrumbs></Breadcrumbs>
           </div>-->
-            <h4 class="selected_byr_by_sly">
+            <h4 class="selected_byr_by_sly" v-if="userType!='byr'">
               得意先名：<span class="selected_byr_customer">{{ selected_customer_list }}</span>
             </h4>
           </div>
@@ -266,6 +266,7 @@ export default {
     return {
       local: Globals.local,
       user_data: null,
+      userType:Globals.global_user_type,
       company_name: null,
       slr_order_list:null,
       hover: false,
@@ -348,6 +349,7 @@ export default {
   },
   created() {
     this.get_user_company_info();
+    //console.log(Globals.global_user_type);
     this.get_logged_user_company();
     Fire.$on("getLoggedUserInfo", () => {
       this.get_logged_user_company();
