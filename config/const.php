@@ -50,5 +50,6 @@ return [
 //  Byr Menu variables
     'SLR_SHIPMENT_CSV_PATH' => '/BYR/slr_shipment_csv',
     'SLR_FIXED_LENGTH_FILE_PATH' => 'app/BYR/slr_fixed_length_files/',
+    'SLR_SHIPMENT_PDF_SAVE_PATH' => 'app/BYR/slr_shipment_pdf/created/',
 
 ];
