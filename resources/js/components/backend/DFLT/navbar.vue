@@ -117,13 +117,13 @@
                     <b-avatar variant=""></b-avatar>
                      {{ user_data.global_user_name ? user_data.global_user_name : "" }}
                   </span>
-                 
+
                 </a>
                 <div
                   class="dropdown-menu dropdown-menu-small d-none"
                   style="margin-left: -60px"
                 >
-                 
+
                   <router-link
                     :to="{
                       name: 'users',
@@ -171,32 +171,13 @@
                   Logout
                 </button>
               </li>
-              
-
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link top_menu_custom_a dropdown-toggle text-nowrap px-3"
-                  href="#"
-                  id="navbarDropdown"
-                  role="button"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  <span
-                    class="flag-icon flag-icon-jp"
-                    v-if="local == 'ja'"
-                  ></span>
-                  <span
-                    class="flag-icon flag-icon-us"
-                    v-if="local == 'en'"
-                  ></span>
+              <li class="nav-item dropdown" v-if="APP_ENV!='production'">
+                <a class="nav-link top_menu_custom_a dropdown-toggle text-nowrap px-3" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span class="flag-icon flag-icon-jp" v-if="local == 'ja'"></span>
+                  <span class="flag-icon flag-icon-us" v-if="local == 'en'"></span>
                   {{ local == "en" ? "English" : "日本語" }}
                 </a>
-                <div
-                  class="dropdown-menu dropdown-menu-small"
-                  aria-labelledby="navbarDropdown"
-                >
+                <div class="dropdown-menu dropdown-menu-small" aria-labelledby="navbarDropdown">
                   <a class="dropdown-item" :href="BASE_URL + 'language/en'">
                     <span class="flag-icon flag-icon-us"></span>
                     English
@@ -341,7 +322,7 @@ export default {
         })
         .then(({ data }) => {
             this.init(data.status);
-          
+
             this.slr_order_list = data.slr_order_info;
         });
     },

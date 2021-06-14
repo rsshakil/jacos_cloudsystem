@@ -22,6 +22,7 @@
 
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
+        @if (App::environment()!='production')
         <div class="collapse navbar-collapse" id="navbarsExample09">
             <ul class="navbar-nav border-left flex-row ">
                 <li class="nav-item dropdown">
@@ -44,6 +45,7 @@
             </ul>
 
         </div>
+        @endif
     </nav>
     <div class="container">
         <div class="row">

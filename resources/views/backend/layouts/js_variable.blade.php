@@ -1,6 +1,7 @@
 <script>
 var Globals = <?php echo json_encode(array(
     'local' => \App::getLocale(),
+    'APP_ENV' => \App::environment(),
     'base_url' => \Config::get('app.url'),
     'user_info_id' => (\Auth::User())?\Auth::User()->id:'',
     'user_info_name' => (\Auth::User())?\Auth::User()->name:'',

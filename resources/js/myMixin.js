@@ -6,6 +6,7 @@ export default {
             global_user_type: Globals.global_user_type,
             global_user_name: Globals.user_info_name,
             myLang: Globals,
+            APP_ENV: Globals.APP_ENV,
             BASE_URL: Globals.base_url,
             alert_icon: "error",
             alert_title: "Oops...",
