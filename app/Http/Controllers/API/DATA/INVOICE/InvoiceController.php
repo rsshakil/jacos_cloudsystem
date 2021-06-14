@@ -207,7 +207,7 @@ class InvoiceController extends Controller
     public function update_invoice_detail(Request $request)
     {
         $matches = array();
-        $explodeAmountSign = $request->mes_lis_inv_lin_det_amo_requested_amount;
+        $explodeAmountSign = $request->requested_amount;
         preg_match_all("/\d+|[\\+\\-\\/\\*]/",$explodeAmountSign,$matches);
         $countMatch = count($matches[0]);
         if($countMatch==2){

@@ -414,7 +414,7 @@
             <div class="form-group row">
               <label for="inputPassword" class="col-sm-2 col-form-label">請求金額</label>
               <div class="col-sm-10">
-                <input type="number" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_amo_requested_amount" required>
+                <input type="number" class="form-control"  v-model="invoiceDetail.requested_amount" required>
               </div>
             </div>
 
@@ -490,7 +490,7 @@
             <div class="form-group row">
               <label for="inputPassword" class="col-sm-2 col-form-label">請求金額</label>
               <div class="col-sm-10">
-                <input type="number" class="form-control"  v-model="invoiceDetail.mes_lis_inv_lin_det_amo_requested_amount">
+                <input type="number" class="form-control"  v-model="invoiceDetail.requested_amount">
               </div>
             </div>
 
@@ -683,7 +683,7 @@ export default {
         mes_lis_inv_lin_lin_trade_number_reference:'',
         mes_lis_inv_lin_det_pay_code:'',
         mes_lis_inv_lin_det_balance_carried_code:'',
-        mes_lis_inv_lin_det_amo_requested_amount:'',
+        requested_amount:'',
       },
       byr_buyer_id:null,
       adm_user_id: Globals.user_info_id,
@@ -739,7 +739,7 @@ export default {
         if(!this.invoiceDetail.mes_lis_inv_lin_lin_trade_number_reference){this.errors.push("伝票番号 フィールドは必須項目です")}
         if(this.invoiceDetail.mes_lis_inv_lin_det_pay_code==''){this.errors.push("請求内容 フィールドは必須項目です")}
         if(this.invoiceDetail.mes_lis_inv_lin_det_balance_carried_code==''){this.errors.push("請求区分 フィールドは必須項目です")}
-        if(!this.invoiceDetail.mes_lis_inv_lin_det_amo_requested_amount){this.errors.push("請求金額 フィールドは必須項目です")}
+        if(!this.invoiceDetail.requested_amount){this.errors.push("請求金額 フィールドは必須項目です")}
 
       if (!this.errors.length) {
         return true;
@@ -776,12 +776,12 @@ export default {
     editInvoiceDetail(valuess){
       this.editInvoiceDetailModal = true;
       this.invoiceDetail = valuess;
-      // if(valuess.mes_lis_inv_lin_det_amo_req_plus_minus=='+'){
-      // this.invoiceDetail.mes_lis_inv_lin_det_amo_requested_amount=valuess.mes_lis_inv_lin_det_amo_requested_amount;
+      if(valuess.mes_lis_inv_lin_det_amo_req_plus_minus=='+'){
+      this.invoiceDetail.requested_amount=valuess.mes_lis_inv_lin_det_amo_requested_amount;
 
-      // }else{
-      // this.invoiceDetail.mes_lis_inv_lin_det_amo_requested_amount=valuess.mes_lis_inv_lin_det_amo_requested_amount;
-      // }
+      }else{
+      this.invoiceDetail.requested_amount='-'+valuess.mes_lis_inv_lin_det_amo_requested_amount;
+      }
       // console.log(valuess);
       // this.invoiceDetail.fill(value)
     },
@@ -796,7 +796,7 @@ export default {
         mes_lis_inv_lin_lin_trade_number_reference:'',
         mes_lis_inv_lin_det_pay_code:'',
         mes_lis_inv_lin_det_balance_carried_code:'',
-        mes_lis_inv_lin_det_amo_requested_amount:'',
+        requested_amount:'',
         };
     },
     update_invoice_detail(){
