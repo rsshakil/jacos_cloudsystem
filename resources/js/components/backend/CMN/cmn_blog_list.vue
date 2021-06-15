@@ -115,7 +115,8 @@ export default {
                     feature_img: '',
                     blog_content: '',
                     cmn_blog_id: '',
-                    blog_by:Globals.cmn_company_id
+                    blog_by:Globals.user_info_id,
+                    cmn_company_id:Globals.cmn_company_id
 
                 })
     };
@@ -237,7 +238,11 @@ export default {
       Fire.$on("AfterCreateblog", () => {
         this.get_all_blogs();
     });
-
+    if(Globals.global_user_type=='BYR' || Globals.global_user_type=='SLR'){
+      this.form.cmn_company_id = Globals.cmn_company_id;
+    }else{
+      this.form.cmn_company_id = 0;
+    }
   },
   mounted() {
     this.editorConfig.language=this.myLang.editor_lang;

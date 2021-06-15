@@ -22,27 +22,40 @@ class CmnBlogController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function return_blog_cmn_company_id(){
+        $authUser = Auth::user();
+        if ($authUser->hasRole('Slr')) {
+            $blog_cmn_company_id = Auth::user()->CompanyId;
+        }else if($authUser->hasRole('Byr')){
+            $blog_cmn_company_id = Auth::user()->CompanyId;
+        }else{
+            $blog_cmn_company_id = 0;
+        }
+        return $blog_cmn_company_id;
+    }
     public function index()
     {
-        //Auth::User()->CompanyId
-        $result = cmn_blog::where('is_delete', '0')->where('blog_by', Auth::user()->CompanyId)->orderBy('is_top_blog', 'ASC')->orderBy('cmn_blog_id', 'DESC')->get();
+        
+        $cmn_company_id = $this->return_blog_cmn_company_id();
+        $blog_by = Auth::user()->id;
+        
+        $result = cmn_blog::where('is_delete', '0')->where('cmn_company_id',$cmn_company_id)->orderBy('is_top_blog', 'ASC')->orderBy('cmn_blog_id', 'DESC')->get();
         return response()->json(['blog_list' => $result]);
     }
     public function get_all_published_blog_list()
     {
-        //
-        $result = cmn_blog::where('is_delete', '0')->where('blog_status', 'published')->where('blog_by', Auth::user()->CompanyId)->where('is_top_blog', '0')->orderBy('is_top_blog', 'DESC')->orderBy('cmn_blog_id', 'DESC')->get();
+        $cmn_company_id = $this->return_blog_cmn_company_id();
+        $result = cmn_blog::where('is_delete', '0')->where('blog_status', 'published')->where('cmn_company_id',$cmn_company_id)->where('is_top_blog', '0')->orderBy('is_top_blog', 'DESC')->orderBy('cmn_blog_id', 'DESC')->get();
         return response()->json(['blog_list' => $result]);
     }
     public function get_signle_top_blog()
     {
-        //admin top blog
-        $super_admin_user_id = User::where('name', 'Jacos Super Admin')->first();
-        $result = cmn_blog::where('is_delete', '0')->where('blog_status', 'published')->where('blog_by', $super_admin_user_id->id)->where('is_top_blog', '1')->first();
+        //admin top blog only
+        $result = cmn_blog::where('is_delete', '0')->where('blog_status', 'published')->where('cmn_company_id', 0)->where('is_top_blog', '1')->first();
         if ($result) {
             return response()->json(['blog_list' => $result]);
         } else {
-            $result = cmn_blog::where('is_delete', '0')->where('blog_status', 'published')->where('blog_by', $super_admin_user_id->id)->orderBy('cmn_blog_id', 'DESC')->first();
+            $result = cmn_blog::where('is_delete', '0')->where('blog_status', 'published')->where('cmn_company_id', 0)->orderBy('cmn_blog_id', 'DESC')->first();
             if ($result) {
                 return response()->json(['blog_list' => $result]);
             } else {
@@ -56,11 +69,11 @@ class CmnBlogController extends Controller
         $authUser = Auth::user();
         if ($authUser->hasRole('Slr')) {
             $byr_info = $this->all_used_fun->get_slrs_byr_id();
-            $result = cmn_blog::where('is_delete', '0')->where('blog_status', 'published')->where('blog_by', $byr_info->adm_user_id)->where('is_top_blog', '1')->orderBy('cmn_blog_id', 'DESC')->first();
+            $result = cmn_blog::where('is_delete', '0')->where('blog_status', 'published')->where('cmn_company_id', $byr_info->cmn_company_id)->where('is_top_blog', '1')->orderBy('cmn_blog_id', 'DESC')->first();
             if ($result) {
                 return response()->json(['blog_list' => $result]);
             } else {
-                $result =cmn_blog::where('is_delete', '0')->where('blog_status', 'published')->where('blog_by', $byr_info->adm_user_id)->orderBy('cmn_blog_id', 'DESC')->first();
+                $result =cmn_blog::where('is_delete', '0')->where('blog_status', 'published')->where('cmn_company_id', $byr_info->cmn_company_id)->orderBy('cmn_blog_id', 'DESC')->first();
                 if ($result) {
                     return response()->json(['blog_list' => $result]);
                 } else {
@@ -117,10 +130,12 @@ class CmnBlogController extends Controller
             'blog_title' => 'required|min:5',
             'blog_content'=>'required'
         ]);
+        $cmn_company_id = ($request->cmn_company_id==null?0:$request->cmn_company_id);
         $arr =array(
             'blog_title'=>$request->blog_title,
             'blog_content'=>$request->blog_content,
-            'blog_by'=>$request->blog_by
+            'blog_by'=>$request->blog_by,
+            'cmn_company_id'=>$cmn_company_id
         );
         $feature_img = $request->feature_img;
         $img = '';
