@@ -167,7 +167,7 @@
             </p>
       <div class="">
         <table
-          class="table table-striped order_list_table table-bordered data_table"
+          class="table table-striped order_list_table order_item_details_table table-bordered data_table"
         >
           <thead>
             <!-- <tr>

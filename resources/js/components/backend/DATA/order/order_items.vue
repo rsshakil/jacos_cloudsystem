@@ -248,7 +248,7 @@
       <div class="col-12">
         <div class="">
           <table
-            class="table table-striped table-bordered table-responsive order_item_list_table data_table"
+            class="table table-striped table-bordered table-responsive order_item_list_table order_item_details_table data_table"
             style="overflow-x: scroll">
             <thead>
               <tr>
