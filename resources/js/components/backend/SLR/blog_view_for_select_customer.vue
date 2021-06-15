@@ -104,7 +104,6 @@ export default {
     // this.byr_buyer_id=this.$route.params.byr_buyer_id;
   },
   mounted() {
-    this.init();
   },
   route: {
     canReuse: false,

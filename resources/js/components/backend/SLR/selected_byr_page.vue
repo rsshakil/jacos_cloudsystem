@@ -8,7 +8,7 @@
                 <blog_view_for_select_customer></blog_view_for_select_customer>
 
 
-           
+
 </div>
 </template>
 
@@ -51,7 +51,6 @@
              Fire.$emit("loadPageTitle", "得意先別HOME");
             },
         mounted() {
-            this.init();
         },
         route: {
             canReuse: false,

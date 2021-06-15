@@ -81,7 +81,6 @@
     });
   },
         mounted() {
-            // this.init();
         }
     }
 </script>

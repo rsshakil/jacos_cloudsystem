@@ -48,7 +48,6 @@ export default {
   created() {
   },
   mounted() {
-    // this.init();
     this.loadData();
   },
 };

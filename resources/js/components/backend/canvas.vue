@@ -322,7 +322,6 @@ methods:{
             // }
           },
           deleteCanvas(cmn_pdf_canvas_id){
-              this.init();
               this.delete_sweet().then((result) => {
               if (result.value) {
                 //Send Request to server
@@ -470,8 +469,6 @@ methods:{
 
           },
           saveData(){
-            this.init();
-            // return 0;
             if (this.canvas_name==null) {
                 alert("Please fill canvas name");
                 return false;

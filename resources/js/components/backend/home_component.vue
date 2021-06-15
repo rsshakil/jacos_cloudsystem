@@ -33,7 +33,6 @@ import page_header_default from './page_header_default'
                 //  this.loading=false;
             },
         mounted() {
-            // this.init();
         }
     }
 </script>

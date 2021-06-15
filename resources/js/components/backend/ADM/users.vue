@@ -158,7 +158,6 @@ export default {
   methods: {
     //get Table data
     loadUserData() {
-        this.init();
       axios.get(this.BASE_URL+"api/users")
         .then(({ data }) => {
           this.users = data.users;
@@ -170,7 +169,6 @@ export default {
         });
     },
     permissionForRole(options){
-        this.init();
         var role_id=[];
         options.forEach(element => {
             role_id.push(element.role_id);
@@ -189,7 +187,6 @@ export default {
     },
     // User create
     save_user(){
-        this.init();
         var role_id=[];
         if (this.name == '' || this.email == '' || this.password == '' || this.confirm_password == '') {
                 this.alert_text="All fields are required"
@@ -246,7 +243,6 @@ export default {
     },
     //Delete User
             deleteUser(id){
-                this.init();
                 this.delete_sweet().then((result) => {
               if (result.value) {
                 //Send Request to server
@@ -268,7 +264,6 @@ export default {
             })
             },
             permissionView(user_id,user_name){
-                this.init();
                 this.permissionModalShow=true;
                 this.permission_modal_title="Permissions for "+user_name;
                 var user_data={user_id:user_id}

@@ -56,14 +56,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        // if($exception!=null){
             if ($exception->getCode()==419) {
-                return response()->json(['status'=>$exception->getCode()]);
+                return redirect('/login');
+                // return response()->json(['status'=>$exception->getCode()]);
             }
-        // }
-        // if($exception!=null){
-        //     return redirect('/login');
-        // }
         return parent::render($request, $exception);
     }
 

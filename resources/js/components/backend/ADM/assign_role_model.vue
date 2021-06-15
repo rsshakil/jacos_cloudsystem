@@ -69,7 +69,6 @@ export default {
   methods: {
     //Get user data
     loadUserData() {
-      this.init();
       axios.get(this.BASE_URL+"api/all_users_roles").then(({ data }) => {
             this.all_users = data.users;
             this.all_roles = data.roles;
@@ -79,8 +78,6 @@ export default {
         });
     },
     showRoles(option){
-
-      this.init();
        this.user_id=option.user_id;
        if (this.user_id) {
            axios.get(this.BASE_URL+"api/get_roles/"+this.user_id)
@@ -101,7 +98,6 @@ export default {
         },
     //Assign role
     AssignRole() {
-      this.init();
       var assign_role_data={roles:this.selected_roles,user_id:this.user_id}
       axios
         .post(this.BASE_URL+"api/assign_role_to_user",assign_role_data)

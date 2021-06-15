@@ -50,7 +50,6 @@
         });
   },
         mounted() {
-            // this.init();
         }
     }
 </script>

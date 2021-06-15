@@ -97,7 +97,6 @@ export default {
   methods: {
     //Get user data
     loadUserData() {
-      this.init();
       axios.get(this.BASE_URL+"api/all_users_permissions").then(({ data }) => {
             this.all_users = data.users;
         })
@@ -123,7 +122,6 @@ export default {
         },
     //Assign role
     AssignPermissions() {
-      this.init();
       var assign_permission_data={permission:this.selected_permissions,user_id:this.user_id}
       axios.post(this.BASE_URL+"api/assign_permission_to_user",assign_permission_data)
         .then(({ data }) => {

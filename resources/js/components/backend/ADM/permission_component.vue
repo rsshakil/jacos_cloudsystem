@@ -96,7 +96,6 @@ export default {
   methods: {
     //get Table data
     loadPermissionData() {
-      this.init();
       axios.get(this.BASE_URL+"api/permission").then(({ data }) => {
             this.permissions=data.permissions;
         })
@@ -107,7 +106,6 @@ export default {
 
     //Insert Permission
     SubmitPermission() {
-      this.init();
       this.form.post(this.BASE_URL+"api/permission").then(({ data }) => {
         if (data.message=='created') {
             this.alert_text=this.myLang.permission_setup_completed
@@ -133,7 +131,6 @@ export default {
         });
     },
     editPermission(item) {
-      this.init();
       this.form.clear();
       this.form.reset();
        this.form.permission_name=item.name;
@@ -144,7 +141,6 @@ export default {
     },
     //Delete Permoission
             deletePermission(id){
-              this.init();
               this.delete_sweet().then((result) => {
               if (result.value) {
                 //Send Request to server

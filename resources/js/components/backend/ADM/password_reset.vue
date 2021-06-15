@@ -83,7 +83,6 @@ methods:{
                     this.sweet_normal_alert();
                     return false;
                 }
-                this.init();
                 var password_data={user_id:this.user_update_id,auth_id:this.auth_id,password:this.password}
                 axios.post(this.BASE_URL+"api/change_password",password_data)
                 .then(({ data }) => {
@@ -107,7 +106,6 @@ created() {
     //LoadTableData
     this.user_update_id = this.$route.params.id;
     this.auth_id = this.$route.params.auth_id;
-    this.init();
   },
 
 }

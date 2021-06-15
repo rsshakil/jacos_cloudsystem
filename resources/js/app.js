@@ -214,7 +214,9 @@ router.onReady(() => {
 // };
 // Set axios default response action
 axios.interceptors.response.use(function(response) {
-    if (response.data.status == 419) {
+    // console.log("Just status: ", response.status);
+    // console.log("Data Status: ", response.data.status); //419
+    if (response.data.status == 419 || response.status == 419) {
         window.location.reload();
     }
     return response;
