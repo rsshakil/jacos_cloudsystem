@@ -77,7 +77,7 @@ import slr_invoice_details from './components/backend/BYR/DATA/INVOICE/slr_invoi
 import voucher_detail from './components/backend/voucher_detail.vue'
 import pdf_platform_setting from './components/backend/PDF_PLATFORM/pdf_platform_setting.vue'
 import pdf_platform_view from './components/backend/PDF_PLATFORM/pdf_platform_view.vue'
-import blog from './components/backend/CMN/cmn_blog_list.vue'
+// import blog from './components/backend/CMN/cmn_blog_list.vue'
 import selected_buyer from './components/backend/SLR/selected_byr_page.vue'
 import management_setting from './components/backend/CONFIG/management_setting.vue'
 // Byr Menu Pages
@@ -94,7 +94,7 @@ export const routes = [
 
     {
         path: '/home',
-        component: Home,
+        component: resolve => require(['./components/backend/home_component.vue'], resolve), //Home,
         name: 'home',
         meta: {
             breadcrumb: {
@@ -104,7 +104,7 @@ export const routes = [
     },
     {
         path: '/blog',
-        component: blog,
+        component: resolve => require(['./components/backend/CMN/cmn_blog_list.vue'], resolve), //blog,
         name: 'blog',
         meta: {
             breadcrumb: {
@@ -115,7 +115,7 @@ export const routes = [
     {
         path: '/role',
         name: "role",
-        component: Role,
+        component: resolve => require(['./components/backend/ADM/role_component.vue'], resolve), //Role,
         meta: {
             breadcrumb: {
                 label: '役割'
@@ -490,9 +490,9 @@ export const routes = [
 
     //return list end
 
-     //slr_return list
+    //slr_return list
 
-     {
+    {
         path: '/slr_return_list',
         component: slr_data_return_list,
         name: 'slr_return_list',
