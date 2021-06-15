@@ -120,7 +120,6 @@ export default {
       };
       axios.post(this.BASE_URL + "api/update_cmn_connects_optionalAllJson", formDatas)
                 .then(({data}) => {
-                    this.init(data.status);
                     Swal.fire({
                         icon: "success",
                         title: "",
@@ -136,7 +135,6 @@ export default {
       let loader = Vue.$loading.show();
       axios.post(this.BASE_URL + "api/get_partner_fax_list",this.form)
         .then(({ data }) => {
-            this.init(data.status);
             this.cmnConnectOptionList = data.result;
             loader.hide();
         });

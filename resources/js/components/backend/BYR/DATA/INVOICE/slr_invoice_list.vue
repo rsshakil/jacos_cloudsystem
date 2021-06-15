@@ -364,7 +364,6 @@ export default {
       this.form.downloadType=downloadType
       axios.post(this.BASE_URL + "api/download_invoice", this.form)
         .then(({ data }) => {
-           this.init(data.status);
            this.downloadFromUrl(data);
         });
     },
