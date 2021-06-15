@@ -251,7 +251,6 @@ export default {
       this.form.reset();
       axios.post(this.BASE_URL + "api/get_permissions_for_buyer",{cmn_company_id:null})
       .then(({data})=>{
-          this.init(data.status);
         this.permissions=data.permission_array
         // console.log(data)
       })
@@ -261,7 +260,6 @@ export default {
       var cmn_company_id=form_data.cmn_company_id
       axios.post(this.BASE_URL + "api/get_permissions_for_buyer",{cmn_company_id:cmn_company_id})
       .then(({data})=>{
-          this.init(data.status);
         this.permissions=data.permission_array
         var sp_array=[];
         (data.selected_permission_array).forEach(element => {
@@ -308,7 +306,6 @@ export default {
       axios.get(
           this.BASE_URL + "api/get_all_company_list/" + Globals.user_info_id
         ).then(({data}) => {
-            this.init(data.status);
           this.company_lists = data.companies;
           // console.log(this.company_lists);
         });

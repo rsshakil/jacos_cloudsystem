@@ -364,7 +364,6 @@ export default {
       this.form.downloadType=downloadType
       axios.post(this.BASE_URL + "api/download_invoice", this.form)
         .then(({ data }) => {
-           this.init(data.status);
            this.downloadFromUrl(data);
         });
     },
@@ -415,7 +414,6 @@ export default {
       axios
         .post(this.BASE_URL + "api/invoiceInsert",this.invoiceData)
         .then(({data}) => {
-            this.init(data.status);
          Fire.$emit("LoadByrinvoice");
          _this.alert_icon = "success";
         _this.alert_title = "";
@@ -438,7 +436,6 @@ export default {
     //     headers: { "Content-Type": "multipart/form-data" },
     //   })
     //     .then(({data})=> {
-    //       this.init(data.status);
     //       Fire.$emit("LoadByrorder");
     //     })
     //     .catch(function (response) {

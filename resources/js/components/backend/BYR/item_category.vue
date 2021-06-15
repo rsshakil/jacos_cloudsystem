@@ -287,14 +287,12 @@ export default {
         if (result.value) {
           const formData = new FormData();
           let file = e.target.files[0];
-         
+
           this.loader = Vue.$loading.show();
           formData.append("file", file);
           formData.append("adm_user_id", Globals.user_info_id);
           axios.post(this.BASE_URL + "api/uploadByrCategoryCsv", formData)
             .then(({ data }) => {
-              this.init(data.status);
-
               _this.alert_icon = "success";
               _this.alert_title = "Inserted";
               _this.alert_text = "Category CSV inserted";
@@ -331,7 +329,7 @@ export default {
 
     },
     save_new_cat() {
-    
+
       this.form.adm_user_id = Globals.user_info_id;
       this.form
         .post(this.BASE_URL + "api/cmn_category_create")
@@ -358,10 +356,10 @@ export default {
             title: tittles,
             text: msg_text,
           });
-          
+
         })
         .catch((error) => {
-          
+
           Swal.fire({
             icon: "warning",
             title: "Invalid category info",
@@ -380,9 +378,8 @@ export default {
       axios
         .post(this.BASE_URL + "api/get_all_cat_list",post_data)
         .then(({ data }) => {
-            this.init(data.status);
           this.cat_lists = data.cat_list;
-          
+
           this.options = data.allCatForParent;
           this.loader.hide();
         });
@@ -400,7 +397,7 @@ export default {
 
   },
   mounted() {
-    
+
   },
 };
 </script>

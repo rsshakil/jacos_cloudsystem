@@ -280,7 +280,6 @@ methods:{
           loadCanvasData() {
             axios.post(this.BASE_URL+"api/load_canvas_setting_data")
                 .then(({ data }) => {
-                    this.init(data.status);
                   this.canvasAllData=data.canvas_info;
                   this.all_buyer=data.all_buyer;
                   // this.loader.hide();
@@ -329,7 +328,6 @@ methods:{
                 //Send Request to server
                 axios.post(this.BASE_URL+'api/delete_canvas',{cmn_pdf_canvas_id:cmn_pdf_canvas_id})
                     .then(({data})=> {
-                        this.init(data.status);
                       if (data.message=='success') {
                         this.alert_text="Canvas deleted"
                       }else if(data.message=='faild'){
@@ -359,7 +357,7 @@ methods:{
                       };
                       reader.readAsDataURL(file);
                       reader.onerror = function() {
-                          
+
                       };
                   }else{
                       this.alert_text='File must me jpg or png'
@@ -496,7 +494,6 @@ methods:{
             // return 0;
             axios.post(this.BASE_URL+"api/canvas_data_save",canvas_data)
                 .then(({ data }) => {
-                    this.init(data.status);
                     if (data.message=='created') {
                           this.alert_text="Canvas Created"
                           this.loadCanvasData()
@@ -932,7 +929,7 @@ methods:{
         // }
     },
       copyObject(){
-        
+
         // copy function start
         var canvas=this.canvas;
         var _this=this;

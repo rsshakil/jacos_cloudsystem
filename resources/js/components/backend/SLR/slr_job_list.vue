@@ -122,7 +122,6 @@ components:{
   methods: {
        get_all_slr_job_lists(){
         axios.get(this.BASE_URL +"api/slr_job_list_by_seller_id/"+this.slr_seller_id).then(({data}) => {
-            this.init(data.status);
             this.slr_job_lists = data.slr_job_list;
         });
     },

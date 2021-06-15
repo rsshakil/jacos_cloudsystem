@@ -912,7 +912,6 @@ export default {
       axios
         .post(this.BASE_URL + "api/receive_download", this.form)
         .then(({ data }) => {
-           this.init(data.status);
           this.downloadFromUrl(data);
         });
     },
@@ -924,7 +923,6 @@ export default {
       axios
         .post(this.BASE_URL + "api/slr_data_receive_detail_list", this.form)
         .then(({ data }) => {
-          this.init(data.status);
           this.receive_detail_lists = data.received_detail_list;
           this.receive_details_length = this.receive_detail_lists.data.length;
           this.byr_buyer_lists = data.byr_buyer_list;

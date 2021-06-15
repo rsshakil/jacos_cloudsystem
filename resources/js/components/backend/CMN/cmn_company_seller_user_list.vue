@@ -129,7 +129,6 @@ tabList,
   methods: {
        get_all_company_users(){
         axios.get(this.BASE_URL +"api/company_user_list/"+this.cmn_company_id).then(({data}) => {
-            this.init(data.status);
             this.company_user_lists = data.user_list;
         });
     },
@@ -150,10 +149,10 @@ tabList,
             title: 'User added success',
             text: 'You have successfully added user'
         });
-                  
+
                 })
                 .catch((error)=>{
-                  
+
                   Swal.fire({
             icon: 'warning',
             title: 'Invalid user info',
@@ -166,15 +165,15 @@ tabList,
   created() {
     this.cmn_company_id = this.$route.params.cmn_company_id;
     this.form.cmn_company_id = this.$route.params.cmn_company_id;
-  
+
       this.get_all_company_users();
       Fire.$on("AfterCreateUser", () => {
         this.get_all_company_users();
     });
-    
+
   },
   mounted() {
-    
+
   }
 };
 </script>

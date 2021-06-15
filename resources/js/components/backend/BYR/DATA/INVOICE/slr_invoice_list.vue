@@ -415,7 +415,6 @@ export default {
       axios
         .post(this.BASE_URL + "api/invoiceInsert",this.invoiceData)
         .then(({data}) => {
-            this.init(data.status);
          Fire.$emit("LoadByrinvoice");
          _this.alert_icon = "success";
         _this.alert_title = "";
@@ -438,7 +437,6 @@ export default {
     //     headers: { "Content-Type": "multipart/form-data" },
     //   })
     //     .then(({data})=> {
-    //       this.init(data.status);
     //       Fire.$emit("LoadByrorder");
     //     })
     //     .catch(function (response) {

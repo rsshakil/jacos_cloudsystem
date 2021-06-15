@@ -60,7 +60,6 @@ components:{
   methods: {
       get_all_scenarios(){
         axios.get(this.BASE_URL +"api/get_scenario_list").then(({data}) => {
-            this.init(data.status);
             this.scenario_lists = data.scenario_list;
 
         });
@@ -69,10 +68,10 @@ components:{
 
   created() {
       this.get_all_scenarios();
-     
+
   },
   mounted() {
-   
+
   }
 };
 </script>

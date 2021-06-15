@@ -120,7 +120,6 @@ export default {
     //get Table data
     loadTableData() {
       axios.get(this.BASE_URL+"api/role").then(({ data }) => {
-          this.init(data.status);
           this.role_permissions = data.role_permissions;
           this.all_permissions = data.role_permissions[0].all_permissions;
         })

@@ -98,7 +98,6 @@ export default {
     loadPermissionData() {
       this.init();
       axios.get(this.BASE_URL+"api/permission").then(({ data }) => {
-          this.init(data.status);
             this.permissions=data.permissions;
         })
         .catch(() => {

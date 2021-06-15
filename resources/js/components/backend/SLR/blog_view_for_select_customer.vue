@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--bloog section-->
-    
+
           <!--user blog-->
           <b-row v-can="['slr_view']">
             <b-col v-if="user_blog.length != '0'">
@@ -43,7 +43,7 @@
 
   </b-row>
 -->
-        
+
   </div>
 </template>
 
@@ -64,13 +64,11 @@ export default {
     get_all_blogs() {
       axios.get(this.BASE_URL + "api/get_all_published_blog_list")
         .then(({data}) => {
-            this.init(data.status);
           this.blog_lists = data.blog_list;
         });
     },
     get_signle_top_blog() {
       axios.get(this.BASE_URL + "api/get_signle_top_blog").then(({ data }) => {
-          this.init(data.status);
         this.single_blog = data.blog_list;
       });
     },
@@ -82,7 +80,6 @@ export default {
       if (byr_buyer_id) {
         axios.get(this.BASE_URL + "api/get_user_top_blog_by_byr_id/" + byr_buyer_id)
         .then(({ data }) => {
-            this.init(data.status);
           this.user_blog = data.blog_list;
         }).catch((error)=>{
           this.user_blog=[];

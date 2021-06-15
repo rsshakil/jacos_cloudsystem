@@ -322,8 +322,6 @@ export default {
           user_id: this.myLang.user_info_id,
         })
         .then(({ data }) => {
-            this.init(data.status);
-
             this.slr_order_list = data.slr_order_info;
         });
     },
@@ -334,7 +332,6 @@ export default {
             "api/get_selected_byr_info/" +byr_buyer_id
         )
         .then(({ data }) => {
-          this.init(data.status);
           if(data.byr_info!=null){
              this.$session.set('byr_buyer_company',data.byr_info.company_name)
              this.company_name = data.byr_info.company_name;

@@ -99,7 +99,7 @@ user_menu,
         .then((response) => {
             this.init(response.status);
           if (response.status === 302 || 401) {
-           
+
           } else {
             // throw error and go to catch block
           }
@@ -109,13 +109,12 @@ user_menu,
     allPermissionCheck(byr_id=null){
         if (this.$route.name!=='home') {
            axios.post(this.BASE_URL+'api/get_permissions_for_buyer',{byr_id:byr_id}).then(({data})=>{
-               this.init(data.status);
             this.permissions_by_user=data.permission_array;
             if (this.permissions_by_user.length>0) {
             this.permission_menu= true
             }
 
-           
+
         })
         }
 

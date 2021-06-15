@@ -133,14 +133,13 @@ export default {
   },
   methods: {
     loadCanvasData() {
-       
+
       axios.post(this.BASE_URL + "api/load_pdf_platform_canvas_data", {
           data_order_id: this.data_order_id,
           scenario_id:this.scenario_id,
           line_per_page:this.line_per_page,
         })
         .then(({ data }) => {
-          this.init(data.status);
           var canvas_data=data.canvas_data;
           if (canvas_data.length>0) {
             this.allName=canvas_data
@@ -165,7 +164,7 @@ export default {
             // }
 
           }else{
-            
+
             //   this.canvasDesign(this.itr)
           }
         })
@@ -202,12 +201,12 @@ export default {
             if (element.type==="textbox") {
               var positionTop=element.top;
               var split_element=(this.splitString(element.text))
-          
+
             var item='';
 
              if(!(Array.isArray(split_element))){
                item=split_element;
-          
+
                this.createObj(element.left,element.top,element.width,element.height,element.fontSize,element.textAlign,element.lineHeight,element.scaleX,element.scaleY,item.toString(),'auto')
              }else{
                if (split_element.length>2) {
@@ -264,7 +263,7 @@ export default {
                }
              }
             }else{
-               
+
                 if (element.type=="line") {
                   var line = new fabric.Line([Number(element.left), Number(element.top), Number(element.width), Number(element.top)], {
                     stroke: 'black'

@@ -262,7 +262,6 @@ export default {
       axios
         .post(this.BASE_URL + "api/slr_payment_download",this.form)
         .then(({ data }) => {
-           this.init(data.status);
           this.downloadFromUrl(data);
         });
     },

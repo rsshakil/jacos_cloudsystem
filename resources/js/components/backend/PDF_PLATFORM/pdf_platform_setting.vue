@@ -294,7 +294,6 @@ methods:{
           loadCanvasData() {
             axios.post(this.BASE_URL+"api/load_pdf_platform_canvas_setting_data")
                 .then(({ data }) => {
-                  this.init(data.status);
                   this.canvasAllData=data.canvas_info;
                   this.all_buyer=data.all_buyer;
                   // this.loader.hide();
@@ -347,7 +346,6 @@ methods:{
                 //Send Request to server
                 axios.post(this.BASE_URL+'api/delete_pdf_platform_canvas',{cmn_pdf_canvas_id:cmn_pdf_platform_canvas_id})
                     .then(({data})=> {
-                        this.init(data.status);
                       if (data.message=='success') {
                         this.alert_text="Canvas deleted"
                       }else if(data.message=='faild'){
@@ -377,7 +375,7 @@ methods:{
                       };
                       reader.readAsDataURL(file);
                       reader.onerror = function() {
-                          
+
                       };
                   }else{
                       this.alert_text='File must me jpg or png'
@@ -421,7 +419,7 @@ methods:{
                       originX: 'left',
                       originY: 'top'
                   });
-               
+
                   mainCanvas.setWidth(img.width);
                   mainCanvas.setHeight(img.height);
               };
@@ -459,7 +457,7 @@ methods:{
           printData(divVar) {
             var canvas=this.canvas;
             var thisVar=this;
-           
+
             if (this.printBg==false) {
               if (this.bg_image_path) {
                 var imgSrc = canvas.backgroundImage._element.src;
@@ -489,7 +487,7 @@ methods:{
                   beforePrint: null, // function called before iframe is filled
                   afterPrint: null // function called before iframe is removed
               });
-             
+
               if (this.printBg==false) {
                   if (this.bg_image_path) {
                   setTimeout(function() {
@@ -529,10 +527,9 @@ methods:{
             //   buyer_id.push(element.byr_buyer_id)
             // });
             var canvas_data= { canvas_id: this.canvas_id, update_image_info: this.update_image_info,byr_id:buyer_id, canvas_name: this.canvas_name, canData: canData, canvasImage: this.getCanvasBgImage(),line_gap:this.line_gap,line_per_page:this.line_per_page }
-           
+
             axios.post(this.BASE_URL+"api/pdf_platform_canvas_data_save",canvas_data)
                 .then(({ data }) => {
-                    this.init(data.status);
                     if (data.message=='created') {
                           this.alert_text="Canvas Created"
                           this.loadCanvasData()
@@ -613,7 +610,7 @@ methods:{
         }
           },
           doubleClick(option){
-         
+
             this.pointerX=option.pointer.x
             this.pointerY=option.pointer.y
             this.createObj(this.pointerX-50,this.pointerY,150,22,20,"left",1.16,1,1,"Created by Click",'clicked');
@@ -648,7 +645,7 @@ methods:{
         var mainCanvas=this.canvas;
         const img = new Image();
         img.src = imgUrl;
-       
+
         img.onload = function() {
           mainCanvas.setWidth(img.naturalWidth);
           mainCanvas.setHeight(img.naturalHeight);
@@ -700,7 +697,7 @@ methods:{
         angle: 0,
         padding: 1
       });
-    
+
       this.canvas.add(rect).setActiveObject(rect);
       },
       createCircle(){
@@ -894,7 +891,7 @@ methods:{
           }
       },
       keyEventFunc(e){
-       
+
         // if (e.keyCode == 46 || (e.ctrlKey && e.keyCode == 8)) {
         if (e.keyCode == 46 || (e.ctrlKey && e.keyCode == 8)) {
             this.deleteObjects();
@@ -999,7 +996,7 @@ methods:{
         // }
     },
       copyObject(){
-        
+
         // copy function start
         var canvas=this.canvas;
         var _this=this;

@@ -1866,7 +1866,7 @@ export default {
       }
       if(event.key=='Enter'){
         event.preventDefault()
-       
+
         // event.target.nextElementSibling.focus()
         // console.log(event.target.parent.closest('.lack_reasons'));
       }
@@ -1893,18 +1893,17 @@ export default {
       }
     },
     update_shipment_detail(order_detail){
-     
+
       axios({method: 'POST',
     url: this.BASE_URL + "api/update_shipment_detail",
     data: order_detail
     })
     .then(({data})=> {
-        this.init(data.status);
        Fire.$emit('LoadByrorderDetail');
     })
     .catch(function (response) {
         //handle error
-        
+
     });
     },
     //get Table data
@@ -1912,7 +1911,6 @@ export default {
       axios
         .get(this.BASE_URL + "api/get_data_order_byr_order_id/" + this.byr_order_id)
         .then(({data}) => {
-          this.init(data.status);
           this.order_detail_lists = data.order_list_detail;
           this.show_hide_col_list = data.slected_list;
         });
@@ -1927,7 +1925,6 @@ export default {
         };
         axios.post(this.BASE_URL + "api/tblecolsetting", post_data)
           .then(({data}) => {
-              this.init(data.status);
           });
       }
     },

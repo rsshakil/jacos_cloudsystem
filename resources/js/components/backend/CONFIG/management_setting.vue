@@ -187,7 +187,6 @@ export default {
             axios
                 .post(this.BASE_URL + "api/update_cmn_connects_optional", post_data)
                 .then(({data}) => {
-                    this.init(data.status);
                     Swal.fire({
                         icon: "success",
                         title: "",

@@ -422,7 +422,6 @@ export default {
     //   })
     //     .then(({data})=> {
     //       //handle success
-    //       this.init(data.status);
     //       this.downloadFromUrl(data);
     //       Fire.$emit("LoadByrorder");
     //     }).catch(function (response) {
@@ -441,7 +440,6 @@ export default {
         headers: { "Content-Type": "multipart/form-data" },
       })
         .then(({data})=> {
-          this.init(data.status);
           Fire.$emit("LoadByrorder");
         })
         .catch(function (response) {

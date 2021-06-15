@@ -1,6 +1,6 @@
 <template>
     <div class="row" v-can="['byr_view']">
-             
+
                 <div class="col-12 text-center">
  <label for="insertItemCategory" class="custom-file-upload" style="float:right;margin-right:15px;padding:6px 15px;">
                 <b-icon
@@ -18,13 +18,13 @@
                 class="form-control uploadBtn"
                 style="display: none"
               />
-     
+
                 </div>
                 <div class="col-12">
                     <div class="">
                         <table class="table table-striped table-bordered order_item_details_table">
                             <thead>
-                               
+
                                 <tr>
                                     <th><input type="checkbox" @click="checkAll()" v-model="isCheckAll"></th>
                                     <th class="sorting" data-input_type="text" data-sorting_type="asc" data-column_name="vendor_items.name"
@@ -106,7 +106,6 @@ export default {
     //get Table data
     get_all_master_item(){
         axios.get(this.BASE_URL +"api/get_all_master_item/"+Globals.user_info_id).then(({data}) => {
-            this.init(data.status);
             this.item_lists = data.item_list;
             this.byr_buyer_lists = data.byr_buyer_list;
         });
@@ -124,12 +123,11 @@ export default {
     headers: {'Content-Type': 'multipart/form-data' }
     })
     .then (({data})=> {
-        this.init(data.status);
        Fire.$emit('LoadByrmasterItem');
     })
     .catch(function (response) {
         //handle error
-      
+
     });
     },
     onChangeFileUpload(){

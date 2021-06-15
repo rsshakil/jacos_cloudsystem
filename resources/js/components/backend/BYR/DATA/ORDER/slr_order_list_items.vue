@@ -853,7 +853,6 @@ export default {
       axios
         .post(this.BASE_URL + "api/update_byr_order_detail_status", post_data)
         .then(({ data }) => {
-          this.init(data.status);
           Fire.$emit("LoadByrorderDetail");
         });
     },
@@ -908,7 +907,6 @@ export default {
         data: order_detail,
       })
         .then(({ data }) => {
-          this.init(data.status);
           Fire.$emit("LoadByrorderDetail");
         })
         .catch(function (response) {});
@@ -924,7 +922,6 @@ export default {
           this.BASE_URL + "api/order_item_details/" + this.data_order_voucher_id
         )
         .then(({ data }) => {
-          this.init(data.status);
           this.order_item_detail_lists = data.order_item_list_detail;
           this.mes_lis_shi_tot_tot_net_price_total =
             data.order_item_list_detail[0].mes_lis_shi_tot_tot_net_price_total;

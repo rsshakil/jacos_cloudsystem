@@ -737,7 +737,6 @@ export default {
       axios
         .post(this.BASE_URL + "api/data_receive_item_detail_list", this.form)
         .then(({ data }) => {
-          this.init(data.status);
           this.order_item_detail_lists = data.received_item_detail_list;
           this.order_item_shipment_data_headTable =
             data.received_item_detail_list[0];

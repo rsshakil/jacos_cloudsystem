@@ -205,7 +205,6 @@ export default {
       axios
         .get(this.BASE_URL + "api/cmn_company_user_list/" + this.cmn_company_id)
         .then(({ data }) => {
-          this.init(data.status);
           this.company_user_lists = data.user_list;
           this.company_name = data.company_name;
         });

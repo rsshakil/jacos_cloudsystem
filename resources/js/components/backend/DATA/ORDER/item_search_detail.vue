@@ -767,7 +767,6 @@ export default {
         data: order_detailitem,
       })
         .then(({ data }) => {
-          this.init(data.status);
           _this.alert_icon = "success";
           _this.alert_title = "";
           _this.alert_text = "入力データを反映させました";
@@ -810,7 +809,6 @@ export default {
         data: order_detailitem,
       })
         .then(({ data }) => {
-          this.init(data.status);
           _this.alert_icon = "success";
           _this.alert_title = "";
           _this.alert_text = "入力データを反映させました";
@@ -902,7 +900,6 @@ export default {
         data: order_detail,
       })
         .then(({ data }) => {
-          this.init(data.status);
           Fire.$emit("LoadByrorderDetail");
         })
         .catch(function (response) {});
@@ -915,7 +912,6 @@ export default {
           this.$route.query
         )
         .then(({ data }) => {
-          this.init(data.status);
           this.order_item_detail_lists = data.order_item_list_detail;
           if (
             data.order_item_list_detail &&

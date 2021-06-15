@@ -161,7 +161,6 @@ export default {
         this.init();
       axios.get(this.BASE_URL+"api/users")
         .then(({ data }) => {
-            this.init(data.status);
           this.users = data.users;
           this.roles = data.roles;
           this.permissions = data.permissions;
@@ -179,7 +178,6 @@ export default {
         var permission_data= { role_id: role_id }
         axios.post(this.BASE_URL+"api/get_permission_for_roles",permission_data)
         .then(({ data }) => {
-            this.init(data.status);
             // made array unic
             this.selected_permissions = Array.from(new Set(data.permission_for_role))
             // Or
@@ -214,7 +212,6 @@ export default {
         var user_data={name:this.name,email:this.email,password:this.password,roles:role_id,permissions:this.selected_permissions}
         axios.post(this.BASE_URL+"api/users",user_data)
         .then(({ data }) => {
-            this.init(data.status);
         //   this.sweet_normal_alert();
           if (data.message=='exists') {
             this.alert_text=this.myLang.email_already_database
@@ -255,7 +252,6 @@ export default {
                 //Send Request to server
                 axios.delete(this.BASE_URL+'api/users/'+id)
                     .then(({data})=> {
-                        this.init(data.status);
                         if (data.message='deleted') {
                             this.alert_text=this.myLang.user_deleted
                         }
@@ -278,7 +274,6 @@ export default {
                 var user_data={user_id:user_id}
                 axios.post(this.BASE_URL+"api/permissions_by_users",user_data)
                 .then(({ data }) => {
-                    this.init(data.status);
                     this.total_permissions_by_user=0;
                     this.permissions_for_user='';
                     this.total_permissions_by_user=data.total_permissions;

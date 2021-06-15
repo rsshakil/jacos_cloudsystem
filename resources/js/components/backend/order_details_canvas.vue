@@ -127,8 +127,6 @@ export default {
           byr_order_id: this.byr_order_id,
           cmn_scenario_id:2,
         }).then(({ data }) => {
-            this.init(data.status);
-          
           if (data.canvas_data.length>0) {
             this.allName=data.canvas_data
             this.canvasSelectedName=this.allName[0]

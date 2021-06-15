@@ -70,11 +70,10 @@ components:{
   },
   methods: {
       delete_company(){
-          
+
       },
        get_all_buyer(){
         axios.get(this.BASE_URL +"api/get_all_buyer").then(({data}) => {
-          this.init(data.status);
             this.company_lists = data.company_list;
             // console.log(this.company_lists);
         });
@@ -83,10 +82,10 @@ components:{
 
   created() {
       this.get_all_buyer();
-    
+
   },
   mounted() {
-   
+
   }
 };
 </script>

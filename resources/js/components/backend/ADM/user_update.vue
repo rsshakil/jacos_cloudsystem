@@ -134,7 +134,6 @@ export default {
         // this.init();
       axios.get(this.BASE_URL+"api/user_details/"+this.user_id)
         .then(({ data }) => {
-            this.init(data.status);
             var users=data.users[0];
             this.form.name=users.name
             this.form.email=users.email

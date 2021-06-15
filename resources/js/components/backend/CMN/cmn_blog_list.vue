@@ -11,7 +11,7 @@
                     <div class="">
                        <table class="table table-striped table-bordered order_item_details_table">
                             <thead>
-                              
+
                                 <tr>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="id" style="cursor: pointer">No <span id="id_icon"></span></th>
                                     <th class="sorting" data-sorting_type="asc" data-column_name="name" style="cursor: pointer">{{myLang.title}}<span id="orderdate_icon"></span></th>
@@ -133,7 +133,7 @@ export default {
         this.form.fill(blog);
       }else if(action_type==3){
       this.delete_sweet().then((value)=>{
-        
+
         if(value.isConfirmed){
           this.blog_update(blog,action_type);
         }
@@ -153,7 +153,6 @@ export default {
                     post_data
                 )
                 .then(({data}) => {
-                    this.init(data.status);
                     Fire.$emit('AfterCreateblog');
                     if(action_type==0){
                       var alert_icon='warning';
@@ -200,7 +199,6 @@ export default {
             },
        get_all_blogs(){
         axios.get(this.BASE_URL +"api/get_all_blog_list").then(({data}) => {
-            this.init(data.status);
             this.blog_lists = data.blog_list;
         });
     },
@@ -221,10 +219,10 @@ export default {
             title: 'blog added success',
             text: 'You have successfully added blog'
         });
-                  
+
                 })
                 .catch((error)=>{
-                  
+
                   Swal.fire({
             icon: 'warning',
             title: 'Invalid blog info',
@@ -239,11 +237,11 @@ export default {
       Fire.$on("AfterCreateblog", () => {
         this.get_all_blogs();
     });
-      
+
   },
   mounted() {
     this.editorConfig.language=this.myLang.editor_lang;
-   
+
   }
 };
 </script>

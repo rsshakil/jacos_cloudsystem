@@ -286,7 +286,7 @@
                     v-model="
                       order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity
                     "
-                    
+
                     class="form-control"
                   />
                   {{ order_item_detail_list.mes_lis_shi_lin_qua_ord_quantity }}
@@ -694,7 +694,6 @@ export default {
         data: order_detailitem,
       })
         .then(({ data }) => {
-          this.init(data.status);
           _this.alert_icon = "success";
           _this.alert_title = "";
           _this.alert_text = "入力データを反映させました";
@@ -712,7 +711,6 @@ export default {
         data: order_detailitem,
       })
         .then(({ data }) => {
-          this.init(data.status);
           _this.alert_icon = "success";
           _this.alert_title = "";
           _this.alert_text = "入力データを反映させました";
@@ -748,7 +746,6 @@ export default {
       axios
         .post(this.BASE_URL + "api/update_byr_order_detail_status", post_data)
         .then(({ data }) => {
-          this.init(data.status);
           Fire.$emit("LoadByrorderDetail");
         });
     },
@@ -803,7 +800,6 @@ export default {
         data: order_detail,
       })
         .then(({ data }) => {
-          this.init(data.status);
           Fire.$emit("LoadByrorderDetail");
         })
         .catch(function (response) {});
@@ -816,7 +812,6 @@ export default {
           this.$route.query
         )
         .then(({ data }) => {
-          this.init(data.status);
           this.order_item_detail_lists = data.order_item_list_detail;
           if (
             data.order_item_list_detail &&

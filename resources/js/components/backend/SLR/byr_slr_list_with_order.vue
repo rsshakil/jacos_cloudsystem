@@ -41,7 +41,6 @@ export default {
           user_id: this.myLang.user_info_id,
         })
         .then(({ data }) => {
-          this.init(data.status);
           this.slr_order_list = data.slr_order_info;
         });
     },

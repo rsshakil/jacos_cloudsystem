@@ -267,7 +267,6 @@ export default {
       let loader = Vue.$loading.show();
       axios.post(this.BASE_URL + "api/slr_get_payment_list", this.form)
         .then(({ data }) => {
-          this.init(data.status);
           this.payment_lists = data.payment_item_list;
           this.payment_lists_length = this.payment_lists.data.length;
           this.byr_buyer_lists = data.byr_buyer_list;
@@ -286,7 +285,6 @@ export default {
       axios
         .post(this.BASE_URL + "api/slr_payment_download", this.form)
         .then(({ data }) => {
-           this.init(data.status);
           this.downloadFromUrl(data);
         });
     },

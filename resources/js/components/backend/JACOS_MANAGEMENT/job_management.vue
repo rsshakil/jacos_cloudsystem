@@ -90,14 +90,12 @@ components:{
   methods: {
       get_all_scenarios(){
         axios.get(this.BASE_URL +"api/get_scenario_list").then(({data}) => {
-            this.init(data.status);
             this.scenario_lists = data.data.scenario_list;
-           
+
         });
     },
     get_all_slr_job_lists(){
         axios.get(this.BASE_URL +"api/slr_job_list_all").then(({data}) => {
-            this.init(data.status);
             this.slr_job_lists = data.job_list;
             this.byr_company_list = data.byr_company_list;
             this.slr_company_list = data.slr_company_list;
@@ -108,10 +106,10 @@ components:{
   created() {
       //this.get_all_scenarios();
       this.get_all_slr_job_lists();
-     
+
   },
   mounted() {
-   
+
   }
 };
 </script>
