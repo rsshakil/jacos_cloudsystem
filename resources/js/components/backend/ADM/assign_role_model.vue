@@ -71,12 +71,11 @@ export default {
     loadUserData() {
       this.init();
       axios.get(this.BASE_URL+"api/all_users_roles").then(({ data }) => {
-          this.init(data.status);
             this.all_users = data.users;
             this.all_roles = data.roles;
         })
         .catch(() => {
-          
+
         });
     },
     showRoles(option){
@@ -86,8 +85,6 @@ export default {
        if (this.user_id) {
            axios.get(this.BASE_URL+"api/get_roles/"+this.user_id)
         .then(({ data }) => {
-            this.init(data.status);
-            
             var roles=data.model_data
             var role_ids=[];
             for (let i = 0; i < roles.length; i++) {
@@ -97,7 +94,7 @@ export default {
             role_ids=[];
         })
         .catch(() => {
-          
+
         });
        }
 
@@ -109,7 +106,6 @@ export default {
       axios
         .post(this.BASE_URL+"api/assign_role_to_user",assign_role_data)
         .then(({ data }) => {
-            this.init(data.status);
           if (data.message=='success') {
             this.alert_text=this.myLang.assign_role_to_user
           }
@@ -127,7 +123,7 @@ export default {
     this.loadUserData();
   },
   mounted() {
-    
+
   }
 };
 </script>

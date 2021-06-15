@@ -129,7 +129,7 @@
                   type="number"
                   class="form-control"
                   :min="0"
-                    
+
                     @change="caseBallUpdate(order_item_lists, 'ケース')"
                   v-model="
                     order_item_lists.mes_lis_shi_lin_qua_shi_num_of_order_units
@@ -141,10 +141,10 @@
                   type="number"
                   class="form-control"
                   :min="0"
-                    
+
                     :step="order_item_lists.mes_lis_shi_lin_qua_unit_multiple"
                      @change="caseBallUpdate(order_item_lists, 'バラ')"
-                  v-model="order_item_lists.mes_lis_shi_lin_qua_shi_quantity" 
+                  v-model="order_item_lists.mes_lis_shi_lin_qua_shi_quantity"
                 />
               </td>
               <!--<td class="cl_custom_color_active">重量</td>
@@ -156,7 +156,7 @@
                   type="number"
                   class="form-control"
                   :min="0"
-                   
+
                   v-model="
                     order_item_lists.mes_lis_shi_lin_amo_item_net_price_unit_price
                   "
@@ -170,7 +170,7 @@
                   type="number"
                   class="form-control"
                   :min="0"
-                    
+
                   v-model="
                     order_item_lists.mes_lis_shi_lin_amo_item_selling_price_unit_price
                   "
@@ -291,7 +291,7 @@
                     v-model="
                       order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity
                     "
-                    
+
                     class="form-control"
                   />
                   {{ order_item_detail_list.mes_lis_shi_lin_qua_ord_quantity }}
@@ -306,7 +306,7 @@
                   <input
                     type="number"
                      :min="0"
-                    
+
                     v-model="
                       order_item_detail_list.mes_lis_shi_lin_amo_item_net_price_unit_price
                     "
@@ -326,12 +326,12 @@
                   }}</span>
                   <span v-else>0</span>
                 </td>
-          
+
                 <td class="text-right">
                   <input
                     type="number"
                     :min="0"
-                    
+
                     v-model="
                       order_item_detail_list.mes_lis_shi_lin_amo_item_selling_price_unit_price
                     "
@@ -413,7 +413,7 @@
                       "shipments"
                     )
                   }}
-                  
+
                 </td>
               </tr>
               <tr
@@ -658,7 +658,7 @@ export default {
           }
           order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units = calval;
           //this.order_item_lists.mes_lis_shi_lin_qua_shi_num_of_order_units = calval;
-         
+
         //}
       }
       // this.order_item_lists.mes_lis_shi_lin_qua_shi_quantity=order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity;
@@ -780,20 +780,20 @@ export default {
       var _this = this;
      // this.order_item_detail_lists=[];
       var order_detailitem = { items: this.order_item_lists };
-      //this.order_item_detail_lists.push(this.order_item_lists); 
+      //this.order_item_detail_lists.push(this.order_item_lists);
       _this.order_item_detail_lists.forEach(function (value, index) {
         if(_this.order_item_lists.mes_lis_shi_lin_qua_shi_num_of_order_units>_this.order_item_detail_lists[index].mes_lis_shi_lin_qua_ord_num_of_order_units){
           _this.order_item_detail_lists[index].mes_lis_shi_lin_qua_shi_num_of_order_units=_this.order_item_detail_lists[index].mes_lis_shi_lin_qua_ord_num_of_order_units
         }else{
           _this.order_item_detail_lists[index].mes_lis_shi_lin_qua_shi_num_of_order_units=_this.order_item_lists.mes_lis_shi_lin_qua_shi_num_of_order_units;
         }
-        
+
         if(_this.order_item_lists.mes_lis_shi_lin_qua_shi_quantity>_this.order_item_detail_lists[index].mes_lis_shi_lin_qua_ord_quantity){
           _this.order_item_detail_lists[index].mes_lis_shi_lin_qua_shi_quantity=_this.order_item_detail_lists[index].mes_lis_shi_lin_qua_ord_quantity;
         }else{
           _this.order_item_detail_lists[index].mes_lis_shi_lin_qua_shi_quantity=_this.order_item_lists.mes_lis_shi_lin_qua_shi_quantity;
         }
-        
+
 
         _this.order_item_detail_lists[index].mes_lis_shi_lin_amo_item_net_price_unit_price=_this.order_item_lists.mes_lis_shi_lin_amo_item_net_price_unit_price;
         _this.order_item_detail_lists[index].mes_lis_shi_lin_amo_item_selling_price_unit_price=_this.order_item_lists.mes_lis_shi_lin_amo_item_selling_price_unit_price;
@@ -848,7 +848,6 @@ export default {
       axios
         .post(this.BASE_URL + "api/update_byr_order_detail_status", post_data)
         .then(({ data }) => {
-          this.init(data.status);
           Fire.$emit("LoadByrorderDetail");
         });
     },

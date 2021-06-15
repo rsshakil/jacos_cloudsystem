@@ -99,11 +99,10 @@ export default {
     loadUserData() {
       this.init();
       axios.get(this.BASE_URL+"api/all_users_permissions").then(({ data }) => {
-          this.init(data.status);
             this.all_users = data.users;
         })
         .catch(() => {
-          
+
         });
     },
     showPermissions(option){
@@ -111,14 +110,13 @@ export default {
        if (this.user_id) {
            axios.get(this.BASE_URL+"api/get_permission_model/"+this.user_id)
         .then(({ data }) => {
-            this.init(data.status);
           this.not_matches=data.not_matches
           this.selected_permissions=data.permissions_exist_id
           this.permissions_by_role=data.all_permissions_for_user_array
-           
+
         })
         .catch(() => {
-          
+
         });
        }
 
@@ -129,7 +127,6 @@ export default {
       var assign_permission_data={permission:this.selected_permissions,user_id:this.user_id}
       axios.post(this.BASE_URL+"api/assign_permission_to_user",assign_permission_data)
         .then(({ data }) => {
-            this.init(data.status);
          this.permissions_by_role= data.all_permissions_for_user_array
          if (data.message=='success') {
             this.alert_text=this.myLang.permission_assigned
@@ -148,7 +145,7 @@ export default {
     this.loadUserData();
   },
   mounted() {
-    
+
   }
 };
 </script>
