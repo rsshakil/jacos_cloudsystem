@@ -36,6 +36,22 @@ npm run dev
 OR
 npm run watch
 
+### postman - newman
+```
+npm install -g newman
+```
+#### collection
+```
+newman run .\tests\postman\JCS.postman_collection.json 
+```
+#### collection -folder
+```
+newman run .\tests\postman\JCS.postman_collection.json --folder Local
+```
+#### collection -folders
+```
+newman run .\tests\postman\JCS.postman_collection.json --folder Local --folder STEP1 --folder order
+```
 
 ### About Testcafe
 

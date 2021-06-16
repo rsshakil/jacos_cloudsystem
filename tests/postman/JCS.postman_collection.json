@@ -1,0 +1,60 @@
+{
+    "info": {
+        "_postman_id": "27d8fda7-df8b-401e-bb24-e6f4d18039d1",
+        "name": "JCS",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [{
+        "name": "Local",
+        "item": [{
+            "name": "STEP1",
+            "item": [{
+                "name": "order",
+                "item": [{
+                    "name": "[local][scenario] order file upload",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [{
+                                    "key": "email",
+                                    "value": "user@jacos.co.jp",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "password",
+                                    "value": "Qe75ymSr",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "up_file",
+                                    "type": "file",
+                                    "src": "tests/postman/data/01.order/ouk-993477-99970-order-20210604144819_1384334529000.csv"
+                                },
+                                {
+                                    "key": "scenario_id",
+                                    "value": "4",
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "http://localhost/jcs/api/scenario_exec",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "path": [
+                                "jcs",
+                                "api",
+                                "scenario_exec"
+                            ]
+                        }
+                    },
+                    "response": []
+                }]
+            }]
+        }]
+    }]
+}
