@@ -56,7 +56,17 @@ newman run .\tests\postman\JCS.postman_collection.json --folder Local --folder S
 ### About Testcafe
 
 #Ensure that Node.js and npm are installed on your computer and run the following command:
-
+```
+npm install -g testcafe
+```
+#### Run Test
+```
+testcafe chrome tests/testcafe/order_test.js
+```
+#### Run Test --live
+```
+testcafe chrome tests/testcafe/order_test.js --live
+```
 ## For Running the Test
 
 #You can run the test from a command shell by calling a single command where you specify the target browser and file path.

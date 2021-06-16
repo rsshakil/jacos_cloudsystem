@@ -81,7 +81,6 @@
               </select>
             </td>
             <td class="cl_custom_color">送信状況</td>
-            <!-- v-model="form.fixedSpecial"send_datetime_status -->
             <td>
               <select class="form-control" v-model="form.send_datetime_status">
                 <option value="*">全て</option>

@@ -217,7 +217,7 @@ class InvoiceController extends Controller
             $request_amount = $matches[0][0];
             $request_sign = '+';
         }
-        
+
         $updatedArray = array(
             'mes_lis_inv_lin_det_transfer_of_ownership_date'=>$request->mes_lis_inv_lin_det_transfer_of_ownership_date,
             'mes_lis_inv_lin_det_goo_major_category'=>$request->mes_lis_inv_lin_det_goo_major_category,
@@ -340,9 +340,9 @@ class InvoiceController extends Controller
         } elseif ($decision_datetime_status=='確定済') {
             $result=$result->whereNotNull('dipd.decision_datetime');
         }
-        if ($send_datetime_status=='未確定あり') {
+        if ($send_datetime_status=='未送信あり') {
             $result=$result->whereNull('dipd.send_datetime');
-        } elseif ($send_datetime_status=='確定済') {
+        } elseif ($send_datetime_status=='送信済') {
             $result=$result->whereNotNull('dipd.send_datetime');
         }
         if ($payment_datetime_status=='支払日あり') {
