@@ -293,6 +293,11 @@ export default {
         mes_lis_inv_pay_code:'',
         mes_lis_inv_per_begin_date:'',
         mes_lis_inv_per_end_date:'',
+        mes_lis_pay_code:'',
+        mes_lis_pay_gln:'',
+        mes_lis_buy_code:'',
+        mes_lis_buy_gln:'',
+        mes_lis_inv_pay_gln:'',
       },
       send_datetime_status: ["未請求", "請求済","再請求あり"],
       form: new Form({
@@ -337,6 +342,11 @@ export default {
     viewInvoicePopup(){
       this.invoiceCreateModal = true;
       this.invoiceData.mes_lis_inv_pay_code=this.partner_codes[0].partner_code;
+      this.invoiceData.mes_lis_pay_code = this.getbyrjsonValueBykeyName("invoice_pay_info","mes_lis_pay_code","invoices");
+    this.invoiceData.mes_lis_pay_gln = this.getbyrjsonValueBykeyName("invoice_pay_info","mes_lis_pay_gln","invoices");
+    this.invoiceData.mes_lis_buy_code = this.getbyrjsonValueBykeyName("invoice_pay_info","mes_lis_buy_code","invoices");
+    this.invoiceData.mes_lis_buy_gln = this.getbyrjsonValueBykeyName("invoice_pay_info","mes_lis_buy_gln","invoices");
+    this.invoiceData.mes_lis_inv_pay_gln = this.getbyrjsonValueBykeyName("invoice_pay_info","mes_lis_inv_pay_gln","invoices");
     },
 
     //get Table data
@@ -460,11 +470,15 @@ export default {
     Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
     this.invoiceData.byr_buyer_id = this.$session.get("byr_buyer_id");
     this.form.byr_buyer_id = this.$session.get("byr_buyer_id");
+    this.getbuyerJsonSettingvalue();
+    
+    
     this.get_all_invoice_list();
     Fire.$on("LoadByrinvoice", () => {
       this.get_all_invoice_list();
     });
     Fire.$emit("loadPageTitle", "請求データ一覧");
+
   },
   mounted() {
   },

@@ -108,7 +108,7 @@ class InvoiceController extends Controller
             DB::raw('COUNT( isnull( dipd.send_datetime)  OR NULL) AS send_cnt')
         )
         ->join('data_invoice_pays as dip', 'data_invoices.data_invoice_id', '=', 'dip.data_invoice_id')
-        ->join('data_invoice_pay_details as dipd', 'dip.data_invoice_pay_id', '=', 'dipd.data_invoice_pay_id')
+        ->leftjoin('data_invoice_pay_details as dipd', 'dip.data_invoice_pay_id', '=', 'dipd.data_invoice_pay_id')
         ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'data_invoices.cmn_connect_id')
         ->where('cc.byr_buyer_id', $byr_buyer_id)
         ->where('cc.slr_seller_id', $slr_seller_id);
@@ -186,8 +186,8 @@ class InvoiceController extends Controller
             'mes_lis_doc_version'=>'',
             'mes_lis_ext_namespace'=>'',
             'mes_lis_ext_version'=>'',
-            'mes_lis_pay_code'=>'',
-            'mes_lis_pay_gln'=>'',
+            'mes_lis_pay_code'=>$request->mes_lis_pay_code,
+            'mes_lis_pay_gln'=>$request->mes_lis_pay_gln,
             'mes_lis_pay_name'=>'',
             'mes_lis_pay_name_sbcs'=>'',
         ]);
@@ -197,10 +197,13 @@ class InvoiceController extends Controller
             'mes_lis_inv_pay_code'=>$request->mes_lis_inv_pay_code,
             // 'mes_lis_inv_pay_id'=>$request->mes_lis_inv_pay_id,
             'mes_lis_inv_per_begin_date'=>$request->mes_lis_inv_per_begin_date,
-            'mes_lis_inv_per_end_date'=>$request->mes_lis_inv_per_end_date
+            'mes_lis_inv_per_end_date'=>$request->mes_lis_inv_per_end_date,
+            'mes_lis_buy_code'=>$request->mes_lis_buy_code,
+            'mes_lis_buy_gln'=>$request->mes_lis_buy_gln,
+            'mes_lis_inv_pay_gln'=>$request->mes_lis_inv_pay_gln
             ]);
 
-        data_invoice_pay_detail::insert(['data_invoice_pay_id'=>$data_invoice_pay_id]);
+        //data_invoice_pay_detail::insert(['data_invoice_pay_id'=>$data_invoice_pay_id]);
         return response()->json(['success' => 1]);
     }
 
@@ -226,7 +229,11 @@ class InvoiceController extends Controller
             'mes_lis_inv_lin_det_pay_code'=>$request->mes_lis_inv_lin_det_pay_code,
             'mes_lis_inv_lin_det_balance_carried_code'=>$request->mes_lis_inv_lin_det_balance_carried_code,
             'mes_lis_inv_lin_det_amo_requested_amount'=>$request_amount,
-            'mes_lis_inv_lin_det_amo_req_plus_minus'=>$request_sign
+            'mes_lis_inv_lin_det_amo_requested_amount'=>$request_amount,
+            'mes_lis_inv_lin_det_amo_req_plus_minus'=>$request_sign,
+            'mes_lis_inv_lin_tra_gln'=>$request->mes_lis_inv_lin_tra_gln,            
+            'mes_lis_inv_lin_sel_gln'=>$request->mes_lis_inv_lin_sel_gln,
+            'mes_lis_inv_lin_sel_code'=>$request->mes_lis_inv_lin_sel_code
         );
         if ($request->data_invoice_pay_detail_id!='') {
             data_invoice_pay_detail::where(['data_invoice_pay_detail_id'=>$request->data_invoice_pay_detail_id])->update($updatedArray);

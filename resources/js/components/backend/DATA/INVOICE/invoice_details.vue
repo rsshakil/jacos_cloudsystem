@@ -683,6 +683,9 @@ export default {
         mes_lis_inv_lin_det_pay_code:'',
         mes_lis_inv_lin_det_balance_carried_code:'',
         requested_amount:'',
+        mes_lis_inv_lin_tra_gln:'',        
+        mes_lis_inv_lin_sel_gln:'',
+        mes_lis_inv_lin_sel_code:''
       },
       byr_buyer_id:null,
       adm_user_id: Globals.user_info_id,
@@ -781,7 +784,10 @@ export default {
       }else{
       this.invoiceDetail.requested_amount='-'+valuess.mes_lis_inv_lin_det_amo_requested_amount;
       }
-      // console.log(valuess);
+this.invoiceDetail.mes_lis_inv_lin_tra_gln=this.getbyrjsonValueBykeyName("invoice_pay_info","mes_lis_inv_lin_tra_gln","invoices");        
+this.invoiceDetail.mes_lis_inv_lin_sel_gln=this.getbyrjsonValueBykeyName("invoice_pay_info","mes_lis_inv_lin_sel_gln","invoices");
+this.invoiceDetail.mes_lis_inv_lin_sel_code=this.param_data.pay_code;
+     // console.log(valuess);
       // this.invoiceDetail.fill(value)
     },
     addInvoiceDetail(){
@@ -796,6 +802,9 @@ export default {
         mes_lis_inv_lin_det_pay_code:'',
         mes_lis_inv_lin_det_balance_carried_code:'',
         requested_amount:'',
+        mes_lis_inv_lin_tra_gln:this.getbyrjsonValueBykeyName("invoice_pay_info","mes_lis_inv_lin_tra_gln","invoices"),     
+        mes_lis_inv_lin_sel_gln:this.getbyrjsonValueBykeyName("invoice_pay_info","mes_lis_inv_lin_sel_gln","invoices"),
+        mes_lis_inv_lin_sel_code:this.param_data.pay_code
         };
     },
     update_invoice_detail(){
