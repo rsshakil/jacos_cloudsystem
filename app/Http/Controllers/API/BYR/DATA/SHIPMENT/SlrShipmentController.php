@@ -89,6 +89,7 @@ class SlrShipmentController extends Controller
         // return $request->all();
         // $byr_buyer_id =Auth::User()->ByrInfo->byr_buyer_id;
         $shipment_download_type=$request->shipment_download_type;
+        $order_info=$request->order_info;
         // $request->request->add(['byr_buyer_id'=>$byr_buyer_id]);
         // return $request->all();
         $csv_data_count =0;
@@ -98,13 +99,13 @@ class SlrShipmentController extends Controller
             // CSV Download
             // $new_file_name = $this->all_functions->downloadFileName($request, 'pdf', '受注');
             // $download_file_url = Config::get('app.url')."storage/app".config('const.PDF_SAVE_PATH')."/". $new_file_name;
-
+            $new_file_name = $this->all_functions->downloadPdfFileName($order_info, 'pdf', '発注明細書');
             // get shipment data query
             $pdf_data_json = DataController::getShipmentPdfData($request);
             $pdf_datas=$pdf_data_json['report_arr_final'];
             $voucher_id_array=$pdf_data_json['voucher_id_array'];
 
-            $download_files=$this->pdfGenerate($pdf_datas);
+            $download_files=$this->pdfGenerate($pdf_datas,$new_file_name);
             $download_file_url=$download_files[0]['pdf_file_url'];
             $pdf_file_names=$download_files[0]['pdf_file_name'];
 
@@ -120,7 +121,7 @@ class SlrShipmentController extends Controller
     }
 
     // PDF Function
-    public function pdfGenerate($pdf_datas=[])
+    public function pdfGenerate($pdf_datas=[],$new_file_name)
     {
         Log::debug(__METHOD__.':start---');
 
@@ -170,7 +171,7 @@ class SlrShipmentController extends Controller
             }
             $first_page=0;
         }
-        $pdf_file_path= $this->all_functions->pdfFileSave($receipt, 1, $shipment_pdf_save_path);
+        $pdf_file_path= $this->all_functions->pdfFileSave($receipt, $new_file_name, $shipment_pdf_save_path);
         array_push($pdf_file_paths, $pdf_file_path);
         // return 0;
         Log::debug(__METHOD__.':end---');

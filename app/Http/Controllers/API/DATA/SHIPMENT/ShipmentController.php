@@ -166,21 +166,23 @@ class ShipmentController extends Controller
     {
         Log::debug(__METHOD__.':start---');
         // return $request->all();
+        $order_info=$request->order_info;
         $shipment_download_type=$request->shipment_download_type;
         $csv_data_count =0;
         $download_file_url=null;
         if ($shipment_download_type=='pdf') {
             $cur_datetime=date('y-m-d H:i:s');
             // CSV Download
-            $new_file_name = $this->all_functions->downloadFileName($request, 'pdf', '受注');
-            $download_file_url = Config::get('app.url')."storage/app".config('const.PDF_SAVE_PATH')."/". $new_file_name;
+            $new_file_name = $this->all_functions->downloadPdfFileName($order_info, 'pdf', '発注明細書');
+            // $new_file_name = $this->all_functions->downloadFileName($request, 'pdf', '受注');
+            // $download_file_url = Config::get('app.url')."storage/app".config('const.PDF_SAVE_PATH')."/". $new_file_name;
 
             // get shipment data query
             $pdf_data_json = Data_Controller::getShipmentPdfData($request);
             $pdf_datas=$pdf_data_json['report_arr_final'];
             $voucher_id_array=$pdf_data_json['voucher_id_array'];
 
-            $download_files=$this->pdfGenerate($pdf_datas);
+            $download_files=$this->pdfGenerate($pdf_datas,$new_file_name);
             $download_file_url=$download_files[0]['pdf_file_url'];
             $pdf_file_names=$download_files[0]['pdf_file_name'];
 
@@ -194,9 +196,8 @@ class ShipmentController extends Controller
 
         return response()->json(['message' => 'Success','status'=>1,'new_file_name'=>$pdf_file_names, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
     }
-
     // PDF Function
-    public function pdfGenerate($pdf_datas=[])
+    public function pdfGenerate($pdf_datas=[],$new_file_name=null)
     {
         Log::debug(__METHOD__.':start---');
 
@@ -246,34 +247,7 @@ class ShipmentController extends Controller
             }
             $first_page=0;
         }
-        // foreach ($pdf_datas as $key => $pdf_data) {
-        //     $receipt->AddPage();
-        //     foreach ($pdf_data as $key => $value) {
-        //         if ($data_count==0) {
-        //             $receipt=$this->all_functions->pdfHeaderData($receipt, $value, $x, $y);
-        //         }
-        //         if ($odd_even==0) {
-        //             if ($data_count!=0 && $data_count%2==0) {
-        //                 $receipt->AddPage();
-        //                 $receipt=$this->all_functions->pdfHeaderData($receipt, $value, $x, $y);
-        //             }
-        //             $this->all_functions->coordinateText($receipt, $value, 0, 50.7, 103.4);
-        //         }else{
-        //             $this->all_functions->coordinateText($receipt, $value, 0, 117, 170);
-        //         }
-
-        //         if ($odd_even==0) {
-        //             $odd_even=1;
-        //         }else{
-        //             $odd_even=0;
-        //         }
-        //         $data_count+=1;
-        //     }
-
-        //     $data_count=0;
-        //     $odd_even=0;
-        // }
-        $pdf_file_path= $this->all_functions->pdfFileSave($receipt, 1, $shipment_pdf_save_path);
+        $pdf_file_path= $this->all_functions->pdfFileSave($receipt, $new_file_name, $shipment_pdf_save_path);
         array_push($pdf_file_paths, $pdf_file_path);
         // return 0;
         Log::debug(__METHOD__.':end---');

@@ -212,6 +212,7 @@ class SlrOrderController extends Controller
         $order_info = DB::table('data_shipments as ds')
         ->select(
             'dor.receive_datetime',
+            'dor.mes_lis_buy_name',
             'dsv.mes_lis_shi_par_sel_code',
             'dsv.mes_lis_shi_par_sel_name',
             'dsv.mes_lis_shi_tra_dat_delivery_date',
