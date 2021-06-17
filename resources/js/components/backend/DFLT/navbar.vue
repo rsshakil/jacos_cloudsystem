@@ -164,10 +164,7 @@
                 </div>
               </li>
               <li class="nav-item">
-                <button
-                  class="btn btn-defalut logout_btn text-danger"
-                  @click="logout()"
-                >
+                <button class="btn btn-defalut logout_btn text-danger" @click="logout()">
                   Logout
                 </button>
               </li>
