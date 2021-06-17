@@ -1,6 +1,12 @@
+import Vue from 'vue'
+import Router from 'vue-router'
+Vue.use(Router)
+
 import Home from './components/backend/home_component.vue'
 import default_home_page_with_blog from './components/backend/default_home_page_with_blog.vue'
 // admin
+// const Role = () =>
+//     import ('./components/backend/ADM/role_component.vue')
 import Role from './components/backend/ADM/role_component.vue'
 import permission from './components/backend/ADM/permission_component.vue'
 import assign_role_model from './components/backend/ADM/assign_role_model.vue'
@@ -87,14 +93,15 @@ import slr_order_list_items from './components/backend/BYR/DATA/ORDER/slr_order_
 import slr_item_search from './components/backend/BYR/DATA/ORDER/slr_item_search.vue'
 import slr_item_search_detail from './components/backend/BYR/DATA/ORDER/slr_item_search_detail.vue'
 
-import { homedir } from 'os'
 // import login_body from './components/login/login_body.vue'
 
 export const routes = [
 
     {
         path: '/home',
-        component: Home,
+        // component: resolve => require(['./components/backend/home_component.vue'], resolve), //Home,
+        component: () =>
+            import ( /* webpackChunkName: "Home" */ './components/backend/home_component.vue'), //Home,
         name: 'home',
         meta: {
             breadcrumb: {
@@ -103,19 +110,9 @@ export const routes = [
         },
     },
     {
-        path: '/blog',
-        component: blog,
-        name: 'blog',
-        meta: {
-            breadcrumb: {
-                label: 'お知らせ'
-            }
-        },
-    },
-    {
         path: '/role',
         name: "role",
-        component: Role,
+        component: resolve => require(['./components/backend/ADM/role_component.vue'], resolve), //Role,
         meta: {
             breadcrumb: {
                 label: '役割'
@@ -182,6 +179,16 @@ export const routes = [
                 label: 'パスワードのリセット',
                 parent: 'users'
             },
+        },
+    },
+    {
+        path: '/blog',
+        component: blog,
+        name: 'blog',
+        meta: {
+            breadcrumb: {
+                label: 'お知らせ'
+            }
         },
     },
     {
