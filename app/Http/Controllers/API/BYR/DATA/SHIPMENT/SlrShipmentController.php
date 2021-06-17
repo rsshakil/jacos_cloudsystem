@@ -38,7 +38,7 @@ class SlrShipmentController extends Controller
         if ($downloadType==1) {
             // CSV Download
             $new_file_name = $this->default_functions->downloadFileName($request, 'csv', '受注');
-            $download_file_url = Config::get('app.url')."storage/app".config('const.SLR_SHIPMENT_CSV_PATH')."/". $new_file_name;
+            $download_file_url = Config::get('app.url')."storage/app".config('const.SLR_SHIPMENT_DOWNLOAD_CSV_PATH')."/". $new_file_name;
 
             // get shipment data query
             $shipment_query = DataController::get_shipment_data($request);
@@ -48,7 +48,7 @@ class SlrShipmentController extends Controller
 
             // CSV create
             Csv::create(
-                config('const.SLR_SHIPMENT_CSV_PATH')."/". $new_file_name,
+                config('const.SLR_SHIPMENT_DOWNLOAD_CSV_PATH')."/". $new_file_name,
                 $shipment_data,
                 DataController::shipmentCsvHeading(),
                 config('const.CSV_FILE_ENCODE')
@@ -63,7 +63,7 @@ class SlrShipmentController extends Controller
             $request->request->add(['email' => 'user@jacos.co.jp']);
             $request->request->add(['password' => 'Qe75ymSr']);
             $new_file_name =$this->default_functions->downloadFileName($request, 'txt', '受注');
-            $download_file_url = Config::get('app.url')."storage/".config('const.SLR_FIXED_LENGTH_FILE_PATH')."/". $new_file_name;
+            $download_file_url = Config::get('app.url')."storage/".config('const.SLR_JCA_FILE_PATH'). $new_file_name;
             $request->request->add(['file_name' => $new_file_name]);
             // $request->request->remove('downloadType');
             // return $request->all();

@@ -34,7 +34,7 @@ class ShipmentController extends Controller
         $this->all_functions = new AllUsedFunction();
         $this->data_csv_order = new data_csv_order();
         $this->data_controller = new Data_Controller();
-        $this->all_functions->folder_create('app/'.config('const.SHIPMENT_CSV_PATH'));
+        $this->all_functions->folder_create('app/'.config('const.SHIPMENT_SEND_CSV_PATH'));
         $this->all_functions->folder_create('app/'.config('const.SHIPMENT_DOWNLOAD_CSV_PATH'));
     }
     public function sendShipmentData(Request $request)
@@ -74,7 +74,7 @@ class ShipmentController extends Controller
             $new_file_name = $this->all_functions->sendFileName($request, 'csv', 'shipment');
 
             data_shipment::where('data_order_id', $data_order_id)->update(['mes_mes_number_of_trading_documents'=>$csv_data_count]);
-            $download_file_url = Config::get('app.url')."storage/app".config('const.SHIPMENT_CSV_PATH')."/". $new_file_name;
+            $download_file_url = Config::get('app.url')."storage/app".config('const.SHIPMENT_SEND_CSV_PATH')."/". $new_file_name;
             // ==============
             $shipment_query = Data_Controller::get_shipment_data($request);
             // $csv_data_count = $shipment_query->count();
@@ -84,12 +84,12 @@ class ShipmentController extends Controller
             // CSV create
             // UTF-8
             Csv::create(
-                config('const.SHIPMENT_CSV_PATH')."/". $new_file_name,
+                config('const.SHIPMENT_SEND_CSV_PATH')."/". $new_file_name,
                 $shipment_data,
                 Data_Controller::shipmentCsvHeading()
             );
             // ==============
-            // (new ShipmentCSVExport($request))->store(config('const.SHIPMENT_CSV_PATH').'/'.$new_file_name);
+            // (new ShipmentCSVExport($request))->store(config('const.SHIPMENT_SEND_CSV_PATH').'/'.$new_file_name);
             data_shipment_voucher::whereNotNull('decision_datetime')
             ->whereNull('send_datetime')
             ->where('mes_lis_shi_log_del_delivery_service_code', $order_info['mes_lis_shi_log_del_delivery_service_code'])
@@ -142,7 +142,7 @@ class ShipmentController extends Controller
             $request->request->add(['email' => 'user@jacos.co.jp']);
             $request->request->add(['password' => 'Qe75ymSr']);
             $new_file_name =$this->all_functions->downloadFileName($request, 'txt', '受注');
-            $download_file_url = Config::get('app.url')."storage/".config('const.FIXED_LENGTH_FILE_PATH')."/". $new_file_name;
+            $download_file_url = Config::get('app.url')."storage/".config('const.JCA_FILE_PATH').'/'. $new_file_name;
             $request->request->add(['file_name' => $new_file_name]);
             // $request->request->remove('downloadType');
             // return $request->all();

@@ -599,7 +599,7 @@ class AllUsedFunction extends Controller
             ->where('cmn_connects.cmn_connect_id', $cmn_connect_id)
             ->first();
         // Log::info($file_name_info);
-        $file_name = $file_header.'_'.$file_name_info->company_name.'_'.date('YmdHis').'.'.$file_type;
+        // $file_name = $file_header.'_'.$file_name_info->company_name.'_'.date('YmdHis').'.'.$file_type;
         // \Log::info($file_name);
         $file_name = $file_name_info->super_code.'-'.$file_header.'_'.$file_name_info->super_code.'-'.$file_name_info->partner_code."-".$file_name_info->jcode.'_'.$file_header.'_'.date('YmdHis').'.'.$file_type;
         Log::debug(__METHOD__.':end---');

@@ -512,7 +512,7 @@ class InvoiceController extends Controller
             // $request->request->add(['email' => 'user@jacos.co.jp']);
             // $request->request->add(['password' => 'Qe75ymSr']);
             // $new_file_name = self::invoiceFileName($data_order_id, 'txt');
-            // $download_file_url = \Config::get('app.url')."storage/".config('const.FIXED_LENGTH_FILE_PATH')."/". $new_file_name;
+            // $download_file_url = \Config::get('app.url')."storage/".config('const.JCA_FILE_PATH')."/". $new_file_name;
             // $request->request->add(['file_name' => $new_file_name]);
             // $cs = new CmnScenarioController();
             // $ret = $cs->exec($request);

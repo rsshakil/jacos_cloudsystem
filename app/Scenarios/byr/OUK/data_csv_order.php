@@ -504,7 +504,7 @@ class data_csv_order extends ScenarioBase
         $data_count=0;
         $file_number=1;
         $page_limit=10;
-        $order_pdf_save_path=config('const.ORDER_PDF_SAVE_PATH');
+        $order_pdf_save_path=config('const.ORDER_FAX_PDF_SAVE_PATH');
         $first_page=0;
 
         $receipt=$this->all_functions->fpdfRet();
