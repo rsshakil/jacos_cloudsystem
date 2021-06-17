@@ -10,10 +10,6 @@ storage/app/public/backend/images/canvas/Background/*
 storage/app/public/backend/images/canvas/Canvas_screenshoot/*
 !storage/app/public/backend/images/canvas/Canvas_screenshoot/canvas_image_screenshoot_seeder.png
 
-storage/app/order_pdf/*
-!storage/app/order_pdf/demo
-
-storage/app/shipment_pdf/*
 
 storage/app/public/backend/images/blog_images/*
 
@@ -21,24 +17,8 @@ storage/app/public/backend/images/canvas/pdf_platform/*
 storage/app/public/backend/images/users/*
 storage/app/public/backend/images/default/*
 
-storage/app/fixed_length_files/*
-storage/app/indepen_csv_files/*
-storage/app/indepen_files/*
-storage/app/shipment_csv/*
-storage/app/shipment_download_csv/*
-storage/app/receive_csv/*
-storage/app/return_csv/*
-storage/app/invoice_csv/*
-storage/app/invoice_compare_csv/*
-storage/app/shipment_updated_csv/*
-storage/app/payment_csv/*
-storage/app/payment_downloaded_csv/*
-storage/app/payment_unpaid_csv/*
-storage/app/order/*
-storage/app/receives/*
-storage/app/returns/*
-storage/app/payments/*
-storage/app/temp/*
+# DATA files
+storage/app/DATA/*
 # Byr File paths
 storage/app/BYR/*
 
@@ -61,4 +41,3 @@ tools/taskctrl/taskCtrlTrace/*
 !.gitkeep
 
 composer.lock
-node_modules

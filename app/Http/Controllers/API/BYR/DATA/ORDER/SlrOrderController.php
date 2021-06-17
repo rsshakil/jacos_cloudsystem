@@ -203,15 +203,10 @@ class SlrOrderController extends Controller
         $sel_code = $order_info['sel_code'];
         $temperature_code = $temperature_code == null ? '' : $temperature_code;
 
-        data_order_voucher::where('data_order_id', $data_order_id)
-        ->where('mes_lis_ord_tra_goo_major_category', $major_category)
-        ->where('mes_lis_ord_log_del_delivery_service_code', $delivery_service_code)
-        ->where('mes_lis_ord_tra_dat_delivery_date', $delivery_date)
-        ->where('mes_lis_ord_par_sel_code', $sel_code)
-        ->whereNull('check_datetime')->update(['check_datetime'=>date('Y-m-d H:i:s')]);
         $order_info = DB::table('data_shipments as ds')
         ->select(
             'dor.receive_datetime',
+            'dor.mes_lis_buy_name',
             'dsv.mes_lis_shi_par_sel_code',
             'dsv.mes_lis_shi_par_sel_name',
             'dsv.mes_lis_shi_tra_dat_delivery_date',

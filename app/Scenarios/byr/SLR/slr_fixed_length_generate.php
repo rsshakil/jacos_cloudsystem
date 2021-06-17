@@ -22,6 +22,7 @@ class slr_fixed_length_generate extends ScenarioBase
         $this->common_class_obj = new Common();
         $this->all_functions = new AllUsedFunction();
         $this->default_functions = new DefaultFunctions();
+        $this->all_functions->folder_create(config('const.SLR_JCA_FILE_PATH'));
     }
 
     public function exec($request, $sc)
@@ -130,7 +131,7 @@ class slr_fixed_length_generate extends ScenarioBase
 
         Log::debug(__METHOD__.':end---');
         if ($string_data!=null) {
-            \File::put(storage_path(config('const.SLR_FIXED_LENGTH_FILE_PATH').$txt_file_name), $string_data);
+            \File::put(storage_path(config('const.SLR_JCA_FILE_PATH').'/'.$txt_file_name), $string_data);
             return [
                 'status'=>1,
                 'message'=>"File has been created",

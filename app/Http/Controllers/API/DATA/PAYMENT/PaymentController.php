@@ -24,7 +24,7 @@ class PaymentController extends Controller
     public function __construct()
     {
         $this->all_used_fun = new AllUsedFunction();
-        $this->all_used_fun->folder_create('app/'.config('const.PAYMENT_CSV_PATH'));
+        $this->all_used_fun->folder_create('app/'.config('const.PAYMENT_DOWNLOAD_CSV_PATH'));
     }
 
     public function getPaymentList(Request $request)
@@ -402,7 +402,7 @@ class PaymentController extends Controller
     }
     public function paymentDownload(Request $request)
     {
-        // $this->all_used_fun->folder_create('app/'.config('const.PAYMENT_CSV_PATH'));
+        // $this->all_used_fun->folder_create('app/'.config('const.PAYMENT_DOWNLOAD_CSV_PATH'));
         // return $request->all();
         // $data_payment_id=$request->data_payment_id?$request->data_payment_id:1;
         $downloadType = $request->downloadType;
@@ -412,7 +412,7 @@ class PaymentController extends Controller
             // CSV Download
             $new_file_name = $this->all_used_fun->downloadFileName($request, 'csv', '支払');
             // self::paymentFileName($data_payment_id, 'csv');
-            $download_file_url = Config::get('app.url') . "storage/app" . config('const.PAYMENT_CSV_PATH') . "/" . $new_file_name;
+            $download_file_url = Config::get('app.url') . "storage/app" . config('const.PAYMENT_DOWNLOAD_CSV_PATH') . "/" . $new_file_name;
 
             // get shipment data query
             $payment_query = DataController::getPaymentData($request);
@@ -421,7 +421,7 @@ class PaymentController extends Controller
 
             // CSV create
             Csv::create(
-                config('const.PAYMENT_CSV_PATH') . "/" . $new_file_name,
+                config('const.PAYMENT_DOWNLOAD_CSV_PATH') . "/" . $new_file_name,
                 $payment_data,
                 DataController::paymentCsvHeading(),
                 config('const.CSV_FILE_ENCODE')

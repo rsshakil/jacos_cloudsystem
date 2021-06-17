@@ -242,7 +242,7 @@
                   <label class="sr-only" for="inline-form-input-name">各種帳票の印刷はこちら</label>
                   <select class="mb-2 mr-sm-2 mb-sm-0 form-control" v-model="form.shipment_download_type">
                     <!-- <option>選択してください</option> -->
-                    <option value="pdf">PDF</option>
+                    <option value="pdf">発注明細書</option>
                   </select>
                   <b-button class="active" variant="primary" @click="pdfDownload()">印刷</b-button>
                 </b-form>

@@ -33,7 +33,9 @@ class InvoiceController extends Controller
         $this->request = new \Illuminate\Http\Request();
         $this->request->setMethod('POST');
         $this->all_used_fun = new AllUsedFunction();
-        $this->all_used_fun->folder_create('app/'.config('const.INVOICE_CSV_PATH'));
+        $this->all_used_fun->folder_create('app/'.config('const.INVOICE_SEND_CSV_PATH'));
+        $this->all_used_fun->folder_create('app/'.config('const.INVOICE_DOWNLOAD_CSV_PATH'));
+        $this->all_used_fun->folder_create('app/'.config('const.INVOICE_COMPARE_CSV_PATH'));
     }
     public function invoiceScheduler($request)
     {
@@ -447,13 +449,13 @@ class InvoiceController extends Controller
         $adm_user_id=$request->adm_user_id;
         $byr_buyer_id=$request->byr_buyer_id;
         $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
-        // $authUser = User::find($adm_user_id);
+        $authUser = User::find($adm_user_id);
 
-        // $cmn_connect_id = '';
-        // if (!$authUser->hasRole(config('const.adm_role_name'))) {
-        //     $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
-        //     $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
-        // }
+        $cmn_connect_id = '';
+        if (!$authUser->hasRole(config('const.adm_role_name'))) {
+            $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
+            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+        }
         // $csv_data_count = InvoiceDataController::get_invoice_data($request)->get()->count();
         $csv_data_count = data_invoice::join('data_invoice_pays as dip', 'dip.data_invoice_id', '=', 'data_invoices.data_invoice_id')
             ->join('data_invoice_pay_details as dipd', 'dipd.data_invoice_pay_id', '=', 'dip.data_invoice_pay_id')
@@ -472,11 +474,12 @@ class InvoiceController extends Controller
             // ->where('dip.status',$param_data['status'])
             ->get()->count();
         if (!$data_count) {
+            $request->request->add(['cmn_connect_id' => $cmn_connect_id]);
             $dateTime = date('Y-m-d H:i:s');
-            $new_file_name = $this->all_used_fun->downloadFileName($request, 'csv', '請求');
+            $new_file_name = $this->all_used_fun->sendFileName($request, 'csv', 'invoice');
             // self::invoiceFileName($data_invoice_id,'csv');
             data_invoice::where('data_invoice_id', $data_invoice_id)->update(['mes_mes_number_of_trading_documents'=>$csv_data_count]);
-            $download_file_url = Config::get('app.url')."storage/app".config('const.INVOICE_CSV_PATH')."/". $new_file_name;
+            $download_file_url = Config::get('app.url')."storage/app".config('const.INVOICE_SEND_CSV_PATH')."/". $new_file_name;
             $invoice_query = InvoiceDataController::get_invoice_data($request);
             // $shipment_query = Data_Controller::get_shipment_data($request);
             // $csv_data_count = $shipment_query->count();
@@ -485,12 +488,12 @@ class InvoiceController extends Controller
 
             // CSV create
             Csv::create(
-                config('const.INVOICE_CSV_PATH')."/". $new_file_name,
+                config('const.INVOICE_SEND_CSV_PATH')."/". $new_file_name,
                 $invoice_data,
                 InvoiceDataController::invoiceCsvHeading(),
                 config('const.CSV_FILE_ENCODE')
             );
-            // (new InvoiceCSVExport($request))->store(config('const.INVOICE_CSV_PATH').'/'.$new_file_name);
+            // (new InvoiceCSVExport($request))->store(config('const.INVOICE_SEND_CSV_PATH').'/'.$new_file_name);
             data_invoice_pay_detail::whereNotNull('decision_datetime')
             ->whereNull('send_datetime')
             ->update(['send_datetime'=>$dateTime]);
@@ -509,7 +512,7 @@ class InvoiceController extends Controller
         if ($downloadType==1) {
             // CSV Download
             $new_file_name = $this->all_used_fun->downloadFileName($request, 'csv', '請求');
-            $download_file_url = Config::get('app.url')."storage/app".config('const.INVOICE_CSV_PATH')."/". $new_file_name;
+            $download_file_url = Config::get('app.url')."storage/app".config('const.INVOICE_DOWNLOAD_CSV_PATH')."/". $new_file_name;
 
             // get shipment data query
             $invoice_query = InvoiceDataController::get_invoice_data($request);
@@ -518,7 +521,7 @@ class InvoiceController extends Controller
 
             // CSV create
             Csv::create(
-                config('const.INVOICE_CSV_PATH')."/". $new_file_name,
+                config('const.INVOICE_DOWNLOAD_CSV_PATH')."/". $new_file_name,
                 $shipment_data,
                 InvoiceDataController::invoiceCsvHeading(),
                 config('const.CSV_FILE_ENCODE')
@@ -529,7 +532,7 @@ class InvoiceController extends Controller
             // $request->request->add(['email' => 'user@jacos.co.jp']);
             // $request->request->add(['password' => 'Qe75ymSr']);
             // $new_file_name = self::invoiceFileName($data_order_id, 'txt');
-            // $download_file_url = \Config::get('app.url')."storage/".config('const.FIXED_LENGTH_FILE_PATH')."/". $new_file_name;
+            // $download_file_url = \Config::get('app.url')."storage/".config('const.JCA_FILE_PATH')."/". $new_file_name;
             // $request->request->add(['file_name' => $new_file_name]);
             // $cs = new CmnScenarioController();
             // $ret = $cs->exec($request);

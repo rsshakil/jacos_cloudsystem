@@ -278,7 +278,7 @@ class ReturnController extends Controller
 
         return response()->json(['retrun_detail_list' => $result, 'byr_buyer_list' => $byr_buyer,'order_info'=>$orderInfo]);
     }
-    
+
 
     public function data_return_detail_list_pagination(Request $request)
     {
@@ -313,7 +313,7 @@ class ReturnController extends Controller
             $cmn_company_id = $cmn_company_info['cmn_company_id'];
             // $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
-       
+
         $result=data_return::select(
             'drv.data_return_voucher_id',
             'drv.mes_lis_ret_par_return_receive_from_code',
@@ -340,7 +340,7 @@ class ReturnController extends Controller
         ->where('drv.mes_lis_ret_tra_goo_major_category', $major_category==null?'':$major_category)
         ->where('drv.mes_lis_ret_tra_dat_transfer_of_ownership_date', $ownership_date)
         ->where('drv.mes_lis_ret_par_sel_code', $sel_code);
-        
+
         $result=$result->groupBy('drv.mes_lis_ret_tra_trade_number')
         ->orderBy($table_name.$sort_by, $sort_type)
         ->get();
@@ -358,7 +358,7 @@ class ReturnController extends Controller
             // CSV Download
             $new_file_name =$this->all_used_fun->downloadFileName($request, 'csv', '返品');
             //  self::returnFileName($data_return_id, 'csv');
-            $download_file_url = Config::get('app.url')."storage/app".config('const.RETURN_CSV_PATH')."/". $new_file_name;
+            $download_file_url = Config::get('app.url')."storage/app".config('const.RETURN_DOWNLOAD_CSV_PATH')."/". $new_file_name;
 
             // get shipment data query
             $shipment_query = DataController::getRtnData($request);
@@ -368,7 +368,7 @@ class ReturnController extends Controller
 
             // CSV create
             Csv::create(
-                config('const.RETURN_CSV_PATH')."/". $new_file_name,
+                config('const.RETURN_DOWNLOAD_CSV_PATH')."/". $new_file_name,
                 $shipment_data,
                 DataController::rtnCsvHeading(),
                 config('const.CSV_FILE_ENCODE')

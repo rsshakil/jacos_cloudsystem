@@ -572,6 +572,13 @@ class AllUsedFunction extends Controller
         return $file_name;
     }
 
+    public function downloadPdfFileName($order_info, $file_type="pdf", $file_header="発注明細書"){
+        Log::debug(__METHOD__.':start---');
+        $file_name = $file_header.'_'.$order_info['mes_lis_buy_name'].'_'.$order_info['mes_lis_shi_tra_goo_major_category'].'_'.$order_info['mes_lis_shi_tra_dat_delivery_date'].'.'.$file_type;
+        return $file_name;
+        Log::debug(__METHOD__.':end---');
+    }
+
     public function sendFileName($request, $file_type="csv", $file_header="shipment")
     {
         Log::debug(__METHOD__.':start---');
@@ -592,7 +599,7 @@ class AllUsedFunction extends Controller
             ->where('cmn_connects.cmn_connect_id', $cmn_connect_id)
             ->first();
         // Log::info($file_name_info);
-        $file_name = $file_header.'_'.$file_name_info->company_name.'_'.date('YmdHis').'.'.$file_type;
+        // $file_name = $file_header.'_'.$file_name_info->company_name.'_'.date('YmdHis').'.'.$file_type;
         // \Log::info($file_name);
         $file_name = $file_name_info->super_code.'-'.$file_header.'_'.$file_name_info->super_code.'-'.$file_name_info->partner_code."-".$file_name_info->jcode.'_'.$file_header.'_'.date('YmdHis').'.'.$file_type;
         Log::debug(__METHOD__.':end---');
@@ -636,11 +643,13 @@ class AllUsedFunction extends Controller
         return $receipt;
     }
     // PDF Save function
-    public function pdfFileSave($receipt, $file_number,$pdf_save_path)
+    // public function pdfFileSave($receipt, $file_number,$pdf_save_path)
+    public function pdfFileSave($receipt, $pdf_file_name=null,$pdf_save_path)
     {
         Log::debug(__METHOD__.':start---');
+        // $pdf_file_name=date('YmdHis').'_'.$file_number.'_receipt.pdf';
+        // $pdf_file_name=$new_file_name;
 
-        $pdf_file_name=date('YmdHis').'_'.$file_number.'_receipt.pdf';
         $this->folder_create($pdf_save_path);
         $response = new Response(
             $receipt->Output(storage_path($pdf_save_path.$pdf_file_name), 'F'),
@@ -681,6 +690,7 @@ class AllUsedFunction extends Controller
     public function coordinateText($receipt, $pdf_data, $x = 0, $y = 50.7, $sum_of_y=103.4)
     {
         Log::debug(__METHOD__.':start---');
+        $classification_code=$pdf_data[0]->mes_lis_ord_tra_ins_goods_classification_code=='01'?'定番':($pdf_data[0]->mes_lis_ord_tra_ins_goods_classification_code=='03'?'特売':$pdf_data[0]->mes_lis_ord_tra_ins_goods_classification_code);
         //Cell($w, $h=0, $txt='', $border=0, $ln=0, $align='', $fill=0, $link='', $stretch=0, $ignore_min_height=false, $calign='T', $valign='M')
         $receipt->SetXY($x + 29.6, $y);
         $receipt->Cell(14.8, 0, $pdf_data[0]->mes_lis_ord_par_rec_name_sbcs, 0, 1, 'L', 0, '', 0);
@@ -699,7 +709,7 @@ class AllUsedFunction extends Controller
         $receipt->SetXY($x + 243, $y);
         $receipt->Cell(21.6, 0, date('y/m/d', strtotime($pdf_data[0]->mes_lis_ord_tra_dat_delivery_date)), 0, 1, 'C', 0, '', 0);
         $receipt->SetXY($x + 29.6, $y += 4.5);
-        $receipt->Cell(14.8, 0, $pdf_data[0]->mes_lis_ord_tra_ins_goods_classification_code, 0, 1, 'C', 0, '', 0);
+        $receipt->Cell(14.8, 0, $classification_code, 0, 1, 'C', 0, '', 0);
         $y += 8.3;
         foreach ($pdf_data as $key1 => $value) {
             $receipt->SetXY($x += 14.7, $y);
