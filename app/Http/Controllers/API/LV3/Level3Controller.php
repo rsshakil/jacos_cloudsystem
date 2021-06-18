@@ -454,7 +454,7 @@ class Level3Controller extends Controller
         Log::debug(__METHOD__.':start---');
 
         // $url_path = Config::get('app.url') . 'storage/app/shipment_csv/moved/';
-        $url_path = Config::get('app.url').'storage/app'.config('const.SHIPMENT_MOVED_CSV_PATH'); aaa
+        $url_path = Config::get('app.url').'storage/app'.config('const.SHIPMENT_MOVED_CSV_PATH');
         // $path = \storage_path('/app/shipment_csv/');
         $path = \storage_path('app/'.config('const.SHIPMENT_SEND_CSV_PATH').'/');
         $files = array_values(array_diff(scandir($path), array('.', '..')));
