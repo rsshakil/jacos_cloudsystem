@@ -16,6 +16,7 @@ class fixed_length_generate extends ScenarioBase
     {
         $this->common_class_obj = new Common();
         $this->all_functions = new AllUsedFunction();
+        $this->all_functions->folder_create(config('const.JCA_FILE_PATH'));
     }
 
     public function exec($request, $sc)
@@ -120,7 +121,7 @@ class fixed_length_generate extends ScenarioBase
 
         \Log::debug(__METHOD__.':end---');
         if ($string_data!=null) {
-            \File::put(storage_path(config('const.FIXED_LENGTH_FILE_PATH').$txt_file_name), $string_data);
+            \File::put(storage_path(config('const.JCA_FILE_PATH').'/'.$txt_file_name), $string_data);
             return [
                 'status'=>1,
                 'message'=>"File has been created",

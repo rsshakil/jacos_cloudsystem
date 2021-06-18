@@ -33,15 +33,16 @@ class InvoiceController extends Controller
         $this->request = new \Illuminate\Http\Request();
         $this->request->setMethod('POST');
         $this->all_used_fun = new AllUsedFunction();
-        $this->all_used_fun->folder_create('app/'.config('const.INVOICE_CSV_PATH'));
+        $this->all_used_fun->folder_create('app/'.config('const.INVOICE_SEND_CSV_PATH'));
+        $this->all_used_fun->folder_create('app/'.config('const.INVOICE_MOVED_CSV_PATH'));
+        $this->all_used_fun->folder_create('app/'.config('const.INVOICE_DOWNLOAD_CSV_PATH'));
+        $this->all_used_fun->folder_create('app/'.config('const.INVOICE_COMPARE_CSV_PATH'));
     }
     public function invoiceScheduler($request)
     {
         $cs = new CmnScenarioController();
 
         $ret = $cs->exec($request);
-        Log::info("======Count=======");
-        Log::info($ret);
         return $ret;
         Log::debug($ret->getContent());
         $ret = json_decode($ret->getContent(), true);
@@ -108,7 +109,7 @@ class InvoiceController extends Controller
             DB::raw('COUNT( isnull( dipd.send_datetime)  OR NULL) AS send_cnt')
         )
         ->join('data_invoice_pays as dip', 'data_invoices.data_invoice_id', '=', 'dip.data_invoice_id')
-        ->join('data_invoice_pay_details as dipd', 'dip.data_invoice_pay_id', '=', 'dipd.data_invoice_pay_id')
+        ->leftjoin('data_invoice_pay_details as dipd', 'dip.data_invoice_pay_id', '=', 'dipd.data_invoice_pay_id')
         ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'data_invoices.cmn_connect_id')
         ->where('cc.byr_buyer_id', $byr_buyer_id)
         ->where('cc.slr_seller_id', $slr_seller_id);
@@ -186,8 +187,8 @@ class InvoiceController extends Controller
             'mes_lis_doc_version'=>'',
             'mes_lis_ext_namespace'=>'',
             'mes_lis_ext_version'=>'',
-            'mes_lis_pay_code'=>'',
-            'mes_lis_pay_gln'=>'',
+            'mes_lis_pay_code'=>$request->mes_lis_pay_code,
+            'mes_lis_pay_gln'=>$request->mes_lis_pay_gln,
             'mes_lis_pay_name'=>'',
             'mes_lis_pay_name_sbcs'=>'',
         ]);
@@ -197,10 +198,13 @@ class InvoiceController extends Controller
             'mes_lis_inv_pay_code'=>$request->mes_lis_inv_pay_code,
             // 'mes_lis_inv_pay_id'=>$request->mes_lis_inv_pay_id,
             'mes_lis_inv_per_begin_date'=>$request->mes_lis_inv_per_begin_date,
-            'mes_lis_inv_per_end_date'=>$request->mes_lis_inv_per_end_date
+            'mes_lis_inv_per_end_date'=>$request->mes_lis_inv_per_end_date,
+            'mes_lis_buy_code'=>$request->mes_lis_buy_code,
+            'mes_lis_buy_gln'=>$request->mes_lis_buy_gln,
+            'mes_lis_inv_pay_gln'=>$request->mes_lis_inv_pay_gln
             ]);
 
-        data_invoice_pay_detail::insert(['data_invoice_pay_id'=>$data_invoice_pay_id]);
+        //data_invoice_pay_detail::insert(['data_invoice_pay_id'=>$data_invoice_pay_id]);
         return response()->json(['success' => 1]);
     }
 
@@ -208,12 +212,12 @@ class InvoiceController extends Controller
     {
         $matches = array();
         $explodeAmountSign = $request->requested_amount;
-        preg_match_all("/\d+|[\\+\\-\\/\\*]/",$explodeAmountSign,$matches);
+        preg_match_all("/\d+|[\\+\\-\\/\\*]/", $explodeAmountSign, $matches);
         $countMatch = count($matches[0]);
-        if($countMatch==2){
+        if ($countMatch==2) {
             $request_amount = $matches[0][1];
             $request_sign = $matches[0][0];
-        }else{
+        } else {
             $request_amount = $matches[0][0];
             $request_sign = '+';
         }
@@ -226,7 +230,11 @@ class InvoiceController extends Controller
             'mes_lis_inv_lin_det_pay_code'=>$request->mes_lis_inv_lin_det_pay_code,
             'mes_lis_inv_lin_det_balance_carried_code'=>$request->mes_lis_inv_lin_det_balance_carried_code,
             'mes_lis_inv_lin_det_amo_requested_amount'=>$request_amount,
-            'mes_lis_inv_lin_det_amo_req_plus_minus'=>$request_sign
+            'mes_lis_inv_lin_det_amo_requested_amount'=>$request_amount,
+            'mes_lis_inv_lin_det_amo_req_plus_minus'=>$request_sign,
+            'mes_lis_inv_lin_tra_gln'=>$request->mes_lis_inv_lin_tra_gln,
+            'mes_lis_inv_lin_sel_gln'=>$request->mes_lis_inv_lin_sel_gln,
+            'mes_lis_inv_lin_sel_code'=>$request->mes_lis_inv_lin_sel_code
         );
         if ($request->data_invoice_pay_detail_id!='') {
             data_invoice_pay_detail::where(['data_invoice_pay_detail_id'=>$request->data_invoice_pay_detail_id])->update($updatedArray);
@@ -324,12 +332,12 @@ class InvoiceController extends Controller
         )
         ->join('data_invoice_pays as dip', 'data_invoices.data_invoice_id', '=', 'dip.data_invoice_id')
         ->join('data_invoice_pay_details as dipd', 'dip.data_invoice_pay_id', '=', 'dipd.data_invoice_pay_id')
-        ->leftJoin('data_payment_pays as dpp', function($join){
+        ->leftJoin('data_payment_pays as dpp', function ($join) {
             $join->on('dpp.mes_lis_pay_pay_code', '=', 'dip.mes_lis_inv_pay_code');
             $join->on('dpp.mes_lis_pay_per_end_date', '=', 'dip.mes_lis_inv_per_end_date');
             $join->on('dpp.mes_lis_buy_code', '=', 'dip.mes_lis_buy_code');
         })
-        ->leftJoin('data_payment_pay_details as dppd','dppd.data_payment_pay_id','=','dpp.data_payment_pay_id')
+        ->leftJoin('data_payment_pay_details as dppd', 'dppd.data_payment_pay_id', '=', 'dpp.data_payment_pay_id')
         ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'data_invoices.cmn_connect_id')
         ->where('cc.byr_buyer_id', $byr_buyer_id)
         ->where('cc.slr_seller_id', $slr_seller_id)
@@ -432,6 +440,7 @@ class InvoiceController extends Controller
 
     public function sendInvoiceData(Request $request)
     {
+        Log::debug(__METHOD__.':start---');
         // return $request->all();
         $data_count=$request->data_count;
         $data_invoice_id=$request->data_invoice_id;
@@ -440,13 +449,13 @@ class InvoiceController extends Controller
         $adm_user_id=$request->adm_user_id;
         $byr_buyer_id=$request->byr_buyer_id;
         $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
-        // $authUser = User::find($adm_user_id);
+        $authUser = User::find($adm_user_id);
 
-        // $cmn_connect_id = '';
-        // if (!$authUser->hasRole(config('const.adm_role_name'))) {
-        //     $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
-        //     $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
-        // }
+        $cmn_connect_id = '';
+        if (!$authUser->hasRole(config('const.adm_role_name'))) {
+            $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id, $byr_buyer_id);
+            $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
+        }
         // $csv_data_count = InvoiceDataController::get_invoice_data($request)->get()->count();
         $csv_data_count = data_invoice::join('data_invoice_pays as dip', 'dip.data_invoice_id', '=', 'data_invoices.data_invoice_id')
             ->join('data_invoice_pay_details as dipd', 'dipd.data_invoice_pay_id', '=', 'dip.data_invoice_pay_id')
@@ -465,11 +474,12 @@ class InvoiceController extends Controller
             // ->where('dip.status',$param_data['status'])
             ->get()->count();
         if (!$data_count) {
+            $request->request->add(['cmn_connect_id' => $cmn_connect_id]);
             $dateTime = date('Y-m-d H:i:s');
-            $new_file_name = $this->all_used_fun->downloadFileName($request, 'csv', '請求');
+            $new_file_name = $this->all_used_fun->sendFileName($request, 'csv', 'invoice');
             // self::invoiceFileName($data_invoice_id,'csv');
             data_invoice::where('data_invoice_id', $data_invoice_id)->update(['mes_mes_number_of_trading_documents'=>$csv_data_count]);
-            $download_file_url = Config::get('app.url')."storage/app".config('const.INVOICE_CSV_PATH')."/". $new_file_name;
+            $download_file_url = Config::get('app.url')."storage/app".config('const.INVOICE_SEND_CSV_PATH')."/". $new_file_name;
             $invoice_query = InvoiceDataController::get_invoice_data($request);
             // $shipment_query = Data_Controller::get_shipment_data($request);
             // $csv_data_count = $shipment_query->count();
@@ -478,17 +488,17 @@ class InvoiceController extends Controller
 
             // CSV create
             Csv::create(
-                config('const.INVOICE_CSV_PATH')."/". $new_file_name,
+                config('const.INVOICE_SEND_CSV_PATH')."/". $new_file_name,
                 $invoice_data,
-                InvoiceDataController::invoiceCsvHeading(),
-                config('const.CSV_FILE_ENCODE')
+                InvoiceDataController::invoiceCsvHeading()
             );
-            // (new InvoiceCSVExport($request))->store(config('const.INVOICE_CSV_PATH').'/'.$new_file_name);
+            // (new InvoiceCSVExport($request))->store(config('const.INVOICE_SEND_CSV_PATH').'/'.$new_file_name);
             data_invoice_pay_detail::whereNotNull('decision_datetime')
             ->whereNull('send_datetime')
             ->update(['send_datetime'=>$dateTime]);
         }
 
+        Log::debug(__METHOD__.':end---');
         return response()->json(['message' => 'Success','status'=>1, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
     }
     public function downloadInvoice(Request $request)
@@ -502,7 +512,7 @@ class InvoiceController extends Controller
         if ($downloadType==1) {
             // CSV Download
             $new_file_name = $this->all_used_fun->downloadFileName($request, 'csv', '請求');
-            $download_file_url = Config::get('app.url')."storage/app".config('const.INVOICE_CSV_PATH')."/". $new_file_name;
+            $download_file_url = Config::get('app.url')."storage/app".config('const.INVOICE_DOWNLOAD_CSV_PATH')."/". $new_file_name;
 
             // get shipment data query
             $invoice_query = InvoiceDataController::get_invoice_data($request);
@@ -511,7 +521,7 @@ class InvoiceController extends Controller
 
             // CSV create
             Csv::create(
-                config('const.INVOICE_CSV_PATH')."/". $new_file_name,
+                config('const.INVOICE_DOWNLOAD_CSV_PATH')."/". $new_file_name,
                 $shipment_data,
                 InvoiceDataController::invoiceCsvHeading(),
                 config('const.CSV_FILE_ENCODE')
@@ -522,7 +532,7 @@ class InvoiceController extends Controller
             // $request->request->add(['email' => 'user@jacos.co.jp']);
             // $request->request->add(['password' => 'Qe75ymSr']);
             // $new_file_name = self::invoiceFileName($data_order_id, 'txt');
-            // $download_file_url = \Config::get('app.url')."storage/".config('const.FIXED_LENGTH_FILE_PATH')."/". $new_file_name;
+            // $download_file_url = \Config::get('app.url')."storage/".config('const.JCA_FILE_PATH')."/". $new_file_name;
             // $request->request->add(['file_name' => $new_file_name]);
             // $cs = new CmnScenarioController();
             // $ret = $cs->exec($request);

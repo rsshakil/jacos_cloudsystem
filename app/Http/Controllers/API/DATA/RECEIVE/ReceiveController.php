@@ -27,7 +27,7 @@ class ReceiveController extends Controller
     public function __construct()
     {
         $this->all_used_fun = new AllUsedFunction();
-        $this->all_used_fun->folder_create('app/'.config('const.RECEIVE_CSV_PATH'));
+        $this->all_used_fun->folder_create('app/'.config('const.RECEIVE_DOWNLOAD_CSV_PATH'));
     }
 
     public function orderReceiveList(Request $request)
@@ -326,7 +326,7 @@ class ReceiveController extends Controller
         ->where('data_receive_vouchers.mes_lis_acc_tra_goo_major_category', $major_category)
         ->where('data_receive_vouchers.mes_lis_acc_log_del_delivery_service_code', '=', $delivery_service_code)
         ->where('data_receive_vouchers.mes_lis_acc_tra_dat_transfer_of_ownership_date', '=', $ownership_date);
-       
+
         $result=$result->groupBy('data_receive_vouchers.mes_lis_acc_tra_trade_number')
         ->orderBy($table_name.$sort_by, $sort_type)->get();
         return response()->json(['received_detail_list_single_pagination' => $result]);
@@ -343,7 +343,7 @@ class ReceiveController extends Controller
             // CSV Download
             $new_file_name =$this->all_used_fun->downloadFileName($request, 'csv', '受領');
             //  self::receiveFileName($data_receive_id, 'csv');
-            $download_file_url = Config::get('app.url')."storage/app".config('const.RECEIVE_CSV_PATH')."/". $new_file_name;
+            $download_file_url = Config::get('app.url')."storage/app".config('const.RECEIVE_DOWNLOAD_CSV_PATH')."/". $new_file_name;
 
             // get shipment data query
             $shipment_query = DataController::getReceiveData($request);
@@ -352,7 +352,7 @@ class ReceiveController extends Controller
 
             // CSV create
             Csv::create(
-                config('const.RECEIVE_CSV_PATH')."/". $new_file_name,
+                config('const.RECEIVE_DOWNLOAD_CSV_PATH')."/". $new_file_name,
                 $shipment_data,
                 DataController::receiveCsvHeading(),
                 config('const.CSV_FILE_ENCODE')

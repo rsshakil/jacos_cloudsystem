@@ -453,8 +453,10 @@ class Level3Controller extends Controller
     {
         Log::debug(__METHOD__.':start---');
 
-        $url_path = Config::get('app.url') . 'storage/app/shipment_csv/moved/';
-        $path = \storage_path('/app/shipment_csv/');
+        // $url_path = Config::get('app.url') . 'storage/app/shipment_csv/moved/';
+        $url_path = Config::get('app.url').'storage/app'.config('const.SHIPMENT_MOVED_CSV_PATH'); aaa
+        // $path = \storage_path('/app/shipment_csv/');
+        $path = \storage_path('app/'.config('const.SHIPMENT_SEND_CSV_PATH').'/');
         $files = array_values(array_diff(scandir($path), array('.', '..')));
         $file_name='';
         $file_path='';
@@ -474,7 +476,8 @@ class Level3Controller extends Controller
         if (!empty($checked_files)) {
             $file_name = $checked_files[0];
             $file_path = $url_path . $checked_files[0];
-            rename($path . $checked_files[0], $path . 'moved/' . $checked_files[0]);
+            // rename($path . $checked_files[0], $path . 'moved/' . $checked_files[0]);
+            rename($path . $checked_files[0], \storage_path('/app'.config('const.SHIPMENT_MOVED_CSV_PATH')) . $checked_files[0]);
             $this->message = "ファイルが見つかりました。";
             $this->status_code = 200;
         } else {
@@ -488,8 +491,10 @@ class Level3Controller extends Controller
     {
         Log::debug(__METHOD__.':start---');
 
-        $url_path = Config::get('app.url') . 'storage/app/invoice_csv/moved/';
-        $path = \storage_path('/app/invoice_csv/');
+        // $url_path = Config::get('app.url') . 'storage/app/invoice_csv/moved/';
+        $url_path = Config::get('app.url').'storage/app'.config('const.INVOICE_MOVED_CSV_PATH');
+        $path = \storage_path('app/'.config('const.INVOICE_SEND_CSV_PATH').'/');
+        // $path = \storage_path('/app/invoice_csv/');
         $files = array_values(array_diff(scandir($path), array('.', '..')));
         $file_name='';
         $file_path='';
@@ -509,7 +514,7 @@ class Level3Controller extends Controller
         if (!empty($checked_files)) {
             $file_name = $checked_files[0];
             $file_path = $url_path . $checked_files[0];
-            rename($path . $checked_files[0], $path . 'moved/' . $checked_files[0]);
+            rename($path . $checked_files[0], \storage_path('/app'.config('const.INVOICE_MOVED_CSV_PATH')) . $checked_files[0]);
             $this->message = "ファイルが見つかりました。";
             $this->status_code = 200;
         } else {
@@ -519,38 +524,6 @@ class Level3Controller extends Controller
         Log::debug(__METHOD__.':end---');
         return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'file_name' => $file_name,'file_path'=>$file_path]);
     }
-    // public function getShipmentFile(Request $request)
-    // {
-    //     $url_path = \Config::get('app.url') . 'storage/app/shipment_csv/moved/';
-    //     $path = \storage_path('/app/shipment_csv/');
-    //     $files = array_values(array_diff(scandir($path), array('.', '..')));
-    //     $files_array = array();
-    //     if (!empty($files)) {
-    //         for ($i = 0; $i < count($files); $i++) {
-    //             if (is_file($path . $files[$i])) {
-    //                 $tmp_array['file_name'] = $files[$i];
-    //                 $tmp_array['file_path'] = $url_path . $files[$i];
-
-    //                 rename($path . $files[$i], $path . 'moved/' . $files[$i]);
-    //                 $files_array[] = $tmp_array;
-    //             }
-
-    //         }
-    //     } else {
-    //         $this->message = "フォルダが空です";
-    //         $this->status_code = 400;
-    //         return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'files_array' => $files_array]);
-    //     }
-
-    //     if (!empty($files_array)) {
-    //         $this->message = "ファイルが見つかりました。";
-    //         $this->status_code = 200;
-    //     } else {
-    //         $this->message = "ファイルが見つかりませんでした。";
-    //         $this->status_code = 401;
-    //     }
-    //     return \response()->json(['message' => $this->message, 'status_code' => $this->status_code, 'files_array' => $files_array]);
-    // }
     public function deleteService(Request $request)
     {
         Log::debug(__METHOD__.':start---');

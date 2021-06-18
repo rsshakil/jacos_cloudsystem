@@ -493,6 +493,7 @@ class data_csv_order extends ScenarioBase
         Log::debug(__METHOD__.':start---');
 
         $pdf_datas = $this->pdfDAta($data_order_id,$partner_code);
+        $today=date('YmdHis');
         // return $pdf_datas;
         // =====================
         $pdf_file_paths=array();
@@ -503,14 +504,15 @@ class data_csv_order extends ScenarioBase
         $data_count=0;
         $file_number=1;
         $page_limit=10;
-        $order_pdf_save_path=config('const.ORDER_PDF_SAVE_PATH');
+        $order_pdf_save_path=config('const.ORDER_FAX_PDF_SAVE_PATH');
         $first_page=0;
 
         $receipt=$this->all_functions->fpdfRet();
 
         foreach ($pdf_datas as $key => $sel_data) {
             if ($page!=0 && $page%$page_limit==0) {
-                $pdf_file_path = $this->all_functions->pdfFileSave($receipt, $file_number,$order_pdf_save_path);
+                $pdf_file_name=$today.'_'.$file_number.'_receipt.pdf';
+                $pdf_file_path = $this->all_functions->pdfFileSave($receipt, $pdf_file_name,$order_pdf_save_path);
                 array_push($pdf_file_paths, $pdf_file_path);
                 $receipt=$this->all_functions->fpdfRet();
                 $file_number+=1;
@@ -534,7 +536,8 @@ class data_csv_order extends ScenarioBase
                 if ($odd_even==0) {
                     if ($data_count!=0 && $data_count%2==0) {
                         if ($page%$page_limit==0) {
-                            $pdf_file_path = $this->all_functions->pdfFileSave($receipt, $file_number,$order_pdf_save_path);
+                            $pdf_file_name=$today.'_'.$file_number.'_receipt.pdf';
+                            $pdf_file_path = $this->all_functions->pdfFileSave($receipt, $pdf_file_name,$order_pdf_save_path);
                             array_push($pdf_file_paths, $pdf_file_path);
                             $receipt=$this->all_functions->fpdfRet();
                             $file_number+=1;
@@ -562,7 +565,8 @@ class data_csv_order extends ScenarioBase
         $first_page=0;
     }
         if ($page%$page_limit!=0) {
-            $pdf_file_path = $this->all_functions->pdfFileSave($receipt, $file_number,$order_pdf_save_path);
+            $pdf_file_name=$today.'_'.$file_number.'_receipt.pdf';
+            $pdf_file_path = $this->all_functions->pdfFileSave($receipt, $pdf_file_name,$order_pdf_save_path);
             array_push($pdf_file_paths, $pdf_file_path);
             $receipt=$this->all_functions->fpdfRet();
             $file_number+=1;

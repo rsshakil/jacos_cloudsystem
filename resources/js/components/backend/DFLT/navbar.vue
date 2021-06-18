@@ -151,23 +151,11 @@
                     <i class="fas fa-edit"></i>
                     {{ myLang.change_password }}
                   </router-link>
-                  <!-- <button class="dropdown-item pc" id="auth_user_id">
-                            <i class="material-icons">vertical_split</i> Change Password
-              </button>-->
-                  <!-- @endcan -->
-                  <!-- <a class="dropdown-item" href="add-new-post.html">
-                    <i class="material-icons">note_add</i> Add New Post
-              </a>-->
                   <div class="dropdown-divider"></div>
-                  <!-- <a class="dropdown-item text-danger" href="#">
-              <i class="material-icons text-danger">&#xE879;</i> Logout </a>-->
                 </div>
               </li>
               <li class="nav-item">
-                <button
-                  class="btn btn-defalut logout_btn text-danger"
-                  @click="logout()"
-                >
+                <button class="btn btn-defalut logout_btn text-danger" @click="logout()">
                   Logout
                 </button>
               </li>

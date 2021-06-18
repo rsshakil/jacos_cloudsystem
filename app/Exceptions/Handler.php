@@ -5,7 +5,9 @@ namespace App\Exceptions;
 // use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
-use Log;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Request;
+// use Illuminate\Http\Request;
 use Symfony\Component\ErrorHandler\ErrorRenderer\HtmlErrorRenderer;
 use Symfony\Component\ErrorHandler\Exception\FlattenException;
 use Illuminate\Support\Facades\Mail;
@@ -42,7 +44,10 @@ class Handler extends ExceptionHandler
              // it will have access to the $error that we are passing below
 
             if ($this->shouldReport($exception)) {
-                $this->sendEmail($exception); // sends an email
+                if (config('const.SEND_EXCEPTION')==1) {
+                    $this->sendEmail($exception); // sends an email
+                }
+
             }
         parent::report($exception);
     }
@@ -65,42 +70,41 @@ class Handler extends ExceptionHandler
 
     public function sendEmail(Throwable $exception)
     {
-        // try {
-        //     $e = FlattenException::create($exception);
-        //     $handler = new HtmlErrorRenderer(true); // boolean, true raises debug flag...
-        //     $css = $handler->getStylesheet();
-        //     $content = $handler->getBody($e);
-        //     Log::info('send mail');
-
-        //     \Mail::send('emails.exception', compact('css','content'), function ($message) {
-        //         $message->to(['jacossakil@gmail.com','sakaki@jacos.co.jp'])
-        //                             ->subject('Exception: error');
-        //     });
-        //     Log::info('excp end');
-        // } catch (Throwable $exception) {
-        //     Log::info('send not mail');
-        //     Log::error($exception);
-        // }
+        try {
+            $e = FlattenException::create($exception);
+            $handler = new HtmlErrorRenderer(true); // boolean, true raises debug flag...
+            $css = $handler->getStylesheet();
+            $content = $handler->getBody($e);
+            Log::info('send mail');
+            Mail::send('emails.exception', compact('css','content'), function ($message) {
+                $message->to(config('const.EXCEPTION_SEND_MAILS'))
+                                    ->subject('Exception: error');
+            });
+            Log::info('excp end');
+        } catch (Throwable $exception) {
+            Log::info('send not mail');
+            Log::error($exception);
+        }
     }
 
     public function sendEmail_backup(Throwable $exception)
     {
-    //    try {
-    //         $e = FlattenException::create($exception);
-    //         $handler = new HtmlErrorRenderer(true); // boolean, true raises debug flag...
-    //         $css = $handler->getStylesheet();
-    //         $content = $handler->getBody($e);
-    //         Log::info('send mail');
-    //         Log::info('ecp start');
-    //         Log::info($exception);
-    //         Log::info('excp end');
-    //         \Mail::send('emails.exception', compact('css','content'), function ($message) {
-    //             $message->to(['jacossakil@gmail.com','sakaki@jacos.co.jp'])
-    //                                 ->subject('Exception: ' . \Request::fullUrl());
-    //         });
-    //     } catch (Throwable $exception) {
-    //         Log::info('send not mail');
-    //         Log::error($exception);
-    //     }
+       try {
+            $e = FlattenException::create($exception);
+            $handler = new HtmlErrorRenderer(true); // boolean, true raises debug flag...
+            $css = $handler->getStylesheet();
+            $content = $handler->getBody($e);
+            Log::info('send mail');
+            Log::info('ecp start');
+            Log::info($exception);
+            Log::info('excp end');
+            Mail::send('emails.exception', compact('css','content'), function ($message) {
+                $message->to(config('const.EXCEPTION_SEND_MAILS'))
+                                    ->subject('Exception: ' . Request::fullUrl());
+            });
+        } catch (Throwable $exception) {
+            Log::info('send not mail');
+            Log::error($exception);
+        }
     }
 }

@@ -145,12 +145,17 @@ export default {
         },
         logout() {
             this.loader = Vue.$loading.show()
-            this.app.req.post(this.BASE_URL + "logout").then(() => {
-                this.$session.destroy()
-                this.$router.push({ name: 'home' })
+            var _this = this;
+            this.app.req.post(this.BASE_URL + "logout").then(({ data }) => {
+                _this.$session.destroy()
+                _this.$router.push({ name: 'home' })
                 window.location.reload();
-                // his.loader.hide();
-
+            }).catch(function(error) {
+                if (error.response && error.response.status == 419) {
+                    _this.$session.destroy()
+                    _this.$router.push({ name: 'home' })
+                    window.location.reload();
+                }
             });
         },
         // display_table_col_setting() {
