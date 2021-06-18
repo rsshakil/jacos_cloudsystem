@@ -9,6 +9,11 @@ const mix = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
+// Override mix internal webpack output configuration
+mix.config.webpackConfig.output = {
+    chunkFilename: 'js/build_component/[name].js',
+    publicPath: '/jcs/public/',
+};
 
 mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css');
