@@ -35,6 +35,7 @@ class ShipmentController extends Controller
         $this->data_csv_order = new data_csv_order();
         $this->data_controller = new Data_Controller();
         $this->all_functions->folder_create('app/'.config('const.SHIPMENT_SEND_CSV_PATH'));
+        $this->all_functions->folder_create('app/'.config('const.SHIPMENT_MOVED_CSV_PATH'));
         $this->all_functions->folder_create('app/'.config('const.SHIPMENT_DOWNLOAD_CSV_PATH'));
     }
     public function sendShipmentData(Request $request)
