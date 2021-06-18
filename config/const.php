@@ -13,6 +13,7 @@ return [
 
     // Shipment files
     'SHIPMENT_SEND_CSV_PATH' => '/DATA/SHIPMENT/shipment_send_csv',
+    'SHIPMENT_MOVED_CSV_PATH' => '/DATA/SHIPMENT/shipment_send_csv/moved/',
     'SHIPMENT_DOWNLOAD_CSV_PATH' => '/DATA/SHIPMENT/shipment_download_csv',
     'JCA_FILE_PATH' => 'app/DATA/SHIPMENT/jca_files/',
     'SHIPMENT_CSV_UPDATE_PATH' => '/DATA/SHIPMENT/shipment_updated_csv',
@@ -28,6 +29,7 @@ return [
 
     // Invoice files
     'INVOICE_SEND_CSV_PATH' => '/DATA/INVOICE/invoice_send_csv',
+    'INVOICE_MOVED_CSV_PATH' => '/DATA/INVOICE/invoice_send_csv/moved/',
     'INVOICE_DOWNLOAD_CSV_PATH' => '/DATA/INVOICE/invoice_download_csv',
     'INVOICE_COMPARE_CSV_PATH' => '/DATA/INVOICE/invoice_compare_csv',
 
@@ -55,8 +57,11 @@ return [
     'SUCCESS' =>1,
     'ERROR' =>0,
     'JCS_EXCEPTION'=>1,
+    'SEND_EXCEPTION'=>0,
+    'EXCEPTION_SEND_MAILS'=>['mayeennbd@gmail.com','jacossakil@gmail.com','sakaki@jacos.co.jp'],
 
     'CSV_FILE_ENCODE'=>'sjis-win',
+
 //  Byr Menu variables
     // Slr shipment files
     'SLR_SHIPMENT_DOWNLOAD_CSV_PATH' => '/BYR/DATA/SHIPMENT/slr_shipment_download_csv',

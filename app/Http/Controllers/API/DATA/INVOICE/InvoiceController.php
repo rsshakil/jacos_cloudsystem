@@ -34,6 +34,7 @@ class InvoiceController extends Controller
         $this->request->setMethod('POST');
         $this->all_used_fun = new AllUsedFunction();
         $this->all_used_fun->folder_create('app/'.config('const.INVOICE_SEND_CSV_PATH'));
+        $this->all_used_fun->folder_create('app/'.config('const.INVOICE_MOVED_CSV_PATH'));
         $this->all_used_fun->folder_create('app/'.config('const.INVOICE_DOWNLOAD_CSV_PATH'));
         $this->all_used_fun->folder_create('app/'.config('const.INVOICE_COMPARE_CSV_PATH'));
     }
@@ -42,8 +43,6 @@ class InvoiceController extends Controller
         $cs = new CmnScenarioController();
 
         $ret = $cs->exec($request);
-        Log::info("======Count=======");
-        Log::info($ret);
         return $ret;
         Log::debug($ret->getContent());
         $ret = json_decode($ret->getContent(), true);
