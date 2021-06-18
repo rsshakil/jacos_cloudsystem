@@ -213,12 +213,12 @@ class InvoiceController extends Controller
     {
         $matches = array();
         $explodeAmountSign = $request->requested_amount;
-        preg_match_all("/\d+|[\\+\\-\\/\\*]/",$explodeAmountSign,$matches);
+        preg_match_all("/\d+|[\\+\\-\\/\\*]/", $explodeAmountSign, $matches);
         $countMatch = count($matches[0]);
-        if($countMatch==2){
+        if ($countMatch==2) {
             $request_amount = $matches[0][1];
             $request_sign = $matches[0][0];
-        }else{
+        } else {
             $request_amount = $matches[0][0];
             $request_sign = '+';
         }
@@ -233,7 +233,7 @@ class InvoiceController extends Controller
             'mes_lis_inv_lin_det_amo_requested_amount'=>$request_amount,
             'mes_lis_inv_lin_det_amo_requested_amount'=>$request_amount,
             'mes_lis_inv_lin_det_amo_req_plus_minus'=>$request_sign,
-            'mes_lis_inv_lin_tra_gln'=>$request->mes_lis_inv_lin_tra_gln,            
+            'mes_lis_inv_lin_tra_gln'=>$request->mes_lis_inv_lin_tra_gln,
             'mes_lis_inv_lin_sel_gln'=>$request->mes_lis_inv_lin_sel_gln,
             'mes_lis_inv_lin_sel_code'=>$request->mes_lis_inv_lin_sel_code
         );
@@ -333,12 +333,12 @@ class InvoiceController extends Controller
         )
         ->join('data_invoice_pays as dip', 'data_invoices.data_invoice_id', '=', 'dip.data_invoice_id')
         ->join('data_invoice_pay_details as dipd', 'dip.data_invoice_pay_id', '=', 'dipd.data_invoice_pay_id')
-        ->leftJoin('data_payment_pays as dpp', function($join){
+        ->leftJoin('data_payment_pays as dpp', function ($join) {
             $join->on('dpp.mes_lis_pay_pay_code', '=', 'dip.mes_lis_inv_pay_code');
             $join->on('dpp.mes_lis_pay_per_end_date', '=', 'dip.mes_lis_inv_per_end_date');
             $join->on('dpp.mes_lis_buy_code', '=', 'dip.mes_lis_buy_code');
         })
-        ->leftJoin('data_payment_pay_details as dppd','dppd.data_payment_pay_id','=','dpp.data_payment_pay_id')
+        ->leftJoin('data_payment_pay_details as dppd', 'dppd.data_payment_pay_id', '=', 'dpp.data_payment_pay_id')
         ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'data_invoices.cmn_connect_id')
         ->where('cc.byr_buyer_id', $byr_buyer_id)
         ->where('cc.slr_seller_id', $slr_seller_id)
@@ -441,6 +441,7 @@ class InvoiceController extends Controller
 
     public function sendInvoiceData(Request $request)
     {
+        Log::debug(__METHOD__.':start---');
         // return $request->all();
         $data_count=$request->data_count;
         $data_invoice_id=$request->data_invoice_id;
@@ -453,7 +454,7 @@ class InvoiceController extends Controller
 
         $cmn_connect_id = '';
         if (!$authUser->hasRole(config('const.adm_role_name'))) {
-            $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id,$byr_buyer_id);
+            $cmn_company_info=$this->all_used_fun->get_user_info($adm_user_id, $byr_buyer_id);
             $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
         }
         // $csv_data_count = InvoiceDataController::get_invoice_data($request)->get()->count();
@@ -490,8 +491,7 @@ class InvoiceController extends Controller
             Csv::create(
                 config('const.INVOICE_SEND_CSV_PATH')."/". $new_file_name,
                 $invoice_data,
-                InvoiceDataController::invoiceCsvHeading(),
-                config('const.CSV_FILE_ENCODE')
+                InvoiceDataController::invoiceCsvHeading()
             );
             // (new InvoiceCSVExport($request))->store(config('const.INVOICE_SEND_CSV_PATH').'/'.$new_file_name);
             data_invoice_pay_detail::whereNotNull('decision_datetime')
@@ -499,6 +499,7 @@ class InvoiceController extends Controller
             ->update(['send_datetime'=>$dateTime]);
         }
 
+        Log::debug(__METHOD__.':end---');
         return response()->json(['message' => 'Success','status'=>1, 'url' => $download_file_url,'csv_data_count'=>$csv_data_count]);
     }
     public function downloadInvoice(Request $request)
