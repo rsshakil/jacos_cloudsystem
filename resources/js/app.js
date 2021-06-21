@@ -115,6 +115,8 @@ window.Form = Form;
 Vue.component(HasError.name, HasError);
 Vue.component(AlertError.name, AlertError);
 // define a mixin object for global function
+// const myMixin = () =>
+//     import ( /* webpackChunkName: "myMixin" */ './myMixin.js')
 import myMixin from "./myMixin";
 Vue.mixin(myMixin);
 

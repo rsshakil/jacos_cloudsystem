@@ -9,7 +9,6 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _return_item_list_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./return_item_list.vue */ "./resources/js/components/backend/DATA/RETURN/return_item_list.vue");
 //
 //
 //
@@ -247,7 +246,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
+// import return_item_listVue from './return_item_list.vue';
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {

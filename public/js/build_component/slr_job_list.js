@@ -115,11 +115,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-// import tabList from "../CMN/tabList";
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'app',
-  components: {// tabList,
-  },
   data: function data() {
     return {
       slr_job_lists: {},
