@@ -57,18 +57,18 @@
 </template>
 
 <script>
-const navbar = () =>
-    import ( /* webpackChunkName: "navbar" */ './DFLT/navbar')
-const sidebar = () =>
-    import ( /* webpackChunkName: "sidebar" */ './DFLT/side_bar')
-const projectfooter = () =>
-    import ( /* webpackChunkName: "projectfooter" */ './DFLT/footer')
-const page_header_default = () =>
-    import ( /* webpackChunkName: "page_header_default" */ './page_header_default')
-// import navbar from './DFLT/navbar'
-// import sidebar from './DFLT/side_bar'
-// import projectfooter from './DFLT/footer'
-// import page_header_default from './page_header_default'
+// const navbar = () =>
+//     import ( /* webpackChunkName: "navbar" */ './DFLT/navbar')
+// const sidebar = () =>
+//     import ( /* webpackChunkName: "sidebar" */ './DFLT/side_bar')
+// const projectfooter = () =>
+//     import ( /* webpackChunkName: "projectfooter" */ './DFLT/footer')
+// const page_header_default = () =>
+//     import ( /* webpackChunkName: "page_header_default" */ './page_header_default')
+import navbar from './DFLT/navbar'
+import sidebar from './DFLT/side_bar'
+import projectfooter from './DFLT/footer'
+import page_header_default from './page_header_default'
 export default {
 name:'app',
 components:{
