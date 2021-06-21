@@ -11,8 +11,8 @@ const mix = require('laravel-mix');
  */
 // Override mix internal webpack output configuration
 mix.config.webpackConfig.output = {
-    chunkFilename: 'js/build_component/[name].bundle.js',
-    publicPath: '/jcs/public/',
+    chunkFilename: 'js/build_component/[name].js',
+    publicPath: 'public/',
 };
 
 mix.js('resources/js/app.js', 'public/js')
