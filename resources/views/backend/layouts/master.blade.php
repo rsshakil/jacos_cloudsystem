@@ -40,6 +40,7 @@
         window.Permissions = [];
         window.Roles = [];
     @endauth
+
     </script>
     <script src="{{Config::get('app.url').'public/js/app.js'}}"></script>
     <script src="{{Config::get('app.url').'/public/js/jquery-3.5.1.min.js'}}"></script>
@@ -49,5 +50,6 @@
     <script src="{{Config::get('app.url').'/public/dashboard/scripts/extras.1.1.0.min.js'}}"></script>
     <script src="{{Config::get('app.url').'/public/js/printThisLibrary/printThis.js'}}"></script>
 </body>
+
 
 </html>

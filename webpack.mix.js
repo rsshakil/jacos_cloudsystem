@@ -16,7 +16,8 @@ mix.config.webpackConfig.output = {
     chunkFilename: 'js/build_component/[name].js',
     // publicPath: '/public/', //For server
     publicPath: app_url + 'public/',
-    // publicPath: '/public/',
+    // publicPath: path.resolve(__dirname, 'public/'),
+    // publicPath: `${process.env.APP_ENV}` == 'local' ? "/jcs/public/" : '/public/',
 };
 
 mix.js('resources/js/app.js', 'public/js')

@@ -185,8 +185,10 @@ var router = new VueRouter({
     linkActiveClass: "active", // active class for non-exact links.
     linkExactActiveClass: "active", // active class for *exact* links.
     mode: "history",
-    base: `${process.env.APP_ENV}` == 'local' ? "/jcs" : '/',
+    base: "/jcs",
+    // base: `${process.env.APP_ENV}` == 'local' ? "/jcs" : '/',
 });
+// console.log(app_url);
 router.onReady(() => {
     if (Globals.user_info_id == '' && router.currentRoute.path != "/home") {
         router.push("home")
