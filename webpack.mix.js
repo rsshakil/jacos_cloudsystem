@@ -1,4 +1,6 @@
 const mix = require('laravel-mix');
+require('dotenv').config();
+const app_url = process.env.APP_URL;
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -12,7 +14,9 @@ const mix = require('laravel-mix');
 // Override mix internal webpack output configuration
 mix.config.webpackConfig.output = {
     chunkFilename: 'js/build_component/[name].js',
-    publicPath: '/public/',
+    // publicPath: '/public/', //For server
+    publicPath: app_url + 'public/',
+    // publicPath: '/public/',
 };
 
 mix.js('resources/js/app.js', 'public/js')
