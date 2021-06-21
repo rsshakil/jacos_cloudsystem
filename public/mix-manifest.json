@@ -5,7 +5,7 @@
     "/js/build_component/assign_permission_model.js": "/js/build_component/assign_permission_model.js",
     "/js/build_component/assign_role_model.js": "/js/build_component/assign_role_model.js",
     "/js/build_component/blog.js": "/js/build_component/blog.js",
-    "/js/build_component/blog_view.js": "/js/build_component/blog_view.js",
+    "/js/build_component/blog_view_for_select_customer.js": "/js/build_component/blog_view_for_select_customer.js",
     "/js/build_component/byr_management.js": "/js/build_component/byr_management.js",
     "/js/build_component/byr_menu.js": "/js/build_component/byr_menu.js",
     "/js/build_component/byr_side_bar_menu.js": "/js/build_component/byr_side_bar_menu.js",
@@ -75,6 +75,5 @@
     "/js/build_component/vendors~blog.js": "/js/build_component/vendors~blog.js",
     "/js/build_component/vendors~order_details_canvas~pdf_platform_view.js": "/js/build_component/vendors~order_details_canvas~pdf_platform_view.js",
     "/js/build_component/voucher_detail.js": "/js/build_component/voucher_detail.js",
-    "/js/build_component/voucher_setting.js": "/js/build_component/voucher_setting.js",
-    "/js/build_component/blog_view_for_select_customer.js": "/js/build_component/blog_view_for_select_customer.js"
+    "/js/build_component/voucher_setting.js": "/js/build_component/voucher_setting.js"
 }
