@@ -86,7 +86,7 @@ class ReturnController extends Controller
 
         $major_category = $major_category['category_code']; // 印刷
         // $having_var = '';
-
+// return $sort_by;
         $table_name='drv.';
         if ($sort_by=="data_return_id" || $sort_by=="receive_datetime") {
             $table_name='data_returns.';
@@ -153,13 +153,12 @@ class ReturnController extends Controller
             'drv.mes_lis_ret_tra_dat_transfer_of_ownership_date',
             'drv.mes_lis_ret_tra_goo_major_category'
         ])
-        ->orderBy('data_returns.receive_datetime', 'DESC')
+        // ->orderBy('data_returns.receive_datetime','DESC');
+        ->orderBy($table_name.$sort_by, $sort_type)
         ->orderBy('drv.mes_lis_ret_par_sel_code')
         ->orderBy('drv.mes_lis_ret_tra_dat_transfer_of_ownership_date')
         ->orderBy('drv.mes_lis_ret_tra_goo_major_category')
-
-        ->orderBy($table_name.$sort_by, $sort_type);
-        $result = $result->paginate($per_page);
+        ->paginate($per_page);
         $byr_buyer = $this->all_used_fun->get_company_list($cmn_company_id);
 
         return response()->json(['return_item_list' => $result, 'byr_buyer_list' => $byr_buyer]);

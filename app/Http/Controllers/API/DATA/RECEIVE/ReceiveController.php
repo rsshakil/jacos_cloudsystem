@@ -112,8 +112,8 @@ class ReceiveController extends Controller
         if ($temperature_code!='*') {
             $result =$result->where('drv.mes_lis_acc_tra_ins_temperature_code', $temperature_code);
         }
-        if ($major_category!='*') {
-            $result =$result->where('drv.mes_lis_acc_tra_goo_major_category', $major_category);
+        if ($major_category['category_code']!='*') {
+            $result =$result->where('drv.mes_lis_acc_tra_goo_major_category', $major_category['category_code']);
         }
         if ($sta_doc_type!='*') {
             $result =$result->where('data_receives.sta_doc_type', $sta_doc_type);
@@ -135,12 +135,12 @@ class ReceiveController extends Controller
             'drv.mes_lis_acc_tra_ins_temperature_code',
         // 'drv.mes_lis_acc_tra_trade_number'
         ])
+        // ->orderBy('data_receives.receive_datetime', 'DESC')
+        ->orderBy($table_name.$sort_by, $sort_type)
         ->orderBy('drv.mes_lis_acc_par_sel_code')
         ->orderBy('drv.mes_lis_acc_tra_dat_transfer_of_ownership_date')
         ->orderBy('drv.mes_lis_acc_log_del_delivery_service_code')
         ->orderBy('drv.mes_lis_acc_tra_ins_temperature_code')
-        ->orderBy('data_receives.receive_datetime', 'DESC')
-        ->orderBy($table_name.$sort_by, $sort_type)
         ->orderBy('drv.mes_lis_acc_tra_goo_major_category')
         ->paginate($per_page);
         $byr_buyer = $this->all_used_fun->get_company_list($cmn_company_id);

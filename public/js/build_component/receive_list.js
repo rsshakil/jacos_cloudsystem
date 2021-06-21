@@ -309,12 +309,15 @@ __webpack_require__.r(__webpack_exports__);
         sel_code: null,
         ownership_date_from: null,
         ownership_date_to: null,
-        major_category: "*",
+        // major_category: "*",
         delivery_service_code: "*",
         temperature_code: "*",
         sta_doc_type: "*",
         check_datetime: '*',
-        // major_category:{category_code:'*',category_name:'全て'},
+        major_category: {
+          category_code: '*',
+          category_name: '全て'
+        },
         sort_by: 'receive_datetime ',
         sort_type: "DESC",
         page_title: 'receive_list',
