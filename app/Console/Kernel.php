@@ -25,11 +25,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $start_time=config('const.INVOICE_SCHEDULE_START_TIME');
-        // $end_time=config('const.INVOICE_SCHEDULE_END_TIME');
+        $schedule_time=config('const.INVOICE_SCHEDULE_TIME');
         $schedule->command('invoice:scheduler')
-                ->dailyAt('15:40');
-                //  ->between($start_time, $end_time);
+                ->dailyAt($schedule_time);
     }
 
     /**

@@ -48,8 +48,6 @@ return [
     // 'PDF_SEND_MAIL' => 'fax849653@ecofax.jp',
     'PDF_SEND_MAIL' => 'sakaki@jacos.co.jp',
     'INVOICE_SCHEDULE_TIME' => '12:00',
-    'INVOICE_SCHEDULE_START_TIME' => '14:00',
-    'INVOICE_SCHEDULE_END_TIME' => '23:00',
 
     'adm_role_name' =>'Super Admin',
     'buyer_role_name' =>'Byr',
