@@ -470,8 +470,6 @@ __webpack_require__.r(__webpack_exports__);
     check_byr_order_api: function check_byr_order_api() {
       var formData = new FormData();
       formData.append("up_file", this.file);
-      formData.append("email", "user@jacos.co.jp");
-      formData.append("password", "Qe75ymSr");
       formData.append("cmn_job_id", 1);
       axios({
         method: "POST",

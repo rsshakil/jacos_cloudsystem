@@ -437,8 +437,6 @@ export default {
     // check_byr_order_api() {
     //   let formData = new FormData();
     //   formData.append("up_file", this.file);
-    //   formData.append("email", "user@jacos.co.jp");
-    //   formData.append("password", "Qe75ymSr");
     //   axios({
     //     method: "POST",
     //     url: this.BASE_URL + "api/job_exec/1",
@@ -471,8 +469,8 @@ export default {
     this.invoiceData.byr_buyer_id = this.$session.get("byr_buyer_id");
     this.form.byr_buyer_id = this.$session.get("byr_buyer_id");
     this.getbuyerJsonSettingvalue();
-    
-    
+
+
     this.get_all_invoice_list();
     Fire.$on("LoadByrinvoice", () => {
       this.get_all_invoice_list();

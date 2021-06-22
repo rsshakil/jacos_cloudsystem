@@ -140,8 +140,6 @@ class ShipmentController extends Controller
             // $request=$this->request;
             $request->request->add(['scenario_id' => 6]);
             $request->request->add(['data_order_id' => $data_order_id]);
-            $request->request->add(['email' => 'user@jacos.co.jp']);
-            $request->request->add(['password' => 'Qe75ymSr']);
             $new_file_name =$this->all_functions->downloadFileName($request, 'txt', '受注');
             $download_file_url = Config::get('app.url')."storage/".config('const.JCA_FILE_PATH').'/'. $new_file_name;
             $request->request->add(['file_name' => $new_file_name]);

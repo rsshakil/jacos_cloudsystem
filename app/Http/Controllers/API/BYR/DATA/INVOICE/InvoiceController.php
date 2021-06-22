@@ -509,8 +509,6 @@ class InvoiceController extends Controller
         } elseif ($downloadType==2) {
             // $request->request->add(['scenario_id' => 6]);
             // $request->request->add(['data_order_id' => 1]);
-            // $request->request->add(['email' => 'user@jacos.co.jp']);
-            // $request->request->add(['password' => 'Qe75ymSr']);
             // $new_file_name = self::invoiceFileName($data_order_id, 'txt');
             // $download_file_url = \Config::get('app.url')."storage/".config('const.JCA_FILE_PATH')."/". $new_file_name;
             // $request->request->add(['file_name' => $new_file_name]);

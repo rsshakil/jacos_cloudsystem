@@ -430,8 +430,6 @@ export default {
     check_byr_order_api() {
       let formData = new FormData();
       formData.append("up_file", this.file);
-      formData.append("email", "user@jacos.co.jp");
-      formData.append("password", "Qe75ymSr");
       formData.append("cmn_job_id", 1);
       axios({
         method: "POST",
