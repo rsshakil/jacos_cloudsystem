@@ -33,14 +33,15 @@ class data_csv_receive extends ScenarioBase
         // file save
         $file_info = $this->upfileSave($request, config('const.RECEIVE_DATA_PATH') . date('Y-m'));
         $cmn_connect_id = $file_info['cmn_connect_id'];
-        
+
         // csv
         $dataArr = $this->all_functions->csvReader($file_info['save_path'], 1);
 
         // data check
         $this->checkCsvData($dataArr, 172);
 
-        $cur_date=date('y-m-d h:i:s');
+        $datetime = new \DateTime( "now", new \DateTimeZone(config('app.timezone')) );
+        $cur_date = $datetime->format( 'Y-m-d H:i:s' );
         $rcv_flg = true;
         $trade_number = '';
         DB::beginTransaction();
