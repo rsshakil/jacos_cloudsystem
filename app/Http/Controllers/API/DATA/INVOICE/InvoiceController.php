@@ -146,7 +146,11 @@ class InvoiceController extends Controller
         ->paginate($per_page);
         $byr_buyer = $this->all_used_fun->get_company_list($cmn_company_id);
         // return response()->json(['invoice_list' => $result, 'byr_buyer_list' => $byr_buyer]);
-        $partner_codes=cmn_connect::select('partner_code')->where('byr_buyer_id', $byr_buyer_id)->where('slr_seller_id', $slr_seller_id)->get();
+        $partner_codes=cmn_connect::
+        select(DB::raw("CONCAT('0',partner_code) AS partner_code"))
+        // select('partner_code')
+        // $partner_codes=cmn_connect::select('partner_code')
+        ->where('byr_buyer_id', $byr_buyer_id)->where('slr_seller_id', $slr_seller_id)->get();
         Log::debug(__METHOD__.':end---');
         return response()->json(['invoice_list' => $result, 'byr_buyer_list' => $byr_buyer,'partner_codes'=>$partner_codes]);
     }

@@ -53,7 +53,7 @@ class data_invoice_scheduler
                 $data_invoice_array['sta_doc_standard']=$shipment_data['sta_doc_standard'];
                 $data_invoice_array['sta_doc_type_version']=$shipment_data['sta_doc_type_version'];
                 $data_invoice_array['sta_doc_instance_identifier']=$shipment_data['sta_doc_instance_identifier'];
-                $data_invoice_array['sta_doc_type']=$shipment_data['sta_doc_type'];
+                $data_invoice_array['sta_doc_type']='Invoice';      //$shipment_data['sta_doc_type'];
                 $data_invoice_array['sta_doc_creation_date_and_time']=$shipment_data['sta_doc_creation_date_and_time'];
                 $data_invoice_array['sta_bus_scope_instance_identifier']=$shipment_data['sta_bus_scope_instance_identifier'];
                 $data_invoice_array['sta_bus_scope_type']=$shipment_data['sta_bus_scope_type'];
