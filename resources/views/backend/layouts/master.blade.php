@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>JCS</title>
-    <link rel="shortcut icon" href="{{Config::get('app.url') . '/public/backend/images/logo/favicon.ico'}}">
+    <link rel="shortcut icon" href="{{Config::get('app.url') . 'public/backend/images/logo/favicon.ico'}}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description"
         content="A high-quality &amp; free Bootstrap admin dashboard template pack that comes with lots of templates and components.">
@@ -40,8 +40,9 @@
         window.Permissions = [];
         window.Roles = [];
     @endauth
+
     </script>
-    <script src="{{Config::get('app.url').'/public/js/app.js'}}"></script>
+    <script src="{{Config::get('app.url').'public/js/app.js'}}"></script>
     <script src="{{Config::get('app.url').'/public/js/jquery-3.5.1.min.js'}}"></script>
     <script src="{{Config::get('app.url').'/public/dashboard/scripts/Chart.min.js'}}"></script>
     <script src="{{Config::get('app.url').'/public/dashboard/scripts/shards-dashboards.1.1.0.min.js'}}"></script>
@@ -49,5 +50,6 @@
     <script src="{{Config::get('app.url').'/public/dashboard/scripts/extras.1.1.0.min.js'}}"></script>
     <script src="{{Config::get('app.url').'/public/js/printThisLibrary/printThis.js'}}"></script>
 </body>
+
 
 </html>

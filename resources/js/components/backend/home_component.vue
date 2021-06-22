@@ -10,15 +10,21 @@
 </template>
 
 <script>
-import page_header_default from './page_header_default'
- import byr_slr_list_with_order from './SLR/byr_slr_list_with_order'
- import blog_view from './blog_view'
+const page_header_default = () =>
+    import ( /* webpackChunkName: "page_header_default" */ './page_header_default')
+const byr_slr_list_with_order = () =>
+    import ( /* webpackChunkName: "byr_slr_list_with_order" */ './SLR/byr_slr_list_with_order')
+const blog_view = () =>
+    import ( /* webpackChunkName: "blog_view" */ './blog_view')
+    // import page_header_default from './page_header_default'
+    // import byr_slr_list_with_order from './SLR/byr_slr_list_with_order'
+    // import blog_view from './blog_view'
     export default {
         components : {
-    'page_header_default': page_header_default,
-    'byr_slr_list_with_order': byr_slr_list_with_order,
-    'blog_view': blog_view,
-  },
+            'page_header_default': page_header_default,
+            'byr_slr_list_with_order': byr_slr_list_with_order,
+            'blog_view': blog_view,
+        },
         data(){
             return {
                 home_title:'',

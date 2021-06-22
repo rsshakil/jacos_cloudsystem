@@ -13,15 +13,21 @@
 </template>
 
 <script>
- import page_header_default from '../page_header_default'
- import byr_slr_list_with_order from './byr_slr_list_with_order'
- import blog_view_for_select_customer from './blog_view_for_select_customer'
+const page_header_default = () =>
+    import ( /* webpackChunkName: "page_header_default" */ '../page_header_default')
+const byr_slr_list_with_order = () =>
+    import ( /* webpackChunkName: "byr_slr_list_with_order" */ './byr_slr_list_with_order')
+const blog_view_for_select_customer = () =>
+    import ( /* webpackChunkName: "blog_view_for_select_customer" */ './blog_view_for_select_customer')
+//  import page_header_default from '../page_header_default'
+//  import byr_slr_list_with_order from './byr_slr_list_with_order'
+//  import blog_view_for_select_customer from './blog_view_for_select_customer'
     export default {
         components : {
-    'page_header_default': page_header_default,
-    'byr_slr_list_with_order': byr_slr_list_with_order,
-    'blog_view_for_select_customer': blog_view_for_select_customer,
-  },
+            'page_header_default': page_header_default,
+            'byr_slr_list_with_order': byr_slr_list_with_order,
+            'blog_view_for_select_customer': blog_view_for_select_customer,
+        },
         data(){
             return {
                 home_title:'',

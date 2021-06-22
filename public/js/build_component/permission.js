@@ -1,4 +1,4 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[5],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["permission"],{
 
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/backend/ADM/permission_component.vue?vue&type=script&lang=js&":
 /*!*******************************************************************************************************************************************************************************************!*\
@@ -187,7 +187,13 @@ __webpack_require__.r(__webpack_exports__);
           });
         }
       });
-    }
+    } //Pagination
+    // getResults(page = 1) {
+    //   axios.get("api/role?page=" + page).then(response => {
+    //     this.tabledata = response.data;
+    //   });
+    // }
+
   },
   created: function created() {
     //LoadTableData

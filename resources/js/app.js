@@ -115,6 +115,8 @@ window.Form = Form;
 Vue.component(HasError.name, HasError);
 Vue.component(AlertError.name, AlertError);
 // define a mixin object for global function
+// const myMixin = () =>
+//     import ( /* webpackChunkName: "myMixin" */ './myMixin.js')
 import myMixin from "./myMixin";
 Vue.mixin(myMixin);
 
@@ -184,7 +186,9 @@ var router = new VueRouter({
     linkExactActiveClass: "active", // active class for *exact* links.
     mode: "history",
     base: "/jcs",
+    // base: `${process.env.APP_ENV}` == 'local' ? "/jcs" : '/',
 });
+// console.log(app_url);
 router.onReady(() => {
     if (Globals.user_info_id == '' && router.currentRoute.path != "/home") {
         router.push("home")

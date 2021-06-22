@@ -678,6 +678,8 @@
   </div>
 </template>
 <script>
+// const AdvancedLaravelVuePaginate = () =>
+//     import ( /* webpackChunkName: "AdvancedLaravelVuePaginate" */ 'advanced-laravel-vue-paginate')
 import AdvancedLaravelVuePaginate from "advanced-laravel-vue-paginate";
 import "advanced-laravel-vue-paginate/dist/advanced-laravel-vue-paginate.css";
 

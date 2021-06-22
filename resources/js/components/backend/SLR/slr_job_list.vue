@@ -105,12 +105,8 @@
   </div>
 </template>
 <script>
-// import tabList from "../CMN/tabList";
 export default {
   name:'app',
-components:{
-// tabList,
-},
   data() {
     return {
         slr_job_lists:{},

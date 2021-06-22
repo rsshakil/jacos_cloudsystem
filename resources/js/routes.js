@@ -1,20 +1,33 @@
-import Home from './components/backend/home_component.vue'
-import default_home_page_with_blog from './components/backend/default_home_page_with_blog.vue'
-// admin
-import Role from './components/backend/ADM/role_component.vue'
-import permission from './components/backend/ADM/permission_component.vue'
-import assign_role_model from './components/backend/ADM/assign_role_model.vue'
-import assign_permission_model from './components/backend/ADM/assign_permission_model.vue'
-import users from './components/backend/ADM/users.vue'
-import user_update from './components/backend/ADM/user_update.vue'
-import password_reset from './components/backend/ADM/password_reset.vue'
+// import Home from './components/backend/home_component.vue'
+const Home = () =>
+    import ( /* webpackChunkName: "home" */ './components/backend/home_component.vue')
+    // admin
+const Role = () =>
+    import ( /* webpackChunkName: "role" */ './components/backend/ADM/role_component.vue')
+const permission = () =>
+    import ( /* webpackChunkName: "permission" */ './components/backend/ADM/permission_component.vue')
+const assign_role_model = () =>
+    import ( /* webpackChunkName: "assign_role_model" */ './components/backend/ADM/assign_role_model.vue')
+const assign_permission_model = () =>
+    import ( /* webpackChunkName: "assign_permission_model" */ './components/backend/ADM/assign_permission_model.vue')
+const users = () =>
+    import ( /* webpackChunkName: "users" */ './components/backend/ADM/users.vue')
+const user_update = () =>
+    import ( /* webpackChunkName: "user_update" */ './components/backend/ADM/user_update.vue')
+const password_reset = () =>
+    import ( /* webpackChunkName: "password_reset" */ './components/backend/ADM/password_reset.vue')
 
 // data/order
-import order_list from './components/backend/DATA/ORDER/order_list.vue'
-import order_vouchers from './components/backend/DATA/ORDER/order_vouchers.vue'
-import item_search from './components/backend/DATA/ORDER/item_search.vue'
-import item_search_detail from './components/backend/DATA/ORDER/item_search_detail.vue'
-import order_items from './components/backend/DATA/ORDER/order_items.vue'
+const order_list = () =>
+    import ( /* webpackChunkName: "order_list" */ './components/backend/DATA/ORDER/order_list.vue')
+const order_vouchers = () =>
+    import ( /* webpackChunkName: "order_vouchers" */ './components/backend/DATA/ORDER/order_vouchers.vue')
+const item_search = () =>
+    import ( /* webpackChunkName: "item_search" */ './components/backend/DATA/ORDER/item_search.vue')
+const item_search_detail = () =>
+    import ( /* webpackChunkName: "item_search_detail" */ './components/backend/DATA/ORDER/item_search_detail.vue')
+const order_items = () =>
+    import ( /* webpackChunkName: "order_items" */ './components/backend/DATA/ORDER/order_items.vue')
 
 
 // data/shipment
@@ -23,71 +36,112 @@ import order_items from './components/backend/DATA/ORDER/order_items.vue'
 // data/payment
 
 // common
+const order_details_canvas = () =>
+    import ( /* webpackChunkName: "order_details_canvas" */ './components/backend/order_details_canvas.vue')
+    // import default_parent from './components/backend/default_parent.vue'
+const voucher_setting = () =>
+    import ( /* webpackChunkName: "voucher_setting" */ './components/backend/canvas.vue')
+const byr_management = () =>
+    import ( /* webpackChunkName: "byr_management" */ './components/backend/SLR/byr_management.vue')
+    // import byr_management_edit from './components/backend/SLR/byr_management_edit.vue'
+const cmn_company_user_list = () =>
+    import ( /* webpackChunkName: "cmn_company_user_list" */ './components/backend/CMN/cmn_company_user_list.vue')
+const cmn_company_partner_list = () =>
+    import ( /* webpackChunkName: "cmn_company_partner_list" */ './components/backend/CMN/cmn_company_partner_list.vue')
+const scenario_management = () =>
+    import ( /* webpackChunkName: "scenario_management" */ './components/backend/JACOS_MANAGEMENT/scenario_management.vue')
+const job_management = () =>
+    import ( /* webpackChunkName: "job_management" */ './components/backend/JACOS_MANAGEMENT/job_management.vue')
+const slr_management = () =>
+    import ( /* webpackChunkName: "slr_management" */ './components/backend/SLR/slr_management.vue')
+const slr_job_list = () =>
+    import ( /* webpackChunkName: "slr_job_list" */ './components/backend/SLR/slr_job_list.vue')
+    // import company_seller_user_list from './components/backend/CMN/cmn_company_seller_user_list.vue'
+const item_master = () =>
+    import ( /* webpackChunkName: "item_master" */ './components/backend/BYR/byr_item_master.vue')
+const item_category = () =>
+    import ( /* webpackChunkName: "item_category" */ './components/backend/BYR/item_category.vue')
+const receive_list = () =>
+    import ( /* webpackChunkName: "receive_list" */ './components/backend/DATA/RECEIVE/receive_list.vue')
+const receive_detail = () =>
+    import ( /* webpackChunkName: "receive_detail" */ './components/backend/DATA/RECEIVE/receive_detail.vue')
+const receive_item_detail = () =>
+    import ( /* webpackChunkName: "receive_item_detail" */ './components/backend/DATA/RECEIVE/receive_item_detail.vue')
+const data_return_list = () =>
+    import ( /* webpackChunkName: "data_return_list" */ './components/backend/DATA/RETURN/data_return_list.vue')
+const return_detail = () =>
+    import ( /* webpackChunkName: "return_detail" */ './components/backend/DATA/RETURN/return_detail.vue')
+const return_item_detail = () =>
+    import ( /* webpackChunkName: "return_item_detail" */ './components/backend/DATA/RETURN/return_item_detail.vue')
+const order_corrected_receive = () =>
+    import ( /* webpackChunkName: "order_corrected_receive" */ './components/backend/DATA/CRTRCV/order_corrected_receive.vue')
+const return_item_list = () =>
+    import ( /* webpackChunkName: "return_item_list" */ './components/backend/DATA/RETURN/return_item_list.vue')
+const payment_list = () =>
+    import ( /* webpackChunkName: "payment_list" */ './components/backend/DATA/PAYMENT/payment_list.vue')
+const payment_detail = () =>
+    import ( /* webpackChunkName: "payment_detail" */ './components/backend/DATA/PAYMENT/payment_detail.vue')
+const payment_item_detail = () =>
+    import ( /* webpackChunkName: "payment_item_detail" */ './components/backend/DATA/PAYMENT/payment_item_detail.vue')
+const invoice_list = () =>
+    import ( /* webpackChunkName: "invoice_list" */ './components/backend/DATA/INVOICE/invoice_list.vue')
+const invoice_details = () =>
+    import ( /* webpackChunkName: "invoice_details" */ './components/backend/DATA/INVOICE/invoice_details.vue')
+const voucher_detail = () =>
+    import ( /* webpackChunkName: "voucher_detail" */ './components/backend/voucher_detail.vue')
+const pdf_platform_setting = () =>
+    import ( /* webpackChunkName: "pdf_platform_setting" */ './components/backend/PDF_PLATFORM/pdf_platform_setting.vue')
+const pdf_platform_view = () =>
+    import ( /* webpackChunkName: "pdf_platform_view" */ './components/backend/PDF_PLATFORM/pdf_platform_view.vue')
+const blog = () =>
+    import ( /* webpackChunkName: "blog" */ './components/backend/CMN/cmn_blog_list.vue')
+const selected_buyer = () =>
+    import ( /* webpackChunkName: "selected_buyer" */ './components/backend/SLR/selected_byr_page.vue')
+const management_setting = () =>
+    import ( /* webpackChunkName: "management_setting" */ './components/backend/CONFIG/management_setting.vue')
 
-import default_parent from './components/backend/default_parent.vue'
-import order_details_canvas from './components/backend/order_details_canvas.vue'
-import voucher_setting from './components/backend/canvas.vue'
-import byr_management from './components/backend/SLR/byr_management.vue'
-import byr_management_edit from './components/backend/SLR/byr_management_edit.vue'
-import cmn_company_user_list from './components/backend/CMN/cmn_company_user_list.vue'
-import cmn_company_partner_list from './components/backend/CMN/cmn_company_partner_list.vue'
-import scenario_management from './components/backend/JACOS_MANAGEMENT/scenario_management.vue'
-import job_management from './components/backend/JACOS_MANAGEMENT/job_management.vue'
-import slr_management from './components/backend/SLR/slr_management.vue'
-import slr_job_list from './components/backend/SLR/slr_job_list.vue'
-// import company_seller_user_list from './components/backend/CMN/cmn_company_seller_user_list.vue'
-import item_master from './components/backend/BYR/byr_item_master.vue'
-import item_category from './components/backend/BYR/item_category.vue'
-import receive_list from './components/backend/DATA/RECEIVE/receive_list.vue'
-import receive_detail from './components/backend/DATA/RECEIVE/receive_detail.vue'
-import receive_item_detail from './components/backend/DATA/RECEIVE/receive_item_detail.vue'
-
-import slr_receive_list from './components/backend/BYR/DATA/RECEIVE/slr_receive_list.vue'
-import slr_receive_detail from './components/backend/BYR/DATA/RECEIVE/slr_receive_detail.vue'
-import slr_receive_item_detail from './components/backend/BYR/DATA/RECEIVE/slr_receive_item_detail.vue'
-
-import data_return_list from './components/backend/DATA/RETURN/data_return_list.vue'
-import return_detail from './components/backend/DATA/RETURN/return_detail.vue'
-import return_item_detail from './components/backend/DATA/RETURN/return_item_detail.vue'
-
-
-import slr_data_return_list from './components/backend/BYR/DATA/RETURN/slr_data_return_list.vue'
-import slr_return_detail from './components/backend/BYR/DATA/RETURN/slr_return_detail.vue'
-import slr_return_item_detail from './components/backend/BYR/DATA/RETURN/slr_return_item_detail.vue'
-
-
-import order_corrected_receive from './components/backend/DATA/CRTRCV/order_corrected_receive.vue'
-import return_item_list from './components/backend/DATA/RETURN/return_item_list.vue'
-
-import payment_list from './components/backend/DATA/PAYMENT/payment_list.vue'
-import payment_detail from './components/backend/DATA/PAYMENT/payment_detail.vue'
-import payment_item_detail from './components/backend/DATA/PAYMENT/payment_item_detail.vue'
-
-
-import slr_payment_list from './components/backend/BYR/DATA/PAYMENT/slr_payment_list.vue'
-import slr_payment_detail from './components/backend/BYR/DATA/PAYMENT/slr_payment_detail.vue'
-import slr_payment_item_detail from './components/backend/BYR/DATA/PAYMENT/slr_payment_item_detail.vue'
-
-import invoice_list from './components/backend/DATA/INVOICE/invoice_list.vue'
-import invoice_details from './components/backend/DATA/INVOICE/invoice_details.vue'
-
-import slr_invoice_list from './components/backend/BYR/DATA/INVOICE/slr_invoice_list.vue'
-import slr_invoice_details from './components/backend/BYR/DATA/INVOICE/slr_invoice_details.vue'
-
-import voucher_detail from './components/backend/voucher_detail.vue'
-import pdf_platform_setting from './components/backend/PDF_PLATFORM/pdf_platform_setting.vue'
-import pdf_platform_view from './components/backend/PDF_PLATFORM/pdf_platform_view.vue'
-import blog from './components/backend/CMN/cmn_blog_list.vue'
-import selected_buyer from './components/backend/SLR/selected_byr_page.vue'
-import management_setting from './components/backend/CONFIG/management_setting.vue'
 // Byr Menu Pages
-import slr_order_list from './components/backend/BYR/DATA/ORDER/slr_order_list.vue'
-import slr_order_list_details from './components/backend/BYR/DATA/ORDER/slr_order_list_details.vue'
-import slr_order_list_items from './components/backend/BYR/DATA/ORDER/slr_order_list_items.vue'
-import slr_item_search from './components/backend/BYR/DATA/ORDER/slr_item_search.vue'
-import slr_item_search_detail from './components/backend/BYR/DATA/ORDER/slr_item_search_detail.vue'
+const slr_order_list = () =>
+    import ( /* webpackChunkName: "slr_order_list" */ './components/backend/BYR/DATA/ORDER/slr_order_list.vue')
+const slr_order_list_details = () =>
+    import ( /* webpackChunkName: "slr_order_list_details" */ './components/backend/BYR/DATA/ORDER/slr_order_list_details.vue')
+const slr_order_list_items = () =>
+    import ( /* webpackChunkName: "slr_order_list_items" */ './components/backend/BYR/DATA/ORDER/slr_order_list_items.vue')
+const slr_item_search = () =>
+    import ( /* webpackChunkName: "slr_item_search" */ './components/backend/BYR/DATA/ORDER/slr_item_search.vue')
+const slr_item_search_detail = () =>
+    import ( /* webpackChunkName: "slr_item_search_detail" */ './components/backend/BYR/DATA/ORDER/slr_item_search_detail.vue')
 
-import { homedir } from 'os'
+// Slr Receive
+const slr_receive_list = () =>
+    import ( /* webpackChunkName: "slr_receive_list" */ './components/backend/BYR/DATA/RECEIVE/slr_receive_list.vue')
+const slr_receive_detail = () =>
+    import ( /* webpackChunkName: "slr_receive_detail" */ './components/backend/BYR/DATA/RECEIVE/slr_receive_detail.vue')
+const slr_receive_item_detail = () =>
+    import ( /* webpackChunkName: "slr_receive_item_detail" */ './components/backend/BYR/DATA/RECEIVE/slr_receive_item_detail.vue')
+
+// Slr return
+const slr_data_return_list = () =>
+    import ( /* webpackChunkName: "slr_data_return_list" */ './components/backend/BYR/DATA/RETURN/slr_data_return_list.vue')
+const slr_return_detail = () =>
+    import ( /* webpackChunkName: "slr_return_detail" */ './components/backend/BYR/DATA/RETURN/slr_return_detail.vue')
+const slr_return_item_detail = () =>
+    import ( /* webpackChunkName: "slr_return_item_detail" */ './components/backend/BYR/DATA/RETURN/slr_return_item_detail.vue')
+
+// Slr Payment
+const slr_payment_list = () =>
+    import ( /* webpackChunkName: "slr_payment_list" */ './components/backend/BYR/DATA/PAYMENT/slr_payment_list.vue')
+const slr_payment_detail = () =>
+    import ( /* webpackChunkName: "slr_payment_detail" */ './components/backend/BYR/DATA/PAYMENT/slr_payment_detail.vue')
+const slr_payment_item_detail = () =>
+    import ( /* webpackChunkName: "slr_payment_item_detail" */ './components/backend/BYR/DATA/PAYMENT/slr_payment_item_detail.vue')
+
+// Slr Invoice
+const slr_invoice_list = () =>
+    import ( /* webpackChunkName: "slr_invoice_list" */ './components/backend/BYR/DATA/INVOICE/slr_invoice_list.vue')
+const slr_invoice_details = () =>
+    import ( /* webpackChunkName: "slr_invoice_details" */ './components/backend/BYR/DATA/INVOICE/slr_invoice_details.vue')
+
 // import login_body from './components/login/login_body.vue'
 
 export const routes = [
@@ -99,16 +153,6 @@ export const routes = [
         meta: {
             breadcrumb: {
                 label: 'HOME'
-            }
-        },
-    },
-    {
-        path: '/blog',
-        component: blog,
-        name: 'blog',
-        meta: {
-            breadcrumb: {
-                label: 'お知らせ'
             }
         },
     },
@@ -182,6 +226,16 @@ export const routes = [
                 label: 'パスワードのリセット',
                 parent: 'users'
             },
+        },
+    },
+    {
+        path: '/blog',
+        component: blog,
+        name: 'blog',
+        meta: {
+            breadcrumb: {
+                label: 'お知らせ'
+            }
         },
     },
     {
