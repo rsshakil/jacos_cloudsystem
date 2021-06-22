@@ -9,8 +9,10 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var advanced_laravel_vue_paginate_dist_advanced_laravel_vue_paginate_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! advanced-laravel-vue-paginate/dist/advanced-laravel-vue-paginate.css */ "./node_modules/advanced-laravel-vue-paginate/dist/advanced-laravel-vue-paginate.css");
-/* harmony import */ var advanced_laravel_vue_paginate_dist_advanced_laravel_vue_paginate_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(advanced_laravel_vue_paginate_dist_advanced_laravel_vue_paginate_css__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var advanced_laravel_vue_paginate__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! advanced-laravel-vue-paginate */ "./node_modules/advanced-laravel-vue-paginate/dist/advanced-laravel-vue-paginate.common.js");
+/* harmony import */ var advanced_laravel_vue_paginate__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(advanced_laravel_vue_paginate__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var advanced_laravel_vue_paginate_dist_advanced_laravel_vue_paginate_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! advanced-laravel-vue-paginate/dist/advanced-laravel-vue-paginate.css */ "./node_modules/advanced-laravel-vue-paginate/dist/advanced-laravel-vue-paginate.css");
+/* harmony import */ var advanced_laravel_vue_paginate_dist_advanced_laravel_vue_paginate_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(advanced_laravel_vue_paginate_dist_advanced_laravel_vue_paginate_css__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -690,15 +692,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-var AdvancedLaravelVuePaginate = function AdvancedLaravelVuePaginate() {
-  return Promise.resolve(/*! import() */).then(__webpack_require__.t.bind(null, /*! advanced-laravel-vue-paginate */ "./node_modules/advanced-laravel-vue-paginate/dist/advanced-laravel-vue-paginate.common.js", 7));
-}; // import AdvancedLaravelVuePaginate from "advanced-laravel-vue-paginate";
-
+// const AdvancedLaravelVuePaginate = () =>
+//     import ( /* webpackChunkName: "AdvancedLaravelVuePaginate" */ 'advanced-laravel-vue-paginate')
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    AdvancedLaravelVuePaginate: AdvancedLaravelVuePaginate
+    AdvancedLaravelVuePaginate: advanced_laravel_vue_paginate__WEBPACK_IMPORTED_MODULE_0___default.a
   },
   // props: ["param_data"],
   data: function data() {

@@ -10,9 +10,9 @@
 </template>
 
 <script>
-// const blog_view = () =>
-//     import ( /* webpackChunkName: "blog_view" */ './blog_view')
-import blog_view from './blog_view'
+const blog_view = () =>
+    import ( /* webpackChunkName: "blog_view" */ './blog_view')
+// import blog_view from './blog_view'
     export default {
         components : {
             'blog_view': blog_view

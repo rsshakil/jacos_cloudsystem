@@ -8,7 +8,9 @@
 <script>
 // './bms_byr_order_detail.vue'
 
-import default_order_vouchers from './default_order_vouchers.vue'
+const default_order_vouchers = () =>
+    import ( /* webpackChunkName: "default_order_vouchers" */ './default_order_vouchers.vue')
+// import default_order_vouchers from './default_order_vouchers.vue'
 // import bms_byr_order_detail from '../BMS/bms_byr_order_detail'
 export default {
   components: {

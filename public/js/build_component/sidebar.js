@@ -101,7 +101,15 @@ var others_menu = function others_menu() {
 
 var user_menu = function user_menu() {
   return __webpack_require__.e(/*! import() | user_menu */ "user_menu").then(__webpack_require__.bind(null, /*! ./MENU/user_menu */ "./resources/js/components/backend/DFLT/MENU/user_menu.vue"));
-};
+}; // import adm_menu from './MENU/adm_menu'
+// import common_menu from './MENU/common_menu'
+// import jacos_menu from './MENU/jacos_menu'
+// import byr_side_bar_menu from './MENU/byr_side_bar_menu'
+// import byr_menu from './MENU/byr_menu'
+// import slr_menu from './MENU/slr_menu'
+// import others_menu from './MENU/others_menu'
+// import user_menu from './MENU/user_menu'
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "sidebar",

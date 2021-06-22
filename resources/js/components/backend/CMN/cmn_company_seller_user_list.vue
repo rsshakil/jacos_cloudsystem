@@ -107,9 +107,9 @@
   </div>
 </template>
 <script>
-// const tabList = () =>
-//     import ( /* webpackChunkName: "tabList" */ '../tabList_seller')
-import tabList from '../tabList_seller'
+const tabList = () =>
+    import ( /* webpackChunkName: "tabList" */ '../tabList_seller')
+// import tabList from '../tabList_seller'
 export default {
   name:'app',
 components:{

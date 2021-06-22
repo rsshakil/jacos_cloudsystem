@@ -61,30 +61,30 @@
 </template>
 
 <script>
-// const adm_menu = () =>
-//     import ( /* webpackChunkName: "adm_menu" */ './MENU/adm_menu')
-// const common_menu = () =>
-//     import ( /* webpackChunkName: "common_menu" */ './MENU/common_menu')
-// const jacos_menu = () =>
-//     import ( /* webpackChunkName: "jacos_menu" */ './MENU/jacos_menu')
-// const byr_side_bar_menu = () =>
-//     import ( /* webpackChunkName: "byr_side_bar_menu" */ './MENU/byr_side_bar_menu')
-// const byr_menu = () =>
-//     import ( /* webpackChunkName: "byr_menu" */ './MENU/byr_menu')
-// const slr_menu = () =>
-//     import ( /* webpackChunkName: "slr_menu" */ './MENU/slr_menu')
-// const others_menu = () =>
-//     import ( /* webpackChunkName: "others_menu" */ './MENU/others_menu')
-// const user_menu = () =>
-//     import ( /* webpackChunkName: "user_menu" */ './MENU/user_menu')
-import adm_menu from './MENU/adm_menu'
-import common_menu from './MENU/common_menu'
-import jacos_menu from './MENU/jacos_menu'
-import byr_side_bar_menu from './MENU/byr_side_bar_menu'
-import byr_menu from './MENU/byr_menu'
-import slr_menu from './MENU/slr_menu'
-import others_menu from './MENU/others_menu'
-import user_menu from './MENU/user_menu'
+const adm_menu = () =>
+    import ( /* webpackChunkName: "adm_menu" */ './MENU/adm_menu')
+const common_menu = () =>
+    import ( /* webpackChunkName: "common_menu" */ './MENU/common_menu')
+const jacos_menu = () =>
+    import ( /* webpackChunkName: "jacos_menu" */ './MENU/jacos_menu')
+const byr_side_bar_menu = () =>
+    import ( /* webpackChunkName: "byr_side_bar_menu" */ './MENU/byr_side_bar_menu')
+const byr_menu = () =>
+    import ( /* webpackChunkName: "byr_menu" */ './MENU/byr_menu')
+const slr_menu = () =>
+    import ( /* webpackChunkName: "slr_menu" */ './MENU/slr_menu')
+const others_menu = () =>
+    import ( /* webpackChunkName: "others_menu" */ './MENU/others_menu')
+const user_menu = () =>
+    import ( /* webpackChunkName: "user_menu" */ './MENU/user_menu')
+// import adm_menu from './MENU/adm_menu'
+// import common_menu from './MENU/common_menu'
+// import jacos_menu from './MENU/jacos_menu'
+// import byr_side_bar_menu from './MENU/byr_side_bar_menu'
+// import byr_menu from './MENU/byr_menu'
+// import slr_menu from './MENU/slr_menu'
+// import others_menu from './MENU/others_menu'
+// import user_menu from './MENU/user_menu'
 export default {
   name: "sidebar",
   props: ["app"],
