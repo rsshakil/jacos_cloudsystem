@@ -3,7 +3,7 @@
   <!-- Hi -->
   <!-- {{app.user?app.user.name:'Account'}} -->
   <main class="main-content p-0">
-    <div class="main-navbar sticky-top bg_custom_color">
+    <div class="main-navbar sticky-top bg_custom_color" :style="{'background-color':customBg}">
       <!-- Main Navbar -->
       <nav class="navbar align-items-stretch navbar-light flex-md-nowrap p-0">
         <div class="row" style="margin-right: 0; margin-left: 0; width: 100%">
@@ -257,6 +257,7 @@ export default {
       userType:Globals.global_user_type,
       company_name: null,
       slr_order_list:null,
+      customBg:'#538ED3',
       hover: false,
       userCompanyInfo:{},
       selected_customer_list: "未選択",
@@ -334,7 +335,14 @@ export default {
   },
   created() {
     this.get_user_company_info();
-    //console.log(Globals.global_user_type);
+    console.log(Globals.global_user_type);
+    if(Globals.global_user_type=='slr'){ 
+      this.customBg='#538ED3';
+    }else if(Globals.global_user_type=='others'){
+      this.customBg='#f73f3f';
+    }else{
+       this.customBg='#53c1d3';
+    }
     this.get_logged_user_company();
     Fire.$on("getLoggedUserInfo", () => {
       this.get_logged_user_company();
