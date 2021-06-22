@@ -396,6 +396,7 @@ class OrderController extends Controller
         $delivery_service_code = $order_info['delivery_service_code'];
         $major_category = $order_info['major_category'];
         $temperature_code = $order_info['temperature_code'];
+        $sel_code = $order_info['sel_code'];
         $temperature_code = $temperature_code == null ? '' : $temperature_code;
         // 'data_order_id' => '1',
         // 'delivery_date' => '2021-04-22',
@@ -434,8 +435,8 @@ class OrderController extends Controller
             ->where('dsv.mes_lis_shi_tra_dat_delivery_date', $delivery_date)
             ->where('dsv.mes_lis_shi_tra_goo_major_category', $major_category)
             ->where('dsv.mes_lis_shi_log_del_delivery_service_code', $delivery_service_code)
-            ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $temperature_code);
-
+            ->where('dsv.mes_lis_shi_tra_ins_temperature_code', $temperature_code)
+            ->where('dsv.mes_lis_shi_par_sel_code', $sel_code);
 
         $result = $result->orderBy('dsv.'.$sort_by, $sort_type);
         $result = $result->groupBy('dsv.mes_lis_shi_tra_trade_number')->get();
