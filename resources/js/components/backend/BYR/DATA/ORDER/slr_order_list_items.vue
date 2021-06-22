@@ -688,7 +688,7 @@ export default {
     return {
       breadcumbtitle: "受注伝票明細",
       parent: {
-        name: "order_list_details",
+        name: "slr_order_list_details",
         query: {},
       },
       today: new Date().toISOString().slice(0, 10),
@@ -956,7 +956,7 @@ export default {
     Fire.$on("LoadByrorderItemDetail", () => {
       this.get_all_byr_order_item_detail();
     });
-    // this.parent.query = this.$session.get("order_param_data");
+    this.parent.query = this.$session.get("order_param_data");
     Fire.$emit("loadPageTitle", "受注伝票明細");
     this.get_prev_next_list();
   },
