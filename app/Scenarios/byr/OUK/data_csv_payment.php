@@ -25,12 +25,12 @@ class data_csv_payment extends ScenarioBase
 
     public function exec($request, $sc)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
 
         // file save
         $file_info = $this->upfileSave($request, config('const.PAYMENT_DATA_PATH') . date('Y-m'));
         $cmn_connect_id = $file_info['cmn_connect_id'];
-                
+
         // csv
         $dataArr = $this->all_functions->csvReader($file_info['save_path'], 1);
 
@@ -38,7 +38,7 @@ class data_csv_payment extends ScenarioBase
         $this->checkCsvData($dataArr, 71);
 
         $payment_flg = true;
-        
+
         $pay_key = '';
         $cur_date=date('y-m-d h:i:s');
         DB::beginTransaction();

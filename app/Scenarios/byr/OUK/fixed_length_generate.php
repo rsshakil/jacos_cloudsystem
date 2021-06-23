@@ -7,6 +7,7 @@ use App\Scenarios\ScenarioBase;
 use App\Scenarios\Common;
 use App\Http\Controllers\API\AllUsedFunction;
 use App\Http\Controllers\API\DATA\Data_Controller;
+use Illuminate\Support\Facades\Log;
 
 class fixed_length_generate extends ScenarioBase
 {
@@ -21,7 +22,7 @@ class fixed_length_generate extends ScenarioBase
 
     public function exec($request, $sc)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
 
         $order_data= Data_Controller::get_shipment_data($request)->get();
 
@@ -119,7 +120,7 @@ class fixed_length_generate extends ScenarioBase
         $txt_file_name = $request->file_name?$request->file_name:(date('y-m-d').'_Text_File_'.time().".txt");
         $string_data=$this->all_functions->convert_from_utf8_to_sjis__recursively($string_data);
 
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         if ($string_data!=null) {
             \File::put(storage_path(config('const.JCA_FILE_PATH').'/'.$txt_file_name), $string_data);
             return [

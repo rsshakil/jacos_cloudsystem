@@ -28,7 +28,7 @@ class data_csv_receive extends ScenarioBase
 
     public function exec($request, $sc)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
 
         // file save
         $file_info = $this->upfileSave($request, config('const.RECEIVE_DATA_PATH') . date('Y-m'));
@@ -288,7 +288,7 @@ class data_csv_receive extends ScenarioBase
             throw $e;
         }
 
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
 
         return ['message' => '', 'status' => $this->success,'cmn_connect_id' => $cmn_connect_id,'data_id' => $data_receive_id];
     }
