@@ -9,8 +9,10 @@ use Illuminate\Http\Request;
 use App\Models\CMN\cmn_job;
 use App\Models\BYR\byr_buyer;
 use App\Models\SLR\slr_seller;
-use DB;
-use Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+
 
 class CmnJobController extends Controller
 {
@@ -42,15 +44,17 @@ class CmnJobController extends Controller
     {
         // return "OK";
         // return $request->all();
-        \Log::debug('scenario exec start---------------');
+        Log::debug('scenario exec start---------------');
         // user info check
-        \Log::debug($request);
-        $user = DB::table('adm_users')->where('email', $request->email)->first();
-        if (!$user) {
-            return ['status'=>1, 'message' => 'Authentication faild!'];
-        }
-        if (!Hash::check($request->password, $user->password)) {
-            return ['status'=>1, 'message' => 'Authentication faild!'];
+        // \Log::debug($request);
+        if (!Auth::user()) {
+            $user = DB::table('adm_users')->where('email', $request->email)->first();
+            if (!$user) {
+                return ['status'=>1, 'message' => 'Authentication faild!'];
+            }
+            if (!Hash::check($request->password, $user->password)) {
+                return ['status'=>1, 'message' => 'Authentication faild!'];
+            }
         }
 
         $request_all=$request->all();
@@ -76,7 +80,7 @@ class CmnJobController extends Controller
         }
         // scenario call
         if (!file_exists(app_path().'/'.$sc->file_path.'.php')) {
-            \Log::error('Scenario file is not exist!:'.$sc->file_path);
+            Log::error('Scenario file is not exist!:'.$sc->file_path);
             return ['status'=>'1','message'=>'Scenario file is not exist!'.$sc->file_path];
         }
         // ファイル読み込み
@@ -89,20 +93,20 @@ class CmnJobController extends Controller
         $sc_obj = new $customClassPath;
         // シナリオ実行
         if (!method_exists($sc_obj, 'exec')) {
-            \Log::error('scenario exec error');
+            Log::error('scenario exec error');
             return ['status'=>'1','message'=>'Scenario exec function is not exist!'];
         }
         $ret = $sc_obj->exec($request, $sc);
         if ($ret !== 0) {
             // error
-            \Log::debug('scenario exec error');
+            Log::debug('scenario exec error');
         } else {
             // success
-            \Log::debug('scenario exec success');
+            Log::debug('scenario exec success');
         }
 
 
-        \Log::debug('scenario exec end  ---------------');
+        Log::debug('scenario exec end  ---------------');
         return $ret;
     }
 

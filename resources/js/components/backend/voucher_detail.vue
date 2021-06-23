@@ -150,21 +150,19 @@ export default {
     },
     check_byr_order_api(){
        let formData = new FormData();
-    formData.append("up_file", this.file);
-    formData.append("email", 'user@jacos.co.jp');
-    formData.append("password", 'Qe75ymSr');
-        axios({
-    method: 'POST',
-    url: this.BASE_URL + "api/job_exec/1",
-    data: formData,
-    headers: {'Content-Type': 'multipart/form-data' }
-    }).then(({data}) => {
-        // console.log(response);
-       Fire.$emit('LoadByrorder');
-    })
-    .catch(function (response) {
+        formData.append("up_file", this.file);
+            axios({
+        method: 'POST',
+        url: this.BASE_URL + "api/job_exec/1",
+        data: formData,
+        headers: {'Content-Type': 'multipart/form-data' }
+        }).then(({data}) => {
+            // console.log(response);
+        Fire.$emit('LoadByrorder');
+        })
+        .catch(function (response) {
 
-    });
+        });
     },
     onChangeFileUpload(){
         this.file = this.$refs.file.files[0];

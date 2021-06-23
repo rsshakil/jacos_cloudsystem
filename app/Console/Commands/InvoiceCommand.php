@@ -87,6 +87,7 @@ class InvoiceCommand extends Command
         $start_date=null;
         $end_date=null;
         // \Log::info($arg);
+        Log::info($closing_date_array);
         foreach ($closing_date_array as $key => $closing_day) {
             // ======Menual=====
             if ($arg==1) {
@@ -181,12 +182,9 @@ class InvoiceCommand extends Command
             // $request=$this->request;
             $request->request->add(['scenario_id' => 15]);
             $request->request->add(['cmn_connect_id' => $cmn_connect_id]);
-            $request->request->add(['email' => 'user@jacos.co.jp']);
-            $request->request->add(['password' => 'Qe75ymSr']);
             $request->request->add(['start_date' => $start_date]);
             $request->request->add(['end_date' => $end_date]);
             $aaa=$this->invoice->invoiceScheduler($request);
-            // $this->invoice->invoiceScheduler($start_date,$end_date);
             if ($arg!=1) {
                 $this->comment("Done");
             }

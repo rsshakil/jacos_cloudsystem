@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\API\CMN;
 
-use Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\API\CMN\CmnScenarioHistoryController;
 use App\Exceptions\JcsException;
-
 use Illuminate\Http\Request;
-use DB;
 use App\Models\CMN\cmn_scenario;
 use App\Models\CMN\cmn_scenario_history;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class CmnScenarioController extends Controller
 {
@@ -30,9 +30,11 @@ class CmnScenarioController extends Controller
      */
     public function exec(Request $request)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
 
         // ユーザチェック
+        // if ($request->scenario_id!=6 || $request->scenario_id!=15 || $request->scenario_id!=17) {
+        if ($request->scenario_id!=15) { //scenario_id=15 is for invoice command
         if (!Auth::user()) {
             $this->validate($request, ['email' => 'required|email', 'password' => 'required']);
             $user = ['email' => $request->get('email'),'password'=>$request->get('password')];
@@ -41,10 +43,11 @@ class CmnScenarioController extends Controller
                 return $this->sc_his->history_create($this->error, "Authentication faild");
             }
             // ログイン成功
-            \Log::debug(Auth::user());
+            Log::debug(Auth::user());
         } else {
-            \Log::Info(Auth::user());
+            Log::Info(Auth::user());
         }
+    }
 
         // Permissionチェック
         // TODO
@@ -101,18 +104,18 @@ class CmnScenarioController extends Controller
             // hisotry
             $this->sc_his->history_create($this->success, $ret['message']);
         } catch (\Exception $th) {
-            \Log::error('$th->getCode():'.$th->getCode());
+            Log::error('$th->getCode():'.$th->getCode());
             // JCS_EXCEPTION判定
             if ($th->getCode() != config('const.JCS_EXCEPTION')) {
                 // JCS_EXCEPTION以外のPHP Exceptionはトレースログ出力
-                \Log::error($th);
+                Log::error($th);
             }
 
             // 異常終了
             $this->sc_his->history_create($this->error, $th->getMessage());
             return ['status'=>$this->error, 'message'=>$th->getMessage()];
         } finally {
-            \Log::debug(__METHOD__.':end---');
+            Log::debug(__METHOD__.':end---');
         }
 
         $ret_data = '';
@@ -124,18 +127,18 @@ class CmnScenarioController extends Controller
 
     private function getScenarioInfo($cmn_scenario_id, $cmn_scenario_name)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
         if ($cmn_scenario_id) {
             // シナリオID指定
             // $cmn_scenario_id よりシナリオ取得
-            \Log::debug('cmn_scenario_id:'.$cmn_scenario_id);
+            Log::debug('cmn_scenario_id:'.$cmn_scenario_id);
 
             // scenario info check
             $sc = cmn_scenario::where('cmn_scenario_id', $cmn_scenario_id)->first();
         } elseif ($cmn_scenario_name) {
             // シナリオ名指定
             // $cmn_scenario_name よりシナリオ取得
-            \Log::debug('cmn_scenario_name:'.$cmn_scenario_name);
+            Log::debug('cmn_scenario_name:'.$cmn_scenario_name);
 
             // scenario info check
             $sc = cmn_scenario::where('name', $cmn_scenario_name)->first();
@@ -148,13 +151,13 @@ class CmnScenarioController extends Controller
             throw new JcsException('No scenario found'.' $cmn_scenario_id:'.$cmn_scenario_id.' $cmn_scenario_name:'.$cmn_scenario_name);
         }
 
-        \Log::info($sc);
+        Log::info($sc);
         // シナリオファイル存在チェック
         if (!file_exists(app_path().'/'.$sc->file_path.'.php')) {
             throw new JcsException('Scenario file is not exist!'.$sc->file_path);
         }
 
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return $sc;
     }
 
