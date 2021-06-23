@@ -61,7 +61,9 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-            if ($exception->getCode()==419) {
+        // return redirect('/login');
+        Log::info($exception->getCode());
+            if ($exception->getCode()===419) {
                 return redirect('/login');
                 // return response()->json(['status'=>$exception->getCode()]);
             }

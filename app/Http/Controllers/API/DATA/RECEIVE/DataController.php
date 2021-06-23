@@ -265,9 +265,12 @@ class DataController extends Controller
                         if ($temperature_code!='*') {
                             $result =$result->where('drv.mes_lis_acc_tra_ins_temperature_code',$temperature_code);
                         }
-                        if ($major_category!='*') {
-                            $result =$result->where('drv.mes_lis_acc_tra_goo_major_category',$major_category);
+                        if ($major_category['category_code']!='*') {
+                            $result =$result->where('drv.mes_lis_acc_tra_goo_major_category', $major_category['category_code']);
                         }
+                        // if ($major_category!='*') {
+                        //     $result =$result->where('drv.mes_lis_acc_tra_goo_major_category',$major_category);
+                        // }
                         if ($sta_doc_type!='*') {
                             $result =$result->where('data_receives.sta_doc_type',$sta_doc_type);
                         }
