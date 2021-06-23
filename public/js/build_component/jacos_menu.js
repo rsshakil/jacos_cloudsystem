@@ -130,7 +130,7 @@ var render = function() {
           },
           [
             _c("b-icon", { attrs: { icon: "gear-fill", "font-scale": "1.2" } }),
-            _vm._v("\r\n            JACOS")
+            _vm._v("\n            JACOS")
           ],
           1
         ),
@@ -165,9 +165,9 @@ var render = function() {
                         attrs: { icon: "house-fill", "font-scale": "1.2" }
                       }),
                       _vm._v(
-                        "\r\n                  " +
+                        "\n                  " +
                           _vm._s(_vm.myLang.new_notice) +
-                          "\r\n                "
+                          "\n                "
                       )
                     ],
                     1
@@ -201,9 +201,9 @@ var render = function() {
                         attrs: { icon: "card-checklist", "font-scale": "1.2" }
                       }),
                       _vm._v(
-                        "\r\n                  " +
+                        "\n                  " +
                           _vm._s(_vm.myLang.buyer_management) +
-                          "\r\n                "
+                          "\n                "
                       )
                     ],
                     1
@@ -237,9 +237,9 @@ var render = function() {
                         attrs: { icon: "card-checklist", "font-scale": "1.2" }
                       }),
                       _vm._v(
-                        "\r\n                  " +
+                        "\n                  " +
                           _vm._s(_vm.myLang.wholesaler_management) +
-                          "\r\n                "
+                          "\n                "
                       )
                     ],
                     1
@@ -273,9 +273,9 @@ var render = function() {
                         attrs: { icon: "card-checklist", "font-scale": "1.2" }
                       }),
                       _vm._v(
-                        "\r\n                  " +
+                        "\n                  " +
                           _vm._s(_vm.myLang.job_management) +
-                          "\r\n                "
+                          "\n                "
                       )
                     ],
                     1
@@ -309,9 +309,9 @@ var render = function() {
                         attrs: { icon: "card-checklist", "font-scale": "1.2" }
                       }),
                       _vm._v(
-                        "\r\n                  " +
+                        "\n                  " +
                           _vm._s(_vm.myLang.scenario_management) +
-                          "\r\n                "
+                          "\n                "
                       )
                     ],
                     1
@@ -348,9 +348,7 @@ var render = function() {
                       _c("b-icon", {
                         attrs: { icon: "grid-fill", "font-scale": "1.2" }
                       }),
-                      _vm._v(
-                        "\r\n            " + _vm._s(_vm.myLang.pdf_platform)
-                      )
+                      _vm._v("\n            " + _vm._s(_vm.myLang.pdf_platform))
                     ],
                     1
                   ),
@@ -394,9 +392,9 @@ var render = function() {
                                   }
                                 }),
                                 _vm._v(
-                                  "\r\n                  " +
+                                  "\n                  " +
                                     _vm._s(_vm.myLang.pdf_platform_setting) +
-                                    "\r\n                "
+                                    "\n                "
                                 )
                               ],
                               1
@@ -433,9 +431,9 @@ var render = function() {
                                   }
                                 }),
                                 _vm._v(
-                                  "\r\n                  " +
+                                  "\n                  " +
                                     _vm._s(_vm.myLang.pdf_platform_show) +
-                                    "\r\n                "
+                                    "\n                "
                                 )
                               ],
                               1

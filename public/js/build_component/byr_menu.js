@@ -137,7 +137,7 @@ var render = function() {
           },
           [
             _c("b-icon", { attrs: { icon: "gear-fill", "font-scale": "1.2" } }),
-            _vm._v("\r\n            管理")
+            _vm._v("\n            管理")
           ],
           1
         ),
@@ -172,9 +172,9 @@ var render = function() {
                         attrs: { icon: "house-fill", "font-scale": "1.2" }
                       }),
                       _vm._v(
-                        "\r\n                  " +
+                        "\n                  " +
                           _vm._s(_vm.myLang.new_notice) +
-                          "\r\n                "
+                          "\n                "
                       )
                     ],
                     1
@@ -205,9 +205,9 @@ var render = function() {
                         attrs: { icon: "receipt", "font-scale": "1.2" }
                       }),
                       _vm._v(
-                        "\r\n                  " +
+                        "\n                  " +
                           _vm._s(_vm.myLang.product_management) +
-                          "\r\n                "
+                          "\n                "
                       )
                     ],
                     1
@@ -241,9 +241,9 @@ var render = function() {
                         attrs: { icon: "receipt", "font-scale": "1.2" }
                       }),
                       _vm._v(
-                        "\r\n                  " +
+                        "\n                  " +
                           _vm._s(_vm.myLang.category_management) +
-                          "\r\n                "
+                          "\n                "
                       )
                     ],
                     1
@@ -271,7 +271,7 @@ var render = function() {
             _c("b-icon", {
               attrs: { icon: "inbox-fill", "font-scale": "1.2" }
             }),
-            _vm._v("\r\n            問屋データ")
+            _vm._v("\n            問屋データ")
           ],
           1
         ),
@@ -309,7 +309,7 @@ var render = function() {
                         attrs: { icon: "receipt", "font-scale": "1.2" }
                       }),
                       _vm._v(
-                        "\r\n                 受注・出荷業務\r\n                "
+                        "\n                 受注・出荷業務\n                "
                       )
                     ],
                     1
@@ -342,9 +342,7 @@ var render = function() {
                       _c("b-icon", {
                         attrs: { icon: "card-checklist", "font-scale": "1.2" }
                       }),
-                      _vm._v(
-                        "\r\n                 受領確認\r\n                "
-                      )
+                      _vm._v("\n                 受領確認\n                ")
                     ],
                     1
                   )
@@ -376,9 +374,7 @@ var render = function() {
                       _c("b-icon", {
                         attrs: { icon: "card-checklist", "font-scale": "1.2" }
                       }),
-                      _vm._v(
-                        "\r\n                 返品確認\r\n                "
-                      )
+                      _vm._v("\n                 返品確認\n                ")
                     ],
                     1
                   )
@@ -410,9 +406,7 @@ var render = function() {
                       _c("b-icon", {
                         attrs: { icon: "card-checklist", "font-scale": "1.2" }
                       }),
-                      _vm._v(
-                        "\r\n                  請求業務\r\n                "
-                      )
+                      _vm._v("\n                  請求業務\n                ")
                     ],
                     1
                   )
@@ -444,7 +438,7 @@ var render = function() {
                       _c("b-icon", {
                         attrs: { icon: "card-checklist", "font-scale": "1.2" }
                       }),
-                      _vm._v("\r\n                支払確認\r\n                ")
+                      _vm._v("\n                支払確認\n                ")
                     ],
                     1
                   )

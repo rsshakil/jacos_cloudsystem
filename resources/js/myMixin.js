@@ -361,6 +361,15 @@ export default {
             if (!str) return ''
             return str.toString().replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         },
+        priceFormatFloat(str) {
+            if (!str) return ''
+            var x = str.split('.');
+            var x1 = x[0];
+            var x2 = x.length > 1 ? '.' + x[1] : '';
+            x1 = x1.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            var returnValue=x1+x2;
+            return returnValue;
+        },
         priceFormatNullZero(str) {
             if (!str) return '0'
             return str.toString().replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ",");
