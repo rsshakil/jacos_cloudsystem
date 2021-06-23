@@ -387,8 +387,14 @@ class InvoiceController extends Controller
             $table_name='dppd.';
         }
         $result = $result->orderBy($table_name.$sort_by, $sort_type);
-        $result=$result->paginate($per_page);
-        return response()->json(['invoice_details_list' => $result]);
+        $invoice_details_list=$result->paginate($per_page);
+        $all_invoice_details_list=$result->get();
+        $shipment_ids=array();
+        foreach ($all_invoice_details_list as $key => $value) {
+            $shipment_ids[]=$value->data_shipment_voucher_id;
+        }
+
+        return response()->json(['invoice_details_list' => $invoice_details_list,'shipment_ids'=>$shipment_ids]);
     }
     public function get_voucher_detail_popup2_invoice(Request $request)
     {

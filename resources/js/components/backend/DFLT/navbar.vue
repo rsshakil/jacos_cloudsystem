@@ -335,8 +335,7 @@ export default {
   },
   created() {
     this.get_user_company_info();
-    console.log(Globals.global_user_type);
-    if(Globals.global_user_type=='slr'){ 
+    if(Globals.global_user_type=='slr'){
       this.customBg='#538ED3';
     }else if(Globals.global_user_type=='others'){
       this.customBg='#f73f3f';

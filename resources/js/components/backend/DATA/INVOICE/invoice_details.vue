@@ -683,7 +683,7 @@ export default {
         mes_lis_inv_lin_det_pay_code:'',
         mes_lis_inv_lin_det_balance_carried_code:'',
         requested_amount:'',
-        mes_lis_inv_lin_tra_gln:'',        
+        mes_lis_inv_lin_tra_gln:'',
         mes_lis_inv_lin_sel_gln:'',
         mes_lis_inv_lin_sel_code:''
       },
@@ -784,7 +784,7 @@ export default {
       }else{
       this.invoiceDetail.requested_amount='-'+valuess.mes_lis_inv_lin_det_amo_requested_amount;
       }
-this.invoiceDetail.mes_lis_inv_lin_tra_gln=this.getbyrjsonValueBykeyName("invoice_pay_info","mes_lis_inv_lin_tra_gln","invoices");        
+this.invoiceDetail.mes_lis_inv_lin_tra_gln=this.getbyrjsonValueBykeyName("invoice_pay_info","mes_lis_inv_lin_tra_gln","invoices");
 this.invoiceDetail.mes_lis_inv_lin_sel_gln=this.getbyrjsonValueBykeyName("invoice_pay_info","mes_lis_inv_lin_sel_gln","invoices");
 this.invoiceDetail.mes_lis_inv_lin_sel_code=this.param_data.pay_code;
      // console.log(valuess);
@@ -802,7 +802,7 @@ this.invoiceDetail.mes_lis_inv_lin_sel_code=this.param_data.pay_code;
         mes_lis_inv_lin_det_pay_code:'',
         mes_lis_inv_lin_det_balance_carried_code:'',
         requested_amount:'',
-        mes_lis_inv_lin_tra_gln:this.getbyrjsonValueBykeyName("invoice_pay_info","mes_lis_inv_lin_tra_gln","invoices"),     
+        mes_lis_inv_lin_tra_gln:this.getbyrjsonValueBykeyName("invoice_pay_info","mes_lis_inv_lin_tra_gln","invoices"),
         mes_lis_inv_lin_sel_gln:this.getbyrjsonValueBykeyName("invoice_pay_info","mes_lis_inv_lin_sel_gln","invoices"),
         mes_lis_inv_lin_sel_code:this.param_data.pay_code
         };
@@ -862,10 +862,7 @@ this.invoiceDetail.mes_lis_inv_lin_sel_code=this.param_data.pay_code;
             this.invoice_detail_lists = data.invoice_details_list;
             this.invoice_detail_length = this.invoice_detail_lists.data.length;
             this.invoice_lists_length = this.invoice_detail_lists.data.length;
-            // console.log(this.invoice_detail_lists.data);
-            (this.invoice_detail_lists.data).forEach(element => {
-                this.form.shipment_ids.push(element.data_shipment_voucher_id)
-            });
+            this.form.shipment_ids=data.shipment_ids;
             loader.hide();
         });
     },
