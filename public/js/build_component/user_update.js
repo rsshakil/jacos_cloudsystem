@@ -678,7 +678,7 @@ var render = function() {
                             _vm._v(
                               " " +
                                 _vm._s(_vm.update_button) +
-                                "\n                                    "
+                                "\r\n                                    "
                             )
                           ],
                           1

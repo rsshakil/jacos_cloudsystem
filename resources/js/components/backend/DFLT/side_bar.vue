@@ -139,6 +139,9 @@ export default {
   },
   created(){
     // this.allPermissionCheck();
+    this.byr_buyer_id=this.$session.get("byr_buyer_id")
+    //   console.log(this.byr_buyer_id);
+      this.allPermissionCheck(this.byr_buyer_id);
     Fire.$on("permission_check_for_buyer", (byr_id) => {
         this.allPermissionCheck(byr_id);
     });
