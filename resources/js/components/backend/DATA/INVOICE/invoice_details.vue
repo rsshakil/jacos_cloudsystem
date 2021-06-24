@@ -1038,6 +1038,7 @@ this.invoiceDetail.mes_lis_inv_lin_sel_code=this.param_data.pay_code;
 
   created() {
       this.byr_buyer_id=this.$session.get("byr_buyer_id")
+    //   console.log(this.byr_buyer_id);
     Fire.$emit("byr_has_selected", this.byr_buyer_id);
     Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
     this.param_data = this.$route.query;

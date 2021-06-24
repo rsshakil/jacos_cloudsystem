@@ -1103,7 +1103,8 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this12 = this;
 
-    this.byr_buyer_id = this.$session.get("byr_buyer_id");
+    this.byr_buyer_id = this.$session.get("byr_buyer_id"); //   console.log(this.byr_buyer_id);
+
     Fire.$emit("byr_has_selected", this.byr_buyer_id);
     Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
     this.param_data = this.$route.query;
