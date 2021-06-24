@@ -659,7 +659,7 @@ class InvoiceController extends Controller
         // $adm_user_id=$request->adm_user_id;
         $byr_buyer_id=$request->byr_buyer_id;
         $shipment_ids=$request->shipment_ids;
-        $shipment_ids= implode(', ', $shipment_ids);
+        $shipment_ids= implode(',', $shipment_ids);
         $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
         // $cmn_connect_id =null;
         // $authUser = User::find($adm_user_id);
