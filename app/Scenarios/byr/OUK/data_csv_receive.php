@@ -44,6 +44,9 @@ class data_csv_receive extends ScenarioBase
         $cur_date = $datetime->format( 'Y-m-d H:i:s' );
         $rcv_flg = true;
         $trade_number = '';
+        $insert_flag=0;
+
+        $data_receive_array=array();
         DB::beginTransaction();
         try {
             foreach ($dataArr as $key => $value) {
@@ -52,7 +55,9 @@ class data_csv_receive extends ScenarioBase
                     // 空であればcontinue
                     continue;
                 }
-
+                Log::info('==============');
+                Log::info($data_receive_array);
+                Log::info('==============');
                 // exist data check
                 $exists_data = data_receive_voucher::join('data_receives', 'data_receives.data_receive_id', '=', 'data_receive_vouchers.data_receive_id')
                 ->join('data_receive_items', 'data_receive_vouchers.data_receive_voucher_id', '=', 'data_receive_items.data_receive_voucher_id')
@@ -194,6 +199,13 @@ class data_csv_receive extends ScenarioBase
                     if ($exists_data) {
                         $data_receive_voucher_id = $exists_data->data_receive_voucher_id;
                         $data_receive_voucher_array['update_datetime']=$cur_date;
+
+                        if ($insert_flag==0) {
+                            $data_receive_id = data_receive::insertGetId($data_receive_array);
+                            $data_receive_voucher_array['data_receive_id']=$data_receive_id;
+                            $insert_flag=1;
+                        }
+
                         data_receive_voucher::where('data_receive_voucher_id', $data_receive_voucher_id)->update($data_receive_voucher_array);
                     } else {
                         $data_receive_voucher_id = data_receive_voucher::insertGetId($data_receive_voucher_array);
@@ -276,7 +288,7 @@ class data_csv_receive extends ScenarioBase
                     data_receive_item::insert($data_receive_item_array);
                 }
                 // format
-                $data_receive_array=array();
+                // $data_receive_array=array();
                 $data_receive_voucher_array=array();
                 $data_receive_item_array=array();
 
