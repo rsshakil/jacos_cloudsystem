@@ -29,6 +29,8 @@ class PaymentController extends Controller
 
     public function getPaymentList(Request $request)
     {
+        \Log::debug(__METHOD__.':start---');
+
         // return $request->all();
         $adm_user_id = $request->adm_user_id;
         $byr_buyer_id = $request->byr_buyer_id;
@@ -88,14 +90,14 @@ class PaymentController extends Controller
             'dpp.mes_lis_pay_per_end_date',
             'dppd.mes_lis_pay_lin_det_pay_out_date',
             'dppd.mes_lis_pay_lin_det_amo_payable_amount',
-            DB::raw('(dppd.mes_lis_pay_lin_det_amo_payable_amount+dppd.mes_lis_pay_lin_det_amo_tax) as total_amount')
+            DB::raw('sum(dppd.mes_lis_pay_lin_det_amo_payable_amount+dppd.mes_lis_pay_lin_det_amo_tax) as total_amount')
         )
             ->join('data_payment_pays as dpp', 'data_payments.data_payment_id', '=', 'dpp.data_payment_id')
             ->join('data_payment_pay_details as dppd', 'dpp.data_payment_pay_id', '=', 'dppd.data_payment_pay_id')
             ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'data_payments.cmn_connect_id')
             ->where('cc.byr_buyer_id', $byr_buyer_id)
             ->where('cc.slr_seller_id', $slr_seller_id);
-            // ->where('data_payments.cmn_connect_id', '=', $cmn_connect_id);
+        // ->where('data_payments.cmn_connect_id', '=', $cmn_connect_id);
         // ->where($search_where);
         if ($mes_lis_pay_pay_code !=null) {
             $result =$result->where('dpp.mes_lis_pay_pay_code', $mes_lis_pay_pay_code);
@@ -133,11 +135,15 @@ class PaymentController extends Controller
         // $buyer_settings = byr_buyer::select('setting_information')->where('byr_buyer_id', $byr_buyer_id)->first();
         $byr_buyer = $this->all_used_fun->get_company_list($cmn_company_id);
         // 'buyer_settings' => $buyer_settings->setting_information
+
+        \Log::debug(__METHOD__.':end---');
+
         return response()->json(['payment_item_list' => $result, 'byr_buyer_list' => $byr_buyer]);
     }
 
     public function get_payment_detail_list(Request $request)
     {
+        \Log::debug(__METHOD__.':start---');
         $data_payment_id = $request->data_payment_id;
         $pay_code = $request->pay_code;
         $end_date = $request->end_date;
@@ -162,7 +168,7 @@ class PaymentController extends Controller
             'dpp.mes_lis_pay_per_end_date',
             'dppd.mes_lis_pay_lin_det_pay_out_date',
             'dppd.mes_lis_pay_lin_det_amo_payable_amount',
-            DB::raw('(dppd.mes_lis_pay_lin_det_amo_payable_amount+dppd.mes_lis_pay_lin_det_amo_tax) as total_amount')
+            DB::raw('sum(dppd.mes_lis_pay_lin_det_amo_payable_amount+dppd.mes_lis_pay_lin_det_amo_tax) as total_amount')
         )
             ->join('data_payment_pays as dpp', 'data_payments.data_payment_id', '=', 'dpp.data_payment_id')
             ->join('data_payment_pay_details as dppd', 'dpp.data_payment_pay_id', '=', 'dppd.data_payment_pay_id')
@@ -274,12 +280,14 @@ class PaymentController extends Controller
             'data_payment_pays.mes_lis_pay_per_end_date'   => $end_date
             ]
         )->whereNull('check_datetime')->update(['check_datetime'=>$today]);
+        \Log::debug(__METHOD__.':end---');
         return response()->json(['payment_item_header' => $result, 'pdtableleft' => $pdtableleft, 'paymentdetailRghtTable' => $paymentdetailRghtTable]);
         // return response()->json(['payment_item_header' => $result, 'paymentdetailTopTable' => $paymentdetailTopTable, 'pdtableleft' => $pdtableleft, 'paymentdetailRghtTable' => $paymentdetailRghtTable]);
     }
 
     public function get_payment_item_detail_list(Request $request)
     {
+        \Log::debug(__METHOD__.':start---');
         // return $request->all();
         $payment_id = $request->payment_id;
         $byr_buyer_id = $request->byr_buyer_id;
@@ -398,6 +406,7 @@ class PaymentController extends Controller
         $byr_buyer_category_list = $this->all_used_fun->get_allCategoryByByrId($byr_buyer_id);
         $buyer_settings = byr_buyer::select('setting_information')->where('byr_buyer_id', $byr_buyer_id)->first();
         $buyer_settings = $buyer_settings->setting_information;
+        \Log::debug(__METHOD__.':end---');
         return response()->json(['payment_item_header' => $result, 'paymentdetailTopTable' => $paymentdetailTopTable, 'byr_buyer_category_list' => $byr_buyer_category_list, 'buyer_settings' => $buyer_settings]);
     }
     public function paymentDownload(Request $request)
