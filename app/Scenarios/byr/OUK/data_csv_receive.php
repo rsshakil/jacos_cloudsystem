@@ -109,7 +109,7 @@ class data_csv_receive extends ScenarioBase
 
                     if ($exists_data) {
                         $data_receive_id = $exists_data->data_receive_id;
-                        data_receive::where('data_receive_id', $data_receive_id)->update($data_receive_array);
+                        // data_receive::where('data_receive_id', $data_receive_id)->update($data_receive_array);
                     } else {
                         $data_receive_id = data_receive::insertGetId($data_receive_array);
                     }
