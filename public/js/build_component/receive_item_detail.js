@@ -646,6 +646,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   breadcrumb: function breadcrumb() {
     return {
@@ -677,6 +681,8 @@ __webpack_require__.r(__webpack_exports__);
       data_order_voucher_id: "",
       totalCostPrice: 0,
       totalSellingPrice: 0,
+      total_mes_lis_acc_tot_tot_net_price_total: 0,
+      total_mes_lis_acc_tot_tot_selling_price_total: 0,
       status: "",
       // byr_order_id: "",
       edit_order_modal: false,
@@ -752,6 +758,8 @@ __webpack_require__.r(__webpack_exports__);
         _this.buyer_settings = JSON.parse(data.buyer_settings);
         _this.order_item_lists = data.received_item_detail_list[0];
         _this.mes_lis_acc_lin_qua_rec_reason_codeList = _this.buyer_settings.receives.mes_lis_acc_lin_qua_rec_reason_code;
+        _this.total_mes_lis_acc_tot_tot_net_price_total = _this.order_item_detail_lists[0].mes_lis_acc_tot_tot_net_price_total;
+        _this.total_mes_lis_acc_tot_tot_selling_price_total = _this.order_item_detail_lists[0].mes_lis_acc_tot_tot_selling_price_total;
 
         _this.loader.hide();
       });
@@ -1540,15 +1548,7 @@ var render = function() {
                         )
                       ]),
                       _vm._v(" "),
-                      _c("td", [
-                        _vm._v(
-                          "\n                " +
-                            _vm._s(
-                              order_item_detail_list.mes_lis_acc_lin_qua_unit_of_measure
-                            ) +
-                            "\n              "
-                        )
-                      ]),
+                      _c("td"),
                       _vm._v(" "),
                       _c("td", [
                         _vm._v(
@@ -1577,7 +1577,7 @@ var render = function() {
                         _vm._v(
                           "\n                " +
                             _vm._s(
-                              _vm._f("priceFormat")(
+                              _vm._f("priceFormatFloat")(
                                 order_item_detail_list.mes_lis_acc_lin_amo_item_net_price_unit_price
                               )
                             ) +
@@ -1661,7 +1661,11 @@ var render = function() {
                   _c("th", { staticStyle: { "text-align": "right" } }, [
                     _vm._v(
                       "\n                " +
-                        _vm._s(_vm._f("priceFormat")(_vm.totalCostPriceVal)) +
+                        _vm._s(
+                          _vm._f("priceFormat")(
+                            _vm.total_mes_lis_acc_tot_tot_net_price_total
+                          )
+                        ) +
                         "\n              "
                     )
                   ]),
@@ -1672,7 +1676,9 @@ var render = function() {
                     _vm._v(
                       "\n                " +
                         _vm._s(
-                          _vm._f("priceFormat")(_vm.totalSellingPriceVal)
+                          _vm._f("priceFormat")(
+                            _vm.total_mes_lis_acc_tot_tot_selling_price_total
+                          )
                         ) +
                         "\n              "
                     )

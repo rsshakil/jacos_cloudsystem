@@ -423,9 +423,9 @@
               </td>
               <td>
                 <!-- {{order_item_detail_list.mes_lis_acc_lin_qua_unit_of_measure}}  {{getbyrjsonValueBykeyName('mes_lis_ord_lin_qua_unit_of_measure',order_item_detail_list.mes_lis_acc_lin_qua_unit_of_measure,'orders',buyer_settings)}}-->
-                {{
+                <!--{{
                   order_item_detail_list.mes_lis_acc_lin_qua_unit_of_measure
-                }}
+                }}-->
               </td>
               <td>
                 <!--<input type="text" class="form-control" @keyup="ball_case_cal(order_item_detail_list,'バラ')" v-model="order_item_detail_list.mes_lis_acc_lin_qua_shi_quantity">
@@ -442,7 +442,7 @@
                 {{order_item_detail_list.mes_lis_ord_lin_amo_item_net_price_unit_price}}-->
                 {{
                   order_item_detail_list.mes_lis_acc_lin_amo_item_net_price_unit_price
-                    | priceFormat
+                    | priceFormatFloat
                 }}
               </td>
               <td class="text-right">
@@ -498,13 +498,17 @@
                 原価金額<br />合計
               </th>
               <th style="text-align: right">
-                {{ totalCostPriceVal | priceFormat }}
+                <!--{{ totalCostPriceVal | priceFormat }}
+                {{order_item_detail_lists[0].mes_lis_acc_tot_tot_net_price_total | priceFormat}}-->
+                {{total_mes_lis_acc_tot_tot_net_price_total | priceFormat}}
               </th>
               <th style="background: #538ed3; color: #fff; text-align: center">
                 売価金額<br />合計
               </th>
               <th style="text-align: right">
-                {{ totalSellingPriceVal | priceFormat }}
+                <!--{{ totalSellingPriceVal | priceFormat }}
+                {{order_item_detail_lists[0].mes_lis_acc_tot_tot_selling_price_total | priceFormat}}-->
+                {{total_mes_lis_acc_tot_tot_selling_price_total | priceFormat}}
               </th>
             </tr>
           </tfoot>
@@ -667,6 +671,8 @@ export default {
       data_order_voucher_id: "",
       totalCostPrice: 0,
       totalSellingPrice: 0,
+      total_mes_lis_acc_tot_tot_net_price_total:0,
+total_mes_lis_acc_tot_tot_selling_price_total:0,
       status: "",
       // byr_order_id: "",
       edit_order_modal: false,
@@ -744,7 +750,8 @@ export default {
           this.buyer_settings = JSON.parse(data.buyer_settings);
           this.order_item_lists = data.received_item_detail_list[0];
           this.mes_lis_acc_lin_qua_rec_reason_codeList = this.buyer_settings.receives.mes_lis_acc_lin_qua_rec_reason_code;
-
+this.total_mes_lis_acc_tot_tot_net_price_total=this.order_item_detail_lists[0].mes_lis_acc_tot_tot_net_price_total;
+this.total_mes_lis_acc_tot_tot_selling_price_total=this.order_item_detail_lists[0].mes_lis_acc_tot_tot_selling_price_total;
           this.loader.hide();
         });
     },

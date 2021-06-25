@@ -202,7 +202,7 @@ var render = function() {
             { staticClass: "nav-link", attrs: { to: "/order_list" } },
             [
               _c("b-icon", { attrs: { icon: "receipt", "font-scale": "1.2" } }),
-              _vm._v("\r\n                 受注・出荷業務\r\n                ")
+              _vm._v("\n                 受注・出荷業務\n                ")
             ],
             1
           )
@@ -231,7 +231,7 @@ var render = function() {
               _c("b-icon", {
                 attrs: { icon: "card-checklist", "font-scale": "1.2" }
               }),
-              _vm._v("\r\n                 受領確認\r\n                ")
+              _vm._v("\n                 受領確認\n                ")
             ],
             1
           )
@@ -260,7 +260,7 @@ var render = function() {
               _c("b-icon", {
                 attrs: { icon: "card-checklist", "font-scale": "1.2" }
               }),
-              _vm._v("\r\n                 返品確認\r\n                ")
+              _vm._v("\n                 返品確認\n                ")
             ],
             1
           )
@@ -288,9 +288,9 @@ var render = function() {
             [
               _c("b-icon", { attrs: { icon: "tools", "font-scale": "1.2" } }),
               _vm._v(
-                "\r\n                  " +
+                "\n                  " +
                   _vm._s(_vm.myLang.jacos_voucher_setting) +
-                  "\r\n                "
+                  "\n                "
               )
             ],
             1
@@ -320,7 +320,7 @@ var render = function() {
               _c("b-icon", {
                 attrs: { icon: "card-checklist", "font-scale": "1.2" }
               }),
-              _vm._v("\r\n                  請求業務\r\n                ")
+              _vm._v("\n                  請求業務\n                ")
             ],
             1
           )
@@ -349,7 +349,7 @@ var render = function() {
               _c("b-icon", {
                 attrs: { icon: "card-checklist", "font-scale": "1.2" }
               }),
-              _vm._v("\r\n                支払確認\r\n                ")
+              _vm._v("\n                支払確認\n                ")
             ],
             1
           )
@@ -377,9 +377,9 @@ var render = function() {
             [
               _c("b-icon", { attrs: { icon: "receipt", "font-scale": "1.2" } }),
               _vm._v(
-                "\r\n                  " +
+                "\n                  " +
                   _vm._s(_vm.myLang.product_management) +
-                  "\r\n                "
+                  "\n                "
               )
             ],
             1
@@ -407,7 +407,7 @@ var render = function() {
             { staticClass: "nav-link", attrs: { to: "/management_setting" } },
             [
               _c("b-icon", { attrs: { icon: "receipt", "font-scale": "1.2" } }),
-              _vm._v("\r\n                  管理\r\n                ")
+              _vm._v("\n                  管理\n                ")
             ],
             1
           )

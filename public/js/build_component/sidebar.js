@@ -165,6 +165,9 @@ var user_menu = function user_menu() {
     var _this3 = this;
 
     // this.allPermissionCheck();
+    this.byr_buyer_id = this.$session.get("byr_buyer_id"); //   console.log(this.byr_buyer_id);
+
+    this.allPermissionCheck(this.byr_buyer_id);
     Fire.$on("permission_check_for_buyer", function (byr_id) {
       _this3.allPermissionCheck(byr_id);
     });

@@ -1,18 +1,47 @@
 <!doctype html>
-<title>Site Maintenance</title>
+
+<head>
+  <link rel="shortcut icon" href="https://jcs.jacos-cloud.com/public/backend/images/logo/favicon.ico">
+</head>
+<title>JCS メンテナンス</title>
 <style>
-  body { text-align: center; padding: 150px; }
-  h1 { font-size: 50px; }
-  body { font: 20px Helvetica, sans-serif; color: #333; }
-  article { display: block; text-align: left; width: 650px; margin: 0 auto; }
-  a { color: #dc8100; text-decoration: none; }
-  a:hover { color: #333; text-decoration: none; }
+  body {
+    text-align: center;
+    padding: 150px;
+  }
+
+  h1 {
+    font-size: 50px;
+  }
+
+  body {
+    font: 20px Helvetica, sans-serif;
+    color: #333;
+  }
+
+  article {
+    display: block;
+    text-align: left;
+    width: 650px;
+    margin: 0 auto;
+  }
+
+  a {
+    color: #dc8100;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: #333;
+    text-decoration: none;
+  }
 </style>
 
 <article>
-    <h1>We&rsquo;ll be back soon!</h1>
-    <div>
-        <p>Sorry for the inconvenience but we&rsquo;re performing some maintenance at the moment. If you need to you can always <a href="mailto:sakaki@jacos.co.jp">contact us</a>, otherwise we&rsquo;ll be back online shortly!</p>
-        <p>&mdash; The Team</p>
-    </div>
+  <h1>メンテナンス中</h1>
+  <div>
+    <p>現在メンテナンスを実施しております。</p>
+    <p>ご迷惑をおかけし申し訳ありません。</p>
+    &mdash; <a href="mailto:jcs-info@jacos.co.jp">株式会社ジャコス</a>
+  </div>
 </article>

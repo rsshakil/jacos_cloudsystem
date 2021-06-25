@@ -387,8 +387,15 @@ class InvoiceController extends Controller
             $table_name='dppd.';
         }
         $result = $result->orderBy($table_name.$sort_by, $sort_type);
-        $result=$result->paginate($per_page);
-        return response()->json(['invoice_details_list' => $result]);
+
+        $all_invoice_details_list=$result->get();
+        $invoice_details_list=$result->paginate($per_page);
+        $shipment_ids=array();
+        foreach ($all_invoice_details_list as $key => $value) {
+            $shipment_ids[]=$value->data_shipment_voucher_id;
+        }
+
+        return response()->json(['invoice_details_list' => $invoice_details_list,'shipment_ids'=>$shipment_ids]);
     }
     public function get_voucher_detail_popup2_invoice(Request $request)
     {
@@ -585,7 +592,7 @@ class InvoiceController extends Controller
         // $adm_user_id=$request->adm_user_id;
         $byr_buyer_id=$request->byr_buyer_id;
         $shipment_ids=$request->shipment_ids;
-        $shipment_ids= implode(', ', $shipment_ids);
+        $shipment_ids= implode(',', array_filter($shipment_ids));
         $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
         // $cmn_connect_id =null;
         // $authUser = User::find($adm_user_id);
@@ -652,7 +659,7 @@ class InvoiceController extends Controller
         // $adm_user_id=$request->adm_user_id;
         $byr_buyer_id=$request->byr_buyer_id;
         $shipment_ids=$request->shipment_ids;
-        $shipment_ids= implode(', ', $shipment_ids);
+        $shipment_ids= implode(',', array_filter($shipment_ids));
         $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
         // $cmn_connect_id =null;
         // $authUser = User::find($adm_user_id);

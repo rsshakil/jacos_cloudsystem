@@ -13,7 +13,7 @@
           >
           <div class="collapse" id="byrmenu" aria-expanded="false">
             <ul class="flex-column pl-2 nav">
-       
+
               <li class="nav-item"  v-for="permission in permissions_by_user" :key="permission.permission_id">
                 <router-link :to="'/'+permission.permission_name" class="nav-link">
                   <b-icon icon="receipt" font-scale="1.2"></b-icon>
@@ -23,8 +23,8 @@
             </ul>
           </div>
         </li>
-        
-        
+
+
       </ul>
 </div>
 </template>
@@ -39,10 +39,10 @@ export default {
         .getAttribute("content"),
         // permission_by_user:[],
     };
-    
+
   },
   methods: {
-    
+
   },
   created(){
     // console.log(this.permissions_by_user);

@@ -913,12 +913,8 @@ __webpack_require__.r(__webpack_exports__);
         var data = _ref7.data;
         _this8.invoice_detail_lists = data.invoice_details_list;
         _this8.invoice_detail_length = _this8.invoice_detail_lists.data.length;
-        _this8.invoice_lists_length = _this8.invoice_detail_lists.data.length; // console.log(this.invoice_detail_lists.data);
-
-        _this8.invoice_detail_lists.data.forEach(function (element) {
-          _this8.form.shipment_ids.push(element.data_shipment_voucher_id);
-        });
-
+        _this8.invoice_lists_length = _this8.invoice_detail_lists.data.length;
+        _this8.form.shipment_ids = data.shipment_ids;
         loader.hide();
       });
     },
@@ -1107,7 +1103,8 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this12 = this;
 
-    this.byr_buyer_id = this.$session.get("byr_buyer_id");
+    this.byr_buyer_id = this.$session.get("byr_buyer_id"); //   console.log(this.byr_buyer_id);
+
     Fire.$emit("byr_has_selected", this.byr_buyer_id);
     Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
     this.param_data = this.$route.query;
@@ -1142,7 +1139,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../../node_module
 
 
 // module
-exports.push([module.i, "\n.same_yellow{\r\n    background: yellow;\n}\r\n", ""]);
+exports.push([module.i, "\n.same_yellow{\n    background: yellow;\n}\n", ""]);
 
 // exports
 
