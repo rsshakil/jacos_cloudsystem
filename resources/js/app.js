@@ -11,6 +11,7 @@ import VueRouter from "vue-router";
 // import vueselect from 'vue-select2';
 //Routes
 import { routes } from "./routes";
+import store from "./store";
 // ================
 // import BackMixin from 'vue-router-back-mixin'
 // Route sync
@@ -257,5 +258,6 @@ import { nextTick } from "q";
 import Axios from "axios";
 new Vue({
     router: router,
+    store,
     render: h => h(App)
 }).$mount("#app");
