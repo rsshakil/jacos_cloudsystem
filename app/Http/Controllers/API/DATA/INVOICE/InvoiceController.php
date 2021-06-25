@@ -283,6 +283,7 @@ class InvoiceController extends Controller
 
     public function invoiceDetailsList(Request $request)
     {
+        \Log::debug(__METHOD__.':start---');
         // return $request->all();
         $data_invoice_id=$request->data_invoice_id;
         $per_page = $request->select_field_per_page_num == null ? 10 : $request->select_field_per_page_num;
@@ -341,7 +342,11 @@ class InvoiceController extends Controller
             $join->on('dpp.mes_lis_pay_per_end_date', '=', 'dip.mes_lis_inv_per_end_date');
             $join->on('dpp.mes_lis_buy_code', '=', 'dip.mes_lis_buy_code');
         })
-        ->leftJoin('data_payment_pay_details as dppd', 'dppd.data_payment_pay_id', '=', 'dpp.data_payment_pay_id')
+        ->leftJoin('data_payment_pay_details as dppd', function ($join) {
+            $join->on('dppd.data_payment_pay_id', '=', 'dpp.data_payment_pay_id');
+            $join->on('dipd.mes_lis_inv_lin_lin_trade_number_reference', '=', 'dppd.mes_lis_pay_lin_lin_trade_number_reference');
+            $join->on('dipd.mes_lis_inv_lin_det_transfer_of_ownership_date', '=', 'dppd.mes_lis_pay_lin_det_transfer_of_ownership_date');
+        })
         ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'data_invoices.cmn_connect_id')
         ->where('cc.byr_buyer_id', $byr_buyer_id)
         ->where('cc.slr_seller_id', $slr_seller_id)
@@ -395,6 +400,7 @@ class InvoiceController extends Controller
             $shipment_ids[]=$value->data_shipment_voucher_id;
         }
 
+        \Log::debug(__METHOD__.':end---');
         return response()->json(['invoice_details_list' => $invoice_details_list,'shipment_ids'=>$shipment_ids]);
     }
     public function get_voucher_detail_popup2_invoice(Request $request)

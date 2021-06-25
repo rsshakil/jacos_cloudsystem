@@ -108,45 +108,45 @@ class DataController extends Controller
             'dppd.mes_lis_pay_lin_det_payment_method_code',
             'dppd.mes_lis_pay_lin_det_tax_tax_type_code',
             'dppd.mes_lis_pay_lin_det_tax_tax_rate'
-            )
-        ->join('data_payment_pays as dpp','dpp.data_payment_id','=','data_payments.data_payment_id')
-        ->join('data_payment_pay_details as dppd','dppd.data_payment_pay_id','=','dpp.data_payment_pay_id')
+        )
+        ->join('data_payment_pays as dpp', 'dpp.data_payment_id', '=', 'data_payments.data_payment_id')
+        ->join('data_payment_pay_details as dppd', 'dppd.data_payment_pay_id', '=', 'dpp.data_payment_pay_id')
         ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'data_payments.cmn_connect_id')
         ->where('cc.byr_buyer_id', $byr_buyer_id)
         ->where('cc.slr_seller_id', $slr_seller_id);
         // ->where('data_payments.cmn_connect_id',$cmn_connect_id);
-            // if ($request->page_title=='payment_list') {
-            //     $table_name = 'dpp.';
-            // $sort_by = $request->sort_by;
-            // $sort_type = $request->sort_type;
-            // if ($sort_by == "receive_datetime" || $sort_by == "data_payment_id") {
-            //     $table_name = 'data_payments.';
-            // }else if ($sort_by == "mes_lis_pay_lin_det_pay_out_date" || $sort_by == "mes_lis_pay_lin_det_amo_payable_amount") {
-            //     $table_name = 'dppd.';
-            // }else{
-            // // }else if ($sort_by == "mes_lis_pay_pay_code" || $sort_by == "mes_lis_buy_name" || $sort_by == "mes_lis_pay_per_end_date" || $sort_by == "check_datetime") {
-            //     $table_name = 'dpp.';
-            // }
-            if ($request->page_title=='payment_list') {
+        // if ($request->page_title=='payment_list') {
+        //     $table_name = 'dpp.';
+        // $sort_by = $request->sort_by;
+        // $sort_type = $request->sort_type;
+        // if ($sort_by == "receive_datetime" || $sort_by == "data_payment_id") {
+        //     $table_name = 'data_payments.';
+        // }else if ($sort_by == "mes_lis_pay_lin_det_pay_out_date" || $sort_by == "mes_lis_pay_lin_det_amo_payable_amount") {
+        //     $table_name = 'dppd.';
+        // }else{
+        // // }else if ($sort_by == "mes_lis_pay_pay_code" || $sort_by == "mes_lis_buy_name" || $sort_by == "mes_lis_pay_per_end_date" || $sort_by == "check_datetime") {
+        //     $table_name = 'dpp.';
+        // }
+        if ($request->page_title=='payment_list') {
             $mes_lis_pay_pay_code = $request->mes_lis_pay_pay_code;
             $mes_lis_buy_name = $request->mes_lis_buy_name;
             $receive_date_from = $request->receive_date_from;
             $receive_date_to = $request->receive_date_to;
-            $receive_date_from = $receive_date_from!=null? date('Y-m-d 00:00:00',strtotime($receive_date_from)):$receive_date_from;
-            $receive_date_to = $receive_date_to!=null? date('Y-m-d 23:59:59',strtotime($receive_date_to)):$receive_date_to;
+            $receive_date_from = $receive_date_from!=null? date('Y-m-d 00:00:00', strtotime($receive_date_from)):$receive_date_from;
+            $receive_date_to = $receive_date_to!=null? date('Y-m-d 23:59:59', strtotime($receive_date_to)):$receive_date_to;
             $mes_lis_pay_per_end_date_from = $request->mes_lis_pay_per_end_date_from;
             $mes_lis_pay_per_end_date_to = $request->mes_lis_pay_per_end_date_to;
-            $mes_lis_pay_per_end_date_from = $mes_lis_pay_per_end_date_from!=null? date('Y-m-d 00:00:00',strtotime($mes_lis_pay_per_end_date_from)):$mes_lis_pay_per_end_date_from;
-            $mes_lis_pay_per_end_date_to = $mes_lis_pay_per_end_date_to!=null? date('Y-m-d 23:59:59',strtotime($mes_lis_pay_per_end_date_to)):$mes_lis_pay_per_end_date_to;
+            $mes_lis_pay_per_end_date_from = $mes_lis_pay_per_end_date_from!=null? date('Y-m-d 00:00:00', strtotime($mes_lis_pay_per_end_date_from)):$mes_lis_pay_per_end_date_from;
+            $mes_lis_pay_per_end_date_to = $mes_lis_pay_per_end_date_to!=null? date('Y-m-d 23:59:59', strtotime($mes_lis_pay_per_end_date_to)):$mes_lis_pay_per_end_date_to;
             $mes_lis_pay_lin_det_pay_out_date_from = $request->mes_lis_pay_lin_det_pay_out_date_from;
             $mes_lis_pay_lin_det_pay_out_date_to = $request->mes_lis_pay_lin_det_pay_out_date_to;
-            $mes_lis_pay_lin_det_pay_out_date_from = $mes_lis_pay_lin_det_pay_out_date_from!=null? date('Y-m-d 00:00:00',strtotime($mes_lis_pay_lin_det_pay_out_date_from)):$mes_lis_pay_lin_det_pay_out_date_from;
-            $mes_lis_pay_lin_det_pay_out_date_to = $mes_lis_pay_lin_det_pay_out_date_to!=null? date('Y-m-d 23:59:59',strtotime($mes_lis_pay_lin_det_pay_out_date_to)):$mes_lis_pay_lin_det_pay_out_date_to;
+            $mes_lis_pay_lin_det_pay_out_date_from = $mes_lis_pay_lin_det_pay_out_date_from!=null? date('Y-m-d 00:00:00', strtotime($mes_lis_pay_lin_det_pay_out_date_from)):$mes_lis_pay_lin_det_pay_out_date_from;
+            $mes_lis_pay_lin_det_pay_out_date_to = $mes_lis_pay_lin_det_pay_out_date_to!=null? date('Y-m-d 23:59:59', strtotime($mes_lis_pay_lin_det_pay_out_date_to)):$mes_lis_pay_lin_det_pay_out_date_to;
 
             $check_datetime = $request->check_datetime;
 
             if ($mes_lis_pay_pay_code !=null) {
-                $csv_data=$csv_data->where('dpp.mes_lis_pay_pay_code',$mes_lis_pay_pay_code);
+                $csv_data=$csv_data->where('dpp.mes_lis_pay_pay_code', $mes_lis_pay_pay_code);
             }
             if ($receive_date_from && $receive_date_to) {
                 $csv_data=$csv_data->whereBetween('data_payments.receive_datetime', [$receive_date_from, $receive_date_to]);
@@ -158,17 +158,17 @@ class DataController extends Controller
                 $csv_data= $csv_data->whereBetween('dppd.mes_lis_pay_lin_det_pay_out_date', [$mes_lis_pay_lin_det_pay_out_date_from, $mes_lis_pay_lin_det_pay_out_date_to]);
             }
             if ($mes_lis_buy_name !=null) {
-                $csv_data=$csv_data->where('dpp.mes_lis_buy_name',$mes_lis_buy_name);
+                $csv_data=$csv_data->where('dpp.mes_lis_buy_name', $mes_lis_buy_name);
             }
             if ($check_datetime!='*') {
-                if($check_datetime==1){
+                if ($check_datetime==1) {
                     $csv_data=$csv_data->whereNull('dpp.check_datetime');
-                }else{
+                } else {
                     $csv_data=$csv_data->whereNotNull('dpp.check_datetime');
                 }
             }
             // $csv_data=$csv_data->orderBy($table_name . $sort_by, $sort_type);
-        }else if($request->page_title=='payment_details_list'){
+        } elseif ($request->page_title=='payment_details_list') {
             $pay_code = $request->pay_code;
             $end_date = $request->end_date;
             $out_date = $request->out_date;
@@ -186,7 +186,8 @@ class DataController extends Controller
         return $csv_data;
     }
 
-    public static function paymentCsvHeading(){
+    public static function paymentCsvHeading()
+    {
         return [
             '送信者ＩＤ',
             '送信者ＩＤ発行元',
@@ -262,7 +263,8 @@ class DataController extends Controller
         ];
     }
 
-    public static function getUnpaidData($request){
+    public static function getUnpaidData($request)
+    {
         $byr_buyer_id=$request->byr_buyer_id;
         $end_date=$request->end_date;
         $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
@@ -272,20 +274,26 @@ class DataController extends Controller
             'dipd.mes_lis_inv_lin_tra_name',
             'dipd.mes_lis_inv_lin_det_transfer_of_ownership_date',
             'dipd.mes_lis_inv_lin_det_amo_req_plus_minus',
-            'dipd.mes_lis_inv_lin_det_amo_requested_amount')
-            ->join('cmn_connects as cc','cc.cmn_connect_id','=','data_invoices.cmn_connect_id')
-            ->join('data_invoice_pays as dip','dip.data_invoice_id','=','data_invoices.data_invoice_id')
-            ->join('data_invoice_pay_details as dipd','dipd.data_invoice_pay_id','=','dip.data_invoice_pay_id')
-            ->leftJoin('data_payment_pays as dpp', function($join){
-            $join->on('dpp.mes_lis_pay_pay_code', '=', 'dip.mes_lis_inv_pay_code');
-            $join->on('dpp.mes_lis_pay_per_end_date', '=', 'dip.mes_lis_inv_per_end_date');
-            $join->on('dpp.mes_lis_buy_code', '=', 'dip.mes_lis_buy_code');
-        })
-        ->where('cc.byr_buyer_id',$byr_buyer_id)
-        ->where('cc.slr_seller_id',$slr_seller_id)
-        ->where('dip.mes_lis_inv_per_end_date',$end_date)
-        ->whereNull('dpp.data_payment_pay_id')
+            'dipd.mes_lis_inv_lin_det_amo_requested_amount'
+        )
+            ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'data_invoices.cmn_connect_id')
+            ->join('data_invoice_pays as dip', 'dip.data_invoice_id', '=', 'data_invoices.data_invoice_id')
+            ->join('data_invoice_pay_details as dipd', 'dipd.data_invoice_pay_id', '=', 'dip.data_invoice_pay_id')
+            ->leftJoin('data_payment_pays as dpp', function ($join) {
+                $join->on('dpp.mes_lis_pay_pay_code', '=', 'dip.mes_lis_inv_pay_code');
+                $join->on('dpp.mes_lis_pay_per_end_date', '=', 'dip.mes_lis_inv_per_end_date');
+                $join->on('dpp.mes_lis_buy_code', '=', 'dip.mes_lis_buy_code');
+            })
+            ->leftJoin('data_payment_pay_details as dppd', function ($join) {
+                $join->on('dppd.data_payment_pay_id', '=', 'dpp.data_payment_pay_id');
+                $join->on('dipd.mes_lis_inv_lin_lin_trade_number_reference', '=', 'dppd.mes_lis_pay_lin_lin_trade_number_reference');
+                $join->on('dipd.mes_lis_inv_lin_det_transfer_of_ownership_date', '=', 'dppd.mes_lis_pay_lin_det_transfer_of_ownership_date');
+            })
+        ->where('cc.byr_buyer_id', $byr_buyer_id)
+        ->where('cc.slr_seller_id', $slr_seller_id)
+        ->where('dip.mes_lis_inv_per_end_date', $end_date)
         ->whereNotNull('dipd.send_datetime')
+        ->whereNull('dppd.data_payment_pay_detail_id')
         // AND dipd.send_datetime IS NOT null
         ->orderBy('dipd.mes_lis_inv_lin_lin_trade_number_reference', "ASC")
         ->orderBy('dipd.mes_lis_inv_lin_tra_code', "ASC")
@@ -294,7 +302,8 @@ class DataController extends Controller
         ->orderBy('dipd.mes_lis_inv_lin_det_amo_requested_amount', "ASC");
         return $result;
     }
-    public static function paymentUnpaidCsvHeading(){
+    public static function paymentUnpaidCsvHeading()
+    {
         return [
             '取引番号（発注・返品）',
             '計上部署コード',
