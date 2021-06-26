@@ -1,12 +1,11 @@
 <template>
-<div>
-
-                <byr_slr_list_with_order></byr_slr_list_with_order>
-                <blog_view></blog_view>
-
-
-
-</div>
+    <div>
+        <ul>
+            <li v-for="(product,i) in products" :key="i">{{ product.name }}</li>
+        </ul>
+        <byr_slr_list_with_order></byr_slr_list_with_order>
+        <blog_view></blog_view>
+    </div>
 </template>
 
 <script>
@@ -25,9 +24,17 @@ const blog_view = () =>
             'byr_slr_list_with_order': byr_slr_list_with_order,
             'blog_view': blog_view,
         },
+        computed:{
+            // products(){
+            //     console.log(this.$store.state.orderModule.products)
+            //     return this.$store.state.orderModule.products
+            // }
+            // products: this.store.state.products,
+        },
         data(){
             return {
                 home_title:'',
+                products: this.$store.state.orderModule.products
             }
         },
         methods:{
@@ -39,6 +46,7 @@ const blog_view = () =>
                 //  this.loading=false;
             },
         mounted() {
+            // console.log(this.$store.state.orderModule.products)
         }
     }
 </script>

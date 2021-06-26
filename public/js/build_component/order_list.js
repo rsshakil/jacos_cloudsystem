@@ -497,6 +497,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this4 = this;
 
+    //   console.log(this.$store.state.orderModule.products)
     // this.byr_session_check()
     this.getbuyerJsonSettingvalue();
     this.form.byr_buyer_id = this.$session.get("byr_buyer_id"); // this.today= new Date().toISOString().slice(0, 10);

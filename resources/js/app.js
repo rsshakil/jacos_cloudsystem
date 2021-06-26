@@ -11,7 +11,7 @@ import VueRouter from "vue-router";
 // import vueselect from 'vue-select2';
 //Routes
 import { routes } from "./routes";
-import store from "./store";
+import store from "./store/store";
 // ================
 // import BackMixin from 'vue-router-back-mixin'
 // Route sync

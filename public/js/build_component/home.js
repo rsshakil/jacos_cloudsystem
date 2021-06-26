@@ -19,7 +19,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 var page_header_default = function page_header_default() {
   return __webpack_require__.e(/*! import() | page_header_default */ "page_header_default").then(__webpack_require__.bind(null, /*! ./page_header_default */ "./resources/js/components/backend/page_header_default.vue"));
 };
@@ -41,9 +40,16 @@ var blog_view = function blog_view() {
     'byr_slr_list_with_order': byr_slr_list_with_order,
     'blog_view': blog_view
   },
+  computed: {// products(){
+    //     console.log(this.$store.state.orderModule.products)
+    //     return this.$store.state.orderModule.products
+    // }
+    // products: this.store.state.products,
+  },
   data: function data() {
     return {
-      home_title: ''
+      home_title: '',
+      products: this.$store.state.orderModule.products
     };
   },
   methods: {},
@@ -51,7 +57,8 @@ var blog_view = function blog_view() {
     Fire.$emit('buyer_session_destroy');
     Fire.$emit("loadPageTitle", "得意先一覧"); //  this.loading=false;
   },
-  mounted: function mounted() {}
+  mounted: function mounted() {// console.log(this.$store.state.orderModule.products)
+  }
 });
 
 /***/ }),
@@ -73,7 +80,19 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    [_c("byr_slr_list_with_order"), _vm._v(" "), _c("blog_view")],
+    [
+      _c(
+        "ul",
+        _vm._l(_vm.products, function(product, i) {
+          return _c("li", { key: i }, [_vm._v(_vm._s(product.name))])
+        }),
+        0
+      ),
+      _vm._v(" "),
+      _c("byr_slr_list_with_order"),
+      _vm._v(" "),
+      _c("blog_view")
+    ],
     1
   )
 }

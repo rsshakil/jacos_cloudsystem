@@ -458,6 +458,7 @@ export default {
   },
 
   mounted() {
+    //   console.log(this.$store.state.orderModule.products)
     // this.byr_session_check()
     this.getbuyerJsonSettingvalue();
     this.form.byr_buyer_id = this.$session.get("byr_buyer_id");
