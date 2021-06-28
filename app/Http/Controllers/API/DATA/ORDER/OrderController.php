@@ -66,6 +66,7 @@ class OrderController extends Controller
     {
         Log::debug(__METHOD__.':start---');
 
+        // return $request->all();
         $adm_user_id = $request->adm_user_id;
         $byr_buyer_id = $request->byr_buyer_id;
         $per_page = $request->per_page?$request->per_page:10;

@@ -1,8 +1,5 @@
 <template>
     <div>
-        <ul>
-            <li v-for="(product,i) in products" :key="i">{{ product.name }}</li>
-        </ul>
         <byr_slr_list_with_order></byr_slr_list_with_order>
         <blog_view></blog_view>
     </div>
@@ -34,7 +31,6 @@ const blog_view = () =>
         data(){
             return {
                 home_title:'',
-                products: this.$store.state.orderModule.products
             }
         },
         methods:{
@@ -46,7 +42,6 @@ const blog_view = () =>
                 //  this.loading=false;
             },
         mounted() {
-            // console.log(this.$store.state.orderModule.products)
         }
     }
 </script>

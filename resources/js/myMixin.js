@@ -67,6 +67,15 @@ export default {
     // },
     methods: {
 
+        updateFormValue(data, var_name, module_name = 'orderModule') {
+            if (data.category_code) {
+                this.category_code = data
+            }
+            //   console.log(var_name)
+            //   console.log(data.target.value)
+            //   console.log(this.$store)
+            this.$store.commit(module_name + '/updateFormValue', { target: var_name, value: data }, { root: true })
+        },
         // Database created and updated datetime conversion
         getbuyerJsonSettingvalue() {
             this.paramInfo.component_name = this.$route.name;
@@ -333,8 +342,9 @@ export default {
                     });
             }
         },
-        iconSet(text_value) {
-            return this.form.sort_by == text_value ? (this.form.sort_type == 'ASC' ? 'fa fa-caret-down' : 'fa fa-caret-up') : '';
+        iconSet(text_value, module_name = 'orderModule') {
+            return this.$store.state[module_name].form.sort_by == text_value ? (this.$store.state[module_name].form.sort_type == 'ASC' ? 'fa fa-caret-down' : 'fa fa-caret-up') : '';
+            // return this.form.sort_by == text_value ? (this.form.sort_type == 'ASC' ? 'fa fa-caret-down' : 'fa fa-caret-up') : '';
         },
         zeroShow(value) {
             return value === 0 ? '0' : value
@@ -367,7 +377,7 @@ export default {
             var x1 = x[0];
             var x2 = x.length > 1 ? '.' + x[1] : '';
             x1 = x1.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            var returnValue=x1+x2;
+            var returnValue = x1 + x2;
             return returnValue;
         },
         priceFormatNullZero(str) {
