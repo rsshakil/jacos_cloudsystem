@@ -100,7 +100,7 @@ var render = function() {
               _c("b-icon", {
                 attrs: { icon: "grid-fill", "font-scale": "1.2" }
               }),
-              _vm._v("\r\n            " + _vm._s(_vm.myLang.buyer_management))
+              _vm._v("\n            " + _vm._s(_vm.myLang.buyer_management))
             ],
             1
           ),
@@ -131,9 +131,9 @@ var render = function() {
                             attrs: { icon: "receipt", "font-scale": "1.2" }
                           }),
                           _vm._v(
-                            "\r\n                  " +
+                            "\n                  " +
                               _vm._s(permission.permission_name) +
-                              "\r\n                "
+                              "\n                "
                           )
                         ],
                         1
