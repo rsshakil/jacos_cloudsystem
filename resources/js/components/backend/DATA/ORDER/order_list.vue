@@ -9,11 +9,11 @@
           </td>
           <td>
             <div class="input-group">
-                <input type="date" class="form-control" :value="this.$store.state.orderModule.form.receive_date_from" @change="updateFormValue($event.target.value,'receive_date_from')">
+                <input type="date" class="form-control" :value="this.$store.state.orderModule.form.receive_date_from" @change="updateFieldValue($event.target.value,'receive_date_from','orderModule','form')">
                 <div class="input-group-prepend">
                     <span class="input-group-text">~</span>
                 </div>
-                <input type="date" class="form-control" :value="this.$store.state.orderModule.form.receive_date_to" @change="updateFormValue($event.target.value,'receive_date_to')">
+                <input type="date" class="form-control" :value="this.$store.state.orderModule.form.receive_date_to" @change="updateFieldValue($event.target.value,'receive_date_to','orderModule','form')">
             </div>
           </td>
 
@@ -23,7 +23,7 @@
           <td>
             <input
               type="text"
-              class="form-control" :value="this.$store.state.orderModule.form.mes_lis_ord_par_sel_code" @change="updateFormValue($event.target.value,'mes_lis_ord_par_sel_code')"
+              class="form-control" :value="this.$store.state.orderModule.form.mes_lis_ord_par_sel_code" @change="updateFieldValue($event.target.value,'mes_lis_ord_par_sel_code','orderModule','form')"
               style="float: left; width: 90px; margin-right: 5px"
             />
             <button @click="showAllCustomerCode" class="btn btn-primary" style="float:left;">
@@ -33,7 +33,7 @@
 
           <td class="cl_custom_color">便</td>
           <td>
-            <select class="form-control" :value="this.$store.state.orderModule.form.delivery_service_code" @change="updateFormValue($event.target.value,'delivery_service_code')">
+            <select class="form-control" :value="this.$store.state.orderModule.form.delivery_service_code" @change="updateFieldValue($event.target.value,'delivery_service_code','orderModule','form')">
                 <option value="*">全て</option>
               <option
                 v-for="(dsc, i) in json_delivery_service_codeList"
@@ -52,11 +52,11 @@
           <td>
 
             <div class="input-group">
-                <input type="date" class="form-control" :value="this.$store.state.orderModule.form.delivery_date_from" @change="updateFormValue($event.target.value,'delivery_date_from')">
+                <input type="date" class="form-control" :value="this.$store.state.orderModule.form.delivery_date_from" @change="updateFieldValue($event.target.value,'delivery_date_from','orderModule','form')">
                 <div class="input-group-prepend">
                     <span class="input-group-text">~</span>
                 </div>
-                <input type="date" class="form-control" :value="this.$store.state.orderModule.form.delivery_date_to" @change="updateFormValue($event.target.value,'delivery_date_to')">
+                <input type="date" class="form-control" :value="this.$store.state.orderModule.form.delivery_date_to" @change="updateFieldValue($event.target.value,'delivery_date_to','orderModule','form')">
             </div>
           </td>
 
@@ -64,14 +64,14 @@
           <td class="cl_custom_color">部門</td>
           <td>
             <!-- <multiselect v-model="form.category_code" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="true" :select-label="''" :deselect-label="''" :selected-label="'選択中'" :preserve-search="true"  placeholder="部門"> -->
-            <multiselect :value="category_code" @select="updateFormValue($event,'category_code')" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="true" :select-label="''" :deselect-label="''" :selected-label="'選択中'" :preserve-search="true"  placeholder="部門">
+            <multiselect :value="category_code" @select="updateFieldValue($event,'category_code','form')" :options="byr_buyer_category_lists" label="category_name" track-by="category_code" :searchable="true" :close-on-select="true" :clear-on-select="true" :select-label="''" :deselect-label="''" :selected-label="'選択中'" :preserve-search="true"  placeholder="部門">
                <span slot="noOptions">候補がありません</span> <span slot="noResult">候補がありません</span>
             </multiselect>
 
           </td>
           <td class="cl_custom_color">温度区分</td>
           <td>
-            <select class="form-control" :value="this.$store.state.orderModule.form.temperature" @change="updateFormValue($event.target.value,'temperature')">
+            <select class="form-control" :value="this.$store.state.orderModule.form.temperature" @change="updateFieldValue($event.target.value,'temperature','orderModule','form')">
             <!-- <select class="form-control" v-model="form.temperature"> -->
             <option value="*">全て</option>
               <option
@@ -85,7 +85,7 @@
         <tr>
        <td class="cl_custom_color">参照状況</td>
           <td>
-            <select class="form-control" :value="this.$store.state.orderModule.form.check_datetime" @change="updateFormValue($event.target.value,'check_datetime')">
+            <select class="form-control" :value="this.$store.state.orderModule.form.check_datetime" @change="updateFieldValue($event.target.value,'check_datetime','orderModule','form')">
               <option value="*">全て</option>
               <option value="1">未参照</option>
               <option value="2">参照済</option>
@@ -93,7 +93,7 @@
           </td>
           <td class="cl_custom_color">確定状況</td>
           <td>
-            <select class="form-control" :value="this.$store.state.orderModule.form.decission_cnt" @change="updateFormValue($event.target.value,'decission_cnt')">
+            <select class="form-control" :value="this.$store.state.orderModule.form.decission_cnt" @change="updateFieldValue($event.target.value,'decission_cnt','orderModule','form')">
               <option
                 v-for="(dcnt, i) in this.$store.state.orderModule.decission_cnt"
                 :key="i"
@@ -107,7 +107,7 @@
           <!-- <td class="cl_custom_color">印刷状況</td> -->
           <td class="cl_custom_color">送信状況</td>
           <td>
-            <select class="form-control" :value="this.$store.state.orderModule.form.send_cnt" @change="updateFormValue($event.target.value,'send_cnt')" >
+            <select class="form-control" :value="this.$store.state.orderModule.form.send_cnt" @change="updateFieldValue($event.target.value,'send_cnt','orderModule','form')" >
              <option
                 v-for="(dcnt, i) in this.$store.state.orderModule.send_cnt"
                 :key="i"
@@ -188,7 +188,10 @@
             <tr v-for="(order_list, index) in $store.state.orderModule.order_lists.data" :key="index">
               <td>{{ $store.state.orderModule.order_lists.current_page * $store.state.orderModule.form.per_page - $store.state.orderModule.form.per_page + index + 1 }}</td>
               <td>
-                <router-link
+                  <button @click="goToDetailsPage('order_list_details',order_list)">
+                      {{ order_list.receive_datetime }}
+                  </button>
+                <!-- <router-link
                   :to="{
                     name: 'order_list_details',
                     query: {
@@ -204,9 +207,7 @@
                         order_list.mes_lis_ord_par_sel_code,
                     },
                   }"
-                  class=""
-                  >{{ order_list.receive_datetime }}</router-link
-                >
+                  class="">{{ order_list.receive_datetime }}</router-link> -->
               </td>
               <td>
                 {{ order_list.mes_lis_ord_par_sel_code }}
@@ -303,7 +304,7 @@ export default {
         },
   methods: {
     onRowClicked (item) {
-        this.updateFormValue (item.mes_lis_ord_par_sel_code,'mes_lis_ord_par_sel_code')
+        this.updateFieldValue (item.mes_lis_ord_par_sel_code,'mes_lis_ord_par_sel_code','orderModule','form')
         // this.form.mes_lis_ord_par_sel_code = item.mes_lis_ord_par_sel_code;
        this.showAllCustomerCodeListModal = false;
     },
@@ -318,9 +319,9 @@ export default {
         });
     },
     sorting(sorted_field){
-        this.updateFormValue (sorted_field,'sort_by','orderModule')
+        this.updateFieldValue (sorted_field,'sort_by','orderModule','form')
         var sort_type=this.$store.state.orderModule.form.sort_type=="ASC"?"DESC":"ASC";
-        this.updateFormValue (sort_type,'sort_type','orderModule')
+        this.updateFieldValue (sort_type,'sort_type','orderModule','form')
         var page = this.$store.state.orderModule.form.page
         this.get_all_order(page);
 
@@ -328,31 +329,38 @@ export default {
     get_all_order(page=1) {
        this.loader = Vue.$loading.show();
 
-      this.updateFormValue(page, 'page','orderModule')
+      this.updateFieldValue(page, 'page','orderModule','form')
 
       axios.post(this.BASE_URL + "api/get_order_list", this.$store.state.orderModule.form)
         .then(({ data }) => {
-            this.$store.commit('orderModule/updateFieldValue', { target: 'order_lists', value: data.order_list }, { root: true })
-            this.$store.commit('orderModule/updateFieldValue', { target: 'order_lists_length', value: data.order_list.data.length }, { root: true })
-            this.$store.commit('orderModule/updateFieldValue', { target: 'page_load', value: 1 }, { root: true })
+            this.updateFieldValue(data.order_list, 'order_lists','orderModule','root')
+            this.updateFieldValue(data.order_list.data.length, 'order_lists_length','orderModule','root')
+            this.updateFieldValue(1, 'page_load','orderModule','root')
+            // this.$store.commit('orderModule/updateFieldValue', { target: 'order_lists', value: data.order_list }, { root: true })
+            // this.$store.commit('orderModule/updateFieldValue', { target: 'order_lists_length', value: data.order_list.data.length }, { root: true })
+            // this.$store.commit('orderModule/updateFieldValue', { target: 'page_load', value: 1 }, { root: true })
             this.loader.hide();
         });
     },
     orderDownload(downloadType = 1) {
       //downloadcsvshipment_confirm
       this.loader = Vue.$loading.show();
-      this.updateFormValue(downloadType, 'downloadType','orderModule')
+      this.updateFieldValue(downloadType, 'downloadType','orderModule','form')
       axios.post(this.BASE_URL + "api/downloadcsvshipment_confirm",this.$store.state.orderModule.form)
         .then(({ data }) => {
            this.downloadFromUrl(data);
            this.loader.hide();
         });
     },
+    goToDetailsPage(page_name,order_list){
+        this.$session.set("order_details",order_list)
+        this.$router.push({name:page_name})
+    },
   },
 
   mounted() {
     this.getbuyerJsonSettingvalue();
-    this.updateFormValue(this.$session.get("byr_buyer_id"), 'byr_buyer_id','orderModule')
+    this.updateFieldValue(this.$session.get("byr_buyer_id"), 'byr_buyer_id','orderModule','form')
     var page = this.$store.state.orderModule.form.page;
     if (this.$store.state.orderModule.page_load==0) {
        this.get_all_order(page);

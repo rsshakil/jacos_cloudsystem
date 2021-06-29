@@ -9,10 +9,11 @@ const state = {
     // new Form(
     {
         adm_user_id: Globals.user_info_id,
-        per_page: 10,
         byr_buyer_id: null,
-        page: 1,
         data_order_id: null,
+        per_page: 10,
+        page: 1,
+        downloadType: 1,
         send_cnt: "*",
         decission_cnt: "*",
         check_datetime: '*',
@@ -26,7 +27,6 @@ const state = {
         receive_date_to: null,
         sort_by: 'receive_datetime ',
         sort_type: "DESC",
-        downloadType: 1,
         page_title: 'order_list',
     }
     // ),
@@ -35,15 +35,15 @@ const state = {
 const getters = {};
 const actions = {};
 const mutations = {
-    updateFormValue(state, { target, value }) {
+    updateFieldValue(state, { target, value, data_for }) {
+        // console.log(data_for)
         // console.log(target)
         // console.log(value)
-        state.form[target] = value;
-    },
-    updateFieldValue(state, { target, value }) {
-        // console.log(target)
-        // console.log(value)
-        state[target] = value;
+        if (data_for == 'form') {
+            state.form[target] = value;
+        } else {
+            state[target] = value;
+        }
     }
 };
 

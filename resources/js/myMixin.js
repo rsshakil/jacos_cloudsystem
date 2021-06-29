@@ -67,14 +67,14 @@ export default {
     // },
     methods: {
 
-        updateFormValue(data, var_name, module_name = 'orderModule') {
+        updateFieldValue(data, var_name, module_name = 'orderModule', data_for = 'root') {
             if (data.category_code) {
                 this.category_code = data
             }
             //   console.log(var_name)
             //   console.log(data.target.value)
             //   console.log(this.$store)
-            this.$store.commit(module_name + '/updateFormValue', { target: var_name, value: data }, { root: true })
+            this.$store.commit(module_name + '/updateFieldValue', { target: var_name, value: data, data_for: data_for }, { root: true })
         },
         // Database created and updated datetime conversion
         getbuyerJsonSettingvalue() {

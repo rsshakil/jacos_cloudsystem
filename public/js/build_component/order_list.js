@@ -298,6 +298,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -313,7 +314,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     onRowClicked: function onRowClicked(item) {
-      this.updateFormValue(item.mes_lis_ord_par_sel_code, 'mes_lis_ord_par_sel_code'); // this.form.mes_lis_ord_par_sel_code = item.mes_lis_ord_par_sel_code;
+      this.updateFieldValue(item.mes_lis_ord_par_sel_code, 'mes_lis_ord_par_sel_code', 'orderModule', 'form'); // this.form.mes_lis_ord_par_sel_code = item.mes_lis_ord_par_sel_code;
 
       this.showAllCustomerCodeListModal = false;
     },
@@ -330,9 +331,9 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     sorting: function sorting(sorted_field) {
-      this.updateFormValue(sorted_field, 'sort_by', 'orderModule');
+      this.updateFieldValue(sorted_field, 'sort_by', 'orderModule', 'form');
       var sort_type = this.$store.state.orderModule.form.sort_type == "ASC" ? "DESC" : "ASC";
-      this.updateFormValue(sort_type, 'sort_type', 'orderModule');
+      this.updateFieldValue(sort_type, 'sort_type', 'orderModule', 'form');
       var page = this.$store.state.orderModule.form.page;
       this.get_all_order(page);
     },
@@ -341,30 +342,18 @@ __webpack_require__.r(__webpack_exports__);
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       this.loader = Vue.$loading.show();
-      this.updateFormValue(page, 'page', 'orderModule');
+      this.updateFieldValue(page, 'page', 'orderModule', 'form');
       axios.post(this.BASE_URL + "api/get_order_list", this.$store.state.orderModule.form).then(function (_ref2) {
         var data = _ref2.data;
 
-        _this2.$store.commit('orderModule/updateFieldValue', {
-          target: 'order_lists',
-          value: data.order_list
-        }, {
-          root: true
-        });
+        _this2.updateFieldValue(data.order_list, 'order_lists', 'orderModule', 'root');
 
-        _this2.$store.commit('orderModule/updateFieldValue', {
-          target: 'order_lists_length',
-          value: data.order_list.data.length
-        }, {
-          root: true
-        });
+        _this2.updateFieldValue(data.order_list.data.length, 'order_lists_length', 'orderModule', 'root');
 
-        _this2.$store.commit('orderModule/updateFieldValue', {
-          target: 'page_load',
-          value: 1
-        }, {
-          root: true
-        });
+        _this2.updateFieldValue(1, 'page_load', 'orderModule', 'root'); // this.$store.commit('orderModule/updateFieldValue', { target: 'order_lists', value: data.order_list }, { root: true })
+        // this.$store.commit('orderModule/updateFieldValue', { target: 'order_lists_length', value: data.order_list.data.length }, { root: true })
+        // this.$store.commit('orderModule/updateFieldValue', { target: 'page_load', value: 1 }, { root: true })
+
 
         _this2.loader.hide();
       });
@@ -375,7 +364,7 @@ __webpack_require__.r(__webpack_exports__);
       var downloadType = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       //downloadcsvshipment_confirm
       this.loader = Vue.$loading.show();
-      this.updateFormValue(downloadType, 'downloadType', 'orderModule');
+      this.updateFieldValue(downloadType, 'downloadType', 'orderModule', 'form');
       axios.post(this.BASE_URL + "api/downloadcsvshipment_confirm", this.$store.state.orderModule.form).then(function (_ref3) {
         var data = _ref3.data;
 
@@ -383,13 +372,19 @@ __webpack_require__.r(__webpack_exports__);
 
         _this3.loader.hide();
       });
+    },
+    goToDetailsPage: function goToDetailsPage(page_name, order_list) {
+      this.$session.set("order_details", order_list);
+      this.$router.push({
+        name: page_name
+      });
     }
   },
   mounted: function mounted() {
     var _this4 = this;
 
     this.getbuyerJsonSettingvalue();
-    this.updateFormValue(this.$session.get("byr_buyer_id"), 'byr_buyer_id', 'orderModule');
+    this.updateFieldValue(this.$session.get("byr_buyer_id"), 'byr_buyer_id', 'orderModule', 'form');
     var page = this.$store.state.orderModule.form.page;
 
     if (this.$store.state.orderModule.page_load == 0) {
@@ -469,9 +464,11 @@ var render = function() {
                         },
                         on: {
                           change: function($event) {
-                            return _vm.updateFormValue(
+                            return _vm.updateFieldValue(
                               $event.target.value,
-                              "receive_date_from"
+                              "receive_date_from",
+                              "orderModule",
+                              "form"
                             )
                           }
                         }
@@ -488,9 +485,11 @@ var render = function() {
                         },
                         on: {
                           change: function($event) {
-                            return _vm.updateFormValue(
+                            return _vm.updateFieldValue(
                               $event.target.value,
-                              "receive_date_to"
+                              "receive_date_to",
+                              "orderModule",
+                              "form"
                             )
                           }
                         }
@@ -521,9 +520,11 @@ var render = function() {
                       },
                       on: {
                         change: function($event) {
-                          return _vm.updateFormValue(
+                          return _vm.updateFieldValue(
                             $event.target.value,
-                            "mes_lis_ord_par_sel_code"
+                            "mes_lis_ord_par_sel_code",
+                            "orderModule",
+                            "form"
                           )
                         }
                       }
@@ -559,9 +560,11 @@ var render = function() {
                         },
                         on: {
                           change: function($event) {
-                            return _vm.updateFormValue(
+                            return _vm.updateFieldValue(
                               $event.target.value,
-                              "delivery_service_code"
+                              "delivery_service_code",
+                              "orderModule",
+                              "form"
                             )
                           }
                         }
@@ -609,9 +612,11 @@ var render = function() {
                         },
                         on: {
                           change: function($event) {
-                            return _vm.updateFormValue(
+                            return _vm.updateFieldValue(
                               $event.target.value,
-                              "delivery_date_from"
+                              "delivery_date_from",
+                              "orderModule",
+                              "form"
                             )
                           }
                         }
@@ -628,9 +633,11 @@ var render = function() {
                         },
                         on: {
                           change: function($event) {
-                            return _vm.updateFormValue(
+                            return _vm.updateFieldValue(
                               $event.target.value,
-                              "delivery_date_to"
+                              "delivery_date_to",
+                              "orderModule",
+                              "form"
                             )
                           }
                         }
@@ -664,9 +671,10 @@ var render = function() {
                           },
                           on: {
                             select: function($event) {
-                              return _vm.updateFormValue(
+                              return _vm.updateFieldValue(
                                 $event,
-                                "category_code"
+                                "category_code",
+                                "form"
                               )
                             }
                           }
@@ -703,9 +711,11 @@ var render = function() {
                         },
                         on: {
                           change: function($event) {
-                            return _vm.updateFormValue(
+                            return _vm.updateFieldValue(
                               $event.target.value,
-                              "temperature"
+                              "temperature",
+                              "orderModule",
+                              "form"
                             )
                           }
                         }
@@ -751,9 +761,11 @@ var render = function() {
                         },
                         on: {
                           change: function($event) {
-                            return _vm.updateFormValue(
+                            return _vm.updateFieldValue(
                               $event.target.value,
-                              "check_datetime"
+                              "check_datetime",
+                              "orderModule",
+                              "form"
                             )
                           }
                         }
@@ -789,9 +801,11 @@ var render = function() {
                         },
                         on: {
                           change: function($event) {
-                            return _vm.updateFormValue(
+                            return _vm.updateFieldValue(
                               $event.target.value,
-                              "decission_cnt"
+                              "decission_cnt",
+                              "orderModule",
+                              "form"
                             )
                           }
                         }
@@ -833,9 +847,11 @@ var render = function() {
                         },
                         on: {
                           change: function($event) {
-                            return _vm.updateFormValue(
+                            return _vm.updateFieldValue(
                               $event.target.value,
-                              "send_cnt"
+                              "send_cnt",
+                              "orderModule",
+                              "form"
                             )
                           }
                         }
@@ -1179,35 +1195,28 @@ var render = function() {
                           )
                         ]),
                         _vm._v(" "),
-                        _c(
-                          "td",
-                          [
-                            _c(
-                              "router-link",
-                              {
-                                attrs: {
-                                  to: {
-                                    name: "order_list_details",
-                                    query: {
-                                      data_order_id: order_list.data_order_id,
-                                      delivery_date: order_list.mes_lis_ord_tra_dat_delivery_date.valueOf(),
-                                      major_category:
-                                        order_list.mes_lis_ord_tra_goo_major_category,
-                                      delivery_service_code:
-                                        order_list.mes_lis_ord_log_del_delivery_service_code,
-                                      temperature_code:
-                                        order_list.mes_lis_ord_tra_ins_temperature_code,
-                                      sel_code:
-                                        order_list.mes_lis_ord_par_sel_code
-                                    }
-                                  }
+                        _c("td", [
+                          _c(
+                            "button",
+                            {
+                              on: {
+                                click: function($event) {
+                                  return _vm.goToDetailsPage(
+                                    "order_list_details",
+                                    order_list
+                                  )
                                 }
-                              },
-                              [_vm._v(_vm._s(order_list.receive_datetime))]
-                            )
-                          ],
-                          1
-                        ),
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                      " +
+                                  _vm._s(order_list.receive_datetime) +
+                                  "\n                  "
+                              )
+                            ]
+                          )
+                        ]),
                         _vm._v(" "),
                         _c("td", [
                           _vm._v(
