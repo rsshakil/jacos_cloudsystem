@@ -42,6 +42,9 @@ const mutations = {
     formValuesStore(state,payload){
         state.form = payload;
     },
+    formValuesStoreBYRID(state,byr_buyer_id){
+        state.form.byr_buyer_id = byr_buyer_id;
+    },
 };
 
 export default {

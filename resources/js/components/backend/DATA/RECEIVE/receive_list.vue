@@ -11,11 +11,11 @@
             <td class="cl_custom_color">受信日</td>
             <td>
              <div class="input-group">
-                    <input type="date" class="form-control" v-model="form.receive_date_from" @change="formDataUpdat">
+                    <input type="date" class="form-control" v-model="form.receive_date_from">
                     <div class="input-group-prepend">
                         <span class="input-group-text">~</span>
                     </div>
-                    <input type="date" class="form-control" v-model="form.receive_date_to" @change="formDataUpdat">
+                    <input type="date" class="form-control" v-model="form.receive_date_to">
                 </div>
 
             </td>
@@ -360,14 +360,16 @@ export default {
           this.downloadFromUrl(data);
         });
     },
-    formDataUpdat(){
-      this.$store.commit('receiveListModule/formValuesStore',this.form);
-    },
+    // formDataUpdat(){
+    //   this.$store.commit('receiveListModule/formValuesStore',this.form);
+    // },
   },
 
   created() {
         this.byr_buyer_id=this.$session.get("byr_buyer_id");
         this.form.byr_buyer_id=this.byr_buyer_id;
+        this.$store.commit('receiveListModule/formValuesStoreBYRID',this.byr_buyer_id);
+        this.form = this.$store.getters['receiveListModule/getFormData'];
         this.getbuyerJsonSettingvalue();
         this.getAllReceivedItem();
         // Fire.$on("LoadAllReceiveItem", () => {
@@ -376,7 +378,7 @@ export default {
         Fire.$emit("byr_has_selected",this.byr_buyer_id);
         Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
         Fire.$emit("loadPageTitle", "受領データ一覧");
-        this.form = this.$store.getters['receiveListModule/getFormData'];
+        
   },
   mounted() {},
 };

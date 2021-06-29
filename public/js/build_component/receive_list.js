@@ -377,14 +377,16 @@ __webpack_require__.r(__webpack_exports__);
 
         _this3.downloadFromUrl(data);
       });
-    },
-    formDataUpdat: function formDataUpdat() {
-      this.$store.commit('receiveListModule/formValuesStore', this.form);
-    }
+    } // formDataUpdat(){
+    //   this.$store.commit('receiveListModule/formValuesStore',this.form);
+    // },
+
   },
   created: function created() {
     this.byr_buyer_id = this.$session.get("byr_buyer_id");
     this.form.byr_buyer_id = this.byr_buyer_id;
+    this.$store.commit('receiveListModule/formValuesStoreBYRID', this.byr_buyer_id);
+    this.form = this.$store.getters['receiveListModule/getFormData'];
     this.getbuyerJsonSettingvalue();
     this.getAllReceivedItem(); // Fire.$on("LoadAllReceiveItem", () => {
     //   this.getAllReceivedItem();
@@ -393,7 +395,6 @@ __webpack_require__.r(__webpack_exports__);
     Fire.$emit("byr_has_selected", this.byr_buyer_id);
     Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
     Fire.$emit("loadPageTitle", "受領データ一覧");
-    this.form = this.$store.getters['receiveListModule/getFormData'];
   },
   mounted: function mounted() {}
 });
@@ -455,7 +456,6 @@ var render = function() {
                         attrs: { type: "date" },
                         domProps: { value: _vm.form.receive_date_from },
                         on: {
-                          change: _vm.formDataUpdat,
                           input: function($event) {
                             if ($event.target.composing) {
                               return
@@ -484,7 +484,6 @@ var render = function() {
                         attrs: { type: "date" },
                         domProps: { value: _vm.form.receive_date_to },
                         on: {
-                          change: _vm.formDataUpdat,
                           input: function($event) {
                             if ($event.target.composing) {
                               return
