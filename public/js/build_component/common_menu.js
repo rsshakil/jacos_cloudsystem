@@ -82,7 +82,7 @@ var render = function() {
           },
           [
             _c("b-icon", { attrs: { icon: "gear-fill", "font-scale": "1.2" } }),
-            _vm._v("\r\n            CMN")
+            _vm._v("\n            CMN")
           ],
           1
         ),
@@ -120,9 +120,9 @@ var render = function() {
                         attrs: { icon: "person-circle", "font-scale": "1.2" }
                       }),
                       _vm._v(
-                        "\r\n                  " +
+                        "\n                  " +
                           _vm._s(_vm.myLang.partner_management) +
-                          "\r\n                  "
+                          "\n                  "
                       )
                     ],
                     1
@@ -156,9 +156,9 @@ var render = function() {
                         attrs: { icon: "person-circle", "font-scale": "1.2" }
                       }),
                       _vm._v(
-                        "\r\n                  " +
+                        "\n                  " +
                           _vm._s(_vm.myLang.user_management) +
-                          "\r\n                  "
+                          "\n                  "
                       )
                     ],
                     1

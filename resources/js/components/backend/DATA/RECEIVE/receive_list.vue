@@ -11,11 +11,11 @@
             <td class="cl_custom_color">受信日</td>
             <td>
              <div class="input-group">
-                    <input type="date" class="form-control" v-model="form.receive_date_from">
+                    <input type="date" class="form-control" v-model="form.receive_date_from" @change="formDataUpdat">
                     <div class="input-group-prepend">
                         <span class="input-group-text">~</span>
                     </div>
-                    <input type="date" class="form-control" v-model="form.receive_date_to">
+                    <input type="date" class="form-control" v-model="form.receive_date_to" @change="formDataUpdat">
                 </div>
 
             </td>
@@ -289,7 +289,7 @@ export default {
       order_customer_code_lists: {},
       showAllCustomerCodeListModal:false,
       byr_buyer_id:null,
-      form: new Form({
+      form: {
         select_field_per_page_num:10,
         page:1,
         adm_user_id: Globals.user_info_id,
@@ -310,7 +310,7 @@ export default {
         page_title:'receive_list',
         downloadType:1
 
-      }),
+      },
     };
   },
   beforeCreate: function() {
@@ -360,6 +360,9 @@ export default {
           this.downloadFromUrl(data);
         });
     },
+    formDataUpdat(){
+      this.$store.commit('receiveListModule/formValuesStore',this.form);
+    },
   },
 
   created() {
@@ -373,6 +376,7 @@ export default {
         Fire.$emit("byr_has_selected",this.byr_buyer_id);
         Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
         Fire.$emit("loadPageTitle", "受領データ一覧");
+        this.form = this.$store.getters['receiveListModule/getFormData'];
   },
   mounted() {},
 };

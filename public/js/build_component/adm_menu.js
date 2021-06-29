@@ -101,7 +101,7 @@ var render = function() {
           },
           [
             _c("b-icon", { attrs: { icon: "gear-fill", "font-scale": "1.2" } }),
-            _vm._v("\r\n            ADM")
+            _vm._v("\n            ADM")
           ],
           1
         ),
@@ -136,9 +136,9 @@ var render = function() {
                         attrs: { icon: "person-circle", "font-scale": "1.2" }
                       }),
                       _vm._v(
-                        "\r\n                  " +
+                        "\n                  " +
                           _vm._s(_vm.myLang.manage_users) +
-                          "\r\n                "
+                          "\n                "
                       )
                     ],
                     1
@@ -172,9 +172,9 @@ var render = function() {
                         }
                       }),
                       _vm._v(
-                        "\r\n                  " +
+                        "\n                  " +
                           _vm._s(_vm.myLang.role_management) +
-                          "\r\n                "
+                          "\n                "
                       )
                     ],
                     1
@@ -208,9 +208,9 @@ var render = function() {
                         }
                       }),
                       _vm._v(
-                        "\r\n                  " +
+                        "\n                  " +
                           _vm._s(_vm.myLang.permission_management) +
-                          "\r\n                "
+                          "\n                "
                       )
                     ],
                     1
@@ -247,9 +247,9 @@ var render = function() {
                         }
                       }),
                       _vm._v(
-                        "\r\n                  " +
+                        "\n                  " +
                           _vm._s(_vm.myLang.assign_role_to_user) +
-                          "\r\n                "
+                          "\n                "
                       )
                     ],
                     1
@@ -283,9 +283,9 @@ var render = function() {
                         attrs: { icon: "unlock-fill", "font-scale": "1.2" }
                       }),
                       _vm._v(
-                        "\r\n                  " +
+                        "\n                  " +
                           _vm._s(_vm.myLang.assign_permission_to_user) +
-                          "\r\n                "
+                          "\n                "
                       )
                     ],
                     1
