@@ -630,167 +630,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -799,7 +638,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   // props: ["param_data"],
   data: function data() {
-    var _Form;
+    var _form;
 
     return {
       byr_buyer_id: null,
@@ -846,7 +685,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       null_selected: [],
       not_null_selected: [],
       null_selected_message: false,
-      form: new Form((_Form = {
+      form: (_form = {
         data_order_id: null,
         byr_buyer_id: null,
         adm_user_id: Globals.user_info_id,
@@ -864,7 +703,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         sort_by: 'data_shipment_voucher_id',
         sort_type: "ASC",
         page_title: 'order_detail_list'
-      }, _defineProperty(_Form, "adm_user_id", Globals.user_info_id), _defineProperty(_Form, "byr_buyer_id", null), _defineProperty(_Form, "par_shi_code", null), _defineProperty(_Form, "par_rec_code", null), _defineProperty(_Form, "order_item_code", null), _defineProperty(_Form, "page", 1), _defineProperty(_Form, "per_page", 10), _defineProperty(_Form, "data_count", false), _defineProperty(_Form, "send_data", false), _defineProperty(_Form, "shipment_download_type", 'pdf'), _Form)),
+      }, _defineProperty(_form, "adm_user_id", Globals.user_info_id), _defineProperty(_form, "byr_buyer_id", null), _defineProperty(_form, "par_shi_code", null), _defineProperty(_form, "par_rec_code", null), _defineProperty(_form, "order_item_code", null), _defineProperty(_form, "page", 1), _defineProperty(_form, "per_page", 10), _defineProperty(_form, "data_count", false), _defineProperty(_form, "send_data", false), _defineProperty(_form, "shipment_download_type", 'pdf'), _form),
       param_data: [],
       item_search_q: [] // buyer_settings:null,
 
@@ -1268,19 +1107,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         _this11.get_all_byr_order_detail();
       });
-    }
+    } // formDataUpdat(){
+    //   this.$store.commit('orderDetailsModule/formValuesStore',this.form);
+    // },
+
   },
   created: function created() {
     var _this12 = this;
 
     // this.byr_session_check()
-    this.byr_buyer_id = this.$session.get("byr_buyer_id");
-    this.form.byr_buyer_id = this.byr_buyer_id;
-    this.data_order_id = this.$route.query.data_order_id;
-    this.form.data_order_id = this.data_order_id;
+    this.byr_buyer_id = this.$session.get("byr_buyer_id"); // this.form.byr_buyer_id=this.byr_buyer_id;
+
+    this.updateFieldValue(this.byr_buyer_id, 'byr_buyer_id', 'orderDetailsModule', 'form');
+    this.data_order_id = this.$route.query.data_order_id; // this.form.data_order_id=this.data_order_id
+
+    this.updateFieldValue(this.data_order_id, 'data_order_id', 'orderDetailsModule', 'form');
+    this.form = this.$store.getters['orderDetailsModule/getFormData'];
     Fire.$emit("byr_has_selected", this.byr_buyer_id);
     Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
-    this.getbuyerJsonSettingvalue();
+    this.getbuyerJsonSettingvalue(this.form.page);
     this.param_data = this.$route.query;
     this.item_search_q = this.$route.query; // console.log(this.param_data);
 

@@ -538,50 +538,6 @@
                 </td>
             </tr>
         </tbody>
-
-        <!--
-          <tr>
-            <td class="cl_custom_color">納品先コード</td>
-            <td>
-              <input
-                type="text"
-                class="form-control"
-                v-model="form.deliveryCode"
-              />
-            </td>
-            <td class="cl_custom_color">納品先名</td>
-            <td>
-              <input
-                type="text"
-                class="form-control"
-                v-model="form.deliveryName"
-              />
-            </td>
-          </tr>
-          <tr>
-            <td class="cl_custom_color">納品先形態区分</td>
-            <td>
-              <select
-                class="form-control"
-                v-model="form.deliveryDestnation"
-                style="width: 220px"
-              >
-                <option value="">全て</option>
-                <option :value="item" v-for="(item,i) in deliveryDestnationOptionList" :key="i"
-                >
-                  {{ item }}
-                </option>
-              </select>
-            </td>
-            <td class="cl_custom_color">納品可能日</td>
-            <td>
-              <input
-                type="date"
-                class="form-control"
-                v-model="form.deliveryDate"
-              />
-            </td>
-          </tr>-->
         </table>
       </div>
     </b-modal>
@@ -620,49 +576,6 @@
                 </td>
             </tr>
         </tbody>
-
-
-        <!--
-          <tr>
-            <td class="cl_custom_color">納品先コード</td>
-            <td>
-              <input
-                type="text"
-                class="form-control"
-                v-model="form.deliveryCode"
-              />
-            </td>
-            <td class="cl_custom_color">納品先名</td>
-            <td>
-              <input
-                type="text"
-                class="form-control"
-                v-model="form.deliveryName"
-              />
-            </td>
-          </tr>
-          <tr>
-            <td class="cl_custom_color">納品先形態区分</td>
-            <td>
-              <select
-                class="form-control"
-                v-model="form.deliveryDestnation"
-                style="width: 220px">
-                <option value="">全て</option>
-                <option :value="item" v-for="(item,i) in deliveryDestnationOptionList" :key="i">
-                  {{ item }}
-                </option>
-              </select>
-            </td>
-            <td class="cl_custom_color">納品可能日</td>
-            <td>
-              <input
-                type="date"
-                class="form-control"
-                v-model="form.deliveryDate"
-              />
-            </td>
-          </tr>-->
         </table>
       </div>
     </b-modal>
@@ -695,80 +608,6 @@
                     </td>
                 </tr>
             </tbody>
-
-        <!--
-          <tr>
-            <td class="cl_custom_color">商品コード（発注用）</td>
-            <td>
-              <input
-                type="text"
-                class="form-control"
-                v-model="form.deliveryCode"
-              />
-            </td>
-            <td class="cl_custom_color">JANコード</td>
-            <td>
-              <input
-                type="text"
-                class="form-control"
-                v-model="form.deliveryName"
-              />
-            </td>
-          </tr>
-
-          <tr>
-            <td class="cl_custom_color">商品名</td>
-            <td colspan="3"><input type="" class="form-control" /></td>
-          </tr>
-          <tr>
-            <td class="cl_custom_color">規格</td>
-            <td colspan="3"><input type="" class="form-control" /></td>
-          </tr>
-          <tr>
-            <td class="cl_custom_color">取引先コード</td>
-            <td>
-              <input
-                type="text"
-                class="form-control"
-                v-model="form.deliveryCode"
-              />
-            </td>
-            <td class="cl_custom_color">納品先コード</td>
-            <td>
-              <input
-                type="text"
-                class="form-control"
-                v-model="form.deliveryName"
-              />
-            </td>
-          </tr>
-          <tr>
-            <td class="cl_custom_color">部門</td>
-            <td>
-              <select
-                class="form-control"
-                v-model="form.deliveryDestnation"
-                style="width: 220px"
-              >
-                <option value="">全て</option>
-                <option :value="item" v-for="(item,i) in deliveryDestnationOptionList" :key="i">
-                  {{ item }}
-                </option>
-              </select>
-            </td>
-            <td class="cl_custom_color">不定貴区分</td>
-            <td>
-              <select
-                class="form-control"
-                v-model="form.deliveryDestnation"
-                style="width: 220px">
-                <option value="">全て</option>
-                <option :value="item" v-for="(item,i) in deliveryDestnationOptionList" :key="i">
-                  {{ item }}
-                </option>
-              </select>
-            </td>
-          </tr>-->
         </table>
       </div>
     </b-modal>
@@ -827,7 +666,7 @@ export default {
         null_selected: [],
         not_null_selected: [],
         null_selected_message: false,
-        form: new Form({
+        form: {
             data_order_id:null,
             byr_buyer_id:null,
             adm_user_id:Globals.user_info_id,
@@ -855,7 +694,7 @@ export default {
             data_count: false,
             send_data:false,
             shipment_download_type:'pdf'
-        }),
+        },
         param_data: [],
         item_search_q: [],
       // buyer_settings:null,
@@ -1236,17 +1075,23 @@ export default {
            this.get_all_byr_order_detail();
         });
     },
+    // formDataUpdat(){
+    //   this.$store.commit('orderDetailsModule/formValuesStore',this.form);
+    // },
   },
 
   created() {
     // this.byr_session_check()
     this.byr_buyer_id=this.$session.get("byr_buyer_id");
-    this.form.byr_buyer_id=this.byr_buyer_id;
+    // this.form.byr_buyer_id=this.byr_buyer_id;
+    this.updateFieldValue(this.byr_buyer_id, 'byr_buyer_id','orderDetailsModule','form')
     this.data_order_id=this.$route.query.data_order_id
-    this.form.data_order_id=this.data_order_id
+    // this.form.data_order_id=this.data_order_id
+    this.updateFieldValue(this.data_order_id, 'data_order_id','orderDetailsModule','form')
+    this.form = this.$store.getters['orderDetailsModule/getFormData'];
     Fire.$emit("byr_has_selected", this.byr_buyer_id);
     Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
-this.getbuyerJsonSettingvalue();
+this.getbuyerJsonSettingvalue(this.form.page);
     this.param_data = this.$route.query;
     this.item_search_q = this.$route.query;
     // console.log(this.param_data);

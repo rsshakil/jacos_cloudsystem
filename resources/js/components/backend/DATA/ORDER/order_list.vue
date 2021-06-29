@@ -172,16 +172,16 @@
           <thead>
             <tr>
               <th style="cursor: pointer">No</th>
-              <th class="pointer_class" @click="sorting('receive_datetime')">{{ myLang.receive_date }} <span class="float-right" :class="iconSet('receive_datetime','orderModule')"></span></th>
-              <th class="pointer_class" @click="sorting('mes_lis_ord_par_sel_code')">{{ myLang.customer_code }} <span class="float-right" :class="iconSet('mes_lis_ord_par_sel_code','orderModule')"></span></th>
-              <th class="pointer_class" @click="sorting('mes_lis_ord_tra_dat_delivery_date')">{{ myLang.delivery_date }} <span class="float-right" :class="iconSet('mes_lis_ord_tra_dat_delivery_date','orderModule')"></span></th>
-              <th class="pointer_class" @click="sorting('mes_lis_ord_tra_goo_major_category')">部門 コード <span class="float-right" :class="iconSet('mes_lis_ord_tra_goo_major_category','orderModule')"></span></th>
-              <th class="pointer_class" @click="sorting('mes_lis_ord_log_del_delivery_service_code')">便 <span class="float-right" :class="iconSet('mes_lis_ord_log_del_delivery_service_code','orderModule')"></span></th>
-              <th class="pointer_class" @click="sorting('mes_lis_ord_tra_ins_temperature_code')">温度区分 <span class="float-right" :class="iconSet('mes_lis_ord_tra_ins_temperature_code','orderModule')"></span></th>
+              <th class="pointer_class" @click="sorting('receive_datetime')">{{ myLang.receive_date }} <span class="float-right" :class="orderIconSet('receive_datetime','orderModule')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_ord_par_sel_code')">{{ myLang.customer_code }} <span class="float-right" :class="orderIconSet('mes_lis_ord_par_sel_code','orderModule')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_ord_tra_dat_delivery_date')">{{ myLang.delivery_date }} <span class="float-right" :class="orderIconSet('mes_lis_ord_tra_dat_delivery_date','orderModule')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_ord_tra_goo_major_category')">部門 コード <span class="float-right" :class="orderIconSet('mes_lis_ord_tra_goo_major_category','orderModule')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_ord_log_del_delivery_service_code')">便 <span class="float-right" :class="orderIconSet('mes_lis_ord_log_del_delivery_service_code','orderModule')"></span></th>
+              <th class="pointer_class" @click="sorting('mes_lis_ord_tra_ins_temperature_code')">温度区分 <span class="float-right" :class="orderIconSet('mes_lis_ord_tra_ins_temperature_code','orderModule')"></span></th>
               <th class="pointer_class">伝票 枚数</th>
               <th class="pointer_class">未確定 伝票枚数</th>
               <th class="pointer_class">未送信 伝票枚数</th>
-              <th class="pointer_class" @click="sorting('check_datetime')">参照状況 <span class="float-right" :class="iconSet('check_datetime','orderModule')"></span></th>
+              <th class="pointer_class" @click="sorting('check_datetime')">参照状況 <span class="float-right" :class="orderIconSet('check_datetime','orderModule')"></span></th>
             </tr>
           </thead>
           <tbody>

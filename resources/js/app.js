@@ -253,7 +253,9 @@ router.beforeEach(async(to, from, next) => {
 //     console.log("Loaded");
 // });
 
-import App from "./components/backend/app.vue";
+// import App from "./components/backend/app.vue";
+const App = () =>
+    import ( /* webpackChunkName: "App" */ './components/backend/app.vue')
 import { nextTick } from "q";
 import Axios from "axios";
 new Vue({

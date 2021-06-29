@@ -53,8 +53,7 @@
           <tr>
             <td class="cl_custom_color">商品コード</td>
             <td>
-              <input
-                type="text" class="form-control topHeaderInputFieldBtn"/>
+              <input type="text" class="form-control topHeaderInputFieldBtn"/>
               <button @click="searchBypopupmodal" class="btn btn-primary active">参照</button>
             </td>
             <td class="cl_custom_color">JANコード</td>
@@ -137,16 +136,14 @@
                     :to="{
                       name: 'item_search_detail',
                       query: {
-                      data_order_id: item_search_query.data_order_id,
-                      delivery_date: item_search_query.delivery_date,
-                      major_category:item_search_query.major_category,
-                      delivery_service_code:item_search_query.delivery_service_code,
-                      temperature_code:item_search_query.temperature_code,
+                      data_order_id: order_info.data_order_id,
+                      delivery_date: order_info.mes_lis_shi_tra_dat_delivery_date,
+                      major_category:order_info.mes_lis_shi_tra_goo_major_category,
+                      delivery_service_code:order_info.mes_lis_shi_log_del_delivery_service_code,
+                      temperature_code:order_info.mes_lis_shi_tra_ins_temperature_code,
                       item_code:order_detail_list.mes_lis_shi_lin_ite_order_item_code,
                     },
-                    }"
-                    class=""
-                    >
+                    }" class="">
                   {{ order_detail_list.mes_lis_shi_lin_ite_order_item_code }}
                   </router-link>
                 </td>
@@ -251,31 +248,18 @@ export default {
         parent: { name: 'order_list_details', query: {}},
         order_info:[],
         item_search_query:[],
-        // deliverySearchForm3:{},
         order_search_modal3:false,
         deliveryDestnationOptionList:{},
         order_item_lists:{},
-        form: new Form({
+        form: {
             mes_lis_shi_lin_ite_gtin:null,
-            mes_lis_shi_log_del_delivery_service_code:null,
-            mes_lis_shi_par_sel_code:null,
-            mes_lis_shi_par_sel_name:null,
-            mes_lis_shi_tra_dat_delivery_date:null,
-            mes_lis_shi_tra_goo_major_category:null,
-            mes_lis_shi_tra_ins_temperature_code:null,
-            mes_lis_shi_tra_trade_number:null,
-            mes_lis_shi_tra_trade_number:null,
-            receive_datetime:null,
-            select_field_per_page_num:10,
-            data_order_id:null,
-            delivery_date:'',
-            major_category:'',
-            delivery_service_code:'',
-            temperature_code:'',
+            mes_lis_shi_lin_ite_order_item_code:null,
+            per_page:10,
             page:1,
             sort_by:'mes_lis_shi_lin_ite_order_item_code ',
             sort_type:"ASC",
-        }),
+            order_info:[],
+        },
     };
   },
   beforeCreate: function() {
@@ -314,30 +298,23 @@ export default {
     Fire.$emit("byr_has_selected", this.$session.get("byr_buyer_id"));
     Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
    // this.loader = Vue.$loading.show();
-this.$session.set("order_item_search_query",this.$route.query)
+    this.$session.set("order_item_search_query",this.$route.query)
     this.order_info=this.$session.get("order_info");
+    this.order_info['data_order_id']=this.$route.query.data_order_id;
 
-    this.form.mes_lis_shi_log_del_delivery_service_code=this.order_info.mes_lis_shi_log_del_delivery_service_code
-    this.form.mes_lis_shi_par_sel_code=this.order_info.mes_lis_shi_par_sel_code
-    this.form.mes_lis_shi_par_sel_name=this.order_info.mes_lis_shi_par_sel_name
-    this.form.mes_lis_shi_tra_dat_delivery_date=this.order_info.mes_lis_shi_tra_dat_delivery_date
-    this.form.mes_lis_shi_tra_goo_major_category=this.order_info.mes_lis_shi_tra_goo_major_category
-    this.form.mes_lis_shi_tra_ins_temperature_code=this.order_info.mes_lis_shi_tra_ins_temperature_code
-    this.form.mes_lis_shi_tra_trade_number=this.order_info.mes_lis_shi_tra_trade_number
-    this.form.receive_datetime=this.order_info.receive_datetime
-this.getbuyerJsonSettingvalue();
-    this.form.data_order_id=this.$route.query.data_order_id;
-this.form.major_category=this.$route.query.major_category;
-this.form.delivery_service_code=this.$route.query.delivery_service_code;
-this.form.delivery_date=this.$route.query.delivery_date;
-this.form.temperature_code=this.$route.query.temperature_code;
+    // this.form.order_info=this.order_info;
+    this.updateFieldValue(this.order_info, 'order_info','itemSearchModule','form')
+    this.form = this.$store.getters['itemSearchModule/getFormData'];
+
+    this.getbuyerJsonSettingvalue();
     this.getItemSearchData();
     Fire.$on("getItemSearchData", () => {
       this.getItemSearchData();
     });
-    this.item_search_query = this.$route.query;
+    // this.item_search_query = this.$route.query;
     this.parent.query = this.$session.get('order_param_data');
     Fire.$emit("loadPageTitle", "受注商品別一覧");
+
   },
   mounted() {
   },
