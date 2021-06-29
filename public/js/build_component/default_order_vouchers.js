@@ -802,9 +802,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     var _Form;
 
     return {
-      byr_buyer_id: 1,
+      byr_buyer_id: null,
       adm_user_id: Globals.user_info_id,
-      data_order_id: 1,
+      data_order_id: null,
       rows: 100,
       currentPage: 1,
       // today: new Date().toISOString().slice(0, 10),
@@ -847,8 +847,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       not_null_selected: [],
       null_selected_message: false,
       form: new Form((_Form = {
-        data_order_id: 1,
-        byr_buyer_id: 1,
+        data_order_id: null,
+        byr_buyer_id: null,
         adm_user_id: Globals.user_info_id,
         order_info: [],
         downloadType: 1,
@@ -872,16 +872,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     //get Table data
-    getOrderDetails: function getOrderDetails() {
+    get_all_byr_order_detail: function get_all_byr_order_detail() {
       var _this2 = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       var loader = Vue.$loading.show();
-      this.updateFormValue(page, 'page', 'orderDetailsModule'); // this.form.page=page
-      // this.form.per_page=this.select_field_per_page_num
-      // this.form.order_info=this.param_data
-      // this.select_field_page_num = page;
-
+      this.form.page = page;
+      this.form.per_page = this.select_field_per_page_num;
+      this.form.order_info = this.param_data;
+      this.select_field_page_num = page;
       axios.post(this.BASE_URL + "api/order_details", this.form).then(function (_ref) {
         var data = _ref.data;
         _this2.order_detail_lists = data.order_list_detail;
@@ -897,7 +896,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     sorting: function sorting(sorted_field) {
       this.form.sort_by = sorted_field;
       this.form.sort_type = this.form.sort_type == "ASC" ? "DESC" : "ASC";
-      this.getOrderDetails();
+      this.get_all_byr_order_detail();
     },
     setRowscodeIntoForm1: function setRowscodeIntoForm1(valCode) {
       this.form.par_shi_code = valCode;
@@ -946,12 +945,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     selectNumPage: function selectNumPage() {
       if (this.select_field_page_num != 0) {
-        this.getOrderDetails(this.select_field_page_num);
+        this.get_all_byr_order_detail(this.select_field_page_num);
       }
     },
     selectNumPerPage: function selectNumPerPage() {
       if (this.select_field_per_page_num != 0) {
-        Fire.$emit("LoadByrorderDetail", this.select_field_page_num); // this.getOrderDetails(this.select_field_page_num);
+        Fire.$emit("LoadByrorderDetail", this.select_field_page_num); // this.get_all_byr_order_detail(this.select_field_page_num);
       }
     },
     checkAll: function checkAll() {
@@ -1213,7 +1212,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               _this.alert_icon = "success";
               _this.alert_title = "完了";
 
-              _this.getOrderDetails();
+              _this.get_all_byr_order_detail();
             }
 
             _this.confirmButtonText = '完了';
@@ -1267,40 +1266,31 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         loaderrrsss.hide();
 
-        _this11.getOrderDetails();
+        _this11.get_all_byr_order_detail();
       });
     }
   },
   created: function created() {
     var _this12 = this;
 
-    console.log(this.$session.get("order_details")); // this.byr_session_check()
-    // this.byr_buyer_id=this.$session.get("byr_buyer_id");
+    // this.byr_session_check()
+    this.byr_buyer_id = this.$session.get("byr_buyer_id");
+    this.form.byr_buyer_id = this.byr_buyer_id;
+    this.data_order_id = this.$route.query.data_order_id;
+    this.form.data_order_id = this.data_order_id;
+    Fire.$emit("byr_has_selected", this.byr_buyer_id);
+    Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
+    this.getbuyerJsonSettingvalue();
+    this.param_data = this.$route.query;
+    this.item_search_q = this.$route.query; // console.log(this.param_data);
 
-    this.updateFieldValue(this.$session.get("byr_buyer_id"), 'byr_buyer_id', 'orderDetailsModule');
-    this.updateFormValue(this.$session.get("byr_buyer_id"), 'byr_buyer_id', 'orderDetailsModule');
-    var param_data = this.$session.get("order_details");
-    this.updateFieldValue(param_data.data_order_id, 'data_order_id', 'orderDetailsModule');
-    this.updateFormValue(param_data.data_order_id, 'data_order_id', 'orderDetailsModule');
-    this.updateFieldValue(param_data, 'param_data', 'orderDetailsModule');
-    this.updateFormValue(param_data, 'order_info', 'orderDetailsModule'); // this.form.byr_buyer_id=this.byr_buyer_id;
-    // this.data_order_id=this.$route.query.data_order_id
-    // this.form.data_order_id=this.data_order_id
+    this.$session.set("order_param_data", this.param_data); // this.data_order_id = this.$route.params.data_order_id;
 
-    Fire.$emit("byr_has_selected", this.$store.state.orderDetailsModule.byr_buyer_id);
-    Fire.$emit("permission_check_for_buyer", this.$store.state.orderDetailsModule.byr_buyer_id);
-    this.getbuyerJsonSettingvalue(); // this.updateFormValue(this.$route.query, 'param_data','orderDetailsModule')
-    // this.param_data = this.$route.query;
-    // this.item_search_q = this.$route.query;
-    //   this.$session.set("order_param_data",this.$route.query)
-    // this.data_order_id = this.$route.params.data_order_id;
-
-    var page = this.$store.state.orderDetailsModule.form.page;
-    this.getOrderDetails(page);
+    this.get_all_byr_order_detail();
     Fire.$on("LoadByrorderDetail", function () {
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
 
-      _this12.getOrderDetails(page);
+      _this12.get_all_byr_order_detail(page);
     });
     Fire.$emit("loadPageTitle", "受注伝票一覧");
   },
@@ -1987,7 +1977,7 @@ var render = function() {
               {
                 staticClass: "btn btn-primary active srchBtn",
                 attrs: { type: "button" },
-                on: { click: _vm.getOrderDetails }
+                on: { click: _vm.get_all_byr_order_detail }
               },
               [_vm._v("\n        " + _vm._s(_vm.myLang.search) + "\n      ")]
             )
@@ -2029,7 +2019,7 @@ var render = function() {
                         nextText: ">",
                         alignment: "center"
                       },
-                      on: { paginateTo: _vm.getOrderDetails }
+                      on: { paginateTo: _vm.get_all_byr_order_detail }
                     })
                   ],
                   1

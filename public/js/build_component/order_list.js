@@ -1195,28 +1195,35 @@ var render = function() {
                           )
                         ]),
                         _vm._v(" "),
-                        _c("td", [
-                          _c(
-                            "button",
-                            {
-                              on: {
-                                click: function($event) {
-                                  return _vm.goToDetailsPage(
-                                    "order_list_details",
-                                    order_list
-                                  )
+                        _c(
+                          "td",
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                attrs: {
+                                  to: {
+                                    name: "order_list_details",
+                                    query: {
+                                      data_order_id: order_list.data_order_id,
+                                      delivery_date: order_list.mes_lis_ord_tra_dat_delivery_date.valueOf(),
+                                      major_category:
+                                        order_list.mes_lis_ord_tra_goo_major_category,
+                                      delivery_service_code:
+                                        order_list.mes_lis_ord_log_del_delivery_service_code,
+                                      temperature_code:
+                                        order_list.mes_lis_ord_tra_ins_temperature_code,
+                                      sel_code:
+                                        order_list.mes_lis_ord_par_sel_code
+                                    }
+                                  }
                                 }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                      " +
-                                  _vm._s(order_list.receive_datetime) +
-                                  "\n                  "
-                              )
-                            ]
-                          )
-                        ]),
+                              },
+                              [_vm._v(_vm._s(order_list.receive_datetime))]
+                            )
+                          ],
+                          1
+                        ),
                         _vm._v(" "),
                         _c("td", [
                           _vm._v(

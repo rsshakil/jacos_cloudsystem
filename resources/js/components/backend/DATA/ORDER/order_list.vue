@@ -188,10 +188,10 @@
             <tr v-for="(order_list, index) in $store.state.orderModule.order_lists.data" :key="index">
               <td>{{ $store.state.orderModule.order_lists.current_page * $store.state.orderModule.form.per_page - $store.state.orderModule.form.per_page + index + 1 }}</td>
               <td>
-                  <button @click="goToDetailsPage('order_list_details',order_list)">
+                  <!-- <button @click="goToDetailsPage('order_list_details',order_list)">
                       {{ order_list.receive_datetime }}
-                  </button>
-                <!-- <router-link
+                  </button> -->
+                <router-link
                   :to="{
                     name: 'order_list_details',
                     query: {
@@ -207,7 +207,7 @@
                         order_list.mes_lis_ord_par_sel_code,
                     },
                   }"
-                  class="">{{ order_list.receive_datetime }}</router-link> -->
+                  class="">{{ order_list.receive_datetime }}</router-link>
               </td>
               <td>
                 {{ order_list.mes_lis_ord_par_sel_code }}

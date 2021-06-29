@@ -1,7 +1,7 @@
 const state = {
-    // byr_buyer_id: null,
+    byr_buyer_id: null,
     adm_user_id: Globals.user_info_id,
-    // data_order_id: null,
+    data_order_id: null,
     // rows: 100,
     // currentPage: 1,
     // // today: new Date().toISOString().slice(0, 10),
@@ -28,15 +28,15 @@ const state = {
     // select_field_page_num: 0,
     // select_field_per_page_num: 10,
     // isCheckAll: false,
-    // fixedSpecialOptionList: [
-    //     { "01": "定番" },
-    //     { "02": "準特価" },
-    //     { "03": "特売" },
-    // ],
-    // situationOptionList: ["未確定あり", "確定済"],
-    // printingStatusOptionList: ["未印刷あり", "印刷済"],
+    fixedSpecialOptionList: [
+        { "01": "定番" },
+        { "02": "準特価" },
+        { "03": "特売" },
+    ],
+    situationOptionList: ["未確定あり", "確定済"],
+    printingStatusOptionList: ["未印刷あり", "印刷済"],
     // deliveryDestnationOptionList: ["店舗", "物流センター"],
-    // send_datetime_options: ["未送信あり", "送信済"],
+    send_datetime_options: ["未送信あり", "送信済"],
     // date_null: false,
     // null_selected: [],
     // not_null_selected: [],
@@ -48,32 +48,24 @@ const state = {
         adm_user_id: Globals.user_info_id,
         byr_buyer_id: null,
         data_order_id: null,
+        page_title: 'order_detail_list',
         per_page: 10,
         page: 1,
+        sort_by: 'data_shipment_voucher_id',
+        sort_type: "ASC",
         downloadType: 1,
         order_info: [],
-        // printingStatus: "*",
-        // situation: "*",
-        // fixedSpecial: "*",
-        // deliveryDestnation: "",
-        // deliveryCode: "",
-        // deliveryDate: "",
-        // deliveryName: "",
-        // mes_lis_shi_tra_trade_number: null,
-        // send_datetime: '*',
-        // sort_by: 'data_shipment_voucher_id',
-        // sort_type: "ASC",
-        // page_title: 'order_detail_list',
-        // adm_user_id: Globals.user_info_id,
-        // byr_buyer_id: null,
-        // par_shi_code: null,
-        // par_rec_code: null,
-        // order_item_code: null,
-        // page: 1,
-        // per_page: 10,
-        // data_count: false,
-        // send_data: false,
-        // shipment_download_type: 'pdf'
+        par_shi_code: null,
+        mes_lis_shi_tra_trade_number: null,
+        par_rec_code: null,
+        order_item_code: null,
+        fixedSpecial: "*",
+        printingStatus: "*",
+        situation: "*",
+        send_datetime: '*',
+        data_count: false,
+        send_data: false,
+        shipment_download_type: 'pdf'
     }
 
 };
@@ -81,8 +73,8 @@ const getters = {};
 const actions = {};
 const mutations = {
     updateFieldValue(state, { target, value, data_for }) {
-        // console.log(target)
-        // console.log(value)
+        console.log(target)
+        console.log(value)
         if (data_for == 'form') {
             state.form[target] = value;
         } else {
