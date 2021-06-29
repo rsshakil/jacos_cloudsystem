@@ -142,7 +142,7 @@
       </div>
 
       <div class="col-12" style="text-align: center">
-        <button @click="getOrderDetails" class="btn btn-primary active srchBtn" type="button">
+        <button @click="get_all_byr_order_detail" class="btn btn-primary active srchBtn" type="button">
           {{ myLang.search }}
         </button>
       </div>
@@ -168,7 +168,7 @@
                   previousText="<"
                   nextText=">"
                   alignment="center"
-                  @paginateTo="getOrderDetails"
+                  @paginateTo="get_all_byr_order_detail"
                 />
               </span>
               <span class="selectPagi">
@@ -538,50 +538,6 @@
                 </td>
             </tr>
         </tbody>
-
-        <!--
-          <tr>
-            <td class="cl_custom_color">納品先コード</td>
-            <td>
-              <input
-                type="text"
-                class="form-control"
-                v-model="form.deliveryCode"
-              />
-            </td>
-            <td class="cl_custom_color">納品先名</td>
-            <td>
-              <input
-                type="text"
-                class="form-control"
-                v-model="form.deliveryName"
-              />
-            </td>
-          </tr>
-          <tr>
-            <td class="cl_custom_color">納品先形態区分</td>
-            <td>
-              <select
-                class="form-control"
-                v-model="form.deliveryDestnation"
-                style="width: 220px"
-              >
-                <option value="">全て</option>
-                <option :value="item" v-for="(item,i) in deliveryDestnationOptionList" :key="i"
-                >
-                  {{ item }}
-                </option>
-              </select>
-            </td>
-            <td class="cl_custom_color">納品可能日</td>
-            <td>
-              <input
-                type="date"
-                class="form-control"
-                v-model="form.deliveryDate"
-              />
-            </td>
-          </tr>-->
         </table>
       </div>
     </b-modal>
@@ -620,49 +576,6 @@
                 </td>
             </tr>
         </tbody>
-
-
-        <!--
-          <tr>
-            <td class="cl_custom_color">納品先コード</td>
-            <td>
-              <input
-                type="text"
-                class="form-control"
-                v-model="form.deliveryCode"
-              />
-            </td>
-            <td class="cl_custom_color">納品先名</td>
-            <td>
-              <input
-                type="text"
-                class="form-control"
-                v-model="form.deliveryName"
-              />
-            </td>
-          </tr>
-          <tr>
-            <td class="cl_custom_color">納品先形態区分</td>
-            <td>
-              <select
-                class="form-control"
-                v-model="form.deliveryDestnation"
-                style="width: 220px">
-                <option value="">全て</option>
-                <option :value="item" v-for="(item,i) in deliveryDestnationOptionList" :key="i">
-                  {{ item }}
-                </option>
-              </select>
-            </td>
-            <td class="cl_custom_color">納品可能日</td>
-            <td>
-              <input
-                type="date"
-                class="form-control"
-                v-model="form.deliveryDate"
-              />
-            </td>
-          </tr>-->
         </table>
       </div>
     </b-modal>
@@ -695,80 +608,6 @@
                     </td>
                 </tr>
             </tbody>
-
-        <!--
-          <tr>
-            <td class="cl_custom_color">商品コード（発注用）</td>
-            <td>
-              <input
-                type="text"
-                class="form-control"
-                v-model="form.deliveryCode"
-              />
-            </td>
-            <td class="cl_custom_color">JANコード</td>
-            <td>
-              <input
-                type="text"
-                class="form-control"
-                v-model="form.deliveryName"
-              />
-            </td>
-          </tr>
-
-          <tr>
-            <td class="cl_custom_color">商品名</td>
-            <td colspan="3"><input type="" class="form-control" /></td>
-          </tr>
-          <tr>
-            <td class="cl_custom_color">規格</td>
-            <td colspan="3"><input type="" class="form-control" /></td>
-          </tr>
-          <tr>
-            <td class="cl_custom_color">取引先コード</td>
-            <td>
-              <input
-                type="text"
-                class="form-control"
-                v-model="form.deliveryCode"
-              />
-            </td>
-            <td class="cl_custom_color">納品先コード</td>
-            <td>
-              <input
-                type="text"
-                class="form-control"
-                v-model="form.deliveryName"
-              />
-            </td>
-          </tr>
-          <tr>
-            <td class="cl_custom_color">部門</td>
-            <td>
-              <select
-                class="form-control"
-                v-model="form.deliveryDestnation"
-                style="width: 220px"
-              >
-                <option value="">全て</option>
-                <option :value="item" v-for="(item,i) in deliveryDestnationOptionList" :key="i">
-                  {{ item }}
-                </option>
-              </select>
-            </td>
-            <td class="cl_custom_color">不定貴区分</td>
-            <td>
-              <select
-                class="form-control"
-                v-model="form.deliveryDestnation"
-                style="width: 220px">
-                <option value="">全て</option>
-                <option :value="item" v-for="(item,i) in deliveryDestnationOptionList" :key="i">
-                  {{ item }}
-                </option>
-              </select>
-            </td>
-          </tr>-->
         </table>
       </div>
     </b-modal>
@@ -785,9 +624,9 @@ export default {
   // props: ["param_data"],
   data() {
     return {
-        byr_buyer_id:1,
+        byr_buyer_id:null,
         adm_user_id: Globals.user_info_id,
-        data_order_id:1,
+        data_order_id:null,
         rows: 100,
         currentPage: 1,
         // today: new Date().toISOString().slice(0, 10),
@@ -827,9 +666,9 @@ export default {
         null_selected: [],
         not_null_selected: [],
         null_selected_message: false,
-        form: new Form({
-            data_order_id:1,
-            byr_buyer_id:1,
+        form: {
+            data_order_id:null,
+            byr_buyer_id:null,
             adm_user_id:Globals.user_info_id,
             order_info:[],
             downloadType:1,
@@ -855,7 +694,7 @@ export default {
             data_count: false,
             send_data:false,
             shipment_download_type:'pdf'
-        }),
+        },
         param_data: [],
         item_search_q: [],
       // buyer_settings:null,
@@ -863,13 +702,12 @@ export default {
   },
   methods: {
       //get Table data
-    getOrderDetails(page = 1) {
+    get_all_byr_order_detail(page = 1) {
       let loader = Vue.$loading.show();
-      this.updateFormValue(page, 'page','orderDetailsModule')
-        // this.form.page=page
-        // this.form.per_page=this.select_field_per_page_num
-        // this.form.order_info=this.param_data
-        // this.select_field_page_num = page;
+        this.form.page=page
+        this.form.per_page=this.select_field_per_page_num
+        this.form.order_info=this.param_data
+        this.select_field_page_num = page;
         axios.post(this.BASE_URL + "api/order_details", this.form)
             .then(({ data }) => {
             this.order_detail_lists = data.order_list_detail;
@@ -883,7 +721,7 @@ export default {
       sorting(sorted_field){
           this.form.sort_by=sorted_field;
           this.form.sort_type=this.form.sort_type=="ASC"?"DESC":"ASC";
-          this.getOrderDetails();
+          this.get_all_byr_order_detail();
 
       },
       setRowscodeIntoForm1(valCode){
@@ -927,14 +765,14 @@ export default {
     },
     selectNumPage() {
       if (this.select_field_page_num != 0) {
-        this.getOrderDetails(this.select_field_page_num);
+        this.get_all_byr_order_detail(this.select_field_page_num);
       }
     },
     selectNumPerPage() {
 
       if (this.select_field_per_page_num != 0) {
         Fire.$emit("LoadByrorderDetail",this.select_field_page_num);
-        // this.getOrderDetails(this.select_field_page_num);
+        // this.get_all_byr_order_detail(this.select_field_page_num);
       }
     },
     checkAll() {
@@ -1192,7 +1030,7 @@ export default {
                 }else{
                     _this.alert_icon = "success";
                     _this.alert_title = "完了";
-                    _this.getOrderDetails()
+                    _this.get_all_byr_order_detail()
                 }
               _this.confirmButtonText = '完了';
               _this.alert_text = data.message;
@@ -1234,40 +1072,34 @@ export default {
             // console.log(data);
             _this.downloadFromUrl(data);
            loaderrrsss.hide();
-           this.getOrderDetails();
+           this.get_all_byr_order_detail();
         });
     },
+    // formDataUpdat(){
+    //   this.$store.commit('orderDetailsModule/formValuesStore',this.form);
+    // },
   },
 
   created() {
-      console.log(this.$session.get("order_details"));
     // this.byr_session_check()
-    // this.byr_buyer_id=this.$session.get("byr_buyer_id");
-    this.updateFieldValue(this.$session.get("byr_buyer_id"), 'byr_buyer_id','orderDetailsModule')
-    this.updateFormValue(this.$session.get("byr_buyer_id"), 'byr_buyer_id','orderDetailsModule')
-    var param_data= this.$session.get("order_details");
-    this.updateFieldValue(param_data.data_order_id, 'data_order_id','orderDetailsModule')
-    this.updateFormValue(param_data.data_order_id, 'data_order_id','orderDetailsModule')
-    this.updateFieldValue(param_data, 'param_data','orderDetailsModule')
-    this.updateFormValue(param_data, 'order_info','orderDetailsModule')
-
+    this.byr_buyer_id=this.$session.get("byr_buyer_id");
     // this.form.byr_buyer_id=this.byr_buyer_id;
-    // this.data_order_id=this.$route.query.data_order_id
+    this.updateFieldValue(this.byr_buyer_id, 'byr_buyer_id','orderDetailsModule','form')
+    this.data_order_id=this.$route.query.data_order_id
     // this.form.data_order_id=this.data_order_id
-    Fire.$emit("byr_has_selected", this.$store.state.orderDetailsModule.byr_buyer_id);
-    Fire.$emit("permission_check_for_buyer", this.$store.state.orderDetailsModule.byr_buyer_id);
-    this.getbuyerJsonSettingvalue();
-
-    // this.updateFormValue(this.$route.query, 'param_data','orderDetailsModule')
-    // this.param_data = this.$route.query;
-    // this.item_search_q = this.$route.query;
-
-//   this.$session.set("order_param_data",this.$route.query)
+    this.updateFieldValue(this.data_order_id, 'data_order_id','orderDetailsModule','form')
+    this.form = this.$store.getters['orderDetailsModule/getFormData'];
+    Fire.$emit("byr_has_selected", this.byr_buyer_id);
+    Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
+this.getbuyerJsonSettingvalue(this.form.page);
+    this.param_data = this.$route.query;
+    this.item_search_q = this.$route.query;
+    // console.log(this.param_data);
+  this.$session.set("order_param_data",this.param_data)
     // this.data_order_id = this.$route.params.data_order_id;
-    var page = this.$store.state.orderDetailsModule.form.page;
-    this.getOrderDetails(page);
+    this.get_all_byr_order_detail();
     Fire.$on("LoadByrorderDetail", (page=1) => {
-      this.getOrderDetails(page);
+      this.get_all_byr_order_detail(page);
     });
     Fire.$emit("loadPageTitle", "受注伝票一覧");
   },

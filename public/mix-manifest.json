@@ -1,6 +1,7 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
+    "/js/build_component/App.js": "/js/build_component/App.js",
     "/js/build_component/adm_menu.js": "/js/build_component/adm_menu.js",
     "/js/build_component/assign_permission_model.js": "/js/build_component/assign_permission_model.js",
     "/js/build_component/assign_role_model.js": "/js/build_component/assign_role_model.js",

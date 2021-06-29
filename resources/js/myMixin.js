@@ -71,7 +71,8 @@ export default {
             if (data.category_code) {
                 this.category_code = data
             }
-            //   console.log(var_name)
+            // console.log(var_name)
+            // console.log(module_name)
             //   console.log(data.target.value)
             //   console.log(this.$store)
             this.$store.commit(module_name + '/updateFieldValue', { target: var_name, value: data, data_for: data_for }, { root: true })
@@ -342,7 +343,11 @@ export default {
                     });
             }
         },
-        iconSet(text_value, module_name = 'orderModule') {
+        iconSet(text_value) {
+            // return this.$store.state[module_name].form.sort_by == text_value ? (this.$store.state[module_name].form.sort_type == 'ASC' ? 'fa fa-caret-down' : 'fa fa-caret-up') : '';
+            return this.form.sort_by == text_value ? (this.form.sort_type == 'ASC' ? 'fa fa-caret-down' : 'fa fa-caret-up') : '';
+        },
+        orderIconSet(text_value, module_name = 'orderModule') {
             return this.$store.state[module_name].form.sort_by == text_value ? (this.$store.state[module_name].form.sort_type == 'ASC' ? 'fa fa-caret-down' : 'fa fa-caret-up') : '';
             // return this.form.sort_by == text_value ? (this.form.sort_type == 'ASC' ? 'fa fa-caret-down' : 'fa fa-caret-up') : '';
         },

@@ -13,11 +13,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var advanced_laravel_vue_paginate__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(advanced_laravel_vue_paginate__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var advanced_laravel_vue_paginate_dist_advanced_laravel_vue_paginate_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! advanced-laravel-vue-paginate/dist/advanced-laravel-vue-paginate.css */ "./node_modules/advanced-laravel-vue-paginate/dist/advanced-laravel-vue-paginate.css");
 /* harmony import */ var advanced_laravel_vue_paginate_dist_advanced_laravel_vue_paginate_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(advanced_laravel_vue_paginate_dist_advanced_laravel_vue_paginate_css__WEBPACK_IMPORTED_MODULE_1__);
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-//
-//
-//
 //
 //
 //
@@ -258,8 +253,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   data: function data() {
-    var _Form;
-
     return {
       breadcumbtitle: '受注商品別一覧',
       parent: {
@@ -268,20 +261,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       },
       order_info: [],
       item_search_query: [],
-      // deliverySearchForm3:{},
       order_search_modal3: false,
       deliveryDestnationOptionList: {},
       order_item_lists: {},
-      form: new Form((_Form = {
+      form: {
         mes_lis_shi_lin_ite_gtin: null,
-        mes_lis_shi_log_del_delivery_service_code: null,
-        mes_lis_shi_par_sel_code: null,
-        mes_lis_shi_par_sel_name: null,
-        mes_lis_shi_tra_dat_delivery_date: null,
-        mes_lis_shi_tra_goo_major_category: null,
-        mes_lis_shi_tra_ins_temperature_code: null,
-        mes_lis_shi_tra_trade_number: null
-      }, _defineProperty(_Form, "mes_lis_shi_tra_trade_number", null), _defineProperty(_Form, "receive_datetime", null), _defineProperty(_Form, "select_field_per_page_num", 10), _defineProperty(_Form, "data_order_id", null), _defineProperty(_Form, "delivery_date", ''), _defineProperty(_Form, "major_category", ''), _defineProperty(_Form, "delivery_service_code", ''), _defineProperty(_Form, "temperature_code", ''), _defineProperty(_Form, "page", 1), _defineProperty(_Form, "sort_by", 'mes_lis_shi_lin_ite_order_item_code '), _defineProperty(_Form, "sort_type", "ASC"), _Form))
+        mes_lis_shi_lin_ite_order_item_code: null,
+        per_page: 10,
+        page: 1,
+        sort_by: 'mes_lis_shi_lin_ite_order_item_code ',
+        sort_type: "ASC",
+        order_info: []
+      }
     };
   },
   beforeCreate: function beforeCreate() {
@@ -322,25 +313,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     this.$session.set("order_item_search_query", this.$route.query);
     this.order_info = this.$session.get("order_info");
-    this.form.mes_lis_shi_log_del_delivery_service_code = this.order_info.mes_lis_shi_log_del_delivery_service_code;
-    this.form.mes_lis_shi_par_sel_code = this.order_info.mes_lis_shi_par_sel_code;
-    this.form.mes_lis_shi_par_sel_name = this.order_info.mes_lis_shi_par_sel_name;
-    this.form.mes_lis_shi_tra_dat_delivery_date = this.order_info.mes_lis_shi_tra_dat_delivery_date;
-    this.form.mes_lis_shi_tra_goo_major_category = this.order_info.mes_lis_shi_tra_goo_major_category;
-    this.form.mes_lis_shi_tra_ins_temperature_code = this.order_info.mes_lis_shi_tra_ins_temperature_code;
-    this.form.mes_lis_shi_tra_trade_number = this.order_info.mes_lis_shi_tra_trade_number;
-    this.form.receive_datetime = this.order_info.receive_datetime;
+    this.order_info['data_order_id'] = this.$route.query.data_order_id; // this.form.order_info=this.order_info;
+
+    this.updateFieldValue(this.order_info, 'order_info', 'itemSearchModule', 'form');
+    this.form = this.$store.getters['itemSearchModule/getFormData'];
     this.getbuyerJsonSettingvalue();
-    this.form.data_order_id = this.$route.query.data_order_id;
-    this.form.major_category = this.$route.query.major_category;
-    this.form.delivery_service_code = this.$route.query.delivery_service_code;
-    this.form.delivery_date = this.$route.query.delivery_date;
-    this.form.temperature_code = this.$route.query.temperature_code;
     this.getItemSearchData();
     Fire.$on("getItemSearchData", function () {
       _this2.getItemSearchData();
-    });
-    this.item_search_query = this.$route.query;
+    }); // this.item_search_query = this.$route.query;
+
     this.parent.query = this.$session.get('order_param_data');
     Fire.$emit("loadPageTitle", "受注商品別一覧");
   },
@@ -878,16 +860,19 @@ var render = function() {
                                     name: "item_search_detail",
                                     query: {
                                       data_order_id:
-                                        _vm.item_search_query.data_order_id,
+                                        _vm.order_info.data_order_id,
                                       delivery_date:
-                                        _vm.item_search_query.delivery_date,
+                                        _vm.order_info
+                                          .mes_lis_shi_tra_dat_delivery_date,
                                       major_category:
-                                        _vm.item_search_query.major_category,
+                                        _vm.order_info
+                                          .mes_lis_shi_tra_goo_major_category,
                                       delivery_service_code:
-                                        _vm.item_search_query
-                                          .delivery_service_code,
+                                        _vm.order_info
+                                          .mes_lis_shi_log_del_delivery_service_code,
                                       temperature_code:
-                                        _vm.item_search_query.temperature_code,
+                                        _vm.order_info
+                                          .mes_lis_shi_tra_ins_temperature_code,
                                       item_code:
                                         order_detail_list.mes_lis_shi_lin_ite_order_item_code
                                     }
@@ -1291,6 +1276,113 @@ var render = function() {
 var staticRenderFns = []
 render._withStripped = true
 
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/runtime/componentNormalizer.js ***!
+  \********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return normalizeComponent; });
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+function normalizeComponent (
+  scriptExports,
+  render,
+  staticRenderFns,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier, /* server only */
+  shadowMode /* vue-cli only */
+) {
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (render) {
+    options.render = render
+    options.staticRenderFns = staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = 'data-v-' + scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = shadowMode
+      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
+      : injectStyles
+  }
+
+  if (hook) {
+    if (options.functional) {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      var originalRender = options.render
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return originalRender(h, context)
+      }
+    } else {
+      // inject component registration as beforeCreate hook
+      var existing = options.beforeCreate
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    }
+  }
+
+  return {
+    exports: scriptExports,
+    options: options
+  }
+}
 
 
 /***/ }),
