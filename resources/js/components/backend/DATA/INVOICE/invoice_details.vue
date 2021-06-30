@@ -1037,22 +1037,22 @@ this.invoiceDetail.mes_lis_inv_lin_sel_code=this.param_data.pay_code;
   },
 
   created() {
-      this.byr_buyer_id=this.$session.get("byr_buyer_id")
-    //   console.log(this.byr_buyer_id);
-    Fire.$emit("byr_has_selected", this.byr_buyer_id);
-    Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
-    this.param_data = this.$route.query;
-    this.form.param_data = this.param_data;
-    this.form.data_invoice_id = this.param_data.data_invoice_id;
-    this.invoiceDetail.data_invoice_id = this.param_data.data_invoice_id;
-this.getbuyerJsonSettingvalue();
+        this.form = this.$store.getters['invoiceDetailsModule/getFormData'];
+        this.byr_buyer_id=this.$session.get("byr_buyer_id")
+        Fire.$emit("byr_has_selected", this.byr_buyer_id);
+        Fire.$emit("permission_check_for_buyer", this.byr_buyer_id);
+        this.param_data = this.$route.query;
+        this.form.param_data = this.param_data;
+        this.form.data_invoice_id = this.param_data.data_invoice_id;
+        this.invoiceDetail.data_invoice_id = this.param_data.data_invoice_id;
+        this.getbuyerJsonSettingvalue();
 
-    this.form.byr_buyer_id = this.byr_buyer_id;
-    this.invoice_details();
-    Fire.$on("LoadByrinvoiceDetails", (page=1) => {
-      this.invoice_details(page);
-    });
-    Fire.$emit('loadPageTitle','請求伝票一覧')
+        this.form.byr_buyer_id = this.byr_buyer_id;
+        this.invoice_details();
+        Fire.$on("LoadByrinvoiceDetails", (page=1) => {
+        this.invoice_details(page);
+        });
+        Fire.$emit('loadPageTitle','請求伝票一覧')
   },
   computed: {
 

@@ -311,7 +311,7 @@ breadcrumb(){
     showAllCustomerCode(){
      let loaderss = Vue.$loading.show();
       this.showAllCustomerCodeListModal = true;
-      this.form.post(this.BASE_URL + "api/get_payment_trade_code_list", this.form)
+      axios.post(this.BASE_URL + "api/get_payment_trade_code_list", this.form)
         .then(({ data }) => {
           this.order_customer_code_lists = data.order_customer_code_lists;
         loaderss.hide();
@@ -332,7 +332,7 @@ breadcrumb(){
           this.mes_lis_pay_lin_det_verification_result_code_list = this.buyer_settings.payments.mes_lis_pay_lin_det_verification_result_code;
           this.mes_lis_inv_lin_det_pay_code_list = this.buyer_settings.invoices.mes_lis_inv_lin_det_pay_code;
           this.mes_lis_inv_lin_det_balance_carried_code_list = this.buyer_settings.invoices.mes_lis_inv_lin_det_balance_carried_code;
-          
+
           loaders.hide();
         });
     },
@@ -345,6 +345,7 @@ searchByFormData() {
   },
 
   created() {
+      this.form = this.$store.getters['paymentItemDetailsModule/getFormData'];
     this.byr_buyer_id = this.$session.get("byr_buyer_id");
     this.form.byr_buyer_id = this.$session.get("byr_buyer_id");
     this.form.payment_id = this.$route.query.data_payment_id;

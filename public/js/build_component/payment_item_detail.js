@@ -324,7 +324,7 @@ __webpack_require__.r(__webpack_exports__);
 
       var loaderss = Vue.$loading.show();
       this.showAllCustomerCodeListModal = true;
-      this.form.post(this.BASE_URL + "api/get_payment_trade_code_list", this.form).then(function (_ref) {
+      axios.post(this.BASE_URL + "api/get_payment_trade_code_list", this.form).then(function (_ref) {
         var data = _ref.data;
         _this.order_customer_code_lists = data.order_customer_code_lists;
         loaderss.hide();
@@ -358,6 +358,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this3 = this;
 
+    this.form = this.$store.getters['paymentItemDetailsModule/getFormData'];
     this.byr_buyer_id = this.$session.get("byr_buyer_id");
     this.form.byr_buyer_id = this.$session.get("byr_buyer_id");
     this.form.payment_id = this.$route.query.data_payment_id;

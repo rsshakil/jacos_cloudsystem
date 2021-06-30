@@ -309,7 +309,8 @@ __webpack_require__.r(__webpack_exports__);
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       this.form.page = page;
-      var loader = Vue.$loading.show();
+      var loader = Vue.$loading.show(); // console.log(this.form);
+
       axios.post(this.BASE_URL + "api/data_return_list", this.form).then(function (_ref2) {
         var data = _ref2.data;
         _this2.return_item_list = data.return_item_list; // console.log(this.return_item_list)
@@ -340,6 +341,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
+    this.form = this.$store.getters['returnListModule/getFormData'];
     this.byr_buyer_id = this.$session.get("byr_buyer_id");
     this.form.byr_buyer_id = this.byr_buyer_id;
     this.getbuyerJsonSettingvalue();

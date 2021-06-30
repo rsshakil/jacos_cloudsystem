@@ -534,164 +534,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 // const AdvancedLaravelVuePaginate = () =>
 //     import ( /* webpackChunkName: "AdvancedLaravelVuePaginate" */ 'advanced-laravel-vue-paginate')
 
@@ -744,7 +586,7 @@ __webpack_require__.r(__webpack_exports__);
       null_selected: [],
       not_null_selected: [],
       null_selected_message: false,
-      form: new Form({
+      form: {
         page: 1,
         select_field_page_num: 1,
         select_field_per_page_num: 10,
@@ -770,7 +612,7 @@ __webpack_require__.r(__webpack_exports__);
         sort_type: "ASC",
         page_title: 'return_details_list',
         downloadType: 1
-      }),
+      },
       param_data: []
     };
   },
@@ -866,6 +708,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this6 = this;
 
+    this.form = this.$store.getters['returnDetailsModule/getFormData'];
     this.form.byr_buyer_id = this.$session.get("byr_buyer_id");
     Fire.$emit("byr_has_selected", this.form.byr_buyer_id);
     Fire.$emit("permission_check_for_buyer", this.form.byr_buyer_id);

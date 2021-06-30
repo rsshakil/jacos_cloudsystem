@@ -291,6 +291,7 @@ export default {
   },
 
   created() {
+      this.form = this.$store.getters['paymentListModule/getFormData'];
     this.byr_buyer_id = this.$session.get("byr_buyer_id");
     this.form.byr_buyer_id = this.byr_buyer_id;
     this.getAllPayments();
