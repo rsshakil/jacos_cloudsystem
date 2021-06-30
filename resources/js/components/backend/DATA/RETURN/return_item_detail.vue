@@ -264,16 +264,21 @@
               <td>{{ index + 1 }}</td>
               <td style="text-align: left">
                 商品コード：{{
-                  order_item_detail_list.mes_lis_ret_lin_ite_order_item_code.slice(
-                    1
-                  )
+                  order_item_detail_list.mes_lis_ret_lin_ite_order_item_code
                 }}<br />
-                JANコード：
+                JANコード：<span v-if="order_item_detail_list.mes_lis_ret_lin_ite_gtin.charAt(0)=='0'">
                 {{
-                  order_item_detail_list.mes_lis_ret_lin_ite_order_item_code.slice(
+                  order_item_detail_list.mes_lis_ret_lin_ite_gtin.slice(
                     1
                   )
-                }}<br />
+                }}
+                </span>
+                <span v-else>
+                {{
+                  order_item_detail_list.mes_lis_ret_lin_ite_gtin
+                }}
+                </span>
+                <br />
                 商品名：{{ order_item_detail_list.mes_lis_ret_lin_ite_name
                 }}<br />
                 規格：{{ order_item_detail_list.mes_lis_ret_lin_ite_ite_spec

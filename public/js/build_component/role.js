@@ -492,7 +492,7 @@ var render = function() {
                               _vm._v(
                                 " " +
                                   _vm._s(_vm.form.submit_button) +
-                                  "\r\n                    "
+                                  "\n                    "
                               )
                             ],
                             1

@@ -499,6 +499,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   breadcrumb: function breadcrumb() {
     return {
@@ -1082,20 +1087,35 @@ var render = function() {
                         _vm._v(
                           "\n              商品コード：" +
                             _vm._s(
-                              order_item_detail_list.mes_lis_ret_lin_ite_order_item_code.slice(
-                                1
-                              )
+                              order_item_detail_list.mes_lis_ret_lin_ite_order_item_code
                             )
                         ),
                         _c("br"),
-                        _vm._v(
-                          "\n              JANコード：\n              " +
-                            _vm._s(
-                              order_item_detail_list.mes_lis_ret_lin_ite_order_item_code.slice(
-                                1
+                        _vm._v("\n              JANコード："),
+                        order_item_detail_list.mes_lis_ret_lin_ite_gtin.charAt(
+                          0
+                        ) == "0"
+                          ? _c("span", [
+                              _vm._v(
+                                "\n              " +
+                                  _vm._s(
+                                    order_item_detail_list.mes_lis_ret_lin_ite_gtin.slice(
+                                      1
+                                    )
+                                  ) +
+                                  "\n              "
                               )
-                            )
-                        ),
+                            ])
+                          : _c("span", [
+                              _vm._v(
+                                "\n              " +
+                                  _vm._s(
+                                    order_item_detail_list.mes_lis_ret_lin_ite_gtin
+                                  ) +
+                                  "\n              "
+                              )
+                            ]),
+                        _vm._v(" "),
                         _c("br"),
                         _vm._v(
                           "\n              商品名：" +
