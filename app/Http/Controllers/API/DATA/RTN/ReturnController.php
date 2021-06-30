@@ -436,6 +436,7 @@ class ReturnController extends Controller
             'drv.mes_lis_ret_tot_tot_net_price_total',
             'drv.mes_lis_ret_tot_tot_selling_price_total',
             'data_return_items.mes_lis_ret_lin_ite_order_item_code',
+            'data_return_items.mes_lis_ret_lin_ite_gtin',
             'data_return_items.mes_lis_ret_lin_ite_name',
             'data_return_items.mes_lis_ret_lin_ite_ite_spec',
             'data_return_items.mes_lis_ret_lin_fre_field_name',
