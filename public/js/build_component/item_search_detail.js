@@ -654,8 +654,9 @@ __webpack_require__.r(__webpack_exports__);
         order_item_detail_list.mes_lis_shi_lin_qua_shi_num_of_order_units = calval; //this.order_item_lists.mes_lis_shi_lin_qua_shi_num_of_order_units = calval;
         //}
       } // this.order_item_lists.mes_lis_shi_lin_qua_shi_quantity=order_item_detail_list.mes_lis_shi_lin_qua_shi_quantity;
-      //this.checkUpdateDeliveryStatus();
 
+
+      this.checkUpdateDeliveryStatus();
     },
     caseBallUpdate: function caseBallUpdate(order_item_detail_list, field_type) {
       if (field_type == "ケース") {
@@ -679,6 +680,33 @@ __webpack_require__.r(__webpack_exports__);
         // }
 
         this.order_item_lists.mes_lis_shi_lin_qua_shi_num_of_order_units = calval;
+      }
+
+      this.checkUpdateDeliveryStatus();
+    },
+    checkUpdateDeliveryStatus: function checkUpdateDeliveryStatus() {
+      var caseBallQtycheck = [];
+      var allIsZero = [];
+      var allIsfull = [];
+      var allIsNotZero = [];
+      var totalRows = this.order_item_detail_lists.length;
+      this.order_item_detail_lists.forEach(function (order_item_detail_listData) {
+        if (order_item_detail_listData.mes_lis_shi_lin_qua_shi_quantity == 0) {
+          allIsZero.push(0);
+        } else if (order_item_detail_listData.mes_lis_shi_lin_qua_shi_num_of_order_units == order_item_detail_listData.mes_lis_shi_lin_qua_ord_num_of_order_units) {
+          allIsfull.push(1);
+        } else {
+          allIsNotZero.push(2);
+        }
+      });
+      this.order_item_shipment_data_headTable.status = "一部未納";
+
+      if (totalRows == allIsZero.length) {
+        this.order_item_shipment_data_headTable.status = "未納";
+      }
+
+      if (totalRows == allIsfull.length) {
+        this.order_item_shipment_data_headTable.status = "完納";
       }
     },
     checkValidate: function checkValidate() {
@@ -743,7 +771,8 @@ __webpack_require__.r(__webpack_exports__);
         items: this.order_item_detail_lists,
         updated_date: this.order_item_shipment_data_headTable.mes_lis_shi_tra_dat_revised_delivery_date,
         total_cost_price: this.totalCostPriceVal,
-        total_selling_price: this.totalSellingPriceVal
+        total_selling_price: this.totalSellingPriceVal,
+        order_status: this.order_item_shipment_data_headTable.status
       };
       axios({
         method: "POST",
