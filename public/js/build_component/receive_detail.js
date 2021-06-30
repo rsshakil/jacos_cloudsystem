@@ -965,6 +965,8 @@ __webpack_require__.r(__webpack_exports__);
     var _this6 = this;
 
     this.form.byr_buyer_id = this.$session.get("byr_buyer_id");
+    this.$store.commit('receiveDetailListModule/formValuesStoreBYRID', this.$session.get("byr_buyer_id"));
+    this.form = this.$store.getters['receiveDetailListModule/getFormData'];
     Fire.$emit("byr_has_selected", this.form.byr_buyer_id);
     Fire.$emit("permission_check_for_buyer", this.form.byr_buyer_id);
     this.getbuyerJsonSettingvalue();

@@ -1013,7 +1013,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../../../node_mod
 
 
 // module
-exports.push([module.i, "\ninput[type=number]{\r\n    min-width: 100px;\n}\r\n", ""]);
+exports.push([module.i, "\ninput[type=number]{\n    min-width: 100px;\n}\n", ""]);
 
 // exports
 
