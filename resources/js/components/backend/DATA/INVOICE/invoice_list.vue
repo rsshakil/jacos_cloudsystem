@@ -467,6 +467,7 @@ export default {
     Fire.$emit("byr_has_selected", this.$session.get("byr_buyer_id"));
     Fire.$emit("permission_check_for_buyer", this.$session.get("byr_buyer_id"));
     this.invoiceData.byr_buyer_id = this.$session.get("byr_buyer_id");
+    this.form = this.$store.getters['invoiceListModule/getFormData'];
     this.form.byr_buyer_id = this.$session.get("byr_buyer_id");
     this.getbuyerJsonSettingvalue();
 
@@ -481,11 +482,6 @@ export default {
   mounted() {
   },
    computed: {
-
-    // totalRequestedAmount: function() {
-    //   return this.invoice_data_lists.reduce(function (sumAmout,val) {return  sumAmout += parseInt(val.mes_lis_inv_lin_det_amo_requested_amount)},0);
-
-    // },
   },
 };
 </script>

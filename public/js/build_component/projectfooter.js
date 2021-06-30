@@ -34,7 +34,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.footer {\n   position: fixed;\n   left: 0;\n   bottom: 0;\n   width: 100%;\n}\n", ""]);
+exports.push([module.i, "\n.footer {\r\n   position: fixed;\r\n   left: 0;\r\n   bottom: 0;\r\n   width: 100%;\n}\r\n", ""]);
 
 // exports
 

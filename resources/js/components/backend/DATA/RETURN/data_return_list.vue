@@ -265,7 +265,6 @@ export default {
         sort_type:"DESC",
         page_title:'return_list',
         downloadType:1
-
       }),
     };
   },
@@ -293,6 +292,7 @@ export default {
     getAllReturnList(page = 1) {
         this.form.page=page;
         let loader = Vue.$loading.show();
+        // console.log(this.form);
         axios.post(this.BASE_URL +"api/data_return_list",this.form)
             .then(({data}) => {
                 this.return_item_list = data.return_item_list;
@@ -322,9 +322,10 @@ export default {
   },
 
   created() {
+        this.form = this.$store.getters['returnListModule/getFormData'];
         this.byr_buyer_id=this.$session.get("byr_buyer_id");
         this.form.byr_buyer_id=this.byr_buyer_id;
-this.getbuyerJsonSettingvalue();
+        this.getbuyerJsonSettingvalue();
         this.getAllReturnList();
         // Fire.$on("LoadAllReceiveItem", () => {
         //   this.getAllReturnList();
