@@ -2552,7 +2552,7 @@ var render = function() {
                           _vm._v(
                             "\n                " +
                               _vm._s(
-                                _vm._f("priceFormat")(
+                                _vm._f("priceFormatNullZero")(
                                   order_detail_list.mes_lis_shi_tot_tot_net_price_total
                                 )
                               ) +
