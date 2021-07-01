@@ -77,6 +77,7 @@ class InvoiceCommand extends Command
     {
         Log::info("----invoiceSchedulerCode Starting----");
         $today=date('y-m-d');
+        $first_day_of_month=date('y-m-01');
         $cmn_connect_info=cmn_connect::select('optional')->where('cmn_connect_id', $cmn_connect_id)->first();
         $optional=json_decode($cmn_connect_info->optional);
         $closing_date_array=$optional->invoice->closing_date;
@@ -86,46 +87,59 @@ class InvoiceCommand extends Command
         $closing_date_count=count($closing_date_array);
         $start_date=null;
         $end_date=null;
-        // \Log::info($arg);
-        Log::info($closing_date_array);
-        foreach ($closing_date_array as $key => $closing_day) {
-            // ======Menual=====
-            if ($arg==1) {
-                $end_date = $today;
-                if ($closing_date_count>1) {
-                    if ($key!=0) {
-                        // \Log::info($arg);
-                        $first_date=$this->all_used_fun->closing_date($closing_date_array[$key-1]);
-                        $last_date=$this->all_used_fun->closing_date($closing_date_array[$key]);
-
-                        $startDatedt = strtotime($first_date);
-                        $endDatedt = strtotime($last_date);
-                        $compareDate = strtotime($end_date);
-
-                        if ($compareDate > $startDatedt && $compareDate <= $endDatedt) {
-                            if ($arg!=1) {
-                                $this->comment($first_date);
-                            }
-                            $start_date = $first_date;
-                            // $start_date = date('y-m-d', strtotime("+1 day", strtotime($first_date)));
+        if ($arg==1) {
+            $closing_date_array_full=array();
+            $end_date=$today;
+            foreach ($closing_date_array as $key1 => $value) {
+                $closing_date_array_full[]=$this->all_used_fun->closing_date($value);
+            }
+            // Log::info($closing_date_array_full);
+            foreach ($closing_date_array_full as $key => $closing_day) {
+                $array_first_date=$this->all_used_fun->closing_date($closing_date_array[array_key_first($closing_date_array)]);
+                $array_end_date=$this->all_used_fun->closing_date(end($closing_date_array));
+                $startDatedt = strtotime($closing_date_array_full[$key]);
+                $compareDate = strtotime($today);
+                // if (array_key_exists([$key+1], $closing_date_array_full)) {
+                if (($key+1)!=count($closing_date_array_full)) {
+                    $endDatedt = strtotime($closing_date_array_full[$key+1]);
+                    if ($compareDate > $startDatedt && $compareDate <= $endDatedt) {
+                        if ($arg!=1) {
+                            $this->comment($start_date);
                         }
-                        // else if(){
-
-                        // }
-                    }
-                } else {
-                    $closing_date=$this->all_used_fun->closing_date($closing_day);
-                    if (strtotime($closing_date) < strtotime($today)) {
-                        $start_date = date('y-m-d', strtotime("+1 day", strtotime($closing_date)));
-                    } elseif (strtotime($closing_date) == strtotime($today)) {
-                        $start_date = $closing_date;
-                    } else {
-                        $start_date = $this->all_used_fun->start_date($closing_date, 1);
+                        $start_date = date('y-m-d',$endDatedt);
+                        break;
                     }
                 }
+
+                if ($start_date==null) {
+                    $first_day_of_monthdt = strtotime($first_day_of_month);
+                    $first_date_of_array = strtotime($array_first_date);
+                    if ($compareDate >= $first_day_of_monthdt && $compareDate <= $first_date_of_array) {
+                        $start_date=date("y-m-d", strtotime("-1 months",strtotime($array_end_date)));
+                        if ($start_date!=$end_date) {
+                            $bbb=strtotime($start_date);
+                            $start_date = date('y-m-d', strtotime("+1 day", $bbb));
+                        }
+
+                        break;
+                    }
+                    $last_day_of_month= $this->all_used_fun->closing_date('last');
+                    $last_day_of_monthdt = strtotime($last_day_of_month);
+                    $array_end_datedt = strtotime($array_end_date);
+                    if ($compareDate >= $array_end_datedt && $compareDate <= $last_day_of_monthdt) {
+                        $start_date = $array_end_date;
+                        break;
+                    }
+                }
+
+                Log::info('=====Start=======');
+                Log::info($start_date);
+                Log::info($end_date);
+                Log::info('============');
             }
-            // ======Menual=====
-            else {
+        }else{
+            // Auto
+            foreach ($closing_date_array as $key => $closing_day) {
                 $closing_date= $this->all_used_fun->closing_date($closing_day);
                 if ($closing_date==$today) {
                     $end_date=$closing_date;
@@ -143,32 +157,7 @@ class InvoiceCommand extends Command
                 }
             }
         }
-        if ($arg==1 && $start_date==null) {
-            $array_first_date=$this->all_used_fun->closing_date($closing_date_array[array_key_first($closing_date_array)]);
-            $array_end_date=$this->all_used_fun->closing_date(end($closing_date_array));
-            if ($array_first_date!=date('y-m-01')) {
-                $last_date=strtotime($array_first_date);
-
-                $startDatedt = strtotime(date('y-m-01'));
-                $endDatedt = strtotime($array_first_date);
-                $compareDate = strtotime($today);
-
-                if ($compareDate >= $startDatedt && $compareDate <= $endDatedt) {
-                    $start_date = date('y-m-01');
-                }
-            }
-            $end_of_the_month=$this->all_used_fun->closing_date('last');
-            if ($array_end_date!=$end_of_the_month) {
-                $startDatedt = strtotime($array_end_date);
-                $endDatedt = strtotime($end_of_the_month); //month end day
-                $compareDate = strtotime($today);
-
-                if ($compareDate >= $startDatedt && $compareDate <= $endDatedt) {
-                    $start_date = $array_end_date;
-                }
-            }
-        }
-        // Matched
+// Matched
         if ($arg!=1) {
             $this->comment("Invoice Running.....");
             $this->comment("cmn_connect: ".$cmn_connect_id);
@@ -177,6 +166,10 @@ class InvoiceCommand extends Command
         }
 
         if ($start_date!=null && $end_date!=null) {
+            Log::info('=====Last Final=======');
+            Log::info($start_date);
+            Log::info($end_date);
+            Log::info('============');
             $request = new \Illuminate\Http\Request();
             $request->setMethod('POST');
             // $request=$this->request;
@@ -190,6 +183,71 @@ class InvoiceCommand extends Command
             }
             return $aaa;
         }
-        Log::info("----invoiceSchedulerCode end----");
+// ++++==========================
+
+        // if ($arg==1 && $start_date==null) {
+        //     $array_first_date=$this->all_used_fun->closing_date($closing_date_array[array_key_first($closing_date_array)]);
+        //     $array_end_date=$this->all_used_fun->closing_date(end($closing_date_array));
+        //     Log::info('======Array first and Last======');
+        //     Log::info($array_first_date);
+        //     Log::info($array_end_date);
+        //     Log::info('============');
+        //     if ($array_first_date!=date('y-m-01')) {
+        //         $last_date=strtotime($array_first_date);
+
+        //         $startDatedt = strtotime(date('y-m-01'));
+        //         $endDatedt = strtotime($array_first_date);
+        //         $compareDate = strtotime($today);
+
+        //         if ($compareDate >= $startDatedt && $compareDate <= $endDatedt) {
+        //             $start_date = date('y-m-01');
+        //             Log::info('=====Start=======');
+        //             Log::info($start_date);
+        //             Log::info($end_date);
+        //             Log::info('============');
+        //         }
+        //     }
+        //     $end_of_the_month=$this->all_used_fun->closing_date('last');
+        //     if ($array_end_date!=$end_of_the_month) {
+        //         $startDatedt = strtotime($array_end_date);
+        //         $endDatedt = strtotime($end_of_the_month); //month end day
+        //         $compareDate = strtotime($today);
+
+        //         if ($compareDate >= $startDatedt && $compareDate <= $endDatedt) {
+        //             $start_date = $array_end_date;
+        //         }
+        //     }
+        //     Log::info('=====Final=======');
+        //     Log::info($start_date);
+        //     Log::info($end_date);
+        //     Log::info('============');
+        // }
+        // Matched
+        // if ($arg!=1) {
+        //     $this->comment("Invoice Running.....");
+        //     $this->comment("cmn_connect: ".$cmn_connect_id);
+        //     $this->comment("Start Date: ".$start_date);
+        //     $this->comment("End Date: ".$end_date);
+        // }
+
+        // if ($start_date!=null && $end_date!=null) {
+        //     Log::info('=====Last Final=======');
+        //     Log::info($start_date);
+        //     Log::info($end_date);
+        //     Log::info('============');
+        //     $request = new \Illuminate\Http\Request();
+        //     $request->setMethod('POST');
+        //     // $request=$this->request;
+        //     $request->request->add(['scenario_id' => 15]);
+        //     $request->request->add(['cmn_connect_id' => $cmn_connect_id]);
+        //     $request->request->add(['start_date' => $start_date]);
+        //     $request->request->add(['end_date' => $end_date]);
+        //     $aaa=$this->invoice->invoiceScheduler($request);
+        //     if ($arg!=1) {
+        //         $this->comment("Done");
+        //     }
+        //     return $aaa;
+        // }
+        // Log::info("----invoiceSchedulerCode end----");
     }
 }

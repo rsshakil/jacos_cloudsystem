@@ -181,6 +181,7 @@
       cancel-title="閉じる"
       @ok.prevent="insertInvoice()"
       v-model="invoiceCreateModal"
+      :no-enforce-focus="true"
     >
       <div class="panel-body">
       <p v-if="errors.length">
@@ -230,6 +231,7 @@
       cancel-title="閉じる"
       v-model="showAllCustomerCodeListModal"
       :hide-footer="true"
+      :no-enforce-focus="true"
     >
       <div class="panel-body add_item_body">
 

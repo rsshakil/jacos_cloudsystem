@@ -655,6 +655,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -739,13 +741,14 @@ __webpack_require__.r(__webpack_exports__);
     deliverySearchForm2: function deliverySearchForm2() {
       var _this2 = this;
 
+      var loaders11111 = Vue.$loading.show();
       this.order_search_modal2 = true;
       this.$route.query.adm_user_id = Globals.user_info_id;
       this.$route.query.byr_buyer_id = this.byr_buyer_id;
       axios.post(this.BASE_URL + "api/get_voucher_detail_popup2_invoice", this.$route.query).then(function (_ref) {
         var data = _ref.data;
-        console.log(data);
         _this2.order_search_modal2List = data.popUpList;
+        loaders11111.hide();
       });
     },
     checkForm: function checkForm(e) {
@@ -2405,6 +2408,7 @@ var render = function() {
           attrs: {
             size: "lg",
             "hide-backdrop": true,
+            "no-enforce-focus": true,
             title: "請求伝票追加",
             "ok-title": "追加",
             "cancel-title": "キャンセル"
@@ -2828,6 +2832,7 @@ var render = function() {
           attrs: {
             size: "lg",
             "hide-backdrop": true,
+            "no-enforce-focus": true,
             title: "請求伝票変更",
             "ok-title": "変更",
             "cancel-title": "キャンセル"
@@ -3249,6 +3254,7 @@ var render = function() {
           attrs: {
             size: "xl",
             "hide-backdrop": true,
+            "no-enforce-focus": true,
             title: "出荷・受領比較",
             "cancel-title": "閉じる",
             "hide-footer": true,
@@ -3502,7 +3508,8 @@ var render = function() {
             title: "出荷・受領比較（明細）",
             "cancel-title": "閉じる",
             "hide-footer": true,
-            draggable: true
+            draggable: true,
+            "no-enforce-focus": true
           },
           model: {
             value: _vm.invoiceitemDatalistModal,
@@ -3675,7 +3682,8 @@ var render = function() {
             "hide-backdrop": true,
             title: "納品先検索",
             "ok-title": "検　索",
-            "cancel-title": "閉じる"
+            "cancel-title": "閉じる",
+            "no-enforce-focus": true
           },
           on: {
             ok: function($event) {

@@ -173,6 +173,7 @@
       cancel-title="閉じる"
       v-model="showAllCustomerCodeListModal"
       :hide-footer="true"
+      :no-enforce-focus="true"
     >
       <div class="panel-body add_item_body">
 
