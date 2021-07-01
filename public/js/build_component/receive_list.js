@@ -388,7 +388,7 @@ __webpack_require__.r(__webpack_exports__);
     this.$store.commit('receiveListModule/formValuesStoreBYRID', this.byr_buyer_id);
     this.form = this.$store.getters['receiveListModule/getFormData'];
     this.getbuyerJsonSettingvalue();
-    this.getAllReceivedItem(); // Fire.$on("LoadAllReceiveItem", () => {
+    this.getAllReceivedItem(this.form.page); // Fire.$on("LoadAllReceiveItem", () => {
     //   this.getAllReceivedItem();
     // });
 

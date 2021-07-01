@@ -958,8 +958,8 @@ export default {
     this.form.delivery_service_code = this.$route.query.delivery_service_code;
     this.form.ownership_date = this.$route.query.ownership_date;
     //this.loader = Vue.$loading.show();
-    this.get_all_receive_detail();
-    Fire.$on("LoadByrorderDetail", (page=1) => {
+    this.get_all_receive_detail(this.form.page);
+    Fire.$on("LoadByrorderDetail", (page=this.form.page) => {
       this.get_all_receive_detail(page);
     });
     this.$session.set("receive_list_detail_query_param",this.$route.query);

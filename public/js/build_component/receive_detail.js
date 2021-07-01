@@ -977,9 +977,9 @@ __webpack_require__.r(__webpack_exports__);
     this.form.delivery_service_code = this.$route.query.delivery_service_code;
     this.form.ownership_date = this.$route.query.ownership_date; //this.loader = Vue.$loading.show();
 
-    this.get_all_receive_detail();
+    this.get_all_receive_detail(this.form.page);
     Fire.$on("LoadByrorderDetail", function () {
-      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _this6.form.page;
 
       _this6.get_all_receive_detail(page);
     });
