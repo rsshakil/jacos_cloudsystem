@@ -11,6 +11,7 @@ use App\Models\DATA\INVOICE\data_invoice_pay;
 use App\Models\DATA\INVOICE\data_invoice_pay_detail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class data_invoice_scheduler
 {
@@ -155,6 +156,8 @@ class data_invoice_scheduler
         $cmn_connect_id=$request->cmn_connect_id;
         $start_date=$request->start_date;
         $end_date=$request->end_date;
+        $byr_buyer_id=$request->byr_buyer_id;
+        $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
 
         $start_date = $start_date!=null? date('Y-m-d 00:00:00',strtotime($start_date)):$start_date;
         $end_date = $end_date!=null? date('Y-m-d 23:59:59',strtotime($end_date)):$end_date;
@@ -202,7 +205,10 @@ class data_invoice_scheduler
         ->leftJoin('data_shipment_vouchers','data_shipment_vouchers.data_shipment_id','data_shipments.data_shipment_id')
         ->leftJoin('data_shipment_items','data_shipment_items.data_shipment_voucher_id','data_shipment_vouchers.data_shipment_voucher_id')
         ->leftJoin('data_shipment_item_details','data_shipment_item_details.data_shipment_item_id','data_shipment_items.data_shipment_item_id')
+        ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'data_shipments.cmn_connect_id')
         ->where('data_shipments.cmn_connect_id',$cmn_connect_id)
+        ->where('cc.byr_buyer_id', $byr_buyer_id)
+        ->where('cc.slr_seller_id', $slr_seller_id)
         ->whereNotNull('data_shipment_vouchers.send_datetime')
         ->whereNull('data_shipment_vouchers.invoice_datetime')
         ->groupBy('data_shipment_vouchers.data_shipment_voucher_id')
