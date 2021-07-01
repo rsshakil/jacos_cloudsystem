@@ -72,7 +72,7 @@ var render = function() {
           },
           [
             _c("b-icon", { attrs: { icon: "gear-fill", "font-scale": "1.2" } }),
-            _vm._v("\n            OTHERS")
+            _vm._v("\r\n            OTHERS")
           ],
           1
         ),

@@ -1097,8 +1097,8 @@ this.getbuyerJsonSettingvalue(this.form.page);
     // console.log(this.param_data);
   this.$session.set("order_param_data",this.param_data)
     // this.data_order_id = this.$route.params.data_order_id;
-    this.get_all_byr_order_detail();
-    Fire.$on("LoadByrorderDetail", (page=1) => {
+    this.get_all_byr_order_detail(this.form.page);
+    Fire.$on("LoadByrorderDetail", (page=this.form.page) => {
       this.get_all_byr_order_detail(page);
     });
     Fire.$emit("loadPageTitle", "受注伝票一覧");

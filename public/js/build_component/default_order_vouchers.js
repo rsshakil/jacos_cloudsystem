@@ -1131,9 +1131,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     this.$session.set("order_param_data", this.param_data); // this.data_order_id = this.$route.params.data_order_id;
 
-    this.get_all_byr_order_detail();
+    this.get_all_byr_order_detail(this.form.page);
     Fire.$on("LoadByrorderDetail", function () {
-      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _this12.form.page;
 
       _this12.get_all_byr_order_detail(page);
     });

@@ -318,9 +318,11 @@ __webpack_require__.r(__webpack_exports__);
     this.updateFieldValue(this.order_info, 'order_info', 'itemSearchModule', 'form');
     this.form = this.$store.getters['itemSearchModule/getFormData'];
     this.getbuyerJsonSettingvalue();
-    this.getItemSearchData();
+    this.getItemSearchData(this.form.page);
     Fire.$on("getItemSearchData", function () {
-      _this2.getItemSearchData();
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _this2.form.page;
+
+      _this2.getItemSearchData(page);
     }); // this.item_search_query = this.$route.query;
 
     this.parent.query = this.$session.get('order_param_data');

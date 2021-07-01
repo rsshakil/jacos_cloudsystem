@@ -353,8 +353,8 @@ searchByFormData() {
     this.form.end_date = this.$route.query.end_date
     this.form.out_date = this.$route.query.out_date
     this.getbuyerJsonSettingvalue();
-    this.getAllPaymentDetails();
-    Fire.$on("LoadPaymentItemDetail", (page=1) => {
+    this.getAllPaymentDetails(this.form.page);
+    Fire.$on("LoadPaymentItemDetail", (page=this.form.page) => {
       this.getAllPaymentDetails(page);
     });
     Fire.$emit("byr_has_selected", this.byr_buyer_id);

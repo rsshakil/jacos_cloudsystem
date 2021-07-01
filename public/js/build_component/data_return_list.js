@@ -345,7 +345,7 @@ __webpack_require__.r(__webpack_exports__);
     this.byr_buyer_id = this.$session.get("byr_buyer_id");
     this.form.byr_buyer_id = this.byr_buyer_id;
     this.getbuyerJsonSettingvalue();
-    this.getAllReturnList(); // Fire.$on("LoadAllReceiveItem", () => {
+    this.getAllReturnList(this.form.page); // Fire.$on("LoadAllReceiveItem", () => {
     //   this.getAllReturnList();
     // });
 

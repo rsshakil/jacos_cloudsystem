@@ -307,9 +307,9 @@ export default {
     this.form = this.$store.getters['itemSearchModule/getFormData'];
 
     this.getbuyerJsonSettingvalue();
-    this.getItemSearchData();
-    Fire.$on("getItemSearchData", () => {
-      this.getItemSearchData();
+    this.getItemSearchData(this.form.page);
+    Fire.$on("getItemSearchData", (page=this.form.page) => {
+      this.getItemSearchData(page);
     });
     // this.item_search_query = this.$route.query;
     this.parent.query = this.$session.get('order_param_data');

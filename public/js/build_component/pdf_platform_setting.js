@@ -1225,7 +1225,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.input-group{\n  min-width: 5rem\n}\n.justificationButton{\n      width: 30px;\n    padding: 0;\n    height: 30px;\n    margin-top: 4px;\n}\n", ""]);
+exports.push([module.i, "\n.input-group{\r\n  min-width: 5rem\n}\n.justificationButton{\r\n      width: 30px;\r\n    padding: 0;\r\n    height: 30px;\r\n    margin-top: 4px;\n}\r\n", ""]);
 
 // exports
 
@@ -1456,7 +1456,7 @@ var render = function() {
                 [
                   _c("b-input-group-prepend", { attrs: { "is-text": "" } }, [
                     _vm._v(
-                      "\n                        canvas name\n                      "
+                      "\r\n                        canvas name\r\n                      "
                     )
                   ]),
                   _vm._v(" "),
@@ -1491,7 +1491,7 @@ var render = function() {
                 [
                   _c("b-input-group-prepend", { attrs: { "is-text": "" } }, [
                     _vm._v(
-                      "\n                        Line gap\n                      "
+                      "\r\n                        Line gap\r\n                      "
                     )
                   ]),
                   _vm._v(" "),
@@ -1526,7 +1526,7 @@ var render = function() {
                 [
                   _c("b-input-group-prepend", { attrs: { "is-text": "" } }, [
                     _vm._v(
-                      "\n                        Line per page\n                      "
+                      "\r\n                        Line per page\r\n                      "
                     )
                   ]),
                   _vm._v(" "),
@@ -1716,7 +1716,7 @@ var render = function() {
                         { attrs: { "is-text": "" } },
                         [
                           _vm._v(
-                            "\n                        SX\n                        "
+                            "\r\n                        SX\r\n                        "
                           )
                         ]
                       ),
@@ -1760,7 +1760,7 @@ var render = function() {
                         { attrs: { "is-text": "" } },
                         [
                           _vm._v(
-                            "\n                        SY\n                        "
+                            "\r\n                        SY\r\n                        "
                           )
                         ]
                       ),
@@ -1804,7 +1804,7 @@ var render = function() {
                         { attrs: { "is-text": "" } },
                         [
                           _vm._v(
-                            "\n                        X\n                        "
+                            "\r\n                        X\r\n                        "
                           )
                         ]
                       ),
@@ -1848,7 +1848,7 @@ var render = function() {
                         { attrs: { "is-text": "" } },
                         [
                           _vm._v(
-                            "\n                        Y\n                        "
+                            "\r\n                        Y\r\n                        "
                           )
                         ]
                       ),

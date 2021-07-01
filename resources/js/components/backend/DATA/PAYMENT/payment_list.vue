@@ -294,7 +294,7 @@ export default {
       this.form = this.$store.getters['paymentListModule/getFormData'];
     this.byr_buyer_id = this.$session.get("byr_buyer_id");
     this.form.byr_buyer_id = this.byr_buyer_id;
-    this.getAllPayments();
+    this.getAllPayments(this.form.page);
     // Fire.$on("getAllPayments", () => {
     // this.getAllPayments();
     // });

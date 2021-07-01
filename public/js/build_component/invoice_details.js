@@ -1113,9 +1113,9 @@ __webpack_require__.r(__webpack_exports__);
     this.invoiceDetail.data_invoice_id = this.param_data.data_invoice_id;
     this.getbuyerJsonSettingvalue();
     this.form.byr_buyer_id = this.byr_buyer_id;
-    this.invoice_details();
+    this.invoice_details(this.form.page);
     Fire.$on("LoadByrinvoiceDetails", function () {
-      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _this12.form.page;
 
       _this12.invoice_details(page);
     });

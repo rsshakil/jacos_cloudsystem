@@ -1048,8 +1048,8 @@ this.invoiceDetail.mes_lis_inv_lin_sel_code=this.param_data.pay_code;
         this.getbuyerJsonSettingvalue();
 
         this.form.byr_buyer_id = this.byr_buyer_id;
-        this.invoice_details();
-        Fire.$on("LoadByrinvoiceDetails", (page=1) => {
+        this.invoice_details(this.form.page);
+        Fire.$on("LoadByrinvoiceDetails", (page=this.form.page) => {
         this.invoice_details(page);
         });
         Fire.$emit('loadPageTitle','請求伝票一覧')

@@ -434,25 +434,6 @@ export default {
         });
       }
     },
-    // check_byr_order_api() {
-    //   let formData = new FormData();
-    //   formData.append("up_file", this.file);
-    //   axios({
-    //     method: "POST",
-    //     url: this.BASE_URL + "api/job_exec/1",
-    //     data: formData,
-    //     headers: { "Content-Type": "multipart/form-data" },
-    //   })
-    //     .then(({data})=> {
-    //       Fire.$emit("LoadByrorder");
-    //     })
-    //     .catch(function (response) {
-    //     });
-    // },
-    // onChangeFileUpload() {
-    //   this.file = this.$refs.file.files[0];
-    //   this.check_byr_order_api();
-    // },
 
     change(e) {
       const selectedCode = e.target.value;
@@ -472,9 +453,9 @@ export default {
     this.getbuyerJsonSettingvalue();
 
 
-    this.get_all_invoice_list();
-    Fire.$on("LoadByrinvoice", () => {
-      this.get_all_invoice_list();
+    this.get_all_invoice_list(this.form.page);
+    Fire.$on("LoadByrinvoice", (page=this.form.page) => {
+      this.get_all_invoice_list(page);
     });
     Fire.$emit("loadPageTitle", "請求データ一覧");
 

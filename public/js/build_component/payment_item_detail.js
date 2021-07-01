@@ -366,9 +366,9 @@ __webpack_require__.r(__webpack_exports__);
     this.form.end_date = this.$route.query.end_date;
     this.form.out_date = this.$route.query.out_date;
     this.getbuyerJsonSettingvalue();
-    this.getAllPaymentDetails();
+    this.getAllPaymentDetails(this.form.page);
     Fire.$on("LoadPaymentItemDetail", function () {
-      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _this3.form.page;
 
       _this3.getAllPaymentDetails(page);
     });
