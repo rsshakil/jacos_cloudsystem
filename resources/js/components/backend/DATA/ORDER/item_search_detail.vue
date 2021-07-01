@@ -829,6 +829,7 @@ export default {
           _this.alert_title = "";
           _this.alert_text = "入力データを反映させました";
           _this.sweet_normal_alert();
+      _this.checkUpdateDeliveryStatus();
       /*
       axios({
         method: "POST",
