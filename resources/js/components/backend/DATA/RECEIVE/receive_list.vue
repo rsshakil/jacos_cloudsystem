@@ -371,7 +371,7 @@ export default {
         this.$store.commit('receiveListModule/formValuesStoreBYRID',this.byr_buyer_id);
         this.form = this.$store.getters['receiveListModule/getFormData'];
         this.getbuyerJsonSettingvalue();
-        this.getAllReceivedItem();
+        this.getAllReceivedItem(this.form.page);
         // Fire.$on("LoadAllReceiveItem", () => {
         //   this.getAllReceivedItem();
         // });
