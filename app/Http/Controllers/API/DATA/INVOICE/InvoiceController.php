@@ -283,7 +283,7 @@ class InvoiceController extends Controller
 
     public function invoiceDetailsList(Request $request)
     {
-        \Log::debug(__METHOD__.':start---');
+        Log::debug(__METHOD__.':start---');
         // return $request->all();
         $data_invoice_id=$request->data_invoice_id;
         $per_page = $request->select_field_per_page_num == null ? 10 : $request->select_field_per_page_num;
@@ -400,7 +400,7 @@ class InvoiceController extends Controller
             $shipment_ids[]=$value->data_shipment_voucher_id;
         }
 
-        \Log::debug(__METHOD__.':end---');
+        Log::debug(__METHOD__.':end---');
         return response()->json(['invoice_details_list' => $invoice_details_list,'shipment_ids'=>$shipment_ids]);
     }
     public function get_voucher_detail_popup2_invoice(Request $request)
