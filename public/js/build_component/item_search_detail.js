@@ -820,6 +820,8 @@ __webpack_require__.r(__webpack_exports__);
       _this.alert_text = "入力データを反映させました";
 
       _this.sweet_normal_alert();
+
+      _this.checkUpdateDeliveryStatus();
       /*
       axios({
         method: "POST",
