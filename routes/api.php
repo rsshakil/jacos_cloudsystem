@@ -95,6 +95,7 @@ Route::group(['middleware'=>'ApiMiddleWire'], function () {
     Route::post('/downloadcsvshipment_confirm', 'API\DATA\SHIPMENT\ShipmentController@downloadShipmentCsv');
     Route::post('/sipment_pdf_download', 'API\DATA\SHIPMENT\ShipmentController@sipmentPdfDownload');
     Route::post('/update_shipment_item_details', 'API\DATA\SHIPMENT\ShipmentController@update_shipment_item_details');
+    Route::post('/update_shipment_item_details_from_search', 'API\DATA\SHIPMENT\ShipmentController@update_shipment_item_details_from_search');
     Route::post('/update_shipment_item_detail_form_data', 'API\DATA\SHIPMENT\ShipmentController@update_shipment_item_detail_form_data');
     Route::post('/get_all_shipment_item_by_search', 'API\DATA\SHIPMENT\ShipmentController@get_all_shipment_item_by_search');
     Route::get('/deletedownloadedshipmentCsv/{fileUrl}', 'API\DATA\SHIPMENT\ShipmentController@deletedownloadedshipmentCsv');
