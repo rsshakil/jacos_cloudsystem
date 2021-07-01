@@ -384,6 +384,7 @@
       cancel-title="キャンセル"
       @ok.prevent="save_user()"
       v-model="edit_order_modal"
+      :no-enforce-focus="true"
     >
       <div class="panel-body add_item_body">
         <form>
@@ -500,6 +501,7 @@
       cancel-title="閉じる"
       @ok.prevent="update_order_voucher_detail()"
       v-model="order_search_modal1"
+      :no-enforce-focus="true"
     >
       <div class="panel-body">
         <table
@@ -582,6 +584,7 @@
       cancel-title="閉じる"
       @ok.prevent="update_order_voucher_detail()"
       v-model="order_search_modal2"
+      :no-enforce-focus="true"
     >
       <div class="panel-body">
         <table
@@ -664,6 +667,7 @@
       cancel-title="閉じる"
       @ok.prevent="update_order_voucher_detail()"
       v-model="order_search_modal3"
+      :no-enforce-focus="true"
     >
       <div class="panel-body">
         <table
@@ -870,33 +874,36 @@ export default {
         this.order_search_modal3 = false;
       },
     deliverySearchForm1() {
+      let loaders333111 = Vue.$loading.show();
       this.order_search_modal1 = true;
       this.$route.query.adm_user_id = Globals.user_info_id;
       this.$route.query.byr_buyer_id = this.byr_buyer_id;
       axios.post(this.BASE_URL + "api/get_voucher_detail_popup1_receive", this.$route.query)
         .then(({ data }) => {
-            console.log(data);
             this.order_search_modal1List = data.popUpList;
+            loaders333111.hide();
         });
     },
     deliverySearchForm2() {
+      let loaders3333222 = Vue.$loading.show();
       this.order_search_modal2 = true;
        this.$route.query.adm_user_id = Globals.user_info_id;
        this.$route.query.byr_buyer_id = this.byr_buyer_id;
       axios.post(this.BASE_URL + "api/get_voucher_detail_popup2_receive", this.$route.query)
         .then(({ data }) => {
-            console.log(data);
             this.order_search_modal2List = data.popUpList;
+            loaders3333222.hide();
         });
     },
     deliverySearchForm3() {
+      let loaders3333 = Vue.$loading.show();
       this.order_search_modal3 = true;
        this.$route.query.adm_user_id = Globals.user_info_id;
        this.$route.query.byr_buyer_id = this.byr_buyer_id;
       axios.post(this.BASE_URL + "api/get_voucher_detail_popup3_receive", this.$route.query)
         .then(({ data }) => {
-            console.log(data);
             this.order_search_modal3List = data.popUpList;
+            loaders3333.hide();
         });
     },
 

@@ -751,6 +751,7 @@ var render = function() {
           attrs: {
             size: "xl",
             "hide-backdrop": true,
+            "no-enforce-focus": true,
             title: "未払伝票確認",
             "cancel-title": "閉じる",
             "hide-footer": true,
