@@ -322,7 +322,7 @@
                   }}
                 </td>
                 <td class="text-right">
-                  {{ order_detail_list.mes_lis_shi_tot_tot_net_price_total | priceFormat}}
+                  {{ order_detail_list.mes_lis_shi_tot_tot_net_price_total | priceFormatNullZero}}
                 </td>
                 <td>{{ order_detail_list.status }}</td>
                 <td>{{ order_detail_list.updated_at }}</td>
