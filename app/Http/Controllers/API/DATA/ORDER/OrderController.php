@@ -209,60 +209,21 @@ class OrderController extends Controller
             ->where('cmn_companies_users.adm_user_id', $user_id)->first();
         if ($slr_info) {
             $slr_id = $slr_info->slr_seller_id;
-            $buyer_infos = cmn_connect::select('cmn_connects.cmn_connect_id','byr_buyers.byr_buyer_id', 'cmn_companies.company_name as buyer_name')
-            ->leftJoin('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
-            ->leftJoin('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
-            ->where('cmn_connects.slr_seller_id', $slr_id)
-            // ->groupBy('byr_buyers.byr_buyer_id')
-            ->get();
-            $collection = collect($buyer_infos);
-            $grouped = $collection->groupBy('byr_buyer_id');
-
-            $data_grouped=$grouped->all();
-
-            $grouped_array=array();
-            for ($i=0; $i <count($data_grouped) ; $i++) {
-                $step0=array_keys($data_grouped)[$i];
-                $grouped_array[]=$data_grouped[$step0];
-            }
-            $test_array=array();
-            $final_array=array();
-            foreach ($grouped_array as $key => $grouped_info) {
-                $cmn_connect_ids=array();
-                foreach ($grouped_info as $key1 => $value) {
-                    $cmn_connect_ids[]=$value->cmn_connect_id;
-                }
-                // $cmn_connect_ids1=implode(',',$cmn_connect_ids);
-                // $cmn_connect_ids1=implode(",",$cmn_connect_ids);
-                $tmp_array = data_order::select(DB::raw('count(data_order_vouchers.data_order_id) as total_order'))
-                // ->leftJoin('data_orders', 'data_orders.cmn_connect_id', '=', 'cmn_connects.cmn_connect_id')
-                ->leftJoin('data_order_vouchers', 'data_order_vouchers.data_order_id', '=', 'data_orders.data_order_id')
-                ->leftJoin('data_shipment_vouchers', 'data_shipment_vouchers.data_order_voucher_id', '=', 'data_order_vouchers.data_order_voucher_id')
-                ->whereIn('data_orders.cmn_connect_id',$cmn_connect_ids)
-                ->first();
-                $test_array['buyer_name']=$grouped_info[0]->buyer_name;
-                $test_array['byr_buyer_id']=$grouped_info[0]->byr_buyer_id;
-                $test_array['total_order']=!empty($tmp_array)?$tmp_array->total_order:0;
-                $final_array[]=$test_array;
-            }
-            // return $final_array;
-
-
-
-
-            // $slr_order_info = cmn_connect::select(DB::raw('count(data_order_vouchers.data_order_id) as total_order'), 'byr_buyers.byr_buyer_id', 'cmn_companies.company_name as buyer_name')
-            //     ->leftJoin('data_orders', 'data_orders.cmn_connect_id', '=', 'cmn_connects.cmn_connect_id')
-            //     ->leftJoin('data_order_vouchers', 'data_order_vouchers.data_order_id', '=', 'data_orders.data_order_id')
-            //     ->leftJoin('data_shipment_vouchers', 'data_shipment_vouchers.data_order_voucher_id', '=', 'data_order_vouchers.data_order_voucher_id')
-            //     ->leftJoin('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
-            //     ->leftJoin('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
-            //     ->whereNull('data_shipment_vouchers.send_datetime')
-            //     ->where('cmn_connects.slr_seller_id', $slr_id)
-            //     ->groupBy('byr_buyers.byr_buyer_id')
-            //     ->get();
+            $slr_order_info = cmn_connect::select(
+                DB::raw('COUNT(data_shipment_vouchers.data_shipment_voucher_id) - COUNT(data_shipment_vouchers.send_datetime) as total_order'),
+                'byr_buyers.byr_buyer_id',
+                'cmn_companies.company_name as buyer_name'
+            )
+                ->join('byr_buyers', 'byr_buyers.byr_buyer_id', '=', 'cmn_connects.byr_buyer_id')
+                ->join('cmn_companies', 'cmn_companies.cmn_company_id', '=', 'byr_buyers.cmn_company_id')
+                ->leftJoin('data_shipments', 'data_shipments.cmn_connect_id', '=', 'cmn_connects.cmn_connect_id')
+                ->leftJoin('data_shipment_vouchers', 'data_shipment_vouchers.data_shipment_id', '=', 'data_shipments.data_shipment_id')
+                ->where('cmn_connects.slr_seller_id', $slr_id)
+                ->groupBy('byr_buyers.byr_buyer_id')
+                ->get();
         }
         Log::debug(__METHOD__.':end---');
-        return response()->json(['slr_order_info' => $final_array]);
+        return response()->json(['slr_order_info' => $slr_order_info]);
     }
     public function orderDetails(Request $request)
     {

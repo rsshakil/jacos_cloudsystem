@@ -355,12 +355,12 @@ __webpack_require__.r(__webpack_exports__);
     showAllCustomerCode: function showAllCustomerCode() {
       var _this2 = this;
 
-      var loaders = Vue.$loading.show();
+      var loadersCusCode = Vue.$loading.show();
       this.showAllCustomerCodeListModal = true;
       this.form.post(this.BASE_URL + "api/get_invoice_customer_code_list", this.form).then(function (_ref) {
         var data = _ref.data;
         _this2.order_customer_code_lists = data.order_customer_code_lists;
-        loaders.hide();
+        loadersCusCode.hide();
       });
     },
     viewInvoicePopup: function viewInvoicePopup() {
@@ -1356,7 +1356,7 @@ var render = function() {
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(value.mes_lis_buy_code))]),
                           _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(value.mes_lis_buy_code))]),
+                          _c("td", [_vm._v(_vm._s(value.mes_lis_buy_name))]),
                           _vm._v(" "),
                           _c("td")
                         ]
