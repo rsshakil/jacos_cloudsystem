@@ -252,7 +252,7 @@
           <td>{{value.mes_lis_inv_pay_code}}</td>
           <td>{{value.mes_lis_inv_pay_name}}</td>
           <td>{{value.mes_lis_buy_code}}</td>
-          <td>{{value.mes_lis_buy_code}}</td>
+          <td>{{value.mes_lis_buy_name}}</td>
 
           <td></td>
           </tr>
@@ -331,12 +331,12 @@ export default {
     },
     //get Table data
     showAllCustomerCode(){
-    let loaders = Vue.$loading.show();
+    let loadersCusCode = Vue.$loading.show();
       this.showAllCustomerCodeListModal = true;
       this.form.post(this.BASE_URL + "api/get_invoice_customer_code_list", this.form)
         .then(({ data }) => {
           this.order_customer_code_lists = data.order_customer_code_lists;
-          loaders.hide();
+          loadersCusCode.hide();
         });
     },
     viewInvoicePopup(){

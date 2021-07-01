@@ -281,7 +281,7 @@
       <div class="panel-body add_item_body">
 
           <div class="row">
-  <table class="table table-striped order_list_partner_code_modal table-bordered data_table">
+  <table class="table table-striped order_item_details_table order_list_partner_code_modal table-bordered data_table">
           <thead>
             <tr>
               <th style="cursor: pointer">No</th>
