@@ -1142,7 +1142,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../../node_module
 
 
 // module
-exports.push([module.i, "\n.same_yellow{\n    background: yellow;\n}\n", ""]);
+exports.push([module.i, "\n.same_yellow{\r\n    background: yellow;\n}\r\n", ""]);
 
 // exports
 

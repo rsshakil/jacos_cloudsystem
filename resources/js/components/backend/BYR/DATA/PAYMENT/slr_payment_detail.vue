@@ -156,7 +156,7 @@
 
       </div>
     </div>
-    <b-modal size="xl" :hide-backdrop="true" title="未払伝票確認" cancel-title="閉じる" v-model="unpaid_slip_modal" :hide-footer="true" :draggable="true">
+    <b-modal size="xl" :hide-backdrop="true" title="未払伝票確認" cancel-title="閉じる" v-model="unpaid_slip_modal" :hide-footer="true" :draggable="true" :no-enforce-focus="true">
       <div class="panel-body">
       <div class="row">
         <div class="col-6">

@@ -50,10 +50,7 @@
       :ok-title="myLang.save"
       :cancel-title="myLang.cancel"
       @ok.prevent="create_new_blog()"
-      v-model="blog_create_modal">
-      <!-- <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-      <div class="modal-body">-->
+      v-model="blog_create_modal" :no-enforce-focus="true">
       <div class="panel-body add_item_body">
         <form enctype="multipart/form-data">
         <input type="hidden" v-model="form.cmn_blog_id">

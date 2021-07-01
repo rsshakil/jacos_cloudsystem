@@ -68,6 +68,7 @@
       :cancel-title="myLang.cancel"
       @ok.prevent="save_edit_job()"
       v-model="job_exe_modal"
+      :no-enforce-focus="true"
     >
       <!-- <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">

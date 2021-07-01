@@ -754,7 +754,8 @@ var render = function() {
             title: "未払伝票確認",
             "cancel-title": "閉じる",
             "hide-footer": true,
-            draggable: true
+            draggable: true,
+            "no-enforce-focus": true
           },
           model: {
             value: _vm.unpaid_slip_modal,

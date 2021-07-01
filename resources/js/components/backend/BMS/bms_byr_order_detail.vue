@@ -1726,10 +1726,7 @@
       cancel-title="キャンセル"
       @ok.prevent="save_user()"
       v-model="edit_order_modal"
-    >
-      <!-- <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-      <div class="modal-body">-->
+      :no-enforce-focus="true">
       <div class="panel-body add_item_body">
         <form>
           <input type="hidden" name="vendor_item_id" id="vendor_item_id" value />

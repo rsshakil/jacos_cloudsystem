@@ -198,6 +198,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 // import tabList from "../CMN/tabList";
 // import jacostabList from "../CMN/jacos_tab_List";
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -676,7 +677,8 @@ var render = function() {
             "hide-backdrop": true,
             title: "Create Partner",
             "ok-title": _vm.save_button,
-            "cancel-title": _vm.myLang.cancel
+            "cancel-title": _vm.myLang.cancel,
+            "no-enforce-focus": true
           },
           on: {
             ok: function($event) {

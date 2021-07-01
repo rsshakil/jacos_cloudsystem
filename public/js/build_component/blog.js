@@ -102,9 +102,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
  // import ClassicEditor from '@ckeditor/ckeditor5-editor-classic';
 
 
@@ -550,7 +547,8 @@ var render = function() {
             "hide-backdrop": true,
             title: "新規　お知らせ",
             "ok-title": _vm.myLang.save,
-            "cancel-title": _vm.myLang.cancel
+            "cancel-title": _vm.myLang.cancel,
+            "no-enforce-focus": true
           },
           on: {
             ok: function($event) {

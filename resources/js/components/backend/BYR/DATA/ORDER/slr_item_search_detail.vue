@@ -432,6 +432,7 @@
       cancel-title="キャンセル"
       @ok.prevent="save_user()"
       v-model="edit_order_modal"
+      :no-enforce-focus="true"
     >
       <div class="panel-body add_item_body">
         <form>

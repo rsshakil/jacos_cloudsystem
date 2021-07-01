@@ -28,7 +28,7 @@
 <body>
     <div class="container-fluid" id="app"></div>
     <b-modal size="lg" :hide-backdrop="true" @ok="signinUser($event)" :title="table_col_modal_title"
-        v-model="table_col_modal_setting">
+        v-model="table_col_modal_setting" :no-enforce-focus="true">
 
         <div v-html="table_col_setting_list"></div>
     </b-modal>

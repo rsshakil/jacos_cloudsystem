@@ -369,6 +369,7 @@
       cancel-title="キャンセル"
       @ok.prevent="save_user()"
       v-model="edit_order_modal"
+      :no-enforce-focus="true"
     >
       <div class="panel-body add_item_body">
         <form>
@@ -485,6 +486,7 @@
       cancel-title="閉じる"
       @ok.prevent="update_order_voucher_detail()"
       v-model="order_search_modal1"
+      :no-enforce-focus="true"
     >
       <div class="panel-body">
         <table class="table orderTopDetailTable table-striped popupListTable table-bordered" style="width: 100%">
@@ -523,6 +525,7 @@
       cancel-title="閉じる"
       @ok.prevent="update_order_voucher_detail()"
       v-model="order_search_modal2"
+      :no-enforce-focus="true"
     >
       <div class="panel-body">
         <table class="table orderTopDetailTable table-striped popupListTable table-bordered" style="width: 100%">
@@ -561,6 +564,7 @@
       cancel-title="閉じる"
       @ok.prevent="update_order_voucher_detail()"
       v-model="order_search_modal3"
+      :no-enforce-focus="true"
     >
       <div class="panel-body">
         <table class="table orderTopDetailTable table-striped popupListTable table-bordered" style="width: 100%">

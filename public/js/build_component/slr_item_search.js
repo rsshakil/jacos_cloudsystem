@@ -245,6 +245,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -970,7 +971,8 @@ var render = function() {
             "hide-backdrop": true,
             title: "商品コード",
             "ok-title": "検　索",
-            "cancel-title": "閉じる"
+            "cancel-title": "閉じる",
+            "no-enforce-focus": true
           },
           on: {
             ok: function($event) {

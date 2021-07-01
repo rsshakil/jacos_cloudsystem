@@ -62,7 +62,7 @@
     </div>
 
     <!-- Start Permission modal  -->
-    <b-modal size="lg" :hide-backdrop="true" :title="permission_modal_title" v-model="permissionModalShow">
+    <b-modal size="lg" :hide-backdrop="true" :title="permission_modal_title" v-model="permissionModalShow" :no-enforce-focus="true">
         <div>
             <h4>Total Permissions: {{total_permissions_by_user}}</h4>
         </div>
@@ -70,7 +70,7 @@
     </b-modal>
     <!-- End Permission modal  -->
     <!-- Add new user Modal -->
-    <b-modal id="modal-lg" size="lg" :hide-backdrop="true" title="Create User" ok-title="Save" @ok.prevent="save_user()" v-model="userModalShow">
+    <b-modal id="modal-lg" size="lg" :hide-backdrop="true" title="Create User" ok-title="Save" @ok.prevent="save_user()" v-model="userModalShow" :no-enforce-focus="true">
         <form method="POST" id="user_create">
                     <div class="row">
                         <div class="col-md-6">

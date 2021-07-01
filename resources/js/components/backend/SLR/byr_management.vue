@@ -111,6 +111,7 @@
       :cancel-title="myLang.cancel"
       @ok.prevent="save_new_buyer()"
       v-model="add_cmn_company_modal"
+      :no-enforce-focus="true"
     >
       <!-- <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">

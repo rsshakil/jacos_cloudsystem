@@ -335,7 +335,7 @@
         </div>
       </div>
       <b-modal size="lg" :hide-backdrop="true" title="請求伝票追加" ok-title="追加" cancel-title="キャンセル"
-      @ok.prevent="update_invoice_detail()" v-model="addInvoiceDetailModal">
+      @ok.prevent="update_invoice_detail()" v-model="addInvoiceDetailModal" :no-enforce-focus="true">
       <div class="panel-body add_item_body">
         <p v-if="errors.length">
         <b>次の間違いを正しくしてください:</b>
@@ -411,7 +411,7 @@
     </b-modal>
 
 <b-modal size="lg" :hide-backdrop="true" title="請求伝票変更" ok-title="変更" cancel-title="キャンセル"
-      @ok.prevent="update_invoice_detail()" v-model="editInvoiceDetailModal">
+      @ok.prevent="update_invoice_detail()" v-model="editInvoiceDetailModal" :no-enforce-focus="true">
       <div class="panel-body add_item_body">
        <p v-if="errors.length">
         <b>次の間違いを正しくしてください:</b>
@@ -486,7 +486,7 @@
       </div>-->
     </b-modal>
 
-<b-modal size="xl" :hide-backdrop="true" title="出荷・受領比較" cancel-title="閉じる" v-model="invoiceCompareModal" :hide-footer="true" :draggable="true">
+<b-modal size="xl" :hide-backdrop="true" title="出荷・受領比較" cancel-title="閉じる" v-model="invoiceCompareModal" :hide-footer="true" :draggable="true" :no-enforce-focus="true">
       <div class="panel-body">
       <div class="row">
         <div class="col-6">
@@ -550,6 +550,7 @@
       v-model="invoiceitemDatalistModal"
       :hide-footer="true"
       :draggable="true"
+      :no-enforce-focus="true"
     >
       <div class="panel-body">
       <div class="row">
@@ -601,6 +602,7 @@
       cancel-title="閉じる"
       @ok.prevent="update_order_voucher_detail()"
       v-model="order_search_modal2"
+      :no-enforce-focus="true"
     >
       <div class="panel-body">
         <table

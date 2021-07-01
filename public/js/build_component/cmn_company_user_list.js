@@ -184,6 +184,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 // import tabList from "../CMN/tabList";
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "app",
@@ -621,7 +622,8 @@ var render = function() {
             "hide-backdrop": true,
             title: _vm.myLang.add_user,
             "ok-title": _vm.save_button,
-            "cancel-title": _vm.myLang.cancel
+            "cancel-title": _vm.myLang.cancel,
+            "no-enforce-focus": true
           },
           on: {
             ok: function($event) {

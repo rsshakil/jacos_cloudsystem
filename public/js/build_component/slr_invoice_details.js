@@ -641,6 +641,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1108,7 +1110,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../../../node_mod
 
 
 // module
-exports.push([module.i, "\n.same_yellow{\r\n    background: yellow;\n}\r\n", ""]);
+exports.push([module.i, "\n.same_yellow{\n    background: yellow;\n}\n", ""]);
 
 // exports
 
@@ -2286,7 +2288,8 @@ var render = function() {
             "hide-backdrop": true,
             title: "請求伝票追加",
             "ok-title": "追加",
-            "cancel-title": "キャンセル"
+            "cancel-title": "キャンセル",
+            "no-enforce-focus": true
           },
           on: {
             ok: function($event) {
@@ -2716,7 +2719,8 @@ var render = function() {
             "hide-backdrop": true,
             title: "請求伝票変更",
             "ok-title": "変更",
-            "cancel-title": "キャンセル"
+            "cancel-title": "キャンセル",
+            "no-enforce-focus": true
           },
           on: {
             ok: function($event) {
@@ -3145,7 +3149,8 @@ var render = function() {
             title: "出荷・受領比較",
             "cancel-title": "閉じる",
             "hide-footer": true,
-            draggable: true
+            draggable: true,
+            "no-enforce-focus": true
           },
           model: {
             value: _vm.invoiceCompareModal,
@@ -3395,7 +3400,8 @@ var render = function() {
             title: "出荷・受領比較（明細）",
             "cancel-title": "閉じる",
             "hide-footer": true,
-            draggable: true
+            draggable: true,
+            "no-enforce-focus": true
           },
           model: {
             value: _vm.invoiceitemDatalistModal,
@@ -3568,7 +3574,8 @@ var render = function() {
             "hide-backdrop": true,
             title: "納品先検索",
             "ok-title": "検　索",
-            "cancel-title": "閉じる"
+            "cancel-title": "閉じる",
+            "no-enforce-focus": true
           },
           on: {
             ok: function($event) {
