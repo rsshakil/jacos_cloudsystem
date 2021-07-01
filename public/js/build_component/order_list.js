@@ -1335,7 +1335,7 @@ var render = function() {
                 "table",
                 {
                   staticClass:
-                    "table table-striped order_list_partner_code_modal table-bordered data_table"
+                    "table table-striped order_item_details_table order_list_partner_code_modal table-bordered data_table"
                 },
                 [
                   _c("thead", [
