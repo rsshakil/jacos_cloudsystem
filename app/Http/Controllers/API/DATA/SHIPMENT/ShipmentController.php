@@ -299,6 +299,7 @@ class ShipmentController extends Controller
         $mes_lis_shi_tot_tot_tax_total_sum=0;
         $mes_lis_shi_tot_tot_item_total_sum=0;
         $mes_lis_shi_tot_tot_unit_total_sum=0;
+         
         foreach ($items as $item) {
             $netprice = $item['mes_lis_shi_lin_qua_shi_quantity']*$item['mes_lis_shi_lin_amo_item_net_price_unit_price'];
             $sellingPrice = $item['mes_lis_shi_lin_qua_shi_quantity']*$item['mes_lis_shi_lin_amo_item_selling_price_unit_price'];
@@ -342,6 +343,103 @@ class ShipmentController extends Controller
             'mes_lis_shi_tot_tot_item_total'=>$mes_lis_shi_tot_tot_item_total_sum,
             'mes_lis_shi_tot_tot_unit_total'=>$mes_lis_shi_tot_tot_unit_total_sum,
             'status'=>$status
+            ]);
+
+        return response()->json(['success' => '1']);
+    }
+
+    public function update_shipment_item_details_from_search(Request $request)
+    {
+        //return $request->all();
+        $items = $request->items;
+        // print_r($items[0]['data_shipment_voucher_id']);exit;
+        // echo $items[0]->data_shipment_voucher_id;exit;
+        $updated_date = $request->updated_date;
+        $total_selling_price = $request->total_selling_price;
+        $total_cost_price = $request->total_cost_price;
+        $status = $request->order_status;
+        $mes_lis_shi_tot_tot_net_price_total_sum=0;
+        $mes_lis_shi_tot_tot_selling_price_total_sum=0;
+        $mes_lis_shi_tot_tot_tax_total_sum=0;
+        $mes_lis_shi_tot_tot_item_total_sum=0;
+        $mes_lis_shi_tot_tot_unit_total_sum=0;
+         
+        foreach ($items as $item) {
+            $netprice = $item['mes_lis_shi_lin_qua_shi_quantity']*$item['mes_lis_shi_lin_amo_item_net_price_unit_price'];
+            $sellingPrice = $item['mes_lis_shi_lin_qua_shi_quantity']*$item['mes_lis_shi_lin_amo_item_selling_price_unit_price'];
+            $tax = ($netprice*$item['mes_lis_shi_tra_tax_tax_rate'])/100;
+           
+            data_shipment_item::where('data_shipment_item_id', $item['data_shipment_item_id'])->update([
+                'mes_lis_shi_lin_qua_shi_num_of_order_units'=>$item['mes_lis_shi_lin_qua_shi_num_of_order_units'],
+                'mes_lis_shi_lin_qua_shi_quantity'=>$item['mes_lis_shi_lin_qua_shi_quantity'],
+                'mes_lis_shi_lin_qua_sto_quantity'=>$item['mes_lis_shi_lin_qua_ord_quantity']-$item['mes_lis_shi_lin_qua_shi_quantity'],
+                'mes_lis_shi_lin_qua_sto_num_of_order_units'=>$item['mes_lis_shi_lin_qua_ord_num_of_order_units']-$item['mes_lis_shi_lin_qua_shi_num_of_order_units'],
+                'mes_lis_shi_lin_qua_sto_reason_code'=>$item['mes_lis_shi_lin_qua_sto_reason_code'],
+                'mes_lis_shi_lin_amo_item_net_price'=>$netprice,
+                'mes_lis_shi_lin_amo_item_net_price_unit_price'=>$item['mes_lis_shi_lin_amo_item_net_price_unit_price'],
+                'mes_lis_shi_lin_amo_item_selling_price'=>$sellingPrice,
+                'mes_lis_shi_lin_amo_item_tax'=>$tax,
+                'mes_lis_shi_lin_amo_item_selling_price_unit_price'=>$item['mes_lis_shi_lin_amo_item_selling_price_unit_price'],
+            ]);
+        }
+       if(isset($updated_date)){
+        data_shipment_voucher::where('data_shipment_voucher_id', $items[0]['data_shipment_voucher_id'])->update([
+            'mes_lis_shi_tra_dat_revised_delivery_date'=>$updated_date
+            ]);
+       }
+       /*new code for update status and total*/
+       $data_shipment_voucher_id = $items[0]['data_shipment_voucher_id'];
+       $result = DB::select("
+       SELECT data_shipment_items.*,data_shipment_vouchers.*,data_order_vouchers.*,data_order_items.* FROM data_shipment_items
+       inner join data_shipment_vouchers on data_shipment_vouchers.data_shipment_voucher_id=data_shipment_items.data_shipment_voucher_id
+       inner join data_shipments on data_shipments.data_shipment_id=data_shipment_vouchers.data_shipment_id
+       inner join data_order_vouchers on data_order_vouchers.data_order_id=data_shipments.data_order_id AND data_order_vouchers.mes_lis_ord_tra_trade_number = data_shipment_vouchers.mes_lis_shi_tra_trade_number
+       inner join data_order_items on data_order_items.data_order_voucher_id=data_order_vouchers.data_order_voucher_id AND data_order_items.mes_lis_ord_lin_lin_line_number = data_shipment_items.mes_lis_shi_lin_lin_line_number
+       where data_shipment_items.data_shipment_voucher_id = '$data_shipment_voucher_id'
+       order by data_shipment_items.mes_lis_shi_lin_lin_line_number
+       ");
+       if($result){
+           $allIsfull =array();
+           $allIsZero =array();
+           $allIsNotZero =array();
+           foreach($result as $vl){
+               if($vl->mes_lis_shi_lin_qua_shi_quantity==0){
+                $allIsZero[]=$vl;
+               }
+               if($vl->mes_lis_shi_lin_qua_shi_num_of_order_units==$vl->mes_lis_shi_lin_qua_ord_num_of_order_units){
+                $allIsfull[]=$vl;
+               }
+
+               $netprice = $vl->mes_lis_shi_lin_qua_shi_quantity*$vl->mes_lis_shi_lin_amo_item_net_price_unit_price;
+                $sellingPrice = $vl->mes_lis_shi_lin_qua_shi_quantity*$vl->mes_lis_shi_lin_amo_item_selling_price_unit_price;
+                $tax = ($netprice*$vl->mes_lis_shi_tra_tax_tax_rate)/100;
+
+               $mes_lis_shi_tot_tot_net_price_total_sum +=$netprice;
+               $mes_lis_shi_tot_tot_selling_price_total_sum +=$sellingPrice;
+               $mes_lis_shi_tot_tot_tax_total_sum +=$tax;
+               $mes_lis_shi_tot_tot_item_total_sum +=$vl->mes_lis_shi_lin_qua_shi_quantity;
+               $mes_lis_shi_tot_tot_unit_total_sum +=$vl->mes_lis_shi_lin_qua_shi_num_of_order_units;
+            
+           }
+           $totalRows =count($result);
+           $allIsfullLength =count($allIsfull);
+           $allIsZeroLength =count($allIsZero);
+           $update_status = '一部未納';
+           if($totalRows==$allIsZeroLength){
+             $update_status = '未納';
+           }
+           if($totalRows==$allIsfullLength){
+             $update_status = '完納';
+           }
+       }
+      /*new code for update status and total*/
+        data_shipment_voucher::where('data_shipment_voucher_id', $data_shipment_voucher_id)->update([
+            'mes_lis_shi_tot_tot_net_price_total'=>$mes_lis_shi_tot_tot_net_price_total_sum,
+            'mes_lis_shi_tot_tot_selling_price_total'=>$mes_lis_shi_tot_tot_selling_price_total_sum,
+            'mes_lis_shi_tot_tot_tax_total'=>$mes_lis_shi_tot_tot_tax_total_sum,
+            'mes_lis_shi_tot_tot_item_total'=>$mes_lis_shi_tot_tot_item_total_sum,
+            'mes_lis_shi_tot_tot_unit_total'=>$mes_lis_shi_tot_tot_unit_total_sum,
+            'status'=>$update_status
             ]);
 
         return response()->json(['success' => '1']);

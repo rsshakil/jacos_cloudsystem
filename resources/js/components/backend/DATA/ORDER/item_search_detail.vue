@@ -790,7 +790,7 @@ export default {
       };
       axios({
         method: "POST",
-        url: this.BASE_URL + "api/update_shipment_item_details",
+        url: this.BASE_URL + "api/update_shipment_item_details_from_search",
         data: order_detailitem,
       })
         .then(({ data }) => {
