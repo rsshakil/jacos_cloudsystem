@@ -348,7 +348,7 @@
           </div>
         </div>
       </div>
-      <b-modal size="lg" :hide-backdrop="true" title="請求伝票追加" ok-title="追加" cancel-title="キャンセル"
+      <b-modal size="lg" :hide-backdrop="true" :no-enforce-focus="true" title="請求伝票追加" ok-title="追加" cancel-title="キャンセル"
       @ok.prevent="update_invoice_detail()" v-model="addInvoiceDetailModal">
       <div class="panel-body add_item_body">
         <p v-if="errors.length">
@@ -424,7 +424,7 @@
       </div>-->
     </b-modal>
 
-<b-modal size="lg" :hide-backdrop="true" title="請求伝票変更" ok-title="変更" cancel-title="キャンセル"
+<b-modal size="lg" :hide-backdrop="true" :no-enforce-focus="true" title="請求伝票変更" ok-title="変更" cancel-title="キャンセル"
       @ok.prevent="update_invoice_detail()" v-model="editInvoiceDetailModal">
       <div class="panel-body add_item_body">
        <p v-if="errors.length">
@@ -500,7 +500,7 @@
       </div>-->
     </b-modal>
 
-<b-modal size="xl" :hide-backdrop="true" title="出荷・受領比較" cancel-title="閉じる" v-model="invoiceCompareModal" :hide-footer="true" :draggable="true">
+<b-modal size="xl" :hide-backdrop="true" :no-enforce-focus="true" title="出荷・受領比較" cancel-title="閉じる" v-model="invoiceCompareModal" :hide-footer="true" :draggable="true">
       <div class="panel-body">
       <div class="row">
         <div class="col-6">
@@ -564,6 +564,7 @@
       v-model="invoiceitemDatalistModal"
       :hide-footer="true"
       :draggable="true"
+      :no-enforce-focus="true"
     >
       <div class="panel-body">
       <div class="row">
@@ -615,6 +616,7 @@
       cancel-title="閉じる"
       @ok.prevent="update_order_voucher_detail()"
       v-model="order_search_modal2"
+      :no-enforce-focus="true"
     >
       <div class="panel-body">
         <table
@@ -724,13 +726,14 @@ export default {
         this.order_search_modal2 = false;
       },
       deliverySearchForm2() {
+        let loaders11111 = Vue.$loading.show();
       this.order_search_modal2 = true;
        this.$route.query.adm_user_id = Globals.user_info_id;
        this.$route.query.byr_buyer_id = this.byr_buyer_id;
       axios.post(this.BASE_URL + "api/get_voucher_detail_popup2_invoice", this.$route.query)
         .then(({ data }) => {
-            console.log(data);
             this.order_search_modal2List = data.popUpList;
+            loaders11111.hide();
         });
     },
     checkForm: function (e) {

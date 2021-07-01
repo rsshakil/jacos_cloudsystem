@@ -782,6 +782,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -885,37 +889,40 @@ __webpack_require__.r(__webpack_exports__);
     deliverySearchForm1: function deliverySearchForm1() {
       var _this = this;
 
+      var loaders333111 = Vue.$loading.show();
       this.order_search_modal1 = true;
       this.$route.query.adm_user_id = Globals.user_info_id;
       this.$route.query.byr_buyer_id = this.byr_buyer_id;
       axios.post(this.BASE_URL + "api/get_voucher_detail_popup1_receive", this.$route.query).then(function (_ref) {
         var data = _ref.data;
-        console.log(data);
         _this.order_search_modal1List = data.popUpList;
+        loaders333111.hide();
       });
     },
     deliverySearchForm2: function deliverySearchForm2() {
       var _this2 = this;
 
+      var loaders3333222 = Vue.$loading.show();
       this.order_search_modal2 = true;
       this.$route.query.adm_user_id = Globals.user_info_id;
       this.$route.query.byr_buyer_id = this.byr_buyer_id;
       axios.post(this.BASE_URL + "api/get_voucher_detail_popup2_receive", this.$route.query).then(function (_ref2) {
         var data = _ref2.data;
-        console.log(data);
         _this2.order_search_modal2List = data.popUpList;
+        loaders3333222.hide();
       });
     },
     deliverySearchForm3: function deliverySearchForm3() {
       var _this3 = this;
 
+      var loaders3333 = Vue.$loading.show();
       this.order_search_modal3 = true;
       this.$route.query.adm_user_id = Globals.user_info_id;
       this.$route.query.byr_buyer_id = this.byr_buyer_id;
       axios.post(this.BASE_URL + "api/get_voucher_detail_popup3_receive", this.$route.query).then(function (_ref3) {
         var data = _ref3.data;
-        console.log(data);
         _this3.order_search_modal3List = data.popUpList;
+        loaders3333.hide();
       });
     },
     selectNumPerPage: function selectNumPerPage() {
@@ -2182,7 +2189,8 @@ var render = function() {
             "hide-backdrop": true,
             title: "発注データ修正",
             "ok-title": "修正",
-            "cancel-title": "キャンセル"
+            "cancel-title": "キャンセル",
+            "no-enforce-focus": true
           },
           on: {
             ok: function($event) {
@@ -2404,7 +2412,8 @@ var render = function() {
             "hide-backdrop": true,
             title: "納品先検索",
             "ok-title": "検　索",
-            "cancel-title": "閉じる"
+            "cancel-title": "閉じる",
+            "no-enforce-focus": true
           },
           on: {
             ok: function($event) {
@@ -2504,7 +2513,8 @@ var render = function() {
             "hide-backdrop": true,
             title: "納品先検索",
             "ok-title": "検　索",
-            "cancel-title": "閉じる"
+            "cancel-title": "閉じる",
+            "no-enforce-focus": true
           },
           on: {
             ok: function($event) {
@@ -2604,7 +2614,8 @@ var render = function() {
             "hide-backdrop": true,
             title: "商品コード",
             "ok-title": "検　索",
-            "cancel-title": "閉じる"
+            "cancel-title": "閉じる",
+            "no-enforce-focus": true
           },
           on: {
             ok: function($event) {
