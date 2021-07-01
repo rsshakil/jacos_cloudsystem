@@ -195,10 +195,6 @@
         </nav>
       </nav>
     </div>
-    <!-- <b-modal size="lg" :hide-backdrop="true" :title="Management" v-model="table_col_modal">
-      <div v-html="permissions_for_col"></div>
-    </b-modal>-->
-    <!-- / .main-navbar -->
     <b-modal
       id="table_col_setting"
       :hide-backdrop="true"
@@ -207,7 +203,7 @@
       cancel-title="キャンセル"
       ok-title="変更"
       @ok.prevent="update_col_setting()"
-    >
+      :no-enforce-focus="true">
       <!-- <div v-html="table_col_setting_list"></div> -->
       <table class="table table-bordered table_col_ssettings">
         <thead>

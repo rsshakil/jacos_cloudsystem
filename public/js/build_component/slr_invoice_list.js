@@ -280,6 +280,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1103,7 +1105,8 @@ var render = function() {
             "hide-backdrop": true,
             title: "新規請求作成",
             "ok-title": "登録",
-            "cancel-title": "閉じる"
+            "cancel-title": "閉じる",
+            "no-enforce-focus": true
           },
           on: {
             ok: function($event) {
@@ -1280,7 +1283,8 @@ var render = function() {
             "hide-backdrop": true,
             title: "取引先コード一覧",
             "cancel-title": "閉じる",
-            "hide-footer": true
+            "hide-footer": true,
+            "no-enforce-focus": true
           },
           model: {
             value: _vm.showAllCustomerCodeListModal,

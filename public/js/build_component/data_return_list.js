@@ -246,6 +246,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 // import return_item_listVue from './return_item_list.vue';
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -1038,7 +1039,8 @@ var render = function() {
             "hide-backdrop": true,
             title: "取引先コード一覧",
             "cancel-title": "閉じる",
-            "hide-footer": true
+            "hide-footer": true,
+            "no-enforce-focus": true
           },
           model: {
             value: _vm.showAllCustomerCodeListModal,

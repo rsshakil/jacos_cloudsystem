@@ -115,6 +115,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'app',
   data: function data() {
@@ -336,7 +337,8 @@ var render = function() {
             "hide-backdrop": true,
             title: _vm.myLang.folder_monitoring,
             "ok-title": _vm.myLang.save,
-            "cancel-title": _vm.myLang.cancel
+            "cancel-title": _vm.myLang.cancel,
+            "no-enforce-focus": true
           },
           on: {
             ok: function($event) {

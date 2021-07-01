@@ -118,11 +118,7 @@
       :cancel-title="myLang.cancel"
       @ok.prevent="save_new_slr()"
       v-model="add_cmn_company_modal"
-    >
-      <!-- estore.fdl.com.bd -->
-      <!-- <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-      <div class="modal-body">-->
+      :no-enforce-focus="true">
       <div class="panel-body add_item_body" v-can="['company_create']">
         <form>
           <input type="hidden" v-model="form.cmn_company_id" />

@@ -172,6 +172,7 @@
       cancel-title="閉じる"
       @ok.prevent="searchItemDetail()"
       v-model="order_search_modal3"
+      :no-enforce-focus="true"
     >
       <div class="panel-body">
         <table

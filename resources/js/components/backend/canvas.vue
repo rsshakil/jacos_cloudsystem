@@ -177,7 +177,7 @@
     <!-- </div> -->
                 </div>
                 <div class="col-12">
-                  <b-modal size="lg"  :hide-backdrop="true" title="Canvas Background Image" v-model="backgroundModalShow" @cancel.prevent="cancelImage" ok-title="Crop">
+                  <b-modal size="lg"  :hide-backdrop="true" title="Canvas Background Image" v-model="backgroundModalShow" @cancel.prevent="cancelImage" ok-title="Crop" :no-enforce-focus="true">
                     <div class="row">
                         <div class="col-md-12">
                           <input type="file" class="btn btn-accent" @change="loadImage($event)" accept="image/*">

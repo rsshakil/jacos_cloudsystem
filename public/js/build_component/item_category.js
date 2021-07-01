@@ -259,6 +259,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -813,7 +814,8 @@ var render = function() {
             "hide-backdrop": true,
             title: _vm.myLang.category_modal_title,
             "ok-title": _vm.myLang.add_new,
-            "cancel-title": _vm.myLang.cancel
+            "cancel-title": _vm.myLang.cancel,
+            "no-enforce-focus": true
           },
           on: {
             ok: function($event) {

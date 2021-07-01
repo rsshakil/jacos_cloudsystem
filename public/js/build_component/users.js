@@ -603,7 +603,8 @@ var render = function() {
           attrs: {
             size: "lg",
             "hide-backdrop": true,
-            title: _vm.permission_modal_title
+            title: _vm.permission_modal_title,
+            "no-enforce-focus": true
           },
           model: {
             value: _vm.permissionModalShow,
@@ -636,7 +637,8 @@ var render = function() {
             size: "lg",
             "hide-backdrop": true,
             title: "Create User",
-            "ok-title": "Save"
+            "ok-title": "Save",
+            "no-enforce-focus": true
           },
           on: {
             ok: function($event) {

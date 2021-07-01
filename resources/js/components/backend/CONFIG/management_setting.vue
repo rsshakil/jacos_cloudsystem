@@ -58,6 +58,7 @@
       cancel-title="キャンセル"
       ok-title="決定"
       @ok.prevent="update_invoice_json_setting()"
+      :no-enforce-focus="true"
     >
      <h4>請求業務の締日を登録できます</h4>
      <label for="invoicejson_0" class="">締日</label>

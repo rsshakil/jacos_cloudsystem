@@ -210,6 +210,7 @@
       cancel-title="閉じる"
       v-model="showAllCustomerCodeListModal"
       :hide-footer="true"
+      :no-enforce-focus="true"
     >
       <div class="panel-body add_item_body">
 
@@ -332,7 +333,7 @@ breadcrumb(){
           this.mes_lis_pay_lin_det_verification_result_code_list = this.buyer_settings.payments.mes_lis_pay_lin_det_verification_result_code;
           this.mes_lis_inv_lin_det_pay_code_list = this.buyer_settings.invoices.mes_lis_inv_lin_det_pay_code;
           this.mes_lis_inv_lin_det_balance_carried_code_list = this.buyer_settings.invoices.mes_lis_inv_lin_det_balance_carried_code;
-          
+
           loaders.hide();
         });
     },

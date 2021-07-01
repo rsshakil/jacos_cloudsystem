@@ -112,6 +112,7 @@
       :cancel-title="myLang.cancel"
       @ok.prevent="create_new_user()"
       v-model="user_create_modal"
+      :no-enforce-focus="true"
     >
       <!-- <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">

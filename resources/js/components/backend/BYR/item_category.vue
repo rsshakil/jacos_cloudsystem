@@ -170,6 +170,7 @@
       :cancel-title="myLang.cancel"
       @ok.prevent="save_new_cat()"
       v-model="add_cmn_cat_modal"
+      :no-enforce-focus="true"
     >
       <!-- <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">

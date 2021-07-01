@@ -125,6 +125,7 @@
       :cancel-title="myLang.cancel"
       v-model="partner_create_modal"
       @ok.prevent="create_new_partner"
+      :no-enforce-focus="true"
     >
       <div class="panel-body add_item_body">
         <form>

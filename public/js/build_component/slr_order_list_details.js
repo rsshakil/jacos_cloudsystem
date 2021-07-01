@@ -604,6 +604,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2475,7 +2479,8 @@ var render = function() {
             "hide-backdrop": true,
             title: "発注データ修正",
             "ok-title": "修正",
-            "cancel-title": "キャンセル"
+            "cancel-title": "キャンセル",
+            "no-enforce-focus": true
           },
           on: {
             ok: function($event) {
@@ -2697,7 +2702,8 @@ var render = function() {
             "hide-backdrop": true,
             title: "納品先検索",
             "ok-title": "検　索",
-            "cancel-title": "閉じる"
+            "cancel-title": "閉じる",
+            "no-enforce-focus": true
           },
           on: {
             ok: function($event) {
@@ -2797,7 +2803,8 @@ var render = function() {
             "hide-backdrop": true,
             title: "納品先検索",
             "ok-title": "検　索",
-            "cancel-title": "閉じる"
+            "cancel-title": "閉じる",
+            "no-enforce-focus": true
           },
           on: {
             ok: function($event) {
@@ -2897,7 +2904,8 @@ var render = function() {
             "hide-backdrop": true,
             title: "商品コード",
             "ok-title": "検　索",
-            "cancel-title": "閉じる"
+            "cancel-title": "閉じる",
+            "no-enforce-focus": true
           },
           on: {
             ok: function($event) {

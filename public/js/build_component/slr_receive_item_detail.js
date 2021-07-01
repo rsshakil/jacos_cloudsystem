@@ -646,6 +646,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   breadcrumb: function breadcrumb() {
     return {
@@ -1692,7 +1693,8 @@ var render = function() {
             "hide-backdrop": true,
             title: "発注データ修正",
             "ok-title": "修正",
-            "cancel-title": "キャンセル"
+            "cancel-title": "キャンセル",
+            "no-enforce-focus": true
           },
           on: {
             ok: function($event) {
