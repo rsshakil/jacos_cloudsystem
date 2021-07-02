@@ -55,25 +55,20 @@ class InvoiceCommand extends Command
         $adm_user_id = $this->argument('adm_user_id');
         $byr_buyer_id = $this->argument('byr_buyer_id');
 
-        $cmn_connect_id = '';
+        $cmn_connect_id = null;
         if ($arg!=0 && $adm_user_id!=0 && $byr_buyer_id!=0) {
-            $authUser = User::find($adm_user_id);
-            if (!$authUser->hasRole(config('const.adm_role_name'))) {
-                $cmn_company_info=$this->global_functions->get_user_info($adm_user_id, $byr_buyer_id);
-                $cmn_connect_id = $cmn_company_info['cmn_connect_id'];
-            }
-            $this->invoiceSchedulerCode($arg, $cmn_connect_id);
+            $this->invoiceSchedulerCode($arg, $cmn_connect_id,$byr_buyer_id);
         } else {
             $cmn_connects=cmn_connect::select('cmn_connect_id')->get();
             foreach ($cmn_connects as $key => $cmn_connect) {
-                $this->invoiceSchedulerCode($arg, $cmn_connect->cmn_connect_id);
+                $this->invoiceSchedulerCode($arg, $cmn_connect->cmn_connect_id,null);
             }
         }
 
 
         // Matched
     }
-    public function invoiceSchedulerCode($arg, $cmn_connect_id)
+    public function invoiceSchedulerCode($arg, $cmn_connect_id=null,$byr_buyer_id=null)
     {
         Log::info("----invoiceSchedulerCode Starting----");
         $today=date('y-m-d');
@@ -93,13 +88,11 @@ class InvoiceCommand extends Command
             foreach ($closing_date_array as $key1 => $value) {
                 $closing_date_array_full[]=$this->all_used_fun->closing_date($value);
             }
-            // Log::info($closing_date_array_full);
             foreach ($closing_date_array_full as $key => $closing_day) {
                 $array_first_date=$this->all_used_fun->closing_date($closing_date_array[array_key_first($closing_date_array)]);
                 $array_end_date=$this->all_used_fun->closing_date(end($closing_date_array));
                 $startDatedt = strtotime($closing_date_array_full[$key]);
                 $compareDate = strtotime($today);
-                // if (array_key_exists([$key+1], $closing_date_array_full)) {
                 if (($key+1)!=count($closing_date_array_full)) {
                     $endDatedt = strtotime($closing_date_array_full[$key+1]);
                     if ($compareDate > $startDatedt && $compareDate <= $endDatedt) {
@@ -131,11 +124,6 @@ class InvoiceCommand extends Command
                         break;
                     }
                 }
-
-                Log::info('=====Start=======');
-                Log::info($start_date);
-                Log::info($end_date);
-                Log::info('============');
             }
         }else{
             // Auto
@@ -164,16 +152,13 @@ class InvoiceCommand extends Command
             $this->comment("Start Date: ".$start_date);
             $this->comment("End Date: ".$end_date);
         }
-
         if ($start_date!=null && $end_date!=null) {
-            Log::info('=====Last Final=======');
-            Log::info($start_date);
-            Log::info($end_date);
-            Log::info('============');
             $request = new \Illuminate\Http\Request();
             $request->setMethod('POST');
             // $request=$this->request;
             $request->request->add(['scenario_id' => 15]);
+            $request->request->add(['arg' => $arg]);
+            $request->request->add(['byr_buyer_id' => $byr_buyer_id]);
             $request->request->add(['cmn_connect_id' => $cmn_connect_id]);
             $request->request->add(['start_date' => $start_date]);
             $request->request->add(['end_date' => $end_date]);

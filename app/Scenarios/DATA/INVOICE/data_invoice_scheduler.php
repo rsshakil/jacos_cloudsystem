@@ -25,9 +25,6 @@ class data_invoice_scheduler
 
     public function exec($request, $sc)
     {
-        // \Log::info($request->all());
-        // return $request->all();
-        // $data_order_id=$request->data_order_id;
         $start_date=$request->start_date;
         $end_date=$request->end_date;
 
@@ -36,10 +33,6 @@ class data_invoice_scheduler
         $data_invoice_pay_details_array=array();
         $shipment_datas=self::shipmentQuery($request);
         $data_count=count($shipment_datas);
-        // Log::info($shipment_datas);
-        // Log::info("=====Count=====");
-        // Log::info();
-        // return 0;
         $datashipment=true;
         $data_invoice_pay_id=1;
         DB::beginTransaction();
@@ -145,24 +138,19 @@ class data_invoice_scheduler
             return ['message' => $e->getMessage(), 'status' => 0,'data'=>['class'=>'error']];
             // something went wrong
         }
-// return $data_count;
-// return response()->json(['message' => "success", 'status' => 1,'total_success_data'=>$data_count]);
-        // return ['message' => $data_count, 'status' => 1];
         return ['message' => "success", 'status' => 1,'data'=>['total_success_data'=>$data_count,'class'=>'success']];
     }
     public static function shipmentQuery($request){
-        // \Log::info($request->all());
-        // $request_all=$request->all();
         $cmn_connect_id=$request->cmn_connect_id;
         $start_date=$request->start_date;
         $end_date=$request->end_date;
         $byr_buyer_id=$request->byr_buyer_id;
-        $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
-
+        $arg=$request->arg;
+        if ($arg!=0) {
+            $slr_seller_id = Auth::User()->SlrInfo->slr_seller_id;
+        }
         $start_date = $start_date!=null? date('Y-m-d 00:00:00',strtotime($start_date)):$start_date;
         $end_date = $end_date!=null? date('Y-m-d 23:59:59',strtotime($end_date)):$end_date;
-        // \Log::info($start_date);
-        // \Log::info($end_date);
         $shipment_datas=data_shipment::select(
             'data_shipments.cmn_connect_id',
             'data_shipments.sta_sen_identifier',
@@ -204,19 +192,23 @@ class data_invoice_scheduler
         )
         ->leftJoin('data_shipment_vouchers','data_shipment_vouchers.data_shipment_id','data_shipments.data_shipment_id')
         ->leftJoin('data_shipment_items','data_shipment_items.data_shipment_voucher_id','data_shipment_vouchers.data_shipment_voucher_id')
-        ->leftJoin('data_shipment_item_details','data_shipment_item_details.data_shipment_item_id','data_shipment_items.data_shipment_item_id')
-        ->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'data_shipments.cmn_connect_id')
-        ->where('data_shipments.cmn_connect_id',$cmn_connect_id)
-        ->where('cc.byr_buyer_id', $byr_buyer_id)
-        ->where('cc.slr_seller_id', $slr_seller_id)
-        ->whereNotNull('data_shipment_vouchers.send_datetime')
+        ->leftJoin('data_shipment_item_details','data_shipment_item_details.data_shipment_item_id','data_shipment_items.data_shipment_item_id');
+        if($arg!=0){
+            $shipment_datas=$shipment_datas->join('cmn_connects as cc', 'cc.cmn_connect_id', '=', 'data_shipments.cmn_connect_id');
+        }
+        $shipment_datas=$shipment_datas->whereNotNull('data_shipment_vouchers.send_datetime')
         ->whereNull('data_shipment_vouchers.invoice_datetime')
-        ->groupBy('data_shipment_vouchers.data_shipment_voucher_id')
-
         ->whereBetween(DB::raw('(CASE WHEN data_shipment_vouchers.mes_lis_shi_tra_dat_revised_delivery_date is null
         THEN data_shipment_vouchers.mes_lis_shi_tra_dat_delivery_date
-        ELSE data_shipment_vouchers.mes_lis_shi_tra_dat_revised_delivery_date END)'), [$start_date, $end_date])
-        ->get();
+        ELSE data_shipment_vouchers.mes_lis_shi_tra_dat_revised_delivery_date END)'), [$start_date, $end_date]);
+            if($arg==0){
+                $shipment_datas=$shipment_datas->where('data_shipments.cmn_connect_id',$cmn_connect_id);
+            }else{
+                $shipment_datas=$shipment_datas->where('cc.byr_buyer_id', $byr_buyer_id)
+                ->where('cc.slr_seller_id', $slr_seller_id);
+            }
+        $shipment_datas = $shipment_datas
+        ->groupBy('data_shipment_vouchers.data_shipment_voucher_id')->get();
         return $shipment_datas;
     }
 }
